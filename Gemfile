@@ -8,6 +8,7 @@ gem 'jquery-rails', '2.0.2' # TODO: Newer versions break publisher sortable part
 gem 'optic14n', '1.0.0'     # Ideally version should be synced with bouncer
 gem 'gds-sso', '3.0.0'
 gem 'plek', '1.2.0'
+gem 'exception_notification', '2.6.1'
 
 group :assets do
   gem 'sass', '3.2.8'
