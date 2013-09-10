@@ -24,5 +24,8 @@ group :test do
   gem 'ci_reporter', '1.8.0'
   gem 'database_cleaner', '1.0.1'
   gem 'webmock', '1.11.0', require: false
+end
+
+group :development, :test do
   gem 'rspec-rails', '2.13.2'
 end
