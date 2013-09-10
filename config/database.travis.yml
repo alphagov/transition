@@ -1,0 +1,8 @@
+test:
+  adapter: mysql2
+  host: localhost
+  database: transition_test
+  username: transition
+  password: transition
+  encoding: utf8
+  pool: 5
