@@ -13,18 +13,18 @@ class CreateAllStillusefulTables < ActiveRecord::Migration
     add_index "hosts", ["hostname"], :name => "index_hosts_on_host", :unique => true
     add_index "hosts", ["site_id"],  :name => "index_hosts_on_site_id"
 
-    create_table "mappings", :force => true do |t|
-      t.integer "site_id",                       :null => false
-      t.string  "c14d_path",     :limit => 1024, :null => false
-      t.string  "c14d_hash",     :limit => 40,   :null => false
-      t.string  "http_status",   :limit => 3,    :null => false
+    create_table "mappings",    :force => true do |t|
+      t.integer "site_id",      :null => false
+      t.string  "path",         :limit => 1024, :null => false
+      t.string  "path_hash",    :limit => 40,   :null => false
+      t.string  "http_status",  :limit => 3,    :null => false
       t.text    "new_url"
       t.text    "suggested_url"
       t.text    "archive_url"
     end
 
     add_index "mappings", ["site_id", "http_status"], :name => "index_mappings_on_site_id_and_http_status"
-    add_index "mappings", ["site_id", "c14d_hash"], :name => "index_mappings_on_site_id_and_path_hash", :unique => true
+    add_index "mappings", ["site_id", "path_hash"], :name => "index_mappings_on_site_id_and_path_hash", :unique => true
     add_index "mappings", ["site_id"], :name => "index_mappings_on_site_id"
 
     create_table "organisations", :force => true do |t|

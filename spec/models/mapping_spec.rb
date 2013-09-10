@@ -6,13 +6,16 @@ describe Mapping do
   end
 
   describe 'the path hash' do
-    let(:path) { '/a/b/c' }
+    let(:some_path) { '/a/b/c' }
+
     subject(:mapping) do
-      build :mapping, c14d_path: path, site: build(:site), http_status: 301
+      build :mapping, path: some_path, site: build(:site), http_status: 301
     end
 
     before { mapping.save.should be_true }
 
-    its(:c14d_hash) { should eql(Digest::SHA1.hexdigest(path)) }
+    its(:path_hash) do
+      should eql(Digest::SHA1.hexdigest(some_path))
+    end
   end
 end
