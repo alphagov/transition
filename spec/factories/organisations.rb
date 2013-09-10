@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :organisation do
-    abbr 'DFID'
-    title 'DFID'
+    sequence(:abbr) {|n| "org#{n}" }
+    title 'Orgtastic'
   end
 end
