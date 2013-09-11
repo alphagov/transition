@@ -3,4 +3,8 @@ class Site < ActiveRecord::Base
 
   has_many :hosts
   has_many :mappings
+
+  def to_param
+    abbr
+  end
 end
