@@ -14,7 +14,7 @@
   <% @organisations.each do |org| %>
       <tr>
         <td>
-          <%= org.title %>
+          <%= link_to org.title, organisation_path(org) %>
         </td>
         <td>
           <%= org.launch_date.to_s(:long_ordinal) %>
