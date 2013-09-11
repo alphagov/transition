@@ -20,4 +20,16 @@ describe OrganisationsController do
       assigns(:organisations).should eql(test_organisations)
     end
   end
+
+  describe '#show' do
+    let!(:organisation) { create :organisation, abbr: 'funk' }
+
+    before do
+      get :show, id: 'funk'
+    end
+
+    it 'assigns the organisation' do
+      assigns(:organisation).should == organisation
+    end
+  end
 end
