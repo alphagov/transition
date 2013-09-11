@@ -1,3 +1,7 @@
 class User < ActiveRecord::Base
-  # attr_accessible :title, :body
+  include GDS::SSO::User
+
+  serialize :permissions, Array
+
+  attr_accessible :uid, :email, :name, :permissions, as: :oauth
 end
