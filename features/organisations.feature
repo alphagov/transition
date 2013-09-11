@@ -9,3 +9,4 @@ Feature: List organisations
     When I visit the home page
     Then I should see the header "Organisations"
     And I should see a table with class "organisations" containing 2 rows
+    And I should see "Signed in"
