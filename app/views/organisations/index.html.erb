@@ -1,0 +1,23 @@
+<h1>Organisations</h1>
+
+<table class="organisations">
+  <thead>
+  <tr>
+    <th>Organisation</th>
+    <th>Launch date</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @organisations.each do |org| %>
+      <tr>
+        <td>
+          <%= org.title %>
+        </td>
+        <td>
+          <%= org.launch_date.to_s(:long_ordinal) %>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
