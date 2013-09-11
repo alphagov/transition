@@ -17,7 +17,7 @@
           <%= link_to org.title, organisation_path(org) %>
         </td>
         <td>
-          <%= org.launch_date.to_s(:long_ordinal) %>
+          <%= date_or_not_yet(org.launch_date) %>
         </td>
       </tr>
   <% end %>
