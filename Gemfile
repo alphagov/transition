@@ -18,6 +18,7 @@ group :assets do
 end
 
 group :test do
+  gem 'cucumber-rails'
   gem 'capybara', '2.1.0', require: false
   gem 'factory_girl_rails', '4.1.0'
   gem 'shoulda-matchers', '2.2.0'
