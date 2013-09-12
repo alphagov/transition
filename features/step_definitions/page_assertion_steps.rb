@@ -14,10 +14,14 @@ Then(/^I should see a link to the URL (.*)$/) do |href|
   expect(page).to have_link('', href: href)
 end
 
-Then(/^I should see a link to the (.*) site$/) do |site_abbr|
-  expect(page).to have_link('', href: site_path(site_abbr))
+Then(/^I should see a link to the (.*) site's mappings$/) do |site_abbr|
+  expect(page).to have_link('', href: site_mappings_path(site_abbr))
 end
 
 Then(/^I should see a link to the organisation (.*)$/) do |org_abbr|
   expect(page).to have_link('', href: organisation_path(org_abbr))
+end
+
+Then(/^I should see a link to page ([0-9]+)$/) do |page_number|
+  expect(page).to have_link(page_number, mappings_path(page: page_number))
 end

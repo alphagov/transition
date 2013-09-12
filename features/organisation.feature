@@ -12,7 +12,7 @@ Feature: View organisation
     When I visit the path /organisations/funk
     Then I should see the header "Ministry of funk"
     And  I should see the header "Sites"
-    And  I should see a link to the awb site
+    And  I should see a link to the awb site's mappings
     And  I should see a link to the URL http://average-white-band.gov.uk/
-    And  I should see a link to the prl site
+    And  I should see a link to the prl site's mappings
     And  I should see a link to the URL http://parliament.gov.uk/

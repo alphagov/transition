@@ -1,0 +1,30 @@
+<h1>Mappings</h1>
+
+<%= render partial: 'site', locals: { site: @site } %>
+
+<% if @site.mappings.empty? %>
+    <p>No mappings found.</p>
+<% else %>
+    <table class="mappings table table-bordered">
+      <thead>
+      <tr>
+        <th>Edit Mapping</th>
+        <th>HTTP Status</th>
+        <th>Original URL</th>
+        <th>New URL</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @site.mappings.each do |mapping| %>
+          <tr data-status-code="<%= mapping.http_status %>">
+            <td><%= link_to 'Edit', edit_site_mapping_path(@site, mapping) %></td>
+            <td><%= mapping.http_status %></td>
+            <td><%= link_to mapping.path, 'http://'+ @site.default_host.hostname + mapping.path %></td>
+            <td><%= link_to mapping.new_url, mapping.new_url if mapping.new_url.present? %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>
+
+
