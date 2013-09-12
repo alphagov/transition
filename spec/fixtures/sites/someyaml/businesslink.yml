@@ -1,0 +1,23 @@
+---
+site: businesslink
+host: www.businesslink.gov.uk
+redirection_date: 17th October 2012
+tna_timestamp: 20120823131012
+title: Business Link
+furl: www.gov.uk
+homepage: https://www.gov.uk
+css: businesslink
+options: --query-string topicid:itemid
+aliases:
+  - businesslink.gov.uk
+  - online.businesslink.gov.uk
+  - www.online.businesslink.gov.uk
+  - www.businesslink.co.uk
+  - www.businesslink.org
+  - www.business.gov.uk
+  - alliance-leicestercommercialbank.businesslink.gov.uk
+  - aol.businesslink.gov.uk
+  - msn.businesslink.gov.uk
+  - sagestartup.businesslink.gov.uk
+  - simplybusiness.businesslink.gov.uk
+---
