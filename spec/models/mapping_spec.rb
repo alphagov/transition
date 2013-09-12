@@ -5,6 +5,22 @@ describe Mapping do
     it { should belong_to(:site) }
   end
 
+  describe 'validations' do
+    it { should validate_presence_of(:site) }
+    it { should validate_presence_of(:path) }
+    it { should ensure_length_of(:path).is_at_most(1024) }
+    it { should validate_presence_of(:http_status) }
+    it { should ensure_length_of(:http_status).is_at_most(3) }
+    it 'ensures paths are unique to a site' do
+      create(:mapping_410)
+      lambda { build(:mapping_410).save }.should raise_error(ActiveRecord::StatementInvalid)
+    end
+
+    it { should ensure_length_of(:new_url).is_at_most(64.kilobytes - 1)}
+    it { should ensure_length_of(:suggested_url).is_at_most(64.kilobytes - 1)}
+    it { should ensure_length_of(:archive_url).is_at_most(64.kilobytes - 1)}
+  end
+
   describe 'the path hash' do
     let(:some_path) { '/a/b/c' }
 
