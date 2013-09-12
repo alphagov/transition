@@ -1,4 +1,6 @@
 class Organisation < ActiveRecord::Base
+  attr_accessible :title, :launch_date, :homepage, :furl, :css
+
   has_many :sites
   has_many :hosts, through: :sites
   has_many :mappings, through: :sites

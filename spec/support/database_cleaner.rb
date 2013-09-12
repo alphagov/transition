@@ -17,12 +17,12 @@ RSpec.configure do |config|
 
   ##
   # Mark tests where you're going to use before(:all) for speed reasons
-  # with the metadata +expensive_setup: true+
-  config.before(:all, :expensive_setup => true) do
+  # with the metadata +testing_before_all: true+
+  config.before(:all, :testing_before_all => true) do
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.after(:all, :expensive_setup => true) do
+  config.after(:all, :testing_before_all => true) do
     DatabaseCleaner.clean_with(:truncation)
   end
 
