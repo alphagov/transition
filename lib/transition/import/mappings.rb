@@ -26,6 +26,7 @@ module Transition
         FROM
           mappings_staging st
         INNER JOIN hosts h on h.hostname = st.host
+        ON DUPLICATE KEY UPDATE http_status = st.http_status, new_url = st.new_url
       mySQL
 
       def self.from_redirector_csv_file!(filename)
