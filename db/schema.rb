@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130910135517) do
+ActiveRecord::Schema.define(:version => 20130913124740) do
 
   create_table "hosts", :force => true do |t|
     t.integer  "site_id"
@@ -39,6 +39,17 @@ ActiveRecord::Schema.define(:version => 20130910135517) do
   add_index "mappings", ["site_id", "http_status"], :name => "index_mappings_on_site_id_and_http_status"
   add_index "mappings", ["site_id", "path_hash"], :name => "index_mappings_on_site_id_and_path_hash", :unique => true
   add_index "mappings", ["site_id"], :name => "index_mappings_on_site_id"
+
+  create_table "mappings_staging", :id => false, :force => true do |t|
+    t.text   "old_url",       :limit => 16777215
+    t.text   "new_url",       :limit => 16777215
+    t.string "http_status"
+    t.string "host"
+    t.string "path"
+    t.string "path_hash"
+    t.text   "suggested_url", :limit => 16777215
+    t.text   "archive_url",   :limit => 16777215
+  end
 
   create_table "organisations", :force => true do |t|
     t.string   "abbr"
