@@ -2,7 +2,7 @@
 
 <%= render partial: 'site', locals: { site: @site } %>
 
-<% if @site.mappings.empty? %>
+<% if @mappings.empty? %>
     <p>No mappings found.</p>
 <% else %>
     <table class="mappings table table-bordered">
@@ -15,7 +15,7 @@
       </tr>
       </thead>
       <tbody>
-      <% @site.mappings.each do |mapping| %>
+      <% @mappings.each do |mapping| %>
           <tr data-status-code="<%= mapping.http_status %>">
             <td><%= link_to 'Edit', edit_site_mapping_path(@site, mapping) %></td>
             <td><%= mapping.http_status %></td>
@@ -25,6 +25,7 @@
       <% end %>
       </tbody>
     </table>
+    <%= paginate(@mappings) %>
 <% end %>
 
 

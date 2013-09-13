@@ -1,13 +1,13 @@
+Then(/^I should see "([^"]*)"$/) do |text|
+  expect(page).to have_content(text)
+end
+
 Then(/^I should see the header "([^"]*)"$/) do |header_text|
   expect(page).to have_selector('h1,h2,h3,h4,h5,h6', text: header_text)
 end
 
-Then(/^I should see a table with class "([^"]*)" containing (\d+) rows$/) do |classname, row_count|
+Then(/^I should see a table with class "([^"]*)" containing (\d+) rows?$/) do |classname, row_count|
   expect(page).to have_selector("table.#{classname} tbody tr", count: row_count)
-end
-
-Then(/^I should see "([^"]*)"$/) do |text|
-  expect(page).to have_content(text)
 end
 
 Then(/^I should see a link to the URL (.*)$/) do |href|
@@ -23,5 +23,9 @@ Then(/^I should see a link to the organisation (.*)$/) do |org_abbr|
 end
 
 Then(/^I should see a link to page ([0-9]+)$/) do |page_number|
-  expect(page).to have_link(page_number, mappings_path(page: page_number))
+  expect(page).to have_link(page_number)
+end
+
+Then(/^I should see (\d+) as the current page$/) do |page_number|
+  expect(page).to have_selector('span.page.current', text: page_number)
 end
