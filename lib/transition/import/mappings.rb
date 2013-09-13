@@ -29,9 +29,15 @@ module Transition
       mySQL
 
       def self.from_redirector_csv_file!(filename)
+        $stderr.print "Importing #{filename} ... "
         [TRUNCATE, LOAD_DATA.sub('$filename$', "'#{File.expand_path(filename)}'"), INSERT_FROM_STAGING].each do |statement|
           ActiveRecord::Base.connection.execute(statement)
         end
+        $stderr.puts 'done.'
+      end
+
+      def self.from_redirector_mask!(filemask)
+        Dir[File.expand_path(filemask)].each {|filename| Mappings.from_redirector_csv_file!(filename)}
       end
     end
   end
