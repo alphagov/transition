@@ -4,5 +4,11 @@ FactoryGirl.define do
     homepage 'https://www.gov.uk/government/organisations/cic-regulator'
 
     association :organisation
+
+    factory :site_with_default_host do
+      after(:create) do |site|
+        site.hosts << FactoryGirl.create(:host)
+      end
+    end
   end
 end

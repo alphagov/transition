@@ -19,3 +19,16 @@ Given(/^there are these organisations:$/) do |org_table|
     FactoryGirl.create(:organisation, abbr: abbr, title: title)
   end
 end
+
+Given(/^there is a site called (.*) belonging to an organisation (.*) with these mappings:$/) do |site_abbr, org_abbr, mappings_table|
+  # table is a | 410         | /about/corporate |                   |
+  org = FactoryGirl.create(:organisation,
+    title: org_abbr,
+    abbr: org_abbr
+  )
+  site = FactoryGirl.create(:site_with_default_host, organisation: org, abbr: site_abbr)
+
+  site.mappings = mappings_table.rows.map do |http_status, path, new_url|
+    FactoryGirl.create(:mapping, site: site, http_status: http_status, path: path, new_url: new_url)
+  end
+end

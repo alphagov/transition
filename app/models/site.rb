@@ -10,4 +10,8 @@ class Site < ActiveRecord::Base
   def to_param
     abbr
   end
+
+  def default_host
+    hosts.first
+  end
 end

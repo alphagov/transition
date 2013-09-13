@@ -12,7 +12,7 @@
       <tbody>
           <% @organisation.sites.each do |site| %>
             <tr>
-              <td><%= link_to site.abbr, site_path(site) %></td>
+              <td><%= link_to site.abbr, site_mappings_path(site) %></td>
               <td><%= link_to site.homepage, site.homepage %></td>
             </tr>
           <% end %>

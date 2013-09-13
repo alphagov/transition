@@ -2,6 +2,8 @@ require 'digest/sha1'
 class Mapping < ActiveRecord::Base
   attr_accessible :path, :site
 
+  paginates_per 100
+
   belongs_to :site
   validates :site, presence: true
   validates :path, presence: true, length: { maximum: 1024 }
