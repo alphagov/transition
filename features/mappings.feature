@@ -10,6 +10,7 @@ Feature: Paginated mappings
     When I visit the path /organisations/bis
     And I click the link called "bis_lowpay"
     Then I should see the header "Mappings"
+    And the page title should be "Mappings for bis_lowpay | GOV.UK Transition"
     And I should see "No mappings found."
 
   Scenario: There are mappings for a site and we visit page 1

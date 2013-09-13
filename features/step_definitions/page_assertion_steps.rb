@@ -29,3 +29,7 @@ end
 Then(/^I should see (\d+) as the current page$/) do |page_number|
   expect(page).to have_selector('span.page.current', text: page_number)
 end
+
+Then(/^the page title should be "([^"]*)"$/) do |title|
+  expect(page).to have_title(title)
+end
