@@ -9,6 +9,7 @@ gem 'optic14n', '1.0.0'     # Ideally version should be synced with bouncer
 gem 'gds-sso', '3.0.0'
 gem 'plek', '1.2.0'
 gem 'htmlentities'
+gem 'kaminari'
 
 # Exception notification is configured in alphagov-deployment. These gems are
 # needed by that code.
