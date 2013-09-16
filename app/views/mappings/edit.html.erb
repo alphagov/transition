@@ -6,7 +6,7 @@
       <%= render 'shared/error_messages', model: f.object %>
 
       <%= f.label :path %>
-      <%= f.text_field :path, class: 'span8'  %>
+      <%= f.text_field :path, class: 'span8', readonly: 'readonly'  %>
 
       <%= f.label :http_status, 'HTTP Status' %>
       <%= f.select :http_status, ['301', '410'] %>
