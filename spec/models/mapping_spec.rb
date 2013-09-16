@@ -21,15 +21,15 @@ describe Mapping do
     it { should ensure_length_of(:archive_url).is_at_most(64.kilobytes - 1)}
 
     describe 'URL validations' do
-      subject(:mapping) { build(:mapping, http_status: '301', new_url: 'not-a-url', suggested_url: '', archive_url: '') }
+      subject(:mapping) { build(:mapping, http_status: '301', new_url: 'not-a-url', suggested_url: 'http://', archive_url: '') }
 
-      before { mapping.save.should be_false }
+      before { mapping.should_not be_valid }
 
       describe 'the errors' do
         subject { mapping.errors }
 
         its([:new_url])       { should == ['is not a URL'] }
-        its([:suggested_url]) { should be_empty }
+        its([:suggested_url]) { should == ['is not a URL'] }
         its([:archive_url])   { should be_empty }
       end
     end
