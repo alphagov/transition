@@ -29,6 +29,11 @@ Given(/^there is a site called (.*) belonging to an organisation (.*) with these
   site = FactoryGirl.create(:site_with_default_host, organisation: org, abbr: site_abbr)
 
   site.mappings = mappings_table.rows.map do |http_status, path, new_url|
-    FactoryGirl.create(:mapping, site: site, http_status: http_status, path: path, new_url: new_url)
+    FactoryGirl.create(:mapping, site: site, http_status: http_status, path: path, new_url: new_url == '' ? nil : new_url)
   end
+end
+
+When(/^a (\d+) mapping exists for the (.+) site with the path (.*)$/) do |status, site_abbr, path|
+  site = FactoryGirl.create :site_with_default_host, abbr: site_abbr
+  site.mappings << FactoryGirl.create(:mapping, http_status: status, path: path)
 end

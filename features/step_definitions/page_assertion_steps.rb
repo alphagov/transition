@@ -33,3 +33,11 @@ end
 Then(/^the page title should be "([^"]*)"$/) do |title|
   expect(page).to have_title(title)
 end
+
+Then(/^I should be returned to the mappings list for (.*)$/) do |site_abbr|
+  expect(current_path).to eql(site_mappings_path(site_abbr))
+end
+
+Then(/^I should still be editing a mapping$/) do
+  step 'I should see "Edit mapping"'
+end

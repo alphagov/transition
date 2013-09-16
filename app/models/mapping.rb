@@ -1,6 +1,6 @@
 require 'digest/sha1'
 class Mapping < ActiveRecord::Base
-  attr_accessible :path, :site
+  attr_accessible :path, :site, :http_status, :new_url, :suggested_url, :archive_url
 
   paginates_per 100
 
@@ -15,7 +15,7 @@ class Mapping < ActiveRecord::Base
   before_validation :set_path_hash
   validates :path_hash, presence: true
 
-  validates :new_url, :suggested_url, :archive_url, length: { maximum: (64.kilobytes - 1) }
+  validates :new_url, :suggested_url, :archive_url, length: { maximum: (64.kilobytes - 1) }, non_blank_url: true
 
   scope :with_status, -> status { where(http_status: Rack::Utils.status_code(status)) }
   scope :redirects, with_status(:moved_permanently)
