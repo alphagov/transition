@@ -94,6 +94,8 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kgio (2.8.0)
+    launchy (2.3.0)
+      addressable (~> 2.3)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -212,6 +214,7 @@ DEPENDENCIES
   htmlentities
   jquery-rails (= 2.0.2)
   kaminari
+  launchy
   mysql2 (= 0.3.11)
   optic14n (= 1.0.0)
   plek (= 1.2.0)
