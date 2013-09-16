@@ -2,8 +2,8 @@
 <h1>Edit mapping</h1>
 
 <%= form_for @mapping, url: polymorphic_path([@site, @mapping]) do |f| %>
+    <%= render 'shared/error_messages', model: f.object %>
     <fieldset class="span12">
-      <%= render 'shared/error_messages', model: f.object %>
 
       <%= f.label :path %>
       <%= f.text_field :path, class: 'span8', readonly: 'readonly'  %>
