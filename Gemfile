@@ -3,7 +3,7 @@ source 'https://BnrJb6FZyzspBboNJzYZ@gem.fury.io/govuk/'
 
 gem 'rails', '3.2.13'
 gem 'unicorn', '4.6.2'
-gem 'mysql2', '0.3.11'
+gem 'mysql2', '0.3.13'
 gem 'jquery-rails', '2.0.2' # TODO: Newer versions break publisher sortable parts. Will need attention.
 gem 'optic14n', '1.0.0'     # Ideally version should be synced with bouncer
 gem 'gds-sso', '3.0.0'
