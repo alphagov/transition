@@ -45,3 +45,11 @@ end
 Then(/^I should not see "([^"]*)"$/) do |content|
   expect(page).not_to have_content(content)
 end
+
+Then(/^the filter box should contain "([^"]*)"$/) do |path|
+  expect(page).to have_field('Filter by path', with: path)
+end
+
+Then(/^I should see a link to remove the filter$/) do
+  expect(page).to have_link('Remove filter')
+end
