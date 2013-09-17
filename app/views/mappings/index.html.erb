@@ -4,8 +4,13 @@
 
 <%= render partial: 'site', locals: { site: @site } %>
 
+<%= render partial: 'filters' %>
+
 <% if @mappings.empty? %>
-    <p>No mappings found.</p>
+    <p>
+      No mappings found.
+      <%= link_to 'Remove filter', site_mappings_path(@site) if params[:contains] %>
+    </p>
 <% else %>
     <table class="mappings table table-bordered">
       <thead>

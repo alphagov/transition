@@ -1,0 +1,10 @@
+.filter {
+  label {
+    display: inline;
+    margin-right: 1em;
+  }
+
+  input[type="submit"] {
+    margin-bottom: 10px; /* Bootstrap adds this to everything except buttons */
+  }
+}

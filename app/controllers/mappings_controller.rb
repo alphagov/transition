@@ -1,7 +1,7 @@
 class MappingsController < ApplicationController
   def index
     @site = Site.find_by_abbr(params[:site_id])
-    @mappings = @site.mappings.page(params[:page])
+    @mappings = @site.mappings.filtered_by_path(params[:contains]).page(params[:page])
   end
 
   def edit

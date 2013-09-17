@@ -1,0 +1,7 @@
+<div class="filter">
+  <%= form_tag(site_mappings_path(@site), method: 'get') do %>
+    <%= label_tag       :contains, 'Filter by path' %>
+    <%= text_field_tag  :contains, params[:contains], class: 'span5'  %>
+    <%= submit_tag 'Filter', name: nil, class: 'btn' %>
+  <% end %>
+</div>
