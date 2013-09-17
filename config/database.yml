@@ -3,6 +3,7 @@ development:
   database: transition_development
   username: transition
   password: transition
+  local_infile: true
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -12,10 +13,12 @@ test: &test
   database: transition_test<%= ENV['TEST_ENV_NUMBER'] %>
   username: transition
   password: transition
+  local_infile: true
 
 production:
   adapter: mysql2
   database: transition_production
+  local_infile: true
 
 cucumber:
   <<: *test
