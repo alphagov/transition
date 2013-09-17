@@ -14,3 +14,8 @@ end
 When(/^I edit the first mapping$/) do
   click_link 'Edit'
 end
+
+When(/^I filter the path by ([^"]*)$/) do |path_contains|
+  fill_in 'Filter by path', with: path_contains
+  click_button 'Filter'
+end
