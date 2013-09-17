@@ -41,3 +41,7 @@ end
 Then(/^I should still be editing a mapping$/) do
   step 'I should see "Edit mapping"'
 end
+
+Then(/^I should not see "([^"]*)"$/) do |content|
+  expect(page).not_to have_content(content)
+end
