@@ -6,7 +6,7 @@
   <dd><%= link_to site.homepage, site.homepage %></dd>
 
   <dt>Query params</dt>
-  <dd><%= site.query_params %></dd>
+  <dd><%= site.query_params.presence || 'N/A' %></dd>
 
   <dt>TNA timestamp</dt>
   <dd><%= site.tna_timestamp %></dd>
