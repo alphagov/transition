@@ -48,4 +48,28 @@ describe Mapping do
       should eql(Digest::SHA1.hexdigest(some_path))
     end
   end
+
+  describe '.filtered_by_path' do
+    before do
+      site = create :site
+      ['/', '/about', '/about/branding', '/other'].each do |path|
+        create :mapping, path: path, site: site
+      end
+    end
+
+    context 'a filter is supplied' do
+      subject { Mapping.filtered_by_path('about').map(&:path) }
+
+      it { should include('/about') }
+      it { should include('/about/branding') }
+      it { should_not include('/') }
+      it { should_not include('/other') }
+    end
+
+    context 'no filter is supplied' do
+      subject { Mapping.filtered_by_path(nil) }
+
+      it { should have(4).mappings }
+    end
+  end
 end
