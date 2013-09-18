@@ -1,18 +1,21 @@
-<table class="paper-trail table table-striped">
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Event</th>
-      <th>On</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @mapping.versions.each do |version| %>
+<div class="paper-trail">
+    <h2>History</h2>
+    <table class="table table-striped">
+      <thead>
         <tr>
-          <td><%= version.whodunnit %></td>
-          <td><%= version.event %></td>
-          <td><%= version.created_at %></td>
+          <th>User</th>
+          <th>Event</th>
+          <th>On</th>
         </tr>
-    <% end %>
-  </tbody>
-</table>
+      </thead>
+      <tbody>
+        <% @mapping.versions.reverse.each do |version| %>
+            <tr>
+              <td><%= version.whodunnit %></td>
+              <td><%= version.event %></td>
+              <td><%= version.created_at.strftime('%d/%m/%y %H:%M') %></td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+</div>
