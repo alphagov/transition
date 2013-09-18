@@ -3,7 +3,7 @@
 <%= content_for :page_title, 'Edit mapping' %>
 <h1>Edit mapping</h1>
 
-<%= form_for @mapping, url: polymorphic_path([@site, @mapping]) do |f| %>
+<%= form_for @mapping, url: site_mapping_path(@site, @mapping) do |f| %>
     <%= render 'shared/error_messages', model: f.object %>
     <fieldset class="span12">
 
