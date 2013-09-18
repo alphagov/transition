@@ -37,4 +37,17 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.include FactoryGirl::Syntax::Methods
+
+  config.before :each do
+    PaperTrail.controller_info = {}
+    PaperTrail.whodunnit = nil
+  end
+
+  config.before :all do
+    PaperTrail.enabled = false
+  end
+
+  config.before :all, versioning: true do
+    PaperTrail.enabled = true
+  end
 end

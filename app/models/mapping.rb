@@ -4,6 +4,8 @@ class Mapping < ActiveRecord::Base
 
   paginates_per 100
 
+  has_paper_trail
+
   belongs_to :site
   validates :site, presence: true
   validates :path, presence: true, length: { maximum: 1024 }
