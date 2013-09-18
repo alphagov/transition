@@ -53,3 +53,10 @@ end
 Then(/^I should see a link to remove the filter$/) do
   expect(page).to have_link('Remove filter')
 end
+
+Then(/^I should see that (.*) is responsible for the (.*)$/) do |user_name, action|
+  within '.paper-trail' do
+    expect(page).to have_selector('td', text: user_name)
+    expect(page).to have_selector('td', text: action)
+  end
+end

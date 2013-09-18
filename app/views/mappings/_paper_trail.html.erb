@@ -1,0 +1,18 @@
+<table class="paper-trail table table-striped">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Event</th>
+      <th>On</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @mapping.versions.each do |version| %>
+        <tr>
+          <td><%= version.whodunnit %></td>
+          <td><%= version.event %></td>
+          <td><%= version.created_at %></td>
+        </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -94,10 +94,11 @@ ActiveRecord::Schema.define(:version => 20130918110810) do
     t.integer  "item_id",    :null => false
     t.string   "event",      :null => false
     t.string   "whodunnit"
+    t.integer  "user_id"
     t.text     "object"
     t.datetime "created_at"
   end
 
-  add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
+  add_index "versions", ["item_type", "item_id", "user_id"], :name => "index_versions_on_item_type_and_item_id_and_user_id"
 
 end
