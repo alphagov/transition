@@ -14,6 +14,7 @@
       <%= link_to 'Remove filter', site_mappings_path(@site) if params[:contains] %>
     </p>
 <% else %>
+    <%= paginate(@mappings) %>
     <table class="mappings table table-bordered">
       <thead>
       <tr>

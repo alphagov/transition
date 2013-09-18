@@ -2,6 +2,10 @@ When(/^I click the link(?: called)? "([^"]+)"$/) do |link_title|
   click_link link_title
 end
 
+When(/^I go to page ([0-9]+)$/) do |page|
+  first(:link, page).click
+end
+
 When(/^I change the mapping to a (\d+) with a new URL of (.*)$/) do |status, new_url|
   select status, from: 'HTTP Status'
   fill_in 'New URL', with: new_url
