@@ -39,7 +39,7 @@ Feature: Paginated mappings
     And the mappings page size is 2
     When I visit the path /organisations/bis
     And I click the link called "bis_lowpay"
-    And I click the link called "2"
+    And I go to page 2
     And  I should see a table with class "mappings" containing 1 row
     And  I should see 2 as the current page
     And  I should see a link to page 1
