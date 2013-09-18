@@ -7,14 +7,14 @@
     <table class="sites table table-bordered">
       <thead>
       <tr>
-        <th>Abbr</th>
+        <th>Abbreviation</th>
         <th>Homepage</th>
       </tr>
       </thead>
       <tbody>
           <% @organisation.sites.each do |site| %>
             <tr>
-              <td><%= link_to site.abbr, site_mappings_path(site) %></td>
+              <td><%= link_to "#{site.abbr} Mappings", site_mappings_path(site) %></td>
               <td><%= link_to site.homepage, site.homepage %></td>
             </tr>
           <% end %>
