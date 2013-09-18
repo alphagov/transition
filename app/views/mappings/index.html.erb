@@ -29,7 +29,7 @@
           <tr data-status-code="<%= mapping.http_status %>">
             <td><%= link_to 'Edit', edit_site_mapping_path(@site, mapping) %></td>
             <td><%= mapping.http_status %></td>
-            <td><%= link_to mapping.path, 'http://'+ @site.default_host.hostname + mapping.path %></td>
+            <td><%= example_url(mapping) %></td>
             <td><%= link_to mapping.new_url, mapping.new_url if mapping.new_url.present? %></td>
           </tr>
       <% end %>

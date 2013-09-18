@@ -6,6 +6,9 @@ FactoryGirl.define do
     association :organisation
 
     factory :site_with_default_host do
+      after(:build) do |site|
+        site.hosts << FactoryGirl.create(:host)
+      end
       after(:create) do |site|
         site.hosts << FactoryGirl.create(:host)
       end
