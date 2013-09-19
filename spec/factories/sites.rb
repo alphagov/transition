@@ -9,9 +9,6 @@ FactoryGirl.define do
       after(:build) do |site|
         site.hosts << FactoryGirl.create(:host)
       end
-      after(:create) do |site|
-        site.hosts << FactoryGirl.create(:host)
-      end
     end
   end
 end
