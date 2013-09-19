@@ -53,3 +53,22 @@ end
 Then(/^I should see a link to remove the filter$/) do
   expect(page).to have_link('Remove filter')
 end
+
+Then(/^I should see that (.*) is responsible for an (.*)$/) do |user_name, action|
+  within '.versions' do
+    expect(page).to have_selector('td', text: user_name)
+    expect(page).to have_selector('td', text: action)
+  end
+end
+
+Then(/^I should see no history$/) do
+  expect(page).not_to have_selector('.paper-trail')
+end
+
+Then(/^I should see that (.*) was changed from (.*) to (.*)$/) do |field_name, old_value, new_value|
+  within '.versions' do
+    expect(page).to have_content(field_name)
+    expect(page).to have_content(old_value)
+    expect(page).to have_content(new_value)
+  end
+end

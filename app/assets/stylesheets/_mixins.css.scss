@@ -3,3 +3,10 @@
   -moz-border-radius: $radius;
   -webkit-border-radius: $radius;
 }
+
+@mixin transition($prop, $time: 1s) {
+  -webkit-transition:$prop 1s ease-in;
+  -moz-transition:$prop 1s ease-in;
+  -o-transition:$prop 1s ease-in;
+  transition:$prop 1s ease-in;
+}

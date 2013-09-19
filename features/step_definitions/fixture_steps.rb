@@ -33,7 +33,13 @@ Given(/^there is a site called (.*) belonging to an organisation (.*) with these
   end
 end
 
-When(/^a (\d+) mapping exists for the (.+) site with the path (.*)$/) do |status, site_abbr, path|
+Given (/^a (\d+) mapping exists for the (.+) site with the path (.*)$/) do |status, site_abbr, path|
   site = FactoryGirl.create :site_with_default_host, abbr: site_abbr
   site.mappings << FactoryGirl.create(:mapping, http_status: status, path: path)
+end
+
+Given(/^there is a mapping that has no history$/) do
+  with_papertrail_disabled do
+    @mapping = FactoryGirl.create :mapping
+  end
 end
