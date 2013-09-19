@@ -90,11 +90,12 @@ ActiveRecord::Schema.define(:version => 20130918110810) do
   end
 
   create_table "versions", :force => true do |t|
-    t.string   "item_type",  :null => false
-    t.integer  "item_id",    :null => false
-    t.string   "event",      :null => false
+    t.string   "item_type",      :null => false
+    t.integer  "item_id",        :null => false
+    t.string   "event",          :null => false
     t.string   "whodunnit"
     t.integer  "user_id"
+    t.text     "object_changes"
     t.text     "object"
     t.datetime "created_at"
   end
