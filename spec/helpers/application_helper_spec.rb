@@ -39,6 +39,19 @@ describe ApplicationHelper do
       it { should include(%(<li><a href="#{site_mappings_path(site)}">#{site.abbr} Mappings)) }
       it { should include('<li class="active">Mapping') }
     end
+
+    context 'for the versions in a mapping', versioning: true do
+      let(:mapping) { create :mapping_with_versions }
+
+      subject { helper.breadcrumb mapping.versions.last }
+
+      it { should include('<ul class="breadcrumb">') }
+      it { should include('<li><a href="/organisations">Organisations') }
+      it { should include("<li><a href=\"#{organisation_path(organisation)}\">#{organisation.title}") }
+      it { should include(%(<li><a href="#{site_mappings_path(site)}">#{site.abbr} Mappings)) }
+      it { should include(%(<li><a href="#{edit_site_mapping_path(site, mapping)}">Mapping)) }
+      it { should include('<li class="active">Versions') }
+    end
   end
 
   describe '#titleize_known_abbr' do

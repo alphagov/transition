@@ -16,7 +16,9 @@ module ApplicationHelper
     when Site
       list_items_for(model.organisation, false) + crumb_li("#{model.abbr} Mappings", site_mappings_path(model), active)
     when Mapping
-      list_items_for(model.site, false) + crumb_li('Mapping', '#{foobar}', true)
+      list_items_for(model.site, false) + crumb_li('Mapping', edit_site_mapping_path(model.site, model), active)
+    when Version
+      list_items_for(model.item, false) + crumb_li('Versions', '#{foobar}', true)
     end
   end
 
