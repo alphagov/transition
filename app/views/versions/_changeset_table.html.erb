@@ -1,0 +1,15 @@
+<%# Render a changeset hash, but only one level deep. %>
+
+<% if version.changeset.any? %>
+    <table class="changes table table-bordered">
+      <tbody>
+      <% version.changeset.each_pair do |field, change| %>
+          <tr>
+            <td><%= titleize_known_abbr(field) %></td>
+            <td><%= change.first %></td>
+            <td><%= change.last %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>

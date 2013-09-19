@@ -3,6 +3,8 @@ Transition::Application.routes.draw do
 
   resources :organisations, only: [:show, :index]
   resources :sites, only: [:show] do
-    resources :mappings, only: [:index, :edit, :update]
+    resources :mappings, only: [:index, :edit, :update] do
+      resources :versions, only: [:index]
+    end
   end
 end

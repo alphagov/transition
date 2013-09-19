@@ -1,11 +1,10 @@
 require 'spec_helper'
 
 describe ApplicationHelper do
-  let(:mapping)       { create :mapping }
-  let(:site)          { mapping.site }
-  let(:organisation)  { site.organisation }
-
   describe '#breadcrumb' do
+    let(:mapping)       { create :mapping }
+    let(:site)          { mapping.site }
+    let(:organisation)  { site.organisation }
 
     context 'at the top level' do
       subject { helper.breadcrumb }
@@ -40,7 +39,15 @@ describe ApplicationHelper do
       it { should include(%(<li><a href="#{site_mappings_path(site)}">#{site.abbr} Mappings)) }
       it { should include('<li class="active">Mapping') }
     end
+  end
 
+  describe '#titleize_known_abbr' do
+    it 'replaces url' do
+      helper.titleize_known_abbr('archive_url').should eql('Archive URL')
+    end
 
+    it 'replaces http' do
+      helper.titleize_known_abbr('http_status').should eql('HTTP Status')
+    end
   end
 end

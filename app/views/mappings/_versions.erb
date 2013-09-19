@@ -1,21 +1,37 @@
+<% include ||= {} %>
+
 <div class="versions">
-    <h2>Versions</h2>
-    <table class="table table-striped">
-      <thead>
+  <h2><%= link_to_if !include[:changes], 'Versions', site_mapping_versions_path(@mapping.site, @mapping) %></h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>User</th>
+      <th>Event</th>
+      <th>On</th>
+      <% if include[:changes] %>
+          <th>Changes</th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <% @mapping.versions.reverse.each do |version| %>
         <tr>
-          <th>User</th>
-          <th>Event</th>
-          <th>On</th>
+          <td>
+            <%= version.whodunnit %>
+          </td>
+          <td>
+            <%= link_to version.event, site_mapping_versions_path(@mapping.site, @mapping) %>
+          </td>
+          <td>
+            <%= version.created_at.strftime('%d/%m/%y %H:%M') %>
+          </td>
+          <% if include[:changes] %>
+              <td>
+                <%= render partial: 'versions/changeset_table', locals: { version: version } %>
+              </td>
+          <% end %>
         </tr>
-      </thead>
-      <tbody>
-        <% @mapping.versions.reverse.each do |version| %>
-            <tr>
-              <td><%= version.whodunnit %></td>
-              <td><%= version.event %></td>
-              <td><%= version.created_at.strftime('%d/%m/%y %H:%M') %></td>
-            </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <% end %>
+    </tbody>
+  </table>
 </div>
