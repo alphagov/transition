@@ -8,8 +8,10 @@
       <%= render 'shared/error_messages', model: f.object %>
       <fieldset class="span7">
 
-        <%= f.label :path %>
-        <%= f.text_field :path, class: 'span7', readonly: 'readonly' %>
+        <%= f.label :old_url, 'Old URL' %>
+        <%= example_url(@mapping, include_host: true) %>
+
+        <hr>
 
         <%= f.label :http_status, 'HTTP Status' %>
         <%= f.select :http_status, ['301', '410'] %>

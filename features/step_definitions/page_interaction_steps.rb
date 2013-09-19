@@ -15,7 +15,7 @@ When(/^I save the mapping$/) do
   click_button 'Save'
 end
 
-When(/^I edit the first mapping$/) do
+When(/^I go to edit the first mapping$/) do
   click_link 'Edit'
 end
 

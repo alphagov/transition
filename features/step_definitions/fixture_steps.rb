@@ -40,6 +40,6 @@ end
 
 Given(/^there is a mapping that has no history$/) do
   with_papertrail_disabled do
-    @mapping = FactoryGirl.create :mapping
+    @mapping = FactoryGirl.create :mapping, site: FactoryGirl.create(:site_with_default_host)
   end
 end
