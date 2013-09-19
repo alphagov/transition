@@ -1,14 +1,14 @@
-<% include ||= {} %>
+<% detailed ||= false %>
 
 <div class="versions">
-  <h2><%= link_to_if !include[:changes], 'Versions', site_mapping_versions_path(@mapping.site, @mapping) %></h2>
+  <h2><%= link_to_unless detailed, 'Versions', site_mapping_versions_path(@mapping.site, @mapping) %></h2>
   <table class="table table-striped">
     <thead>
     <tr>
       <th>User</th>
       <th>Event</th>
       <th>On</th>
-      <% if include[:changes] %>
+      <% if detailed %>
           <th>Changes</th>
       <% end %>
     </tr>
@@ -17,15 +17,16 @@
     <% @mapping.versions.reverse.each do |version| %>
         <tr>
           <td>
+            <%= anchor_if detailed, '[*]', version.id %>
             <%= version.whodunnit %>
           </td>
           <td>
-            <%= link_to version.event, site_mapping_versions_path(@mapping.site, @mapping) %>
+            <%= link_to_unless(detailed, version.event, site_mapping_versions_path(@mapping.site, @mapping, anchor: version.id)) %>
           </td>
           <td>
             <%= version.created_at.strftime('%d/%m/%y %H:%M') %>
           </td>
-          <% if include[:changes] %>
+          <% if detailed %>
               <td>
                 <%= render partial: 'versions/changeset_table', locals: { version: version } %>
               </td>

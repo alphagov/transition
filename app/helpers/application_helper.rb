@@ -43,4 +43,12 @@ module ApplicationHelper
     all_abbrs = Regexp.new("(#{KNOWN_ABBRS.keys.map(&:to_s).join('|')})")
     str.titleize.gsub(all_abbrs, KNOWN_ABBRS)
   end
+
+  def anchor_if(condition, text, name)
+    if condition
+      content_tag :a, text, id: name, name: name
+    else
+      text
+    end
+  end
 end
