@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Mapping do
+  specify { PaperTrail.should_not be_enabled } # testing our tests a little here, but if this fails, tests will be slow
+
   describe 'relationships' do
     it { should belong_to(:site) }
   end
@@ -70,6 +72,39 @@ describe Mapping do
       subject { Mapping.filtered_by_path(nil) }
 
       it { should have(4).mappings }
+    end
+  end
+
+  describe 'The paper trail', versioning: true do
+    let(:alice) { create :user }
+    let(:bob)   { create :user }
+
+    before            { PaperTrail.whodunnit = alice }
+    subject(:mapping) { create :mapping }
+
+    it { should have(1).versions }
+
+    describe 'the last version' do
+      subject { mapping.versions.last }
+
+      its(:whodunnit) { should eql(alice.id.to_s) }
+      its(:event)     { should eql('create') }
+    end
+
+    describe 'an update from Bob' do
+      before do
+        PaperTrail.whodunnit = bob
+        mapping.update_attributes(new_url: 'http://updated.com')
+      end
+
+      it { should have(2).versions }
+
+      describe 'the last version' do
+        subject { mapping.versions.last }
+
+        its(:whodunnit)  { should eql bob.id.to_s }
+        its(:event)      { should eql 'update'}
+      end
     end
   end
 end

@@ -23,3 +23,14 @@ When(/^I filter the path by ([^"]*)$/) do |path_contains|
   fill_in 'Filter by path', with: path_contains
   click_button 'Filter'
 end
+
+When(/^I change the mapping's (.*) to (.*)$/) do |field_name, value|
+  fill_in field_name, with: value
+  step 'I save the mapping'
+end
+
+When(/^I click the first "(.*)" link in the history table$/) do |event_name|
+  within '.versions' do
+    first(:link, event_name).click
+  end
+end

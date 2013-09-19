@@ -1,4 +1,6 @@
 class MappingsController < ApplicationController
+  include PaperTrail::Controller
+
   def index
     @site = Site.find_by_abbr(params[:site_id])
     @mappings = @site.mappings.filtered_by_path(params[:contains]).page(params[:page])

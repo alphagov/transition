@@ -3,27 +3,36 @@
 <%= content_for :page_title, 'Edit mapping' %>
 <h1>Edit mapping</h1>
 
-<%= form_for @mapping, url: polymorphic_path([@site, @mapping]) do |f| %>
-    <%= render 'shared/error_messages', model: f.object %>
-    <fieldset class="span12">
+<div class="span12">
+  <%= form_for @mapping, url: site_mapping_path(@site, @mapping) do |f| %>
+      <%= render 'shared/error_messages', model: f.object %>
+      <fieldset class="span7">
 
-      <%= f.label :path %>
-      <%= f.text_field :path, class: 'span8', readonly: 'readonly'  %>
+        <%= f.label :path %>
+        <%= f.text_field :path, class: 'span7', readonly: 'readonly' %>
 
-      <%= f.label :http_status, 'HTTP Status' %>
-      <%= f.select :http_status, ['301', '410'] %>
+        <%= f.label :http_status, 'HTTP Status' %>
+        <%= f.select :http_status, ['301', '410'] %>
 
-      <%= f.label :new_url, 'New URL' %>
-      <%= f.text_field :new_url, class: 'span8'  %>
+        <%= f.label :new_url, 'New URL' %>
+        <%= f.text_field :new_url, class: 'span7' %>
 
-      <%= f.label :suggested_url, 'Suggested URL' %>
-      <%= f.text_field :suggested_url, class: 'span8'  %>
+        <%= f.label :suggested_url, 'Suggested URL' %>
+        <%= f.text_field :suggested_url, class: 'span7' %>
 
-      <%= f.label :archive_url, 'Archive URL' %>
-      <%= f.text_field :archive_url, class: 'span8'  %>
+        <%= f.label :archive_url, 'Archive URL' %>
+        <%= f.text_field :archive_url, class: 'span7' %>
 
-      <hr>
+        <hr>
 
-      <%= f.submit 'Save mapping', class: 'btn btn-success' %>
-    </fieldset>
-<% end %>
+        <%= f.submit 'Save mapping', class: 'btn btn-success' %>
+      </fieldset>
+
+      <% if @mapping.versions.any? %>
+          <div class="span3">
+            <%= render partial: 'versions' %>
+          </div>
+      <% end %>
+  <% end %>
+</div>
+
