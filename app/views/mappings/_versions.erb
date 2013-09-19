@@ -17,7 +17,9 @@
     <% @mapping.versions.reverse.each do |version| %>
         <tr>
           <td>
-            <%= anchor_if detailed, '[*]', version.id %>
+            <% if detailed %>
+                <%= anchor '[*]', version.id %>
+            <% end %>
             <%= version.whodunnit %>
           </td>
           <td>

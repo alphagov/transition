@@ -44,11 +44,7 @@ module ApplicationHelper
     str.titleize.gsub(all_abbrs, KNOWN_ABBRS)
   end
 
-  def anchor_if(condition, text, name)
-    if condition
-      content_tag :a, text, id: name, name: name
-    else
-      text
-    end
+  def anchor(text, name)
+    content_tag :a, text, id: name, name: name
   end
 end

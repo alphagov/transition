@@ -1,3 +1,7 @@
 <% content_for :page_title, 'Versions' %>
 <%= render partial: 'mappings/versions',
            locals: { detailed: true } %>
+
+<%= javascript_tag do %>
+  GOVUK.Versions.ready();
+<% end %>

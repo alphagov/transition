@@ -1,0 +1,12 @@
+@import '_mixins';
+
+.versions {
+  table {
+    tr.selected > td {
+      $highlight: #ff9744;
+      border-top: 2px solid $highlight;
+      border-bottom: 2px solid $highlight;
+      @include transition(border-color, 2s);
+    }
+  }
+}
