@@ -7,7 +7,7 @@ FactoryGirl.define do
 
     factory :site_with_default_host do
       after(:build) do |site|
-        site.hosts << FactoryGirl.create(:host)
+        site.hosts << FactoryGirl.build(:host)
       end
     end
   end
