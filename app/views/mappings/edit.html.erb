@@ -3,13 +3,5 @@
 <%= content_for :page_title, 'Edit mapping' %>
 <h1>Edit mapping</h1>
 
-<div class="span12">
-  <%= render :partial => 'form' %>
-
-  <% if @mapping.versions.any? %>
-      <div class="span3">
-        <%= render partial: 'versions' %>
-      </div>
-  <% end %>
-</div>
+<%= render :partial => 'form' %>
 

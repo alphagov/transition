@@ -8,6 +8,8 @@
 
 <%= render partial: 'filters' %>
 
+<%= link_to 'New mapping', new_site_mapping_path(@site), class: 'btn btn-success' %>
+
 <% if @mappings.empty? %>
     <p>
       No mappings found.
