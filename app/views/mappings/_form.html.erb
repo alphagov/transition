@@ -1,0 +1,26 @@
+<%= form_for @mapping, url: site_mapping_path(@site, @mapping) do |f| %>
+    <%= render 'shared/error_messages', model: f.object %>
+    <fieldset class="span7">
+
+      <%= f.label :old_url, 'Old URL' %>
+      <%= example_url(@mapping, include_host: true) %>
+
+      <hr>
+
+      <%= f.label :http_status, 'HTTP Status' %>
+      <%= f.select :http_status, ['301', '410'] %>
+
+      <%= f.label :new_url, 'New URL' %>
+      <%= f.text_field :new_url, class: 'span7' %>
+
+      <%= f.label :suggested_url, 'Suggested URL' %>
+      <%= f.text_field :suggested_url, class: 'span7' %>
+
+      <%= f.label :archive_url, 'Archive URL' %>
+      <%= f.text_field :archive_url, class: 'span7' %>
+
+      <hr>
+
+      <%= f.submit 'Save mapping', class: 'btn btn-success' %>
+    </fieldset>
+<% end %>
