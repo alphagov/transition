@@ -1,8 +1,8 @@
-<% content_for(:page_title, "Mappings for #{@site.abbr}") %>
+<% content_for(:page_title, "#{@site.abbr} Mappings") %>
 
 <%= breadcrumb(@site) %>
 
-<h1>Mappings</h1>
+<h1><%= @site.abbr %> Mappings</h1>
 
 <%= render partial: 'site', locals: { site: @site } %>
 

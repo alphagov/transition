@@ -30,6 +30,7 @@ Feature: Filter mappings
   Scenario: There are no matches
     When I filter the path by /is-not-there
     Then the filter box should contain "/is-not-there"
+    And I should see "No mappings found."
     And I should see a link to remove the filter
 
 
