@@ -7,6 +7,14 @@ describe Mapping do
     it { should belong_to(:site) }
   end
 
+  describe '#redirect?' do
+    its(:redirect?) { should be_false }
+    it 'is true when http_status is 301' do
+      subject.http_status = '301'
+      subject.redirect?.should be_true
+    end
+  end
+
   describe 'validations' do
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:path) }

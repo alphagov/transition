@@ -23,6 +23,10 @@ class Mapping < ActiveRecord::Base
   scope :redirects, with_status(:moved_permanently)
   scope :filtered_by_path, -> path { where(path.blank? ? true : Mapping.arel_table[:path].matches("%#{path}%")) }
 
+  def redirect?
+    http_status == '301'
+  end
+
   protected
   def set_path_hash
     self.path_hash = Digest::SHA1.hexdigest(path) if path_changed?
