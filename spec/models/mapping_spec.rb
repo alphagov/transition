@@ -41,6 +41,18 @@ describe Mapping do
         its([:new_url])       { should == ['is not a URL'] }
         its([:suggested_url]) { should == ['is not a URL'] }
         its([:archive_url])   { should be_empty }
+
+        describe 'failure to supply a new URL for a 301' do
+          before do
+            mapping.new_url = ''
+            mapping.should_not be_valid
+          end
+
+          its([:new_url]) do
+            should == ['New URL required when mapping is a redirect']
+          end
+        end
+
       end
     end
   end
