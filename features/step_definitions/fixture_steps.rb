@@ -37,3 +37,7 @@ Given(/^there is a mapping that has no history$/) do
     @mapping = create :mapping, site: create(:site_with_default_host)
   end
 end
+
+Given(/^a site (.*) exists$/) do |site_abbr|
+  create :site_with_default_host, abbr: site_abbr
+end

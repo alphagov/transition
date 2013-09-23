@@ -18,10 +18,15 @@ class Mapping < ActiveRecord::Base
   validates :path_hash, presence: true
 
   validates :new_url, :suggested_url, :archive_url, length: { maximum: (64.kilobytes - 1) }, non_blank_url: true
+  validates :new_url, presence: { if: :redirect?, message: 'New URL required when mapping is a redirect' }
 
   scope :with_status, -> status { where(http_status: Rack::Utils.status_code(status)) }
   scope :redirects, with_status(:moved_permanently)
   scope :filtered_by_path, -> path { where(path.blank? ? true : Mapping.arel_table[:path].matches("%#{path}%")) }
+
+  def redirect?
+    http_status == '301'
+  end
 
   protected
   def set_path_hash

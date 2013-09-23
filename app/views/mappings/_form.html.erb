@@ -1,0 +1,36 @@
+<%= render partial: 'example_url' if @mapping.persisted? %>
+
+<div class="span12">
+  <%= form_for @mapping, url: polymorphic_url([@site, @mapping]) do |f| %>
+      <%= render 'shared/error_messages', model: f.object %>
+
+      <fieldset class="span7">
+        <% unless @mapping.persisted? %>
+            <%= f.label :path %>
+            http://<%= @site.default_host.hostname %><%= f.text_field :path, class: 'span7' %>
+        <% end %>
+
+        <%= f.label :http_status, 'HTTP Status' %>
+        <%= f.select :http_status, ['301', '410'] %>
+
+        <%= f.label :new_url, 'New URL' %>
+        <%= f.text_field :new_url, class: 'span7' %>
+
+        <%= f.label :suggested_url, 'Suggested URL' %>
+        <%= f.text_field :suggested_url, class: 'span7' %>
+
+        <%= f.label :archive_url, 'Archive URL' %>
+        <%= f.text_field :archive_url, class: 'span7' %>
+
+        <hr>
+
+        <%= f.submit 'Save mapping', class: 'btn btn-success' %>
+      </fieldset>
+
+      <% if @mapping.versions.any? %>
+          <div class="span3">
+            <%= render partial: 'versions' %>
+          </div>
+      <% end %>
+  <% end %>
+</div>

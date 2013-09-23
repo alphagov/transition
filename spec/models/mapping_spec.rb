@@ -7,6 +7,14 @@ describe Mapping do
     it { should belong_to(:site) }
   end
 
+  describe '#redirect?' do
+    its(:redirect?) { should be_false }
+    it 'is true when http_status is 301' do
+      subject.http_status = '301'
+      subject.redirect?.should be_true
+    end
+  end
+
   describe 'validations' do
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:path) }
@@ -33,6 +41,18 @@ describe Mapping do
         its([:new_url])       { should == ['is not a URL'] }
         its([:suggested_url]) { should == ['is not a URL'] }
         its([:archive_url])   { should be_empty }
+
+        describe 'failure to supply a new URL for a 301' do
+          before do
+            mapping.new_url = ''
+            mapping.should_not be_valid
+          end
+
+          its([:new_url]) do
+            should == ['New URL required when mapping is a redirect']
+          end
+        end
+
       end
     end
   end
