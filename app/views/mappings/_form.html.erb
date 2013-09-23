@@ -1,13 +1,11 @@
+<%= render partial: 'example_url' if @mapping.persisted? %>
+
 <div class="span12">
   <%= form_for @mapping, url: polymorphic_url([@site, @mapping]) do |f| %>
       <%= render 'shared/error_messages', model: f.object %>
 
       <fieldset class="span7">
-        <% if @mapping.persisted? %>
-            <%= f.label :old_url, 'Old URL' %>
-            <%= example_url(@mapping, include_host: true) %>
-            <hr>
-        <% else %>
+        <% unless @mapping.persisted? %>
             <%= f.label :path %>
             http://<%= @site.default_host.hostname %><%= f.text_field :path, class: 'span7' %>
         <% end %>
