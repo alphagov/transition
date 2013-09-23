@@ -40,6 +40,12 @@ describe ApplicationHelper do
       it { should include('<li class="active">Mapping') }
     end
 
+    context 'for a new mapping' do
+      subject { helper.breadcrumb(Mapping.new(site: site)) }
+
+      it { should include('<li class="active">New mapping') }
+    end
+
     context 'for the versions in a mapping', versioning: true do
       let(:mapping) { create :mapping_with_versions }
 
