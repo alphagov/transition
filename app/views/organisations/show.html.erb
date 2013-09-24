@@ -4,21 +4,21 @@
 <h1><%= @organisation.title %></h1>
 
 <% unless @organisation.sites.empty? %>
-    <h2>Sites</h2>
-    <table class="sites table table-bordered">
-      <thead>
+  <h2>Sites</h2>
+  <table class="sites table table-bordered">
+    <thead>
+    <tr>
+      <th>Abbreviation</th>
+      <th>Homepage</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @organisation.sites.each do |site| %>
       <tr>
-        <th>Abbreviation</th>
-        <th>Homepage</th>
+        <td><%= link_to "#{site.abbr} Mappings", site_mappings_path(site) %></td>
+        <td><%= link_to site.homepage, site.homepage %></td>
       </tr>
-      </thead>
-      <tbody>
-          <% @organisation.sites.each do |site| %>
-            <tr>
-              <td><%= link_to "#{site.abbr} Mappings", site_mappings_path(site) %></td>
-              <td><%= link_to site.homepage, site.homepage %></td>
-            </tr>
-          <% end %>
-      </tbody>
-    </table>
+    <% end %>
+    </tbody>
+  </table>
 <% end %>

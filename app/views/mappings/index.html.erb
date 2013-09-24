@@ -11,40 +11,41 @@
 <%= link_to 'New mapping', new_site_mapping_path(@site), class: 'btn btn-success' %>
 
 <% if @mappings.empty? %>
-    <p>
-      No mappings found.
-      <%= link_to 'Remove filter', site_mappings_path(@site) if params[:contains] %>
-    </p>
+  <p>
+    No mappings found.
+    <%= link_to 'Remove filter', site_mappings_path(@site) if params[:contains] %>
+  </p>
 <% else %>
-    <%= paginate(@mappings) %>
-    <table class="mappings table table-bordered">
-      <thead>
-      <tr>
-        <th></th>
-        <th>HTTP Status</th>
-        <th>
-          Original path from <%= @site.default_host.hostname %><br>
-          (where it redirects to when applicable)
-        </th>
+  <%= paginate(@mappings) %>
+  <table class="mappings table table-bordered">
+    <thead>
+    <tr>
+      <th></th>
+      <th>HTTP Status</th>
+      <th>
+        Original path from <%= @site.default_host.hostname %>
+        <br>
+        (where it redirects to when applicable)
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @mappings.each do |mapping| %>
+      <tr data-status-code="<%= mapping.http_status %>">
+        <td><%= link_to 'Edit', edit_site_mapping_path(@site, mapping) %></td>
+        <td><%= mapping.http_status %></td>
+        <td>
+          <%= example_url(mapping) %>
+          <% if mapping.redirect? %>
+            <span class="redirects-to">redirects to</span><br>
+            <%= link_to mapping.new_url, mapping.new_url if mapping.new_url.present? %>
+          <% end %>
+        </td>
       </tr>
-      </thead>
-      <tbody>
-      <% @mappings.each do |mapping| %>
-          <tr data-status-code="<%= mapping.http_status %>">
-            <td><%= link_to 'Edit', edit_site_mapping_path(@site, mapping) %></td>
-            <td><%= mapping.http_status %></td>
-            <td>
-              <%= example_url(mapping) %>
-              <% if mapping.redirect? %>
-                  <span class="redirects-to">redirects to</span><br>
-                  <%= link_to mapping.new_url, mapping.new_url if mapping.new_url.present? %>
-              <% end %>
-            </td>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
-    <%= paginate(@mappings) %>
+    <% end %>
+    </tbody>
+  </table>
+  <%= paginate(@mappings) %>
 <% end %>
 
 

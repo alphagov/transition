@@ -14,14 +14,14 @@
 
   <tbody>
   <% @organisations.each do |org| %>
-      <tr>
-        <td>
-          <%= link_to org.title, organisation_path(org) %>
-        </td>
-        <td>
-          <%= date_or_not_yet(org.launch_date) %>
-        </td>
-      </tr>
+    <tr>
+      <td>
+        <%= link_to org.title, organisation_path(org) %>
+      </td>
+      <td>
+        <%= date_or_not_yet(org.launch_date) %>
+      </td>
+    </tr>
   <% end %>
   </tbody>
 </table>

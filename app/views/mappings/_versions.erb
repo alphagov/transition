@@ -8,18 +8,18 @@
   </thead>
   <tbody>
   <% @mapping.versions.reverse.each do |version| %>
-      <tr>
-        <td>
-          <%= anchor '[*]', version.id %>
-          <%= version.whodunnit %>
-        </td>
-        <td>
-          <%= version.created_at.strftime('%d/%m/%y %H:%M') %>
-        </td>
-        <td>
-          <%= render partial: 'versions/changeset_table', locals: { version: version } %>
-        </td>
-      </tr>
+    <tr>
+      <td>
+        <%= anchor '[*]', version.id %>
+        <%= version.whodunnit %>
+      </td>
+      <td>
+        <%= version.created_at.strftime('%d/%m/%y %H:%M') %>
+      </td>
+      <td>
+        <%= render partial: 'versions/changeset_table', locals: { version: version } %>
+      </td>
+    </tr>
   <% end %>
   </tbody>
 </table>
