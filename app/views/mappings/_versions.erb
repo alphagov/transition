@@ -1,40 +1,25 @@
-<% detailed ||= false %>
-
-<div class="versions">
-  <h2><%= link_to_unless detailed, 'Versions', site_mapping_versions_path(@mapping.site, @mapping) %></h2>
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th>User</th>
-      <th>Event</th>
-      <th>On</th>
-      <% if detailed %>
-          <th>Changes</th>
-      <% end %>
-    </tr>
-    </thead>
-    <tbody>
-    <% @mapping.versions.reverse.each do |version| %>
-        <tr>
-          <td>
-            <% if detailed %>
-                <%= anchor '[*]', version.id %>
-            <% end %>
-            <%= version.whodunnit %>
-          </td>
-          <td>
-            <%= link_to_unless(detailed, version.event, site_mapping_versions_path(@mapping.site, @mapping, anchor: version.id)) %>
-          </td>
-          <td>
-            <%= version.created_at.strftime('%d/%m/%y %H:%M') %>
-          </td>
-          <% if detailed %>
-              <td>
-                <%= render partial: 'versions/changeset_table', locals: { version: version } %>
-              </td>
-          <% end %>
-        </tr>
-    <% end %>
-    </tbody>
-  </table>
-</div>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>By</th>
+    <th>On</th>
+    <th>Changes</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @mapping.versions.reverse.each do |version| %>
+      <tr>
+        <td>
+          <%= anchor '[*]', version.id %>
+          <%= version.whodunnit %>
+        </td>
+        <td>
+          <%= version.created_at.strftime('%d/%m/%y %H:%M') %>
+        </td>
+        <td>
+          <%= render partial: 'versions/changeset_table', locals: { version: version } %>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
