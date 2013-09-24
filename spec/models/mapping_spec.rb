@@ -57,18 +57,17 @@ describe Mapping do
     end
   end
 
-  describe 'the path hash' do
+  describe 'values normalised or changed on save' do
     let(:some_path) { '/a/b/c' }
 
     subject(:mapping) do
-      build :mapping, path: some_path, site: build(:site), http_status: 301
+      build :mapping, path: some_path, site: build(:site), http_status: 301, archive_url: ''
     end
 
     before { mapping.save.should be_true }
 
-    its(:path_hash) do
-      should eql(Digest::SHA1.hexdigest(some_path))
-    end
+    its(:path_hash)   { should eql(Digest::SHA1.hexdigest(some_path)) }
+    its(:archive_url) { should be_nil }
   end
 
   describe '.filtered_by_path' do

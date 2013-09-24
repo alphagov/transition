@@ -1,5 +1,9 @@
+require 'active_record/concerns/nilify_blanks'
 require 'digest/sha1'
+
 class Mapping < ActiveRecord::Base
+  include ActiveRecord::Concerns::NilifyBlanks
+
   SUPPORTED_STATUSES = [301, 410]
   
   attr_accessible :path, :site, :http_status, :new_url, :suggested_url, :archive_url
