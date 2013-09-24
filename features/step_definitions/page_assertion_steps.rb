@@ -62,7 +62,7 @@ Then(/^I should see that (.*) is responsible for an (.*)$/) do |user_name, actio
 end
 
 Then(/^I should see no history$/) do
-  expect(page).not_to have_selector('.paper-trail')
+  expect(page).not_to have_link('History')
 end
 
 Then(/^I should see that (.*) was changed from (.*) to (.*)$/) do |field_name, old_value, new_value|
@@ -71,4 +71,8 @@ Then(/^I should see that (.*) was changed from (.*) to (.*)$/) do |field_name, o
     expect(page).to have_content(old_value)
     expect(page).to have_content(new_value)
   end
+end
+
+Then(/^I should see a link to "([^"]*)"$/) do |title|
+  expect(page).to have_link(title)
 end

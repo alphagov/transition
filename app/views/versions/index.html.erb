@@ -1,8 +1,13 @@
-<% content_for :page_title, 'Versions' %>
+<% content_for :page_title, 'History' %>
 
 <%= breadcrumb(@versions.last) %>
+<h1>History</h1>
 
-<%= render partial: 'mappings/versions', locals: { detailed: true } %>
+<%= mapping_edit_tabs active: 'History' %>
+
+<div class="versions">
+    <%= render partial: 'mappings/versions', locals: { detailed: true } %>
+</div>
 
 <%= javascript_tag do %>
   GOVUK.Versions.ready();

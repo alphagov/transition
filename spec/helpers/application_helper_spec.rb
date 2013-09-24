@@ -56,7 +56,7 @@ describe ApplicationHelper do
       it { should include("<li><a href=\"#{organisation_path(organisation)}\">#{organisation.title}") }
       it { should include(%(<li><a href="#{site_mappings_path(site)}">#{site.abbr} Mappings)) }
       it { should include(%(<li><a href="#{edit_site_mapping_path(site, mapping)}">Mapping)) }
-      it { should include('<li class="active">Versions') }
+      it { should include('<li class="active">History') }
     end
   end
 

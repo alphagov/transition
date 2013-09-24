@@ -3,5 +3,9 @@
 <%= content_for :page_title, 'Edit mapping' %>
 <h1>Edit mapping</h1>
 
+<%= mapping_edit_tabs active: 'Edit' %>
+
+<%= render partial: 'example_url' %>
+
 <%= render :partial => 'form' %>
 

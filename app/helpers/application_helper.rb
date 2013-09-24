@@ -21,7 +21,7 @@ module ApplicationHelper
         ['New mapping', '']
       list_items_for(model.site, false) + crumb_li(title, mapping_path, active)
     when Version
-      list_items_for(model.item, false) + crumb_li('Versions', '#{foobar}', true)
+      list_items_for(model.item, false) + crumb_li('History', '#{foobar}', true)
     end
   end
 

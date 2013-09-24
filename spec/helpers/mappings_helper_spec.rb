@@ -20,4 +20,15 @@ describe MappingsHelper do
       it { should include ">http://#{hostname}/about/branding</a>"}
     end
   end
+
+  describe '#mapping_edit_tabs', versioning: true do
+    let!(:mapping) { create :mapping_with_versions, site: site }
+    before         { @mapping = mapping }
+
+    subject { helper.mapping_edit_tabs active: 'Edit' }
+
+    it { should include('<ul class="nav nav-tabs">') }
+    it { should include('<li class="active"><a href="#"') }
+    it { should include(%(<li><a href="#{site_mapping_versions_path(@mapping.site, @mapping)}")) }
+  end
 end
