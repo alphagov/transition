@@ -9,7 +9,7 @@ end
 When(/^I go to page ([0-9]+)$/) do |page|
   first(:link, page).click
 end
-                     ``
+
 When(/^I make the mapping a redirect with a new URL of (.*)$/) do |new_url|
   select '301', from: 'HTTP Status'
   fill_in 'New URL', with: new_url

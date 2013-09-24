@@ -4,10 +4,22 @@ module MappingsHelper
     link_to (options[:include_host] ? scheme_and_host : '') + mapping.path, scheme_and_host + mapping.path
   end
 
-  def bootstrap_tabs(link_hash, options)
+  ##
+  # Twitter bootstrap-flavour tabs.
+  # Produce a <ul class="nav nav-tabs">
+  # with list items with links in them.
+  # e.g.
+  #
+  #   +bootstrap_flavour_tabs(
+  #      {
+  #        'Edit'    => lambda { edit_path },
+  #        'History' => lambda { history_path }
+  #      }, active: 'Edit'
+  #    )
+  def bootstrap_flavour_tabs(titles_to_links, options)
     content_tag :ul, class: 'nav nav-tabs' do
-      link_hash.inject('') do |result, arr|
-        title, link_proc  = arr[0], arr[1]
+      titles_to_links.inject('') do |result, title_link|
+        title, link_proc  = title_link[0], title_link[1]
         active            = options[:active] == title
         html_opts         = {}
         html_opts[:class] = 'active' if active
@@ -19,9 +31,11 @@ module MappingsHelper
     end
   end
 
+  ##
+  # Tabs for mapping editing
   def mapping_edit_tabs(options = {})
     if @mapping.versions.any?
-      bootstrap_tabs(
+      bootstrap_flavour_tabs(
         {
           'Edit'    => lambda { edit_site_mapping_path(@mapping.site, @mapping) },
           'History' => lambda { site_mapping_versions_path(@mapping.site, @mapping) }
