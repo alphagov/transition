@@ -31,4 +31,10 @@ describe MappingsHelper do
     it { should include('<li class="active"><a href="#"') }
     it { should include(%(<li><a href="#{site_mapping_versions_path(@mapping.site, @mapping)}")) }
   end
+
+  describe '#options_for_supported_statuses' do
+    it 'provides an array of supported statuses in a form compatible with FormBuilder#select' do
+      helper.options_for_supported_statuses.should == [['301 Moved Permanently', '301'], ['410 Gone', '410']]
+    end
+  end
 end

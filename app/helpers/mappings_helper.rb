@@ -43,4 +43,13 @@ module MappingsHelper
         options)
     end
   end
+
+  ##
+  # Return a FormBuilder-compatible list of HTTP Status codes with descriptions
+  # e.g. [['301 Moved Permanently', '301'], ['410 Gone', '410']]
+  def options_for_supported_statuses
+    Mapping::SUPPORTED_STATUSES.map do |status|
+      ["#{status} #{Rack::Utils::HTTP_STATUS_CODES[status]}", status.to_s]
+    end
+  end
 end

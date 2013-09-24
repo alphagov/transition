@@ -1,5 +1,7 @@
 require 'digest/sha1'
 class Mapping < ActiveRecord::Base
+  SUPPORTED_STATUSES = [301, 410]
+  
   attr_accessible :path, :site, :http_status, :new_url, :suggested_url, :archive_url
 
   paginates_per 100

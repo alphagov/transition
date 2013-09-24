@@ -12,7 +12,7 @@
     <% end %>
 
     <%= f.label :http_status, 'HTTP Status' %>
-    <%= f.select :http_status, ['301', '410'] %>
+    <%= f.select :http_status, options_for_supported_statuses %>
 
     <%= f.label :new_url, 'New URL' %>
     <%= f.text_field :new_url, class: 'span8' %>
