@@ -11,7 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130918110810) do
+ActiveRecord::Schema.define(:version => 20130925162249) do
+
+  create_table "hits", :force => true do |t|
+    t.integer  "host_id",                     :null => false
+    t.string   "path",        :limit => 1024, :null => false
+    t.string   "path_hash",   :limit => 40,   :null => false
+    t.string   "http_status", :limit => 3,    :null => false
+    t.integer  "count",                       :null => false
+    t.date     "hit_on",                      :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+  end
+
+  add_index "hits", ["host_id", "hit_on"], :name => "index_hits_on_host_id_and_hit_on"
+  add_index "hits", ["host_id", "http_status"], :name => "index_hits_on_host_id_and_http_status"
+  add_index "hits", ["host_id", "path_hash", "hit_on", "http_status"], :name => "index_hits_on_host_id_and_path_hash_and_hit_on_and_http_status", :unique => true
+  add_index "hits", ["host_id"], :name => "index_hits_on_host_id"
 
   create_table "hosts", :force => true do |t|
     t.integer  "site_id"
@@ -100,6 +116,6 @@ ActiveRecord::Schema.define(:version => 20130918110810) do
     t.datetime "created_at"
   end
 
-  add_index "versions", ["item_type", "item_id", "user_id"], :name => "index_versions_on_item_type_and_item_id_and_user_id"
+  add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
 
 end
