@@ -1,7 +1,8 @@
 @import "bootstrap";
 @import "bootstrap-responsive";
 
-/* Pagination tweaks copied from Migratorator and Publisher */
+/* Pagination overrides
+   Based on Migratorator and then Publisher */
 
 .pagination {
 
@@ -13,17 +14,14 @@
   .gap {
     float: left;
     padding: 0 14px;
-
     line-height: 34px;
     text-decoration: none;
-
     border: 1px solid #ddd;
     border-left-width: 0;
   }
 
   a:hover,
-  a:focus,
-  .active a {
+  a:focus {
     background-color: #f5f5f5;
   }
 
