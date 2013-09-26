@@ -16,3 +16,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Ignore schema.rb (since we're using structure.sql instead)
+# in case anyone runs db:schema:dump and checks in the result
+/db/schema.rb
