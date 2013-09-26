@@ -1,0 +1,5 @@
+date	count	status	host	path
+2012-10-14	21	301	www.businesslink.gov.uk	/
+2012-10-14	12	404	www.businesslink.gov.uk	/about-nothing
+2012-10-14	11	301	online.businesslink.gov.uk	/unknown-host
+2012-10-14	10	503	tariff.businesslink.gov.uk	/unknown-host
