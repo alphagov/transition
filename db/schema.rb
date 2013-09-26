@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130925162249) do
+ActiveRecord::Schema.define(:version => 20130926082808) do
 
   create_table "hits", :force => true do |t|
     t.integer  "host_id",                     :null => false
@@ -28,6 +28,14 @@ ActiveRecord::Schema.define(:version => 20130925162249) do
   add_index "hits", ["host_id", "http_status"], :name => "index_hits_on_host_id_and_http_status"
   add_index "hits", ["host_id", "path_hash", "hit_on", "http_status"], :name => "index_hits_on_host_id_and_path_hash_and_hit_on_and_http_status", :unique => true
   add_index "hits", ["host_id"], :name => "index_hits_on_host_id"
+
+  create_table "hits_staging", :id => false, :force => true do |t|
+    t.string  "hostname"
+    t.string  "path",        :limit => 1024
+    t.string  "http_status", :limit => 3
+    t.integer "count"
+    t.date    "hit_on"
+  end
 
   create_table "hosts", :force => true do |t|
     t.integer  "site_id"
