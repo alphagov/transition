@@ -34,21 +34,6 @@ module ApplicationHelper
     end
   end
 
-  KNOWN_ABBRS = {
-    'http' => 'HTTP',
-    'Http' => 'HTTP',
-    'url' => 'URL',
-    'Url' => 'URL'
-  }
-
-  ##
-  # Help avoid abominations like 'Http status' or 'Archive url' without resorting to the nuclear
-  # +ActiveSupport::Inflector#acronym+
-  def titleize_known_abbr(str)
-    all_abbrs = Regexp.new("(#{KNOWN_ABBRS.keys.map(&:to_s).join('|')})")
-    str.titleize.gsub(all_abbrs, KNOWN_ABBRS)
-  end
-
   def anchor(text, name)
     content_tag :a, text, id: name, name: name
   end
