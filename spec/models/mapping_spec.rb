@@ -49,7 +49,7 @@ describe Mapping do
           end
 
           its([:new_url]) do
-            should == ['New URL required when mapping is a redirect']
+            should == ['required when mapping is a redirect']
           end
         end
 

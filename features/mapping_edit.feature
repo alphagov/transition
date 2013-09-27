@@ -23,5 +23,5 @@ Feature: Edit a site's mapping
     When I make the mapping a redirect with a new URL of not-a-url
     And I save the mapping
     Then I should still be editing a mapping
-    And I should see "New url is not a URL"
+    And I should see "New URL is not a URL"
 
