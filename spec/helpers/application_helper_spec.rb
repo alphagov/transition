@@ -59,14 +59,4 @@ describe ApplicationHelper do
       it { should include('<li class="active">History') }
     end
   end
-
-  describe '#titleize_known_abbr' do
-    it 'replaces url' do
-      helper.titleize_known_abbr('archive_url').should eql('Archive URL')
-    end
-
-    it 'replaces http' do
-      helper.titleize_known_abbr('http_status').should eql('HTTP Status')
-    end
-  end
 end
