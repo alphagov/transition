@@ -38,6 +38,8 @@ RSpec.configure do |config|
 
   config.include FactoryGirl::Syntax::Methods
 
+  config.filter_run_excluding :external_api => true
+
   config.before :each do
     PaperTrail.controller_info = {}
     PaperTrail.whodunnit = nil
