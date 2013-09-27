@@ -28,14 +28,14 @@
     background: $grayLighter;
   }
 
-  .first,
-  .first a {
+  .first a,
+  .page:first-child {
     border-left-width: 1px;
     border-radius: 4px 0 0 4px;
   }
 
-  .last,
-  .last a {
+  .last a,
+  .page:last-child  {
     border-radius: 0 4px 4px 0;
   }
 
