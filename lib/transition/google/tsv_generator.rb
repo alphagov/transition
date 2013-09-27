@@ -20,9 +20,9 @@ module Transition
       ##
       # Generate the list in +results_pager+ to +stdfile+
       def generate!
-        @stdfile.puts HEADER
-        @results_pager.each do |hostname, path, count|
-          @stdfile.puts "#{HIT_NEVER_STR}\t#{count}\t000\t#{hostname}\t#{path}"
+        stdfile.puts HEADER
+        results_pager.each do |hostname, path, count|
+          stdfile.puts "#{HIT_NEVER_STR}\t#{count}\t000\t#{hostname}\t#{path}"
         end
       end
     end
