@@ -2,10 +2,7 @@
   <div class="control-group">
     <%= label_tag :contains, 'Filter by path', class: 'control-label' %>
     <div class="controls">
-      <div class="input-prepend input-append">
-        <span class="add-on" title="Filter">
-          <i class="icon-filter"></i>
-        </span>
+      <div class="input-append">
         <%= text_field_tag :contains, params[:contains], class: 'span4', placeholder: 'eg /home'  %>
         <%= submit_tag 'Filter', name: nil, class: 'btn' %>
       </div>
