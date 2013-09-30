@@ -5,13 +5,24 @@
 <h1><%= @site.abbr %> Mappings</h1>
 
 <%= render partial: 'site', locals: { site: @site } %>
-
 <%= render partial: 'filters' %>
 
-<%= link_to 'New mapping', new_site_mapping_path(@site), class: 'btn btn-primary' %>
-
+<% if @mappings.empty? or @mappings.length < Mapping.default_per_page %>
+  <div class="add-bottom-margin">
+    <%= link_to 'New mapping', new_site_mapping_path(@site), class: 'btn btn-primary' %>
+  </div>
 <% else %>
-  <%= paginate(@mappings) %>
+  <div class="clearfix">
+    <div class="pull-left">
+      <%= paginate(@mappings) %>
+    </div>
+    <div class="pull-right">
+      <%= link_to 'New mapping', new_site_mapping_path(@site), class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+
+<% if @mappings.any? %>
   <table class="mappings table table-bordered">
     <thead>
     <tr>
@@ -42,5 +53,3 @@
   </table>
   <%= paginate(@mappings) %>
 <% end %>
-
-
