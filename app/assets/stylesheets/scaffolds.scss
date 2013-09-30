@@ -27,6 +27,39 @@ footer {
   padding-top: 2em;
 }
 
-.content a:visited {
-  color: $linkColorVisited;
+.content a {
+  &:visited {
+    color: $linkColorVisited;
+  }
+  
+  // Don't give visited links that are buttons
+  // the visited link colour
+
+  &.btn:visited {
+    color: $defaultButtonColor;
+  }
+
+  &.btn-primary:visited {
+    color: $primaryButtonColor;
+  }
+
+  &.btn-info:visited {
+    color: $infoButtonColor;
+  }
+
+  &.btn-success:visited {
+    color: $successButtonColor;
+  }
+
+  &.btn-warning:visited {
+    color: $warningButtonColor;
+  }
+
+  &.btn-danger:visited {
+    color: $dangerButtonColor;
+  }
+
+  &.btn-inverse:visited {
+    color: $inverseButtonColor;
+  }
 }
