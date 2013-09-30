@@ -73,6 +73,7 @@ CREATE TABLE `organisations` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `css` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ga_profile_id` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_organisations_on_abbr` (`abbr`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -135,3 +136,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130918110810');
 INSERT INTO schema_migrations (version) VALUES ('20130925162249');
 
 INSERT INTO schema_migrations (version) VALUES ('20130926082808');
+
+INSERT INTO schema_migrations (version) VALUES ('20130927131427');

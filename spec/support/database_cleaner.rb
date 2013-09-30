@@ -11,8 +11,17 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
+  ##
+  # For tests that are using MySQL DDE, i.e. anything with an
+  # import/ingest using LOAD DATA LOCAL INFILE
+  config.before(:each, :truncate_everything => true) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean
+  end
+
   config.before(:each, :js => true) do
     DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean
   end
 
   ##
