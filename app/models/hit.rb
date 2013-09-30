@@ -1,6 +1,8 @@
 require 'digest/sha1'
 
 class Hit < ActiveRecord::Base
+  NEVER = Date.new(1970, 1, 1)
+
   belongs_to :host
   validates :host, :hit_on, presence: true
   validates :path, presence: true, length: { maximum: 1024 }

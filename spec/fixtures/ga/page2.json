@@ -1,0 +1,50 @@
+{
+  "kind": "analytics#gaData",
+  "id": "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:46600000&dimensions=ga:hostname,ga:pagePath&metrics=ga:pageviews&start-date=2013-01-01&end-date=2013-08-19&start-index=6&max-results=5",
+  "query": {
+    "start-date": "2013-01-01",
+    "end-date": "2013-08-19",
+    "ids": "ga:46600000",
+    "dimensions": "ga:hostname,ga:pagePath",
+    "metrics": ["ga:pageviews"],
+    "start-index": 6,
+    "max-results": 5
+  },
+  "itemsPerPage": 5,
+  "totalResults": 10,
+  "selfLink": "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:46600000&dimensions=ga:hostname,ga:pagePath&metrics=ga:pageviews&start-date=2013-01-01&end-date=2013-08-19&start-index=6&max-results=5", "previousLink": "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:46600000&dimensions=ga:hostname,ga:pagePath&metrics=ga:pageviews&start-date=2013-01-01&end-date=2013-08-19&start-index=1&max-results=5",
+  "profileInfo": {
+    "profileId": "46600000",
+    "accountId": "18400000",
+    "webPropertyId": "UA-18400000-2",
+    "internalWebPropertyId": "46400000",
+    "profileName": "www.environment-agency.gov.uk",
+    "tableId": "ga:46600000"
+  }, "containsSampledData": true, "columnHeaders": [
+  {
+    "name": "ga:hostname",
+    "columnType": "DIMENSION",
+    "dataType": "STRING"
+  },
+  {
+    "name": "ga:pagePath",
+    "columnType": "DIMENSION",
+    "dataType": "STRING"
+  },
+  {
+    "name": "ga:pageviews",
+    "columnType": "METRIC",
+    "dataType": "INTEGER"
+  }
+],
+  "totalsForAllResults": {
+    "ga:pageviews": "35833767"
+  },
+  "rows": [
+    ["Www.environment-agency.gov.uk", "/homeandleisure/wildlife/130079.aspx", "60"],
+    ["Www.environment-agency.gov.uk", "/static/documents/Leisure/Japanese_Knotweed.pdf", "20"],
+    ["blaegbjnedlkbmlconcnigfklnphdldn", "/popup.html", "976"],
+    ["btctest.bewdleytowncouncil.org", "/upldir/files/floodwarnings.html", "80"],
+    ["cc.bingj.com", "/cache.aspx?q=What+should+you+do+in+case+of+a+flood?&d=4813263483699646&mkt=en-US&setlang=en-US&w=CDQ5epVVB-WM0Y8PasJUvjBh8nZUmi5w", "20"]
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "analytics#gaData",
+  "id": "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:46600000&dimensions=ga:hostname,ga:pagePath&metrics=ga:pageviews&start-date=2013-01-01&end-date=2013-08-19&max-results=5",
+  "query": {
+    "start-date": "2013-01-01",
+    "end-date": "2013-08-19",
+    "ids": "ga:46000000",
+    "dimensions": "ga:hostname,ga:pagePath",
+    "metrics": ["ga:pageviews"],
+    "start-index": 1,
+    "max-results": 5
+  },
+  "itemsPerPage": 5,
+  "totalResults": 10,
+  "selfLink": "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:46600000&dimensions=ga:hostname,ga:pagePath&metrics=ga:pageviews&start-date=2013-01-01&end-date=2013-08-19&max-results=5", "nextLink": "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:46600000&dimensions=ga:hostname,ga:pagePath&metrics=ga:pageviews&start-date=2013-01-01&end-date=2013-08-19&start-index=6&max-results=5",
+  "profileInfo": {
+    "profileId": "46000000",
+    "accountId": "18400000",
+    "webPropertyId": "UA-18000000-2",
+    "internalWebPropertyId": "46400000",
+    "profileName": "www.environment-agency.gov.uk",
+    "tableId": "ga:46600000"
+  }, "containsSampledData": true, "columnHeaders": [
+  {
+    "name": "ga:hostname",
+    "columnType": "DIMENSION",
+    "dataType": "STRING"
+  },
+  {
+    "name": "ga:pagePath",
+    "columnType": "DIMENSION",
+    "dataType": "STRING"
+  },
+  {
+    "name": "ga:pageviews",
+    "columnType": "METRIC",
+    "dataType": "INTEGER"
+  }
+],
+  "totalsForAllResults": {
+    "ga:pageviews": "35833767"
+  },
+  "rows": [
+    ["131.253.14.98", "/proxy.ashx?h=7Hx2ZSV8kOSIN5kJkHbfLlU2pBGW3Nfu&a=http://environment-agency.gov.uk/homeandleisure/recreation/130784.aspx", "20"],
+    ["62.60.8.40", "/app/olr/home", "20"],
+    ["74.6.238.252", "/search/srpcache?ei=UTF-8&p=building+a++bund&vm=r&rd=r2&type=yahoo_avg_hs2-tb-web_chrome_uk&fr=yhs-avg-chrome&u=http://cc.bingj.com/cache.aspx?q=building+a+bund&d=4529872981001604&mkt=en-GB&setlang=en-GB&w=Nd7pgIbiHwEL8qdwcSYUFsLqnwt36F5a&icp=1&.intl=uk&sig=fY1Keqa4I18gTZ5wnJcVaA--?vm=r", "20"],
+    ["87.248.112.8", "/search/srpcache?ei=UTF-8&p=Current+Water+Levels+in+River+Rhine&rd=r2&fr=yfp-t-702-s&u=http://cc.bingj.com/cache.aspx?q=Current+Water+Levels+in+River+Rhine&d=4956264456323488&mkt=en-GB&setlang=en-GB&w=YAB0FuR0GkDN2RYjOvgdqq2_u8i76qoa&icp=1&.intl=uk&sig=1A.cMW2Mi3tCpHvsv3nnCA--", "20"],
+    ["Www.environment-agency.gov.uk", "/", "60"]
+  ]}
