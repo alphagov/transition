@@ -1,4 +1,5 @@
 @import '_colours';
+@import 'bootstrap/_variables';
 
 /* Base styles */
 body {
@@ -25,6 +26,22 @@ pre {
 footer {
   clear: left;
   padding-top: 2em;
+}
+
+.add-top-margin {
+  margin-bottom: $baseLineHeight;
+}
+
+.remove-top-margin {
+  margin-bottom: 0;
+}
+
+.add-bottom-margin {
+  margin-bottom: $baseLineHeight;
+}
+
+.remove-bottom-margin {
+  margin-bottom: 0;
 }
 
 .content a {
