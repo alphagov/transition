@@ -2,7 +2,7 @@
 
 <%= breadcrumb(@site) %>
 
-<h1><%= @site.abbr %> Mappings</h1>
+<h1 class="page-header"><%= @site.abbr %> Mappings</h1>
 
 <%= render partial: 'site', locals: { site: @site } %>
 <%= render partial: 'filters' %>
