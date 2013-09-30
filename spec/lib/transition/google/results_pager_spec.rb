@@ -20,8 +20,8 @@ describe Transition::Google::ResultsPager do
   let(:test_client) do
     double(Google::APIClient).tap { |client| client.stub(:discovered_api).and_return(analytics_api) }
   end
-  let(:p1_json) { File.read('spec/fixtures/ga/p1.json') }
-  let(:p2_json) { File.read('spec/fixtures/ga/p2.json') }
+  let(:p1_json) { File.read('spec/fixtures/ga/page1.json') }
+  let(:p2_json) { File.read('spec/fixtures/ga/page2.json') }
 
   subject(:pager) do
     Transition::Google::ResultsPager.new(test_parameters, test_client)
