@@ -9,7 +9,7 @@
 
 <% if @mappings.empty? or @mappings.length < Mapping.default_per_page %>
   <div class="add-bottom-margin">
-    <%= link_to 'New mapping', new_site_mapping_path(@site), class: 'btn btn-primary' %>
+    <%= render partial: 'add_button' %>
   </div>
 <% else %>
   <div class="clearfix">
@@ -17,7 +17,7 @@
       <%= paginate(@mappings, :window => 2) %>
     </div>
     <div class="pull-right">
-      <%= link_to 'New mapping', new_site_mapping_path(@site), class: 'btn btn-primary' %>
+      <%= render partial: 'add_button' %>
     </div>
   </div>
 <% end %>
