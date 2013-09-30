@@ -1,3 +1,5 @@
+require_relative '../../../app/models/hit'
+
 module Transition
   module Google
     ##

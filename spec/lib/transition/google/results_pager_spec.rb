@@ -7,14 +7,15 @@ describe Transition::Google::ResultsPager do
   end
 
   # Minimal set of params required to ask GA about hit count per host/path and use paging
-  let(:test_parameters) { {
+  let(:test_parameters) {{
     'ids'         => 'ga:46600000',
     'start-date'  => '2013-01-01',
     'end-date'    => '2013-08-20',
-    'dimensions'  => 'ga:hostname,ga:page',
+    'dimensions'  => 'ga:hostname,ga:pagePath',
     'metrics'     => 'ga:pageViews',
     'max-results' => 5
-  } }
+  }}
+
   let(:analytics_api) { stub('Analytics API').as_null_object }
   let(:test_client) do
     double(Google::APIClient).tap { |client| client.stub(:discovered_api).and_return(analytics_api) }
@@ -31,7 +32,7 @@ describe Transition::Google::ResultsPager do
 
   describe 'the rows it returns' do
     before do
-      test_client.should_receive(:execute).twice do |*args|
+      test_client.should_receive(:execute!).twice do |*args|
         parameters = args.last[:parameters]
         if parameters['start-index'].nil?
           api_result_with(p1_json)

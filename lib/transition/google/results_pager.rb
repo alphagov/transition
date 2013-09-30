@@ -1,3 +1,5 @@
+require 'transition/google/api_client'
+
 module Transition
   module Google
     ##
@@ -29,7 +31,9 @@ module Transition
 
       def do_each(start_index = 1, &block)
         parameters.merge!('start-index' => start_index) unless start_index == 1
-        result = client.execute(api_method: @analytics.data.ga.get, parameters: parameters)
+        $stderr.puts "Getting start-index=#{start_index}, page size #{parameters['max-results']}"
+
+        result = client.execute!(api_method: @analytics.data.ga.get, parameters: parameters)
 
         JSON.parse(result.body).tap do |json|
           json['rows'].each { |row| yield row }

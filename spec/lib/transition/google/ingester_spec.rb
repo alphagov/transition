@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'transition/google/url_ingester'
 
-describe Transition::Google::UrlIngester do
+describe Transition::Google::UrlIngester, truncate_everything: true do
   let(:hostpath_rows) {[
     ['dpm.gov.uk', '/path', 30],
     ['dpm.gov.uk', '/path2', 20],
@@ -11,9 +11,6 @@ describe Transition::Google::UrlIngester do
   subject(:ingester) { Transition::Google::UrlIngester.new('dpm') }
 
   before do
-    # We're using raw SQL to load data quickly, so Rails has no :transaction with which to work.
-    # Make sure we clear down explicitly (and unfortunately slowly) before every test.
-    DatabaseCleaner.strategy = :truncation
     # The only part we're stubbing is the pager, which normally talks to Google.
     # The rest is actual integration.
     ingester.stub(:results_pager).and_return(hostpath_rows)

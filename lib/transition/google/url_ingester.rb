@@ -17,7 +17,7 @@ module Transition
       def initialize(
         org_abbr,
         start_date = 6.months.ago,
-        end_date   = Date.today.end_of_day
+        end_date = Date.today.end_of_day
       )
         @org_abbr = org_abbr
 
@@ -42,25 +42,31 @@ module Transition
           'ids'         => "ga:#{organisation.ga_profile_id}",
           'start-date'  => start_date.strftime('%Y-%m-%d'),
           'end-date'    => end_date.strftime('%Y-%m-%d'),
-          'dimensions'  => 'ga:hostname,ga:page',
+          'dimensions'  => 'ga:hostname,ga:pagePath',
           'metrics'     => 'ga:pageViews',
           'max-results' => PAGE_SIZE
         }
       end
 
-      def ingest!
+      def list(output = $stdout)
         check_organisation!
-        tempfile = Tempfile.new('hit-ingest')
+
         begin
           begin
-            TSVGenerator.new(results_pager, tempfile).generate!
+            TSVGenerator.new(results_pager, output).generate!
           ensure
-            tempfile.close
+            output.close if output.respond_to?(:close)
           end
 
-          Transition::Import::Hits.from_redirector_tsv_file!(tempfile.path)
+          yield output if block_given?
         ensure
-          tempfile.unlink
+          output.unlink if output.respond_to?(:unlink)
+        end
+      end
+
+      def ingest!(output_file = Tempfile.new('hit-ingest'))
+        list(output_file) do |output|
+          Transition::Import::Hits.from_redirector_tsv_file!(output.path)
         end
       end
     end
