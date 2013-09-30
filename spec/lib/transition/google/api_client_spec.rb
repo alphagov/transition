@@ -6,7 +6,7 @@ describe Transition::Google::APIClient do
     @client = Transition::Google::APIClient.analytics_client!
   end
 
-  # Remove config.filter_run_excluding :external_api => true from spec_helper.rb to run.
+  # These specs don't run by default. Remove `config.filter_run_excluding :external_api => true to run them.
   # Checks that a connection to GA is possible with key and secrets in config/ga
   describe '.analytics_client!', external_api: true do
     it 'is a Google::APIClient' do
