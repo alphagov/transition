@@ -1,8 +1,11 @@
+@import '_colours';
+
 /* Base styles */
 body {
   background-color: #fff;
   color: #333;
 }
+
 body,
 p,
 ol,
@@ -12,6 +15,7 @@ td {
   font-size: 13px;
   line-height: 18px;
 }
+
 pre {
   background-color: #eee;
   padding: 10px;
@@ -21,4 +25,8 @@ pre {
 footer {
   clear: left;
   padding-top: 2em;
+}
+
+a:visited {
+  color: $linkColorVisited;
 }
