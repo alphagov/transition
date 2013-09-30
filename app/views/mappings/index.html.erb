@@ -10,11 +10,6 @@
 
 <%= link_to 'New mapping', new_site_mapping_path(@site), class: 'btn btn-primary' %>
 
-<% if @mappings.empty? %>
-  <p>
-    No mappings found.
-    <%= link_to 'Remove filter', site_mappings_path(@site) if params[:contains] %>
-  </p>
 <% else %>
   <%= paginate(@mappings) %>
   <table class="mappings table table-bordered">
