@@ -1,3 +1,7 @@
+# From the rake task, for some reason, app/models/hit.rb is not loaded,
+# despite the => :environment dependency. This is a workaround.
+# If you can remove it and make rake ingest:ga work, I owe you gelato.
+# (substitute delicacy of your choice for the lactose-intolerant)
 require_relative '../../../app/models/hit'
 
 module Transition
