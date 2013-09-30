@@ -11,7 +11,8 @@ body,
 p,
 ol,
 ul,
-td {
+td,
+label {
   font-family: nta, Arial, sans-serif;
   font-size: 13px;
   line-height: 18px;
@@ -48,7 +49,7 @@ footer {
   &:visited {
     color: $linkColorVisited;
   }
-  
+
   // Don't give visited links that are buttons
   // the visited link colour
 
