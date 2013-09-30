@@ -235,7 +235,7 @@ DEPENDENCIES
   exception_notification (= 2.6.1)
   factory_girl_rails (= 4.1.0)
   gds-sso (= 3.0.0)
-  google-api-client
+  google-api-client (= 0.6.4)
   htmlentities (= 4.3.1)
   jquery-rails (= 2.0.2)
   kaminari (= 0.14.1)
