@@ -83,7 +83,7 @@
 
     <section class="page-header"></section>
 
-    <section role="main">
+    <section class="content" role="main">
       <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
         <div class="alert <%= k %>">
           <%= flash[k] %>
