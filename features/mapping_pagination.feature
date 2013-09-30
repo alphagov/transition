@@ -11,7 +11,7 @@ Feature: Paginated mappings
     And I click the link called "bis_lowpay"
     Then I should see the header "Mappings"
     And the page title should be "bis_lowpay Mappings | GOV.UK Transition"
-    And I should see "No mappings found."
+    And I should see "0 mappings"
 
   Scenario: There are mappings for a site and we visit page 1
     Given I have logged in as a GDS user

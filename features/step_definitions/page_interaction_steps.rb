@@ -3,7 +3,7 @@ When(/^I click the (?:link|tab)(?: called)? "([^"]+)"$/) do |link_title|
 end
 
 When(/^I go to create a new mapping$/) do
-  click_link 'New mapping'
+  click_link 'Add mapping'
 end
 
 When(/^I go to page ([0-9]+)$/) do |page|
