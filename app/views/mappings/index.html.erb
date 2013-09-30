@@ -14,7 +14,7 @@
 <% else %>
   <div class="clearfix">
     <div class="pull-left">
-      <%= paginate(@mappings) %>
+      <%= paginate(@mappings, :window => 2) %>
     </div>
     <div class="pull-right">
       <%= link_to 'New mapping', new_site_mapping_path(@site), class: 'btn btn-primary' %>
@@ -51,5 +51,5 @@
     <% end %>
     </tbody>
   </table>
-  <%= paginate(@mappings) %>
+  <%= paginate(@mappings, :window => 2) %>
 <% end %>
