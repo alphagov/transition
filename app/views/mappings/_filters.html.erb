@@ -1,7 +1,7 @@
 <%= form_tag(site_mappings_path(@site), method: 'get', class: 'form-inline') do %>
   <div class="control-group">
     <%= label_tag :contains, class: 'control-label' do %>
-      Filter by path <% if @mappings.empty? %>— <strong>No mappings found</strong><% end %> <% if params[:contains] and params[:contains].length > 0 %>(<%= link_to 'Remove filter', site_mappings_path(@site) %>)<% end %>
+      Filter by path <% if params[:contains] and params[:contains].length > 0 %>(<%= link_to 'Remove filter', site_mappings_path(@site) %>)<% end %>
     <% end %>
     <div class="controls">
       <div class="input-append">
