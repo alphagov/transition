@@ -22,8 +22,8 @@ Then(/^I should see a link to the organisation (.*)$/) do |org_abbr|
   expect(page).to have_link('', href: organisation_path(org_abbr))
 end
 
-Then(/^I should see a link to page ([0-9]+)$/) do |page_number|
-  expect(page).to have_link(page_number)
+Then(/^I should see links top and bottom to page ([0-9]+)$/) do |page_number|
+  expect(page).to have_link(page_number, count: 2)
 end
 
 Then(/^I should see (\d+) as the current page$/) do |page_number|

@@ -27,7 +27,7 @@ Feature: Paginated mappings
     And  I should see "bis_lowpay"
     And  I should see a table with class "mappings" containing 2 rows
     And  I should see 1 as the current page
-    And  I should see a link to page 2
+    And  I should see links top and bottom to page 2
 
   Scenario: There are mappings for a site and we visit page 2
     Given I have logged in as a GDS user
@@ -40,8 +40,8 @@ Feature: Paginated mappings
     When I visit the path /organisations/bis
     And I click the link called "bis_lowpay"
     And I go to page 2
-    And  I should see a table with class "mappings" containing 1 row
+    Then  I should see a table with class "mappings" containing 1 row
     And  I should see 2 as the current page
-    And  I should see a link to page 1
+    And  I should see links top and bottom to page 1
 
 

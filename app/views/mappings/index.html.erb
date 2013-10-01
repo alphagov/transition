@@ -9,7 +9,7 @@
 
 <h2><%= pluralize(number_with_delimiter(@mappings.total_count, :delimiter => ','), 'mapping', 'mappings') %></h2>
 
-<% if @mappings.empty? or @mappings.length < Mapping.default_per_page %>
+<% if @mappings.empty? or @mappings.total_count < Mapping.default_per_page %>
   <div class="add-bottom-margin">
     <%= render partial: 'add_button' %>
   </div>
