@@ -1,0 +1,15 @@
+@import '_theme';
+
+.navbar .brand {
+  background: url("/assets/header-crown.png") 0 0.3em no-repeat;
+  color: #fff;
+  font-family: $newTransportFontStack;
+  margin-left: 0;
+  padding-left: 2em;
+  padding-top: 12px;
+}
+
+.navbar .brand:hover,
+.navbar .brand:focus {
+  text-decoration: underline;
+}
