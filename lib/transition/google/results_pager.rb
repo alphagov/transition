@@ -16,7 +16,7 @@ module Transition
       #    'ids'         => 'ga:46600000',
       #    'start-date'  => '2013-01-01',
       #    'end-date'    => '2013-08-20',
-      #    'dimensions'  => 'ga:hostname,ga:page',
+      #    'dimensions'  => 'ga:hostname,ga:pagePath',
       #    'metrics'     => 'ga:pageViews',
       #    'max-results' => 5
       #   },
@@ -29,7 +29,7 @@ module Transition
         @analytics = client.discovered_api('analytics', 'v3')
       end
 
-      def do_each(start_index = 1, &block)
+      def each(start_index = 1, &block)
         parameters.merge!('start-index' => start_index) unless start_index == 1
         $stderr.puts "Getting start-index=#{start_index}, page size #{parameters['max-results']}"
 
@@ -39,13 +39,9 @@ module Transition
           json['rows'].each { |row| yield row }
           if (next_link = json['nextLink'])
             next_index = next_link.match(/&start-index=([0-9]*)/)[1]
-            do_each(next_index, &block) if next_index
+            each(next_index, &block) if next_index
           end
         end
-      end
-
-      def each
-        do_each(1) { |row| yield row }
       end
     end
   end
