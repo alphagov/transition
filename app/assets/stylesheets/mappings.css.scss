@@ -1,18 +1,9 @@
 @import 'bootstrap/_variables';
 
-.filter {
-  label {
-    display: inline;
-    margin-right: 1em;
-  }
-
-  input[type="submit"] {
-    margin-bottom: 10px; /* Bootstrap adds this to everything except buttons */
-  }
-}
-
 .history {
-  h2 { font-size: 2em; }
+  h2 {
+    font-size: 2em;
+  }
 }
 
 .redirects-to {
