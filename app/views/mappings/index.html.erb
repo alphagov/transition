@@ -2,21 +2,27 @@
 
 <%= breadcrumb(@site) %>
 
-<h1><%= @site.abbr %> Mappings</h1>
+<h1 class="page-header"><%= @site.abbr %> Mappings</h1>
 
 <%= render partial: 'site', locals: { site: @site } %>
-
 <%= render partial: 'filters' %>
 
-<%= link_to 'New mapping', new_site_mapping_path(@site), class: 'btn btn-success' %>
+<h2><%= pluralize(number_with_delimiter(@mappings.total_count, :delimiter => ','), 'mapping', 'mappings') %></h2>
 
-<% if @mappings.empty? %>
-  <p>
-    No mappings found.
-    <%= link_to 'Remove filter', site_mappings_path(@site) if params[:contains] %>
-  </p>
+<% if @mappings.empty? or @mappings.total_count < Mapping.default_per_page %>
+  <div class="add-bottom-margin">
+    <%= render partial: 'add_button' %>
+  </div>
 <% else %>
-  <%= paginate(@mappings) %>
+  <div class="pull-left">
+    <%= paginate(@mappings, :window => 2) %>
+  </div>
+  <div class="pull-right add-bottom-margin">
+    <%= render partial: 'add_button' %>
+  </div>
+<% end %>
+
+<% if @mappings.any? %>
   <table class="mappings table table-bordered">
     <thead>
     <tr>
@@ -45,7 +51,5 @@
     <% end %>
     </tbody>
   </table>
-  <%= paginate(@mappings) %>
+  <%= paginate(@mappings, :window => 2) %>
 <% end %>
-
-
