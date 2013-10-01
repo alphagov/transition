@@ -14,13 +14,11 @@
     <%= render partial: 'add_button' %>
   </div>
 <% else %>
-  <div class="clearfix">
-    <div class="pull-left">
-      <%= paginate(@mappings, :window => 2) %>
-    </div>
-    <div class="pull-right">
-      <%= render partial: 'add_button' %>
-    </div>
+  <div class="pull-left">
+    <%= paginate(@mappings, :window => 2) %>
+  </div>
+  <div class="pull-right add-bottom-margin">
+    <%= render partial: 'add_button' %>
   </div>
 <% end %>
 
