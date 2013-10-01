@@ -31,7 +31,7 @@
 
 
     <!--[if lt IE 9]>
-      <script src="https://assets.digital.cabinet-office.gov.uk/static/ie-27ccded64045ab36dbfb67c2f47c362b.js" type="text/javascript"></script>
+      <script src="https://assets.digital.cabinet-office.gov.uk/static/ie-fc5bd25c5f46587b9bff917417ab2b7f.js" type="text/javascript"></script>
     <![endif]-->
 
     <link rel="shortcut icon" href="https://assets.digital.cabinet-office.gov.uk/static/favicon-447e4ac1ab790342660eacfe3dcce264.ico" type="image/x-icon" />
@@ -83,7 +83,7 @@
 
     <section class="page-header"></section>
 
-    <section class="content" role="main">
+    <main role="main">
       <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
         <div class="alert <%= k %>">
           <%= flash[k] %>
@@ -92,7 +92,7 @@
       
       <%= yield %>
 
-    </section>
+    </main>
 
     <footer>
       <p>&copy; GDS. <span class="pull-right">Version: <%= CURRENT_RELEASE_SHA %></span></p>
