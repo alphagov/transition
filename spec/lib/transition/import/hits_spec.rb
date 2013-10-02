@@ -21,6 +21,10 @@ describe Transition::Import::Hits do
         Hit.where(path: '/unknown-host').any?.should be_false
       end
 
+      it 'has not imported hits with a count less than ten' do
+        Hit.where(path: '/too-few-count').any?.should be_false
+      end
+
       describe 'the first hit' do
         subject(:hit) { Hit.first }
 
