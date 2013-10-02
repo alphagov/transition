@@ -22,4 +22,4 @@
 /db/schema.rb
 
 # Ignore secret things
-/config/ga
+/config/ga_*
