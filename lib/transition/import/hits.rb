@@ -19,7 +19,8 @@ module Transition
         INSERT IGNORE INTO hits (host_id, path, path_hash, http_status, `count`, hit_on, created_at, updated_at)
         SELECT h.id, st.path, SHA1(st.path), st.http_status, st.count, st.hit_on, NOW(), NOW()
         FROM   hits_staging st
-        INNER JOIN hosts h on h.hostname = st.hostname;
+        INNER JOIN hosts h on h.hostname = st.hostname
+        WHERE  st.count >= 10
       mySQL
 
       def self.from_redirector_tsv_file!(filename)
