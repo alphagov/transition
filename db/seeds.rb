@@ -1,11 +1,13 @@
-# Create test user
-#
-unless User.find_by_email("test@example.com")
-  u             = User.new
-  u.email       = "test@example.com"
-  u.name        = "Test User"
-  u.permissions = ["signin"]
-  u.save
+if Rails.env.development?
+  # Create test user
+  #
+  unless User.find_by_email("test@example.com")
+    u             = User.new
+    u.email       = "test@example.com"
+    u.name        = "Test User"
+    u.permissions = ["signin"]
+    u.save
+  end
 end
 
 require 'transition/import/orgs_sites_hosts'
