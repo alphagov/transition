@@ -7,4 +7,4 @@ bundle exec rake db:create db:structure:load
 bundle exec rake db:seed
 
 bundle exec rake notmodules:sync
-bundle exec rake db:import:all
+bundle exec rake import:all
