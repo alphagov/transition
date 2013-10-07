@@ -21,7 +21,7 @@ module Transition
 
       def import_inferred_orgs!
         organisations.values.map do |site|
-          Organisation.find_or_create_by_abbr!(site.inferred_organisation) do |org|
+          Organisation.where(abbr: site.inferred_organisation).first_or_create do |org|
             org.launch_date = site.redirection_date
             %w(abbr title furl homepage css).each do |meth|
               getter, setter = meth.to_sym, "#{meth}=".to_sym

@@ -66,21 +66,19 @@ module Transition
 
       attr_reader :site
       def import_site!
-        @site = Site.find_or_initialize_by_abbr(abbr).tap do |site|
+        @site = Site.where(abbr: abbr).first_or_create do |site|
           site.organisation       = child? ? Organisation.find_by_abbr(inferred_parent) : Organisation.find_by_abbr(inferred_organisation)
           site.tna_timestamp      = yaml['tna_timestamp']
           site.query_params       = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
           site.global_http_status = global_http_status
           site.global_new_url     = global_new_url
           site.homepage           = yaml['homepage']
-          site.save!
         end
       end
 
       def import_hosts!
-        [yaml['host'], yaml['aliases']].flatten.each do |name|
-          if name
-            host      = Host.find_or_initialize_by_hostname(name)
+        [yaml['host'], yaml['aliases']].flatten.compact.each do |name|
+          Host.where(hostname: name).first_or_create do |host|
             host.site = site
             host.save!
           end
