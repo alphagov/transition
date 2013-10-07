@@ -1,4 +1,4 @@
-<%= form_for @mapping, url: polymorphic_url([@site, @mapping]) do |f| %>
+<%= form_for @mapping, url: polymorphic_url([@site, @mapping]), html: {class: 'js-edit-mapping-form'} do |f| %>
   <%= render 'shared/error_messages', model: f.object %>
 
   <% if @mapping.persisted? # we're editing, show the example URL  %>
@@ -11,18 +11,23 @@
   <% end %>
 
   <%= f.label :http_status, 'HTTP Status' %>
-  <%= f.select :http_status, options_for_supported_statuses %>
+  <%= f.select :http_status, options_for_supported_statuses, {}, { class: 'js-http-status' } %>
 
-  <%= f.label :new_url, 'New URL' %>
-  <%= f.text_field :new_url, class: 'span8' %>
+  <%= field_set_tag nil, class: 'js-for-redirect' do %>
+    <%= f.label :new_url, 'New URL' %>
+    <%= f.text_field :new_url, class: 'span8' %>
+  <% end %>
 
-  <%= f.label :suggested_url, 'Suggested URL' %>
-  <%= f.text_field :suggested_url, class: 'span8' %>
+  <%= field_set_tag nil, class: 'js-for-archive' do %>
+    <%= f.label :suggested_url, 'Suggested URL' %>
+    <%= f.text_field :suggested_url, class: 'span8' %>
 
-  <%= f.label :archive_url, 'Archive URL' %>
-  <%= f.text_field :archive_url, class: 'span8' %>
+    <%= f.label :archive_url, 'Archive URL' %>
+    <%= f.text_field :archive_url, class: 'span8' %>
+  <% end %>
 
   <hr>
 
   <%= f.submit 'Save mapping', class: 'btn btn-success' %>
 <% end %>
+<script>GOVUK.Mappings.edit()</script>
