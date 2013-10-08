@@ -17,10 +17,19 @@ describe Transition::Import::OrgsSitesHosts do
         # There are 2 orgs, 3 sites and 15 hosts.
         # We'll need a more representative sample for partial domains
         Transition::Import::OrgsSitesHosts.from_redirector_yaml!('spec/fixtures/sites/someyaml/*.yml')
+        @businesslink = Organisation.find_by_abbr!('businesslink')
       end
 
       it 'has imported orgs' do
         Organisation.count.should == 2
+      end
+
+      it 'has assigned an org id to an org site' do
+        Site.find_by_abbr!('businesslink').organisation.should == @businesslink
+      end
+
+      it 'has assigned a parent org id to a child site' do
+        Site.find_by_abbr!('businesslink_events').organisation.should == @businesslink
       end
 
       it 'has imported sites' do
