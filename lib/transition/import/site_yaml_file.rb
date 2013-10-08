@@ -2,21 +2,47 @@ require 'htmlentities'
 
 module Transition
   module Import
-    class SiteYamlFile
-      attr_accessor :yaml
-
-      def initialize(filename)
-        self.yaml = YAML.load_file(filename)
+    ##
+    # A transition-centric view over redirector yaml
+    # to infer parent and org
+    class SiteYamlFile < Struct.new(:yaml, :other_sites)
+      def import!
+        import_site!
+        import_hosts!
       end
 
-      def import!
-        site_abbr = yaml['site']
-        org_abbr  = site_abbr.sub(/_.*$/, '')
+      def abbr
+        yaml['site']
+      end
 
-        organisation = import_organisation(org_abbr)
-        site         = import_site(organisation, site_abbr)
+      def title
+        HTMLEntities.new.decode(yaml['title'])
+      end
 
-        import_hosts(site)
+      %w(furl redirection_date homepage css).each do |name|
+        define_method name.to_sym do
+          yaml[name]
+        end
+      end
+
+      def inferred_organisation
+        abbr.split('_').last
+      end
+
+      def inferred_parent
+        abbr.split('_').first if child? # nil otherwise
+      end
+
+      ##
+      # A Site is an organisation from the point of view of Transition either
+      # when it has no parent or its title is different from that of its parent department
+      def organisation?
+        parent_org_site = other_sites.departments[inferred_parent]
+        parent_org_site.nil? || (parent_org_site.title != title)
+      end
+
+      def child?
+        abbr.include?('_')
       end
 
       def has_global_status?
@@ -38,38 +64,23 @@ module Transition
         yaml['global'].split(' ')[1] if has_global_status?
       end
 
-      def import_site(organisation, site_abbr)
-        Site.find_or_initialize_by_abbr(site_abbr).tap do |site|
-          site.organisation       = organisation
+      attr_reader :site
+      def import_site!
+        @site = Site.where(abbr: abbr).first_or_create do |site|
+          site.organisation       = child? ? Organisation.find_by_abbr(inferred_parent) : Organisation.find_by_abbr(inferred_organisation)
           site.tna_timestamp      = yaml['tna_timestamp']
           site.query_params       = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
           site.global_http_status = global_http_status
           site.global_new_url     = global_new_url
           site.homepage           = yaml['homepage']
-          site.save
         end
       end
 
-      def import_organisation(org_abbr)
-        Organisation.find_or_initialize_by_abbr(org_abbr).tap do |organisation|
-          organisation.update_attributes(
-            {
-              title:       HTMLEntities.new.decode(yaml['title']),
-              launch_date: yaml['redirection_date'],
-              homepage:    yaml['homepage'],
-              furl:        yaml['furl'],
-              css:         yaml['css'] || nil
-            }
-          )
-        end
-      end
-
-      def import_hosts(site)
-        [yaml['host'], yaml['aliases']].flatten.each do |name|
-          if name
-            host      = Host.find_or_initialize_by_hostname(name)
+      def import_hosts!
+        [yaml['host'], yaml['aliases']].flatten.compact.each do |name|
+          Host.where(hostname: name).first_or_create do |host|
             host.site = site
-            host.save
+            host.save!
           end
         end
       end
