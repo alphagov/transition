@@ -27,6 +27,7 @@ group :assets do
 end
 
 group :test do
+  gem 'poltergeist'
   gem 'launchy'                             # Primarily for save_and_open_page support in Capybara
   gem 'cucumber-rails', require: false
   gem 'capybara', '2.1.0', require: false
