@@ -12,12 +12,21 @@ Feature: Edit a site's mapping
   Scenario: Looking at the example URL
     Then I should see "http://bis.gov.uk/about"
 
-  Scenario: Editing a site mapping with valid values
+  @javascript
+  Scenario: Editing a site mapping that is a redirect
     When I make the mapping a redirect with a new URL of https://gov.uk/new-url
-    And I save the mapping
+    Then I should see redirect fields
+    But I should not see archive fields
+    When I save the mapping
     Then I should be returned to the mappings list for bis
     And I should see "Mapping saved"
     And I should see "https://gov.uk/new-url"
+
+  @javascript
+  Scenario: Editing a site mapping that is an archive
+    When I make the mapping an archive
+    Then I should not see redirect fields
+    But I should see archive fields
 
   Scenario: Editing a mapping with invalid values
     When I make the mapping a redirect with a new URL of not-a-url
