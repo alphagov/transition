@@ -4,7 +4,7 @@ source 'https://BnrJb6FZyzspBboNJzYZ@gem.fury.io/govuk/'
 gem 'rails', '3.2.13'
 gem 'unicorn', '4.6.2'
 gem 'mysql2', '0.3.13'
-gem 'jquery-rails', '2.0.2' # TODO: Newer versions break publisher sortable parts. Will need attention.
+gem 'jquery-rails', '3.0.4'
 gem 'optic14n', '1.0.0'     # Ideally version should be synced with bouncer
 gem 'gds-sso', '3.0.0'
 gem 'plek', '1.2.0'
@@ -27,6 +27,7 @@ group :assets do
 end
 
 group :test do
+  gem 'poltergeist'
   gem 'launchy'                             # Primarily for save_and_open_page support in Capybara
   gem 'cucumber-rails', require: false
   gem 'capybara', '2.1.0', require: false
@@ -39,4 +40,5 @@ end
 
 group :development, :test do
   gem 'rspec-rails', '2.13.2'
+  gem 'jasmine', '2.0.0.rc3'
 end

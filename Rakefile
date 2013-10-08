@@ -7,4 +7,4 @@ require File.expand_path('../config/application', __FILE__)
 Transition::Application.load_tasks
 
 task(:default).clear
-task :default => [:cucumber, :spec]
+task :default => [:cucumber, :spec, 'jasmine:ci']

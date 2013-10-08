@@ -15,6 +15,10 @@ When(/^I make the mapping a redirect with a new URL of (.*)$/) do |new_url|
   fill_in 'New URL', with: new_url
 end
 
+When(/^I make the mapping an archive$/) do
+  select '410', from: 'HTTP Status'
+end
+
 When(/^I save the mapping$/) do
   click_button 'Save'
 end
