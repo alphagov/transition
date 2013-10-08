@@ -14,32 +14,45 @@ describe Transition::Import::OrgsSitesHosts do
 
     context 'importing valid yaml files', testing_before_all: true do
       before :all do
-        # There are 2 orgs, 3 sites and 15 hosts.
-        # We'll need a more representative sample for partial domains
         Transition::Import::OrgsSitesHosts.from_redirector_yaml!('spec/fixtures/sites/someyaml/*.yml')
         @businesslink = Organisation.find_by_abbr!('businesslink')
       end
 
       it 'has imported orgs' do
-        Organisation.count.should == 2
-      end
-
-      it 'has assigned an org id to an org site' do
-        Site.find_by_abbr!('businesslink').organisation.should == @businesslink
-      end
-
-      it 'has assigned a parent org id to a child site' do
-        Site.find_by_abbr!('businesslink_events').organisation.should == @businesslink
+        Organisation.count.should == 4
       end
 
       it 'has imported sites' do
-        Site.count.should == 3
+        Site.count.should == 6
       end
 
       it 'has imported hosts' do
-        Host.count.should == 15
+        Host.count.should == 18
+      end
+
+      describe 'a department' do
+        it 'has assigned an organisation to its own site' do
+          Site.find_by_abbr!('businesslink').organisation.should == @businesslink
+        end
+      end
+
+      describe 'a child organisation with its own hosted site' do
+        subject { Organisation.find_by_abbr!('ukaea') }
+
+        it { should have(1).site }
+      end
+
+      describe 'a child site that is not an organisation' do
+        it 'has assigned the right parent org' do
+          Site.find_by_abbr!('businesslink_events').organisation.should == @businesslink
+        end
+      end
+
+      describe 'The Wales office breaking case' do
+        it 'does not create a new org for the same title in a different language' do
+          Organisation.find_by_abbr('walesoffice_cymru').should be_nil
+        end
       end
     end
-
   end
 end
