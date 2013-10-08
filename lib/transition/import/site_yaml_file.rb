@@ -38,7 +38,12 @@ module Transition
       # when it has no parent or its title is different from that of its parent department
       def organisation?
         parent_org_site = other_sites.departments[inferred_parent]
-        parent_org_site.nil? || (parent_org_site.title != title)
+        parent_org_site.nil? || titles_differ(parent_org_site)
+      end
+
+      def titles_differ(parent_org_site)
+        # Cope with org titles in different languages
+        parent_org_site.title != title && title != 'Swyddfa Cymru'
       end
 
       def child?
@@ -67,7 +72,11 @@ module Transition
       attr_reader :site
       def import_site!
         @site = Site.where(abbr: abbr).first_or_create do |site|
-          site.organisation       = child? ? Organisation.find_by_abbr(inferred_parent) : Organisation.find_by_abbr(inferred_organisation)
+          site.organisation       = if child? && !organisation?
+                                      Organisation.find_by_abbr(inferred_parent)
+                                    else
+                                      Organisation.find_by_abbr(inferred_organisation)
+                                    end
           site.tna_timestamp      = yaml['tna_timestamp']
           site.query_params       = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
           site.global_http_status = global_http_status

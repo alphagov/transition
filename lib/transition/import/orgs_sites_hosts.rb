@@ -23,7 +23,8 @@ module Transition
         organisations.values.map do |site|
           Organisation.where(abbr: site.inferred_organisation).first_or_create do |org|
             org.launch_date = site.redirection_date
-            %w(abbr title furl homepage css).each do |meth|
+            org.abbr = site.inferred_organisation
+            %w(title furl homepage css).each do |meth|
               getter, setter = meth.to_sym, "#{meth}=".to_sym
               org.send setter, site.send(getter)
             end
