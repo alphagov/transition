@@ -38,10 +38,10 @@ module Transition
       # when it has no parent or its title is different from that of its parent department
       def organisation?
         parent_org_site = other_sites.departments[inferred_parent]
-        parent_org_site.nil? || titles_differ(parent_org_site)
+        parent_org_site.nil? || titles_differ?(parent_org_site)
       end
 
-      def titles_differ(parent_org_site)
+      def titles_differ?(parent_org_site)
         # Cope with org titles in different languages
         parent_org_site.title != title && title != 'Swyddfa Cymru'
       end
