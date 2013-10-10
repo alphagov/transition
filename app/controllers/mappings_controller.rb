@@ -19,7 +19,7 @@ class MappingsController < ApplicationController
   end
 
   def index
-    @mappings = @site.mappings.filtered_by_path(params[:contains]).page(params[:page])
+    @mappings = @site.mappings.filtered_by_path(params[:contains]).order(:path).page(params[:page])
   end
 
   def edit
