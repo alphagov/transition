@@ -7,7 +7,8 @@
 <table class="organisations table table-bordered">
   <thead>
   <tr>
-    <th>Organisation</th>
+    <th class="abbr">Abbreviation</th>
+    <th class="title">Organisation</th>
     <th>Launch date</th>
   </tr>
   </thead>
@@ -15,7 +16,10 @@
   <tbody>
   <% @organisations.each do |org| %>
     <tr>
-      <td>
+      <td class="abbr">
+        <%= link_to org.abbr, organisation_path(org) %>
+      </td>
+      <td class="title">
         <%= link_to org.title, organisation_path(org) %>
       </td>
       <td>
