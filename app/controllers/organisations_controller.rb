@@ -1,6 +1,6 @@
 class OrganisationsController < ApplicationController
   def index
-    @organisations = Organisation.all
+    @organisations = Organisation.order(:title)
   end
 
   def show
