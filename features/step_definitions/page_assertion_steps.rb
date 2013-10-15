@@ -130,14 +130,20 @@ Then(/^the hits should be aggregated by status$/) do
 end
 
 Then(/^the top hit should be represented by a 100% bar$/) do
-  save_and_open_page
   within '.hits' do
-    expect(page).to have_selector('tbody tr:first-child .bar[style*="width: 100"]')
+    expect(page).to have_selector('tbody tr:first-child .bar-chart-row[style*="width: 100"]')
   end
 end
 
 Then(/^subsequent hits should have smaller bars$/) do
   within '.hits' do
-    expect(page).to have_selector('tbody tr:nth-child(2) .bar[style*="width: 78.9"]')
+    expect(page).to have_selector('tbody tr:nth-child(2) .bar-chart-row[style*="width: 78.9"]')
+  end
+end
+
+Then(/^each path should be a link to the real URL$/) do
+  within '.hits' do
+    anchors = page.all(:css, '.path a')
+    expect(anchors).to have(5).links
   end
 end

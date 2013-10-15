@@ -19,7 +19,7 @@
         <td class="status"><%= hit.http_status %></td>
         <td class="relative">
           <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
-          <span class="path"><%= hit.path %></span>
+          <span class="path"><%= link_to_hit(hit) %></span>
         </td>
         <td class="count"><%= number_with_delimiter hit.count %></td>
       </tr>
