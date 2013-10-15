@@ -16,6 +16,10 @@ class Hit < ActiveRecord::Base
   before_validation :normalize_hit_on
   validates :path_hash, presence: true
 
+  def self.aggregated
+    scoped.select('hits.path, sum(hits.count) as count, hits.http_status').group(:path, :http_status)
+  end
+
   protected
   def set_path_hash
     self.path_hash = Digest::SHA1.hexdigest(path) if path_changed?

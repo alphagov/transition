@@ -113,12 +113,18 @@ Then(/^I should see all hits for the Attorney General's office in descending cou
     counts = page.all(:css, 'td.count').map { |node| node.text.to_i }
 
     expect(counts).to be_sorted.descending
-    save_and_open_page
   end
 end
 
 Then(/^I should not see hits for the Cabinet Office site$/) do
   within '.hits' do
     expect(page).to_not have_content('/cabinetoffice')
+  end
+end
+
+Then(/^the hits should be aggregated by status$/) do
+  within '.hits' do
+    expect(page).to have_selector('tbody tr', count: 5)
+    expect(page).to have_selector('tbody tr:first-child .count', text: '190')
   end
 end

@@ -8,6 +8,10 @@ class Site < ActiveRecord::Base
   validates_presence_of :abbr
   validates_uniqueness_of :abbr
 
+  def aggregated_hits
+    hits.aggregated
+  end
+
   def to_param
     abbr
   end

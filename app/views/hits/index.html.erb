@@ -14,7 +14,7 @@
       <tr>
         <td><%= hit.http_status %></td>
         <td><%= hit.path %></td>
-        <td class="count"><%= hit.count %></td>
+        <td class="count"><%= number_with_delimiter hit.count %></td>
       </tr>
     <% end %>
   </tbody>

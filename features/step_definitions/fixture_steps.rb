@@ -50,7 +50,8 @@ Given(/^some hits exist for the Attorney General's office site$/) do
 
   [200, 301, 304, 404, 410].each do |status|
     2.times do |n|
-      create :hit, http_status: status.to_s, count: count, host: @site.hosts.first, path: n == 1 ? '/2' : '/1'
+      create :hit, http_status: status.to_s, count: count, host: @site.hosts.first,
+                   hit_on: n == 1 ? DateTime.now : 1.week.ago
       count += 10
     end
   end

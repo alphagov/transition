@@ -1,9 +1,6 @@
 class HitsController < ApplicationController
-  before_filter do
-    @site = Site.find_by_abbr!(params[:site_id])
-  end
-
   def index
-    @hits = @site.hits.order('hits.count DESC')
+    @site = Site.find_by_abbr!(params[:site_id])
+    @hits = @site.aggregated_hits.order('count DESC')
   end
 end
