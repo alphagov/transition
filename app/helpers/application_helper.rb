@@ -10,6 +10,7 @@ module ApplicationHelper
   end
 
   def list_items_for(model, active = true)
+    model = model.first if model.respond_to?(:each)
     case model
     when Organisation
       crumb_li(model.title, organisation_path(model), active)
@@ -20,8 +21,10 @@ module ApplicationHelper
         ['Mapping', edit_site_mapping_path(model.site, model)] :
         ['New mapping', '']
       list_items_for(model.site, false) + crumb_li(title, mapping_path, active)
+    when Hit
+      list_items_for(model.host.site.organisation, false) + crumb_li("#{model.host.site.abbr} Hits", '#', true)
     when Version
-      list_items_for(model.item, false) + crumb_li('History', '#{foobar}', true)
+      list_items_for(model.item, false) + crumb_li('History', '#', true)
     end
   end
 

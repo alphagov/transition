@@ -17,7 +17,7 @@ class Hit < ActiveRecord::Base
   validates :path_hash, presence: true
 
   def self.aggregated
-    scoped.select('hits.path, sum(hits.count) as count, hits.http_status').group(:path, :http_status)
+    scoped.select('hits.path, sum(hits.count) as count, hits.http_status, hits.host_id').group(:path, :http_status)
   end
 
   protected
