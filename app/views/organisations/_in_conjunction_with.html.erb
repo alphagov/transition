@@ -1,0 +1,6 @@
+<% if @organisation.parent.present? %>
+  <%# TODO: replace "Works in conjunction with" with real agency language when organisations API becomes available %>
+  <p class="subtitle">In conjunction with
+    <%= link_to @organisation.parent.title, organisation_path(@organisation.parent) %>
+  </p>
+<% end %>

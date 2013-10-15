@@ -2,11 +2,12 @@ Given(/^there are (\d+) organisations$/) do |n|
   n.to_i.times { create(:organisation) }
 end
 
-Given(/^there is an organisation named (.*) abbreviated (.*) with these sites:$/) do |name, abbr, site_table|
+Given(/^there is a (.*) organisation named (.*) abbreviated (.*) with these sites:$/) do |parent, name, abbr, site_table|
   # table rows are like | awb  | http://average-white-band.gov.uk/ |
-  org       = create(:organisation, title: name, abbr: abbr)
-  org.sites = site_table.rows.map do |site_abbr, homepage|
-    create(:site, abbr: site_abbr, homepage: homepage, organisation_id: org.id)
+  @parent             = create(:organisation, abbr: parent)
+  @organisation       = create(:organisation, title: name, abbr: abbr, parent: @parent)
+  @organisation.sites = site_table.rows.map do |site_abbr, homepage|
+    create(:site, abbr: site_abbr, homepage: homepage, organisation_id: @organisation.id)
   end
 end
 

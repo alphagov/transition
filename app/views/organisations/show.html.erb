@@ -1,7 +1,12 @@
 <%= breadcrumb(@organisation) %>
 <%= content_for :page_title, @organisation.title %>
 
-<h1 class="page-header"><%= @organisation.title %></h1>
+<header>
+  <h1 class="page-header">
+    <%= @organisation.title %>
+  </h1>
+  <%= render 'in_conjunction_with' %>
+</header>
 
 <% unless @organisation.sites.empty? %>
   <h2>Sites</h2>
