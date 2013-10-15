@@ -3,6 +3,8 @@
 
 <h1 class="page-header"><%= "#{@site.abbr} hits" %></h1>
 
+<%= paginate @hits %>
+
 <table class="hits table table-bordered">
   <thead>
     <tr>
@@ -26,3 +28,5 @@
     <% end %>
   </tbody>
 </table>
+
+<%= paginate @hits %>

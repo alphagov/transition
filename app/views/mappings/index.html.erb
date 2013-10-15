@@ -15,7 +15,7 @@
   </div>
 <% else %>
   <div class="pull-left">
-    <%= paginate(@mappings, :window => 2) %>
+    <%= paginate(@mappings) %>
   </div>
   <div class="pull-right add-bottom-margin">
     <%= render partial: 'add_button' %>
@@ -51,7 +51,7 @@
     <% end %>
     </tbody>
   </table>
-  <%= paginate(@mappings, :window => 2) %>
+  <%= paginate(@mappings) %>
   
 <% else %>
   <p class="no-content no-content-bordered">

@@ -1,4 +1,5 @@
 require 'digest/sha1'
+require 'kaminari'
 
 class Hit < ActiveRecord::Base
   NEVER = Date.new(1970, 1, 1)
