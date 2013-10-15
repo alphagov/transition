@@ -1,4 +1,6 @@
 <% content_for :page_title, "#{@site.abbr} hits" %>
+<%= breadcrumb(@site) %>
+
 <h1 class="page-header"><%= "#{@site.abbr} hits" %></h1>
 
 <table class="hits table table-bordered">
