@@ -5,14 +5,10 @@ Feature: View organisation
 
   Scenario: Visit an organisation page
     Given I have logged in as a GDS user
-    And there is an organisation named Ministry of funk abbreviated funk with these sites:
-      | abbr | homepage                          |
-      | awb  | http://average-white-band.gov.uk/ |
-      | prl  | http://parliament.gov.uk/         |
-    When I visit the path /organisations/funk
-    Then I should see the header "Ministry of funk"
-    And  I should see the header "Sites"
-    And  I should see a link to the awb site's mappings
-    And  I should see a link to the URL http://average-white-band.gov.uk/
-    And  I should see a link to the prl site's mappings
-    And  I should see a link to the URL http://parliament.gov.uk/
+    And there is a bis organisation named UK Atomic Energy Authority abbreviated ukaea with these sites:
+      | abbr       | homepage                                                               |
+      | bis_ukaea  | https://www.gov.uk/government/organisations/uk-atomic-energy-authority |
+    When I visit the path /organisations/ukaea
+    Then I should see the header "UK Atomic Energy Authority"
+    And I should see that this organisation works with its parent
+    And I should see links to all this organisation's sites and homepages

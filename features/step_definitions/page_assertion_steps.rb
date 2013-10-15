@@ -14,10 +14,6 @@ Then(/^I should see a link to the URL (.*)$/) do |href|
   expect(page).to have_link('', href: href)
 end
 
-Then(/^I should see a link to the (.*) site's mappings$/) do |site_abbr|
-  expect(page).to have_link('', href: site_mappings_path(site_abbr))
-end
-
 Then(/^I should see a link to the organisation (.*)$/) do |org_abbr|
   expect(page).to have_link('', href: organisation_path(org_abbr))
 end
@@ -99,4 +95,15 @@ Then(/^I should not see archive fields$/) do
   within '.js-edit-mapping-form' do
     expect(page).not_to have_selector('.js-for-archive')
   end
+end
+
+Then(/^I should see links to all this organisation's sites and homepages$/) do
+  @organisation.sites.each do |site|
+    expect(page).to have_link('', href: site_mappings_path(site.abbr))
+    expect(page).to have_link('', href: site.homepage)
+  end
+end
+
+Then(/^I should see that this organisation works with its parent$/) do
+  expect(page).to have_link('', href: organisation_path(@organisation.parent))
 end

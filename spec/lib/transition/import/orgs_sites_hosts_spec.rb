@@ -37,9 +37,12 @@ describe Transition::Import::OrgsSitesHosts do
       end
 
       describe 'a child organisation with its own hosted site' do
-        subject { Organisation.find_by_abbr!('ukaea') }
+        let(:bis) { Organisation.find_by_abbr! 'bis' }
+
+        subject { Organisation.find_by_abbr! 'ukaea' }
 
         it { should have(1).site }
+        its(:parent) { should eql bis }
       end
 
       describe 'a child site that is not an organisation' do

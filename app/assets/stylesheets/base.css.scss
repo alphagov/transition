@@ -80,3 +80,8 @@ main a {
     color: $inverseButtonColor;
   }
 }
+
+.subtitle {
+  margin: -$baseLineHeight 0 $baseLineHeight;
+  font-size: $fontSizeLarge;
+}
