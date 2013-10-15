@@ -40,4 +40,12 @@ module ApplicationHelper
   def anchor(text, name)
     content_tag :a, text, id: name, name: name
   end
+
+  def past_first_page?
+    params[:page] && params[:page].to_i > 1
+  end
+
+  def first_page?
+    !past_first_page?
+  end
 end

@@ -2,5 +2,5 @@
    count = count.to_f
    max = max.to_f
 %>
-<% width = params[:page] && params[:page].to_i > 1 ? '3px' : "#{count / max * 100}%" %>
-<div class="bar-chart-row bar-chart-row-<%= status %>" style="width: <%= width %>;"></div>
+<% style_rows = %( style="width: #{count / max * 100}%").html_safe %>
+<div class="bar-chart-row bar-chart-row-<%= status %>"<%= style_rows if first_page? %>></div>
