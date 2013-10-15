@@ -1,0 +1,21 @@
+<% content_for :page_title, "#{@site.abbr} hits" %>
+<h1 class="page-header"><%= "#{@site.abbr} hits" %></h1>
+
+<table class="hits table table-bordered">
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Path</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @hits.each do |hit| %>
+      <tr>
+        <td><%= hit.http_status %></td>
+        <td><%= hit.path %></td>
+        <td class="count"><%= hit.count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -3,6 +3,7 @@ class Site < ActiveRecord::Base
 
   has_many :hosts
   has_many :mappings
+  has_many :hits, through: :hosts
 
   validates_presence_of :abbr
   validates_uniqueness_of :abbr

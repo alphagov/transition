@@ -107,3 +107,18 @@ end
 Then(/^I should see that this organisation works with its parent$/) do
   expect(page).to have_link('', href: organisation_path(@organisation.parent))
 end
+
+Then(/^I should see all hits for the Attorney General's office in descending count order$/) do
+  within '.hits' do
+    counts = page.all(:css, 'td.count').map { |node| node.text.to_i }
+
+    expect(counts).to be_sorted.descending
+    save_and_open_page
+  end
+end
+
+Then(/^I should not see hits for the Cabinet Office site$/) do
+  within '.hits' do
+    expect(page).to_not have_content('/cabinetoffice')
+  end
+end

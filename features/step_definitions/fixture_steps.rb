@@ -42,3 +42,21 @@ end
 Given(/^a site (.*) exists$/) do |site_abbr|
   create :site_with_default_host, abbr: site_abbr
 end
+
+Given(/^some hits exist for the Attorney General's office site$/) do
+  @site = create :site_with_default_host, abbr: 'ago'
+
+  count = 10
+
+  [200, 301, 304, 404, 410].each do |status|
+    2.times do |n|
+      create :hit, http_status: status.to_s, count: count, host: @site.hosts.first, path: n == 1 ? '/2' : '/1'
+      count += 10
+    end
+  end
+end
+
+Given(/^some hits exist for the Cabinet Office site$/) do
+  site = create :site_with_default_host, abbr: 'cabinetoffice'
+  create :hit, http_status: '410', count: 20, host: site.hosts.first, path: '/cabinetofficehit'
+end
