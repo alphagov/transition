@@ -3,7 +3,7 @@ Feature: All traffic for site
   I want to see all hits to a site
   So that I can see what to fix next
 
-Scenario:
+Scenario: Hits exist and are ordered for a site
   Given I have logged in as a GDS user
   And some hits exist for the Attorney General's office site
   And some hits exist for the Cabinet Office site
@@ -15,3 +15,10 @@ Scenario:
   And the top hit should be represented by a 100% bar
   And subsequent hits should have smaller bars
   But I should not see hits for the Cabinet Office site
+
+Scenario: No hits exist
+  Given I have logged in as a GDS user
+  And no hits exist for the Attorney General's office site
+  When I visit the associated organisation
+  And I click the link "View Hits"
+  Then I should see "No hits"

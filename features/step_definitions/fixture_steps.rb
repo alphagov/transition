@@ -61,3 +61,8 @@ Given(/^some hits exist for the Cabinet Office site$/) do
   site = create :site_with_default_host, abbr: 'cabinetoffice'
   create :hit, http_status: '410', count: 20, host: site.hosts.first, path: '/cabinetofficehit'
 end
+
+Given(/^no hits exist for the Attorney General's office site$/) do
+  @site = create :site_with_default_host, abbr: 'ago'
+  Hit.delete_all
+end
