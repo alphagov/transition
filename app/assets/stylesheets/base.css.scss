@@ -28,6 +28,8 @@ footer {
   padding-top: 2em;
 }
 
+/* Tool belt */
+
 .add-top-margin {
   margin-bottom: $baseLineHeight;
 }
@@ -42,6 +44,10 @@ footer {
 
 .remove-bottom-margin {
   margin-bottom: 0;
+}
+
+.relative {
+  position: relative;
 }
 
 main a {

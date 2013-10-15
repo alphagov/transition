@@ -1,3 +1,23 @@
-// Place all the styles related to the hits controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import 'theme';
+
+.bar-chart-row {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: $defaultHTTPStatusColor;
+}
+
+.bar-chart-row-301 {
+  background-color: $goodHTTPStatusColor;
+}
+
+.bar-chart-row-500,
+.bar-chart-row-404 {
+  background-color: $badHTTPStatusColor;
+}
+
+.path {
+  position: relative;
+  z-index: 1;
+}

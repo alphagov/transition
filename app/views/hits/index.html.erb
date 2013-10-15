@@ -15,9 +15,9 @@
     <% @hits.each do |hit| %>
       <tr>
         <td><%= hit.http_status %></td>
-        <td>
-          <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max } %>
-          <%= hit.path %>
+        <td class="relative">
+          <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
+          <span class="path"><%= hit.path %></span>
         </td>
         <td class="count"><%= number_with_delimiter hit.count %></td>
       </tr>
