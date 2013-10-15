@@ -10,10 +10,15 @@
     </tr>
   </thead>
   <tbody>
+    <% max = @hits.first.count %>
+
     <% @hits.each do |hit| %>
       <tr>
         <td><%= hit.http_status %></td>
-        <td><%= hit.path %></td>
+        <td>
+          <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max } %>
+          <%= hit.path %>
+        </td>
         <td class="count"><%= number_with_delimiter hit.count %></td>
       </tr>
     <% end %>

@@ -1,0 +1,8 @@
+<%
+   count = count.to_f
+   max = max.to_f
+%>
+<div class="progress">
+  <% width_percentage = count / max * 100 %>
+  <div class="bar" style="width: <%= width_percentage %>%;"></div>
+</div>
