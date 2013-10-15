@@ -1,3 +1,5 @@
+@import 'bootstrap/_variables';
+@import 'mixins';
 @import 'theme';
 
 .bar-chart-row {
@@ -17,7 +19,22 @@
   background-color: $badHTTPStatusColor;
 }
 
+.hits {
+  table-layout: fixed;
+}
+
+.status {
+  width: $gridColumnWidth;
+  @include box-sizing();
+}
+
+.count {
+  width: $gridColumnWidth * 2;
+  @include box-sizing();
+}
+
 .path {
+  word-wrap: break-word;
   position: relative;
   z-index: 1;
 }

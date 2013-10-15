@@ -6,9 +6,9 @@
 <table class="hits table table-bordered">
   <thead>
     <tr>
-      <th>Status</th>
+      <th class="status">Status</th>
       <th>Path</th>
-      <th>Count</th>
+      <th class="count">Count</th>
     </tr>
   </thead>
   <tbody>
@@ -16,7 +16,7 @@
 
     <% @hits.each do |hit| %>
       <tr>
-        <td><%= hit.http_status %></td>
+        <td class="status"><%= hit.http_status %></td>
         <td class="relative">
           <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
           <span class="path"><%= hit.path %></span>
