@@ -43,17 +43,15 @@ Given(/^a site (.*) exists$/) do |site_abbr|
   create :site_with_default_host, abbr: site_abbr
 end
 
-Given(/^some hits exist for the Attorney General's office site$/) do
+Given(/^these hits exist for the Attorney General's office site:$/) do |table|
   @site = create :site_with_default_host, abbr: 'ago'
-
-  count = 10
-
-  [200, 301, 304, 404, 410].each do |status|
-    2.times do |n|
-      create :hit, http_status: status.to_s, count: count, host: @site.hosts.first,
-                   hit_on: n == 1 ? DateTime.now : 1.week.ago
-      count += 10
-    end
+  # table is a | 410         | /    | 16/10/12 | 100   |
+  table.rows.map do |status, path, hit_on, count|
+    create :hit, host: @site.default_host,
+                 http_status: status,
+                 path: path,
+                 hit_on: DateTime.strptime(hit_on, '%d/%m/%y'),
+                 count: count
   end
 end
 
