@@ -1,10 +1,12 @@
 <% content_for :page_title, "#{@site.abbr} hits" %>
-<%= breadcrumb(@hits) %>
+<%= breadcrumb(@hits.first || @site.default_host.hits.build) %>
 
 <h1 class="page-header"><%= "#{@site.abbr} hits" %></h1>
 
 <% if @hits.any? %>
-    <%= render partial: 'hits', locals: { hits: @hits } %>
+  <%= render partial: 'hits', locals: { hits: @hits } %>
 <% else %>
-    <p>No hits.</p>
+  <p class="no-content no-content-bordered">
+    We don’t have any traffic data for <%= @site.abbr %> yet.
+  </p>
 <% end %>

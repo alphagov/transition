@@ -10,7 +10,6 @@ module ApplicationHelper
   end
 
   def list_items_for(model, active = true)
-    model = model.first if model.respond_to?(:each)
     case model
     when Organisation
       crumb_li(model.title, organisation_path(model), active)

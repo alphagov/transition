@@ -21,4 +21,4 @@ Scenario: No hits exist
   And no hits exist for the Attorney General's office site
   When I visit the associated organisation
   And I click the link "View Hits"
-  Then I should see "No hits"
+  Then I should see "We don’t have any traffic data for ago yet."
