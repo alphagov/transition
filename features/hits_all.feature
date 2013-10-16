@@ -17,8 +17,7 @@ Scenario: Hits exist and are ordered for a site
     | 301         | /2   | 17/10/12 | 100   |
     | 301         | /2   | 18/10/12 | 100   |
   And some hits exist for the Cabinet Office site
-  When I visit the associated organisation
-  And I click the link "View Hits"
+  When I visit the associated site's hits
   Then I should see all hits for the Attorney General's office in descending count order
   And the hits should be grouped by path and status
   And each path should be a link to the real URL
@@ -29,6 +28,5 @@ Scenario: Hits exist and are ordered for a site
 Scenario: No hits exist
   Given I have logged in as a GDS user
   And no hits exist for the Attorney General's office site
-  When I visit the associated organisation
-  And I click the link "View Hits"
+  When I visit the associated site's hits
   Then I should see "We don’t have any traffic data for ago yet."

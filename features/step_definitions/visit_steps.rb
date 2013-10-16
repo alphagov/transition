@@ -13,3 +13,7 @@ end
 When(/^I visit the associated organisation$/) do
   visit organisation_path(@site.organisation)
 end
+
+When(/^I visit the associated site's hits$/) do
+  visit site_hits_path(@site)
+end
