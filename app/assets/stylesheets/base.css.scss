@@ -85,3 +85,16 @@ main a {
   margin: -$baseLineHeight 0 $baseLineHeight;
   font-size: $fontSizeLarge;
 }
+
+.no-content {
+  color: lighten($grayLight, 20%); // Large text needs a lighter colour for balance
+  font-size: $baseFontSize * 2;
+  line-height: $baseLineHeight * 2;
+  text-align: center;
+  padding: ($baseLineHeight * 4) 0;
+}
+
+.no-content-bordered {
+  border: 1px solid $tableBorder;
+  border-radius: $baseBorderRadius;
+}

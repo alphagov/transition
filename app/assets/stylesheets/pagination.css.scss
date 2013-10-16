@@ -32,12 +32,12 @@
   .first a,
   .page:first-child {
     border-left-width: 1px;
-    border-radius: $defaultBorderRadius 0 0 $defaultBorderRadius;
+    border-radius: $baseBorderRadius 0 0 $baseBorderRadius;
   }
 
   .last a,
   .page:last-child  {
-    border-radius: 0 $defaultBorderRadius $defaultBorderRadius 0;
+    border-radius: 0 $baseBorderRadius $baseBorderRadius 0;
   }
 
 }

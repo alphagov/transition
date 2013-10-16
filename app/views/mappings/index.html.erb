@@ -52,4 +52,9 @@
     </tbody>
   </table>
   <%= paginate(@mappings, :window => 2) %>
+  
+<% else %>
+  <p class="no-content no-content-bordered">
+    No mappings found
+  </p>
 <% end %>
