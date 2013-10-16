@@ -10,3 +10,9 @@
   -o-transition:$prop 1s ease-in;
   transition:$prop 1s ease-in;
 }
+
+@mixin box-sizing() {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}

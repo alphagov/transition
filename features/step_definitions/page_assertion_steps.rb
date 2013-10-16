@@ -107,3 +107,43 @@ end
 Then(/^I should see that this organisation works with its parent$/) do
   expect(page).to have_link('', href: organisation_path(@organisation.parent))
 end
+
+Then(/^I should see all hits for the Attorney General's office in descending count order$/) do
+  within '.hits' do
+    counts = page.all(:css, 'td.count').map { |node| node.text.to_i }
+
+    expect(counts).to be_sorted.descending
+  end
+end
+
+Then(/^I should not see hits for the Cabinet Office site$/) do
+  within '.hits' do
+    expect(page).to_not have_content('/cabinetoffice')
+  end
+end
+
+Then(/^the hits should be grouped by path and status$/) do
+  within '.hits' do
+    expect(page).to have_selector('tbody tr', count: 4)
+    expect(page).to have_selector('tbody tr:first-child .count', text: '300')
+  end
+end
+
+Then(/^the top hit should be represented by a 100% bar$/) do
+  within '.hits' do
+    expect(page).to have_selector('tbody tr:first-child .bar-chart-row[style*="width: 100"]')
+  end
+end
+
+Then(/^subsequent hits should have smaller bars$/) do
+  within '.hits' do
+    expect(page).to have_selector('tbody tr:nth-child(2) .bar-chart-row[style*="width: 66.6"]')
+  end
+end
+
+Then(/^each path should be a link to the real URL$/) do
+  within '.hits' do
+    anchors = page.all(:css, '.path a')
+    expect(anchors).to have(4).links
+  end
+end

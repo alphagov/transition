@@ -8,5 +8,7 @@ Transition::Application.routes.draw do
     resources :mappings, except: [:destroy] do
       resources :versions, only: [:index]
     end
+
+    resources :hits, only: :index
   end
 end

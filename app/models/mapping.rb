@@ -8,8 +8,6 @@ class Mapping < ActiveRecord::Base
   
   attr_accessible :path, :site, :http_status, :new_url, :suggested_url, :archive_url
 
-  paginates_per 100
-
   has_paper_trail
 
   belongs_to :site

@@ -20,8 +20,10 @@ module ApplicationHelper
         ['Mapping', edit_site_mapping_path(model.site, model)] :
         ['New mapping', '']
       list_items_for(model.site, false) + crumb_li(title, mapping_path, active)
+    when Hit
+      list_items_for(model.host.site.organisation, false) + crumb_li("#{model.host.site.abbr} Hits", '#', true)
     when Version
-      list_items_for(model.item, false) + crumb_li('History', '#{foobar}', true)
+      list_items_for(model.item, false) + crumb_li('History', '#', true)
     end
   end
 
@@ -36,5 +38,13 @@ module ApplicationHelper
 
   def anchor(text, name)
     content_tag :a, text, id: name, name: name
+  end
+
+  def past_first_page?
+    params[:page] && params[:page].to_i > 1
+  end
+
+  def first_page?
+    !past_first_page?
   end
 end
