@@ -182,3 +182,23 @@
     <p class="no-content">A longer, multi-line no content message. Do labore et <a href="#">dolore magna aliqua</a>.</p>
   </div>
 </div>
+<hr>
+
+<h2>Hits</h2>
+<div class="row">
+  <p class="span6 lead">Hits are colour coded (with a custom palette) based on HTTP status to help identify important rows in a table of data.</p>
+  <div class="span6">
+    <div class="relative">
+      <h3 class="path">Ambiguous: default, 410</h3>
+      <%= render partial: 'hits/bar_chart_row', locals: { count: 100, max: 100, status: 410 } %>
+    </div>
+    <div class="relative">
+      <h3 class="path">Good: 301</h3>
+      <%= render partial: 'hits/bar_chart_row', locals: { count: 80, max: 100, status: 301 } %>
+    </div>
+    <div class="relative">
+      <h3 class="path">Bad: 404</h3>
+      <%= render partial: 'hits/bar_chart_row', locals: { count: 60, max: 100, status: 404 } %>
+    </div>
+  </div>
+</div>

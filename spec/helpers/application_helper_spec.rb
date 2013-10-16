@@ -5,6 +5,7 @@ describe ApplicationHelper do
     let(:mapping)       { create :mapping }
     let(:site)          { mapping.site }
     let(:organisation)  { site.organisation }
+    let(:hit)           { build :hit, host: build(:host, site: site) }
 
     context 'at the top level' do
       subject { helper.breadcrumb }
@@ -38,6 +39,15 @@ describe ApplicationHelper do
       it { should include("<li><a href=\"#{organisation_path(organisation)}\">#{organisation.title}") }
       it { should include(%(<li><a href="#{site_mappings_path(site)}">#{site.abbr} Mappings)) }
       it { should include('<li class="active">Mapping') }
+    end
+
+    context 'for a hit' do
+      subject { helper.breadcrumb hit }
+
+      it { should include('<ul class="breadcrumb">') }
+      it { should include('<li><a href="/organisations">Organisations') }
+      it { should include("<li><a href=\"#{organisation_path(organisation)}\">#{organisation.title}") }
+      it { should include('<li class="active">cic_regulator Hits') }
     end
 
     context 'for a new mapping' do

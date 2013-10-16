@@ -42,3 +42,25 @@ end
 Given(/^a site (.*) exists$/) do |site_abbr|
   create :site_with_default_host, abbr: site_abbr
 end
+
+Given(/^these hits exist for the Attorney General's office site:$/) do |table|
+  @site = create :site_with_default_host, abbr: 'ago'
+  # table is a | 410         | /    | 16/10/12 | 100   |
+  table.rows.map do |status, path, hit_on, count|
+    create :hit, host: @site.default_host,
+                 http_status: status,
+                 path: path,
+                 hit_on: DateTime.strptime(hit_on, '%d/%m/%y'),
+                 count: count
+  end
+end
+
+Given(/^some hits exist for the Cabinet Office site$/) do
+  site = create :site_with_default_host, abbr: 'cabinetoffice'
+  create :hit, http_status: '410', count: 20, host: site.hosts.first, path: '/cabinetofficehit'
+end
+
+Given(/^no hits exist for the Attorney General's office site$/) do
+  @site = create :site_with_default_host, abbr: 'ago'
+  Hit.delete_all
+end

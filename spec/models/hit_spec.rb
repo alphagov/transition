@@ -17,6 +17,6 @@ describe Hit do
     subject { create :hit, hit_on: DateTime.new(2014, 12, 31, 23, 59, 59) }
 
     its(:hit_on)    { should eql(DateTime.new(2014, 12, 31, 0, 0, 0)) }
-    its(:path_hash) { should eql('88bf0e0efdd1f1e0a7ea7958bcc9083e4a166c8e') }
+    its(:path_hash) { should eql('ce81157034ae8c32f429d3dc03bed10cc0c47b65') }
   end
 end

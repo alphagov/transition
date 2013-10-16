@@ -1,0 +1,41 @@
+@import 'bootstrap/_variables';
+@import 'mixins';
+@import 'theme';
+
+.bar-chart-row {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: $defaultHTTPStatusColor;
+  min-width: 3px;
+}
+
+.bar-chart-row-301 {
+  background-color: $goodHTTPStatusColor;
+}
+
+.bar-chart-row-500,
+.bar-chart-row-404 {
+  background-color: $badHTTPStatusColor;
+}
+
+.hits {
+  table-layout: fixed;
+}
+
+.status {
+  width: $gridColumnWidth;
+  @include box-sizing();
+}
+
+.count {
+  width: $gridColumnWidth * 2;
+  @include box-sizing();
+}
+
+.path {
+  word-wrap: break-word;
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,27 @@
+<%= paginate hits %>
+
+<table class="hits table table-bordered">
+  <thead>
+  <tr>
+    <th class="status">Status</th>
+    <th>Path</th>
+    <th class="count">Count</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% max = hits.first.count %>
+
+  <% hits.each do |hit| %>
+      <tr>
+        <td class="status"><%= hit.http_status %></td>
+        <td class="relative">
+          <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
+          <span class="path"><%= link_to_hit(hit) %></span>
+        </td>
+        <td class="count"><%= number_with_delimiter hit.count %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate hits %>
