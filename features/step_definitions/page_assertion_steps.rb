@@ -147,3 +147,45 @@ Then(/^each path should be a link to the real URL$/) do
     expect(anchors).to have(4).links
   end
 end
+
+Then(/^I should see a section for the most common errors on the Attorney General's office$/) do
+  expect(page).to have_selector('h2', text: 'Errors')
+end
+
+Then(/^it should show only the top ten errors in descending order$/) do
+  within '.hits-errors' do
+    expect(page).to have_selector('tbody tr', count: 10)
+    expect(page).to have_selector('.bar-chart-row-404', count: 10)
+    counts = page.all(:css, 'td.count').map { |node| node.text.to_i }
+
+    expect(counts).to be_sorted.descending
+  end
+end
+
+Then(/^I should see a section for the most common archives$/) do
+  expect(page).to have_selector('h2', text: 'Archives')
+end
+
+Then(/^it should show only the top ten archives in descending order$/) do
+  within '.hits-archives' do
+    expect(page).to have_selector('tbody tr', count: 10)
+    expect(page).to have_selector('.bar-chart-row-410', count: 10)
+    counts = page.all(:css, 'td.count').map { |node| node.text.to_i }
+
+    expect(counts).to be_sorted.descending
+  end
+end
+
+Then(/^I should see a section for the most common redirects$/) do
+  expect(page).to have_selector('h2', text: 'Redirects')
+end
+
+Then(/^it should show only the top ten redirects in descending order$/) do
+  within '.hits-redirects' do
+    expect(page).to have_selector('tbody tr', count: 10)
+    expect(page).to have_selector('.bar-chart-row-301', count: 10)
+    counts = page.all(:css, 'td.count').map { |node| node.text.to_i }
+
+    expect(counts).to be_sorted.descending
+  end
+end

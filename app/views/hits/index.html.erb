@@ -3,6 +3,8 @@
 
 <h1 class="page-header"><%= "#{@site.abbr} hits" %></h1>
 
+<%= paginate @hits %>
+
 <% if @hits.any? %>
   <%= render partial: 'hits', locals: { hits: @hits } %>
 <% else %>
@@ -10,3 +12,5 @@
     We don’t have any traffic data for <%= @site.abbr %> yet.
   </p>
 <% end %>
+
+<%= paginate @hits %>
