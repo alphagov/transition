@@ -22,15 +22,15 @@ class Hit < ActiveRecord::Base
   end
   
   def self.aggregated_errors
-    self.aggregated.where('http_status = 404')
+    self.aggregated.where(http_status: 404)
   end
   
   def self.aggregated_archives
-    self.aggregated.where('http_status = 410')
+    self.aggregated.where(http_status: 410)
   end
   
   def self.aggregated_redirects
-    self.aggregated.where('http_status = 301')
+    self.aggregated.where(http_status: 301)
   end
 
   protected

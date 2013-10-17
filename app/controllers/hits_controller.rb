@@ -9,9 +9,11 @@ class HitsController < ApplicationController
   end
 
   def summary
-    @errors    = @site.aggregated_errors.order('count DESC').take(10)
-    @archives  = @site.aggregated_archives.order('count DESC').take(10)
-    @redirects = @site.aggregated_redirects.order('count DESC').take(10)
+    @sections = {
+      'errors'    => @site.aggregated_errors.order('count DESC').take(10),
+      'archives'  => @site.aggregated_archives.order('count DESC').take(10),
+      'redirects' => @site.aggregated_redirects.order('count DESC').take(10)
+    }
   end
 
   def errors
