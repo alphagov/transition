@@ -1,19 +1,19 @@
 <% content_for :page_title, title %>
-<%= breadcrumb(hits_data.first || site.default_host.hits_data.build) %>
+<%= breadcrumb(hits.first || site.default_host.hits.build) %>
 
 <h1><%= title %></h1>
 
 <%= render partial: 'hits_tabs', locals: { active: active } %>
 
-<h2><%= pluralize(number_with_delimiter(hits_data.total_count, :delimiter => ','), 'hit', 'hits') %></h2>
-<%= paginate hits_data %>
+<h2><%= pluralize(number_with_delimiter(hits.total_count, :delimiter => ','), 'hit', 'hits') %></h2>
+<%= paginate hits %>
 
-<% if hits_data.any? %>
-  <%= render partial: 'hits_table', locals: { hits: hits_data } %>
+<% if hits.any? %>
+  <%= render partial: 'hits_table', locals: { hits: hits } %>
 <% else %>
   <p class="no-content no-content-bordered">
     <%= no_content_message %>
   </p>
 <% end %>
 
-<%= paginate hits_data %>
+<%= paginate hits %>
