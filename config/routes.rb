@@ -12,6 +12,9 @@ Transition::Application.routes.draw do
     resources :hits, only: [:index] do
       collection do
         get 'summary'
+        get 'errors'
+        get 'archives'
+        get 'redirects'
       end
     end
   end

@@ -1,0 +1,9 @@
+<%= render partial: 'hits',
+  locals: {
+     hits_data: @hits,
+     site: @site,
+     title: "#{@site.abbr} Redirects",
+     active: 'Redirects',
+     no_content_message: "There are no redirects for #{@site.abbr} yet."
+   }
+%>

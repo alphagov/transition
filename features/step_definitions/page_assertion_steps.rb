@@ -152,7 +152,7 @@ Then(/^I should see a section for the most common errors on the Attorney General
   expect(page).to have_selector('h2', text: 'Errors')
 end
 
-Then(/^it should show only the top ten errors in descending order$/) do
+Then(/^it should show only the top ten errors in descending count order$/) do
   within '.hits-errors' do
     expect(page).to have_selector('tbody tr', count: 10)
     expect(page).to have_selector('.bar-chart-row-404', count: 10)
@@ -166,7 +166,7 @@ Then(/^I should see a section for the most common archives$/) do
   expect(page).to have_selector('h2', text: 'Archives')
 end
 
-Then(/^it should show only the top ten archives in descending order$/) do
+Then(/^it should show only the top ten archives in descending count order$/) do
   within '.hits-archives' do
     expect(page).to have_selector('tbody tr', count: 10)
     expect(page).to have_selector('.bar-chart-row-410', count: 10)
@@ -180,10 +180,40 @@ Then(/^I should see a section for the most common redirects$/) do
   expect(page).to have_selector('h2', text: 'Redirects')
 end
 
-Then(/^it should show only the top ten redirects in descending order$/) do
+Then(/^it should show only the top ten redirects in descending count order$/) do
   within '.hits-redirects' do
     expect(page).to have_selector('tbody tr', count: 10)
     expect(page).to have_selector('.bar-chart-row-301', count: 10)
+    counts = page.all(:css, 'td.count').map { |node| node.text.to_i }
+
+    expect(counts).to be_sorted.descending
+  end
+end
+
+Then(/^I should see all hits with an error status for the Attorney General's office in descending count order$/) do
+  within '.hits' do
+    expect(page).to have_selector('tbody tr', count: 11)
+    expect(page).to have_selector('.bar-chart-row-404', count: 11)
+    counts = page.all(:css, 'td.count').map { |node| node.text.to_i }
+
+    expect(counts).to be_sorted.descending
+  end
+end
+
+Then(/^I should see all hits with an archive status for the Attorney General's office in descending count order$/) do
+  within '.hits' do
+    expect(page).to have_selector('tbody tr', count: 11)
+    expect(page).to have_selector('.bar-chart-row-410', count: 11)
+    counts = page.all(:css, 'td.count').map { |node| node.text.to_i }
+
+    expect(counts).to be_sorted.descending
+  end
+end
+
+Then(/^I should see all hits with a redirect status for the Attorney General's office in descending count order$/) do
+  within '.hits' do
+    expect(page).to have_selector('tbody tr', count: 11)
+    expect(page).to have_selector('.bar-chart-row-301', count: 11)
     counts = page.all(:css, 'td.count').map { |node| node.text.to_i }
 
     expect(counts).to be_sorted.descending

@@ -1,11 +1,14 @@
-<% content_for :page_title, "#{@site.abbr} hits" %>
+<% content_for :page_title, "#{@site.abbr} Hits Summary" %>
+<%= breadcrumb(@site.default_host.hits.build) %>
 
-<h1 class="page-header"><%= "#{@site.abbr} hits" %></h1>
+<h1><%= "#{@site.abbr} Hits Summary" %></h1>
+
+<%= render partial: 'hits_tabs', locals: { active: 'Summary' } %>
 
 <section class="hits-errors">
   <h2>Errors</h2>
   <% if @errors.any? %>
-    <%= render partial: 'hits', locals: { hits: @errors } %>
+    <%= render partial: 'hits_table', locals: { hits: @errors } %>
   <% else %>
     <p class="no-content no-content-bordered">
       There are no known errors for <%= @site.abbr %> yet.
@@ -16,7 +19,7 @@
 <section class="hits-archives">
   <h2>Archives</h2>
   <% if @archives.any? %>
-    <%= render partial: 'hits', locals: { hits: @archives } %>
+    <%= render partial: 'hits_table', locals: { hits: @archives } %>
   <% else %>
     <p class="no-content no-content-bordered">
       There are no archive hits for <%= @site.abbr %> yet.
@@ -27,7 +30,7 @@
 <section class="hits-redirects">
   <h2>Redirects</h2>
   <% if @redirects.any? %>
-    <%= render partial: 'hits', locals: { hits: @redirects } %>
+    <%= render partial: 'hits_table', locals: { hits: @redirects } %>
   <% else %>
     <p class="no-content no-content-bordered">
       There are no redirects for <%= @site.abbr %> yet.

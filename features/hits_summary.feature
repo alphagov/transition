@@ -3,7 +3,7 @@ Feature: Summary traffic for site
   I want to see a summary of traffic to a site
   So that I can more easily decide what to fix next based on performance
 
-Scenario: Hits exist and are summarised for a site
+Background:
   Given I have logged in as a GDS user
   And these hits exist for the Attorney General's office site:
     | http_status | path | hit_on   | count |
@@ -42,9 +42,23 @@ Scenario: Hits exist and are summarised for a site
     | 404         | /11  | 18/10/12 | 10    |
   When I visit the associated organisation
   And I click the link "Hits Summary"
+
+Scenario: Hits exist and are summarised for a site
   Then I should see a section for the most common errors on the Attorney General's office
-  And it should show only the top ten errors in descending order
+  And it should show only the top ten errors in descending count order
   And I should see a section for the most common archives
-  And it should show only the top ten archives in descending order
+  And it should show only the top ten archives in descending count order
   And I should see a section for the most common redirects
-  And it should show only the top ten redirects in descending order
+  And it should show only the top ten redirects in descending count order
+
+Scenario: Hits exist and can be filtered by error
+  And I click the link "Errors"
+  Then I should see all hits with an error status for the Attorney General's office in descending count order
+  
+Scenario: Hits exist and can be filtered by archives
+  And I click the link "Archives"
+  Then I should see all hits with an archive status for the Attorney General's office in descending count order
+  
+Scenario: Hits exist and can be filtered by redirects
+  And I click the link "Redirects"
+  Then I should see all hits with a redirect status for the Attorney General's office in descending count order

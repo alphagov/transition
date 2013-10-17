@@ -1,16 +1,9 @@
-<% content_for :page_title, "#{@site.abbr} hits" %>
-<%= breadcrumb(@hits.first || @site.default_host.hits.build) %>
-
-<h1 class="page-header"><%= "#{@site.abbr} hits" %></h1>
-
-<%= paginate @hits %>
-
-<% if @hits.any? %>
-  <%= render partial: 'hits', locals: { hits: @hits } %>
-<% else %>
-  <p class="no-content no-content-bordered">
-    We don’t have any traffic data for <%= @site.abbr %> yet.
-  </p>
-<% end %>
-
-<%= paginate @hits %>
+<%= render partial: 'hits',
+  locals: {
+     hits_data: @hits,
+     site: @site,
+     title: "#{@site.abbr} Hits",
+     active: 'All',
+     no_content_message: "We don’t have any traffic data for #{@site.abbr} yet."
+   }
+%>

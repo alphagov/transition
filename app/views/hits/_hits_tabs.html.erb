@@ -1,0 +1,10 @@
+<%= bootstrap_flavour_tabs(
+      {
+        'Summary'    => lambda { summary_site_hits_path(@site) },
+        'All'        => lambda { site_hits_path(@site) },
+        'Errors'     => lambda { errors_site_hits_path(@site) },
+        'Archives'   => lambda { archives_site_hits_path(@site) },
+        'Redirects'  => lambda { redirects_site_hits_path(@site) }
+      }, active: active
+    )
+%>
