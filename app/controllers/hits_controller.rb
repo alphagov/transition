@@ -6,8 +6,8 @@ class HitsController < ApplicationController
   
   def summary
     @site = Site.find_by_abbr!(params[:site_id])
-    @errors    = @site.aggregated_errors.page(params[1]).per(10).order('count DESC')
-    @archives  = @site.aggregated_archives.page(params[1]).per(10).order('count DESC')
-    @redirects = @site.aggregated_redirects.page(params[1]).per(10).order('count DESC')
+    @errors    = @site.aggregated_errors.order('count DESC').take(10)
+    @archives  = @site.aggregated_archives.order('count DESC').take(10)
+    @redirects = @site.aggregated_redirects.order('count DESC').take(10)
   end
 end
