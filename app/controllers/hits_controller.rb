@@ -10,10 +10,10 @@ class HitsController < ApplicationController
 
   def summary
     @sections = {
-      'errors'    => @site.aggregated_errors.order('count DESC').take(10),
-      'archives'  => @site.aggregated_archives.order('count DESC').take(10),
-      'redirects' => @site.aggregated_redirects.order('count DESC').take(10),
-      'other'     => @site.aggregated_other.order('count DESC').take(10)
+      'errors'    => @site.aggregated_errors.top_ten.to_a,    # to_a avoids the view incurring
+      'archives'  => @site.aggregated_archives.top_ten.to_a,  # several count queries on #any?
+      'redirects' => @site.aggregated_redirects.top_ten.to_a,
+      'other'     => @site.aggregated_other.top_ten.to_a
     }
   end
 
