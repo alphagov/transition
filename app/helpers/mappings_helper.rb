@@ -12,20 +12,20 @@ module MappingsHelper
   #
   #   +bootstrap_flavour_tabs(
   #      {
-  #        'Edit'    => lambda { edit_path },
-  #        'History' => lambda { history_path }
+  #        'Edit'    => edit_path,
+  #        'History' => history_path
   #      }, active: 'Edit'
   #    )
   def bootstrap_flavour_tabs(titles_to_links, options)
     content_tag :ul, class: 'nav nav-tabs' do
       titles_to_links.inject('') do |result, title_link|
-        title, link_proc  = title_link[0], title_link[1]
+        title, href       = title_link[0], title_link[1]
         active            = options[:active] == title
         html_opts         = {}
         html_opts[:class] = 'active' if active
 
         result << content_tag(:li, html_opts) do
-          link_to(title, active ? '#' : link_proc.call)
+          link_to(title, active ? '#' : href)
         end
       end.html_safe
     end
@@ -37,8 +37,8 @@ module MappingsHelper
     if @mapping.versions.any?
       bootstrap_flavour_tabs(
         {
-          'Edit'    => lambda { edit_site_mapping_path(@mapping.site, @mapping) },
-          'History' => lambda { site_mapping_versions_path(@mapping.site, @mapping) }
+          'Edit'    => edit_site_mapping_path(@mapping.site, @mapping),
+          'History' => site_mapping_versions_path(@mapping.site, @mapping)
         },
         options)
     end
