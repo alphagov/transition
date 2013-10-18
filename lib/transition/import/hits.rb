@@ -16,8 +16,8 @@ module Transition
       mySQL
 
       INSERT_FROM_STAGING = <<-mySQL
-        INSERT IGNORE INTO hits (host_id, path, path_hash, http_status, `count`, hit_on, created_at, updated_at)
-        SELECT h.id, st.path, SHA1(st.path), st.http_status, st.count, st.hit_on, NOW(), NOW()
+        INSERT IGNORE INTO hits (host_id, path, path_hash, http_status, `count`, hit_on)
+        SELECT h.id, st.path, SHA1(st.path), st.http_status, st.count, st.hit_on
         FROM   hits_staging st
         INNER JOIN hosts h on h.hostname = st.hostname
         WHERE  st.count >= 10
