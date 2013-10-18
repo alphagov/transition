@@ -40,6 +40,17 @@ Background:
     | 404         | /9   | 18/10/12 | 100   |
     | 404         | /10  | 18/10/12 | 100   |
     | 404         | /11  | 18/10/12 | 10    |
+    | 200         | /    | 17/10/12 | 100   |
+    | 200         | /2   | 17/10/12 | 100   |
+    | 200         | /3   | 18/10/12 | 100   |
+    | 200         | /4   | 18/10/12 | 100   |
+    | 200         | /5   | 18/10/12 | 100   |
+    | 200         | /6   | 18/10/12 | 100   |
+    | 200         | /7   | 18/10/12 | 100   |
+    | 200         | /8   | 18/10/12 | 100   |
+    | 200         | /9   | 18/10/12 | 100   |
+    | 200         | /10  | 18/10/12 | 100   |
+    | 200         | /11  | 18/10/12 | 10    |
   When I visit the associated organisation
   And I click the link "Hits Summary"
 
@@ -50,15 +61,21 @@ Scenario: Hits exist and are summarised for a site
   And it should show only the top ten archives in descending count order
   And I should see a section for the most common redirects
   And it should show only the top ten redirects in descending count order
+  And I should see a section for the other hits, the most common miscellany
+  And it should show only the top ten other hits in descending count order
 
 Scenario: Hits exist and can be filtered by error
   And I click the link "Errors"
   Then I should see all hits with an error status for the Attorney General's office in descending count order
-  
+
 Scenario: Hits exist and can be filtered by archives
   And I click the link "Archives"
   Then I should see all hits with an archive status for the Attorney General's office in descending count order
-  
+
 Scenario: Hits exist and can be filtered by redirects
   And I click the link "Redirects"
   Then I should see all hits with a redirect status for the Attorney General's office in descending count order
+
+Scenario: Hits exist and can be filtered by everything else
+  And I click the link "Other"
+  Then I should see all hits with long tail statuses for the Attorney General's office in descending count order

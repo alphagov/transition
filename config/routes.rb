@@ -15,6 +15,7 @@ Transition::Application.routes.draw do
         get 'errors'
         get 'archives'
         get 'redirects'
+        get 'other'
       end
     end
   end

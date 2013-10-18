@@ -160,6 +160,10 @@ Then(/^I should see a section for the most common redirects$/) do
   expect(page).to have_selector('h2', text: 'Redirects')
 end
 
+Then(/^I should see a section for the other hits, the most common miscellany$/) do
+  expect(page).to have_selector('h2', text: 'Other')
+end
+
 Then(/^it should show only the top ten errors in descending count order$/) do
   within '.hits-errors' do
     expect(page).to have_sorted_bar_rows(10).for_status(404)
@@ -178,6 +182,12 @@ Then(/^it should show only the top ten redirects in descending count order$/) do
   end
 end
 
+Then(/^it should show only the top ten other hits in descending count order$/) do
+  within '.hits-other' do
+    expect(page).to have_sorted_bar_rows(10).for_status(200)
+  end
+end
+
 Then(/^I should see all hits with an error status for the Attorney General's office in descending count order$/) do
   within '.hits' do
     expect(page).to have_sorted_bar_rows(11).for_status(404)
@@ -193,5 +203,11 @@ end
 Then(/^I should see all hits with a redirect status for the Attorney General's office in descending count order$/) do
   within '.hits' do
     expect(page).to have_sorted_bar_rows(11).for_status(301)
+  end
+end
+
+Then(/^I should see all hits with long tail statuses for the Attorney General's office in descending count order$/) do
+  within '.hits' do
+    expect(page).to have_sorted_bar_rows(11).for_status(200)
   end
 end

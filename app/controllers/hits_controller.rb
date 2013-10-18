@@ -12,7 +12,8 @@ class HitsController < ApplicationController
     @sections = {
       'errors'    => @site.aggregated_errors.order('count DESC').take(10),
       'archives'  => @site.aggregated_archives.order('count DESC').take(10),
-      'redirects' => @site.aggregated_redirects.order('count DESC').take(10)
+      'redirects' => @site.aggregated_redirects.order('count DESC').take(10),
+      'other'     => @site.aggregated_other.order('count DESC').take(10)
     }
   end
 
@@ -26,6 +27,10 @@ class HitsController < ApplicationController
 
   def redirects
     @hits = @site.aggregated_redirects.page(params[:page]).order('count DESC')
+  end
+  
+  def other
+    @hits = @site.aggregated_other.page(params[:page]).order('count DESC')
   end
 
 end
