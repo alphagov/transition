@@ -6,8 +6,6 @@ CREATE TABLE `hits` (
   `http_status` varchar(3) COLLATE utf8_bin NOT NULL,
   `count` int(11) NOT NULL,
   `hit_on` date NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_hits_on_host_id_and_path_hash_and_hit_on_and_http_status` (`host_id`,`path_hash`,`hit_on`,`http_status`),
   KEY `index_hits_on_host_id` (`host_id`),
@@ -144,3 +142,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130927131427');
 INSERT INTO schema_migrations (version) VALUES ('20131010115334');
 
 INSERT INTO schema_migrations (version) VALUES ('20131010140146');
+
+INSERT INTO schema_migrations (version) VALUES ('20131018160637');

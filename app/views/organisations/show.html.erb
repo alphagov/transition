@@ -22,7 +22,7 @@
     <% @organisation.sites.each do |site| %>
       <tr>
         <td><%= link_to "#{site.abbr} Mappings", site_mappings_path(site) %></td>
-        <td><%= link_to 'View Hits', site_hits_path(site) %></td>
+        <td><%= link_to 'Hits Summary', summary_site_hits_path(site) %></td>
         <td><%= link_to site.homepage, site.homepage %></td>
       </tr>
     <% end %>

@@ -1,27 +1,19 @@
+<% content_for :page_title, title %>
+<%= breadcrumb(hits.first || site.default_host.hits.build) %>
+
+<h1><%= title %></h1>
+
+<%= render partial: 'hits_tabs', locals: { active: active } %>
+
+<h2><%= pluralize(number_with_delimiter(hits.total_count, :delimiter => ','), 'path', 'paths') %></h2>
 <%= paginate hits %>
 
-<table class="hits table table-bordered">
-  <thead>
-  <tr>
-    <th class="status">Status</th>
-    <th>Path</th>
-    <th class="count">Count</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% max = hits.first.count %>
-
-  <% hits.each do |hit| %>
-      <tr>
-        <td class="status"><%= hit.http_status %></td>
-        <td class="relative">
-          <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
-          <span class="path"><%= link_to_hit(hit) %></span>
-        </td>
-        <td class="count"><%= number_with_delimiter hit.count %></td>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
+<% if hits.total_count > 0 # already eval'd above, saves a DB call with #any? %>
+  <%= render partial: 'hits_table', locals: { hits: hits } %>
+<% else %>
+  <p class="no-content no-content-bordered">
+    <%= no_content_message %>
+  </p>
+<% end %>
 
 <%= paginate hits %>

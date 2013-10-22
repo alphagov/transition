@@ -12,6 +12,22 @@ class Site < ActiveRecord::Base
     hits.aggregated
   end
 
+  def aggregated_errors
+    hits.aggregated_errors
+  end
+
+  def aggregated_archives
+    hits.aggregated_archives
+  end
+
+  def aggregated_redirects
+    hits.aggregated_redirects
+  end
+  
+  def aggregated_other
+    hits.aggregated_other
+  end
+
   def to_param
     abbr
   end

@@ -1,0 +1,10 @@
+<% content_for :page_title, "#{@site.abbr} Hits Summary" %>
+<%= breadcrumb(@site.default_host.hits.build) %>
+
+<h1><%= "#{@site.abbr} Hits Summary" %></h1>
+
+<%= render partial: 'hits_tabs', locals: { active: 'Summary' } %>
+
+<% @sections.each_pair do |status_class, hits| %>
+  <%= render partial: 'summary_section', locals: { status_class: status_class, hits: hits } %>
+<% end %>

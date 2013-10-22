@@ -18,7 +18,27 @@ class Hit < ActiveRecord::Base
   validates :path_hash, presence: true
 
   def self.aggregated
-    scoped.select('hits.path, sum(hits.count) as count, hits.http_status, hits.host_id').group(:path, :http_status)
+    scoped.select('hits.path, sum(hits.count) as count, hits.http_status, hits.host_id').group(:path_hash, :http_status)
+  end
+
+  def self.aggregated_errors
+    self.aggregated.where(http_status: 404)
+  end
+
+  def self.aggregated_archives
+    self.aggregated.where(http_status: 410)
+  end
+
+  def self.aggregated_redirects
+    self.aggregated.where(http_status: 301)
+  end
+
+  def self.aggregated_other
+    self.aggregated.where('http_status NOT IN (?)', [404, 410, 301])
+  end
+
+  def self.top_ten
+    order('count DESC').limit(10)
   end
 
   protected
