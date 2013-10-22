@@ -5,7 +5,7 @@
 
 <%= render partial: 'hits_tabs', locals: { active: active } %>
 
-<h2><%= pluralize(number_with_delimiter(hits.total_count, :delimiter => ','), 'hit', 'hits') %></h2>
+<h2><%= pluralize(number_with_delimiter(hits.total_count, :delimiter => ','), 'path', 'paths') %></h2>
 <%= paginate hits %>
 
 <% if hits.total_count > 0 # already eval'd above, saves a DB call with #any? %>
