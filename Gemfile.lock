@@ -78,7 +78,7 @@ GEM
       railties (>= 3.0.0)
     faraday (0.8.7)
       multipart-post (~> 1.1)
-    gds-api-adapters (7.12.0)
+    gds-api-adapters (7.14.0)
       link_header
       lrucache (~> 0.1.1)
       null_logger
@@ -262,7 +262,7 @@ DEPENDENCIES
   database_cleaner (= 1.0.1)
   exception_notification (= 2.6.1)
   factory_girl_rails (= 4.1.0)
-  gds-api-adapters (= 7.12.0)
+  gds-api-adapters (= 7.14.0)
   gds-sso (= 3.0.0)
   google-api-client (= 0.6.4)
   htmlentities (= 4.3.1)

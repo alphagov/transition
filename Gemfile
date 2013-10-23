@@ -12,7 +12,7 @@ gem 'htmlentities', '4.3.1'
 gem 'kaminari', '0.14.1'
 gem 'paper_trail', '2.7.2'  # Using stable, see https://github.com/airblade/paper_trail/tree/2.7-stable for docs
 gem 'google-api-client', '0.6.4'
-gem 'gds-api-adapters', '7.12.0'
+gem 'gds-api-adapters', '7.14.0'
 
 # Exception notification is configured in alphagov-deployment. These gems are
 # needed by that code.

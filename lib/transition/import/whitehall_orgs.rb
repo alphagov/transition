@@ -1,4 +1,3 @@
-require 'forwardable'
 require 'gds_api/organisations'
 
 module Transition
