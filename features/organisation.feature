@@ -10,5 +10,5 @@ Feature: View organisation
       | bis_ukaea  | https://www.gov.uk/government/organisations/uk-atomic-energy-authority |
     When I visit the path /organisations/ukaea
     Then I should see the header "UK Atomic Energy Authority"
-    And I should see that this organisation works with its parent
+    And I should see that this organisation is an executive non-departmental public body of its parent
     And I should see links to all this organisation's sites and homepages
