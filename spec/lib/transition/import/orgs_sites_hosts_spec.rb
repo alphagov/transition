@@ -6,15 +6,25 @@ describe Transition::Import::OrgsSitesHosts do
 
     context 'there are no valid yaml files' do
       it 'reports the lack' do
-        lambda do
+        expect {
           Transition::Import::OrgsSitesHosts.from_redirector_yaml!('spec/fixtures/sites/noyaml/*.yml')
-        end.should raise_error(Transition::Import::OrgsSitesHosts::NoYamlFound)
+        }.to raise_error(Transition::Import::OrgsSitesHosts::NoYamlFound)
       end
     end
 
     context 'importing valid yaml files', testing_before_all: true do
       before :all do
-        Transition::Import::OrgsSitesHosts.from_redirector_yaml!('spec/fixtures/sites/someyaml/*.yml')
+        # This nasty block is a substitute for stubbing, which isn't available in a before :all
+        Transition::Import::OrgsSitesHosts.from_redirector_yaml!('spec/fixtures/sites/someyaml/*.yml') do |o|
+          def o.whitehall_organisations
+            Transition::Import::WhitehallOrgs.new.tap do |orgs|
+              def orgs.cached_org_path
+                'spec/fixtures/whitehall/orgs.yml'
+              end
+            end
+          end
+        end
+
         @businesslink = Organisation.find_by_abbr!('businesslink')
       end
 
@@ -41,8 +51,10 @@ describe Transition::Import::OrgsSitesHosts do
 
         subject { Organisation.find_by_abbr! 'ukaea' }
 
-        it { should have(1).site }
-        its(:parent) { should eql bis }
+        it                   { should have(1).site }
+        its(:parent)         { should eql bis }
+        its(:whitehall_slug) { should eql 'uk-atomic-energy-authority' }
+        its(:whitehall_type) { should eql 'Executive non-departmental public body' }
       end
 
       describe 'a child site that is not an organisation' do
