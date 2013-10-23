@@ -40,7 +40,7 @@ module Transition
       end
 
       def create_org_from(site)
-        Organisation.where(abbr: site.inferred_organisation).first_or_create do |org|
+        Organisation.where(abbr: site.inferred_organisation).first_or_create.tap do |org|
           %w(title furl homepage css).each { |attr| org.send "#{attr}=".to_sym, site.send(attr.to_sym) }
 
           org.abbr        = site.inferred_organisation
@@ -50,6 +50,7 @@ module Transition
             org.whitehall_type = whitehall_org.format
             org.whitehall_slug = whitehall_org.details.slug
           end
+          org.save!
         end
       end
 
