@@ -1,5 +1,6 @@
 <% if @organisation.parent.present? && @organisation.whitehall_type.present? %>
-  <p class="subtitle">is <%= relationship_display_name(@organisation.whitehall_type) %> of
+  <p class="subtitle">
+    <%= relationship_display_name(@organisation) %>
     <%= link_to @organisation.parent.title, organisation_path(@organisation.parent) %>
   </p>
 <% end %>

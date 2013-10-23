@@ -12,6 +12,10 @@ describe OrganisationsHelper do
   end
 
   describe '#relationship_display_name' do
-    specify { helper.relationship_display_name('Executive body').should == 'an executive body' }
+    let(:executive_body) { create :organisation }
+    let(:other)          { create :organisation, whitehall_type: 'Other' }
+
+    specify { helper.relationship_display_name(executive_body).should == 'is an executive non-departmental public body of' }
+    specify { helper.relationship_display_name(other).should == 'works with' }
   end
 end
