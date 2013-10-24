@@ -5,6 +5,13 @@
 
 <%= render partial: 'hits_tabs', locals: { active: active } %>
 
+<script src="https://www.google.com/jsapi"></script>
+<div class="hits-graph js-hits-graph"></div>
+<script>
+  var rawData = <%= raw points %>;
+  GOVUK.Hits.plot();
+</script>
+
 <h2><%= pluralize(number_with_delimiter(hits.total_count, :delimiter => ','), 'path', 'paths') %></h2>
 <%= paginate hits %>
 
