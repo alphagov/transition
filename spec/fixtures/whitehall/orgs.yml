@@ -1,0 +1,51 @@
+---
+- !ruby/object:OpenStruct
+  table:
+    :id: https://whitehall-admin.production.alphagov.co.uk/api/organisations/attorney-generals-office
+    :title: Attorney General's Office
+    :format: Ministerial department
+    :updated_at: '2013-08-22T11:02:18+01:00'
+    :web_url: https://www.gov.uk/government/organisations/attorney-generals-office
+    :details: !ruby/object:OpenStruct
+      table:
+        :slug: attorney-generals-office
+        :abbreviation: AGO
+        :closed_at: 
+        :govuk_status: live
+    :parent_organisations: []
+    :child_organisations:
+    - !ruby/object:OpenStruct
+      table:
+        :id: https://whitehall-admin.production.alphagov.co.uk/api/organisations/treasury-solicitor-s-department
+        :web_url: https://www.gov.uk/government/organisations/treasury-solicitor-s-department
+    - !ruby/object:OpenStruct
+      table:
+        :id: https://whitehall-admin.production.alphagov.co.uk/api/organisations/crown-prosecution-service
+        :web_url: https://www.gov.uk/government/organisations/crown-prosecution-service
+    - !ruby/object:OpenStruct
+      table:
+        :id: https://whitehall-admin.production.alphagov.co.uk/api/organisations/serious-fraud-office
+        :web_url: https://www.gov.uk/government/organisations/serious-fraud-office
+    - !ruby/object:OpenStruct
+      table:
+        :id: https://whitehall-admin.production.alphagov.co.uk/api/organisations/hm-crown-prosecution-service-inspectorate
+        :web_url: https://www.gov.uk/government/organisations/hm-crown-prosecution-service-inspectorate
+- !ruby/object:OpenStruct
+  table:
+    :id: https://whitehall-admin.production.alphagov.co.uk/api/organisations/uk-atomic-energy-authority
+    :title: UK Atomic Energy Authority
+    :format: Executive non-departmental public body
+    :updated_at: '2013-10-02T16:21:14+01:00'
+    :web_url: https://www.gov.uk/government/organisations/uk-atomic-energy-authority
+    :details: !ruby/object:OpenStruct
+      table:
+        :slug: uk-atomic-energy-authority
+        :abbreviation: UKAEA
+        :closed_at:
+        :govuk_status: live
+    :parent_organisations:
+    - !ruby/object:OpenStruct
+      table:
+        :id: https://whitehall-admin.production.alphagov.co.uk/api/organisations/department-for-business-innovation-skills
+        :web_url: https://www.gov.uk/government/organisations/department-for-business-innovation-skills
+    :child_organisations: []

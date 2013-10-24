@@ -73,6 +73,8 @@ CREATE TABLE `organisations` (
   `css` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `ga_profile_id` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_id` int(11) DEFAULT NULL,
+  `whitehall_slug` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `whitehall_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_organisations_on_abbr` (`abbr`),
   KEY `index_organisations_on_title` (`title`)
@@ -144,3 +146,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131010115334');
 INSERT INTO schema_migrations (version) VALUES ('20131010140146');
 
 INSERT INTO schema_migrations (version) VALUES ('20131018160637');
+
+INSERT INTO schema_migrations (version) VALUES ('20131023082026');

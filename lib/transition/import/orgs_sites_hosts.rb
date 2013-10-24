@@ -1,4 +1,5 @@
 require 'transition/import/site_yaml_file'
+require 'transition/import/whitehall_orgs'
 
 module Transition
   module Import
@@ -11,7 +12,10 @@ module Transition
       end
 
       def self.from_redirector_yaml!(mask)
-        OrgsSitesHosts.new(mask).import!
+        OrgsSitesHosts.new(mask).tap do |orgs_sites_hosts|
+          yield orgs_sites_hosts if block_given?
+          orgs_sites_hosts.import!
+        end
       end
 
       def import!
@@ -24,14 +28,7 @@ module Transition
         # and one to set up their parents.
         Organisation.transaction do
           organisations.values.each do |site|
-            Organisation.where(abbr: site.inferred_organisation).first_or_create do |org|
-              org.launch_date = site.redirection_date
-              org.abbr = site.inferred_organisation
-              %w(title furl homepage css).each do |meth|
-                getter, setter = meth.to_sym, "#{meth}=".to_sym
-                org.send setter, site.send(getter)
-              end
-            end
+            create_org_from(site)
           end
           organisations.values.select { |s| s.child? }.each do |site|
             Organisation.find_by_abbr!(site.inferred_organisation).tap do |org|
@@ -39,6 +36,21 @@ module Transition
               org.save!
             end
           end
+        end
+      end
+
+      def create_org_from(site)
+        Organisation.where(abbr: site.inferred_organisation).first_or_create.tap do |org|
+          %w(title furl homepage css).each { |attr| org.send "#{attr}=".to_sym, site.send(attr.to_sym) }
+
+          org.abbr        = site.inferred_organisation
+          org.launch_date = site.redirection_date
+
+          if (whitehall_org = whitehall_organisations.by_title[org.title])
+            org.whitehall_type = whitehall_org.format
+            org.whitehall_slug = whitehall_org.details.slug
+          end
+          org.save!
         end
       end
 
@@ -72,6 +84,10 @@ module Transition
       # All orgs (things that are not *just* sites)
       def organisations
         sites.select { |_, site| site.organisation? }
+      end
+
+      def whitehall_organisations
+        @organisations ||= WhitehallOrgs.new
       end
     end
   end
