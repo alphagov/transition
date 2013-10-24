@@ -2,35 +2,36 @@ class HitsController < ApplicationController
 
   before_filter do
     @site = Site.find_by_abbr!(params[:site_id])
+    @aggregated_hits = @site.hits.aggregated
   end
 
   def index
-    @hits = @site.aggregated_hits.page(params[:page]).order('count DESC')
+    @hits = @aggregated_hits.page(params[:page]).order('count DESC')
   end
 
   def summary
     @sections = {
-      'errors'    => @site.aggregated_errors.top_ten.to_a,    # to_a avoids the view incurring
-      'archives'  => @site.aggregated_archives.top_ten.to_a,  # several count queries on #any?
-      'redirects' => @site.aggregated_redirects.top_ten.to_a,
-      'other'     => @site.aggregated_other.top_ten.to_a
+      'errors'    => @aggregated_hits.errors.top_ten.to_a,    # to_a avoids the view incurring
+      'archives'  => @aggregated_hits.archives.top_ten.to_a,  # several count queries on #any?
+      'redirects' => @aggregated_hits.redirects.top_ten.to_a,
+      'other'     => @aggregated_hits.other.top_ten.to_a
     }
   end
 
   def errors
-    @hits = @site.aggregated_errors.page(params[:page]).order('count DESC')
+    @hits = @aggregated_hits.errors.page(params[:page]).order('count DESC')
   end
 
   def archives
-    @hits = @site.aggregated_archives.page(params[:page]).order('count DESC')
+    @hits = @aggregated_hits.archives.page(params[:page]).order('count DESC')
   end
 
   def redirects
-    @hits = @site.aggregated_redirects.page(params[:page]).order('count DESC')
+    @hits = @aggregated_hits.redirects.page(params[:page]).order('count DESC')
   end
   
   def other
-    @hits = @site.aggregated_other.page(params[:page]).order('count DESC')
+    @hits = @aggregated_hits.other.page(params[:page]).order('count DESC')
   end
 
 end
