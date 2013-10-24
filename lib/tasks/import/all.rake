@@ -1,6 +1,11 @@
 namespace :import do
   desc 'Import Organisations, Sites, Hosts, Mappings and Hits'
-  task :all => ['import:all:orgs_sites_hosts', 'import:all:mappings', 'import:all:hits']
+  task :all => [
+    'import:all:orgs_sites_hosts',
+    'import:all:mappings',
+    'import:all:hits',
+    'import:dns_details'
+  ]
 
   namespace :all do
     desc 'Import all Organisations, Sites and Hosts'
