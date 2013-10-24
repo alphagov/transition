@@ -18,8 +18,12 @@ class Hit < ActiveRecord::Base
   validates :path_hash, presence: true
 
   scope :aggregated, -> {
-    select('hits.path, sum(hits.count) as count, hits.http_status, hits.host_id').group(:path_hash, :http_status)
+    select('hits.path, hits.hit_on, sum(hits.count) as count, hits.http_status, hits.host_id')
   }
+
+  scope :by_path_and_status, -> { group(:path_hash, :http_status) }
+  scope :by_date,            -> { group(:hit_on) }
+  scope :by_date_and_status, -> { group(:hit_on, :http_status) }
 
   scope :errors,     -> { where(http_status: 404) }
   scope :archives,   -> { where(http_status: 410) }
