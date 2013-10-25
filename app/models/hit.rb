@@ -17,7 +17,7 @@ class Hit < ActiveRecord::Base
   before_validation :normalize_hit_on
   validates :path_hash, presence: true
 
-  scope :aggregated, -> {
+  scope :grouped, -> {
     select('hits.path, hits.hit_on, sum(hits.count) as count, hits.http_status, hits.host_id')
   }
 
