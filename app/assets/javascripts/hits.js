@@ -8,7 +8,7 @@
   }
 
   var Hits = {
-    plot: function() {
+    plot: function(colors) {
 
       var chartContainer = $('.js-hits-graph').get(0);
       window.google.load("visualization", "1", {packages:["corechart"]});
@@ -29,6 +29,7 @@
                 width: '80%',
                 height: '80%'
               },
+              colors: colors,
               focusTarget: 'category' // Highlights all trends in a single tooltip, hovering
                                       // anywhere in the space above or below a point
             };

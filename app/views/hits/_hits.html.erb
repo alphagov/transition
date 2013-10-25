@@ -9,7 +9,7 @@
 <div class="hits-graph js-hits-graph"></div>
 <script>
   var rawData = <%= raw points %>;
-  GOVUK.Hits.plot();
+  GOVUK.Hits.plot(['<%= @category.color %>']);
 </script>
 
 <h2><%= pluralize(number_with_delimiter(hits.total_count, :delimiter => ','), 'path', 'paths') %></h2>

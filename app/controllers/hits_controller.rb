@@ -1,3 +1,5 @@
+require 'transition/hits/category'
+
 class HitsController < ApplicationController
 
   before_filter do
@@ -5,33 +7,30 @@ class HitsController < ApplicationController
   end
 
   def index
-    @hits   = grouped.by_path_and_status.page(params[:page]).order('count DESC')
-    @points = graph_points(grouped.by_date, 'All hits')
+    @category = Transition::Hits::Category['all'].tap do |c|
+      c.hits   = grouped.by_path_and_status.page(params[:page]).order('count DESC')
+      c.points = graph_points(grouped.by_date, 'All hits')
+    end
   end
 
   def summary
-    @sections = {
-      'errors'    => grouped.by_path_and_status.errors.top_ten.to_a,    # to_a avoids the view incurring
-      'archives'  => grouped.by_path_and_status.archives.top_ten.to_a,  # several count queries on #any?
-      'redirects' => grouped.by_path_and_status.redirects.top_ten.to_a,
-      'other'     => grouped.by_path_and_status.other.top_ten.to_a
-    }
+    @sections = Transition::Hits::Category.all.reject { |c| c.name == 'all' }.map do |category|
+      category.tap { |c| c.hits = grouped.by_path_and_status.send(category.to_sym).top_ten.to_a }
+    end
 
-    @points = {
-      'All'       => grouped.by_date,
-      'Errors'    => grouped.by_date_and_status.errors,
-      'Archives'  => grouped.by_date_and_status.archives,
-      'Redirects' => grouped.by_date_and_status.redirects,
-    }
+    @points = Transition::Hits::Category.all.reject { |c| c.name == 'other' }.map do |category|
+      category.tap do |c|
+        c.points = (c.name == 'all') ? grouped.by_date : grouped.by_date_and_status.send(category.to_sym)
+      end
+    end
   end
 
   def category
     # Category - one of %w(archives redirect errors other) (see routes.rb)
-    @category = params[:category]
-    category_hits = grouped.by_path_and_status.send(@category.to_sym)
+    @category = Transition::Hits::Category[params[:category]]
 
-    @hits   = category_hits.page(params[:page]).order('count DESC')
-    @points = graph_points(category_hits, @category.titleize)
+    @category.hits   = grouped.by_path_and_status.send(@category.to_sym).page(params[:page]).order('count DESC')
+    @category.points = graph_points(grouped.by_date_and_status.send(@category.to_sym), @category.title)
   end
 
   protected

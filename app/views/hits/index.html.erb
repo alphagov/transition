@@ -1,8 +1,8 @@
 <%= render partial: 'hits',
   locals: {
-     hits: @hits,
+     hits: @category.hits,
      site: @site,
-     points: @points,
+     points: @category.points,
      title: "#{@site.abbr} Hits",
      active: 'All',
      no_content_message: "We don’t have any traffic data for #{@site.abbr} yet."

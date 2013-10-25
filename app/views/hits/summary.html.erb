@@ -5,6 +5,6 @@
 
 <%= render partial: 'hits_tabs', locals: { active: 'Summary' } %>
 
-<% @sections.each_pair do |status_class, hits| %>
-  <%= render partial: 'summary_section', locals: { status_class: status_class, hits: hits } %>
+<% @sections.each do |category| %>
+  <%= render partial: 'summary_section', locals: { category: category } %>
 <% end %>

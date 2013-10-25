@@ -1,10 +1,10 @@
 <%= render partial: 'hits',
   locals: {
-     hits: @hits,
+     hits: @category.hits,
      site: @site,
-     points: @points,
-     title: "#{@site.abbr} #{@category.titleize}",
-     active: "#{@category.titleize}",
+     points: @category.points,
+     title: "#{@site.abbr} #{@category.title}",
+     active: "#{@category.title}",
      no_content_message: "There are no #{@category} for #{@site.abbr} yet."
    }
 %>
