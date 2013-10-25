@@ -11,8 +11,8 @@
     plot: function() {
 
       var chartContainer = $('.js-hits-graph').get(0);
-      google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawChart);
+      window.google.load("visualization", "1", {packages:["corechart"]});
+      window.google.setOnLoadCallback(drawChart);
 
       function drawChart() {
 
@@ -20,8 +20,8 @@
         // https://google-developers.appspot.com/chart/interactive/docs/gallery/linechart
         // https://developers.google.com/chart/interactive/docs/roles
 
-        var data = new google.visualization.arrayToDataTable(rawData),
-            chart = new google.visualization.LineChart(chartContainer),
+        var data = window.google.visualization.arrayToDataTable(rawData),
+            chart = new window.google.visualization.LineChart(chartContainer),
             options = {
               chartArea: {
                 left: 60,
