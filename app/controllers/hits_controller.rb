@@ -6,7 +6,7 @@ class HitsController < ApplicationController
 
   def index
     @hits   = grouped.by_path_and_status.page(params[:page]).order('count DESC')
-    @points = graph_points_from_hits "All hits", grouped.by_date
+    @points = graph_points(grouped.by_date, 'All hits')
   end
 
   def summary
@@ -25,24 +25,13 @@ class HitsController < ApplicationController
     }
   end
 
-  def errors
-    @hits   = grouped.by_path_and_status.errors.page(params[:page]).order('count DESC')
-    @points = graph_points_from_hits 'Errors', grouped.by_date_and_status.errors
-  end
+  def category
+    # Category - one of %w(archives redirect errors other) (see routes.rb)
+    @category = params[:category]
+    category_hits = grouped.by_path_and_status.send(@category.to_sym)
 
-  def archives
-    @hits   = grouped.by_path_and_status.archives.page(params[:page]).order('count DESC')
-    @points = graph_points_from_hits 'Archives', grouped.by_date_and_status.archives
-  end
-
-  def redirects
-    @hits   = grouped.by_path_and_status.redirects.page(params[:page]).order('count DESC')
-    @points = graph_points_from_hits 'Redirects', grouped.by_date_and_status.redirects
-  end
-
-  def other
-    @hits   = grouped.by_path_and_status.other.page(params[:page]).order('count DESC')
-    @points = graph_points_from_hits 'Other', grouped.by_date_and_status.other
+    @hits   = category_hits.page(params[:page]).order('count DESC')
+    @points = graph_points(category_hits, @category.titleize)
   end
 
   protected
@@ -50,7 +39,7 @@ class HitsController < ApplicationController
   ##
   # Creates format required by
   # https://google-developers.appspot.com/chart/interactive/docs/gallery/linechart
-  def graph_points_from_hits(title, hits)
+  def graph_points(hits, title)
     hits.inject([['Date', title]]) do |points, hit|
       points << [hit.hit_on.to_s('yyyy-mm-dd'), hit.count]
     end

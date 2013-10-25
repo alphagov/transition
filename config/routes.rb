@@ -14,10 +14,10 @@ Transition::Application.routes.draw do
     resources :hits, only: [:index] do
       collection do
         get 'summary'
-        get 'errors'
-        get 'archives'
-        get 'redirects'
-        get 'other'
+        get 'redirects', to: 'hits#category', defaults: { category: 'redirects' }
+        get 'errors',    to: 'hits#category', defaults: { category: 'errors' }
+        get 'archives',  to: 'hits#category', defaults: { category: 'archives' }
+        get 'other',     to: 'hits#category', defaults: { category: 'other' }
       end
     end
   end
