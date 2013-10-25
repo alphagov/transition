@@ -64,9 +64,12 @@ Scenario: Hits exist and are summarised for a site
   And I should see a section for the other hits, the most common miscellany
   And it should show only the top ten other hits in descending count order
 
+@javascript
 Scenario: Hits exist and can be filtered by error
   And I click the link "Errors"
+  And I wait until a graph is visible
   Then I should see all hits with an error status for the Attorney General's office in descending count order
+  And an errors graph showing two dates and a red trend line
 
 Scenario: Hits exist and can be filtered by archives
   And I click the link "Archives"
