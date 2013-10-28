@@ -100,15 +100,24 @@ Then(/^the top hit's canonicalized path should already be in the form$/) do
   expect(find_field('Path').value).to eql('/a')
 end
 
-Then(/^an errors graph showing two dates and a red trend line$/) do
+Then(/^a[n]? (\w+) graph showing two dates and a (\w+) trend line$/) do |category, color|
+
+  case color
+  when "red"
+    color = "#ee9999"
+  when "green"
+    color = "#99ee99"
+  else
+    color = "#aaaaaa"
+  end
 
   result = page.evaluate_script('rawData')
-  expect(result).to eql([["Date", "Errors"], ["2012-10-17", 200], ["2012-10-18", 810]])
+  expect(result).to eql([["Date", category.titleize], ["2012-10-17", 200], ["2012-10-18", 810]])
 
   # Poltergeist doesnt correctly find content of SVG text elements
   # Use an SVG matcher instead of:
   # expect(page).to have_selector('text', text: 'Errors')
-  expect(page).to have_svg_text('Errors')
 
-  expect(page).to have_selector('path[stroke="#ee9999"]')
+  expect(page).to have_svg_text(category.titleize)
+  expect(page).to have_selector("path[stroke='#{color}']")
 end

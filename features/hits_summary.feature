@@ -71,14 +71,20 @@ Scenario: Hits exist and can be filtered by error
   Then I should see all hits with an error status for the Attorney General's office in descending count order
   And an errors graph showing two dates and a red trend line
 
+@javascript
 Scenario: Hits exist and can be filtered by archives
   And I click the link "Archives"
   Then I should see all hits with an archive status for the Attorney General's office in descending count order
+  And an archives graph showing two dates and a grey trend line
 
+@javascript
 Scenario: Hits exist and can be filtered by redirects
   And I click the link "Redirects"
   Then I should see all hits with a redirect status for the Attorney General's office in descending count order
+  And a redirects graph showing two dates and a green trend line
 
+@javascript
 Scenario: Hits exist and can be filtered by everything else
   And I click the link "Other"
   Then I should see all hits with an other status for the Attorney General's office in descending count order
+  And an other graph showing two dates and a grey trend line
