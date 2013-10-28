@@ -64,6 +64,27 @@ Then(/^it should show only the top (\d+) (\w+) in descending count order$/) do |
   end
 end
 
+Then(/^I should see a graph representing hits data over time$/) do
+  expect(page).to have_selector("svg")
+
+  result = page.evaluate_script('rawData')
+  expect(result).to eql([
+    ["Date",        "All hits", "Errors", "Archives", "Redirects"],
+    ["2012-10-17",  800,        200,      200,        200        ],
+    ["2012-10-18",  3240,       810,      810,        810        ]
+  ])
+end
+
+Then(/^I should see a trend for all hits, errors, archives and redirects$/) do
+  ['#999999', '#ee9999', '#99ee99', '#aaaaaa'].each do |color|
+    expect(page).to have_selector("path[stroke='#{color}']")
+  end
+
+  ['All hits', 'Errors', 'Archives', 'Redirects'].each do |category|
+    expect(page).to have_svg_text(category)
+  end
+end
+
 Then(/^I should see all hits with a[n]? (\w+) status for the Attorney General's office in descending count order$/) do |category|
 
   case category

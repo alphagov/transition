@@ -65,6 +65,11 @@ Scenario: Hits exist and are summarised for a site
   And it should show only the top 10 other in descending count order
 
 @javascript
+Scenario: Hits are viewable over time
+  Then I should see a graph representing hits data over time
+  And I should see a trend for all hits, errors, archives and redirects
+
+@javascript
 Scenario: Hits exist and can be filtered by error
   And I click the link "Errors"
   And I wait until a graph is visible
