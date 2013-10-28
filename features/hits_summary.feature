@@ -55,14 +55,14 @@ Background:
   And I click the link "Hits Summary"
 
 Scenario: Hits exist and are summarised for a site
-  Then I should see a section for the most common errors on the Attorney General's office
-  And it should show only the top ten errors in descending count order
+  Then I should see a section for the most common errors
+  And it should show only the top 10 errors in descending count order
   And I should see a section for the most common archives
-  And it should show only the top ten archives in descending count order
+  And it should show only the top 10 archives in descending count order
   And I should see a section for the most common redirects
-  And it should show only the top ten redirects in descending count order
+  And it should show only the top 10 redirects in descending count order
   And I should see a section for the other hits, the most common miscellany
-  And it should show only the top ten other hits in descending count order
+  And it should show only the top 10 other in descending count order
 
 @javascript
 Scenario: Hits exist and can be filtered by error
@@ -81,4 +81,4 @@ Scenario: Hits exist and can be filtered by redirects
 
 Scenario: Hits exist and can be filtered by everything else
   And I click the link "Other"
-  Then I should see all hits with long tail statuses for the Attorney General's office in descending count order
+  Then I should see all hits with an other status for the Attorney General's office in descending count order
