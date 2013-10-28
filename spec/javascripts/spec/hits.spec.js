@@ -73,6 +73,16 @@ describe('A hits module', function() {
 
         expect(chartFn.draw.calls.mostRecent().args[1].hAxis.title).toBe("17 October 2012 to 18 October 2012");
       });
+
+      it('sets trend colours to those passed in', function() {
+        var colors = ['#999', '#000'];
+
+        root.GOVUK.Hits.plot(colors);
+        spyOn(chartFn, 'draw');
+        callbackFn();
+
+        expect(chartFn.draw.calls.mostRecent().args[1].colors).toEqual(colors);
+      });
     });
   });
 });
