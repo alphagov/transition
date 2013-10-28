@@ -1,15 +1,12 @@
 require 'transition/hits/category'
 
 class HitsController < ApplicationController
-
-  before_filter do
-    @site = Site.find_by_abbr!(params[:site_id])
-  end
+  before_filter :find_site
 
   def index
     @category = Transition::Hits::Category['all'].tap do |c|
       c.hits   = grouped.by_path_and_status.page(params[:page]).order('count DESC')
-      c.points = graph_points(grouped.by_date, 'All hits')
+      c.points = grouped.by_date
     end
   end
 
@@ -27,21 +24,16 @@ class HitsController < ApplicationController
 
   def category
     # Category - one of %w(archives redirect errors other) (see routes.rb)
-    @category = Transition::Hits::Category[params[:category]]
-
-    @category.hits   = grouped.by_path_and_status.send(@category.to_sym).page(params[:page]).order('count DESC')
-    @category.points = graph_points(grouped.by_date_and_status.send(@category.to_sym), @category.title)
+    @category = Transition::Hits::Category[params[:category]].tap do |c|
+      c.hits   = grouped.by_path_and_status.send(c.to_sym).page(params[:page]).order('count DESC')
+      c.points = grouped.by_date_and_status.send(c.to_sym)
+    end
   end
 
   protected
 
-  ##
-  # Creates format required by
-  # https://google-developers.appspot.com/chart/interactive/docs/gallery/linechart
-  def graph_points(hits, title)
-    hits.inject([['Date', title]]) do |points, hit|
-      points << [hit.hit_on.to_s('yyyy-mm-dd'), hit.count]
-    end
+  def find_site
+    @site = Site.find_by_abbr!(params[:site_id])
   end
 
   def grouped
