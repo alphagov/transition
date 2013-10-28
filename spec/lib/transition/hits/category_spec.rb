@@ -12,9 +12,9 @@ describe Transition::Hits::Category do
 
       it { should be_a(Transition::Hits::Category) }
 
-      its(:title)  { should == 'All' }
+      its(:title)  { should == 'All hits' }
       its(:to_sym) { should == :all }
-      its(:color)  { should == '#999' }
+      its(:color)  { should == '#333' }
     end
 
     describe 'indexing' do

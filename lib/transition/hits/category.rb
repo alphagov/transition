@@ -4,10 +4,10 @@ module Transition
       attr_accessor :hits, :points
 
       COLORS = {
-        'all'       => '#999',
+        'all'       => '#333',
         'errors'    => '#e99',
-        'redirects' => '#9e9',
         'archives'  => '#aaa',
+        'redirects' => '#9e9',
         'other'     => '#aaa'
       }
 
@@ -26,7 +26,7 @@ module Transition
       end
 
       def title
-        name.capitalize
+        name == 'all' ? 'All hits' : name.capitalize
       end
     end
   end

@@ -18,7 +18,7 @@ class HitsController < ApplicationController
       category.tap { |c| c.hits = grouped.by_path_and_status.send(category.to_sym).top_ten.to_a }
     end
 
-    @points = Transition::Hits::Category.all.reject { |c| c.name == 'other' }.map do |category|
+    @point_categories = Transition::Hits::Category.all.reject { |c| c.name == 'other' }.map do |category|
       category.tap do |c|
         c.points = (c.name == 'all') ? grouped.by_date : grouped.by_date_and_status.send(category.to_sym)
       end

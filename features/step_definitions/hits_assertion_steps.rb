@@ -76,7 +76,7 @@ Then(/^I should see a graph representing hits data over time$/) do
 end
 
 Then(/^I should see a trend for all hits, errors, archives and redirects$/) do
-  ['#999999', '#ee9999', '#99ee99', '#aaaaaa'].each do |color|
+  ['#333333', '#ee9999', '#99ee99', '#aaaaaa'].each do |color|
     expect(page).to have_selector("path[stroke='#{color}']")
   end
 

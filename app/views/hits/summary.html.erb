@@ -5,6 +5,13 @@
 
 <%= render partial: 'hits_tabs', locals: { active: 'Summary' } %>
 
+<script src="https://www.google.com/jsapi"></script>
+<div class="hits-graph js-hits-graph"></div>
+<script>
+  var rawData = <%= raw_summary_array(@point_categories) %>;
+  GOVUK.Hits.plot(<%= colors(@point_categories) %>);
+</script>
+
 <% @sections.each do |category| %>
   <%= render partial: 'summary_section', locals: { category: category } %>
 <% end %>
