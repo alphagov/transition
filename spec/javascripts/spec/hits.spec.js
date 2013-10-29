@@ -7,7 +7,6 @@ describe('A hits module', function() {
   describe('when plotting a hits graph', function() {
 
     beforeEach(function() {
-
       container = $('<div class="js-hits-graph"></div>');
       $('body').append(container);
 
@@ -36,11 +35,10 @@ describe('A hits module', function() {
     describe('when the chart API has loaded', function() {
 
       var callbackFn,
-          chartFn;
+          chartFn,
+          literalDataTable = { fakeDataTable: true };
 
       beforeEach(function() {
-        window.rawData = [["Date", "Errors"], ["2012-10-17", 200], ["2012-10-18", 810]];
-
         chartFn = {draw: function() {}};
 
         spyOn(window.google, "setOnLoadCallback").and.callFake(function(callback) {
@@ -53,9 +51,9 @@ describe('A hits module', function() {
       it('passes the raw data in the page to a DataTable', function() {
         spyOn(window.google.visualization, "DataTable");
 
-        root.GOVUK.Hits.plot();
+        root.GOVUK.Hits.plot(literalDataTable);
         callbackFn();
-        expect(window.google.visualization.DataTable).toHaveBeenCalledWith(window.rawData);
+        expect(window.google.visualization.DataTable).toHaveBeenCalledWith(literalDataTable);
       });
 
       it('draws into the hits graph container', function() {
@@ -69,7 +67,7 @@ describe('A hits module', function() {
       it('sets trend colours to those passed in', function() {
         var colors = ['#999', '#000'];
 
-        root.GOVUK.Hits.plot(colors);
+        root.GOVUK.Hits.plot(literalDataTable, colors);
         spyOn(chartFn, 'draw');
         callbackFn();
 

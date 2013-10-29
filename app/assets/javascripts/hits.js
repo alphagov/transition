@@ -8,7 +8,7 @@
   }
 
   var Hits = {
-    plot: function(colors) {
+    plot: function(literalDataTable, colors) {
 
       var chartContainer = $('.js-hits-graph').get(0);
       window.google.load("visualization", "1", {packages:["corechart"]});
@@ -20,7 +20,7 @@
         // https://google-developers.appspot.com/chart/interactive/docs/gallery/linechart
         // https://developers.google.com/chart/interactive/docs/roles
 
-        var data = new window.google.visualization.DataTable(rawData),
+        var data = new window.google.visualization.DataTable(literalDataTable),
             chart = new window.google.visualization.LineChart(chartContainer),
             options = {
               chartArea: {

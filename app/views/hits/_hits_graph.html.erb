@@ -1,6 +1,5 @@
 <script src="https://www.google.com/jsapi"></script>
 <div class="hits-graph js-hits-graph"></div>
 <script>
-  var rawData = <%= google_data_table(point_categories) %>;
-  GOVUK.Hits.plot(<%= colors(point_categories) %>);
+  GOVUK.Hits.plot(<%= google_data_table(point_categories) %>, <%= colors(point_categories) %>);
 </script>
