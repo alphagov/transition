@@ -4,7 +4,7 @@
     <th class="status">HTTP<br/>Status</th>
     <th>Path</th>
     <th class="count">Count</th>
-    <th class="mapping"></th>
+    <th class="hit-to-mapping"></th>
   </tr>
   </thead>
   <tbody>
@@ -18,7 +18,7 @@
         <span class="path"><%= link_to_hit(hit) %></span>
       </td>
       <td class="count"><%= number_with_delimiter hit.count %></td>
-      <td class="mapping">
+      <td class="hit-to-mapping">
         <%= link_to find_site_mapping_path(@site, path: hit.path), class: 'btn btn-mini', title: 'Check mapping' do %>
           <i class="icon-edit"></i>
         <% end %>
