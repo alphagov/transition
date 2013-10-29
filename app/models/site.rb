@@ -23,7 +23,7 @@ class Site < ActiveRecord::Base
   def aggregated_redirects
     hits.aggregated_redirects
   end
-  
+
   def aggregated_other
     hits.aggregated_other
   end
