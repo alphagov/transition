@@ -65,14 +65,7 @@ Then(/^it should show only the top (\d+) (\w+) in descending count order$/) do |
 end
 
 Then(/^I should see a graph representing hits data over time$/) do
-  expect(page).to have_selector("svg")
-
-  result = page.evaluate_script('rawData')
-  expect(result).to eql([
-    ["Date",        "All hits", "Errors", "Archives", "Redirects"],
-    ["2012-10-17",  800,        200,      200,        200        ],
-    ["2012-10-18",  3240,       810,      810,        810        ]
-  ])
+  expect(page).to have_selector('svg')
 end
 
 Then(/^I should see a trend for all hits, errors, archives and redirects$/) do
@@ -131,9 +124,6 @@ Then(/^a[n]? (\w+) graph showing two dates and a (\w+) trend line$/) do |categor
   else
     color = "#aaaaaa"
   end
-
-  result = page.evaluate_script('rawData')
-  expect(result).to eql([["Date", category.titleize], ["2012-10-17", 200], ["2012-10-18", 810]])
 
   # Poltergeist doesnt correctly find content of SVG text elements
   # Use an SVG matcher instead of:

@@ -28,7 +28,9 @@ module Transition
 
       def insert_zero_hits(hits)
         compare_dates = lambda { |a,b| a.hit_on <=> b.hit_on }
-        max_date, min_date = hits.max(&compare_dates).hit_on, hits.min(&compare_dates).hit_on
+        max_date, min_date = hits.max(&compare_dates).try(:hit_on), hits.min(&compare_dates).try(:hit_on)
+
+        return [] if max_date.nil?
 
         date_hits = (min_date..max_date).inject({}) do |hash, date|
           hash[date] = nil

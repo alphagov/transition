@@ -15,7 +15,7 @@ describe('A hits module', function() {
         load: function() {},
         setOnLoadCallback: function() {},
         visualization: {
-          arrayToDataTable: function() {},
+          DataTable: function() {},
           LineChart: function() {}
         }
       }
@@ -50,12 +50,12 @@ describe('A hits module', function() {
         spyOn(window.google.visualization, "LineChart").and.returnValue(chartFn);
       });
 
-      it('parses the raw data provided by the page', function() {
-        spyOn(window.google.visualization, "arrayToDataTable");
+      it('passes the raw data in the page to a DataTable', function() {
+        spyOn(window.google.visualization, "DataTable");
 
         root.GOVUK.Hits.plot();
         callbackFn();
-        expect(window.google.visualization.arrayToDataTable).toHaveBeenCalledWith(window.rawData);
+        expect(window.google.visualization.DataTable).toHaveBeenCalledWith(window.rawData);
       });
 
       it('draws into the hits graph container', function() {
