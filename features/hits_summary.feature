@@ -93,3 +93,8 @@ Scenario: Hits exist and can be filtered by everything else
   And I click the link "Other"
   Then I should see all hits with an other status for the Attorney General's office in descending count order
   And an other graph showing two dates and a grey trend line
+
+Scenario: No hits exist for a category
+  Given no hits exist for the Attorney General's office site
+  When I click the link "Errors"
+  Then I should see "There are no errors for ago yet"

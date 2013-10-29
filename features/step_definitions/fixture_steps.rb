@@ -61,7 +61,7 @@ Given(/^some hits exist for the Cabinet Office site$/) do
 end
 
 Given(/^no hits exist for the Attorney General's office site$/) do
-  @site = create :site_with_default_host, abbr: 'ago'
+  @site ||= create(:site_with_default_host, abbr: 'ago')
   Hit.delete_all
 end
 

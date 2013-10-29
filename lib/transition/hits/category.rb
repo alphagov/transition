@@ -56,6 +56,10 @@ module Transition
       def title
         name == 'all' ? 'All hits' : name.capitalize
       end
+
+      def plural
+        name == 'all' ? 'hits' : name.pluralize
+      end
     end
   end
 end

@@ -15,6 +15,7 @@ describe Transition::Hits::Category do
       its(:title)  { should == 'All hits' }
       its(:to_sym) { should == :all }
       its(:color)  { should == '#333' }
+      its(:plural) { should == 'hits' }
     end
 
     describe 'indexing' do
@@ -23,6 +24,7 @@ describe Transition::Hits::Category do
       its(:title)  { should == 'Errors' }
       its(:to_sym) { should == :errors }
       its(:color)  { should == '#e99' }
+      its(:plural) { should == 'errors' }
 
       describe 'the polyfill of points when points= is called' do
         let(:errors) do
