@@ -1,7 +1,7 @@
 Feature: All traffic for site
   As a GDS transition manager/GDS performance analyst
   I want to see all hits to a site
-  So that I can see what to fix next
+  So that I can see what to fix next and can fix it
 
 Scenario: Hits exist and are ordered for a site
   Given I have logged in as a GDS user
@@ -31,3 +31,16 @@ Scenario: No hits exist
   And no hits exist for the Attorney General's office site
   When I visit the associated site's hits
   Then I should see "We don’t have any traffic data for ago yet."
+
+Scenario: Check mapping for a hit
+  Given I have logged in as a GDS user
+  And these hits exist for the Attorney General's office site:
+    | http_status | path | hit_on   | count |
+    | 301         | /    | 16/10/12 | 100   |
+    | 404         | /A   | 16/10/12 | 100   |
+    | 404         | /A   | 17/10/12 | 100   |
+  And no mapping exists for the top hit
+  And I am on the Attorney General's office site's hits page
+  When I click on the link to check the mapping for the top hit
+  Then I should be on the new mapping page
+  And the top hit's canonicalized path should already be in the form

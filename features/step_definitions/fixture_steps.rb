@@ -64,3 +64,7 @@ Given(/^no hits exist for the Attorney General's office site$/) do
   @site = create :site_with_default_host, abbr: 'ago'
   Hit.delete_all
 end
+
+Given(/^no mapping exists for the top hit$/) do
+  @site.mappings.delete_all
+end

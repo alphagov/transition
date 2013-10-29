@@ -222,3 +222,11 @@ Then(/^I should see all hits with long tail statuses for the Attorney General's 
     expect(page).to have_sorted_bar_rows(11).for_status(200)
   end
 end
+
+Then(/^I should be on the new mapping page$/) do
+  step 'I should see "New mapping"'
+end
+
+Then(/^the top hit's canonicalized path should already be in the form$/) do
+  expect(find_field('Path').value).to eql('/a')
+end

@@ -17,3 +17,7 @@ end
 When(/^I visit the associated site's hits$/) do
   visit site_hits_path(@site)
 end
+
+Given(/^I am on the Attorney General's office site's hits page$/) do
+  visit site_hits_path(@site)
+end
