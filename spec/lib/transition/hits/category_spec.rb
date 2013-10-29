@@ -18,11 +18,35 @@ describe Transition::Hits::Category do
     end
 
     describe 'indexing' do
-      subject { Transition::Hits::Category['errors'] }
+      subject(:errors_category) { Transition::Hits::Category['errors'] }
 
       its(:title)  { should == 'Errors' }
       its(:to_sym) { should == :errors }
       its(:color)  { should == '#e99' }
+
+      describe 'the polyfill of points when points= is called' do
+        let(:errors) do
+          [
+            build(:hit, hit_on: '2012-12-28', count: 1000, http_status: 404),
+            build(:hit, hit_on: '2012-12-31', count: 3, http_status: 404)
+          ]
+        end
+
+        before { errors_category.points = errors }
+
+        it { should have(4).points }
+
+        its(:'points.first') { should == errors.first }
+        its(:'points.last')  { should == errors.last }
+
+        describe 'the first inserted hit' do
+          subject { errors_category.points[1] }
+
+          its(:hit_on) { should eql(Date.new(2012,12,29)) }
+          its(:count)  { should eql(0) }
+        end
+      end
+
     end
   end
 end
