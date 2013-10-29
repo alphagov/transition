@@ -1,3 +1,5 @@
+require 'json'
+
 module HitsHelper
   def link_to_hit(hit)
     scheme_and_host = 'http://'+ hit.host.hostname
@@ -6,31 +8,46 @@ module HitsHelper
 
   ##
   # Given a list of #Transition::Hits::Category# with populated points,
-  # produce a raw JS-compatible array of the form:
+  # produces a Google data table JSON representation, as defined at:
   #
-  # e.g. raw_summary_array([Category.new('all'), Category.new('archives')])
-  # [
-  #   ["Date", "All hits", "Archives"]
-  #   ["2013-08-08", 121, 77]
-  #   ["2013-08-09", 343, 12]
-  # ]
-  def raw_summary_array(point_categories)
-    header = ['Date'].concat(point_categories.map(&:title))
+  # https://developers.google.com/chart/interactive/docs/dev/implementing_data_source?hl=pt-BR#jsondatatable
+  #
+  # Note: Google uses a custom JSON date format, a string in the form of:
+  # Date(year, month, day)
+  #
+  # eg google_data_table([Category.new('errors'), Category.new('archives')])
+  # {
+  #   cols: [{label: 'Date', type: 'date'},
+  #          {label: 'Errors', type: 'number'},
+  #          {label: 'Archive', type: 'number'}],
+  #   rows: [
+  #          {c:[{v: 'Date(2012, 12, 10)'}, {v: 10000, f:'10,000'}, {v: 20000, f:'20,000'}]},
+  #          {c:[{v: 'Date(2012, 12, 11)'}, {v: 1000,  f:'1,000'}, {v: 2000, f:'2,000'}]},
+  #         ]
+  # }
+  def google_data_table(categories)
 
-    [header].tap do |array|
-      dates = {}
+    dates = {}
+    cols = [{label: 'Date', type: 'date'}]
 
-      point_categories.each do |category|
-        category.points.each do |hit|
-          date = dates[hit.hit_on.strftime('%Y-%m-%d')] ||= {}
-          date[category.name] = hit.count
-        end
+    categories.each do |category|
+      cols << {label: category.title, type: 'number'}
+
+      category.points.each do |hit|
+        date = dates[hit.hit_on] || dates[hit.hit_on] = {}
+        date[category.name] = hit.count
       end
+    end
 
-      dates.each_pair do |date, category_counts|
-        array << [date, *point_categories.map {|c| category_counts[c.name] || 0}]
-      end
-    end.to_s.html_safe
+    rows = []
+    dates.each_pair do |date, category_counts|
+      rows << {c: [
+                {v: "Date(#{date.year}, #{date.month - 1}, #{date.day})"},
+                *categories.map {|c| {v: category_counts[c.name] || 0, f: number_with_delimiter(category_counts[c.name] || 0)}}
+              ]}
+    end
+
+    {cols: cols, rows: rows}.to_json.html_safe
   end
 
   def colors(point_categories)

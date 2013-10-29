@@ -66,14 +66,6 @@ describe('A hits module', function() {
         expect($(call.args[0]).is('.js-hits-graph')).toBe(true);
       });
 
-      it('generates an X axis title based on the date range', function() {
-        spyOn(chartFn, 'draw');
-        root.GOVUK.Hits.plot();
-        callbackFn();
-
-        expect(chartFn.draw.calls.mostRecent().args[1].hAxis.title).toBe("17 October 2012 to 18 October 2012");
-      });
-
       it('sets trend colours to those passed in', function() {
         var colors = ['#999', '#000'];
 

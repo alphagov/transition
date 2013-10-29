@@ -20,7 +20,7 @@
         // https://google-developers.appspot.com/chart/interactive/docs/gallery/linechart
         // https://developers.google.com/chart/interactive/docs/roles
 
-        var data = window.google.visualization.arrayToDataTable(rawData),
+        var data = new window.google.visualization.DataTable(rawData),
             chart = new window.google.visualization.LineChart(chartContainer),
             options = {
               chartArea: {
@@ -29,24 +29,12 @@
                 width: '80%',
                 height: '80%'
               },
-              hAxis: {
-                textPosition: 'none',
-                title: dateRangeString(rawData) // eg 1 June 2012 to 12 September 2013
-              },
               colors: colors,
               focusTarget: 'category' // Highlights all trends in a single tooltip, hovering
                                       // anywhere in the space above or below a point
             };
 
         chart.draw(data, options);
-      }
-
-      function dateRangeString(data) {
-
-        var startDate = data[1][0],
-            endDate = data[data.length - 1][0];
-
-        return moment(startDate).format("D MMMM YYYY") + ' to ' + moment(endDate).format("D MMMM YYYY");
       }
     }
   };
