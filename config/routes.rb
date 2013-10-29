@@ -7,6 +7,9 @@ Transition::Application.routes.draw do
   resources :sites, only: [] do
     resources :mappings, except: [:destroy] do
       resources :versions, only: [:index]
+      collection do
+        get 'find'
+      end
     end
 
     resources :hits, only: [:index] do
@@ -19,4 +22,6 @@ Transition::Application.routes.draw do
       end
     end
   end
+
+  match 'sites/:site_abbr/mappings/find' => 'mappings#find', as: 'find_site_mapping'
 end

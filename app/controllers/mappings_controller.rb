@@ -6,7 +6,7 @@ class MappingsController < ApplicationController
   end
 
   def new
-    @mapping = @site.mappings.build
+    @mapping = @site.mappings.build(path: params[:path])
   end
 
   def create
@@ -32,6 +32,23 @@ class MappingsController < ApplicationController
       redirect_to site_mappings_path(@site), notice: 'Mapping saved.'
     else
       render action: 'edit'
+    end
+  end
+
+  def find
+    path = @site.canonicalize_path(params[:path])
+
+    if path.empty?
+      back_or_mappings_index = request.env['HTTP_REFERER'] || site_mappings_path(@site)
+      notice = "It's not currently possible to edit homepage mappings."
+      return redirect_to back_or_mappings_index, notice: notice
+    end
+
+    mapping = @site.mappings.find_by_path(path)
+    if mapping.present?
+      redirect_to edit_site_mapping_path(@site, mapping)
+    else
+      redirect_to new_site_mapping_path(@site, path: path)
     end
   end
 end
