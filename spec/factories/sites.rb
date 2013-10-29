@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :site do
     abbr 'cic_regulator'
     homepage 'https://www.gov.uk/government/organisations/cic-regulator'
+    query_params ''
 
     association :organisation
 
