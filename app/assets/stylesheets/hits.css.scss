@@ -34,6 +34,11 @@
   @include box-sizing();
 }
 
+.mapping {
+  width: $gridColumnWidth;
+  @include box-sizing();
+}
+
 .path {
   word-wrap: break-word;
   position: relative;

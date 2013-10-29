@@ -149,6 +149,16 @@ Then(/^each path should be a link to the real URL$/) do
   end
 end
 
+Then(/^each hit should have a link to check its mapping$/) do
+  within '.hits tbody' do
+    page.all('tr').each do |row|
+      path = row.find(:css, '.path').text
+      mapping = row.find(:css, '.mapping')
+      expect(mapping).to have_link('', href: find_site_mapping_path(@site, path: path))
+    end
+  end
+end
+
 Then(/^I should see a section for the most common errors on the Attorney General's office$/) do
   expect(page).to have_selector('h2', text: 'Errors')
 end
