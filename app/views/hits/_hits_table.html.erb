@@ -19,7 +19,7 @@
       </td>
       <td class="count"><%= number_with_delimiter hit.count %></td>
       <td class="action">
-        <%= link_to 'Check mapping', find_site_mappings_path(@site, path: hit.path), class: 'btn btn-mini' %>
+        <%= link_to 'Check mapping', site_mapping_find_path(@site, path: hit.path), class: 'btn btn-mini' %>
       </td>
     </tr>
   <% end %>

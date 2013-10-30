@@ -154,7 +154,7 @@ Then(/^each hit should have a link to check its mapping$/) do
     page.all('tr').each do |row|
       path = row.find(:css, '.path').text
       mapping = row.find(:css, '.action')
-      expect(mapping).to have_link('', href: find_site_mappings_path(@site, path: path))
+      expect(mapping).to have_link('', href: site_mapping_find_path(@site, path: path))
     end
   end
 end
