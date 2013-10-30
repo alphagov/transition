@@ -19,30 +19,34 @@ describe Transition::Hits::Category do
     end
 
     describe 'indexing' do
-      subject(:errors_category) { Transition::Hits::Category['errors'] }
+      it 'errors on unrecognised categories' do
+        expect { Transition::Hits::Category['non-existent'] }.to raise_error(ArgumentError)
+      end
 
-      its(:title)  { should == 'Errors' }
-      its(:to_sym) { should == :errors }
-      its(:color)  { should == '#e99' }
-      its(:plural) { should == 'errors' }
+      subject(:others_category) { Transition::Hits::Category['other'] }
+
+      its(:title)  { should == 'Other' }
+      its(:to_sym) { should == :other }
+      its(:color)  { should == '#aaa' }
+      its(:plural) { should == 'others' }
 
       describe 'the polyfill of points when points= is called' do
-        let(:errors) do
+        let(:others) do
           [
-            build(:hit, hit_on: '2012-12-28', count: 1000, http_status: 404),
-            build(:hit, hit_on: '2012-12-31', count: 3, http_status: 404)
+            build(:hit, hit_on: '2012-12-28', count: 1000, http_status: 200),
+            build(:hit, hit_on: '2012-12-31', count: 3, http_status: 200)
           ]
         end
 
-        before { errors_category.points = errors }
+        before { others_category.points = others }
 
         it { should have(4).points }
 
-        its(:'points.first') { should == errors.first }
-        its(:'points.last')  { should == errors.last }
+        its(:'points.first') { should == others.first }
+        its(:'points.last')  { should == others.last }
 
         describe 'the first inserted hit' do
-          subject { errors_category.points[1] }
+          subject { others_category.points[1] }
 
           its(:hit_on) { should eql(Date.new(2012,12,29)) }
           its(:count)  { should eql(0) }

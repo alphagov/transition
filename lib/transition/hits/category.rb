@@ -19,7 +19,8 @@ module Transition
       end
 
       def self.[](name)
-        Category.new(name, COLORS[name])
+        color = COLORS[name] || (raise ArgumentError, "No Category found for '#{name}'")
+        Category.new(name, color)
       end
 
       def points=(hits)
