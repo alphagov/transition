@@ -40,7 +40,7 @@ class MappingsController < ApplicationController
 
     if path.empty?
       back_or_mappings_index = request.env['HTTP_REFERER'] || site_mappings_path(@site)
-      notice = "It's not currently possible to edit homepage mappings."
+      notice = "It's not currently possible to edit the mapping for a site's homepage."
       return redirect_to back_or_mappings_index, notice: notice
     end
 
