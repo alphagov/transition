@@ -4,7 +4,7 @@ describe Transition::Hits::Category do
   describe '.all' do
     subject(:all_categories) { Transition::Hits::Category.all }
 
-    it { should be_an(Array)}
+    it { should be_an(Array) }
     it { should have(5).categories }
 
     describe 'the first' do
@@ -31,25 +31,40 @@ describe Transition::Hits::Category do
       its(:plural) { should == 'others' }
 
       describe 'the polyfill of points when points= is called' do
-        let(:others) do
-          [
-            build(:hit, hit_on: '2012-12-28', count: 1000, http_status: 200),
-            build(:hit, hit_on: '2012-12-31', count: 3, http_status: 200)
-          ]
+        context 'valid data' do
+          let(:others) do
+            [
+              build(:hit, hit_on: '2012-12-28', count: 1000, http_status: 200),
+              build(:hit, hit_on: '2012-12-31', count: 3, http_status: 200)
+            ]
+          end
+
+          before { others_category.points = others }
+
+          it { should have(4).points }
+
+          its(:'points.first') { should == others.first }
+          its(:'points.last')  { should == others.last }
+
+          describe 'the first inserted hit' do
+            subject { others_category.points[1] }
+
+            its(:hit_on) { should eql(Date.new(2012, 12, 29)) }
+            its(:count) { should eql(0) }
+          end
         end
 
-        before { others_category.points = others }
+        context 'invalid data - more than one row per date' do
+          let(:others) do
+            [
+              build(:hit, hit_on: '2012-12-28', count: 1000, http_status: 200),
+              build(:hit, hit_on: '2012-12-28', count: 3, http_status: 200)
+            ]
+          end
 
-        it { should have(4).points }
-
-        its(:'points.first') { should == others.first }
-        its(:'points.last')  { should == others.last }
-
-        describe 'the first inserted hit' do
-          subject { others_category.points[1] }
-
-          its(:hit_on) { should eql(Date.new(2012,12,29)) }
-          its(:count)  { should eql(0) }
+          it 'raises an error' do
+            expect { others_category.points = others }.to raise_error(ArgumentError)
+          end
         end
       end
 

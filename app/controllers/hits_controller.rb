@@ -26,7 +26,7 @@ class HitsController < ApplicationController
     # Category - one of %w(archives redirect errors other) (see routes.rb)
     @category = Transition::Hits::Category[params[:category]].tap do |c|
       c.hits   = grouped.by_path_and_status.send(c.to_sym).page(params[:page]).order('count DESC')
-      c.points = grouped.by_date_and_status.send(c.to_sym)
+      c.points = params[:category] == 'other' ? grouped.by_date.other : grouped.by_date_and_status.send(c.to_sym)
     end
   end
 

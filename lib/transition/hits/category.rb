@@ -27,6 +27,10 @@ module Transition
         @points = insert_zero_hits(hits)
       end
 
+      ##
+      # Pad points with zero-count days to stop charts generating misleading slopes.
+      # Requires at most one hit row per day as input - if this assumption is violated,
+      # data would be lost and the graph would mislead, so we check for it.
       def insert_zero_hits(hits)
         compare_dates = lambda { |a,b| a.hit_on <=> b.hit_on }
         max_date, min_date = hits.max(&compare_dates).try(:hit_on), hits.min(&compare_dates).try(:hit_on)
@@ -38,7 +42,10 @@ module Transition
           hash
         end
 
-        hits.each { |hit| date_hits[hit.hit_on] = hit }
+        hits.each do |hit|
+          raise ArgumentError, "expects one hit row per day, first duplicate at #{hit.hit_on}" if date_hits[hit.hit_on]
+          date_hits[hit.hit_on] = hit
+        end
 
         date_hits.keys.each do |date|
           date_hits[date] ||= Hit.new do |h|
