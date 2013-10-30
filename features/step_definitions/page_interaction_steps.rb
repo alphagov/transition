@@ -49,5 +49,5 @@ When(/^I make the mapping a redirect from (.*) to (.*)$/) do |path, new_url|
 end
 
 When(/^I click on the link to check the mapping for the top hit/) do
-  click_link '', href: find_site_mapping_path(@site, path: '/A')
+  click_link '', href: find_site_mappings_path(@site, path: '/A')
 end

@@ -22,6 +22,4 @@ Transition::Application.routes.draw do
       end
     end
   end
-
-  match 'sites/:site_abbr/mappings/find' => 'mappings#find', via: :get, as: 'find_site_mapping'
 end
