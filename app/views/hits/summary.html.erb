@@ -5,6 +5,10 @@
 
 <%= render partial: 'hits_tabs', locals: { active: 'Summary' } %>
 
-<% @sections.each_pair do |status_class, hits| %>
-  <%= render partial: 'summary_section', locals: { status_class: status_class, hits: hits } %>
+<% if any_hits_for?(@point_categories) %>
+  <%= render partial: 'hits_graph', locals: { point_categories: @point_categories } %>
+<% end %>
+
+<% @sections.each do |category| %>
+  <%= render partial: 'summary_section', locals: { category: category } %>
 <% end %>

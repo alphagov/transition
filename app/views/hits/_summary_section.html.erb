@@ -1,10 +1,10 @@
-<section class="hits-<%= status_class %>">
-  <h2><%= status_class.titleize %></h2>
-  <% if hits.any? %>
-    <%= render partial: 'hits_table', locals: { hits: hits} %>
+<section class="hits-<%= category.name %>">
+  <h2><%= category.title %></h2>
+  <% if category.hits.any? %>
+    <%= render partial: 'hits_table', locals: { hits: category.hits} %>
   <% else %>
     <p class="no-content no-content-bordered">
-      There are no known <%= status_class.pluralize %> for <%= @site.abbr %> yet.
+      There are no known <%= category.name.pluralize %> for <%= @site.abbr %> yet.
     </p>
   <% end %>
 </section>

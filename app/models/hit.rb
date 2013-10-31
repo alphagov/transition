@@ -17,29 +17,19 @@ class Hit < ActiveRecord::Base
   before_validation :normalize_hit_on
   validates :path_hash, presence: true
 
-  def self.aggregated
-    scoped.select('hits.path, sum(hits.count) as count, hits.http_status, hits.host_id').group(:path_hash, :http_status)
-  end
+  scope :grouped, -> {
+    select('hits.path, hits.hit_on, sum(hits.count) as count, hits.http_status, hits.host_id')
+  }
 
-  def self.aggregated_errors
-    self.aggregated.where(http_status: 404)
-  end
+  scope :by_path_and_status, -> { group(:path_hash, :http_status) }
+  scope :by_date,            -> { group(:hit_on) }
+  scope :by_date_and_status, -> { group(:hit_on, :http_status) }
 
-  def self.aggregated_archives
-    self.aggregated.where(http_status: 410)
-  end
-
-  def self.aggregated_redirects
-    self.aggregated.where(http_status: 301)
-  end
-
-  def self.aggregated_other
-    self.aggregated.where('http_status NOT IN (?)', [404, 410, 301])
-  end
-
-  def self.top_ten
-    order('count DESC').limit(10)
-  end
+  scope :errors,     -> { where(http_status: 404) }
+  scope :archives,   -> { where(http_status: 410) }
+  scope :redirects,  -> { where(http_status: 301) }
+  scope :other,      -> { where('http_status NOT IN (?)', [404, 410, 301]) }
+  scope :top_ten,    -> { order('count DESC').limit(10) }
 
   protected
   def set_path_hash

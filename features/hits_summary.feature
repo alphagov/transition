@@ -3,7 +3,7 @@ Feature: Summary traffic for site
   I want to see a summary of traffic to a site
   So that I can more easily decide what to fix next based on performance
 
-Background:
+Background: I start at the summary page
   Given I have logged in as a GDS user
   And these hits exist for the Attorney General's office site:
     | http_status | path | hit_on   | count |
@@ -55,27 +55,58 @@ Background:
   And I click the link "Hits Summary"
 
 Scenario: Hits exist and are summarised for a site
-  Then I should see a section for the most common errors on the Attorney General's office
-  And it should show only the top ten errors in descending count order
+  Then I should see a section for the most common errors
+  And it should show only the top 10 errors in descending count order
   And I should see a section for the most common archives
-  And it should show only the top ten archives in descending count order
+  And it should show only the top 10 archives in descending count order
   And I should see a section for the most common redirects
-  And it should show only the top ten redirects in descending count order
+  And it should show only the top 10 redirects in descending count order
   And I should see a section for the other hits, the most common miscellany
-  And it should show only the top ten other hits in descending count order
+  And it should show only the top 10 other in descending count order
 
+@javascript
+Scenario: Hits are viewable over time
+  Then I should see a graph representing hits data over time
+  And I should see a trend for all hits, errors, archives and redirects
+
+@javascript
 Scenario: Hits exist and can be filtered by error
-  And I click the link "Errors"
+  When I click the link "Errors"
   Then I should see all hits with an error status for the Attorney General's office in descending count order
+  And an errors graph showing two dates and a red trend line
 
+@javascript
 Scenario: Hits exist and can be filtered by archives
-  And I click the link "Archives"
+  When I click the link "Archives"
   Then I should see all hits with an archive status for the Attorney General's office in descending count order
+  And an archives graph showing two dates and a grey trend line
 
+@javascript
 Scenario: Hits exist and can be filtered by redirects
-  And I click the link "Redirects"
+  When I click the link "Redirects"
   Then I should see all hits with a redirect status for the Attorney General's office in descending count order
+  And a redirects graph showing two dates and a green trend line
 
+@javascript
 Scenario: Hits exist and can be filtered by everything else
-  And I click the link "Other"
-  Then I should see all hits with long tail statuses for the Attorney General's office in descending count order
+  When I click the link "Other"
+  Then I should see all hits with an other status for the Attorney General's office in descending count order
+  And an other graph showing two dates and a grey trend line
+
+@javascript
+Scenario: There are multiple pages for a category
+  Given the hits page size is 11
+  And there are at least two pages of error hits
+  When I click the link "Errors"
+  And I go to page 2
+  Then I should not see a graph
+
+@javascript
+Scenario: No hits exist for a category
+  Given no hits exist for the Attorney General's office site
+  When I visit the associated organisation
+  And I click the link "Hits Summary"
+  Then I should not see a graph
+  When I click the link "Errors"
+  Then I should see "There are no errors for ago yet"
+  And I should not see a graph
