@@ -4,6 +4,10 @@ module HitsHelper
     link_to hit.path, scheme_and_host + hit.path
   end
 
+  def any_hits_for?(points_categories)
+    points_categories.find { |c| c.points && !c.points.empty? }
+  end
+
   ##
   # Given a list of #Transition::Hits::Category# with populated points,
   # produces a Google data table JSON representation, as defined at:

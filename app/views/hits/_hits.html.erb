@@ -5,12 +5,16 @@
 
 <%= render partial: 'hits_tabs', locals: { active: active } %>
 
-<%= render partial: 'hits_graph', locals: { point_categories: [@category] } %>
+<% # You might be wondering why we don't use hits.any? here.
+   # That's because it costs an (expensive) DB call and we need the count later
+   if hits.total_count > 0 %>
+  <%= render partial: 'hits_graph', locals: { point_categories: [@category] } %>
+<% end %>
 
 <h2><%= pluralize(number_with_delimiter(hits.total_count, :delimiter => ','), 'path', 'paths') %></h2>
 <%= paginate hits %>
 
-<% if hits.total_count > 0 # already eval'd above, saves a DB call with #any? %>
+<% if hits.total_count > 0 %>
   <%= render partial: 'hits_table', locals: { hits: hits } %>
 <% else %>
   <p class="no-content no-content-bordered">

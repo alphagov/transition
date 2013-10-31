@@ -6,6 +6,24 @@ describe HitsHelper do
     specify { helper.link_to_hit(hit).should =~ %r(<a href="http://.*example\.gov\.uk/article/123">/article/123</a>) }
   end
 
+  describe '#any_hits_for' do
+    let(:all_cats)  { Transition::Hits::Category.all }
+    let(:some_hits) { all_cats.map { |cat| cat.tap {|c| c.points = [build(:hit)] } } }
+    let(:no_hits)   { all_cats.map { |cat| cat.tap {|c| c.points = [           ] } } }
+
+    context 'there are hits' do
+      it 'is true' do
+        helper.any_hits_for?(some_hits).should be_true
+      end
+    end
+
+    context 'there are no hits' do
+      it 'is false' do
+        helper.any_hits_for?(no_hits).should be_false
+      end
+    end
+  end
+
   describe '#google_data_table' do
     let(:archives) { [
       build(:hit, hit_on: '2012-12-31', count: 3, http_status: 410),

@@ -49,11 +49,11 @@ end
 Then(/^it should show only the top (\d+) (\w+) in descending count order$/) do |count, category|
 
   case category
-  when "errors"
+  when 'errors'
     status = 404
-  when "archives"
+  when 'archives'
     status = 410
-  when "redirects"
+  when 'redirects'
     status = 301
   else
     status = 200
@@ -65,7 +65,11 @@ Then(/^it should show only the top (\d+) (\w+) in descending count order$/) do |
 end
 
 Then(/^I should see a graph representing hits data over time$/) do
-  expect(page).to have_selector('svg')
+  expect(page).to have_selector('.hits-graph svg')
+end
+
+Then(/^I should not see a graph$/) do
+  expect(page).not_to have_selector('.hits-graph svg')
 end
 
 Then(/^I should see a trend for all hits, errors, archives and redirects$/) do
@@ -81,11 +85,11 @@ end
 Then(/^I should see all hits with a[n]? (\w+) status for the Attorney General's office in descending count order$/) do |category|
 
   case category
-  when "error"
+  when 'error'
     status = 404
-  when "archive"
+  when 'archive'
     status = 410
-  when "redirect"
+  when 'redirect'
     status = 301
   else
     status = 200
@@ -117,12 +121,12 @@ end
 Then(/^a[n]? (\w+) graph showing two dates and a (\w+) trend line$/) do |category, color|
 
   case color
-  when "red"
-    color = "#ee9999"
-  when "green"
-    color = "#99ee99"
+  when 'red'
+    color = '#ee9999'
+  when 'green'
+    color = '#99ee99'
   else
-    color = "#aaaaaa"
+    color = '#aaaaaa'
   end
 
   # Poltergeist doesnt correctly find content of SVG text elements
