@@ -84,8 +84,8 @@ GEM
       null_logger
       plek
       rest-client (~> 1.6.3)
-    gds-sso (3.0.0)
-      omniauth-gds (= 0.0.3)
+    gds-sso (5.0.0)
+      omniauth-gds (>= 1.0.0)
       rack-accept (~> 0.4.4)
       rails (>= 3.0.0)
       warden (~> 1.2)
@@ -101,7 +101,7 @@ GEM
       multi_json (>= 1.0.0)
       signet (~> 0.4.5)
       uuidtools (>= 2.1.0)
-    hashie (2.0.3)
+    hashie (2.0.5)
     hike (1.2.3)
     htmlentities (4.3.1)
     httpauth (0.2.0)
@@ -148,7 +148,7 @@ GEM
     omniauth (1.1.4)
       hashie (>= 1.2, < 3)
       rack
-    omniauth-gds (0.0.3)
+    omniauth-gds (1.0.0)
       omniauth-oauth2 (~> 1.0)
     omniauth-oauth2 (1.1.1)
       oauth2 (~> 0.8.0)
@@ -240,7 +240,7 @@ GEM
       rack
       raindrops (~> 0.7)
     uuidtools (2.1.4)
-    warden (1.2.1)
+    warden (1.2.3)
       rack (>= 1.0)
     webmock (1.11.0)
       addressable (>= 2.2.7)
@@ -263,7 +263,7 @@ DEPENDENCIES
   exception_notification (= 2.6.1)
   factory_girl_rails (= 4.1.0)
   gds-api-adapters (= 7.14.0)
-  gds-sso (= 3.0.0)
+  gds-sso (= 5.0.0)
   google-api-client (= 0.6.4)
   htmlentities (= 4.3.1)
   jasmine (= 2.0.0.rc3)
