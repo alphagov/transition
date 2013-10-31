@@ -4,7 +4,9 @@ module Transition
   module Import
     class WhitehallOrgs
       ##
-      # Place to put complete cached copy of orgs API
+      # Place to put complete cached copy of orgs API.
+      # Cache expires when the date changes, so could be valid
+      # for up to 24 hours.
       def cached_org_path
         "/tmp/all_whitehall_orgs-#{DateTime.now.strftime('%Y-%m-%d')}.yaml"
       end
