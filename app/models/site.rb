@@ -23,7 +23,7 @@ class Site < ActiveRecord::Base
   def aggregated_redirects
     hits.aggregated_redirects
   end
-  
+
   def aggregated_other
     hits.aggregated_other
   end
@@ -34,5 +34,14 @@ class Site < ActiveRecord::Base
 
   def default_host
     hosts.first
+  end
+
+  def canonicalize_path(raw_path)
+    # BLURI takes a full URL, but we only care about the path. There's no
+    # benefit in making an extra query to get a real hostname for the site.
+    raw_url = 'http://www.example.com' + raw_path
+    bluri = BLURI(raw_url).canonicalize!(allow_query: query_params.split(":"))
+    path = bluri.path
+    bluri.query ? (path + '?' + bluri.query) : path
   end
 end

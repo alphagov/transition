@@ -36,4 +36,56 @@ describe MappingsController do
       its(:user_id)   { should eql(user.id) }
     end
   end
+
+  describe '#find' do
+    let(:site) { FactoryGirl.create(:site) }
+    raw_path = '/ABOUT/'
+    canonicalized_path = '/about'
+
+    before do
+      login_as_stub_user
+    end
+
+    context 'when no mapping exists yet for the canonicalized path' do
+      it 'redirects to the new mapping form' do
+        get :find, site_id: site.abbr, path: raw_path
+
+        expect(response).to redirect_to new_site_mapping_path(site, path: canonicalized_path)
+      end
+    end
+
+    context 'when a mapping exists for the canonicalized path' do
+      it 'redirects to the edit mapping form' do
+        mapping = FactoryGirl.create(:mapping, site: site, path: canonicalized_path)
+
+        get :find, site_id: site.abbr, path: raw_path
+
+        expect(response).to redirect_to edit_site_mapping_path(site, mapping)
+      end
+    end
+
+    context 'when the path canonicalizes to a homepage' do
+      invalid_path = '//'
+
+      context 'when there is a previous page to go back to' do
+        it 'redirects back to the previous page' do
+          request.env['HTTP_REFERER'] = site_hits_url(site)
+
+          get :find, site_id: site.abbr, path: invalid_path
+
+          expect(response).to redirect_to site_hits_url(site)
+        end
+      end
+
+      context 'when no previous page is available' do
+        it 'redirects to site mappings index' do
+          request.env['HTTP_REFERER'] = nil
+
+          get :find, site_id: site.abbr, path: invalid_path
+
+          expect(response).to redirect_to site_mappings_url(site)
+        end
+      end
+    end
+  end
 end

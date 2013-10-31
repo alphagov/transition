@@ -34,6 +34,11 @@
   @include box-sizing();
 }
 
+.action {
+  width: 110px;
+  @include box-sizing();
+}
+
 .path {
   word-wrap: break-word;
   position: relative;

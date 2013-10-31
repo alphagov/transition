@@ -149,6 +149,16 @@ Then(/^each path should be a link to the real URL$/) do
   end
 end
 
+Then(/^each hit should have a link to check its mapping$/) do
+  within '.hits tbody' do
+    page.all('tr').each do |row|
+      path = row.find(:css, '.path').text
+      mapping = row.find(:css, '.action')
+      expect(mapping).to have_link('', href: site_mapping_find_path(@site, path: path))
+    end
+  end
+end
+
 Then(/^I should see a section for the most common errors on the Attorney General's office$/) do
   expect(page).to have_selector('h2', text: 'Errors')
 end
@@ -211,4 +221,12 @@ Then(/^I should see all hits with long tail statuses for the Attorney General's 
   within '.hits' do
     expect(page).to have_sorted_bar_rows(11).for_status(200)
   end
+end
+
+Then(/^I should be on the new mapping page$/) do
+  step 'I should see "New mapping"'
+end
+
+Then(/^the top hit's canonicalized path should already be in the form$/) do
+  expect(find_field('Path').value).to eql('/a')
 end
