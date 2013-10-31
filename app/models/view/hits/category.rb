@@ -1,5 +1,7 @@
-module Transition
+module View
   module Hits
+    ##
+    # The categories for hits
     class Category < Struct.new(:name, :color)
       attr_reader   :points
       attr_accessor :hits

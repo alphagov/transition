@@ -29,6 +29,7 @@ end
 group :test do
   gem 'poltergeist'
   gem 'launchy'                             # Primarily for save_and_open_page support in Capybara
+  gem 'timecop'
   gem 'cucumber-rails', require: false
   gem 'capybara', '2.1.0', require: false
   gem 'factory_girl_rails', '4.1.0'

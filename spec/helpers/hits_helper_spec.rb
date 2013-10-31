@@ -7,7 +7,7 @@ describe HitsHelper do
   end
 
   describe '#any_hits_for' do
-    let(:all_cats)  { Transition::Hits::Category.all }
+    let(:all_cats)  { View::Hits::Category.all }
     let(:some_hits) { all_cats.map { |cat| cat.tap {|c| c.points = [build(:hit)] } } }
     let(:no_hits)   { all_cats.map { |cat| cat.tap {|c| c.points = [           ] } } }
 
@@ -41,9 +41,9 @@ describe HitsHelper do
 
     let(:categories) {
       [
-        Transition::Hits::Category['archives'].tap { |c| c.points = archives },
-        Transition::Hits::Category['errors'].tap { |c| c.points = errors },
-        Transition::Hits::Category['redirects'].tap { |c| c.points = redirects }
+        View::Hits::Category['archives'].tap { |c| c.points = archives },
+        View::Hits::Category['errors'].tap { |c| c.points = errors },
+        View::Hits::Category['redirects'].tap { |c| c.points = redirects }
       ]
     }
 
