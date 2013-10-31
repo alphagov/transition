@@ -153,7 +153,7 @@ Then(/^each hit should have a link to check its mapping$/) do
   within '.hits tbody' do
     page.all('tr').each do |row|
       path = row.find(:css, '.path').text
-      mapping = row.find(:css, '.hit-to-mapping')
+      mapping = row.find(:css, '.action')
       expect(mapping).to have_link('', href: find_site_mappings_path(@site, path: path))
     end
   end
