@@ -1,3 +1,4 @@
+@javascript
 Feature: Summary traffic for site
   As a GDS transition manager/GDS performance analyst
   I want to see a summary of traffic to a site
@@ -64,36 +65,30 @@ Scenario: Hits exist and are summarised for a site
   And I should see a section for the other hits, the most common miscellany
   And it should show only the top 10 other in descending count order
 
-@javascript
 Scenario: Hits are viewable over time
   Then I should see a graph representing hits data over time
   And I should see a trend for all hits, errors, archives and redirects
 
-@javascript
 Scenario: Hits exist and can be filtered by error
   When I click the link "Errors"
   Then I should see all hits with an error status for the Attorney General's office in descending count order
   And an errors graph showing two dates and a red trend line
 
-@javascript
 Scenario: Hits exist and can be filtered by archives
   When I click the link "Archives"
   Then I should see all hits with an archive status for the Attorney General's office in descending count order
   And an archives graph showing two dates and a grey trend line
 
-@javascript
 Scenario: Hits exist and can be filtered by redirects
   When I click the link "Redirects"
   Then I should see all hits with a redirect status for the Attorney General's office in descending count order
   And a redirects graph showing two dates and a green trend line
 
-@javascript
 Scenario: Hits exist and can be filtered by everything else
   When I click the link "Other"
   Then I should see all hits with an other status for the Attorney General's office in descending count order
   And an other graph showing two dates and a grey trend line
 
-@javascript
 Scenario: There are multiple pages for a category
   Given the hits page size is 11
   And there are at least two pages of error hits
@@ -101,7 +96,6 @@ Scenario: There are multiple pages for a category
   And I go to page 2
   Then I should not see a graph
 
-@javascript
 Scenario: No hits exist for a category
   Given no hits exist for the Attorney General's office site
   When I visit the associated organisation
