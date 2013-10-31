@@ -68,3 +68,14 @@ end
 Given(/^no mapping exists for the top hit$/) do
   @site.mappings.delete_all
 end
+
+Given(/^there are at least two pages of error hits$/) do
+  hits_count = @site.default_host.hits.errors.count
+  page_size = Hit.default_per_page
+
+  ((page_size + 1) - hits_count).times do
+    create :hit, host: @site.default_host,
+                 http_status: '404',
+                 count: 1
+  end
+end

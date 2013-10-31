@@ -3,7 +3,7 @@ Feature: Summary traffic for site
   I want to see a summary of traffic to a site
   So that I can more easily decide what to fix next based on performance
 
-Background:
+Background: I start at the summary page
   Given I have logged in as a GDS user
   And these hits exist for the Attorney General's office site:
     | http_status | path | hit_on   | count |
@@ -71,28 +71,36 @@ Scenario: Hits are viewable over time
 
 @javascript
 Scenario: Hits exist and can be filtered by error
-  And I click the link "Errors"
+  When I click the link "Errors"
   And I wait until a graph is visible
   Then I should see all hits with an error status for the Attorney General's office in descending count order
   And an errors graph showing two dates and a red trend line
 
 @javascript
 Scenario: Hits exist and can be filtered by archives
-  And I click the link "Archives"
+  When I click the link "Archives"
   Then I should see all hits with an archive status for the Attorney General's office in descending count order
   And an archives graph showing two dates and a grey trend line
 
 @javascript
 Scenario: Hits exist and can be filtered by redirects
-  And I click the link "Redirects"
+  When I click the link "Redirects"
   Then I should see all hits with a redirect status for the Attorney General's office in descending count order
   And a redirects graph showing two dates and a green trend line
 
 @javascript
 Scenario: Hits exist and can be filtered by everything else
-  And I click the link "Other"
+  When I click the link "Other"
   Then I should see all hits with an other status for the Attorney General's office in descending count order
   And an other graph showing two dates and a grey trend line
+
+@javascript
+Scenario: There are multiple pages for a category
+  Given the hits page size is 11
+  And there are at least two pages of error hits
+  When I click the link "Errors"
+  And I go to page 2
+  Then I should not see a graph
 
 @javascript
 Scenario: No hits exist for a category
