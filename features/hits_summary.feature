@@ -72,7 +72,6 @@ Scenario: Hits are viewable over time
 @javascript
 Scenario: Hits exist and can be filtered by error
   When I click the link "Errors"
-  And I wait until a graph is visible
   Then I should see all hits with an error status for the Attorney General's office in descending count order
   And an errors graph showing two dates and a red trend line
 
