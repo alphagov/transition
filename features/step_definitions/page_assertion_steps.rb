@@ -14,10 +14,6 @@ end
 
 # Links
 
-Then(/^I should see a link to the URL (.*)$/) do |href|
-  expect(page).to have_link('', href: href)
-end
-
 Then(/^I should see a link to "([^"]*)"$/) do |title|
   expect(page).to have_link(title)
 end
