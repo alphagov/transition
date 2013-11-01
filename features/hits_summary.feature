@@ -6,6 +6,7 @@ Feature: Summary traffic for site
 
 Background: I start at the summary page
   Given I have logged in as a GDS user
+  And the date is 19/10/12
   And these hits exist for the Attorney General's office site:
     | http_status | path | hit_on   | count |
     | 301         | /    | 17/10/12 | 100   |
@@ -69,25 +70,34 @@ Scenario: Hits are viewable over time
   Then I should see a graph representing hits data over time
   And I should see a trend for all hits, errors, archives and redirects
 
-Scenario: Hits exist and can be filtered by error
+Scenario: Hits exist and can be filtered by error and time period "Yesterday"
   When I click the link "Errors"
   Then I should see all hits with an error status for the Attorney General's office in descending count order
-  And an errors graph showing two dates and a red trend line
+  And I should see an errors graph showing a red trend line
+  When I filter by the date period "Yesterday"
+  Then I should see only yesterday's errors in descending count order
+  And I should not see a graph
+  And the period "Yesterday" should be selected
 
-Scenario: Hits exist and can be filtered by archives
+Scenario: Hits exist and can be filtered by archives and time period "Last seven days"
   When I click the link "Archives"
   Then I should see all hits with an archive status for the Attorney General's office in descending count order
-  And an archives graph showing two dates and a grey trend line
+  When I filter by the date period "Last seven days"
+  Then I should see an archives graph showing a grey trend line with 2 points
+  And the period "Last seven days" should be selected
 
-Scenario: Hits exist and can be filtered by redirects
+Scenario: Hits exist and can be filtered by redirects and time period "Last 30 days"
   When I click the link "Redirects"
   Then I should see all hits with a redirect status for the Attorney General's office in descending count order
-  And a redirects graph showing two dates and a green trend line
+  And I should see a redirects graph showing a green trend line
+  When I filter by the date period "Last 30 days"
+  Then I should see an redirects graph showing a green trend line with 2 points
+  And the period "Last 30 days" should be selected
 
-Scenario: Hits exist and can be filtered by everything else
+Scenario: Hits exist and can be filtered by other statuses
   When I click the link "Other"
   Then I should see all hits with an other status for the Attorney General's office in descending count order
-  And an other graph showing two dates and a grey trend line
+  And I should see an other graph showing a grey trend line
 
 Scenario: There are multiple pages for a category
   Given the hits page size is 11
