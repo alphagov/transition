@@ -17,12 +17,13 @@ describe View::Hits::TimePeriod do
       its(:query_slug) { should == 'yesterday' }
     end
 
-    describe 'the default' do
+    describe 'the default, all-time' do
       subject { View::Hits::TimePeriod.default }
 
-      its(:title)      { should eql('All time') }
-      its(:slug)       { should eql('all-time') }
+      its(:title)      { should == 'All time' }
+      its(:slug)       { should == 'all-time' }
       its(:query_slug) { should be_nil }
+      its(:no_content) { should == 'yet' }
     end
 
     describe 'indexing on slug' do
@@ -37,6 +38,7 @@ describe View::Hits::TimePeriod do
         its(:range)      { should == (30.days.ago.to_date..Date.today) }
         its(:start_date) { should == 30.days.ago.to_date }
         its(:end_date)   { should == Date.today }
+        its(:no_content) { should == 'in this time period' }
 
         it 'calculates dates correctly even if, say, the server has been up a few decades' do
           Timecop.freeze(Date.new(2112, 10, 31)) do

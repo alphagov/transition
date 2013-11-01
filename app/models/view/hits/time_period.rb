@@ -49,6 +49,10 @@ module View
       def end_date
         range.max
       end
+
+      def no_content
+        slug == 'all-time' ? 'yet' : 'in this time period'
+      end
     end
   end
 end

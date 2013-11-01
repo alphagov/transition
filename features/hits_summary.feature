@@ -114,3 +114,5 @@ Scenario: No hits exist for a category
   When I click the link "Errors"
   Then I should see "There are no errors for ago yet"
   And I should not see a graph
+  When I filter by the date period "Last seven days"
+  Then I should see "There are no errors for ago in this time period"
