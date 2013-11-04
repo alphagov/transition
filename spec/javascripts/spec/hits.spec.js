@@ -14,6 +14,9 @@ describe('A hits module', function() {
         load: function() {},
         setOnLoadCallback: function() {},
         visualization: {
+          events: {
+            addListener: function() {}
+          },
           DataTable: function() {},
           LineChart: function() {}
         }

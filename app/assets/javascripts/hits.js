@@ -20,15 +20,21 @@
       window.google.setOnLoadCallback(drawChart);
 
       function drawChart() {
+        function onDateSelected() {
+          var date      = dataTable.getValue(chart.getSelection()[0].row, 0);
+          var formatter = new google.visualization.DateFormat({pattern: 'yyyyMMdd'});
+
+          window.location = window.location.pathname + "?period=" + formatter.formatValue(date);
+        }
 
         // Documentation
         // https://google-developers.appspot.com/chart/interactive/docs/gallery/linechart
         // https://developers.google.com/chart/interactive/docs/roles
 
         Hits.lastDataTable(literalDataTable);
-        var data = new window.google.visualization.DataTable(literalDataTable),
-            chart = new window.google.visualization.LineChart(chartContainer),
-            options = {
+        var dataTable = new window.google.visualization.DataTable(literalDataTable),
+            chart     = new window.google.visualization.LineChart(chartContainer),
+            options   = {
               chartArea: {
                 left: 60,
                 top: 20,
@@ -39,8 +45,9 @@
               focusTarget: 'category' // Highlights all trends in a single tooltip, hovering
                                       // anywhere in the space above or below a point
             };
+        google.visualization.events.addListener(chart, 'select', onDateSelected);
 
-        chart.draw(data, options);
+        chart.draw(dataTable, options);
       }
     }
   };
