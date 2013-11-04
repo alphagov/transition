@@ -56,6 +56,7 @@ describe View::Hits::TimePeriod do
           its(:range)      { should == (Date.new(2013, 10, 1)..Date.new(2013, 10, 31)) }
           its(:title)      { should == '1 Oct 2013 - 31 Oct 2013' }
           its(:slug)       { should == '20131001-20131031' }
+          its(:no_content) { should == 'in this time period' }
         end
 
         context 'A valid single date' do
@@ -66,6 +67,7 @@ describe View::Hits::TimePeriod do
           its(:range)      { should == (Date.new(2013, 10, 1)..Date.new(2013, 10, 1)) }
           its(:title)      { should == '1 Oct 2013' }
           its(:slug)       { should == '20131001' }
+          its(:no_content) { should == 'in this time period' }
         end
 
         context 'Invalid periods' do
