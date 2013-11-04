@@ -2,10 +2,21 @@ module View
   module Hits
     ##
     # The fixed time periods available to view
-    class TimePeriod < Struct.new(:title, :range_proc)
+    class TimePeriod
+      attr_reader   :slug
+      attr_accessor :range_proc
+
+      def initialize(slug, title, range_proc)
+        @slug = slug
+        @title = title
+        self.range_proc = range_proc
+      end
+
       def self.slugize(title)
         title.downcase.gsub(' ', '-')
       end
+
+      DATE_RANGE = /[0-9]{8}(?:-[0-9]{8})?/
 
       PERIODS_BY_SLUG = {
         'Yesterday'       => lambda { Date.yesterday..Date.today },
@@ -14,8 +25,19 @@ module View
         'All time'        => lambda { 100.years.ago.to_date..Date.today }
       }.inject({}) do |hash, arr|
         title, range_proc = *arr
-        hash[TimePeriod.slugize(title)] = TimePeriod.new(title, range_proc)
+        slug = TimePeriod.slugize(title)
+        hash[slug] = TimePeriod.new(slug, title, range_proc)
         hash
+      end
+
+      def title
+        @title || formatted_date
+      end
+
+      def formatted_date
+        dates = [start_date]
+        dates << end_date unless start_date == end_date
+        dates.map { |date| date.strftime('%-d %b %Y') }.join(' - ')
       end
 
       def self.all
@@ -27,11 +49,14 @@ module View
       end
 
       def self.[](slug)
-        PERIODS_BY_SLUG[slug]
+        slug =~ DATE_RANGE ?  TimePeriod.parse(slug) : PERIODS_BY_SLUG[slug]
       end
 
-      def slug
-        TimePeriod.slugize(title)
+      def self.parse(range_str)
+        dates = range_str.split('-')[0..1].map { |s| Date.parse(s) }
+        dates[1] ||= dates[0]
+        raise ArgumentError, 'Invalid range, start date should be less than end date' if dates.first > dates.last
+        TimePeriod.new(range_str, nil, lambda { Range.new(dates.first, dates.last) })
       end
 
       def query_slug

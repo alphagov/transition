@@ -46,6 +46,35 @@ describe View::Hits::TimePeriod do
           end
         end
       end
+
+      context 'the slug describes a period' do
+        context 'A valid period' do
+          subject { View::Hits::TimePeriod['20131001-20131031'] }
+
+          its(:start_date) { should == Date.new(2013, 10, 1) }
+          its(:end_date)   { should == Date.new(2013, 10, 31) }
+          its(:range)      { should == (Date.new(2013, 10, 1)..Date.new(2013, 10, 31)) }
+          its(:title)      { should == '1 Oct 2013 - 31 Oct 2013' }
+          its(:slug)       { should == '20131001-20131031' }
+        end
+
+        context 'A valid single date' do
+          subject { View::Hits::TimePeriod['20131001'] }
+
+          its(:start_date) { should == Date.new(2013, 10, 1) }
+          its(:end_date)   { should == Date.new(2013, 10, 1) }
+          its(:range)      { should == (Date.new(2013, 10, 1)..Date.new(2013, 10, 1)) }
+          its(:title)      { should == '1 Oct 2013' }
+          its(:slug)       { should == '20131001' }
+        end
+
+        context 'Invalid periods' do
+          specify { expect { View::Hits::TimePeriod['99999999'] }.to raise_error(ArgumentError) }
+          specify { expect { View::Hits::TimePeriod['99999999-99999999'] }.to raise_error(ArgumentError) }
+          specify { expect { View::Hits::TimePeriod['20130101-20120101'] }.to raise_error(ArgumentError) }
+        end
+
+      end
     end
   end
 end
