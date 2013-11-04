@@ -110,6 +110,7 @@ CREATE TABLE `users` (
   `remotely_signed_out` tinyint(1) DEFAULT '0',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
+  `organisation` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -148,3 +149,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131010140146');
 INSERT INTO schema_migrations (version) VALUES ('20131018160637');
 
 INSERT INTO schema_migrations (version) VALUES ('20131023082026');
+
+INSERT INTO schema_migrations (version) VALUES ('20131104141642');
