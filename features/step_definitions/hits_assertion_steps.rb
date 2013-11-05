@@ -46,7 +46,7 @@ Then(/^I should see a section for the other hits, the most common miscellany$/) 
   expect(page).to have_selector('h2', text: 'Other')
 end
 
-Then(/^it should show only the top (\d+) (\w+) in descending count order$/) do |count, category|
+Then(/^it should show(?: only the top) (\d+) (\w+) in descending count order$/) do |count, category|
 
   case category
   when 'errors'
@@ -118,7 +118,7 @@ Then(/^the top hit's canonicalized path should already be in the form$/) do
   expect(find_field('Path').value).to eql('/a')
 end
 
-Then(/^a[n]? (\w+) graph showing two dates and a (\w+) trend line$/) do |category, color|
+Then(/^I should see a[n]? (\w+) graph showing a (\w+) trend line(?: with )?([0-9]*)?(?: points)?$/) do |category, color, points|
 
   case color
   when 'red'
@@ -135,4 +135,18 @@ Then(/^a[n]? (\w+) graph showing two dates and a (\w+) trend line$/) do |categor
 
   expect(page).to have_svg_text(category.titleize)
   expect(page).to have_selector("path[stroke='#{color}']")
+
+  expect(page).to have_hit_graph_points(points.to_i) if points.present?
+end
+
+Then(/^I should see only yesterday's errors in descending count order$/) do
+  within '.hits' do
+    expect(page).to have_sorted_bar_rows(9).for_status(404)
+  end
+end
+
+Then(/^the period "([^"]*)" should be selected$/) do |period_title|
+  within '.date-range .dropdown-toggle' do
+    expect(page).to have_text(period_title)
+  end
 end

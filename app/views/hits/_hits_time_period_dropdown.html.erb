@@ -1,0 +1,16 @@
+<h2>
+  Hits from
+  <div class="date-range btn-group">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+      <%= @period.title %>
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <% View::Hits::TimePeriod.all.each do |period| %>
+        <li>
+          <%= link_to period.title, action: controller.action_name, period: period.query_slug %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</h2>

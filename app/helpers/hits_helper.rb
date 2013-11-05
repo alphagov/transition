@@ -5,11 +5,15 @@ module HitsHelper
   end
 
   def any_hits_for?(points_categories)
-    points_categories.find { |c| c.points && !c.points.empty? }
+    points_categories && points_categories.find { |c| c.points && !c.points.empty? }
+  end
+
+  def no_hits_for_any?(sections)
+    sections.all? {|section| !section.hits.any? }
   end
 
   ##
-  # Given a list of #Transition::Hits::Category# with populated points,
+  # Given a list of #View::Hits::Category# with populated points,
   # produces a Google data table JSON representation, as defined at:
   #
   # https://developers.google.com/chart/interactive/docs/dev/implementing_data_source?hl=pt-BR#jsondatatable

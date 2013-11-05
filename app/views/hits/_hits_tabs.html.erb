@@ -1,11 +1,13 @@
+<% period = { period: @period.query_slug } %>
+
 <%= bootstrap_flavour_tabs(
       {
-        'Summary'    => summary_site_hits_path(@site),
-        'All'        => site_hits_path(@site),
-        'Errors'     => errors_site_hits_path(@site),
-        'Archives'   => archives_site_hits_path(@site),
-        'Redirects'  => redirects_site_hits_path(@site),
-        'Other'      => other_site_hits_path(@site)
+        'Summary'    => summary_site_hits_path(@site, period),
+        'All'        => site_hits_path(@site, period),
+        'Errors'     => errors_site_hits_path(@site, period),
+        'Archives'   => archives_site_hits_path(@site, period),
+        'Redirects'  => redirects_site_hits_path(@site, period),
+        'Other'      => other_site_hits_path(@site, period)
       }, active: active
     )
 %>

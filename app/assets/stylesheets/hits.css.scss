@@ -2,6 +2,11 @@
 @import 'mixins';
 @import 'theme';
 
+.date-range {
+  margin-left: 10px;
+  font-weight: normal;
+}
+
 .bar-chart-row {
   position: absolute;
   left: 0;

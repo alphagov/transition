@@ -29,12 +29,6 @@ When(/^I change the mapping's (.*) to (.*)$/) do |field_name, value|
   step 'I save the mapping'
 end
 
-When(/^I click the first "(.*)" link in the history table$/) do |event_name|
-  within '.versions' do
-    first(:link, event_name).click
-  end
-end
-
 When(/^I make the mapping a redirect from (.*) to (.*)$/) do |path, new_url|
   fill_in 'Path', with: path
   fill_in 'New URL', with: new_url

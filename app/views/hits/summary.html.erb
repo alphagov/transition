@@ -5,10 +5,21 @@
 
 <%= render partial: 'hits_tabs', locals: { active: 'Summary' } %>
 
+<%= render partial: 'hits_time_period_dropdown' %>
+
 <% if any_hits_for?(@point_categories) %>
   <%= render partial: 'hits_graph', locals: { point_categories: @point_categories } %>
 <% end %>
 
 <% @sections.each do |category| %>
-  <%= render partial: 'summary_section', locals: { category: category } %>
+  <% if category.hits.any?  %>
+    <%= render partial: 'summary_section', locals: { category: category } %>
+  <% end  %>
 <% end %>
+
+<% if no_hits_for_any?(@sections) %>
+  <p class="no-content no-content-bordered">
+    There are no known hits for the <%= @site.abbr %> summary <%= @period.no_content %>.
+  </p>
+<% end  %>
+

@@ -25,6 +25,8 @@ class Hit < ActiveRecord::Base
   scope :by_date,            -> { group(:hit_on) }
   scope :by_date_and_status, -> { group(:hit_on, :http_status) }
 
+  scope :in_range, ->(start_date, end_date) { where('(hit_on >= ?) AND (hit_on <= ?)', start_date, end_date) }
+
   scope :errors,     -> { where(http_status: 404) }
   scope :archives,   -> { where(http_status: 410) }
   scope :redirects,  -> { where(http_status: 301) }

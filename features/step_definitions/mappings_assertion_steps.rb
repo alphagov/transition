@@ -14,13 +14,6 @@ Then(/^I should see a link to remove the filter$/) do
   expect(page).to have_link('Remove filter')
 end
 
-Then(/^I should see that (.*) is responsible for an (.*)$/) do |user_name, action|
-  within '.versions' do
-    expect(page).to have_selector('td', text: user_name)
-    expect(page).to have_selector('td', text: action)
-  end
-end
-
 Then(/^I should see no history$/) do
   expect(page).not_to have_link('History')
 end

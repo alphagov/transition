@@ -1,7 +1,3 @@
-Given(/^there are (\d+) organisations$/) do |n|
-  n.to_i.times { create(:organisation) }
-end
-
 Given(/^there is a (.*) organisation named (.*) abbreviated (.*) with these sites:$/) do |parent, name, abbr, site_table|
   # table rows are like | awb  | http://average-white-band.gov.uk/ |
   @parent             = create(:organisation, abbr: parent)

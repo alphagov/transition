@@ -1,32 +1,34 @@
-require 'transition/hits/category'
-
 class HitsController < ApplicationController
-  before_filter :find_site
+  before_filter :find_site, :set_period
 
   def index
-    @category = Transition::Hits::Category['all'].tap do |c|
-      c.hits   = grouped.by_path_and_status.page(params[:page]).order('count DESC')
-      c.points = grouped.by_date
+    @category = View::Hits::Category['all'].tap do |c|
+      c.hits   = date_range.by_path_and_status.page(params[:page]).order('count DESC')
+      c.points = date_range.by_date
     end
   end
 
   def summary
-    @sections = Transition::Hits::Category.all.reject { |c| c.name == 'all' }.map do |category|
-      category.tap { |c| c.hits = grouped.by_path_and_status.send(category.to_sym).top_ten.to_a }
+    @sections = View::Hits::Category.all.reject { |c| c.name == 'all' }.map do |category|
+      category.tap do |c|
+        c.hits = date_range.by_path_and_status.send(category.to_sym).top_ten.to_a
+      end
     end
 
-    @point_categories = Transition::Hits::Category.all.reject { |c| c.name == 'other' }.map do |category|
-      category.tap do |c|
-        c.points = (c.name == 'all') ? grouped.by_date : grouped.by_date_and_status.send(category.to_sym)
+    unless @period.single_day?
+      @point_categories = View::Hits::Category.all.reject { |c| c.name == 'other' }.map do |category|
+        category.tap do |c|
+          c.points = ((c.name == 'all') ? date_range.by_date : date_range.by_date_and_status.send(category.to_sym))
+        end
       end
     end
   end
 
   def category
     # Category - one of %w(archives redirect errors other) (see routes.rb)
-    @category = Transition::Hits::Category[params[:category]].tap do |c|
-      c.hits   = grouped.by_path_and_status.send(c.to_sym).page(params[:page]).order('count DESC')
-      c.points = params[:category] == 'other' ? grouped.by_date.other : grouped.by_date_and_status.send(c.to_sym)
+    @category = View::Hits::Category[params[:category]].tap do |c|
+      c.hits   = date_range.by_path_and_status.send(c.to_sym).page(params[:page]).order('count DESC')
+      c.points = params[:category] == 'other' ? date_range.by_date.other : date_range.by_date_and_status.send(c.to_sym)
     end
   end
 
@@ -38,5 +40,13 @@ class HitsController < ApplicationController
 
   def grouped
     @site.hits.grouped
+  end
+
+  def set_period
+    @period = (View::Hits::TimePeriod[params[:period]] || View::Hits::TimePeriod.default)
+  end
+
+  def date_range
+    grouped.in_range(@period.start_date, @period.end_date)
   end
 end

@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe Transition::Hits::Category do
+describe View::Hits::Category do
   describe '.all' do
-    subject(:all_categories) { Transition::Hits::Category.all }
+    subject(:all_categories) { View::Hits::Category.all }
 
     it { should be_an(Array) }
     it { should have(5).categories }
 
     describe 'the first' do
-      subject { Transition::Hits::Category.all.first }
+      subject { View::Hits::Category.all.first }
 
-      it { should be_a(Transition::Hits::Category) }
+      it { should be_a(View::Hits::Category) }
 
       its(:title)  { should == 'All hits' }
       its(:to_sym) { should == :all }
@@ -20,10 +20,10 @@ describe Transition::Hits::Category do
 
     describe 'indexing' do
       it 'errors on unrecognised categories' do
-        expect { Transition::Hits::Category['non-existent'] }.to raise_error(ArgumentError)
+        expect { View::Hits::Category['non-existent'] }.to raise_error(ArgumentError)
       end
 
-      subject(:others_category) { Transition::Hits::Category['other'] }
+      subject(:others_category) { View::Hits::Category['other'] }
 
       its(:title)  { should == 'Other' }
       its(:to_sym) { should == :other }
