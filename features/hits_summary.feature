@@ -108,11 +108,12 @@ Scenario: There are multiple pages for a category
   And I go to page 2
   Then I should not see a graph
 
-Scenario: No hits exist for a category
+Scenario: No hits exist at all
   Given no hits exist for the Attorney General's office site
   When I visit the associated organisation
   And I click the link "Hits Summary"
   Then I should not see a graph
+  And I should see "There are no known hits for the ago summary yet"
   When I click the link "Errors"
   Then I should see "There are no errors for ago yet"
   And I should not see a graph

@@ -8,6 +8,10 @@ module HitsHelper
     points_categories && points_categories.find { |c| c.points && !c.points.empty? }
   end
 
+  def no_hits_for_any?(sections)
+    sections.all? {|section| !section.hits.any? }
+  end
+
   ##
   # Given a list of #View::Hits::Category# with populated points,
   # produces a Google data table JSON representation, as defined at:

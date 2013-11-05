@@ -14,3 +14,10 @@
     <%= render partial: 'summary_section', locals: { category: category } %>
   <% end  %>
 <% end %>
+
+<% if no_hits_for_any?(@sections) %>
+  <p class="no-content no-content-bordered">
+    There are no known hits for the <%= @site.abbr %> summary <%= @period.no_content %>.
+  </p>
+<% end  %>
+
