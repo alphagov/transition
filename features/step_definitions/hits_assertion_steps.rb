@@ -46,7 +46,7 @@ Then(/^I should see a section for the other hits, the most common miscellany$/) 
   expect(page).to have_selector('h2', text: 'Other')
 end
 
-Then(/^it should show only the top (\d+) (\w+) in descending count order$/) do |count, category|
+Then(/^it should show(?: only the top) (\d+) (\w+) in descending count order$/) do |count, category|
 
   case category
   when 'errors'

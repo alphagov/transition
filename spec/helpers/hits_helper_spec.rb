@@ -21,6 +21,10 @@ describe HitsHelper do
       it 'is false' do
         helper.any_hits_for?(no_hits).should be_false
       end
+
+      it 'is false' do
+        helper.any_hits_for?(nil).should be_false
+      end
     end
   end
 

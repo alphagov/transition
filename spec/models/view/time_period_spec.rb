@@ -51,23 +51,25 @@ describe View::Hits::TimePeriod do
         context 'A valid period' do
           subject { View::Hits::TimePeriod['20131001-20131031'] }
 
-          its(:start_date) { should == Date.new(2013, 10, 1) }
-          its(:end_date)   { should == Date.new(2013, 10, 31) }
-          its(:range)      { should == (Date.new(2013, 10, 1)..Date.new(2013, 10, 31)) }
-          its(:title)      { should == '1 Oct 2013 - 31 Oct 2013' }
-          its(:slug)       { should == '20131001-20131031' }
-          its(:no_content) { should == 'in this time period' }
+          its(:start_date)  { should == Date.new(2013, 10, 1) }
+          its(:end_date)    { should == Date.new(2013, 10, 31) }
+          its(:range)       { should == (Date.new(2013, 10, 1)..Date.new(2013, 10, 31)) }
+          its(:title)       { should == '1 Oct 2013 - 31 Oct 2013' }
+          its(:slug)        { should == '20131001-20131031' }
+          its(:no_content)  { should == 'in this time period' }
+          its(:single_day?) { should be_false }
         end
 
         context 'A valid single date' do
           subject { View::Hits::TimePeriod['20131001'] }
 
-          its(:start_date) { should == Date.new(2013, 10, 1) }
-          its(:end_date)   { should == Date.new(2013, 10, 1) }
-          its(:range)      { should == (Date.new(2013, 10, 1)..Date.new(2013, 10, 1)) }
-          its(:title)      { should == '1 Oct 2013' }
-          its(:slug)       { should == '20131001' }
-          its(:no_content) { should == 'in this time period' }
+          its(:start_date)  { should == Date.new(2013, 10, 1) }
+          its(:end_date)    { should == Date.new(2013, 10, 1) }
+          its(:range)       { should == (Date.new(2013, 10, 1)..Date.new(2013, 10, 1)) }
+          its(:title)       { should == '1 Oct 2013' }
+          its(:slug)        { should == '20131001' }
+          its(:no_content)  { should == 'in this time period' }
+          its(:single_day?) { should be_true }
         end
 
         context 'Invalid periods' do

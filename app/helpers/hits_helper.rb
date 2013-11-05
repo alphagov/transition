@@ -5,7 +5,7 @@ module HitsHelper
   end
 
   def any_hits_for?(points_categories)
-    points_categories.find { |c| c.points && !c.points.empty? }
+    points_categories && points_categories.find { |c| c.points && !c.points.empty? }
   end
 
   ##

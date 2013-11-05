@@ -56,7 +56,7 @@ Background: I start at the summary page
   When I visit the associated organisation
   And I click the link "Hits Summary"
 
-Scenario: Hits exist and are summarised for a site
+Scenario: Hits exist and are summarised for a site, displayed with a graph
   Then I should see a section for the most common errors
   And it should show only the top 10 errors in descending count order
   And I should see a section for the most common archives
@@ -65,10 +65,12 @@ Scenario: Hits exist and are summarised for a site
   And it should show only the top 10 redirects in descending count order
   And I should see a section for the other hits, the most common miscellany
   And it should show only the top 10 other in descending count order
-
-Scenario: Hits are viewable over time
-  Then I should see a graph representing hits data over time
+  And I should see a graph representing hits data over time
   And I should see a trend for all hits, errors, archives and redirects
+  When I click a point for the date 18/10/12
+  Then I should see a section for the most common errors
+  And it should show only the top 9 errors in descending count order
+  But I should not see a graph
 
 Scenario: Hits exist and can be filtered by error and time period "Yesterday"
   When I click the link "Errors"

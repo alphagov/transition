@@ -15,9 +15,11 @@ class HitsController < ApplicationController
       end
     end
 
-    @point_categories = View::Hits::Category.all.reject { |c| c.name == 'other' }.map do |category|
-      category.tap do |c|
-        c.points = ((c.name == 'all') ? date_range.by_date : date_range.by_date_and_status.send(category.to_sym))
+    unless @period.single_day?
+      @point_categories = View::Hits::Category.all.reject { |c| c.name == 'other' }.map do |category|
+        category.tap do |c|
+          c.points = ((c.name == 'all') ? date_range.by_date : date_range.by_date_and_status.send(category.to_sym))
+        end
       end
     end
   end

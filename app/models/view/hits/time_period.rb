@@ -1,7 +1,11 @@
 module View
   module Hits
     ##
-    # The fixed time periods available to view
+    # Named or arbitrary whole-day-only time periods available to view.
+    # Either parsed from a valid date range string like '20130101-20130131'
+    # or looked up by slug (like 'last-30-days').
+    #
+    # In either case use TimePeriod[string]
     class TimePeriod
       attr_reader   :slug
       attr_accessor :range_proc
@@ -73,6 +77,10 @@ module View
 
       def end_date
         range.max
+      end
+
+      def single_day?
+        start_date == end_date
       end
 
       def no_content
