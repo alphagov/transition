@@ -10,5 +10,7 @@
 <% end %>
 
 <% @sections.each do |category| %>
-  <%= render partial: 'summary_section', locals: { category: category } %>
+  <% if category.hits.any?  %>
+    <%= render partial: 'summary_section', locals: { category: category } %>
+  <% end  %>
 <% end %>
