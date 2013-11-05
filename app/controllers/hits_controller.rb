@@ -1,5 +1,5 @@
 class HitsController < ApplicationController
-  before_filter :find_site, :period
+  before_filter :find_site, :set_period
 
   def index
     @category = View::Hits::Category['all'].tap do |c|
@@ -42,11 +42,11 @@ class HitsController < ApplicationController
     @site.hits.grouped
   end
 
-  def period
-    @period ||= (View::Hits::TimePeriod[params[:period]] || View::Hits::TimePeriod.default)
+  def set_period
+    @period = (View::Hits::TimePeriod[params[:period]] || View::Hits::TimePeriod.default)
   end
 
   def date_range
-    grouped.in_range(period.start_date, period.end_date)
+    grouped.in_range(@period.start_date, @period.end_date)
   end
 end
