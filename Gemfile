@@ -27,9 +27,9 @@ group :assets do
 end
 
 group :test do
-  gem 'poltergeist'
-  gem 'launchy'                             # Primarily for save_and_open_page support in Capybara
-  gem 'timecop'
+  gem 'poltergeist', '1.4.1'
+  gem 'launchy', '2.3.0'                  # Primarily for save_and_open_page support in Capybara
+  gem 'timecop', '0.5.9.2'
   gem 'cucumber-rails', require: false
   gem 'capybara', '2.1.0', require: false
   gem 'factory_girl_rails', '4.1.0'

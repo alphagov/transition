@@ -270,18 +270,18 @@ DEPENDENCIES
   jasmine (= 2.0.0.rc3)
   jquery-rails (= 3.0.4)
   kaminari (= 0.14.1)
-  launchy
+  launchy (= 2.3.0)
   mysql2 (= 0.3.13)
   optic14n (= 1.0.0)
   paper_trail (= 2.7.2)
   plek (= 1.2.0)
-  poltergeist
+  poltergeist (= 1.4.1)
   rails (= 3.2.13)
   rspec-rails (= 2.13.2)
   sass (= 3.2.8)
   sass-rails (= 3.2.6)
   shoulda-matchers (= 2.2.0)
-  timecop
+  timecop (= 0.5.9.2)
   uglifier (= 2.0.1)
   unicorn (= 4.6.2)
   webmock (= 1.11.0)
