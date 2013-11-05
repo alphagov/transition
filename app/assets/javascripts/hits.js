@@ -9,8 +9,9 @@
 
   var Hits = {
     lastDataTable: function(dataTable) {
-      if(typeof dataTable === "undefined")
+      if (typeof dataTable === "undefined") {
         return this["_lastDataTable"];
+      }
       this["_lastDataTable"] = dataTable;
     },
     plot: function(literalDataTable, colors) {
