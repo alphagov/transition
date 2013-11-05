@@ -9,7 +9,7 @@
 
   var Hits = {
     lastDataTable: function(dataTable) {
-      if(dataTable === undefined)
+      if(typeof dataTable === "undefined")
         return this["_lastDataTable"];
       this["_lastDataTable"] = dataTable;
     },
@@ -21,10 +21,11 @@
 
       function drawChart() {
         function onDateSelected() {
-          var date      = dataTable.getValue(chart.getSelection()[0].row, 0);
+          var rowNumber = chart.getSelection()[0].row;      // selection is always single item
+          var date      = dataTable.getValue(rowNumber, 0);
           var formatter = new google.visualization.DateFormat({pattern: 'yyyyMMdd'});
 
-          window.location = window.location.pathname + "?period=" + formatter.formatValue(date);
+          window.location = "?period=" + formatter.formatValue(date);
         }
 
         // Documentation
