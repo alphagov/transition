@@ -34,8 +34,8 @@ describe View::Hits::Category do
         context 'valid data' do
           let(:others) do
             [
-              build(:hit, hit_on: '2012-12-28', count: 1000, http_status: 200),
-              build(:hit, hit_on: '2012-12-31', count: 3, http_status: 200)
+              build(:daily_hit_total, total_on: '2012-12-28', count: 1000, http_status: 200),
+              build(:daily_hit_total, total_on: '2012-12-31', count: 3, http_status: 200)
             ]
           end
 
@@ -46,10 +46,10 @@ describe View::Hits::Category do
           its(:'points.first') { should == others.first }
           its(:'points.last')  { should == others.last }
 
-          describe 'the first inserted hit' do
+          describe 'the first inserted total' do
             subject { others_category.points[1] }
 
-            its(:hit_on) { should eql(Date.new(2012, 12, 29)) }
+            its(:total_on) { should eql(Date.new(2012, 12, 29)) }
             its(:count) { should eql(0) }
           end
         end
@@ -57,8 +57,8 @@ describe View::Hits::Category do
         context 'invalid data - more than one row per date' do
           let(:others) do
             [
-              build(:hit, hit_on: '2012-12-28', count: 1000, http_status: 200),
-              build(:hit, hit_on: '2012-12-28', count: 3, http_status: 200)
+              build(:daily_hit_total, total_on: '2012-12-28', count: 1000, http_status: 200),
+              build(:daily_hit_total, total_on: '2012-12-28', count: 3, http_status: 200)
             ]
           end
 

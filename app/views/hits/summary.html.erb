@@ -7,7 +7,7 @@
 
 <%= render partial: 'hits_time_period_dropdown' %>
 
-<% if any_hits_for?(@point_categories) %>
+<% if any_totals_for?(@point_categories) %>
   <%= render partial: 'hits_graph', locals: { point_categories: @point_categories } %>
 <% end %>
 

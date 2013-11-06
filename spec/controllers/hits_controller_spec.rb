@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'transition/import/daily_hit_totals'
 
 describe HitsController do
   describe '#category' do
@@ -17,14 +18,15 @@ describe HitsController do
 
     before do
       login_as_stub_user
-      get :category, site_id: site, category: test_category
+      Transition::Import::DailyHitTotals.from_hits!
+      get :category, site_id: site, category: test_category_name
     end
 
     subject(:category)      { assigns[:category] }
     let(:sum_of_hit_counts) { category.points.inject(0) { |sum, hit| sum + hit.count } }
 
     context 'a single-status category, errors' do
-      let(:test_category) { 'errors' }
+      let(:test_category_name) { 'errors' }
 
       it 'has one point per day' do
         category.should have(4).points
@@ -35,7 +37,7 @@ describe HitsController do
     end
 
     context 'a multi-status category, other' do
-      let(:test_category) { 'other' }
+      let(:test_category_name) { 'other' }
 
       it 'has one point per day' do
         category.should have(4).points

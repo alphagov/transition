@@ -6,41 +6,41 @@ describe HitsHelper do
     specify { helper.link_to_hit(hit).should =~ %r(<a href="http://.*example\.gov\.uk/article/123">/article/123</a>) }
   end
 
-  describe '#any_hits_for' do
+  describe '#any_totals_for' do
     let(:all_cats)  { View::Hits::Category.all }
-    let(:some_hits) { all_cats.map { |cat| cat.tap {|c| c.points = [build(:hit)] } } }
-    let(:no_hits)   { all_cats.map { |cat| cat.tap {|c| c.points = [           ] } } }
+    let(:some_totals) { all_cats.map { |cat| cat.tap {|c| c.points = [build(:daily_hit_total)] } } }
+    let(:no_totals)   { all_cats.map { |cat| cat.tap {|c| c.points = [] } } }
 
-    context 'there are hits' do
+    context 'there are totals' do
       it 'is true' do
-        helper.any_hits_for?(some_hits).should be_true
+        helper.any_totals_for?(some_totals).should be_true
       end
     end
 
-    context 'there are no hits' do
+    context 'there are no totals' do
       it 'is false' do
-        helper.any_hits_for?(no_hits).should be_false
+        helper.any_totals_for?(no_totals).should be_false
       end
 
       it 'is false' do
-        helper.any_hits_for?(nil).should be_false
+        helper.any_totals_for?(nil).should be_false
       end
     end
   end
 
   describe '#google_data_table' do
     let(:archives) { [
-      build(:hit, hit_on: '2012-12-31', count: 3, http_status: 410),
-      build(:hit, hit_on: '2012-12-30', count: 1000, http_status: 410)
+      build(:daily_hit_total, total_on: '2012-12-31', count: 3, http_status: 410),
+      build(:daily_hit_total, total_on: '2012-12-30', count: 1000, http_status: 410)
     ] }
 
     let(:errors) { [
-      build(:hit, hit_on: '2012-12-31', count: 3, http_status: 404),
-      build(:hit, hit_on: '2012-12-30', count: 4, http_status: 404)
+      build(:daily_hit_total, total_on: '2012-12-31', count: 3, http_status: 404),
+      build(:daily_hit_total, total_on: '2012-12-30', count: 4, http_status: 404)
     ] }
 
     let(:redirects) { [
-      build(:hit, hit_on: '2012-12-30', count: 4, http_status: 301)
+      build(:daily_hit_total, total_on: '2012-12-30', count: 4, http_status: 301)
     ] }
 
     let(:categories) {
