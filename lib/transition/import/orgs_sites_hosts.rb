@@ -47,6 +47,7 @@ module Transition
           org.launch_date     = site.redirection_date
 
           if (whitehall_org = whitehall_organisations.by_title[org.title])
+            org.abbreviation   = whitehall_org.details.abbreviation
             org.whitehall_type = whitehall_org.format
             org.whitehall_slug = whitehall_org.details.slug
           end
