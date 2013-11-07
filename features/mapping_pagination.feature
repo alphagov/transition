@@ -4,7 +4,7 @@ Feature: Paginated mappings
   so that I can find one to edit
 
   Scenario: There are no mappings for a site
-    Given I have logged in as a GDS user
+    Given I have logged in as an admin
     And there is a site called bis_lowpay belonging to an organisation bis with these mappings:
       | http_status | path             | new_url           |
     When I visit the path /organisations/bis
@@ -14,7 +14,7 @@ Feature: Paginated mappings
     And I should see "0 mappings"
 
   Scenario: There are mappings for a site and we visit page 1
-    Given I have logged in as a GDS user
+    Given I have logged in as an admin
     And there is a site called bis_lowpay belonging to an organisation bis with these mappings:
       | http_status | path             | new_url           |
       | 410         | /about/corporate |                   |
@@ -30,7 +30,7 @@ Feature: Paginated mappings
     And  I should see links top and bottom to page 2
 
   Scenario: There are mappings for a site and we visit page 2
-    Given I have logged in as a GDS user
+    Given I have logged in as an admin
     And there is a site called bis_lowpay belonging to an organisation bis with these mappings:
       | http_status | path             | new_url           |
       | 410         | /about/corporate |                   |

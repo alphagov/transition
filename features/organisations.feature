@@ -4,7 +4,7 @@ Feature: List organisations
   so that I can get to the mappings for a site
 
   Scenario: Visit the list page
-    Given I have logged in as a GDS user
+    Given I have logged in as an admin
     And there are these organisations:
       | abbr | title                                          |
       | bis  | Department for Business, Innovation and Skills |

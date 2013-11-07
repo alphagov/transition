@@ -4,7 +4,7 @@ Feature: Create a mapping
   so that a previously unknown URL starts to send people to the right place
 
   Scenario:
-    Given I have logged in as a GDS user
+    Given I have logged in as an admin
     And a site bis exists
     And I visit the path /sites/bis/mappings
     And I go to create a new mapping

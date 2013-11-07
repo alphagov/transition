@@ -20,7 +20,7 @@ describe MappingsController do
   end
 
   describe '#update for paper_trail', versioning: true do
-    let(:user)    { FactoryGirl.create(:user, name: 'Bob Terwhilliger') }
+    let(:user)    { FactoryGirl.create(:admin, name: 'Bob Terwhilliger') }
     let(:mapping) { create :mapping }
 
     before do
@@ -85,6 +85,22 @@ describe MappingsController do
 
           expect(response).to redirect_to site_mappings_url(site)
         end
+      end
+    end
+  end
+
+  describe '#new' do
+    context 'user doesn\'t have permission' do
+      let(:site) { FactoryGirl.create(:site) }
+
+      before do
+        user = FactoryGirl.create(:user, organisation_slug: nil)
+        login_as user
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        get :new, site_id: site.abbr
+        expect(response).to redirect_to site_mappings_path(site)
       end
     end
   end

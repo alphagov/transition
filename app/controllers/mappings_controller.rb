@@ -5,6 +5,8 @@ class MappingsController < ApplicationController
     @site = Site.find_by_abbr(params[:site_id])
   end
 
+  before_filter :check_user_can_edit, only: [:new, :create, :edit, :update]
+
   def new
     @mapping = @site.mappings.build(path: params[:path])
   end
@@ -49,6 +51,14 @@ class MappingsController < ApplicationController
       redirect_to edit_site_mapping_path(@site, mapping)
     else
       redirect_to new_site_mapping_path(@site, path: path)
+    end
+  end
+
+private
+  def check_user_can_edit
+    unless current_user.can_edit?(@site.organisation)
+      message = "You don't have permission to edit site mappings for #{@site.organisation.title}"
+      redirect_to site_mappings_path(@site), alert: message
     end
   end
 end

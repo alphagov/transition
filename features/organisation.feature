@@ -4,7 +4,7 @@ Feature: View organisation
   so that I can work on their mappings
 
   Scenario: Visit an organisation page
-    Given I have logged in as a GDS user
+    Given I have logged in as an admin
     And there is a bis organisation named UK Atomic Energy Authority abbreviated ukaea with these sites:
       | abbr       | homepage                                                               |
       | bis_ukaea  | https://www.gov.uk/government/organisations/uk-atomic-energy-authority |
