@@ -18,3 +18,7 @@ end
 Given(/^I have logged in as an admin called "([^"]*)"$/) do |name|
   GDS::SSO.test_user = create(:admin, name: name)
 end
+
+Given(/^I have logged in as a member of another organisation$/) do
+  GDS::SSO.test_user = create(:user, organisation_slug: 'slug-for-another-org')
+end

@@ -14,3 +14,10 @@ Feature: Create a mapping
     Then I should be returned to the mappings list for bis
     And I should see "Mapping saved."
 
+  Scenario: I don't have access
+    Given I have logged in as a member of another organisation
+    And a site bis exists
+    And I visit the path /sites/bis/mappings
+    Then I should not see "Add mapping"
+    And I visit the path /sites/bis/mappings/new
+    Then I should see "You don't have permission to edit site mappings for"
