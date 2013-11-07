@@ -5,13 +5,13 @@ class User < ActiveRecord::Base
 
   attr_accessible :uid, :email, :name, :permissions, :organisation_slug, as: :oauth
 
-  def gds_transition_manager?
-    permissions.include?("GDS Transition Manager")
+  def admin?
+    permissions.include?("admin")
   end
 
   def can_edit?(organisation_to_edit)
     case
-    when gds_transition_manager?
+    when admin?
       true
     when organisation.nil?
       false

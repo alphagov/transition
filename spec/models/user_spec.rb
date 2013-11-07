@@ -22,17 +22,17 @@ describe User do
     end
   end
 
-  describe 'gds_transition_manager?' do
+  describe 'admin?' do
     context 'doesn\'t have permission' do
       subject(:user) { FactoryGirl.create(:user, permissions: ["signin"])}
 
-      its(:gds_transition_manager?) { should eql(false) }
+      its(:admin?) { should eql(false) }
     end
 
     context 'has relevant permission' do
-      subject(:user) { FactoryGirl.create(:gds_transition_manager) }
+      subject(:user) { FactoryGirl.create(:admin) }
 
-      its(:gds_transition_manager?) { should eql(true) }
+      its(:admin?) { should eql(true) }
     end
   end
 
@@ -44,8 +44,8 @@ describe User do
       FactoryGirl.create(:organisation, whitehall_slug: 'agency-of-soul', parent: ministry_of_funk)
     }
 
-    context 'user is a GDS Transition Manager' do
-      subject(:user) { FactoryGirl.create(:gds_transition_manager) }
+    context 'user is an admin' do
+      subject(:user) { FactoryGirl.create(:admin) }
 
       it 'lets them edit anything' do
         user.can_edit?(ministry_of_funk).should eql(true)
