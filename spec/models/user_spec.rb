@@ -21,4 +21,18 @@ describe User do
       its(:organisation) { should eql(nil) }
     end
   end
+
+  describe 'gds_transition_manager?' do
+    context 'doesn\'t have permission' do
+      subject(:user) { FactoryGirl.create(:user, permissions: ["signin"])}
+
+      its(:gds_transition_manager?) { should eql(false) }
+    end
+
+    context 'has relevant permission' do
+      subject(:user) { FactoryGirl.create(:user, permissions: ["GDS Transition Manager"])}
+
+      its(:gds_transition_manager?) { should eql(true) }
+    end
+  end
 end

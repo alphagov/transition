@@ -5,6 +5,10 @@ class User < ActiveRecord::Base
 
   attr_accessible :uid, :email, :name, :permissions, :organisation_slug, as: :oauth
 
+  def gds_transition_manager?
+    permissions.include?("GDS Transition Manager")
+  end
+
   def organisation
     @_organisation ||= begin
       if self.organisation_slug
