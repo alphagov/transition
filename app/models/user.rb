@@ -9,6 +9,21 @@ class User < ActiveRecord::Base
     permissions.include?("GDS Transition Manager")
   end
 
+  def can_edit?(organisation_to_edit)
+    case
+    when gds_transition_manager?
+      true
+    when organisation.nil?
+      false
+    when organisation.id == organisation_to_edit.id
+      true
+    when organisation.id == organisation_to_edit.parent_id
+      true
+    else
+      false
+    end
+  end
+
   def organisation
     @_organisation ||= begin
       if self.organisation_slug

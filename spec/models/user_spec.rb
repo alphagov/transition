@@ -30,9 +30,50 @@ describe User do
     end
 
     context 'has relevant permission' do
-      subject(:user) { FactoryGirl.create(:user, permissions: ["GDS Transition Manager"])}
+      subject(:user) { FactoryGirl.create(:gds_transition_manager) }
 
       its(:gds_transition_manager?) { should eql(true) }
+    end
+  end
+
+  describe 'can_edit?' do
+    let(:ministry_of_funk) {
+      FactoryGirl.create(:organisation, whitehall_slug: 'ministry-of-funk')
+    }
+    let(:agency_of_soul) {
+      FactoryGirl.create(:organisation, whitehall_slug: 'agency-of-soul', parent: ministry_of_funk)
+    }
+
+    context 'user is a GDS Transition Manager' do
+      subject(:user) { FactoryGirl.create(:gds_transition_manager) }
+
+      it 'lets them edit anything' do
+        user.can_edit?(ministry_of_funk).should eql(true)
+      end
+    end
+
+    context 'user is not a member of any organisation' do
+      subject(:user) { FactoryGirl.create(:user) }
+
+      it 'should return false' do
+        user.can_edit?(ministry_of_funk).should eql(false)
+      end
+    end
+
+    context 'user is a member of the parent organisation' do
+      subject(:user) { FactoryGirl.create(:user, organisation_slug: "ministry-of-funk") }
+
+      it 'should return true' do
+        user.can_edit?(agency_of_soul).should eql(true)
+      end
+    end
+
+    context 'user is a member of a child organisation' do
+      subject(:user) { FactoryGirl.create(:user, organisation_slug: "agency-of-soul") }
+
+      it 'should return false' do
+        user.can_edit?(ministry_of_funk).should eql(false)
+      end
     end
   end
 end
