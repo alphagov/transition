@@ -7,10 +7,10 @@ class Organisation < ActiveRecord::Base
   has_many :hosts, through: :sites
   has_many :mappings, through: :sites
 
-  validates_presence_of :abbr
-  validates_uniqueness_of :abbr
+  validates_presence_of :redirector_abbr
+  validates_uniqueness_of :redirector_abbr
 
   def to_param
-    abbr
+    redirector_abbr
   end
 end

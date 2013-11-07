@@ -25,7 +25,7 @@ describe Transition::Import::OrgsSitesHosts do
           end
         end
 
-        @businesslink = Organisation.find_by_abbr!('businesslink')
+        @businesslink = Organisation.find_by_redirector_abbr!('businesslink')
       end
 
       it 'has imported orgs' do
@@ -47,9 +47,9 @@ describe Transition::Import::OrgsSitesHosts do
       end
 
       describe 'a child organisation with its own hosted site' do
-        let(:bis) { Organisation.find_by_abbr! 'bis' }
+        let(:bis) { Organisation.find_by_redirector_abbr! 'bis' }
 
-        subject { Organisation.find_by_abbr! 'ukaea' }
+        subject { Organisation.find_by_redirector_abbr! 'ukaea' }
 
         it                   { should have(1).site }
         its(:parent)         { should eql bis }
@@ -65,7 +65,7 @@ describe Transition::Import::OrgsSitesHosts do
 
       describe 'The Wales office breaking case' do
         it 'does not create a new org for the same title in a different language' do
-          Organisation.find_by_abbr('walesoffice_cymru').should be_nil
+          Organisation.find_by_redirector_abbr('walesoffice_cymru').should be_nil
         end
       end
     end

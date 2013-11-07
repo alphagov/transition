@@ -4,6 +4,6 @@ class OrganisationsController < ApplicationController
   end
 
   def show
-    @organisation = Organisation.find_by_abbr(params[:id])
+    @organisation = Organisation.find_by_redirector_abbr(params[:id])
   end
 end

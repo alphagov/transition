@@ -30,7 +30,7 @@ module Transition
       end
 
       def organisation
-        @organisation ||= Organisation.find_by_abbr!(@org_abbr)
+        @organisation ||= Organisation.find_by_redirector_abbr!(@org_abbr)
       end
 
       def results_pager
