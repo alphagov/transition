@@ -4,7 +4,7 @@ Feature: Filter mappings
   so that I can get to the things I need to change faster 
 
   Background:
-    Given I have logged in as a GDS user
+    Given I have logged in as an admin
     And there is a site called directgov belonging to an organisation directgov with these mappings:
       | http_status | path             | new_url                                 |
       | 410         | /about/corporate |                                         |

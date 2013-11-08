@@ -25,6 +25,9 @@
         <nav role="navigation" class="nav-collapse">
           <ul class="nav">
             <li><a href="/">Organisations</a></li>
+            <% if current_user.organisation %>
+              <li><%= link_to "#{current_user.organisation.title} (#{current_user.organisation.abbreviation})", organisation_path(current_user.organisation) %></li>
+            <% end %>
           </ul>
           <ul class="nav pull-right">
             <li class="dropdown">
