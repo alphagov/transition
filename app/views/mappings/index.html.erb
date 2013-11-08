@@ -30,7 +30,9 @@
   <table class="mappings table table-bordered">
     <thead>
     <tr>
-      <th></th>
+      <% if current_user.can_edit?(@site.organisation) %>
+        <th></th>
+      <% end %>
       <th>HTTP Status</th>
       <th>
         Original path from <%= @site.default_host.hostname %>
@@ -42,7 +44,9 @@
     <tbody>
     <% @mappings.each do |mapping| %>
       <tr data-status-code="<%= mapping.http_status %>">
-        <td><%= link_to 'Edit', edit_site_mapping_path(@site, mapping) %></td>
+        <% if current_user.can_edit?(@site.organisation) %>
+          <td><%= link_to 'Edit', edit_site_mapping_path(@site, mapping) %></td>
+        <% end %>
         <td><%= mapping.http_status %></td>
         <td>
           <%= example_url(mapping) %>
