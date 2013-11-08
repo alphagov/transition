@@ -63,7 +63,7 @@ CREATE TABLE `mappings_staging` (
 
 CREATE TABLE `organisations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `abbr` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `redirector_abbr` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `launch_date` date DEFAULT NULL,
   `homepage` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -75,8 +75,9 @@ CREATE TABLE `organisations` (
   `parent_id` int(11) DEFAULT NULL,
   `whitehall_slug` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `whitehall_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `abbreviation` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `index_organisations_on_abbr` (`abbr`),
+  UNIQUE KEY `index_organisations_on_abbr` (`redirector_abbr`),
   KEY `index_organisations_on_title` (`title`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -151,3 +152,7 @@ INSERT INTO schema_migrations (version) VALUES ('20131018160637');
 INSERT INTO schema_migrations (version) VALUES ('20131023082026');
 
 INSERT INTO schema_migrations (version) VALUES ('20131104141642');
+
+INSERT INTO schema_migrations (version) VALUES ('20131107192158');
+
+INSERT INTO schema_migrations (version) VALUES ('20131107202738');

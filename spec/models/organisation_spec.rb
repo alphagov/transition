@@ -8,7 +8,7 @@ describe Organisation do
   end
 
   describe 'validations' do
-    it { should validate_presence_of(:abbr) }
-    it { should validate_uniqueness_of(:abbr) }
+    it { should validate_presence_of(:redirector_abbr) }
+    it { should validate_uniqueness_of(:redirector_abbr) }
   end
 end

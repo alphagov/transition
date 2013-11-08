@@ -31,8 +31,8 @@ module Transition
             create_org_from(site)
           end
           organisations.values.select { |s| s.child? }.each do |site|
-            Organisation.find_by_abbr!(site.inferred_organisation).tap do |org|
-              org.parent = Organisation.find_by_abbr!(site.inferred_parent)
+            Organisation.find_by_redirector_abbr!(site.inferred_organisation).tap do |org|
+              org.parent = Organisation.find_by_redirector_abbr!(site.inferred_parent)
               org.save!
             end
           end
@@ -40,13 +40,14 @@ module Transition
       end
 
       def create_org_from(site)
-        Organisation.where(abbr: site.inferred_organisation).first_or_create.tap do |org|
+        Organisation.where(redirector_abbr: site.inferred_organisation).first_or_create.tap do |org|
           %w(title furl homepage css).each { |attr| org.send "#{attr}=".to_sym, site.send(attr.to_sym) }
 
-          org.abbr        = site.inferred_organisation
-          org.launch_date = site.redirection_date
+          org.redirector_abbr = site.inferred_organisation
+          org.launch_date     = site.redirection_date
 
           if (whitehall_org = whitehall_organisations.by_title[org.title])
+            org.abbreviation   = whitehall_org.details.abbreviation
             org.whitehall_type = whitehall_org.format
             org.whitehall_slug = whitehall_org.details.slug
           end
