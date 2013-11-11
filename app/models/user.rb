@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   attr_accessible :uid, :email, :name, :permissions, :organisation_slug, as: :oauth
 
   def admin?
-    permissions.include?("admin")
+    permissions.include?('admin')
   end
 
   def can_edit?(organisation_to_edit)
@@ -16,12 +16,7 @@ class User < ActiveRecord::Base
   end
 
   def organisation
-    @_organisation ||= begin
-      if organisation_slug
-        Organisation.find_by_whitehall_slug(organisation_slug)
-      else
-        nil
-      end
-    end
+    @_organisation ||=
+      Organisation.find_by_whitehall_slug(organisation_slug) if organisation_slug
   end
 end
