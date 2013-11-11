@@ -26,13 +26,13 @@ describe User do
     context 'doesn\'t have permission' do
       subject(:user) { create(:user, permissions: ["signin"])}
 
-      its(:admin?) { should eql(false) }
+      its(:admin?) { should be_false }
     end
 
     context 'has relevant permission' do
       subject(:user) { create(:admin) }
 
-      its(:admin?) { should eql(true) }
+      its(:admin?) { should be_true }
     end
   end
 
@@ -48,32 +48,26 @@ describe User do
       subject(:user) { create(:admin) }
 
       it 'lets them edit anything' do
-        user.can_edit?(ministry_of_funk).should eql(true)
+        user.can_edit?(ministry_of_funk).should be_true
       end
     end
 
     context 'user is not a member of any organisation' do
       subject(:user) { create(:user) }
 
-      it 'should return false' do
-        user.can_edit?(ministry_of_funk).should eql(false)
-      end
+      specify { user.can_edit?(ministry_of_funk).should be_false }
     end
 
     context 'user is a member of the parent organisation' do
       subject(:user) { create(:user, organisation_slug: "ministry-of-funk") }
 
-      it 'should return true' do
-        user.can_edit?(agency_of_soul).should eql(true)
-      end
+      specify { user.can_edit?(agency_of_soul).should be_true }
     end
 
     context 'user is a member of a child organisation' do
       subject(:user) { create(:user, organisation_slug: "agency-of-soul") }
 
-      it 'should return false' do
-        user.can_edit?(ministry_of_funk).should eql(false)
-      end
+      specify { user.can_edit?(ministry_of_funk).should be_false }
     end
   end
 end
