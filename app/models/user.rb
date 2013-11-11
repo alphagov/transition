@@ -26,8 +26,8 @@ class User < ActiveRecord::Base
 
   def organisation
     @_organisation ||= begin
-      if self.organisation_slug
-        Organisation.find_by_whitehall_slug(self.organisation_slug)
+      if organisation_slug
+        Organisation.find_by_whitehall_slug(organisation_slug)
       else
         nil
       end
