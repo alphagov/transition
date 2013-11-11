@@ -49,6 +49,7 @@ describe User do
 
       it 'lets them edit anything' do
         user.can_edit?(ministry_of_funk).should be_true
+        user.can_edit?(agency_of_soul).should be_true
       end
     end
 
