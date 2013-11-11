@@ -41,7 +41,7 @@ describe User do
       create(:organisation, whitehall_slug: 'ministry-of-funk')
     }
     let(:agency_of_soul) {
-      create(:organisation, whitehall_slug: 'agency-of-soul', parent: ministry_of_funk)
+      build(:organisation, whitehall_slug: 'agency-of-soul', parent: ministry_of_funk)
     }
 
     context 'user is an admin' do
