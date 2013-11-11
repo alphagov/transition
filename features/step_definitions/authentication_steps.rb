@@ -3,7 +3,7 @@ Given(/^I have logged in as an admin$/) do
 end
 
 Given(/^I have logged in as a member of DCLG$/) do
-  dclg = FactoryGirl.create(:organisation,
+  dclg = create(:organisation,
                              title: 'Department for Communities and Local Government',
                              abbreviation: 'DCLG',
                              redirector_abbr: 'dclg',

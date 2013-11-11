@@ -20,7 +20,7 @@ describe MappingsController do
   end
 
   describe '#find' do
-    let(:site) { FactoryGirl.create(:site) }
+    let(:site) { create(:site) }
     raw_path = '/ABOUT/'
     canonicalized_path = '/about'
 
@@ -38,7 +38,7 @@ describe MappingsController do
 
     context 'when a mapping exists for the canonicalized path' do
       it 'redirects to the edit mapping form' do
-        mapping = FactoryGirl.create(:mapping, site: site, path: canonicalized_path)
+        mapping = create(:mapping, site: site, path: canonicalized_path)
 
         get :find, site_id: site.abbr, path: raw_path
 
@@ -73,10 +73,10 @@ describe MappingsController do
 
   describe '#new' do
     context 'user doesn\'t have permission' do
-      let(:site) { FactoryGirl.create(:site) }
+      let(:site) { create(:site) }
 
       before do
-        login_as FactoryGirl.create(:user, organisation_slug: nil)
+        login_as create(:user, organisation_slug: nil)
       end
 
       it 'redirects to the index page and sets a flash message' do
@@ -88,10 +88,10 @@ describe MappingsController do
 
   describe '#create' do
     context 'user doesn\'t have permission' do
-      let(:site) { FactoryGirl.create(:site) }
+      let(:site) { create(:site) }
 
       before do
-        login_as FactoryGirl.create(:user, organisation_slug: nil)
+        login_as create(:user, organisation_slug: nil)
       end
 
       it 'redirects to the index page and sets a flash message' do
@@ -103,10 +103,10 @@ describe MappingsController do
 
   describe '#edit' do
     context 'user doesn\'t have permission' do
-      let(:mapping) { FactoryGirl.create(:mapping) }
+      let(:mapping) { create(:mapping) }
 
       before do
-        login_as FactoryGirl.create(:user, organisation_slug: nil)
+        login_as create(:user, organisation_slug: nil)
       end
 
       it 'redirects to the index page and sets a flash message' do
@@ -118,10 +118,10 @@ describe MappingsController do
 
   describe '#update', versioning: true do
     context 'user doesn\'t have permission' do
-      let(:mapping) { FactoryGirl.create(:mapping) }
+      let(:mapping) { create(:mapping) }
 
       before do
-        login_as FactoryGirl.create(:user, organisation_slug: nil)
+        login_as create(:user, organisation_slug: nil)
       end
 
       it 'redirects to the index page and sets a flash message' do
@@ -131,7 +131,7 @@ describe MappingsController do
     end
 
     context 'paper_trail' do
-      let(:user)    { FactoryGirl.create(:admin, name: 'Bob Terwhilliger') }
+      let(:user)    { create(:admin, name: 'Bob Terwhilliger') }
       let(:mapping) { create :mapping }
 
       before do

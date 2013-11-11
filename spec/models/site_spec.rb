@@ -16,7 +16,7 @@ describe Site do
   describe '#default_host' do
     let(:hosts) { [create(:host), create(:host)] }
     subject(:site) do
-      FactoryGirl.create(:site) do |site|
+      create(:site) do |site|
         site.hosts = hosts
       end
     end
@@ -26,7 +26,7 @@ describe Site do
 
   describe '#canonicalize_path' do
     let(:site) do
-      FactoryGirl.create(:site, query_params: "foo:bar")
+      create(:site, query_params: "foo:bar")
     end
     subject(:canonicalized_path) { site.canonicalize_path @raw_path }
 
