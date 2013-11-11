@@ -19,26 +19,8 @@ describe MappingsController do
     end
   end
 
-  describe '#update for paper_trail', versioning: true do
-    let(:user)    { FactoryGirl.create(:user, name: 'Bob Terwhilliger') }
-    let(:mapping) { create :mapping }
-
-    before do
-      login_as user
-
-      post :update, site_id: mapping.site, id: mapping.id, mapping: { new_url: 'http://somewhere.bad' }
-    end
-
-    describe 'the recorded user' do
-      subject { Mapping.first.versions.last }
-
-      its(:whodunnit) { should eql('Bob Terwhilliger') }
-      its(:user_id)   { should eql(user.id) }
-    end
-  end
-
   describe '#find' do
-    let(:site) { FactoryGirl.create(:site) }
+    let(:site) { create(:site) }
     raw_path = '/ABOUT/'
     canonicalized_path = '/about'
 
@@ -56,7 +38,7 @@ describe MappingsController do
 
     context 'when a mapping exists for the canonicalized path' do
       it 'redirects to the edit mapping form' do
-        mapping = FactoryGirl.create(:mapping, site: site, path: canonicalized_path)
+        mapping = create(:mapping, site: site, path: canonicalized_path)
 
         get :find, site_id: site.abbr, path: raw_path
 
@@ -85,6 +67,84 @@ describe MappingsController do
 
           expect(response).to redirect_to site_mappings_url(site)
         end
+      end
+    end
+  end
+
+  describe '#new' do
+    context 'user doesn\'t have permission' do
+      let(:site) { create(:site) }
+
+      before do
+        login_as create(:user, organisation_slug: nil)
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        get :new, site_id: site.abbr
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+  end
+
+  describe '#create' do
+    context 'user doesn\'t have permission' do
+      let(:site) { create(:site) }
+
+      before do
+        login_as create(:user, organisation_slug: nil)
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        post :create, site_id: site.abbr
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+  end
+
+  describe '#edit' do
+    context 'user doesn\'t have permission' do
+      let(:mapping) { create(:mapping) }
+
+      before do
+        login_as create(:user, organisation_slug: nil)
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        get :edit, site_id: mapping.site.abbr, id: mapping.id
+        expect(response).to redirect_to site_mappings_path(mapping.site)
+      end
+    end
+  end
+
+  describe '#update', versioning: true do
+    context 'user doesn\'t have permission' do
+      let(:mapping) { create(:mapping) }
+
+      before do
+        login_as create(:user, organisation_slug: nil)
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        put :update, site_id: mapping.site.abbr, id: mapping.id
+        expect(response).to redirect_to site_mappings_path(mapping.site)
+      end
+    end
+
+    context 'paper_trail' do
+      let(:user)    { create(:admin, name: 'Bob Terwhilliger') }
+      let(:mapping) { create :mapping }
+
+      before do
+        login_as user
+
+        post :update, site_id: mapping.site, id: mapping.id, mapping: { new_url: 'http://somewhere.bad' }
+      end
+
+      describe 'the recorded user' do
+        subject { Mapping.first.versions.last }
+
+        its(:whodunnit) { should eql('Bob Terwhilliger') }
+        its(:user_id)   { should eql(user.id) }
       end
     end
   end

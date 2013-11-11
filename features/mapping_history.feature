@@ -4,7 +4,7 @@ Feature: History of edits to a mapping
   So that people can be held accountable for changes
 
   Background: Bob has made a good mapping bad. Oh, Bob.
-    Given I have logged in as a GDS user called "Bob"
+    Given I have logged in as an admin called "Bob"
     And there is a site called directgov belonging to an organisation directgov with these mappings:
       | http_status | path             | new_url                                 |
       | 301         | /about/corporate | http://somewhere.good                   |

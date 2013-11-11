@@ -5,7 +5,7 @@ Feature: Summary traffic for site
   So that I can more easily decide what to fix next based on performance
 
 Background: I start at the summary page
-  Given I have logged in as a GDS user
+  Given I have logged in as an admin
   And the date is 19/10/12
   And these hits exist for the Attorney General's office site:
     | http_status | path | hit_on   | count |

@@ -4,7 +4,9 @@
     <th class="status">HTTP<br/>Status</th>
     <th>Path</th>
     <th class="count">Count</th>
-    <th class="action">Action</th>
+    <% if current_user.can_edit?(@site.organisation) %>
+      <th class="action">Action</th>
+    <% end %>
   </tr>
   </thead>
   <tbody>
@@ -18,9 +20,11 @@
         <span class="path"><%= link_to_hit(hit) %></span>
       </td>
       <td class="count"><%= number_with_delimiter hit.count %></td>
-      <td class="action">
-        <%= link_to 'Check mapping', site_mapping_find_path(@site, path: hit.path), class: 'btn btn-mini' %>
-      </td>
+      <% if current_user.can_edit?(@site.organisation) %>
+        <td class="action">
+          <%= link_to 'Check mapping', site_mapping_find_path(@site, path: hit.path), class: 'btn btn-mini' %>
+        </td>
+      <% end %>
     </tr>
   <% end %>
   </tbody>

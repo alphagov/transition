@@ -9,16 +9,20 @@
 
 <h2><%= pluralize(number_with_delimiter(@mappings.total_count, :delimiter => ','), 'mapping', 'mappings') %></h2>
 
-<% if @mappings.empty? or @mappings.total_count < Mapping.default_per_page %>
+<% if (@mappings.empty? or @mappings.total_count < Mapping.default_per_page) && current_user.can_edit?(@site.organisation) %>
   <div class="add-bottom-margin">
     <%= render partial: 'add_button' %>
   </div>
-<% else %>
+<% elsif current_user.can_edit?(@site.organisation) %>
   <div class="pull-left">
     <%= paginate(@mappings) %>
   </div>
   <div class="pull-right add-bottom-margin">
     <%= render partial: 'add_button' %>
+  </div>
+<% else %>
+  <div class="add-bottom-margin">
+    <%= paginate(@mappings) %>
   </div>
 <% end %>
 
@@ -26,7 +30,9 @@
   <table class="mappings table table-bordered">
     <thead>
     <tr>
-      <th></th>
+      <% if current_user.can_edit?(@site.organisation) %>
+        <th></th>
+      <% end %>
       <th>HTTP Status</th>
       <th>
         Original path from <%= @site.default_host.hostname %>
@@ -38,7 +44,9 @@
     <tbody>
     <% @mappings.each do |mapping| %>
       <tr data-status-code="<%= mapping.http_status %>">
-        <td><%= link_to 'Edit', edit_site_mapping_path(@site, mapping) %></td>
+        <% if current_user.can_edit?(@site.organisation) %>
+          <td><%= link_to 'Edit', edit_site_mapping_path(@site, mapping) %></td>
+        <% end %>
         <td><%= mapping.http_status %></td>
         <td>
           <%= example_url(mapping) %>

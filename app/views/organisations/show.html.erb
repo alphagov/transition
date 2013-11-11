@@ -8,6 +8,12 @@
   <%= render 'in_conjunction_with' %>
 </header>
 
+<% if current_user.can_edit?(@organisation) %>
+  <p class="alert alert-block alert-info">
+    You have permission to edit site mappings for <i><%= @organisation.title %></i>.
+  </p>
+<% end %>
+
 <% unless @organisation.sites.empty? %>
   <h2>Sites</h2>
   <table class="sites table table-bordered">
