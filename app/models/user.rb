@@ -10,18 +10,9 @@ class User < ActiveRecord::Base
   end
 
   def can_edit?(organisation_to_edit)
-    case
-    when admin?
-      true
-    when organisation.nil?
-      false
-    when organisation.id == organisation_to_edit.id
-      true
-    when organisation.id == organisation_to_edit.parent_id
-      true
-    else
-      false
-    end
+    admin? ||
+      organisation == organisation_to_edit ||
+      organisation_to_edit.parent && (organisation == organisation_to_edit.parent)
   end
 
   def organisation
