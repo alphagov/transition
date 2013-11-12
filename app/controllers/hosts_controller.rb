@@ -1,4 +1,4 @@
-class HostsController < ApplicationController
+class HostsController < ActionController::Base
   def index
     @hosts = Host.includes(:site)
 
