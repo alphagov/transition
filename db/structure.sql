@@ -107,6 +107,7 @@ CREATE TABLE `sites` (
   `updated_at` datetime NOT NULL,
   `global_http_status` varchar(3) COLLATE utf8_unicode_ci DEFAULT NULL,
   `global_new_url` text COLLATE utf8_unicode_ci,
+  `managed_by_transition` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_sites_on_site` (`abbr`),
   KEY `index_sites_on_organisation_id` (`organisation_id`)
@@ -170,3 +171,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131107192158');
 INSERT INTO schema_migrations (version) VALUES ('20131107202738');
 
 INSERT INTO schema_migrations (version) VALUES ('20131108121241');
+
+INSERT INTO schema_migrations (version) VALUES ('20131112133657');
