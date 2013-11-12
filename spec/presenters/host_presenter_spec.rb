@@ -13,5 +13,17 @@ describe 'HostPresenter' do
       }
       subject { should eql(expected) }
     end
+
+    context 'when aka is true' do
+      subject { HostPresenter.new(host, aka: true).as_hash }
+
+      it 'should use the aka hostname' do
+        expected = {
+          hostname: host.aka_hostname,
+          managed_by_transition: site.managed_by_transition,
+        }
+        subject { should eql(expected) }
+      end
+    end
   end
 end
