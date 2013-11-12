@@ -14,7 +14,7 @@
   </p>
 <% end %>
 
-<% unless @organisation.sites.empty? %>
+<% unless @sites.empty? %>
   <h2>Sites</h2>
   <table class="sites table table-bordered">
     <thead>
@@ -25,7 +25,7 @@
     </tr>
     </thead>
     <tbody>
-    <% @organisation.sites.each do |site| %>
+    <% @sites.each do |site| %>
       <tr>
         <td><%= link_to "#{site.abbr} Mappings", site_mappings_path(site) %></td>
         <td><%= link_to 'Hits Summary', summary_site_hits_path(site) %></td>
