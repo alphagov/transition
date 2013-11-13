@@ -18,6 +18,17 @@ describe Mapping do
   describe 'validations' do
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:path) }
+
+    describe 'home pages (which are handled by Site)' do
+      subject(:homepage_mapping) { build(:mapping, path: '/') }
+
+      before { homepage_mapping.should_not be_valid }
+      it 'disallows homepages' do
+        homepage_mapping.errors[:path].should ==
+          ["It's not currently possible to edit the mapping for a site's homepage."]
+      end
+    end
+
     it { should ensure_length_of(:path).is_at_most(1024) }
     it { should validate_presence_of(:http_status) }
     it { should ensure_length_of(:http_status).is_at_most(3) }
@@ -31,7 +42,9 @@ describe Mapping do
     it { should ensure_length_of(:archive_url).is_at_most(64.kilobytes - 1)}
 
     describe 'URL validations' do
-      subject(:mapping) { build(:mapping, http_status: '301', new_url: 'not-a-url', suggested_url: 'http://', archive_url: '') }
+      subject(:mapping) do
+        build(:mapping, http_status: '301', new_url: 'not-a-url', suggested_url: 'http://', archive_url: '')
+      end
 
       before { mapping.should_not be_valid }
 
@@ -48,9 +61,7 @@ describe Mapping do
             mapping.should_not be_valid
           end
 
-          its([:new_url]) do
-            should == ['required when mapping is a redirect']
-          end
+          its([:new_url]) { should == ['required when mapping is a redirect'] }
         end
 
       end
@@ -58,22 +69,25 @@ describe Mapping do
   end
 
   describe 'values normalised or changed on save' do
-    let(:some_path) { '/a/b/c' }
+    let(:uncanonicalized_path) { '/A/b/c?significant=1&really-significant=2&insignificant=2' }
+    let(:canonicalized_path)   { '/a/b/c?really-significant=2&significant=1' }
+    let(:site)                 { build(:site, query_params: 'significant:really-significant')}
 
     subject(:mapping) do
-      build :mapping, path: some_path, site: build(:site), http_status: 301, archive_url: ''
+      build :mapping, path: uncanonicalized_path, site: site, http_status: '410', archive_url: ''
     end
 
-    before { mapping.save.should be_true }
+    before { mapping.save! }
 
-    its(:path_hash)   { should eql(Digest::SHA1.hexdigest(some_path)) }
+    its(:path)        { should eql(canonicalized_path) }
+    its(:path_hash)   { should eql(Digest::SHA1.hexdigest(canonicalized_path)) }
     its(:archive_url) { should be_nil }
   end
 
   describe '.filtered_by_path' do
     before do
       site = create :site
-      ['/', '/about', '/about/branding', '/other'].each do |path|
+      ['/a', '/about', '/about/branding', '/other'].each do |path|
         create :mapping, path: path, site: site
       end
     end
@@ -83,7 +97,7 @@ describe Mapping do
 
       it { should include('/about') }
       it { should include('/about/branding') }
-      it { should_not include('/') }
+      it { should_not include('/a') }
       it { should_not include('/other') }
     end
 

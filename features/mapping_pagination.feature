@@ -18,7 +18,7 @@ Feature: Paginated mappings
     And there is a site called bis_lowpay belonging to an organisation bis with these mappings:
       | http_status | path             | new_url           |
       | 410         | /about/corporate |                   |
-      | 301         | /                | http://gov.uk/bis |
+      | 301         | /a               | http://gov.uk/bis |
       | 410         | /something       |                   |
     And the mappings page size is 2
     When I visit the path /organisations/bis
@@ -34,7 +34,7 @@ Feature: Paginated mappings
     And there is a site called bis_lowpay belonging to an organisation bis with these mappings:
       | http_status | path             | new_url           |
       | 410         | /about/corporate |                   |
-      | 301         | /                | http://gov.uk/bis |
+      | 301         | /a               | http://gov.uk/bis |
       | 410         | /something       |                   |
     And the mappings page size is 2
     When I visit the path /organisations/bis

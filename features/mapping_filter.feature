@@ -9,7 +9,7 @@ Feature: Filter mappings
       | http_status | path             | new_url                                 |
       | 410         | /about/corporate |                                         |
       | 301         | /about/branding  | http://gov.uk/branding                  |
-      | 301         | /                | http://gov.uk/directgov                 |
+      | 301         | /a               | http://gov.uk/directgov                 |
       | 410         | /notinfilter     |                                         |
     And I visit the path /sites/directgov/mappings
 
