@@ -14,21 +14,23 @@
   </p>
 <% end %>
 
-<% unless @sites.empty? %>
+<% unless @organisation.sites.empty? %>
   <h2>Sites</h2>
   <table class="sites table table-bordered">
     <thead>
-    <tr>
-      <th>Abbreviation</th>
-      <th>Hits</th>
-      <th>Homepage</th>
-    </tr>
+      <tr>
+        <th>Old Site Homepage</th>
+        <th>Mappings</th>
+        <th>Analytics</th>
+        <th>New Site Homepage</th>
+      </tr>
     </thead>
     <tbody>
     <% @sites.each do |site| %>
       <tr>
-        <td><%= link_to "#{site.abbr} Mappings", site_mappings_path(site) %></td>
-        <td><%= link_to 'Hits Summary', summary_site_hits_path(site) %></td>
+        <td><%= site.default_host.hostname %></td>
+        <td><%= link_to "Mappings", site_mappings_path(site) %></td>
+        <td><%= link_to 'Analytics', summary_site_hits_path(site) %></td>
         <td><%= link_to site.homepage, site.homepage %></td>
       </tr>
     <% end %>
