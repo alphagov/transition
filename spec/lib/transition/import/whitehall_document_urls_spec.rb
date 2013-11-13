@@ -38,7 +38,19 @@ describe Transition::Import::WhitehallDocumentURLs do
         mapping.http_status.should == '301'
       end
 
-      it 'canonicalises the URL to find the one to update'
+      it 'canonicalises the URL to find the one to update' do
+        site = create(:site_with_default_host, abbr: 'www.dft', query_params: 'significant')
+        mapping = create(:mapping, site: site, path: '/oldurl?significant=aha', new_url: 'https://www.gov.uk/mediocre')
+        csv =  csv_for('/oldurl?significant=aha&ignored=ohyes','/amazing')
+
+        Transition::Import::WhitehallDocumentURLs.new.from_csv(csv)
+        Mapping.all.count.should == 1
+        mapping.reload
+        mapping.site.should == site
+        mapping.path.should == '/oldurl?significant=aha'
+        mapping.new_url.should == 'https://www.gov.uk/amazing'
+        mapping.http_status.should == '301'
+      end
 
       it 'skips rows without an Old Url'
 

@@ -12,9 +12,18 @@ module Transition
 
           if host
             canonical_path = host.site.canonical_path_from_url(row[0])
-            host.site.mappings.create!(path: canonical_path, new_url: row[1], http_status: '301')
+            existing_mapping = host.site.mappings.where(path_hash: path_hash(canonical_path)).first
+            if existing_mapping
+              existing_mapping.update_attributes(new_url: row[1], http_status: '301')
+            else
+              host.site.mappings.create(path: canonical_path, new_url: row[1], http_status: '301')
+            end
           end
         end
+      end
+
+      def path_hash(canonical_path)
+        Digest::SHA1.hexdigest(canonical_path)
       end
     end
   end
