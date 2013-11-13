@@ -9,30 +9,33 @@ describe HostsController do
 
     before do
       site.hosts << [host_b, host_c]
+      get :index, {:format => :json}
+      @parsed_response = JSON.parse(response.body)
     end
 
     it 'does not require authentication' do
-      get :index, {:format => :json}
       expect(response.status).to be(200)
     end
 
+    it 'contains results, total and response info' do
+      %w(results total _response_info).each do |key|
+        expect(@parsed_response).to have_key(key)
+      end
+    end
+
     it 'provides the hostname and managed_by_transition for a host' do
-      get :index, {:format => :json}
-      first_host = JSON.parse(response.body).first
+      first_host = @parsed_response['results'].first
       expect(first_host).to have_key('hostname')
       expect(first_host).to have_key('managed_by_transition')
     end
 
     it 'contains twice the number of hosts (to include aka hostnames)' do
-      get :index, {:format => :json}
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response.count).to be(6)
+      expect(@parsed_response['results'].count).to be(6)
     end
 
     it 'contains the actual and aka hostnames for each stored host' do
-      get :index, {:format => :json}
-      parsed_response = JSON.parse(response.body)
-      hostnames = parsed_response[0..1].map { |h| h['hostname'] }
+      results = @parsed_response['results']
+      hostnames = results[0..1].map { |h| h['hostname'] }
       expected_hostnames =
         [
           site.default_host.hostname,
