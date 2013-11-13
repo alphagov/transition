@@ -4,7 +4,7 @@ module HitsHelper
     link_to hit.path, scheme_and_host + hit.path
   end
 
-  def any_hits_for?(points_categories)
+  def any_totals_for?(points_categories)
     points_categories && points_categories.find { |c| c.points && !c.points.empty? }
   end
 
@@ -38,9 +38,9 @@ module HitsHelper
     categories.each do |category|
       cols << { label: category.title, type: 'number' }
 
-      category.points.each do |hit|
-        date                = dates[hit.hit_on] || (dates[hit.hit_on] = {})
-        date[category.name] = hit.count
+      category.points.each do |total|
+        date                = dates[total.total_on] || (dates[total.total_on] = {})
+        date[category.name] = total.count
       end
     end
 

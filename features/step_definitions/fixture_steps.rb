@@ -49,6 +49,8 @@ Given(/^these hits exist for the Attorney General's office site:$/) do |table|
                  hit_on: DateTime.strptime(hit_on, '%d/%m/%y'),
                  count: count
   end
+  require 'transition/import/daily_hit_totals'
+  Transition::Import::DailyHitTotals.from_hits!
 end
 
 Given(/^some hits exist for the Cabinet Office site$/) do
@@ -59,6 +61,7 @@ end
 Given(/^no hits exist for the Attorney General's office site$/) do
   @site ||= create(:site_with_default_host, abbr: 'ago')
   Hit.delete_all
+  DailyHitTotal.delete_all
 end
 
 Given(/^no mapping exists for the top hit$/) do

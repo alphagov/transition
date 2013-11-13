@@ -17,20 +17,23 @@ class Hit < ActiveRecord::Base
   before_validation :normalize_hit_on
   validates :path_hash, presence: true
 
-  scope :grouped, -> {
-    select('hits.path, hits.hit_on, sum(hits.count) as count, hits.http_status, hits.host_id')
+  scope :by_path_and_status, -> {
+    select('hits.path, sum(hits.count) as count, hits.http_status, hits.host_id').
+      group(:host_id, :path_hash, :http_status)
   }
-
-  scope :by_path_and_status, -> { group(:path_hash, :http_status) }
-  scope :by_date,            -> { group(:hit_on) }
-  scope :by_date_and_status, -> { group(:hit_on, :http_status) }
-
+  scope :points_by_date, -> {
+    select('hits.hit_on, sum(hits.count) as count').group(:hit_on)
+  }
+  scope :points_by_date_and_status, -> {
+    select('hits.hit_on, sum(hits.count) as count, hits.http_status').
+      group(:hit_on, :http_status)
+  }
   scope :in_range, ->(start_date, end_date) { where('(hit_on >= ?) AND (hit_on <= ?)', start_date, end_date) }
 
-  scope :errors,     -> { where(http_status: 404) }
-  scope :archives,   -> { where(http_status: 410) }
-  scope :redirects,  -> { where(http_status: 301) }
-  scope :other,      -> { where('http_status NOT IN (?)', [404, 410, 301]) }
+  scope :errors,     -> { where(http_status: '404') }
+  scope :archives,   -> { where(http_status: '410') }
+  scope :redirects,  -> { where(http_status: '301') }
+  scope :other,      -> { where("http_status NOT IN ('404', '410', '301')") }
   scope :top_ten,    -> { order('count DESC').limit(10) }
 
   protected

@@ -1,3 +1,13 @@
+CREATE TABLE `daily_hit_totals` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `host_id` int(11) NOT NULL,
+  `http_status` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `count` int(11) NOT NULL,
+  `total_on` date NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_daily_hit_totals_on_host_id_and_total_on_and_http_status` (`host_id`,`total_on`,`http_status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `hits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `host_id` int(11) NOT NULL,
@@ -152,6 +162,8 @@ INSERT INTO schema_migrations (version) VALUES ('20131018160637');
 INSERT INTO schema_migrations (version) VALUES ('20131023082026');
 
 INSERT INTO schema_migrations (version) VALUES ('20131104141642');
+
+INSERT INTO schema_migrations (version) VALUES ('20131106102619');
 
 INSERT INTO schema_migrations (version) VALUES ('20131107192158');
 
