@@ -18,6 +18,8 @@ module Transition
             else
               host.site.mappings.create(path: canonical_path, new_url: row[1], http_status: '301')
             end
+          else
+            Rails.logger.warn("Skipping mapping for unknown host in Whitehall URL CSV: '#{old_uri.host}'")
           end
         end
       end

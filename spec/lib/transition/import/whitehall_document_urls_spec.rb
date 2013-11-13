@@ -52,9 +52,15 @@ describe Transition::Import::WhitehallDocumentURLs do
         mapping.http_status.should == '301'
       end
 
+      it 'logs an unknown host' do
+        Rails.logger.should_receive(:warn).with("Skipping mapping for unknown host in Whitehall URL CSV: 'www.dft.gov.uk'")
+        csv =  csv_for('/oldurl','/amazing')
+        Transition::Import::WhitehallDocumentURLs.new.from_csv(csv)
+      end
+
       it 'skips rows without an Old Url'
 
-      it 'logs an unknown host'
+      it 'skips rows with an unknown State'
 
       it 'handles parse failures of Old Url'
     end
