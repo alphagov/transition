@@ -10,7 +10,13 @@ module Transition
           next if row[0].blank?
           next unless row[5] == 'published'
 
-          old_uri = URI.parse(row[0])
+          begin
+            old_uri = URI.parse(row[0])
+          rescue URI::InvalidURIError => e
+            Rails.logger.warn("Skipping mapping for unparseable Old Url in Whitehall URL CSV: #{row[0]}")
+            next
+          end
+
           host = Host.find_by_hostname(old_uri.host)
 
           if host

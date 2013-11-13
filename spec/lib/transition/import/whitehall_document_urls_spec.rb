@@ -75,7 +75,14 @@ Old Url,New Url,Status,Slug,Admin Url,State
         Mapping.all.count.should == 0
       end
 
-      it 'handles parse failures of Old Url'
+      it 'handles parse failures of Old Url' do
+csv = StringIO.new(<<-END)
+Old Url,New Url,Status,Slug,Admin Url,State
+http://_____/old,https://www.gov.uk/a-document,301,new,http://whitehall-admin/#{rand(1000)},published
+    END
+        Transition::Import::WhitehallDocumentURLs.new.from_csv(csv)
+        Mapping.all.count.should == 0
+      end
     end
   end
 end
