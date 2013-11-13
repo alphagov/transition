@@ -7,6 +7,7 @@ module Transition
         # Rows are like:
         # Old Url,New Url,Status,Slug,Admin Url,State
         CSV.new(urls_io, headers: true).each do |row|
+          next if row[0].blank?
           old_uri = URI.parse(row[0])
           host = Host.find_by_hostname(old_uri.host)
 

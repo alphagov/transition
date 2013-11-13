@@ -58,7 +58,14 @@ describe Transition::Import::WhitehallDocumentURLs do
         Transition::Import::WhitehallDocumentURLs.new.from_csv(csv)
       end
 
-      it 'skips rows without an Old Url'
+      it 'skips rows without an Old Url' do
+        csv = StringIO.new(<<-END)
+Old Url,New Url,Status,Slug,Admin Url,State
+,https://www.gov.uk/a-document,301,new,http://whitehall-admin/#{rand(1000)},published
+    END
+        Transition::Import::WhitehallDocumentURLs.new.from_csv(csv)
+        Mapping.all.count.should == 0
+      end
 
       it 'skips rows with an unknown State'
 
