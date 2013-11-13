@@ -3,7 +3,7 @@ Given(/^there is a (.*) organisation named (.*) abbreviated (.*) with these site
   @parent             = create(:organisation, redirector_abbr: parent)
   @organisation       = create(:organisation, title: name, redirector_abbr: abbr, parent: @parent)
   @organisation.sites = site_table.rows.map do |site_abbr, homepage|
-    create(:site, abbr: site_abbr, homepage: homepage, organisation_id: @organisation.id)
+    create(:site_with_default_host, abbr: site_abbr, homepage: homepage, organisation_id: @organisation.id)
   end
 end
 

@@ -12,6 +12,7 @@ Feature: View organisation
     Then I should see the header "UK Atomic Energy Authority"
     And I should see that this organisation is an executive non-departmental public body of its parent
     And I should see links to all this organisation's sites and homepages
+    And I should see all the old homepages for the sites of the given organisation
 
   Scenario: I can edit an organisation
     Given I have logged in as a member of DCLG
