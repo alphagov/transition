@@ -30,24 +30,23 @@
   <table class="mappings table table-bordered">
     <thead>
     <tr>
-      <% if current_user.can_edit?(@site.organisation) %>
-        <th></th>
-      <% end %>
-      <th>HTTP Status</th>
+      <th class="mapping-type-header">Type</th>
       <th>
         Original path from <%= @site.default_host.hostname %>
         <br>
         (where it redirects to when applicable)
       </th>
+      <% if current_user.can_edit?(@site.organisation) %>
+        <th></th>
+      <% end %>
     </tr>
     </thead>
     <tbody>
     <% @mappings.each do |mapping| %>
       <tr data-status-code="<%= mapping.http_status %>">
-        <% if current_user.can_edit?(@site.organisation) %>
-          <td><%= link_to 'Edit', edit_site_mapping_path(@site, mapping) %></td>
-        <% end %>
-        <td><%= mapping.http_status %></td>
+        <td class="<%= "mapping-type-#{mapping.type}" %>">
+          <%= mapping.type.titleize %>
+        </td>
         <td>
           <%= example_url(mapping) %>
           <% if mapping.redirect? %>
@@ -55,12 +54,19 @@
             <%= link_to mapping.new_url, mapping.new_url, class: 'redirects-to-link' if mapping.new_url.present? %>
           <% end %>
         </td>
+        <% if current_user.can_edit?(@site.organisation) %>
+          <td>
+            <%= link_to edit_site_mapping_path(@site, mapping), class: 'btn btn-mini' do %>
+              Edit&nbsp;mapping
+            <% end %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
     </tbody>
   </table>
   <%= paginate(@mappings) %>
-  
+
 <% else %>
   <p class="no-content no-content-bordered">
     No mappings found

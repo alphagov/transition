@@ -1,4 +1,5 @@
 @import 'bootstrap/_variables';
+@import 'theme';
 
 .history {
   h2 {
@@ -15,4 +16,12 @@
 .redirects-to-link:visited {
   color: $grayLight;
   text-decoration: underline;
+}
+
+.mapping-type-redirect {
+  background-color: $goodHTTPStatusColor;
+}
+
+.mapping-type-archive {
+  background-color: $defaultHTTPStatusColor;
 }
