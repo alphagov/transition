@@ -67,7 +67,13 @@ Old Url,New Url,Status,Slug,Admin Url,State
         Mapping.all.count.should == 0
       end
 
-      it 'skips rows with an unknown State'
+      it 'skips rows with a State of anything but "published"' do
+        site = create(:site_with_default_host, abbr: 'www.dft')
+        csv =  csv_for('/oldurl', '/new', 'draft')
+
+        Transition::Import::WhitehallDocumentURLs.new.from_csv(csv)
+        Mapping.all.count.should == 0
+      end
 
       it 'handles parse failures of Old Url'
     end
