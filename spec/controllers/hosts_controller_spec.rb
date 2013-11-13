@@ -9,7 +9,7 @@ describe HostsController do
 
     before do
       site.hosts << [host_b, host_c]
-      get :index, {:format => :json}
+      get :index
       @parsed_response = JSON.parse(response.body)
     end
 
