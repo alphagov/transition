@@ -1,10 +1,18 @@
-<section class="hits-<%= category.name %>">
-  <h2><%= category.title %></h2>
+<section class="hits-summary hits-summary-<%= category.name %>">
+  
+  <h2>
+    Top 10 <%= category.title %>
+  </h2>
+  
   <% if category.hits.any? %>
     <%= render partial: 'hits_table', locals: { hits: category.hits} %>
+    <p class="hits-summary-link">
+      <%= link_to "See all #{category.name}", (send category.path_method, @site, period: @period.query_slug) %>
+    </p>
   <% else %>
     <p class="no-content no-content-bordered">
       There are no known <%= category.name.pluralize %> for <%= @site.abbr %> <%= @period.no_content %>.
     </p>
   <% end %>
+  
 </section>

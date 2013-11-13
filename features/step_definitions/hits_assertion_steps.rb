@@ -59,7 +59,7 @@ Then(/^it should show(?: only the top) (\d+) (\w+) in descending count order$/) 
     status = 200
   end
 
-  within ".hits-#{category}" do
+  within ".hits-summary-#{category}" do
     expect(page).to have_sorted_bar_rows(count).for_status(status)
   end
 end
