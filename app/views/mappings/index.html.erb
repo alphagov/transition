@@ -52,7 +52,7 @@
           <%= example_url(mapping) %>
           <% if mapping.redirect? %>
             <span class="redirects-to">redirects to</span><br>
-            <%= link_to mapping.new_url, mapping.new_url if mapping.new_url.present? %>
+            <%= link_to mapping.new_url, mapping.new_url, class: 'redirects-to-link' if mapping.new_url.present? %>
           <% end %>
         </td>
       </tr>
