@@ -14,7 +14,11 @@
 
   <% hits.each do |hit| %>
     <tr>
-      <td class="status"><%= hit.http_status %></td>
+      <td class="status">
+        <abbr title="<%= "#{hit.http_status} — #{Rack::Utils::HTTP_STATUS_CODES[hit.http_status.to_i]}" %>">
+          <%= hit.http_status %>
+        </abbr>
+      </td>
       <td class="relative">
         <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
         <span class="path"><%= link_to_hit(hit) %></span>
