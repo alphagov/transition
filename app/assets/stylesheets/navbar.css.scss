@@ -1,3 +1,4 @@
+@import 'bootstrap/_variables';
 @import '_theme';
 
 .navbar .brand {
@@ -10,5 +11,10 @@
 
 .navbar .brand:hover,
 .navbar .brand:focus {
+  text-decoration: underline;
+}
+
+.navbar-text a {
+  color: $grayLight;
   text-decoration: underline;
 }
