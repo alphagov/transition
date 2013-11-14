@@ -6,7 +6,10 @@ class Host < ActiveRecord::Base
   def aka_hostname
     # This does the reverse of Bouncer's aka handling:
     #     hostname.sub(/^aka-/, '').sub(/^aka\./, 'www.')
-    aka = hostname.sub(/^www\./, 'aka.')
-    aka.start_with?('aka.') ? aka : 'aka-' + aka
+    if hostname.start_with?('www.')
+      hostname.sub(/^www\./, 'aka.')
+    else
+      'aka-' + hostname
+    end
   end
 end

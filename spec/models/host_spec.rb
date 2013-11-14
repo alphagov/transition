@@ -17,5 +17,10 @@ describe Host do
       let(:host) { build(:host, hostname: 'www.foo.com') }
       it { should eql('aka.foo.com') }
     end
+
+    context "when the hostname has www2 on the front" do
+      let(:host) { build(:host, hostname: 'www2.lowpay.gov.uk') }
+      it { should eql('aka-www2.lowpay.gov.uk') }
+    end
   end
 end
