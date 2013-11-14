@@ -10,7 +10,7 @@ Feature: History of edits to a mapping
       | 301         | /about/corporate | http://somewhere.good                   |
     And I visit the path /sites/directgov/mappings
     And I click the link "Edit"
-    And I change the mapping's New URL to http://somewhere.bad
+    And I change the mapping's redirect to http://somewhere.bad
 
   Scenario: Looking at an edited mapping
     When I log in as a SIRO

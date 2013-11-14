@@ -1,5 +1,3 @@
-# encoding=utf-8
-
 module MappingsHelper
   def example_url(mapping, options = {})
     scheme_and_host = 'http://'+ mapping.site.default_host.hostname
@@ -51,7 +49,7 @@ module MappingsHelper
   # e.g. [['301 Moved Permanently', '301'], ['410 Gone', '410']]
   def options_for_supported_statuses
     Mapping::TYPES.map do |status, type|
-      ["#{type.titleize} — #{status}: #{Rack::Utils::HTTP_STATUS_CODES[status.to_i]}", status]
+      ["#{type.titleize}", status]
     end
   end
 end
