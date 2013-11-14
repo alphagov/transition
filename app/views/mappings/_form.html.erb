@@ -2,15 +2,16 @@
   <%= render 'shared/error_messages', model: f.object %>
 
   <%= f.label :http_status, 'Type' %>
-  <%= f.select :http_status, options_for_supported_statuses, {}, { class: 'span4 js-http-status' } %>
+  <%= f.select :http_status, options_for_supported_statuses, {}, { class: 'remove-bottom-margin span4 js-http-status' } %>
 
   <% if @mapping.persisted? # we're editing, show the example URL  %>
-    <%= label_tag :old_url, 'Old URL' %>
-    <%= example_url(@mapping, include_host: true, class: 'span7') %>
-    <hr>
+    <div class="add-vertical-margins">
+      <%= label_tag :old_url, 'Old URL' %>
+      <%= example_url(@mapping, include_host: true, class: 'span7') %>
+    </div>
   <% else %>
-    <%= f.label :path, 'Old URL' %>
-    <div class="input-prepend">
+    <%= f.label :path, 'Old URL', class: 'add-top-margin' %>
+    <div class="input-prepend add-bottom-margin">
       <span class="add-on">http://<%= @site.default_host.hostname %></span>
       <%= f.text_field :path, class: 'span8', placeholder: '/path/to/page' %>
     </div>

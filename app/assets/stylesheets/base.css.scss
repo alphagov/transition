@@ -30,6 +30,7 @@ footer {
 
 /* Tool belt */
 
+.add-vertical-margins,
 .add-top-margin {
   margin-top: $baseLineHeight;
 }
@@ -38,6 +39,7 @@ footer {
   margin-bottom: 0;
 }
 
+.add-vertical-margins,
 .add-bottom-margin {
   margin-bottom: $baseLineHeight;
 }
