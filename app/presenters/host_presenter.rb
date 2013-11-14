@@ -5,7 +5,7 @@
 class HostPresenter
   def initialize(host, options={})
     @host = host
-    @aka = options[:aka]
+    @use_aka_hostname = options[:use_aka_hostname]
   end
 
   def as_hash
@@ -17,6 +17,6 @@ class HostPresenter
 
 private
   def hostname
-    @aka ? @host.aka_hostname : @host.hostname
+    @use_aka_hostname ? @host.aka_hostname : @host.hostname
   end
 end

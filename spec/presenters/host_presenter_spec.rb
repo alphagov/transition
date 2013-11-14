@@ -8,13 +8,13 @@ describe 'HostPresenter' do
 
     it { should have_key(:hostname) }
 
-    context 'when aka is false (by default)' do
+    context 'when use_aka_hostname is false (by default)' do
       subject { HostPresenter.new(host).as_hash }
       its([:hostname]) { should eql(host.hostname) }
     end
 
-    context 'when aka is true' do
-      subject { HostPresenter.new(host, aka: true).as_hash }
+    context 'when use_aka_hostname is true' do
+      subject { HostPresenter.new(host, use_aka_hostname: true).as_hash }
       its([:hostname]) { should eql(host.aka_hostname) }
     end
 
