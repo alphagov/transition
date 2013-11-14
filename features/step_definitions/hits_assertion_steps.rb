@@ -115,7 +115,7 @@ Then(/^I should be on the new mapping page$/) do
 end
 
 Then(/^the top hit's canonicalized path should already be in the form$/) do
-  expect(find_field('Path').value).to eql('/a')
+  expect(find_field('Old URL').value).to eql('/a')
 end
 
 Then(/^I should see a[n]? (\w+) graph showing a (\w+) trend line(?: with )?([0-9]*)?(?: points)?$/) do |category, color, points|

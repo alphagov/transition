@@ -3,16 +3,16 @@ When(/^I go to create a new mapping$/) do
 end
 
 When(/^I make the mapping a redirect with a new URL of (.*)$/) do |new_url|
-  select '301', from: 'HTTP Status'
+  select '301', from: 'Type'
   fill_in 'New URL', with: new_url
 end
 
 When(/^I make the mapping an archive$/) do
-  select '410', from: 'HTTP Status'
+  select '410', from: 'Type'
 end
 
-When(/^I save the mapping$/) do
-  click_button 'Save'
+When(/^I (save|create) the mapping$/) do |type|
+  click_button type.titleize
 end
 
 When(/^I go to edit the first mapping$/) do
@@ -30,6 +30,6 @@ When(/^I change the mapping's (.*) to (.*)$/) do |field_name, value|
 end
 
 When(/^I make the mapping a redirect from (.*) to (.*)$/) do |path, new_url|
-  fill_in 'Path', with: path
+  fill_in 'Old URL', with: path
   fill_in 'New URL', with: new_url
 end

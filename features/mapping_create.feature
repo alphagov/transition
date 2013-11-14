@@ -10,7 +10,7 @@ Feature: Create a mapping
     And I go to create a new mapping
     Then I should see "http://bis.gov.uk"
     When I make the mapping a redirect from /Needs/Canonicalizing/q=1 to http://gov.uk/organisations/bis
-    And I save the mapping
+    And I create the mapping
     Then I should be returned to the mappings list for bis
     And I should see "Mapping saved."
     And I should see "/needs/canonicalizing"
