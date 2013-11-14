@@ -14,6 +14,7 @@ describe Transition::Import::OrgsSitesHosts do
 
     context 'importing valid yaml files', testing_before_all: true do
       before :all do
+        @old_site = create(:site, abbr: 'oldsite')
         # This nasty block is a substitute for stubbing, which isn't available in a before :all
         Transition::Import::OrgsSitesHosts.from_redirector_yaml!('spec/fixtures/sites/someyaml/*.yml') do |o|
           def o.whitehall_organisations
@@ -29,15 +30,19 @@ describe Transition::Import::OrgsSitesHosts do
       end
 
       it 'has imported orgs' do
-        Organisation.count.should == 4
+        Organisation.count.should == 5
       end
 
       it 'has imported sites' do
-        Site.count.should == 6
+        Site.count.should == 7
       end
 
       it 'has imported hosts' do
         Host.count.should == 18
+      end
+
+      it 'sets managed_by_transition to false for all new sites' do
+        Site.where(managed_by_transition: true).should == [@old_site]
       end
 
       describe 'a department' do
