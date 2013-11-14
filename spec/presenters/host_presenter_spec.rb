@@ -6,24 +6,19 @@ describe 'HostPresenter' do
     let(:host) { site.hosts.first }
     subject { HostPresenter.new(host).as_hash }
 
-    it 'should generate JSON' do
-      expected = {
-        hostname: host.hostname,
-        managed_by_transition: site.managed_by_transition,
-      }
-      subject { should eql(expected) }
+    it { should have_key(:hostname) }
+
+    context 'when aka is false (by default)' do
+      subject { HostPresenter.new(host).as_hash }
+      its([:hostname]) { should eql(host.hostname) }
     end
 
     context 'when aka is true' do
       subject { HostPresenter.new(host, aka: true).as_hash }
-
-      it 'should use the aka hostname' do
-        expected = {
-          hostname: host.aka_hostname,
-          managed_by_transition: site.managed_by_transition,
-        }
-        subject { should eql(expected) }
-      end
+      its([:hostname]) { should eql(host.aka_hostname) }
     end
+
+    it { should have_key(:managed_by_transition) }
+    its([:managed_by_transition]) { should be_true }
   end
 end
