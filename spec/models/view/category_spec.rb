@@ -8,14 +8,15 @@ describe View::Hits::Category do
     it { should have(5).categories }
 
     describe 'the first' do
-      subject { View::Hits::Category.all.first }
+      subject(:all_category) { View::Hits::Category.all.first }
 
       it { should be_a(View::Hits::Category) }
 
-      its(:title)  { should == 'All hits' }
-      its(:to_sym) { should == :all }
-      its(:color)  { should == '#333' }
-      its(:plural) { should == 'hits' }
+      its(:title)       { should == 'All hits' }
+      its(:to_sym)      { should == :all }
+      its(:color)       { should == '#333' }
+      its(:plural)      { should == 'hits' }
+      its(:path_method) { should == :site_hits_path }
     end
 
     describe 'indexing' do
@@ -25,10 +26,11 @@ describe View::Hits::Category do
 
       subject(:others_category) { View::Hits::Category['other'] }
 
-      its(:title)  { should == 'Other' }
-      its(:to_sym) { should == :other }
-      its(:color)  { should == '#aaa' }
-      its(:plural) { should == 'others' }
+      its(:title)       { should == 'Other' }
+      its(:to_sym)      { should == :other }
+      its(:color)       { should == '#aaa' }
+      its(:plural)      { should == 'others' }
+      its(:path_method) { should == :other_site_hits_path }
 
       describe 'the polyfill of points when points= is called' do
         context 'valid data' do
