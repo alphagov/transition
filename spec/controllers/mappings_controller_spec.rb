@@ -1,11 +1,15 @@
 require 'spec_helper'
 
 describe MappingsController do
+  let(:site)              { create :site, abbr: 'moj' }
+  let(:unaffiliated_user) { create(:user, organisation_slug: nil) }
+  let(:admin_bob)         { create(:admin, name: 'Bob Terwhilliger') }
+  let(:mapping)           { create(:mapping) }
+
   describe '#index' do
-    let(:site)      { create :site, abbr: 'moj' }
     let(:mapping_a) { create :mapping, path: '/a', site: site }
     let(:mapping_b) { create :mapping, path: '/b', site: site }
-    let(:mapping_c) { create :mapping, path: '/c', site: site}
+    let(:mapping_c) { create :mapping, path: '/c', site: site }
 
     before do
       login_as_stub_user
@@ -20,9 +24,8 @@ describe MappingsController do
   end
 
   describe '#find' do
-    let(:site) { create(:site) }
-    raw_path = '/ABOUT/'
-    canonicalized_path = '/about'
+    let(:raw_path)           { '/ABOUT/' }
+    let(:canonicalized_path) { '/about' }
 
     before do
       login_as_stub_user
@@ -72,41 +75,35 @@ describe MappingsController do
   end
 
   describe '#new' do
-    context 'user doesn\'t have permission' do
-      let(:site) { create(:site) }
-
+    context 'when user doesn\'t have permission' do
       before do
-        login_as create(:user, organisation_slug: nil)
+        login_as unaffiliated_user
+        get :new, site_id: site.abbr
       end
 
       it 'redirects to the index page and sets a flash message' do
-        get :new, site_id: site.abbr
         expect(response).to redirect_to site_mappings_path(site)
       end
     end
   end
 
   describe '#create' do
-    context 'user doesn\'t have permission' do
-      let(:site) { create(:site) }
-
+    context 'when user doesn\'t have permission' do
       before do
-        login_as create(:user, organisation_slug: nil)
+        login_as unaffiliated_user
+        post :create, site_id: site.abbr
       end
 
       it 'redirects to the index page and sets a flash message' do
-        post :create, site_id: site.abbr
         expect(response).to redirect_to site_mappings_path(site)
       end
     end
   end
 
   describe '#edit' do
-    context 'user doesn\'t have permission' do
-      let(:mapping) { create(:mapping) }
-
+    context 'when user doesn\'t have permission' do
       before do
-        login_as create(:user, organisation_slug: nil)
+        login_as unaffiliated_user
       end
 
       it 'redirects to the index page and sets a flash message' do
@@ -116,35 +113,36 @@ describe MappingsController do
     end
   end
 
-  describe '#update', versioning: true do
-    context 'user doesn\'t have permission' do
-      let(:mapping) { create(:mapping) }
-
+  describe '#update' do
+    context 'when user doesn\'t have permission' do
       before do
-        login_as create(:user, organisation_slug: nil)
+        login_as unaffiliated_user
+        put :update, site_id: mapping.site.abbr, id: mapping.id
       end
 
-      it 'redirects to the index page and sets a flash message' do
-        put :update, site_id: mapping.site.abbr, id: mapping.id
+      it 'redirects to the index page' do
         expect(response).to redirect_to site_mappings_path(mapping.site)
       end
     end
 
-    context 'paper_trail' do
-      let(:user)    { create(:admin, name: 'Bob Terwhilliger') }
-      let(:mapping) { create :mapping }
+    context 'when Bob has permission to update a mapping, but is acting Evilly' do
+      describe 'updating with versioning', versioning: true do
+        before do
+          login_as admin_bob
+          post :update, site_id: mapping.site, id: mapping.id,
+               mapping: { path: '/Needs/Canonicalization?has=some&query=parts', new_url: 'http://somewhere.bad' }
+        end
 
-      before do
-        login_as user
+        it 'canonicalises the path' do
+          mapping.reload.path.should == '/needs/canonicalization'
+        end
 
-        post :update, site_id: mapping.site, id: mapping.id, mapping: { new_url: 'http://somewhere.bad' }
-      end
+        describe 'the recorded user' do
+          subject { Mapping.first.versions.last }
 
-      describe 'the recorded user' do
-        subject { Mapping.first.versions.last }
-
-        its(:whodunnit) { should eql('Bob Terwhilliger') }
-        its(:user_id)   { should eql(user.id) }
+          its(:whodunnit) { should eql('Bob Terwhilliger') }
+          its(:user_id)   { should eql(admin_bob.id) }
+        end
       end
     end
   end

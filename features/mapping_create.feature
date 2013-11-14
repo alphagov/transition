@@ -9,10 +9,11 @@ Feature: Create a mapping
     And I visit the path /sites/bis/mappings
     And I go to create a new mapping
     Then I should see "http://bis.gov.uk"
-    When I make the mapping a redirect from /somewhere to http://gov.uk/organisations/bis
+    When I make the mapping a redirect from /Needs/Canonicalizing/q=1 to http://gov.uk/organisations/bis
     And I save the mapping
     Then I should be returned to the mappings list for bis
     And I should see "Mapping saved."
+    And I should see "/needs/canonicalizing"
 
   Scenario: I don't have access
     Given I have logged in as a member of another organisation
