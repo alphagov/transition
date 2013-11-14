@@ -72,16 +72,18 @@ module Transition
       attr_reader :site
       def import_site!
         @site = Site.where(abbr: abbr).first_or_create do |site|
-          site.organisation       = if child? && !organisation?
-                                      Organisation.find_by_redirector_abbr(inferred_parent)
-                                    else
-                                      Organisation.find_by_redirector_abbr(inferred_organisation)
-                                    end
-          site.tna_timestamp      = yaml['tna_timestamp']
-          site.query_params       = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
-          site.global_http_status = global_http_status
-          site.global_new_url     = global_new_url
-          site.homepage           = yaml['homepage']
+          site.organisation =
+            if child? && !organisation?
+              Organisation.find_by_redirector_abbr(inferred_parent)
+            else
+              Organisation.find_by_redirector_abbr(inferred_organisation)
+            end
+          site.tna_timestamp          = yaml['tna_timestamp']
+          site.query_params           = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
+          site.global_http_status     = global_http_status
+          site.global_new_url         = global_new_url
+          site.homepage               = yaml['homepage']
+          site.managed_by_transition  = false
         end
       end
 

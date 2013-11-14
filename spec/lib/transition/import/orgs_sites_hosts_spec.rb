@@ -40,6 +40,10 @@ describe Transition::Import::OrgsSitesHosts do
         Host.count.should == 18
       end
 
+      it 'has set managed_by_transition to false for all new sites' do
+        Site.where(managed_by_transition: true).should be_empty
+      end
+
       describe 'a department' do
         it 'has assigned an organisation to its own site' do
           Site.find_by_abbr!('businesslink').organisation.should == @businesslink
