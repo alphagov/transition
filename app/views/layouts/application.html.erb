@@ -29,18 +29,8 @@
               <li><%= link_to "#{current_user.organisation.title} (#{current_user.organisation.abbreviation})", organisation_path(current_user.organisation) %></li>
             <% end %>
           </ul>
-          <ul class="nav pull-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Services<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="http://digital.cabinetoffice.gov.uk/">GDS blog</a></li>
-                <li class="divider"></li>
-                <li><%= link_to 'Sign out', gds_sign_out_path %></li>
-              </ul>
-            </li>
-          </ul>
           <p class="navbar-text pull-right">
-            Signed in as <%= link_to current_user.name, Plek.current.find('signon') %>
+            Hello, <%= link_to current_user.name, Plek.current.find('signon') %> &bull; <%= link_to 'Sign out', gds_sign_out_path %>
           </p>
         </nav><!--/.nav-collapse -->
       </div>
