@@ -1,7 +1,11 @@
 <section class="hits-summary hits-summary-<%= category.name %>">
   
   <h2>
-    Top 10 <%= category.title %>
+  <% if category.hits.count < 10 %>
+    <%= category.hits.count %> <%= category.title %>
+  <% else %>
+    Top <%= category.hits.count %> <%= category.title %>
+  <% end %>
   </h2>
   
   <% if category.hits.any? %>
