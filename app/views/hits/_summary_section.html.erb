@@ -1,4 +1,4 @@
-<section class="hits-summary hits-summary-<%= category.name %>">
+<section class="hits-summary-<%= category.name %> add-big-bottom-margin">
   
   <h2>
   <% if category.hits.count < 10 %>
@@ -10,9 +10,7 @@
   
   <% if category.hits.any? %>
     <%= render partial: 'hits_table', locals: { hits: category.hits} %>
-    <p class="hits-summary-link">
-      <%= link_to "See all #{category.name}", (send category.path_method, @site, period: @period.query_slug) %>
-    </p>
+    <%= link_to "See all #{category.name}", (send category.path_method, @site, period: @period.query_slug) %>
   <% else %>
     <p class="no-content no-content-bordered">
       There are no known <%= category.name.pluralize %> for <%= @site.abbr %> <%= @period.no_content %>.

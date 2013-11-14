@@ -42,6 +42,10 @@ footer {
   margin-bottom: $baseLineHeight;
 }
 
+.add-big-bottom-margin {
+  margin-bottom: $baseLineHeight *2;
+}
+
 .remove-bottom-margin {
   margin-bottom: 0;
 }
