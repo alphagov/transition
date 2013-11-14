@@ -2,7 +2,7 @@
 # the host is managed, for configuring the CDN, optionally using the
 # host's aka_hostname.
 
-class HostPresenter < Struct.new(:host)
+class HostPresenter
   def initialize(host, options={})
     @host = host
     @aka = options[:aka]
