@@ -25,15 +25,6 @@
   background-color: $badHTTPStatusColor;
 }
 
-.hits-summary {
-  margin-bottom: $baseLineHeight * 4;
-}
-
-.hits-summary-link a {
-  font-weight: normal;
-  font-size: (14/13)+em;
-}
-
 .hits {
   table-layout: fixed;
 }
