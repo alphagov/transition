@@ -3,6 +3,8 @@ Transition::Application.routes.draw do
 
   resources :style, only: [:index]
 
+  resources :hosts, only: [:index]
+
   resources :organisations, only: [:show, :index]
   resources :sites, only: [] do
 
