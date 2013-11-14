@@ -1,8 +1,8 @@
-<% content_for(:page_title, "#{@site.abbr} Mappings") %>
+<% content_for(:page_title, "#{@site.default_host.hostname} Mappings") %>
 
 <%= breadcrumb(@site) %>
 
-<h1 class="page-header"><%= @site.abbr %> Mappings</h1>
+<h1 class="page-header"><%= @site.default_host.hostname %> Mappings</h1>
 
 <%= render partial: 'site', locals: { site: @site } %>
 <%= render partial: 'filters' %>
@@ -55,7 +55,7 @@
           <% end %>
         </td>
         <% if current_user.can_edit?(@site.organisation) %>
-          <td>
+          <td class="text-right">
             <%= link_to edit_site_mapping_path(@site, mapping), class: 'btn btn-mini' do %>
               Edit&nbsp;mapping
             <% end %>
