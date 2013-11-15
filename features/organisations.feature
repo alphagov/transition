@@ -10,7 +10,7 @@ Feature: List organisations
       | bis  | Department for Business, Innovation and Skills |
       | fco  | Foreign Office                                 |
     When I visit the home page
-    Then I should see "Signed in"
+    Then I should see "Hello"
     And I should see the header "Organisations"
     And I should see a table with class "organisations" containing 2 rows
     And I should see a link to the organisation bis
