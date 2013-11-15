@@ -17,7 +17,7 @@
       <td class="status"><%= hit.http_status %></td>
       <td class="relative">
         <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
-        <span class="path"><%= link_to_hit(hit) %></span>
+        <span class="path"><%= link_to_hit(hit, @site.default_host) %></span>
       </td>
       <td class="count"><%= number_with_delimiter hit.count %></td>
       <% if current_user.can_edit?(@site.organisation) %>
