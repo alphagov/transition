@@ -34,7 +34,7 @@ describe MappingsHelper do
 
   describe '#options_for_supported_statuses' do
     it 'provides an array of supported statuses in a form compatible with FormBuilder#select' do
-      helper.options_for_supported_statuses.should == [['301 Moved Permanently', '301'], ['410 Gone', '410']]
+      helper.options_for_supported_statuses.should == [['Redirect', '301'], ['Archive', '410']]
     end
   end
 end

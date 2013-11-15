@@ -14,7 +14,7 @@ Feature: Edit a site's mapping
 
   @javascript
   Scenario: Editing a site mapping that is a redirect
-    When I make the mapping a redirect with a new URL of https://gov.uk/new-url
+    When I make the mapping a redirect to https://gov.uk/new-url
     Then I should see redirect fields
     But I should not see archive fields
     When I save the mapping
@@ -29,7 +29,7 @@ Feature: Edit a site's mapping
     But I should see archive fields
 
   Scenario: Editing a mapping with invalid values
-    When I make the mapping a redirect with a new URL of not-a-url
+    When I make the mapping a redirect to not-a-url
     And I save the mapping
     Then I should still be editing a mapping
     And I should see "New URL is not a URL"
