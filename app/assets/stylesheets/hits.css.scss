@@ -7,13 +7,32 @@
   font-weight: normal;
 }
 
+.hits {
+  table-layout: fixed;
+}
+
+.hits td {
+  overflow: hidden;
+}
+
+
+.bar-chart-wrap {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  margin: -8px;
+}
+
 .bar-chart-row {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   bottom: 0;
+  
   background-color: $defaultHTTPStatusColor;
+  
   min-width: 3px;
+  min-height: 40px;
 }
 
 .bar-chart-row-301 {
@@ -25,9 +44,6 @@
   background-color: $badHTTPStatusColor;
 }
 
-.hits {
-  table-layout: fixed;
-}
 
 .status {
   width: $gridColumnWidth;
@@ -46,6 +62,9 @@
 
 .path {
   word-wrap: break-word;
+  display: inline-block;
+  margin: 8px;
+  
   position: relative;
   z-index: 1;
 }
