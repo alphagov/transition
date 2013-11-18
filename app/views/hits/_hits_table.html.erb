@@ -19,7 +19,7 @@
           <%= hit.http_status %>
         </abbr>
       </td>
-      <td>
+      <td class="remove-padding">
         <div class="bar-chart-wrap">
           <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
           <span class="path"><%= link_to_hit(hit, @site.default_host) %></span>
