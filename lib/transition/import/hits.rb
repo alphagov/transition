@@ -38,11 +38,15 @@ module Transition
       def self.from_redirector_mask!(filemask)
         done = 0
         ActiveRecord::Base.connection.execute('SET autocommit=0')
-        Dir[File.expand_path(filemask)].each do |filename|
-          Hits.from_redirector_tsv_file!(filename)
-          done += 1
+        begin
+          Dir[File.expand_path(filemask)].each do |filename|
+            Hits.from_redirector_tsv_file!(filename)
+            done += 1
+          end
+          ActiveRecord::Base.connection.execute('COMMIT')
+        ensure
+          ActiveRecord::Base.connection.execute('SET autocommit=1')
         end
-        ActiveRecord::Base.connection.execute('COMMIT')
 
         $stderr.puts "#{done} hits files imported."
       end
