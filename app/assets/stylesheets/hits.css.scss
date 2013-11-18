@@ -15,12 +15,14 @@
   overflow: hidden;
 }
 
+.hits .remove-padding {
+  padding: 0;
+}
 
 .bar-chart-wrap {
   position: relative;
   height: 100%;
   width: 100%;
-  margin: -8px;
 }
 
 .bar-chart-row {
