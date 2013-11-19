@@ -1,5 +1,4 @@
 @import '_theme';
-@import "bootstrap";
 @import 'bootstrap/_variables';
 
 /* Base styles */
@@ -111,8 +110,8 @@ main a {
 
 .page-title-with-border {
   @extend .page-title;
-  border-bottom: none;
-  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 30px;
 }
 
 .subtitle {
