@@ -3,6 +3,7 @@ development:
   database: transition_development
   username: transition
   password: transition
+  encoding: utf8
   local_infile: true
 
 # Warning: The database defined as "test" will be erased and
@@ -13,11 +14,13 @@ test: &test
   database: transition_test<%= ENV['TEST_ENV_NUMBER'] %>
   username: transition
   password: transition
+  encoding: utf8
   local_infile: true
 
 production:
   adapter: mysql2
   database: transition_production
+  encoding: utf8
   local_infile: true
 
 cucumber:
