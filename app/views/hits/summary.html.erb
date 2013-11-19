@@ -1,7 +1,12 @@
-<% content_for :page_title, "#{@site.abbr} Hits Summary" %>
+<% content_for :page_title, "#{@site.abbr} Analytics" %>
 <%= breadcrumb(@site.default_host.hits.build) %>
 
-<h1><%= "#{@site.abbr} Hits Summary" %></h1>
+<div class="page-title">
+  <h1>
+    <span class="small"><%= @site.default_host.hostname %></span>
+    Analytics
+  </h1>
+</div>
 
 <%= render partial: 'hits_tabs', locals: { active: 'Summary' } %>
 

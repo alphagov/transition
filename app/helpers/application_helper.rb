@@ -14,14 +14,14 @@ module ApplicationHelper
     when Organisation
       crumb_li(model.title, organisation_path(model), active)
     when Site
-      list_items_for(model.organisation, false) + crumb_li("#{model.abbr} Mappings", site_mappings_path(model), active)
+      list_items_for(model.organisation, false) + crumb_li("#{model.default_host.hostname} mappings", site_mappings_path(model), active)
     when Mapping
       title, mapping_path = model.persisted? ?
         ['Mapping', edit_site_mapping_path(model.site, model)] :
         ['New mapping', '']
       list_items_for(model.site, false) + crumb_li(title, mapping_path, active)
     when Hit
-      list_items_for(model.host.site.organisation, false) + crumb_li("#{model.host.site.abbr} Hits", '#', true)
+      list_items_for(model.host.site.organisation, false) + crumb_li("#{model.host.site.default_host.hostname} analytics", '#', true)
     when Version
       list_items_for(model.item, false) + crumb_li('History', '#', true)
     end

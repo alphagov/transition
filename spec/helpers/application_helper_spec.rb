@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ApplicationHelper do
   describe '#breadcrumb' do
-    let(:mapping)       { create :mapping }
+    let(:mapping)       { create :mapping_with_default_host }
     let(:site)          { mapping.site }
     let(:organisation)  { site.organisation }
     let(:hit)           { build :hit, host: build(:host, site: site) }
@@ -28,7 +28,7 @@ describe ApplicationHelper do
       it { should include('<ul class="breadcrumb">') }
       it { should include('<li><a href="/organisations">Organisations') }
       it { should include("<li><a href=\"#{organisation_path(organisation)}\">#{organisation.title}") }
-      it { should include(%(<li class="active">#{site.abbr} Mappings)) }
+      it { should include(%(<li class="active">#{site.default_host.hostname} mappings)) }
     end
 
     context 'for a mapping' do
@@ -37,7 +37,7 @@ describe ApplicationHelper do
       it { should include('<ul class="breadcrumb">') }
       it { should include('<li><a href="/organisations">Organisations') }
       it { should include("<li><a href=\"#{organisation_path(organisation)}\">#{organisation.title}") }
-      it { should include(%(<li><a href="#{site_mappings_path(site)}">#{site.abbr} Mappings)) }
+      it { should include(%(<li><a href="#{site_mappings_path(site)}">#{site.default_host.hostname} mappings)) }
       it { should include('<li class="active">Mapping') }
     end
 
@@ -47,7 +47,7 @@ describe ApplicationHelper do
       it { should include('<ul class="breadcrumb">') }
       it { should include('<li><a href="/organisations">Organisations') }
       it { should include("<li><a href=\"#{organisation_path(organisation)}\">#{organisation.title}") }
-      it { should include('<li class="active">cic_regulator Hits') }
+      it { should include(%(<li class="active">#{site.default_host.hostname} analytics)) }
     end
 
     context 'for a new mapping' do
@@ -58,13 +58,14 @@ describe ApplicationHelper do
 
     context 'for the versions in a mapping', versioning: true do
       let(:mapping) { create :mapping_with_versions }
+      let(:site)    { mapping.site }
 
       subject { helper.breadcrumb mapping.versions.last }
 
       it { should include('<ul class="breadcrumb">') }
       it { should include('<li><a href="/organisations">Organisations') }
       it { should include("<li><a href=\"#{organisation_path(organisation)}\">#{organisation.title}") }
-      it { should include(%(<li><a href="#{site_mappings_path(site)}">#{site.abbr} Mappings)) }
+      it { should include(%(<li><a href="#{site_mappings_path(site)}">#{site.default_host.hostname} mappings)) }
       it { should include(%(<li><a href="#{edit_site_mapping_path(site, mapping)}">Mapping)) }
       it { should include('<li class="active">History') }
     end

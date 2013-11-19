@@ -1,4 +1,5 @@
 @import '_theme';
+@import "bootstrap";
 @import 'bootstrap/_variables';
 
 /* Base styles */
@@ -93,6 +94,30 @@ main a {
   }
 }
 
+// Extend Bootstrap header styles
+
+.page-title {
+  
+  @extend .page-header;
+  border-bottom: none;
+  margin-bottom: 10px;
+  
+  .small {
+    font-size: 65%;
+    font-weight: normal;
+    line-height: 1.5;
+    color: $grayLight;
+    display: block;
+  }
+  
+}
+
+.with-border {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 30px;
+}
+
+
 .subtitle {
   margin: -$baseLineHeight 0 $baseLineHeight;
   font-size: $fontSizeLarge;
@@ -110,3 +135,4 @@ main a {
   border: 1px solid $tableBorder;
   border-radius: $baseBorderRadius;
 }
+
