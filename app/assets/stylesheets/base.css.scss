@@ -1,5 +1,4 @@
 @import '_theme';
-@import "bootstrap";
 @import 'bootstrap/_variables';
 
 /* Base styles */
@@ -97,26 +96,23 @@ main a {
 // Extend Bootstrap header styles
 
 .page-title {
-  
-  @extend .page-header;
-  border-bottom: none;
-  margin-bottom: 10px;
-  
-  .small {
-    font-size: 65%;
-    font-weight: normal;
-    line-height: 1.5;
-    color: $grayLight;
-    display: block;
-  }
-  
+  padding-bottom: 9px;
+  margin: 20px 0 10px;
 }
 
-.with-border {
+.page-title .small {
+  font-size: 65%;
+  font-weight: normal;
+  line-height: 1.5;
+  color: $grayLight;
+  display: block;
+}
+
+.page-title-with-border {
+  @extend .page-title;
   border-bottom: 1px solid #ddd;
   margin-bottom: 30px;
 }
-
 
 .subtitle {
   margin: -$baseLineHeight 0 $baseLineHeight;
