@@ -14,7 +14,13 @@ class MappingsController < ApplicationController
   def create
     @mapping = @site.mappings.build(params[:mapping])
     if @mapping.save
-      redirect_to site_mappings_path(@site), notice: 'Mapping saved.'
+      if @mapping.redirect?
+        link = ActionController::Base.helpers.link_to @mapping.new_url, @mapping.new_url
+        notice = "Mapping created. <strong>#{@mapping.path}</strong> redirects to <strong>#{link}</strong>"
+      else
+        notice = "Mapping created. <strong>#{@mapping.path}</strong> has been archived"
+      end
+      redirect_to edit_site_mapping_path(@site, @mapping), notice: notice.html_safe
     else
       render action: 'new'
     end
@@ -31,7 +37,7 @@ class MappingsController < ApplicationController
   def update
     @mapping = @site.mappings.find(params[:id])
     if @mapping.update_attributes(params[:mapping])
-      redirect_to site_mappings_path(@site), notice: 'Mapping saved.'
+      redirect_to edit_site_mapping_path(@site, @mapping), notice: 'Mapping saved.'
     else
       render action: 'edit'
     end

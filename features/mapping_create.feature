@@ -11,9 +11,10 @@ Feature: Create a mapping
     Then I should see "http://bis.gov.uk"
     When I make the mapping a redirect from /Needs/Canonicalizing/q=1 to http://gov.uk/organisations/bis
     And I create the mapping
-    Then I should be returned to the mappings list for bis
-    And I should see "Mapping saved."
+    Then I should be returned to the edit mapping page with a success message
+    And I should see "Mapping created."
     And I should see "/needs/canonicalizing"
+    And I should see "http://gov.uk/organisations/bis"
 
   Scenario: I don't have access
     Given I have logged in as a member of another organisation

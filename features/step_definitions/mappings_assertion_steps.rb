@@ -6,6 +6,15 @@ Then(/^I should still be editing a mapping$/) do
   step 'I should see "Edit mapping"'
 end
 
+Then(/^I should be editing the mapping for "([^"]*)"$/) do |path|
+  expect(page).to have_selector("form a[href*='#{path}']")
+end
+
+Then(/^I should be returned to the edit mapping page with a success message$/) do
+  step 'I should see "Edit mapping"'
+  page.should satisfy {|page| page.has_content?('Mapping created') or page.has_content?('Mapping saved')}
+end
+
 Then(/^the filter box should contain "([^"]*)"$/) do |path|
   expect(page).to have_field('Filter by path', with: path)
 end
