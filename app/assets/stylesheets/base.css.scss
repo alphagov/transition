@@ -83,8 +83,13 @@ main a {
   }
 }
 
-// Extend Bootstrap header styles
+.muted-link,
+.muted-link:visited {
+  color: $grayLight;
+  text-decoration: underline;
+}
 
+// Extend Bootstrap header styles
 .page-title {
   padding-bottom: 9px;
   margin: 20px 0 10px;
