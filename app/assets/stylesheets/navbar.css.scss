@@ -18,3 +18,10 @@
   color: $grayLight;
   text-decoration: underline;
 }
+
+// Let's make these more specific to add the intended white colour
+.navbar-inverse .nav-collapse .nav .active > a, 
+.navbar-inverse .nav-collapse .nav .active > a:hover, 
+.navbar-inverse .nav-collapse .nav .active > a:focus {
+  color: #FFF;
+}
