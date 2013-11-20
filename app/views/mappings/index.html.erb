@@ -55,7 +55,7 @@
         <td>
           <%= example_url(mapping) %>
           <% if mapping.redirect? %>
-            <span class="redirects-to">redirects to</span><br>
+            <i class="muted">redirects to</i><br>
             <%= link_to mapping.new_url, mapping.new_url, class: 'muted-link' if mapping.new_url.present? %>
           <% end %>
         </td>
