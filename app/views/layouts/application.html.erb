@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html class="no-js" id="gov-uk-transition">
 <head>
   <title><%= yield :page_title %> | GOV.UK Transition</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>(function(d){d.className=d.className.replace(/^no-js\b/,'js');}(document.documentElement));</script>
   <% # HTML5 shim, for IE6-8 support of HTML5 elements %>
   <!--[if lt IE 9]>
     <%= javascript_include_tag "html5" %>
@@ -16,8 +17,6 @@
   <%= yield :extra_headers %>
 </head>
 <body>
-<script type="text/javascript">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-
   <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
     <div class="navbar-inner">
       <div class="container">
