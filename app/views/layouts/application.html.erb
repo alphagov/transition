@@ -31,7 +31,7 @@
         <%= link_to 'GOV.UK Transition', root_path, :class => "brand" %>
         <nav role="navigation" class="nav-collapse">
           <ul class="nav">
-            <li <% if current_page?('/') %> class="active" <% end %>><a href="/">Organisations</a></li>
+            <li <% if current_page?('/') or current_page?(organisations_path) %> class="active" <% end %>><a href="/">Organisations</a></li>
             <% if current_user.organisation %>
               <li <% if current_page?(organisation_path(current_user.organisation)) %> class="active" <% end %>><%= link_to "#{current_user.organisation.title} (#{current_user.organisation.abbreviation})", organisation_path(current_user.organisation) %></li>
             <% end %>
