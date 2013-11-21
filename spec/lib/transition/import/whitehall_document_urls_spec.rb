@@ -1,6 +1,16 @@
 require 'spec_helper'
 require 'transition/import/whitehall_document_urls'
 
+# From: https://github.com/airblade/paper_trail/tree/2.7-stable#turning-papertrail-offon
+def with_versioning
+  was_enabled = PaperTrail.enabled?
+  PaperTrail.enabled = true
+  begin
+    yield
+  ensure
+    PaperTrail.enabled = was_enabled
+  end
+end
 
 def csv_for(old_path, govuk_path, whitehall_state = 'published')
   StringIO.new(<<-END)
@@ -11,11 +21,13 @@ end
 
 describe Transition::Import::WhitehallDocumentURLs do
   describe 'from_csv' do
+    let(:as_user) { create(:user, name: 'C-3PO') }
+
     context 'site and host exists' do
       let!(:site) { create(:site_with_default_host, abbr: 'www.dft', query_params: 'significant') }
 
       before do
-        Transition::Import::WhitehallDocumentURLs.new.from_csv(csv)
+        Transition::Import::WhitehallDocumentURLs.new(as_user).from_csv(csv)
       end
 
       context 'rosy case' do
@@ -85,12 +97,34 @@ END
       end
     end
 
+    context 'testing version recording' do
+      let!(:site) { create(:site_with_default_host, abbr: 'www.dft', query_params: 'significant') }
+      let(:csv) { csv_for('/oldurl', '/new') }
+
+      before do
+        with_versioning do
+          Transition::Import::WhitehallDocumentURLs.new(as_user).from_csv(csv)
+        end
+      end
+
+      subject(:mapping) { Mapping.first }
+
+      specify 'records the changes being made by a robot user' do
+        mapping.versions.size.should == 1
+        mapping.versions.first.whodunnit.should == as_user.id.to_s
+      end
+
+      specify 'reverts the whodunnit user' do
+        ::PaperTrail.whodunnit.should be_nil
+      end
+    end
+
     context 'no site/host for Old Url' do
       let(:csv) { csv_for('/oldurl', '/amazing') }
 
       it 'logs an unknown host' do
         Rails.logger.should_receive(:warn).with("Skipping mapping for unknown host in Whitehall URL CSV: 'www.dft.gov.uk'")
-        Transition::Import::WhitehallDocumentURLs.new.from_csv(csv)
+        Transition::Import::WhitehallDocumentURLs.new(as_user).from_csv(csv)
       end
     end
   end
