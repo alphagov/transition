@@ -5,8 +5,14 @@
   background: url("/assets/header-crown.png") 0 0.25em no-repeat;
   color: #fff;
   font-family: $gillSansFontStack;
-  margin-left: 0;
+  margin-left: 20px;
   padding-left: 2em;
+}
+
+@media (min-width: 980px) {
+  .navbar .brand {
+    margin-left: 0;
+  }
 }
 
 .navbar .brand:hover,
@@ -20,8 +26,16 @@
 }
 
 // Let's make these more specific to add the intended white colour
-.navbar-inverse .nav-collapse .nav .active > a, 
-.navbar-inverse .nav-collapse .nav .active > a:hover, 
-.navbar-inverse .nav-collapse .nav .active > a:focus {
+.navbar-inverse .nav-collapse .nav a:hover,
+.navbar-inverse .nav-collapse .nav .active a,
+.navbar-inverse .nav-collapse .nav .active a:hover,
+.navbar-inverse .nav-collapse .nav .active a:focus {
   color: #FFF;
+}
+
+@media (min-width: 980px) {
+  .navbar-fixed-space {
+    height: 41px;
+    margin-bottom: 20px;
+  }
 }

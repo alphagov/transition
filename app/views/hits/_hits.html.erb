@@ -1,7 +1,12 @@
 <% content_for :page_title, title %>
 <%= breadcrumb(site.default_host.hits.build) %>
 
-<h1><%= title %></h1>
+<div class="page-title">
+  <h1>
+    <span class="small"><%= @site.default_host.hostname %></span>
+    <%= title %>
+  </h1>
+</div>
 
 <%= render partial: 'hits_tabs', locals: { active: active } %>
 

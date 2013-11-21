@@ -2,7 +2,12 @@
 
 <%= breadcrumb(@site) %>
 
-<h1 class="page-header"><%= @site.default_host.hostname %> Mappings</h1>
+<div class="page-title-with-border">
+  <h1>
+    <span class="small"><%= @site.default_host.hostname %></span>
+    Mappings
+  </h1>
+</div>
 
 <%= render partial: 'site', locals: { site: @site } %>
 <%= render partial: 'filters' %>

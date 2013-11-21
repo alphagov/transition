@@ -93,6 +93,27 @@ main a {
   }
 }
 
+// Extend Bootstrap header styles
+
+.page-title {
+  padding-bottom: 9px;
+  margin: 20px 0 10px;
+}
+
+.page-title .small {
+  font-size: 65%;
+  font-weight: normal;
+  line-height: 1.5;
+  color: $grayLight;
+  display: block;
+}
+
+.page-title-with-border {
+  @extend .page-title;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 30px;
+}
+
 .subtitle {
   margin: -$baseLineHeight 0 $baseLineHeight;
   font-size: $fontSizeLarge;
@@ -110,3 +131,4 @@ main a {
   border: 1px solid $tableBorder;
   border-radius: $baseBorderRadius;
 }
+

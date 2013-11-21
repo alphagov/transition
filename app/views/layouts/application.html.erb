@@ -44,11 +44,9 @@
       </div>
     </div>
   </header>
-
+  <div class="navbar-fixed-space"></div>
   <section class="container">
-
-    <section class="page-header"></section>
-
+    
     <main role="main">
       <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
         <div class="alert <%= k %>">

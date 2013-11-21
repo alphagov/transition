@@ -1,8 +1,10 @@
 <% content_for(:page_title, 'Style Guide') %>
 
-<h1 class="page-header">
-  Style Guide
-</h1>
+<div class="page-title">
+  <h1>
+    Style Guide
+  </h1>
+</div>
 
 <p class="lead">Transition’s UI is powered by <a href="http://getbootstrap.com/2.3.2/base-css.html">bootstrap 2.3.2</a>, using <a href="https://github.com/thomas-mcdonald/bootstrap-sass/tree/v2.3.2.1">bootstrap SASS</a> (v2.3.2.1). This guide documents how transition is using bootstrap, where the app has diverged from default styles and any custom styles needed to fill in the gaps.</p>
 
@@ -30,8 +32,22 @@
   <p class="span6 lead">Page headers have a single pixel bottom-border. Subtitles - if used - run underneath this.</p>
   <section class="headers span6">
     <header>
-      <h1 class="page-header">UK Space Agency</h1>
+      <div class="page-title">
+        <h1>
+          <span class="small">www.ukspaceagency.com</span>
+          UK Space Agency
+        </h1>
+      </div>
       <p class="subtitle">UKSA is an executive agency of <a href="#">BIS</a></p>
+      
+      <div class="page-title with-border">
+        <h1>
+          <span class="small">www.ukspaceagency.com</span>
+          UK Space Agency
+        </h1>
+      </div>
+      <p class="subtitle">UKSA is an executive agency of <a href="#">BIS</a></p>
+      
     </header>
   </section>
 </div>

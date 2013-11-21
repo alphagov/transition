@@ -2,9 +2,11 @@
 <%= content_for :page_title, @organisation.title %>
 
 <header>
-  <h1 class="page-header">
-    <%= @organisation.title %>
-  </h1>
+  <div class="page-title">
+    <h1>
+      <%= @organisation.title %>
+    </h1>
+  </div>
   <%= render 'in_conjunction_with' %>
 </header>
 
