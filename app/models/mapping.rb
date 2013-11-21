@@ -19,6 +19,7 @@ class Mapping < ActiveRecord::Base
   validates :site, presence: true
   validates :path,
             presence: true,
+            path: true,
             length: { maximum: 1024 },
             exclusion: { in: ['/'], message: I18n.t('not_possible_to_edit_homepage_mapping')}
   validates :http_status, presence: true, length: { maximum: 3 }
