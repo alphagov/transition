@@ -24,7 +24,11 @@ module Transition
 
             host = Host.find_by_hostname(old_uri.host)
 
-            if host
+            if host.nil?
+              Rails.logger.warn("Skipping mapping for unknown host in Whitehall URL CSV: '#{old_uri.host}'")
+            elsif ! host.site.managed_by_transition?
+              Rails.logger.warn("Skipping mapping for a site managed by redirector in Whitehall URL CSV: '#{old_uri.host}'")
+            else
               canonical_path = host.site.canonical_path_from_url(row[0])
               existing_mapping = host.site.mappings.where(path_hash: path_hash(canonical_path)).first
               if existing_mapping
@@ -32,8 +36,6 @@ module Transition
               else
                 host.site.mappings.create(path: canonical_path, new_url: row[1], http_status: '301')
               end
-            else
-              Rails.logger.warn("Skipping mapping for unknown host in Whitehall URL CSV: '#{old_uri.host}'")
             end
           end
         end
