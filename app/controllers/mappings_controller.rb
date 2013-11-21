@@ -14,13 +14,7 @@ class MappingsController < ApplicationController
   def create
     @mapping = @site.mappings.build(params[:mapping])
     if @mapping.save
-      if @mapping.redirect?
-        link = ActionController::Base.helpers.link_to @mapping.new_url, @mapping.new_url
-        notice = "Mapping created. <strong>#{@mapping.path}</strong> redirects to <strong>#{link}</strong>"
-      else
-        notice = "Mapping created. <strong>#{@mapping.path}</strong> has been archived"
-      end
-      redirect_to edit_site_mapping_path(@site, @mapping), notice: notice.html_safe
+      redirect_to edit_site_mapping_path(@site, @mapping), notice: view_context.created_mapping(@mapping)
     else
       render action: 'new'
     end
