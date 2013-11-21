@@ -1,10 +1,17 @@
 FactoryGirl.define do
   factory :mapping do
-    http_status 410
+    http_status '410'
     path '/about/branding'
     association :site, strategy: :build
 
     factory :mapping_410
+
+
+    factory :archived
+    factory :redirect do
+      http_status '301'
+      new_url 'https://www.gov.uk/somewhere'
+    end
 
     factory :mapping_with_default_host do
       after(:create) { |mapping| mapping.site.hosts << create(:host) }

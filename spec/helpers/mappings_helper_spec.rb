@@ -21,6 +21,34 @@ describe MappingsHelper do
     end
   end
 
+  describe '#created_mapping' do
+    shared_examples 'it sanitises input' do
+      it 'sanitises input' do
+        helper.created_mapping(
+          build(:archived, path: '<script>alert("abusive");</script>')
+        ).should_not include('<script>')
+      end
+    end
+
+    context 'mapping is an archive' do
+      it 'indicates the path has been performed' do
+        helper.created_mapping(build(:archived)).should ==
+          'Mapping created. <strong>/about/branding</strong> has been archived'
+      end
+
+      it_behaves_like 'it sanitises input'
+    end
+
+    context 'mapping is a redirect' do
+      it 'links to the new url' do
+        helper.created_mapping(build(:redirect)).should ==
+          'Mapping created. <strong>/about/branding</strong> redirects to <strong>' +
+            '<a href="https://www.gov.uk/somewhere">https://www.gov.uk/somewhere</a></strong>'
+      end
+      it_behaves_like 'it sanitises input'
+    end
+  end
+
   describe '#mapping_edit_tabs', versioning: true do
     let!(:mapping) { create :mapping_with_versions, site: site }
     before         { @mapping = mapping }
