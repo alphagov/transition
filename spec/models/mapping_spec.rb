@@ -42,28 +42,37 @@ describe Mapping do
     it { should ensure_length_of(:archive_url).is_at_most(64.kilobytes - 1)}
 
     describe 'URL validations' do
-      subject(:mapping) do
-        build(:mapping, http_status: '301', new_url: 'not-a-url', suggested_url: 'http://', archive_url: '')
-      end
-
       before { mapping.should_not be_valid }
 
-      describe 'the errors' do
-        subject { mapping.errors }
-
-        its([:new_url])       { should == ['is not a URL'] }
-        its([:suggested_url]) { should == ['is not a URL'] }
-        its([:archive_url])   { should be_empty }
-
-        describe 'failure to supply a new URL for a 301' do
-          before do
-            mapping.new_url = ''
-            mapping.should_not be_valid
-          end
-
-          its([:new_url]) { should == ['required when mapping is a redirect'] }
+      context 'oh golly, everything is wrong' do
+        subject(:mapping) do
+          build(:mapping, http_status: '301', new_url: 'not-a-url', suggested_url: 'http://', archive_url: '')
         end
 
+        describe 'the errors' do
+          subject { mapping.errors }
+
+          its([:new_url])       { should == ['is not a URL'] }
+          its([:suggested_url]) { should == ['is not a URL'] }
+          its([:archive_url])   { should be_empty }
+
+          context 'failure to supply a new URL for a 301' do
+            before do
+              mapping.new_url = ''
+              mapping.should_not be_valid
+            end
+
+            its([:new_url]) { should == ['required when mapping is a redirect'] }
+          end
+        end
+      end
+
+      context 'paths are abusive' do
+        subject(:mapping) { build(:archived, path: '/<script>alert("eating your first-born")</script>') }
+
+        it 'fails' do
+          mapping.errors[:path].should == ['is not a valid path']
+        end
       end
     end
   end
