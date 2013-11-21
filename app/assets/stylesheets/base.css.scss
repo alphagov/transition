@@ -1,50 +1,82 @@
 @import '_theme';
 @import 'bootstrap/_variables';
 
-/* Base styles */
-body {
-  background-color: #fff;
-  color: #333;
-}
-
-pre {
-  background-color: #eee;
-  padding: 10px;
-  font-size: 11px;
-}
+/* ==========================================================================
+   Base
+   ========================================================================== */
 
 footer {
   clear: left;
   padding-top: 2em;
 }
 
-/* Tool belt */
+/* ==========================================================================
+   Toggle content
+   ========================================================================== */
 
-.add-vertical-margins,
-.add-top-margin {
-  margin-top: $baseLineHeight;
+// Hide JavaScript content when JavaScript disabled
+.no-js .if-no-js-hide {
+  display: none;
 }
 
-.remove-top-margin {
-  margin-bottom: 0;
+// Hide visually, but keep available for screenreaders, by Jon Neal
+// www.webaim.org/techniques/css/invisiblecontent/  &  j.mp/visuallyhidden  &  h5bp.com/v
+.rm {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  z-index: -1;
 }
 
-.add-vertical-margins,
-.add-bottom-margin {
-  margin-bottom: $baseLineHeight;
+// Hide visually when JavaScript enabled
+.js .if-js-rm {
+  @extend .rm;
 }
 
-.add-big-bottom-margin {
-  margin-bottom: $baseLineHeight *2;
-}
-
-.remove-bottom-margin {
-  margin-bottom: 0;
-}
+/* ==========================================================================
+   Helpers
+   ========================================================================== */
 
 .relative {
   position: relative;
 }
+
+/* Margin helpers
+   ========================================================================== */
+
+.add-vertical-margins {
+  margin-top: $baseLineHeight !important;
+  margin-bottom: $baseLineHeight !important;
+}
+
+.add-top-margin {
+  margin-top: $baseLineHeight !important;
+}
+
+.remove-top-margin {
+  margin-top: 0 !important;
+}
+
+.add-bottom-margin {
+  margin-bottom: $baseLineHeight !important;
+}
+
+.add-big-bottom-margin {
+  margin-bottom: $baseLineHeight * 2 !important;
+}
+
+.remove-bottom-margin {
+  margin-bottom: 0 !important;
+}
+
+/* ==========================================================================
+   Bootstrap link overrides
+   ========================================================================== */
 
 main a {
   &:visited {
@@ -89,7 +121,10 @@ main a {
   text-decoration: underline;
 }
 
-// Extend Bootstrap header styles
+/* ==========================================================================
+   Page headers
+   ========================================================================== */
+
 .page-title {
   padding-bottom: 9px;
   margin: 20px 0 10px;
@@ -108,6 +143,10 @@ main a {
   border-bottom: 1px solid #ddd;
   margin-bottom: 30px;
 }
+
+/* ==========================================================================
+   Common content patterns
+   ========================================================================== */
 
 .subtitle {
   margin: -$baseLineHeight 0 $baseLineHeight;
