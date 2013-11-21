@@ -54,6 +54,21 @@ module MappingsHelper
   end
 
   ##
+  # Generate national archive index URL
+  def national_archive_index_url(mapping)
+    scheme_and_host = 'http://'+ mapping.site.default_host.hostname
+    "http://webarchive.nationalarchives.gov.uk/*/#{scheme_and_host}#{mapping.path}"
+  end
+
+  ##
+  # Generate national archive link
+  def national_archive_link(mapping)
+    scheme_and_host = 'http://'+ mapping.site.default_host.hostname
+    url = "http://webarchive.nationalarchives.gov.uk/#{mapping.site.tna_timestamp.to_formatted_s(:number)}/#{scheme_and_host}#{mapping.path}"
+    link_to url, url
+  end
+
+  ##
   # Return a FormBuilder-compatible list of HTTP Status codes with descriptions
   # e.g. [['301 Moved Permanently', '301'], ['410 Gone', '410']]
   def options_for_supported_statuses

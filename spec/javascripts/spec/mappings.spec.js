@@ -16,6 +16,11 @@ describe('A mappings module', function() {
         </select>\
         <div class="js-for-redirect"></div>\
         <div class="js-for-archive"></div>\
+        <div data-module="toggle">\
+          <a href="#" class="js-toggle">Toggle</a>\
+          <span class="js-toggle-target"></span>\
+          <strong class="js-toggle-target if-js-hide"></strong>\
+        </div>\
       </form>');
 
       $('body').append(form);
@@ -67,6 +72,18 @@ describe('A mappings module', function() {
 
         expect(form.find('.js-for-redirect:visible').length).toBe(1);
         expect(form.find('.js-for-archive:visible').length).toBe(1);
+      });
+
+    });
+
+    describe('when clicking a toggle within the form', function() {
+
+      it('toggles visibility of all toggle targets', function() {
+        root.GOVUK.Mappings.edit();
+        form.find('.js-toggle').click();
+
+        expect(form.find('strong.if-js-hide').length).toBe(0);
+        expect(form.find('span.if-js-hide').length).toBe(1);
       });
 
     });

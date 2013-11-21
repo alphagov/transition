@@ -14,3 +14,12 @@
 .mapping-type-archive {
   background-color: $defaultHTTPStatusColor;
 }
+
+.read-only-fields dt {
+  margin-bottom: 5px;
+}
+
+.read-only-fields dd {
+  margin-left: 0;
+  margin-bottom: $baseLineHeight;
+}

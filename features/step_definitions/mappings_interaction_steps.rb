@@ -33,3 +33,8 @@ When(/^I make the mapping a redirect from (.*) to (.*)$/) do |path, new_url|
   fill_in 'Old URL', with: path
   fill_in 'Redirects to', with: new_url
 end
+
+When(/^I enter an archive URL but then click "Cancel"$/) do
+  fill_in 'Alternative national archive URL', with: 'anything'
+  click_link 'Cancel'
+end
