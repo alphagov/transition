@@ -14,7 +14,7 @@ class MappingsController < ApplicationController
   def create
     @mapping = @site.mappings.build(params[:mapping])
     if @mapping.save
-      redirect_to site_mappings_path(@site), notice: 'Mapping saved.'
+      redirect_to edit_site_mapping_path(@site, @mapping), notice: view_context.created_mapping(@mapping)
     else
       render action: 'new'
     end
@@ -31,7 +31,7 @@ class MappingsController < ApplicationController
   def update
     @mapping = @site.mappings.find(params[:id])
     if @mapping.update_attributes(params[:mapping])
-      redirect_to site_mappings_path(@site), notice: 'Mapping saved.'
+      redirect_to edit_site_mapping_path(@site, @mapping), notice: 'Mapping saved.'
     else
       render action: 'edit'
     end
