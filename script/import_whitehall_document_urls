@@ -19,12 +19,24 @@ require 'open-uri'
 require 'transition/import/whitehall_document_urls'
 
 WHITEHALL_URL = 'https://whitehall-admin.production.alphagov.co.uk/government/all_document_attachment_and_non_document_mappings.csv'
+AS_USER_EMAIL = 'whitehall-urls-robot@dummy.com'
 
 def redis
   @_redis ||= begin
     redis_config = YAML.load_file(File.join(Rails.root, "config", "redis.yml"))
     Redis.new(redis_config.symbolize_keys)
   end
+end
+
+def as_user
+  user = User.find_by_email(AS_USER_EMAIL)
+  unless user
+    user = User.new
+    user.email = AS_USER_EMAIL
+    user.name  = 'Whitehall URL Robot'
+    user.save!
+  end
+  user
 end
 
 def default_filename
@@ -49,7 +61,7 @@ def process(filename)
   Rails.logger.info('Processing...')
 
   File.open(filename, 'r'){ |file|
-    Transition::Import::WhitehallDocumentURLs.new.from_csv(file)
+    Transition::Import::WhitehallDocumentURLs.new(as_user).from_csv(file)
   }
 end
 
