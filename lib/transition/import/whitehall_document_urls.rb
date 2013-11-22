@@ -9,6 +9,25 @@ module Transition
 
       def from_csv(urls_io)
         as_a_user(@user) do
+          # The structure of the CSV is:
+          #
+          # For every artefact in Whitehall
+          #   For each edition (in any state)
+          #     if the artefact has any Old URLs
+          #       include a line per Old URL
+          #     else
+          #       include a single line
+          #
+          # Where an 'artefact' is one of:
+          #   document
+          #   attachment
+          #   people
+          #   policy advisory groups
+          #   policy teams
+          #   roles
+          #   organisations
+          #   corporate information pages
+          #
           # Rows are like:
           # Old Url,New Url,Status,Slug,Admin Url,State
           CSV.new(urls_io, headers: true).each do |row|
