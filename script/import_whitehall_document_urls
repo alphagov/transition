@@ -1,0 +1,80 @@
+#!/usr/bin/env ruby
+
+# Download Old and New document URLs from Whitehall and update or create
+# matching mappings.
+#
+# Standard usage:
+#   bundle exec AUTH_USERNAME=betademo AUTH_PASSWORD=redacted script/import_whitehall_document_urls
+#
+# To use an already-downloaded file (this saves lots of time):
+#   bundle exec FILENAME=tmp/foo.csv script/import_whitehall_document_urls
+#
+# Runs the task inside a redis lock to prevent concurrency
+
+require File.expand_path('../../config/environment',  __FILE__)
+
+require 'redis'
+require 'redis-lock'
+require 'open-uri'
+require 'transition/import/whitehall_document_urls'
+
+WHITEHALL_URL = 'https://whitehall-admin.production.alphagov.co.uk/government/all_document_attachment_and_non_document_mappings.csv'
+AS_USER_EMAIL = 'whitehall-urls-robot@dummy.com'
+
+def redis
+  @_redis ||= begin
+    redis_config = YAML.load_file(File.join(Rails.root, "config", "redis.yml"))
+    Redis.new(redis_config.symbolize_keys)
+  end
+end
+
+def as_user
+  user = User.find_by_email(AS_USER_EMAIL)
+  unless user
+    user = User.new
+    user.email = AS_USER_EMAIL
+    user.name  = 'Whitehall URL Robot'
+    user.save!
+  end
+  user
+end
+
+def default_filename
+  "tmp/#{Time.now.to_i}-all_document_attachment_and_non_document_mappings.csv"
+end
+
+def download(filename = default_filename)
+  username = ENV['AUTH_USERNAME'] || abort('Basic AUTH_USERNAME is required')
+  password = ENV['AUTH_PASSWORD'] || abort('Basic AUTH_PASSWORD is required')
+
+  Rails.logger.info("Downloading 50+ MB CSV to #{filename}")
+  # Have to force the encoding because it isn't set on the response, so
+  # Ruby defaults to BINARY
+  urls_io = open(WHITEHALL_URL, 'r:utf-8', http_basic_authentication: [username, password])
+  open(filename, 'w') do |file|
+    file.write(urls_io.read)
+  end
+  filename
+end
+
+def process(filename)
+  Rails.logger.info('Processing...')
+
+  File.open(filename, 'r'){ |file|
+    Transition::Import::WhitehallDocumentURLs.new(as_user).from_csv(file)
+  }
+end
+
+begin
+  redis.lock("transition:#{Rails.env}:import_whitehall_document_urls", life: (5 * 60)) do
+    Rails.logger.debug('Successfully got a lock. Running...')
+    if ENV['FILENAME']
+      filename = ENV['FILENAME']
+    else
+      filename = download
+    end
+    process(filename)
+  end
+rescue Redis::Lock::LockNotAcquired => e
+  Rails.logger.debug("Failed to get lock for Whitehall Document URLs import (#{e.message}). Another process probably got there first.")
+end
