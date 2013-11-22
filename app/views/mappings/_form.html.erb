@@ -36,26 +36,32 @@
       <dl class="read-only-fields js-toggle-target <% if @mapping.archive_url %>if-js-hide<% end %>">
         <dt>National archive</dt>
         <dd>
-          <%= national_archive_link(@mapping) %><br />
-          <span class="muted">Is this archive missing? <a href="#add-alternative-url" class="if-no-js-hide muted-link js-toggle">Use an alternative</a>
+          <% if @mapping.persisted? %>
+            <%= national_archive_link(@mapping) %><br />
+            <span class="muted">Is this archive missing? <a href="#add-alternative-url" class="if-no-js-hide muted-link js-toggle">Use an alternative</a>
+          <% else %>
+            <p>The archive URL will be automatically generated based on the old URL provided above.</p>
+          <% end %>
         </dd>
       </dl>
-      <div class="add-bottom-margin js-toggle-target <% unless @mapping.archive_url %>if-js-hide<% end %>">
-        <%= f.label :archive_url do %>
-          Alternative national archive URL (<%= link_to 'Find on the national archives', national_archive_index_url(@mapping) %>)
-        <% end %>
-        <div class="input-append">
-          <%= f.text_field :archive_url, class: 'span8' %>
-          <a href="#remove" class="btn js-cancel if-no-js-hide"><i class="icon-remove"></i> <%= @mapping.archive_url ? 'Remove' : 'Cancel' %></a>
+      <% if @mapping.persisted? %>
+        <div class="add-bottom-margin js-toggle-target <% unless @mapping.archive_url %>if-js-hide<% end %>">
+          <%= f.label :archive_url do %>
+            Alternative national archive URL (<%= link_to 'Find on the national archives', national_archive_index_url(@mapping) %>)
+          <% end %>
+          <div class="input-append">
+            <%= f.text_field :archive_url, class: 'span8' %>
+            <a href="#remove" class="btn js-cancel if-no-js-hide"><i class="icon-remove"></i> <%= @mapping.archive_url ? 'Remove' : 'Cancel' %></a>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
 
     <hr>
 
     <div data-module="toggle">
       <p class="if-no-js-hide js-toggle-target <% if @mapping.suggested_url %>if-js-hide<% end %>">
-        Does this page contain content that shouldn’t be met by government?<br/>
+        Did this page contain content that shouldn’t be met by government?<br/>
         <a href="#suggest-url" class="js-toggle muted-link">Suggest a private sector URL</a>
       </p>
       <div class="<% unless @mapping.suggested_url %>if-js-hide<% end %> js-toggle-target">
