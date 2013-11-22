@@ -1,7 +1,9 @@
 <section class="hits-summary-<%= category.name %> add-big-bottom-margin">
   
   <h2>
-  <% if category.hits.count < 10 %>
+  <% if category.hits.count == 1 %>
+    <%= category.hits.count %> <%= category.title.singularize %>
+  <% elsif category.hits.count >= 2 and category.hits.count < 10 %>
     <%= category.hits.count %> <%= category.title %>
   <% else %>
     Top <%= category.hits.count %> <%= category.title %>
