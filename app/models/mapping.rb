@@ -18,10 +18,9 @@ class Mapping < ActiveRecord::Base
   belongs_to :site
   validates :site, presence: true
   validates :path,
-            presence: true,
-            path: true,
             length: { maximum: 1024 },
-            exclusion: { in: ['/'], message: I18n.t('not_possible_to_edit_homepage_mapping')}
+            exclusion: { in: ['/'], message: I18n.t('not_possible_to_edit_homepage_mapping')},
+            is_path: true
   validates :http_status, presence: true, length: { maximum: 3 }
   validates :site_id, uniqueness: { scope: [:path], message: 'Mapping already exists for this site and path!' }
 
@@ -51,6 +50,6 @@ class Mapping < ActiveRecord::Base
   end
 
   def canonicalize_path
-    self.path = site.canonicalize_path(path) unless (site.nil? || path == '/')
+    self.path = site.canonicalize_path(path) unless (site.nil? || path == '/' || path =~ /^[^\/]/)
   end
 end

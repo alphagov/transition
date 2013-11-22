@@ -67,11 +67,27 @@ describe Mapping do
         end
       end
 
+      context 'path is blank' do
+        subject(:mapping) { build(:archived, path: '') }
+
+        it 'fails' do
+          mapping.errors[:path].should == ["can't be blank"]
+        end
+      end
+
+      context 'path does not start with a /' do
+        subject(:mapping) { build(:archived, path: 'not_a_path') }
+
+        it 'fails' do
+          mapping.errors[:path].should == ['must start with a forward slash "/"']
+        end
+      end
+
       context 'paths are abusive' do
         subject(:mapping) { build(:archived, path: '/<script>alert("eating your first-born")</script>') }
 
         it 'fails' do
-          mapping.errors[:path].should == ['is not a valid path']
+          mapping.errors[:path].should == ['contains invalid or unsafe characters (e.g. "<")']
         end
       end
     end
