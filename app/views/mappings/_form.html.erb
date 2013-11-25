@@ -8,7 +8,7 @@
     <dl class="read-only-fields add-vertical-margins">
       <dt>Old URL</dt>
       <dd>
-        <%= example_url(@mapping, include_host: true, class: 'span7') %>
+        <%= link_to @mapping.old_url, @mapping.old_url %>
       </dd>
     </dl>
   <% else %>
@@ -37,7 +37,7 @@
         <dt>National archive</dt>
         <dd>
           <% if @mapping.persisted? %>
-            <%= national_archive_link(@mapping) %><br />
+            <%= link_to @mapping.national_archive_url, @mapping.national_archive_url %><br />
             <span class="muted">Is this archive missing? <a href="#add-alternative-url" class="if-no-js-hide muted-link js-toggle">Use an alternative</a>
           <% else %>
             <p>The archive URL will be automatically generated based on the old URL provided above.</p>
@@ -47,7 +47,7 @@
       <% if @mapping.persisted? %>
         <div class="add-bottom-margin js-toggle-target <% unless @mapping.archive_url %>if-js-hide<% end %>">
           <%= f.label :archive_url do %>
-            Alternative national archive URL (<%= link_to 'Find on the national archives', national_archive_index_url(@mapping) %>)
+            Alternative national archive URL (<%= link_to 'Find on the national archives', @mapping.national_archive_index_url %>)
           <% end %>
           <div class="input-append">
             <%= f.text_field :archive_url, class: 'span8' %>

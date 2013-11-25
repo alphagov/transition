@@ -15,6 +15,31 @@ describe Mapping do
     end
   end
 
+  describe 'url generation (based on mapping path and site host)' do
+    before do
+      subject.site = create(:site_with_default_host)
+      subject.path = '/some-path'
+    end
+
+    describe '#old_url' do
+      it 'returns a complete URL with scheme, host and path' do
+        subject.old_url.should == 'http://cic_regulator.gov.uk/some-path'
+      end
+    end
+
+    describe '#national_archive_url' do
+      it 'returns an archive URL with appended timestamp and the old url' do
+        subject.national_archive_url.should == 'http://webarchive.nationalarchives.gov.uk/20120816224015/http://cic_regulator.gov.uk/some-path'
+      end
+    end
+
+    describe '#national_archive_index_url' do
+      it 'returns an archive URL with wildcard timestamp and the old url' do
+        subject.national_archive_index_url.should == 'http://webarchive.nationalarchives.gov.uk/*/http://cic_regulator.gov.uk/some-path'
+      end
+    end
+  end
+
   describe 'validations' do
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:path) }

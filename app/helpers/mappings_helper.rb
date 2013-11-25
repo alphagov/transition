@@ -1,8 +1,4 @@
 module MappingsHelper
-  def example_url(mapping, options = {})
-    scheme_and_host = 'http://'+ mapping.site.default_host.hostname
-    link_to (options[:include_host] ? scheme_and_host : '') + mapping.path, scheme_and_host + mapping.path
-  end
 
   def created_mapping(mapping)
     if mapping.redirect?
@@ -51,21 +47,6 @@ module MappingsHelper
         },
         options)
     end
-  end
-
-  ##
-  # Generate national archive index URL
-  def national_archive_index_url(mapping)
-    scheme_and_host = 'http://'+ mapping.site.default_host.hostname
-    "http://webarchive.nationalarchives.gov.uk/*/#{scheme_and_host}#{mapping.path}"
-  end
-
-  ##
-  # Generate national archive link
-  def national_archive_link(mapping)
-    scheme_and_host = 'http://'+ mapping.site.default_host.hostname
-    url = "http://webarchive.nationalarchives.gov.uk/#{mapping.site.tna_timestamp.to_formatted_s(:number)}/#{scheme_and_host}#{mapping.path}"
-    link_to url, url
   end
 
   ##

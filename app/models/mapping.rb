@@ -45,6 +45,24 @@ class Mapping < ActiveRecord::Base
     TYPES[http_status] || 'unknown'
   end
 
+  ##
+  # Reconstruct old URL based on path and default site hostname
+  def old_url
+    "http://#{self.site.default_host.hostname}#{self.path}"
+  end
+
+  ##
+  # Generate national archive index URL
+  def national_archive_index_url
+    "http://webarchive.nationalarchives.gov.uk/*/#{self.old_url}"
+  end
+
+  ##
+  # Generate national archive URL
+  def national_archive_url
+    "http://webarchive.nationalarchives.gov.uk/#{self.tna_timestamp}/#{self.old_url}"
+  end
+
   protected
   def set_path_hash
     self.path_hash = Digest::SHA1.hexdigest(path) if path_changed?
@@ -53,4 +71,9 @@ class Mapping < ActiveRecord::Base
   def canonicalize_path
     self.path = site.canonicalize_path(path) unless (site.nil? || path == '/')
   end
+
+  def tna_timestamp
+    self.site.tna_timestamp.to_formatted_s(:number)
+  end
+
 end
