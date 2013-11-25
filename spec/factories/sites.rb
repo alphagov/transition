@@ -3,6 +3,7 @@ FactoryGirl.define do
     abbr 'cic_regulator'
     homepage 'https://www.gov.uk/government/organisations/cic-regulator'
     query_params ''
+    tna_timestamp '2012-08-16 22:40:15'
     managed_by_transition true
 
     association :organisation

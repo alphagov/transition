@@ -53,19 +53,14 @@
 </div>
 <hr>
 
-<h2>Typography</h2>
+<h2>Links</h2>
 <div class="row">
-  <p class="span6 lead"><strong>Body copy</strong> is set to 13px/18px, smaller than Boostrap’s default 14px/20px.</p>
-  <div class="span6">
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <div class="span6 lead">
+    <p>To match bootstrap’s muted text, a muted link class is available.</p>
+    <p>Transition has also added purple <code>:visited</code> styles. These apply to the main content but not to buttons.</p>
   </div>
-</div>
-<hr>
-
-<h2>Visited links</h2>
-<div class="row">
-  <p class="span6 lead">Transition has added purple <code>:visited</code> styles. These apply to the main content but not to buttons.</p>
   <ul class="span6">
+    <a href="/style" class="muted-link">Muted link</a><br><br>
     <a href="/style">Visited link</a><br><br>
     <a href="/style#<%= "#{Time.now.utc.to_i}" %>">Normal link</a><br><br>
     <a href="/style" class="btn">Visited button link</a><br><br>

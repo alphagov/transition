@@ -9,5 +9,5 @@
   <dd><%= site.query_params.presence || 'N/A' %></dd>
 
   <dt><abbr title="The National Archive">TNA</abbr> timestamp</dt>
-  <dd><%= site.tna_timestamp %></dd>
+  <dd><%= site.tna_timestamp.to_formatted_s(:long) %> (<%= site.tna_timestamp.to_formatted_s(:number) %>)</dd>
 </dl>

@@ -5,22 +5,6 @@ describe MappingsHelper do
   let(:hostname){ site.default_host.hostname }
   let(:mapping) { build :mapping, site: site }
 
-  describe '#example_url' do
-    context 'no host' do
-      subject { helper.example_url(mapping) }
-
-      it { should include %(<a href="http://#{hostname}) }
-      it { should include '>/about/branding</a>'}
-    end
-
-    context 'include a host' do
-      subject { helper.example_url(mapping, include_host: true) }
-
-      it { should include '<a href="http://' }
-      it { should include ">http://#{hostname}/about/branding</a>"}
-    end
-  end
-
   describe '#created_mapping' do
     shared_examples 'it sanitises input' do
       it 'sanitises input' do

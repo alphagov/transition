@@ -53,10 +53,10 @@
           <%= mapping.type.titleize %>
         </td>
         <td>
-          <%= example_url(mapping) %>
+          <%= link_to mapping.old_url, mapping.old_url %>
           <% if mapping.redirect? %>
-            <span class="redirects-to">redirects to</span><br>
-            <%= link_to mapping.new_url, mapping.new_url, class: 'redirects-to-link' if mapping.new_url.present? %>
+            <i class="muted">redirects to</i><br>
+            <%= link_to mapping.new_url, mapping.new_url, class: 'muted-link' if mapping.new_url.present? %>
           <% end %>
         </td>
         <% if current_user.can_edit?(@site.organisation) %>

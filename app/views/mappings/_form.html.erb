@@ -5,10 +5,12 @@
   <%= f.select :http_status, options_for_supported_statuses, {}, { class: 'remove-bottom-margin js-http-status' } %>
 
   <% if @mapping.persisted? # we're editing, show the example URL  %>
-    <div class="add-vertical-margins">
-      <%= label_tag :old_url, 'Old URL' %>
-      <%= example_url(@mapping, include_host: true, class: 'span7') %>
-    </div>
+    <dl class="read-only-fields add-vertical-margins">
+      <dt>Old URL</dt>
+      <dd>
+        <%= link_to @mapping.old_url, @mapping.old_url %>
+      </dd>
+    </dl>
   <% else %>
     <%= f.label :path, 'Old URL', class: 'add-top-margin' %>
     <div class="input-prepend add-bottom-margin">
@@ -18,16 +20,60 @@
   <% end %>
 
   <%= field_set_tag nil, class: 'js-for-redirect' do %>
+    <legend class="if-js-rm">
+      Redirect
+    </legend>
     <%= f.label :new_url, 'Redirects to' %>
-    <%= f.text_field :new_url, class: 'span8', placeholder: 'https://www.gov.uk' %>
+    <%= f.text_field :new_url, class: 'span8' %>
   <% end %>
 
   <%= field_set_tag nil, class: 'js-for-archive' do %>
-    <%= f.label :suggested_url, 'Suggested URL' %>
-    <%= f.text_field :suggested_url, class: 'span8' %>
+    <legend class="if-js-rm">
+      Archive
+    </legend>
 
-    <%= f.label :archive_url, 'Archive URL' %>
-    <%= f.text_field :archive_url, class: 'span8' %>
+    <div data-module="toggle">
+      <dl class="read-only-fields js-toggle-target <% if @mapping.archive_url %>if-js-hide<% end %>">
+        <dt>National archive</dt>
+        <dd>
+          <% if @mapping.persisted? %>
+            <%= link_to @mapping.national_archive_url, @mapping.national_archive_url %><br />
+            <span class="muted">Is this archive missing? <a href="#add-alternative-url" class="if-no-js-hide muted-link js-toggle">Use an alternative</a>
+          <% else %>
+            <p>The archive URL will be automatically generated based on the old URL provided above.</p>
+          <% end %>
+        </dd>
+      </dl>
+      <% if @mapping.persisted? %>
+        <div class="add-bottom-margin js-toggle-target <% unless @mapping.archive_url %>if-js-hide<% end %>">
+          <%= f.label :archive_url do %>
+            Alternative national archive URL (<%= link_to 'Find on the national archives', @mapping.national_archive_index_url %>)
+          <% end %>
+          <div class="input-append">
+            <%= f.text_field :archive_url, class: 'span8' %>
+            <a href="#remove" class="btn js-cancel if-no-js-hide"><i class="icon-remove"></i> <%= @mapping.archive_url ? 'Remove' : 'Cancel' %></a>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <hr>
+
+    <div data-module="toggle">
+      <p class="if-no-js-hide js-toggle-target <% if @mapping.suggested_url %>if-js-hide<% end %>">
+        Did this page contain content that shouldn’t be met by government?<br/>
+        <a href="#suggest-url" class="js-toggle muted-link">Suggest a private sector URL</a>
+      </p>
+      <div class="<% unless @mapping.suggested_url %>if-js-hide<% end %> js-toggle-target">
+        <%= f.label :suggested_url do %>
+          Suggest URL to user
+        <% end %>
+        <div class="input-append">
+          <%= f.text_field :suggested_url, class: 'span8' %>
+          <a href="#remove" class="btn js-cancel if-no-js-hide"><i class="icon-remove"></i> <%= @mapping.suggested_url ? 'Remove' : 'Cancel' %></a>
+        </div>
+      </div>
+    </div>
   <% end %>
 
   <%= f.submit @mapping.persisted? ? 'Save mapping' : 'Create mapping', class: 'add-top-margin btn btn-success' %>

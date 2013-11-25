@@ -1,60 +1,95 @@
 @import '_theme';
 @import 'bootstrap/_variables';
 
-/* Base styles */
-body {
-  background-color: #fff;
-  color: #333;
-}
-
-body,
-p,
-ol,
-ul,
-td,
-label {
-  font-size: 13px;
-  line-height: 18px;
-}
-
-pre {
-  background-color: #eee;
-  padding: 10px;
-  font-size: 11px;
-}
+/* ==========================================================================
+   Base
+   ========================================================================== */
 
 footer {
   clear: left;
   padding-top: 2em;
 }
 
-/* Tool belt */
-
-.add-vertical-margins,
-.add-top-margin {
-  margin-top: $baseLineHeight;
+label {
+  font-weight: bold;
 }
 
-.remove-top-margin {
-  margin-bottom: 0;
+/* ==========================================================================
+   Toggle content
+   ========================================================================== */
+
+.hide {
+  display: none;
 }
 
-.add-vertical-margins,
-.add-bottom-margin {
-  margin-bottom: $baseLineHeight;
+// Hide JavaScript content when JavaScript disabled
+.no-js .if-no-js-hide {
+  @extend .hide;
 }
 
-.add-big-bottom-margin {
-  margin-bottom: $baseLineHeight *2;
+// Hide JavaScript fallback content when JavaScript enabled
+.js .if-js-hide {
+  @extend .hide;
 }
 
-.remove-bottom-margin {
-  margin-bottom: 0;
+// Hide visually, but keep available for screenreaders, by Jon Neal
+// www.webaim.org/techniques/css/invisiblecontent/  &  j.mp/visuallyhidden  &  h5bp.com/v
+.rm {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  z-index: -1;
 }
+
+// Hide visually when JavaScript enabled
+.js .if-js-rm {
+  @extend .rm;
+}
+
+/* ==========================================================================
+   Helpers
+   ========================================================================== */
 
 .relative {
   position: relative;
 }
+
+/* Margin helpers
+   ========================================================================== */
+
+.add-vertical-margins {
+  margin-top: $baseLineHeight !important;
+  margin-bottom: $baseLineHeight !important;
+}
+
+.add-top-margin {
+  margin-top: $baseLineHeight !important;
+}
+
+.remove-top-margin {
+  margin-top: 0 !important;
+}
+
+.add-bottom-margin {
+  margin-bottom: $baseLineHeight !important;
+}
+
+.add-big-bottom-margin {
+  margin-bottom: $baseLineHeight * 2 !important;
+}
+
+.remove-bottom-margin {
+  margin-bottom: 0 !important;
+}
+
+/* ==========================================================================
+   Bootstrap link overrides
+   ========================================================================== */
 
 main a {
   &:visited {
@@ -93,7 +128,15 @@ main a {
   }
 }
 
-// Extend Bootstrap header styles
+.muted-link,
+.muted-link:visited {
+  color: $grayLight;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Page headers
+   ========================================================================== */
 
 .page-title {
   padding-bottom: 9px;
@@ -113,6 +156,10 @@ main a {
   border-bottom: 1px solid #ddd;
   margin-bottom: 30px;
 }
+
+/* ==========================================================================
+   Common content patterns
+   ========================================================================== */
 
 .subtitle {
   margin: -$baseLineHeight 0 $baseLineHeight;

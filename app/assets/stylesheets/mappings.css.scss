@@ -7,21 +7,19 @@
   }
 }
 
-.redirects-to {
-  color: $grayLight;
-  font-style: italic;
-}
-
-.redirects-to-link,
-.redirects-to-link:visited {
-  color: $grayLight;
-  text-decoration: underline;
-}
-
 .mapping-type-redirect {
   background-color: $goodHTTPStatusColor;
 }
 
 .mapping-type-archive {
   background-color: $defaultHTTPStatusColor;
+}
+
+.read-only-fields dt {
+  margin-bottom: 5px;
+}
+
+.read-only-fields dd {
+  margin-left: 0;
+  margin-bottom: $baseLineHeight;
 }

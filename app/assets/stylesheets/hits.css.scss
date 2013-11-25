@@ -71,8 +71,9 @@
   z-index: 1;
 }
 
-.js-enabled .hits-graph {
+.js .hits-graph {
   height: 300px;
+
   path, circle {
     cursor: pointer;
   }

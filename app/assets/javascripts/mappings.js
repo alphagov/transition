@@ -16,10 +16,14 @@
           archiveFields = form.find('.js-for-archive'),
           redirectFields = form.find('.js-for-redirect');
 
-      httpStatus.on('change', toggleFormFields);
-      toggleFormFields();
+      httpStatus.on('change', toggleFormFieldsets);
+      toggleFormFieldsets();
 
-      function toggleFormFields() {
+      form.find('[data-module="toggle"]').each(function() {
+        GOVUK.Mappings.toggle($(this));
+      });
+
+      function toggleFormFieldsets() {
 
         var selectedHTTPStatus = httpStatus.val();
 
@@ -41,8 +45,24 @@
             break;
         }
       }
+    },
 
+    toggle: function(element) {
+      element.on('click', '.js-toggle', toggle);
+      element.on('click', '.js-cancel', cancel);
+
+      function toggle(event) {
+        element.find('.js-toggle-target').toggleClass('if-js-hide');
+        element.find('input').first().focus();
+        event.preventDefault();
+      }
+
+      function cancel(event) {
+        toggle(event);
+        element.find('input').first().val('');
+      }
     }
+
   };
 
   root.GOVUK.Mappings = Mappings;

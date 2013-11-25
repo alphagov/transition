@@ -15,6 +15,14 @@ describe Mapping do
     end
   end
 
+  describe 'url generation (based on mapping path and site host)' do
+    subject(:mapping) { create :mapping, site: create(:site_with_default_host), path: '/some-path' }
+
+    its(:old_url)                    { should == 'http://cic_regulator.gov.uk/some-path' }
+    its(:national_archive_url)       { should == 'http://webarchive.nationalarchives.gov.uk/20120816224015/http://cic_regulator.gov.uk/some-path' }
+    its(:national_archive_index_url) { should == 'http://webarchive.nationalarchives.gov.uk/*/http://cic_regulator.gov.uk/some-path' }
+  end
+
   describe 'validations' do
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:path) }
