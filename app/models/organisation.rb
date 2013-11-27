@@ -21,6 +21,7 @@ class Organisation < ActiveRecord::Base
 
   validates_presence_of :whitehall_slug
   validates_uniqueness_of :whitehall_slug
+  validates_presence_of :title
 
   def to_param
     whitehall_slug
