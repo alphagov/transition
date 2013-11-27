@@ -3,6 +3,9 @@ class Host < ActiveRecord::Base
   has_many :hits
   has_many :daily_hit_totals
 
+  validate :hostname, presence: true
+  validate :site, presence: true
+
   def aka_hostname
     # This does the reverse of Bouncer's aka handling:
     #     hostname.sub(/^aka-/, '').sub(/^aka\./, 'www.')
