@@ -1,6 +1,7 @@
 class OrganisationsController < ApplicationController
   def index
     @organisations = Organisation.order(:title)
+    @site_count = Site.count
   end
 
   def show
