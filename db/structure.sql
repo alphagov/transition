@@ -84,7 +84,6 @@ CREATE TABLE `organisations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `redirector_abbr` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `launch_date` date DEFAULT NULL,
   `homepage` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `furl` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
@@ -116,6 +115,7 @@ CREATE TABLE `sites` (
   `global_http_status` varchar(3) COLLATE utf8_unicode_ci DEFAULT NULL,
   `global_new_url` text COLLATE utf8_unicode_ci,
   `managed_by_transition` tinyint(1) NOT NULL DEFAULT '1',
+  `launch_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_sites_on_site` (`abbr`),
   KEY `index_sites_on_organisation_id` (`organisation_id`)
@@ -181,6 +181,8 @@ INSERT INTO schema_migrations (version) VALUES ('20131107202738');
 INSERT INTO schema_migrations (version) VALUES ('20131108121241');
 
 INSERT INTO schema_migrations (version) VALUES ('20131112133657');
+
+INSERT INTO schema_migrations (version) VALUES ('20131127140136');
 
 INSERT INTO schema_migrations (version) VALUES ('20131128120152');
 
