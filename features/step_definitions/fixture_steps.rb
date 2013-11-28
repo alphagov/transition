@@ -5,6 +5,7 @@ Given(/^there is a (.*) organisation named (.*) abbreviated (.*) with these site
   @organisation.sites = site_table.rows.map do |site_abbr, homepage|
     create(:site_with_default_host, abbr: site_abbr, homepage: homepage, organisation_id: @organisation.id)
   end
+  @organisation.parent_organisations << @parent
 end
 
 Given(/^there are these organisations:$/) do |org_table|
