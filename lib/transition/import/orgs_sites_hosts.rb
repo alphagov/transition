@@ -33,7 +33,6 @@ module Transition
           organisations.values.select { |s| s.child? }.each do |site|
             Organisation.find_by_redirector_abbr!(site.inferred_organisation).tap do |org|
               inferred_parent_org = Organisation.find_by_redirector_abbr!(site.inferred_parent)
-              org.parent = inferred_parent_org
               org.parent_organisations << inferred_parent_org
               org.save!
             end
