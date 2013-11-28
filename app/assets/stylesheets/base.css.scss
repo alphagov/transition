@@ -134,6 +134,12 @@ main a {
   text-decoration: underline;
 }
 
+// Force long URLs to break
+.breakable {
+  word-break: break-all;
+  display: inline-block;
+}
+
 /* ==========================================================================
    Page headers
    ========================================================================== */
