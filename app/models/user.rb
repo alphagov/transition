@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   def can_edit?(organisation_to_edit)
     admin? ||
       organisation == organisation_to_edit ||
-      organisation_to_edit.parent && (organisation == organisation_to_edit.parent)
+      organisation_to_edit.parent_organisations.include?(organisation)
   end
 
   def organisation
