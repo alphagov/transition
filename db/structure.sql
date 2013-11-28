@@ -91,7 +91,6 @@ CREATE TABLE `organisations` (
   `updated_at` datetime NOT NULL,
   `css` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `ga_profile_id` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `parent_id` int(11) DEFAULT NULL,
   `whitehall_slug` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `whitehall_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `abbreviation` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -186,3 +185,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131112133657');
 INSERT INTO schema_migrations (version) VALUES ('20131128120152');
 
 INSERT INTO schema_migrations (version) VALUES ('20131128150000');
+
+INSERT INTO schema_migrations (version) VALUES ('20131128155022');
