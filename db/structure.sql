@@ -71,6 +71,15 @@ CREATE TABLE `mappings_staging` (
   `archive_url` mediumtext COLLATE utf8_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `organisational_relationships` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_organisation_id` int(11) DEFAULT NULL,
+  `child_organisation_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_organisational_relationships_on_parent_organisation_id` (`parent_organisation_id`),
+  KEY `index_organisational_relationships_on_child_organisation_id` (`child_organisation_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `organisations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `redirector_abbr` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -173,3 +182,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131107202738');
 INSERT INTO schema_migrations (version) VALUES ('20131108121241');
 
 INSERT INTO schema_migrations (version) VALUES ('20131112133657');
+
+INSERT INTO schema_migrations (version) VALUES ('20131128120152');

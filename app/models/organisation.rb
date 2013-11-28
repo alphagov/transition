@@ -3,6 +3,18 @@ class Organisation < ActiveRecord::Base
 
   belongs_to :parent, class_name: Organisation, foreign_key: 'parent_id'
 
+  has_many :child_organisational_relationships,
+            foreign_key: :parent_organisation_id,
+            class_name: "OrganisationalRelationship"
+  has_many :parent_organisational_relationships,
+            foreign_key: :child_organisation_id,
+            class_name: "OrganisationalRelationship",
+            dependent: :destroy
+  has_many :child_organisations,
+            through: :child_organisational_relationships
+  has_many :parent_organisations,
+            through: :parent_organisational_relationships
+
   has_many :sites
   has_many :hosts, through: :sites
   has_many :mappings, through: :sites
