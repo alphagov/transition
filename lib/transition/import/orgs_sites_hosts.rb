@@ -40,7 +40,7 @@ module Transition
       end
 
       def create_org_from(site)
-        Organisation.where(redirector_abbr: site.inferred_organisation).first_or_create.tap do |org|
+        Organisation.where(redirector_abbr: site.inferred_organisation).first_or_initialize.tap do |org|
           %w(title furl homepage css).each { |attr| org.send "#{attr}=".to_sym, site.send(attr.to_sym) }
 
           org.redirector_abbr = site.inferred_organisation
