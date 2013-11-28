@@ -58,6 +58,7 @@ describe Transition::Import::OrgsSitesHosts do
 
         it                   { should have(1).site }
         its(:parent)         { should eql bis }
+        its(:parent_organisations) { should eql [bis] }
         its(:abbreviation)   { should eql 'UKAEA' }
         its(:whitehall_slug) { should eql 'uk-atomic-energy-authority' }
         its(:whitehall_type) { should eql 'Executive non-departmental public body' }
