@@ -8,6 +8,7 @@ class Organisation < ActiveRecord::Base
   has_many :mappings, through: :sites
 
   validates_presence_of :redirector_abbr
+  validates_presence_of :title
   validates_uniqueness_of :redirector_abbr
 
   def to_param

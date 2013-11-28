@@ -71,7 +71,7 @@ module Transition
 
       attr_reader :site
       def import_site!
-        @site = Site.where(abbr: abbr).first_or_create do |site|
+        @site = Site.where(abbr: abbr).first_or_initialize do |site|
           site.organisation =
             if child? && !organisation?
               Organisation.find_by_redirector_abbr(inferred_parent)
@@ -89,7 +89,7 @@ module Transition
 
       def import_hosts!
         [yaml['host'], yaml['aliases']].flatten.compact.each do |name|
-          Host.where(hostname: name).first_or_create do |host|
+          Host.where(hostname: name).first_or_initialize do |host|
             host.site = site
             host.save!
           end
