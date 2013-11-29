@@ -146,4 +146,22 @@ describe MappingsController do
       end
     end
   end
+
+  describe 'rejecting an invalid or missing authenticity (CSRF) token' do
+    before do
+      login_as admin_bob
+    end
+
+    it 'should return a 403 response' do
+      # as allow_forgery_protection is disabled in the test environment, we're
+      # stubbing the verified_request? method from
+      # ActionController::RequestForgeryProtection::ClassMethods to return false
+      # in order to test our override of the verify_authenticity_token method
+      subject.stub(:verified_request?).and_return(false)
+      post :create, site_id: mapping.site,
+               mapping: { path: '/foo', http_status: '410' }
+      response.status.should eql(403)
+      response.body.should eql('Invalid authenticity token')
+    end
+  end
 end

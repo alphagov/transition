@@ -5,11 +5,20 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
+  rescue_from ActionController::InvalidAuthenticityToken do
+    render text: "Invalid authenticity token", status: 403
+  end
+
   def user_for_paper_trail
     current_user.name if user_signed_in?
   end
 
   def info_for_paper_trail
     { user_id: current_user.id } if user_signed_in?
+  end
+
+private
+  def verify_authenticity_token
+    raise ActionController::InvalidAuthenticityToken unless verified_request?
   end
 end
