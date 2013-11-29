@@ -74,6 +74,29 @@ describe Transition::Import::OrgsSitesHosts do
           Organisation.find_by_redirector_abbr('walesoffice_cymru').should be_nil
         end
       end
+
+      context 'the import is run again' do
+        before :all do
+          Transition::Import::OrgsSitesHosts.from_redirector_yaml!('spec/fixtures/sites/someyaml/*.yml') do |o|
+            def o.whitehall_organisations
+              Transition::Import::WhitehallOrgs.new.tap do |orgs|
+                def orgs.cached_org_path
+                  'spec/fixtures/whitehall/orgs.yml'
+                end
+              end
+            end
+          end
+        end
+
+        describe 'a pre-existing parent-child relationship is not duplicated' do
+          let(:bis) { Organisation.find_by_redirector_abbr! 'bis' }
+
+          subject { Organisation.find_by_redirector_abbr! 'ukaea' }
+
+          its(:parent_organisations) { should have_exactly(1).organisations }
+          its(:parent_organisations) { should eql [bis] }
+        end
+      end
     end
   end
 end
