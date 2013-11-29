@@ -10,7 +10,12 @@ namespace :import do
   namespace :all do
     desc 'Import all Organisations, Sites and Hosts'
     task :orgs_sites_hosts do
-      Rake::Task['import:orgs_sites_hosts'].invoke('data/redirector/data/sites/*.yml')
+      patterns = [
+        'data/redirector/data/transition-sites/*.yml',
+        'data/redirector/data/sites/*.yml',
+      ]
+      glob = '{' + patterns.join(',') + '}'
+      Rake::Task['import:orgs_sites_hosts'].invoke(glob)
     end
 
     desc 'Import all mappings'
