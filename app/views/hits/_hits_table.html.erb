@@ -22,7 +22,7 @@
       <td class="remove-padding">
         <div class="bar-chart-wrap">
           <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
-          <span class="path"><%= link_to_hit(hit, @site.default_host) %></span>
+          <span class="breakable path"><%= link_to_hit(hit, @site.default_host) %></span>
         </div>
       </td>
       <td class="count"><%= number_with_delimiter hit.count %></td>

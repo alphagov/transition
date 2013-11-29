@@ -3,7 +3,7 @@
   <dd><%= site.abbr %></dd>
 
   <dt>Homepage</dt>
-  <dd><%= link_to site.homepage, site.homepage %></dd>
+  <dd><%= link_to site.homepage, site.homepage, class: 'breakable' %></dd>
 
   <dt>Query parameters</dt>
   <dd><%= site.query_params.presence || 'N/A' %></dd>

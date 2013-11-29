@@ -30,10 +30,10 @@
     <tbody>
     <% @sites.each do |site| %>
       <tr>
-        <td><%= site.default_host.hostname %></td>
+        <td><span class="breakable"><%= site.default_host.hostname %></span></td>
         <td><%= link_to "Mappings", site_mappings_path(site) %></td>
         <td><%= link_to 'Analytics', summary_site_hits_path(site) %></td>
-        <td><%= link_to site.homepage, site.homepage %></td>
+        <td><%= link_to site.homepage, site.homepage, class: 'breakable' %></td>
       </tr>
     <% end %>
     </tbody>
