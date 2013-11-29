@@ -7,7 +7,7 @@ end
 
 Then(/^I should see that this organisation is an executive non-departmental public body of its parent$/) do
   expect(page).to have_content('is an executive non-departmental public body of')
-  expect(page).to have_link('', href: organisation_path(@organisation.parent))
+  expect(page).to have_link('', href: organisation_path(@organisation.parent_organisations.first))
 end
 
 Then(/^I should see a link to the organisation (.*)$/) do |org_abbr|

@@ -41,7 +41,7 @@ describe User do
       create(:organisation, whitehall_slug: 'ministry-of-funk')
     }
     let(:agency_of_soul) {
-      build(:organisation, whitehall_slug: 'agency-of-soul', parent: ministry_of_funk)
+      create(:organisation, whitehall_slug: 'agency-of-soul', parent_organisations: [ministry_of_funk])
     }
 
     context 'user is an admin' do
@@ -59,7 +59,13 @@ describe User do
       specify { user.can_edit?(ministry_of_funk).should be_false }
     end
 
-    context 'user is a member of the parent organisation' do
+    context 'user is a member of an organisation' do
+      subject(:user) { create(:user, organisation_slug: "agency-of-soul") }
+
+      specify { user.can_edit?(agency_of_soul).should be_true }
+    end
+
+    context 'user is a member of a parent organisation' do
       subject(:user) { create(:user, organisation_slug: "ministry-of-funk") }
 
       specify { user.can_edit?(agency_of_soul).should be_true }
@@ -69,6 +75,15 @@ describe User do
       subject(:user) { create(:user, organisation_slug: "agency-of-soul") }
 
       specify { user.can_edit?(ministry_of_funk).should be_false }
+    end
+
+    context 'user is a member of one parent organisation and not a member of another parent' do
+      let!(:department_of_disco) {
+        create(:organisation, whitehall_slug: "department-of-disco", child_organisations: [agency_of_soul])
+      }
+      subject(:user) { create(:user, organisation_slug: "ministry-of-funk") }
+
+      specify { user.can_edit?(agency_of_soul).should be_true }
     end
   end
 end
