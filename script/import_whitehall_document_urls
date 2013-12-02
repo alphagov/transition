@@ -4,10 +4,10 @@
 # matching mappings.
 #
 # Standard usage:
-#   bundle exec AUTH_USERNAME=betademo AUTH_PASSWORD=redacted script/import_whitehall_document_urls
+#   AUTH_USERNAME=betademo AUTH_PASSWORD=redacted bundle exec script/import_whitehall_document_urls
 #
 # To use an already-downloaded file (this saves lots of time):
-#   bundle exec FILENAME=tmp/foo.csv script/import_whitehall_document_urls
+#   FILENAME=tmp/foo.csv bundle exec script/import_whitehall_document_urls
 #
 # Runs the task inside a redis lock to prevent concurrency
 
