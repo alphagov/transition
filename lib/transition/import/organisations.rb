@@ -3,23 +3,22 @@ require 'transition/import/whitehall_orgs'
 module Transition
   module Import
     class Organisations
+      def initialize(whitehall_orgs)
+        @whitehall_orgs = whitehall_orgs
+      end
+
       def whitehall_orgs
         @whitehall_orgs ||= WhitehallOrgs.new
       end
 
       def create(whitehall_org)
         Organisation.where(whitehall_slug: whitehall_org.details.slug).first_or_initialize.tap do |target|
-          target.whitehall_slug = whitehall_org.details.slug
+          target.whitehall_slug  = whitehall_org.details.slug
+          target.redirector_abbr = whitehall_org.details.slug
 
+          target.whitehall_type = whitehall_org.format
           target.title          = whitehall_org.title
           target.abbreviation   = whitehall_org.details.abbreviation
-          target.whitehall_type = whitehall_org.format
-
-          # Redirector TODOs
-          target.redirector_abbr = whitehall_org.details.slug # temporary, as unique constraint
-                                                              # means this isn't as independent
-                                                              # from redirector as we'd like.
-          # target.launch_date     = WAS organisation.redirection_date
 
           # create org relationships through the parent end
           # of the association as they arise
@@ -37,9 +36,9 @@ module Transition
         end
       end
 
-      def self.from_whitehall!
+      def self.from_whitehall!(whitehall_orgs = WhitehallOrgs.new)
         Organisation.transaction do
-          Organisations.new.import!
+          Organisations.new(whitehall_orgs).import!
         end
       end
     end

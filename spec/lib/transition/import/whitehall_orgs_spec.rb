@@ -5,23 +5,11 @@ describe Transition::Import::WhitehallOrgs do
   context 'with an API response stubbed to fixtures' do
     subject(:whitehall_orgs) do
       Transition::Import::WhitehallOrgs.new.tap do |orgs|
-        orgs.stub(:cached_org_path).and_return('spec/fixtures/whitehall/orgs.yml')
+        orgs.stub(:cached_org_path).and_return('spec/fixtures/whitehall/orgs_abridged.yml')
       end
     end
 
-    it { should have(425).organisations }
-
-    shared_examples 'Attorney General\'s Office' do
-      it                   { should be_an(OpenStruct) }
-      specify              { ago.format.should == 'Ministerial department' }
-      its(:'details.slug') { should == 'attorney-generals-office' }
-    end
-
-    describe '#by_title' do
-      subject(:ago) { whitehall_orgs.by_title['Attorney General\'s Office'] }
-
-      it_behaves_like 'Attorney General\'s Office'
-    end
+    it { should have(6).organisations }
 
     describe '#by_id' do
       subject(:ago) do
@@ -29,7 +17,10 @@ describe Transition::Import::WhitehallOrgs do
           'https://whitehall-admin.production.alphagov.co.uk/api/organisations/attorney-generals-office'
         ]
       end
-      it_behaves_like 'Attorney General\'s Office'
+
+      it                   { should be_an(OpenStruct) }
+      specify              { ago.format.should == 'Ministerial department' }
+      its(:'details.slug') { should == 'attorney-generals-office' }
     end
   end
 end

@@ -8,12 +8,17 @@ module Transition
     class WhitehallOrgs
       include Enumerable
 
+      def initialize(cached_org_path = nil)
+        @cached_org_path = cached_org_path
+      end
+
       ##
       # Place to put complete cached copy of orgs API.
       # Cache expires when the date changes, so could be valid
       # for up to 24 hours.
       def cached_org_path
-        "/tmp/all_whitehall_orgs-#{DateTime.now.strftime('%Y-%m-%d')}.yaml"
+        @cached_org_path ||=
+          "/tmp/all_whitehall_orgs-#{DateTime.now.strftime('%Y-%m-%d')}.yaml"
       end
 
       def organisations

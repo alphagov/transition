@@ -1,5 +1,6 @@
 ---
 site: bis_ukaea
+whitehall_slug: uk-atomic-energy-authority
 host: www.uk-atomic-energy.org.uk
 redirection_date: 25th September 2013
 tna_timestamp: 20130105231830

@@ -4,7 +4,6 @@ module Transition
   module Import
     ##
     # A transition-centric view over redirector yaml
-    # to infer parent and org
     class SiteYamlFile < Struct.new(:yaml, :other_sites)
       def import!
         import_site!
@@ -19,7 +18,7 @@ module Transition
         HTMLEntities.new.decode(yaml['title'])
       end
 
-      %w(furl homepage css).each do |name|
+      %w(furl redirection_date homepage css whitehall_slug).each do |name|
         define_method name.to_sym do
           yaml[name]
         end
@@ -47,13 +46,13 @@ module Transition
       attr_reader :site
       def import_site!
         @site = Site.where(abbr: abbr).first_or_initialize do |site|
-          site.tna_timestamp          = yaml['tna_timestamp']
-          site.launch_date            = yaml['redirection_date']
-          site.query_params           = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
-          site.global_http_status     = global_http_status
-          site.global_new_url         = global_new_url
-          site.homepage               = yaml['homepage']
-          site.managed_by_transition  = false
+          site.organisation          = Organisation.find_by_whitehall_slug(whitehall_slug)
+          site.tna_timestamp         = yaml['tna_timestamp']
+          site.query_params          = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
+          site.global_http_status    = global_http_status
+          site.global_new_url        = global_new_url
+          site.homepage              = yaml['homepage']
+          site.managed_by_transition = false
 
           site.save!
         end
