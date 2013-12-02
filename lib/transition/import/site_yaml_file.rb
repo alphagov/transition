@@ -14,11 +14,18 @@ module Transition
         yaml['site']
       end
 
+      def whitehall_slug
+        yaml['whitehall_slug'] || case abbr
+                                    when /^directgov.*/ then 'directgov'
+                                    when /^businesslink.*/ then 'business-link'
+                                  end
+      end
+
       def title
         HTMLEntities.new.decode(yaml['title'])
       end
 
-      %w(furl redirection_date homepage css whitehall_slug).each do |name|
+      %w(furl redirection_date homepage css).each do |name|
         define_method name.to_sym do
           yaml[name]
         end
@@ -47,6 +54,7 @@ module Transition
       def import_site!
         @site = Site.where(abbr: abbr).first_or_initialize do |site|
           site.organisation          = Organisation.find_by_whitehall_slug(whitehall_slug)
+
           site.tna_timestamp         = yaml['tna_timestamp']
           site.query_params          = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
           site.global_http_status    = global_http_status

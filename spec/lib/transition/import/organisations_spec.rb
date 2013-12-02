@@ -10,8 +10,18 @@ describe Transition::Import::Organisations do
       )
     end
 
-    it 'has imported orgs' do
-      Organisation.count.should == 6
+    it 'has imported orgs - one per org in abridged plus two special cases' do
+      Organisation.count.should == 8
+    end
+
+    describe 'the special cases' do
+      it 'creates directgov' do
+        Organisation.find_by_whitehall_slug('directgov').should_not be_nil
+      end
+
+      it 'creates businesslink' do
+        Organisation.find_by_whitehall_slug('business-link').should_not be_nil
+      end
     end
 
     describe 'an organisation with multiple parents' do

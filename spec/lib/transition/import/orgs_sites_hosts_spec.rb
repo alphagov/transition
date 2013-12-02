@@ -25,24 +25,34 @@ describe Transition::Import::OrgsSitesHosts do
       end
 
       it 'has imported orgs' do
-        Organisation.count.should == 7
+        Organisation.count.should == 9
       end
 
       it 'has imported sites' do
-        Site.count.should == 10
+        Site.count.should == 12
       end
 
       it 'has imported hosts' do
-        Host.count.should == 24
+        Host.count.should == 35
       end
 
       it 'sets managed_by_transition to false for all new sites' do
         Site.where(managed_by_transition: true).should == [@old_site]
       end
 
-      describe 'a department' do
-        it 'has assigned an organisation to its own site' do
-          Site.find_by_abbr!('businesslink').organisation.should == @businesslink
+      ##
+      # BusinessLink and Directgov never existed in Whitehall.
+      describe 'sites with organisations that sort of don\'t exist' do
+        let(:businesslink) { Organisation.find_by_whitehall_slug('business-link') }
+        let(:directgov)    { Organisation.find_by_whitehall_slug('directgov') }
+
+        it 'has assigned sites to businesslink' do
+          Site.find_by_abbr!('businesslink').organisation.should == businesslink
+          Site.find_by_abbr!('businesslink_events').organisation.should == businesslink
+        end
+        it 'has assigned sites to Directgov' do
+          Site.find_by_abbr!('directgov').organisation.should == directgov
+          Site.find_by_abbr!('directgov_campaigns').organisation.should == directgov
         end
       end
 
@@ -55,18 +65,6 @@ describe Transition::Import::OrgsSitesHosts do
         its(:parent_organisations) { should eql [bis] }
         its(:abbreviation)         { should eql 'UKAEA' }
         its(:whitehall_type)       { should eql 'Executive non-departmental public body' }
-      end
-
-      describe 'a child site that is not an organisation' do
-        it 'has assigned the right parent org' do
-          Site.find_by_abbr!('businesslink_events').organisation.should == @businesslink
-        end
-      end
-
-      describe 'The Wales office breaking case' do
-        it 'does not create a new org for the same title in a different language' do
-          Organisation.find_by_redirector_abbr('walesoffice_cymru').should be_nil
-        end
       end
 
       context 'the import is run again' do
