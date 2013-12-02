@@ -19,7 +19,7 @@ module Transition
         HTMLEntities.new.decode(yaml['title'])
       end
 
-      %w(furl redirection_date homepage css).each do |name|
+      %w(furl homepage css).each do |name|
         define_method name.to_sym do
           yaml[name]
         end
@@ -79,6 +79,7 @@ module Transition
               Organisation.find_by_redirector_abbr(inferred_organisation)
             end
           site.tna_timestamp          = yaml['tna_timestamp']
+          site.launch_date            = yaml['redirection_date']
           site.query_params           = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
           site.global_http_status     = global_http_status
           site.global_new_url         = global_new_url

@@ -46,7 +46,6 @@ module Transition
           %w(title furl homepage css).each { |attr| org.send "#{attr}=".to_sym, site.send(attr.to_sym) }
 
           org.redirector_abbr = site.inferred_organisation
-          org.launch_date     = site.redirection_date
 
           if (whitehall_org = whitehall_organisations.by_title[org.title])
             org.abbreviation   = whitehall_org.details.abbreviation

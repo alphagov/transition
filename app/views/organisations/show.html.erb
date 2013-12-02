@@ -25,6 +25,7 @@
         <th scope="col">Mappings</th>
         <th scope="col">Analytics</th>
         <th scope="col">New homepage</th>
+        <th scope="col">Launch date</th>
       </tr>
     </thead>
     <tbody>
@@ -34,6 +35,7 @@
         <td><%= link_to "Mappings", site_mappings_path(site) %></td>
         <td><%= link_to 'Analytics', summary_site_hits_path(site) %></td>
         <td><%= link_to site.homepage, site.homepage, class: 'breakable' %></td>
+        <td><%= date_or_not_yet(site.launch_date) %></td>
       </tr>
     <% end %>
     </tbody>

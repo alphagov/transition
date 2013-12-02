@@ -13,7 +13,7 @@
   <tr>
     <th class="abbr" scope="col">Abbreviation</th>
     <th class="title" scope="col">Organisation</th>
-    <th scope="col">Launch date</th>
+    <th scope="col">Sites</th>
   </tr>
   </thead>
 
@@ -29,7 +29,7 @@
         <%= link_to org.title, organisation_path(org) %>
       </td>
       <td>
-        <%= date_or_not_yet(org.launch_date) %>
+        <%= pluralize(org.sites.count, 'site') %>
       </td>
     </tr>
   <% end %>
