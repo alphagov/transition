@@ -95,6 +95,7 @@ CREATE TABLE `organisations` (
   `abbreviation` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_organisations_on_abbr` (`redirector_abbr`),
+  UNIQUE KEY `index_organisations_on_whitehall_slug` (`whitehall_slug`),
   KEY `index_organisations_on_title` (`title`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -189,3 +190,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131128120152');
 INSERT INTO schema_migrations (version) VALUES ('20131128150000');
 
 INSERT INTO schema_migrations (version) VALUES ('20131128155022');
+
+INSERT INTO schema_migrations (version) VALUES ('20131202093544');

@@ -2,7 +2,12 @@ require 'gds_api/organisations'
 
 module Transition
   module Import
+    ##
+    # Behaves like a repo of Whitehall Orgs, indexing by_title
+    # and by_slug
     class WhitehallOrgs
+      include Enumerable
+
       ##
       # Place to put complete cached copy of orgs API.
       # Cache expires when the date changes, so could be valid
@@ -22,13 +27,20 @@ module Transition
         end
       end
 
-      def each
-        organisations.each
+      def each(&block)
+        organisations.each &block
       end
 
       def by_title
         @organisations_hash ||= organisations.inject({}) do |hash, org|
           hash[org.title] = org
+          hash
+        end
+      end
+
+      def by_id
+        @organisations_hash ||= organisations.inject({}) do |hash, org|
+          hash[org.id] = org
           hash
         end
       end

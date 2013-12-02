@@ -9,16 +9,27 @@ describe Transition::Import::WhitehallOrgs do
       end
     end
 
-    it { should have(2).organisations }
+    it { should have(425).organisations }
 
-    describe 'indexing [] by title' do
-      subject(:ago) do
-        whitehall_orgs.by_title['Attorney General\'s Office']
-      end
-
+    shared_examples 'Attorney General\'s Office' do
       it                   { should be_an(OpenStruct) }
       specify              { ago.format.should == 'Ministerial department' }
       its(:'details.slug') { should == 'attorney-generals-office' }
+    end
+
+    describe '#by_title' do
+      subject(:ago) { whitehall_orgs.by_title['Attorney General\'s Office'] }
+
+      it_behaves_like 'Attorney General\'s Office'
+    end
+
+    describe '#by_id' do
+      subject(:ago) do
+        whitehall_orgs.by_id[
+          'https://whitehall-admin.production.alphagov.co.uk/api/organisations/attorney-generals-office'
+        ]
+      end
+      it_behaves_like 'Attorney General\'s Office'
     end
   end
 end
