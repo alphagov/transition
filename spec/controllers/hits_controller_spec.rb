@@ -18,12 +18,11 @@ describe HitsController do
         create(:hit, host: host, hit_on: '2012-12-31', count: 1, http_status: 404)
       ]
     end
-    let!(:others) do
+    let!(:archives) do
       [
-       create(:hit, host: host, hit_on: '2012-12-28', count: 2, http_status: 200),
-       create(:hit, host: host, hit_on: '2012-12-28', count: 2, http_status: 501),
-       create(:hit, host: host, hit_on: '2012-12-31', count: 2, http_status: 200),
-       create(:hit, host: host_alias, hit_on: '2012-12-31', count: 2, http_status: 200)
+       create(:hit, host: host, hit_on: '2012-12-28', count: 2, http_status: 410),
+       create(:hit, host: host, hit_on: '2012-12-31', count: 2, http_status: 410),
+       create(:hit, host: host_alias, hit_on: '2012-12-31', count: 2, http_status: 410)
       ]
     end
 
@@ -47,22 +46,21 @@ describe HitsController do
       end
     end
 
-    context 'a multi-status category, other' do
-      let(:test_category_name) { 'other' }
+    context 'a multi-status category, archives' do
+      let(:test_category_name) { 'archives' }
 
       it 'has one point per day' do
         category.should have(4).points
       end
-      it 'adds up to eight total others' do
-        sum_of_hit_counts.should == 8
+      it 'adds up to eight total archives' do
+        sum_of_hit_counts.should == 6
       end
       it 'groups hits by path and status' do
         results = category.hits.map {|r| [r.http_status, r.path, r.count]}
         results.should == [
-          ['200', '/article/123', 6],
-          ['501', '/article/123', 2]
+          ['410', '/article/123', 6]
         ]
-        category.hits.length.should == 2
+        category.hits.length.should == 1
       end
     end
   end

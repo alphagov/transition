@@ -10,8 +10,7 @@ module View
         'all'       => '#333',
         'errors'    => '#e99',
         'archives'  => '#aaa',
-        'redirects' => '#9e9',
-        'other'     => '#aaa'
+        'redirects' => '#9e9'
       }
 
       def self.all

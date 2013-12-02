@@ -16,7 +16,7 @@ class HitsController < ApplicationController
     end
 
     unless @period.single_day?
-      @point_categories = View::Hits::Category.all.reject { |c| c.name == 'other' }.map do |category|
+      @point_categories = View::Hits::Category.all.map do |category|
         category.tap do |c|
           c.points = ((c.name == 'all') ? totals_in_period : totals_in_period.send(category.to_sym))
         end
@@ -25,10 +25,10 @@ class HitsController < ApplicationController
   end
 
   def category
-    # Category - one of %w(archives redirect errors other) (see routes.rb)
+    # Category - one of %w(archives redirect errors) (see routes.rb)
     @category = View::Hits::Category[params[:category]].tap do |c|
       c.hits   = hits_in_period.by_path_and_status.send(c.to_sym).page(params[:page]).order('count DESC')
-      c.points = params[:category] == 'other' ? totals_in_period.by_date.other : totals_in_period.by_date_and_status.send(c.to_sym)
+      c.points = totals_in_period.by_date_and_status.send(c.to_sym)
     end
   end
 

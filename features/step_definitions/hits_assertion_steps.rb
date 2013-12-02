@@ -42,10 +42,6 @@ Then(/^I should see a section for the most common (\w+)$/) do |category|
   expect(page).to have_selector('h2', text: category.titleize)
 end
 
-Then(/^I should see a section for the other hits, the most common miscellany$/) do
-  expect(page).to have_selector('h2', text: 'Other')
-end
-
 Then(/^it should show(?: only the top) (\d+) (\w+) in descending count order$/) do |count, category|
 
   case category
@@ -55,8 +51,6 @@ Then(/^it should show(?: only the top) (\d+) (\w+) in descending count order$/) 
     status = 410
   when 'redirects'
     status = 301
-  else
-    status = 200
   end
 
   within ".hits-summary-#{category}" do
@@ -91,8 +85,6 @@ Then(/^I should see all hits with a[n]? (\w+) status for the Attorney General's 
     status = 410
   when 'redirect'
     status = 301
-  else
-    status = 200
   end
 
   within '.hits' do

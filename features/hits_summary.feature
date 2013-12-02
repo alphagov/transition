@@ -63,8 +63,6 @@ Scenario: Hits exist and are summarised for a site, displayed with a graph
   And it should show only the top 10 archives in descending count order
   And I should see a section for the most common redirects
   And it should show only the top 10 redirects in descending count order
-  And I should see a section for the other hits, the most common miscellany
-  And it should show only the top 10 other in descending count order
   And I should see a graph representing hits data over time
   And I should see a trend for all hits, errors, archives and redirects
   When I click a point for the date 18/10/12
@@ -95,11 +93,6 @@ Scenario: Hits exist and can be filtered by redirects and time period "Last 30 d
   When I filter by the date period "Last 30 days"
   Then I should see an redirects graph showing a green trend line with 2 points
   And the period "Last 30 days" should be selected
-
-Scenario: Hits exist and can be filtered by other statuses
-  When I click the link "Other"
-  Then I should see all hits with an other status for the Attorney General's office in descending count order
-  And I should see an other graph showing a grey trend line
 
 Scenario: There are multiple pages for a category
   Given the hits page size is 11
