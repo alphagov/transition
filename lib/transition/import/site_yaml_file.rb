@@ -25,31 +25,6 @@ module Transition
         end
       end
 
-      def inferred_organisation
-        abbr.split('_').last
-      end
-
-      def inferred_parent
-        abbr.split('_').first if child? # nil otherwise
-      end
-
-      ##
-      # A Site is an organisation from the point of view of Transition either
-      # when it has no parent or its title is different from that of its parent department
-      def organisation?
-        parent_org_site = other_sites.departments[inferred_parent]
-        parent_org_site.nil? || titles_differ?(parent_org_site)
-      end
-
-      def titles_differ?(parent_org_site)
-        # Cope with org titles in different languages
-        parent_org_site.title != title && title != 'Swyddfa Cymru'
-      end
-
-      def child?
-        abbr.include?('_')
-      end
-
       def has_global_status?
         # cdn.hm-treasury.gov.uk has a regex in the global value, which Bouncer
         # implements as a "rule", so we can ignore it.
@@ -71,13 +46,7 @@ module Transition
 
       attr_reader :site
       def import_site!
-        @site = Site.where(abbr: abbr).first_or_create do |site|
-          site.organisation =
-            if child? && !organisation?
-              Organisation.find_by_redirector_abbr(inferred_parent)
-            else
-              Organisation.find_by_redirector_abbr(inferred_organisation)
-            end
+        @site = Site.where(abbr: abbr).first_or_initialize do |site|
           site.tna_timestamp          = yaml['tna_timestamp']
           site.launch_date            = yaml['redirection_date']
           site.query_params           = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
@@ -85,6 +54,8 @@ module Transition
           site.global_new_url         = global_new_url
           site.homepage               = yaml['homepage']
           site.managed_by_transition  = false
+
+          site.save!
         end
       end
 
