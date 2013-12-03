@@ -66,9 +66,10 @@ module Transition
 
       attr_reader :site
       def import_site!
-        @site = Site.where(abbr: abbr).first_or_initialize do |site|
+        @site = Site.where(abbr: abbr).first_or_initialize.tap do |site|
           site.organisation          = Organisation.find_by_whitehall_slug(whitehall_slug)
 
+          site.launch_date           = yaml['redirection_date']
           site.tna_timestamp         = yaml['tna_timestamp']
           site.query_params          = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
           site.global_http_status    = global_http_status

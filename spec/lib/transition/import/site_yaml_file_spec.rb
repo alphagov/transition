@@ -12,6 +12,28 @@ describe Transition::Import::SiteYamlFile do
     it 'is not managed by transition - it doesn\'t have transition-sites in path' do
       redirector_yaml_file.should_not be_managed_by_transition
     end
+
+    describe '#import!' do
+      before { redirector_yaml_file.import! }
+
+      subject(:site) { Site.find_by_abbr('ago') }
+
+      its(:launch_date)           { should eql(Date.new(2012, 12, 13)) }
+      its(:tna_timestamp)         { should be_a(Time) }
+      its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-generals-office') }
+      its(:managed_by_transition) { should eql(false) }
+
+      describe 'updates' do
+        before do
+          redirector_yaml_file.import!
+          Transition::Import::SiteYamlFile.load('spec/fixtures/sites/updates/ago.yml').import!
+        end
+
+        its(:launch_date)           { should eql(Date.new(2014, 12, 13)) }
+        its(:tna_timestamp)         { should be_a(Time) }
+        its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-update-office') }
+      end
+    end
   end
 
   context 'A transition YAML file' do
