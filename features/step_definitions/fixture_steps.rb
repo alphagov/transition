@@ -1,22 +1,23 @@
 Given(/^there is a (.*) organisation named (.*) abbreviated (.*) with these sites:$/) do |parent, name, abbr, site_table|
   # table rows are like | awb  | http://average-white-band.gov.uk/ |
-  @parent             = create(:organisation, redirector_abbr: parent)
-  @organisation       = create(:organisation, title: name, redirector_abbr: abbr, parent_organisations: [@parent])
+  @parent             = create(:organisation, whitehall_slug: parent)
+  @organisation       = create(:organisation, title: name, whitehall_slug: abbr, parent_organisations: [@parent])
   @organisation.sites = site_table.rows.map do |site_abbr, homepage|
-    create(:site_with_default_host, abbr: site_abbr, homepage: homepage, organisation_id: @organisation.id)
+    create(:site_with_default_host, abbr: site_abbr, homepage: homepage, organisation: @organisation)
   end
+  puts
 end
 
 Given(/^there are these organisations:$/) do |org_table|
   # org_table is like | abbr | Title |
   org_table.rows.each do |abbr, title|
-    create(:organisation, redirector_abbr: abbr, title: title)
+    create(:organisation, whitehall_slug: abbr, title: title)
   end
 end
 
 Given(/^there is a site called (.*) belonging to an organisation (.*) with these mappings:$/) do |site_abbr, org_abbr, mappings_table|
   # table is a | 410         | /about/corporate |                   |
-  org  = create(:organisation, title: org_abbr, redirector_abbr: org_abbr)
+  org  = create(:organisation, title: org_abbr, whitehall_slug: org_abbr)
   site = create(:site_with_default_host, organisation: org, abbr: site_abbr)
 
   site.mappings = mappings_table.rows.map do |http_status, path, new_url|

@@ -14,7 +14,7 @@ Feature: View organisation
     And I should see links to all this organisation's sites and homepages
     And I should see all the old homepages for the sites of the given organisation
 
-  Scenario: I can edit an organisation
+  Scenario: I can edit an organisation's mappings
     Given I have logged in as a member of DCLG
-    When I visit the path /organisations/dclg
+    When I visit the path /organisations/department-for-communities-and-local-government
     Then I should see "You have permission to edit site mappings for Department for Communities and Local Government"

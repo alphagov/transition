@@ -20,14 +20,16 @@ describe Transition::Google::UrlIngester, truncate_everything: true do
 
   context 'the org has no profile id' do
     it 'raises a RuntimeError' do
-      create :site_with_default_host, abbr: 'dpm', organisation: create(:organisation, redirector_abbr: 'dpm', ga_profile_id: nil)
+      create :site_with_default_host, abbr: 'dpm',
+             organisation: create(:organisation, whitehall_slug: 'dpm', ga_profile_id: nil)
       expect { ingester.ingest! }.to raise_error(RuntimeError)
     end
   end
 
   context 'an org with a profile id exists' do
     it 'ingests only hits for known hosts' do
-      create :site_with_default_host, abbr: 'dpm', organisation: create(:organisation, redirector_abbr: 'dpm')
+      create :site_with_default_host, abbr: 'dpm',
+             organisation: create(:organisation, whitehall_slug: 'dpm')
       ingester.ingest!
       Hit.all.should have(2).hits
     end

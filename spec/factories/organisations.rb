@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :organisation do
-    sequence(:redirector_abbr) {|n| "org#{n}" }
     title 'Orgtastic'
 
     ga_profile_id '46600000'

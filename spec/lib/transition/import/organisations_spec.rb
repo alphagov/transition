@@ -36,14 +36,5 @@ describe Transition::Import::Organisations do
 
       its(:parent_organisations) { should =~ [bis, fco] }
     end
-
-    describe 'an organisation with a site in redirector' do
-      subject(:bis) { Organisation.find_by_whitehall_slug(
-        'department-for-business-innovation-skills') }
-      it 'sets the redirector_abbr the same as whitehall_slug' do
-        bis.redirector_abbr.should eql 'department-for-business-innovation-skills'
-      end
-    end
-
   end
 end

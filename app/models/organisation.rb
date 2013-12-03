@@ -19,10 +19,10 @@ class Organisation < ActiveRecord::Base
   has_many :hosts, through: :sites
   has_many :mappings, through: :sites
 
-  validates_presence_of :redirector_abbr
-  validates_uniqueness_of :redirector_abbr
+  validates_presence_of :whitehall_slug
+  validates_uniqueness_of :whitehall_slug
 
   def to_param
-    redirector_abbr
+    whitehall_slug
   end
 end

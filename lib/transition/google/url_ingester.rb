@@ -15,11 +15,11 @@ module Transition
       attr_accessor :start_date, :end_date
 
       def initialize(
-        org_abbr,
+        whitehall_slug,
         start_date = 6.months.ago,
         end_date = Date.today.end_of_day
       )
-        @org_abbr = org_abbr
+        @whitehall_slug = whitehall_slug
 
         self.start_date = start_date
         self.end_date   = end_date
@@ -30,7 +30,7 @@ module Transition
       end
 
       def organisation
-        @organisation ||= Organisation.find_by_redirector_abbr!(@org_abbr)
+        @organisation ||= Organisation.find_by_whitehall_slug!(@whitehall_slug)
       end
 
       def results_pager
