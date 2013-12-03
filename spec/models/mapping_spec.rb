@@ -173,4 +173,32 @@ describe Mapping do
       end
     end
   end
+
+  describe 'edited_by_human' do
+    context 'imported from redirector' do
+      subject(:mapping) { create(:mapping, from_redirector: true) }
+
+      its(:edited_by_human?) { should be_true }
+    end
+
+    context 'has been edited by a human', versioning: true do
+      before do
+        PaperTrail.whodunnit = create(:user)
+      end
+
+      subject(:mapping) { create(:mapping) }
+
+      its(:edited_by_human?) { should be_true }
+    end
+
+    context 'has been edited by a robot', versioning: true do
+      before do
+        PaperTrail.whodunnit = create(:user, is_robot: true)
+      end
+
+      subject(:mapping) { create(:mapping) }
+
+      its(:edited_by_human?) { should be_false }
+    end
+  end
 end
