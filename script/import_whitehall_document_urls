@@ -34,6 +34,7 @@ def as_user
     user = User.new
     user.email = AS_USER_EMAIL
     user.name  = 'Whitehall URL Robot'
+    user.is_robot = true
     user.save!
   end
   user

@@ -21,7 +21,7 @@ end
 
 describe Transition::Import::WhitehallDocumentURLs do
   describe 'from_csv' do
-    let(:as_user) { create(:user, name: 'C-3PO') }
+    let(:as_user) { create(:user, name: 'C-3PO', is_robot: true) }
 
     context 'site and host exists' do
       let!(:site) { create(:site_with_default_host, abbr: 'www.dft', query_params: 'significant') }
@@ -68,6 +68,19 @@ describe Transition::Import::WhitehallDocumentURLs do
         its(:path)        { should == '/oldurl?significant=aha' }
         its(:new_url)     { should == 'https://www.gov.uk/amazing' }
         its(:http_status) { should == '301' }
+      end
+
+      context 'existing mapping edited by a human' do
+        let(:csv) {
+          create(:mapping, from_redirector: true, site: site, path: '/oldurl', new_url: 'https://www.gov.uk/curated')
+          csv_for('/oldurl', '/automated')
+        }
+
+        subject(:mapping) { Mapping.first }
+
+        specify { Mapping.count.should == 1 }
+
+        its(:new_url)     { should == 'https://www.gov.uk/curated' }
       end
 
       context 'CSV row without an Old Url' do
