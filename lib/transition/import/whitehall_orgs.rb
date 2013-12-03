@@ -36,15 +36,8 @@ module Transition
         organisations.each &block
       end
 
-      def by_title
-        @organisations_hash ||= organisations.inject({}) do |hash, org|
-          hash[org.title] = org
-          hash
-        end
-      end
-
       def by_id
-        @organisations_hash ||= organisations.inject({}) do |hash, org|
+        @by_id ||= organisations.inject({}) do |hash, org|
           hash[org.id] = org
           hash
         end
