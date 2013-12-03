@@ -34,4 +34,11 @@ Transition::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Fetch Whitehall organisations from production in development, so that we can
+  # rake import:all without having to have whitehall running locally with
+  # up-to-date data
+  if ENV['GOVUK_APP_DOMAIN'].blank?
+    ENV['GOVUK_APP_DOMAIN'] = 'production.alphagov.co.uk'
+  end
 end
