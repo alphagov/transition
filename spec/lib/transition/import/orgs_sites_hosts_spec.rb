@@ -17,27 +17,27 @@ describe Transition::Import::OrgsSitesHosts do
 
     context 'importing valid yaml files', testing_before_all: true do
       before :all do
-        @old_site = create(:site, abbr: 'oldsite')
         Transition::Import::OrgsSitesHosts.from_redirector_yaml!(
-          'spec/fixtures/sites/someyaml/*.yml',
+          'spec/fixtures/sites/someyaml/**/*.yml',
           Transition::Import::WhitehallOrgs.new('spec/fixtures/whitehall/orgs_abridged.yml')
         )
+        @ukti = Site.find_by_abbr('ukti')
       end
 
       it 'has imported orgs' do
-        Organisation.count.should == 9
+        Organisation.count.should == 8
       end
 
       it 'has imported sites' do
-        Site.count.should == 12
+        Site.count.should == 11
       end
 
       it 'has imported hosts' do
         Host.count.should == 35
       end
 
-      it 'sets managed_by_transition to false for all new sites' do
-        Site.where(managed_by_transition: true).should == [@old_site]
+      it 'sets managed_by_transition to false for sites not in transition-sites' do
+        Site.where(managed_by_transition: true).should == [@ukti]
       end
 
       ##

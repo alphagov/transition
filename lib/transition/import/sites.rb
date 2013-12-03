@@ -16,8 +16,7 @@ module Transition
 
       def sites
         @sites ||= @yaml_files.inject([]) do |sites, filename|
-          site_yaml = YAML::load(File.read(filename))
-          sites << SiteYamlFile.new(site_yaml, self)
+          sites << SiteYamlFile.load(filename)
         end
       end
     end

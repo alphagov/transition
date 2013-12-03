@@ -4,7 +4,15 @@ module Transition
   module Import
     ##
     # A transition-centric view over redirector yaml
-    class SiteYamlFile < Struct.new(:yaml, :other_sites)
+    class SiteYamlFile
+      attr_accessor :yaml
+      attr_writer   :managed_by_transition
+
+      def initialize(yaml, managed_by_transition)
+        self.yaml = yaml
+        self.managed_by_transition = managed_by_transition
+      end
+
       def import!
         import_site!
         import_hosts!
@@ -50,6 +58,12 @@ module Transition
         yaml['global'].split(' ')[1] if has_global_status?
       end
 
+      def managed_by_transition?
+        # Always exactly true/false values, not just "falsey"
+        # - this is also going to the DB, which won't allow nil
+        !!@managed_by_transition
+      end
+
       attr_reader :site
       def import_site!
         @site = Site.where(abbr: abbr).first_or_initialize do |site|
@@ -60,7 +74,7 @@ module Transition
           site.global_http_status    = global_http_status
           site.global_new_url        = global_new_url
           site.homepage              = yaml['homepage']
-          site.managed_by_transition = false
+          site.managed_by_transition = managed_by_transition?
 
           site.save!
         end
@@ -73,6 +87,11 @@ module Transition
             host.save!
           end
         end
+      end
+
+      def self.load(yaml_filename)
+        managed_by_transition = (yaml_filename =~ /\/transition-sites\//)
+        SiteYamlFile.new(YAML.load(File.read(yaml_filename)), managed_by_transition)
       end
     end
   end
