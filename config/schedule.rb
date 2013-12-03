@@ -9,5 +9,5 @@ job_type :run_script, 'cd :path && RAILS_ENV=:environment /usr/local/bin/govuk_s
 # At the time of writing, the file is generated twice a day:
 # https://github.com/alphagov/whitehall/blob/master/config/schedule.rb#L18
 every :day, at: ['3:30am', '1:15pm'] do
-  run_script 'import_whitehall_document_urls'
+  run_script 'import_whitehall_mappings'
 end

@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'transition/import/whitehall_document_urls'
+require 'transition/import/whitehall/mappings_csv'
 
 # From: https://github.com/airblade/paper_trail/tree/2.7-stable#turning-papertrail-offon
 def with_versioning
@@ -19,7 +19,7 @@ http://www.dft.gov.uk#{old_path},https://www.gov.uk#{govuk_path},301,new,http://
 END
 end
 
-describe Transition::Import::WhitehallDocumentURLs do
+describe Transition::Import::Whitehall::MappingsCSV do
   describe 'from_csv' do
     let(:as_user) { create(:user, name: 'C-3PO', is_robot: true) }
 
@@ -27,7 +27,7 @@ describe Transition::Import::WhitehallDocumentURLs do
       let!(:site) { create(:site_with_default_host, abbr: 'www.dft', query_params: 'significant') }
 
       before do
-        Transition::Import::WhitehallDocumentURLs.new(as_user).from_csv(csv)
+        Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(csv)
       end
 
       context 'rosy case' do
@@ -116,7 +116,7 @@ END
 
       it 'logs it' do
         Rails.logger.should_receive(:warn).with("Skipping mapping for a site managed by redirector in Whitehall URL CSV: 'www.dft.gov.uk'")
-        Transition::Import::WhitehallDocumentURLs.new(as_user).from_csv(csv)
+        Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(csv)
       end
     end
 
@@ -126,7 +126,7 @@ END
 
       before do
         with_versioning do
-          Transition::Import::WhitehallDocumentURLs.new(as_user).from_csv(csv)
+          Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(csv)
         end
       end
 
@@ -147,7 +147,7 @@ END
 
       it 'logs an unknown host' do
         Rails.logger.should_receive(:warn).with("Skipping mapping for unknown host in Whitehall URL CSV: 'www.dft.gov.uk'")
-        Transition::Import::WhitehallDocumentURLs.new(as_user).from_csv(csv)
+        Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(csv)
       end
     end
   end

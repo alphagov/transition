@@ -4,10 +4,10 @@
 # matching mappings.
 #
 # Standard usage:
-#   AUTH_USERNAME=betademo AUTH_PASSWORD=redacted bundle exec script/import_whitehall_document_urls
+#   AUTH_USERNAME=betademo AUTH_PASSWORD=redacted bundle exec script/import_whitehall_mappings
 #
 # To use an already-downloaded file (this saves lots of time):
-#   FILENAME=tmp/foo.csv bundle exec script/import_whitehall_document_urls
+#   FILENAME=tmp/foo.csv bundle exec script/import_whitehall_mappings
 #
 # Runs the task inside a redis lock to prevent concurrency
 
@@ -16,7 +16,7 @@ require File.expand_path('../../config/environment',  __FILE__)
 require 'redis'
 require 'redis-lock'
 require 'open-uri'
-require 'transition/import/whitehall_document_urls'
+require 'transition/import/whitehall/mappings_csv'
 
 WHITEHALL_URL = 'https://whitehall-admin.production.alphagov.co.uk/government/all_document_attachment_and_non_document_mappings.csv'
 AS_USER_EMAIL = 'whitehall-urls-robot@dummy.com'
@@ -62,12 +62,12 @@ def process(filename)
   Rails.logger.info('Processing...')
 
   File.open(filename, 'r'){ |file|
-    Transition::Import::WhitehallDocumentURLs.new(as_user).from_csv(file)
+    Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(file)
   }
 end
 
 begin
-  redis.lock("transition:#{Rails.env}:import_whitehall_document_urls", life: (5 * 60)) do
+  redis.lock("transition:#{Rails.env}:import_whitehall_mappings", life: (5 * 60)) do
     Rails.logger.debug('Successfully got a lock. Running...')
     if ENV['FILENAME']
       filename = ENV['FILENAME']
