@@ -33,6 +33,7 @@ describe Transition::Import::Organisations do
       its(:abbreviation)   { should eql 'UKTI' }
       its(:whitehall_slug) { should eql 'uk-trade-investment' }
       its(:whitehall_type) { should eql 'Non-ministerial department' }
+      its(:homepage)       { should eql 'https://www.gov.uk/government/organisations/uk-trade-investment' }
 
       its(:parent_organisations) { should =~ [bis, fco] }
     end

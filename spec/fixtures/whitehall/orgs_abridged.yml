@@ -345,7 +345,7 @@
     :title: UK Trade & Investment
     :format: Non-ministerial department
     :updated_at: '2013-08-22T11:02:20+01:00'
-    :web_url: https://www.gov.uk/government/organisations/uk-trade-investment
+    :web_url: https://www.anybleedingenvironment.gov.uk/government/organisations/uk-trade-investment
     :details: !ruby/object:OpenStruct
       table:
         :slug: uk-trade-investment

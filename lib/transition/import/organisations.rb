@@ -19,6 +19,8 @@ module Transition
           target.whitehall_type = whitehall_org.format
           target.title          = whitehall_org.title
           target.abbreviation   = whitehall_org.details.abbreviation
+          target.homepage       =
+            "https://www.gov.uk#{URI.parse(whitehall_org.web_url).path}" if whitehall_org.web_url.present?
 
           # create org relationships through the parent end
           # of the association as they arise
