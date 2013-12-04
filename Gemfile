@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 source 'https://BnrJb6FZyzspBboNJzYZ@gem.fury.io/govuk/'
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.16'
 gem 'unicorn', '4.6.2'
 gem 'mysql2', '0.3.13'
 gem 'jquery-rails', '3.0.4'
