@@ -1,6 +1,36 @@
 module Transition
   module Import
     class Hits
+      # Bouncer/Redirector paths that should be ignored when importing hits
+      # These appear when a 404/410 page is rendered which includes assets
+      # served by the app.
+      #
+      # Lines should probably never be removed from this, only added.
+      BOUNCER_PATHS = [
+        '/robots.txt',
+        '/sitemap.xml',
+        '/favicon.ico',
+        '/gone.css',
+        '/ie.css',
+        '/bis_crest_13px_x2.png',
+        '/bis_crest_18px_x2.png',
+        '/businesslink-logo-2x.png',
+        '/directgov-logo-2x.png',
+        '/govuk-crest.png',
+        '/govuk-logo.gif',
+        '/govuk-logo.png',
+        '/ho_crest_13px_x2.png',
+        '/ho_crest_18px_x2.png',
+        '/mod_crest_13px_x2.png',
+        '/mod_crest_18px_x2.png',
+        '/org_crest_13px_x2.png',
+        '/org_crest_18px_x2.png',
+        '/so_crest_13px_x2.png',
+        '/so_crest_18px_x2.png',
+        '/wales_crest_13px_x2.png',
+        '/wales_crest_18px_x2.png',
+      ]
+
       TRUNCATE = <<-mySQL
         TRUNCATE hits_staging
       mySQL
@@ -21,6 +51,7 @@ module Transition
         FROM   hits_staging st
         INNER JOIN hosts h on h.hostname = st.hostname
         WHERE  st.count >= 10
+        AND    st.path NOT IN (#{BOUNCER_PATHS.map { |path| "'" + path + "'" }.join(', ')})
       mySQL
 
       def self.from_redirector_tsv_file!(filename)
