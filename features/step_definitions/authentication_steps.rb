@@ -4,10 +4,10 @@ end
 
 Given(/^I have logged in as a member of DCLG$/) do
   dclg = create(:organisation,
-                             title: 'Department for Communities and Local Government',
-                             abbreviation: 'DCLG',
-                             redirector_abbr: 'dclg',
-                             whitehall_slug: 'department-for-communities-and-local-government')
+                title:          'Department for Communities and Local Government',
+                abbreviation:   'DCLG',
+                whitehall_slug: 'department-for-communities-and-local-government')
+
   GDS::SSO.test_user = create(:user, organisation_slug: dclg.whitehall_slug)
 end
 

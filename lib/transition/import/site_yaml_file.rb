@@ -4,8 +4,15 @@ module Transition
   module Import
     ##
     # A transition-centric view over redirector yaml
-    # to infer parent and org
-    class SiteYamlFile < Struct.new(:yaml, :other_sites)
+    class SiteYamlFile
+      attr_accessor :yaml
+      attr_writer   :managed_by_transition
+
+      def initialize(yaml, managed_by_transition)
+        self.yaml = yaml
+        self.managed_by_transition = managed_by_transition
+      end
+
       def import!
         import_site!
         import_hosts!
@@ -15,39 +22,21 @@ module Transition
         yaml['site']
       end
 
+      def whitehall_slug
+        yaml['whitehall_slug'] || case abbr
+                                    when /^directgov.*/ then 'directgov'
+                                    when /^businesslink.*/ then 'business-link'
+                                  end
+      end
+
       def title
         HTMLEntities.new.decode(yaml['title'])
       end
 
-      %w(furl homepage css).each do |name|
+      %w(furl redirection_date homepage css).each do |name|
         define_method name.to_sym do
           yaml[name]
         end
-      end
-
-      def inferred_organisation
-        abbr.split('_').last
-      end
-
-      def inferred_parent
-        abbr.split('_').first if child? # nil otherwise
-      end
-
-      ##
-      # A Site is an organisation from the point of view of Transition either
-      # when it has no parent or its title is different from that of its parent department
-      def organisation?
-        parent_org_site = other_sites.departments[inferred_parent]
-        parent_org_site.nil? || titles_differ?(parent_org_site)
-      end
-
-      def titles_differ?(parent_org_site)
-        # Cope with org titles in different languages
-        parent_org_site.title != title && title != 'Swyddfa Cymru'
-      end
-
-      def child?
-        abbr.include?('_')
       end
 
       def has_global_status?
@@ -69,22 +58,26 @@ module Transition
         yaml['global'].split(' ')[1] if has_global_status?
       end
 
+      def managed_by_transition?
+        # Always exactly true/false values, not just "falsey"
+        # - this is also going to the DB, which won't allow nil
+        !!@managed_by_transition
+      end
+
       attr_reader :site
       def import_site!
-        @site = Site.where(abbr: abbr).first_or_create do |site|
-          site.organisation =
-            if child? && !organisation?
-              Organisation.find_by_redirector_abbr(inferred_parent)
-            else
-              Organisation.find_by_redirector_abbr(inferred_organisation)
-            end
-          site.tna_timestamp          = yaml['tna_timestamp']
-          site.launch_date            = yaml['redirection_date']
-          site.query_params           = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
-          site.global_http_status     = global_http_status
-          site.global_new_url         = global_new_url
-          site.homepage               = yaml['homepage']
-          site.managed_by_transition  = false
+        @site = Site.where(abbr: abbr).first_or_initialize.tap do |site|
+          site.organisation          = Organisation.find_by_whitehall_slug(whitehall_slug)
+
+          site.launch_date           = yaml['redirection_date']
+          site.tna_timestamp         = yaml['tna_timestamp']
+          site.query_params          = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
+          site.global_http_status    = global_http_status
+          site.global_new_url        = global_new_url
+          site.homepage              = yaml['homepage']
+          site.managed_by_transition = managed_by_transition?
+
+          site.save!
         end
       end
 
@@ -95,6 +88,11 @@ module Transition
             host.save!
           end
         end
+      end
+
+      def self.load(yaml_filename)
+        managed_by_transition = (yaml_filename =~ /\/transition-sites\//)
+        SiteYamlFile.new(YAML.load(File.read(yaml_filename)), managed_by_transition)
       end
     end
   end

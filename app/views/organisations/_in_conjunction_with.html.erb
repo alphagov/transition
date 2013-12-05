@@ -1,6 +1,6 @@
 <% if @organisation.parent_organisations.present? && @organisation.whitehall_type.present? %>
   <p class="subtitle">
     <%= relationship_display_name(@organisation) %>
-    <%= links_to_all_parents(@organisation).html_safe %>
+    <%= links_to_all_parents(@organisation) %>
   </p>
 <% end %>

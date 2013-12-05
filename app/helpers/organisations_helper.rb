@@ -22,6 +22,6 @@ module OrganisationsHelper
     all_links = organisation.parent_organisations.map do |parent|
       link_to parent.title, organisation_path(parent)
     end
-    all_links.to_sentence(last_word_connector: ' and ')
+    all_links.to_sentence(last_word_connector: ' and ').html_safe
   end
 end

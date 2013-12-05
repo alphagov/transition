@@ -4,7 +4,7 @@ namespace :import do
   task :orgs_sites_hosts, [:filename_or_mask] => :environment do |_, args|
     begin
       Transition::Import::OrgsSitesHosts.from_redirector_yaml!(args.filename_or_mask)
-    rescue Transition::Import::OrgsSitesHosts::NoYamlFound
+    rescue Transition::Import::Sites::NoYamlFound
       $stderr.puts <<-TEXT
 Warning: no sites YAML found at #{args.filename_or_mask}
 

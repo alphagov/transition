@@ -5,15 +5,17 @@ describe Transition::Import::WhitehallOrgs do
   context 'with an API response stubbed to fixtures' do
     subject(:whitehall_orgs) do
       Transition::Import::WhitehallOrgs.new.tap do |orgs|
-        orgs.stub(:cached_org_path).and_return('spec/fixtures/whitehall/orgs.yml')
+        orgs.stub(:cached_org_path).and_return('spec/fixtures/whitehall/orgs_abridged.yml')
       end
     end
 
-    it { should have(2).organisations }
+    it { should have(6).organisations }
 
-    describe 'indexing [] by title' do
+    describe '#by_id' do
       subject(:ago) do
-        whitehall_orgs.by_title['Attorney General\'s Office']
+        whitehall_orgs.by_id[
+          'https://whitehall-admin.production.alphagov.co.uk/api/organisations/attorney-generals-office'
+        ]
       end
 
       it                   { should be_an(OpenStruct) }

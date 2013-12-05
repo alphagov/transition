@@ -1,0 +1,22 @@
+---
+site: directgov
+host: www.direct.gov.uk
+redirection_date: 17th October 2012
+tna_timestamp: 20121015000000
+title: Directgov
+furl: www.gov.uk
+homepage: https://www.gov.uk
+aliases:
+- resources.direct.gov.uk
+- 3g.direct.gov.uk
+- imode.direct.gov.uk
+- m.direct.gov.uk
+- mobile.direct.gov.uk
+- o2.direct.gov.uk
+- wap.direct.gov.uk
+css: directgov
+locations:
+- path: /(en/)?AdvancedSearch
+  operation: ^~
+  status: 301
+  new_url: https://www.gov.uk/search
