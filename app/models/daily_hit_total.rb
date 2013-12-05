@@ -12,5 +12,4 @@ class DailyHitTotal < ActiveRecord::Base
   scope :errors,     -> { where(http_status: '404') }
   scope :archives,   -> { where(http_status: '410') }
   scope :redirects,  -> { where(http_status: '301') }
-  scope :other,      -> { where("http_status NOT IN ('404', '410', '301')") }
 end
