@@ -37,5 +37,13 @@ describe Transition::Import::Organisations do
 
       its(:parent_organisations) { should =~ [bis, fco] }
     end
+
+    describe 'fudged CSS/URL details' do
+      subject(:ago) { Organisation.find_by_whitehall_slug('attorney-generals-office') }
+
+      its(:css)  { should eql 'attorney-generals-office' }
+      its(:furl) { should eql 'www.gov.uk/ago' }
+    end
+
   end
 end

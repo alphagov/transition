@@ -12,6 +12,10 @@ module Transition
         @whitehall_orgs ||= WhitehallOrgs.new
       end
 
+      def css_furl_fudge
+        @css_furl_fudge ||= YAML.load(File.read('db/seeds/css-furl-fudge.yml'))
+      end
+
       def create(whitehall_org)
         Organisation.where(whitehall_slug: whitehall_org.details.slug).first_or_initialize.tap do |target|
           target.whitehall_slug  = whitehall_org.details.slug
@@ -21,6 +25,11 @@ module Transition
           target.abbreviation   = whitehall_org.details.abbreviation
           target.homepage       =
             "https://www.gov.uk#{URI.parse(whitehall_org.web_url).path}" if whitehall_org.web_url.present?
+
+          if fudge_for_org = css_furl_fudge[whitehall_org.details.slug]
+            target.css  = fudge_for_org[:css]
+            target.furl = fudge_for_org[:furl]
+          end
 
           # create org relationships through the parent end
           # of the association as they arise

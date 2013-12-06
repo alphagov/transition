@@ -1,0 +1,123 @@
+##
+# Exists as a fudge to existing data pending Whitehall API
+# getting CSS and FURL support.
+#
+# Is referenced by Transition::Import::Organisations.
+#
+# Remove this file and alter that import when Whitehall
+# organisations API gets FURL/CSS support.
+#
+# In the meantime, this is where Organisation CSS and FURL get
+# set predictably and repeatably for both dev and production.
+---
+uk-border-agency:
+  :css: home-office
+  :furl: www.gov.uk/ukba
+attorney-generals-office:
+  :css: attorney-generals-office
+  :furl: www.gov.uk/ago
+treasury-solicitor-s-department:
+  :css: 
+  :furl: www.gov.uk/tsol
+department-for-business-innovation-skills:
+  :css: department-for-business-innovation-skills
+  :furl: www.gov.uk/bis
+british-hallmarking-council:
+  :css: bis
+  :furl: www.gov.uk/british-hallmarking-council
+low-pay-commission:
+  :css: department-for-business-innovation-skills
+  :furl: www.gov.uk/lowpay
+office-of-manpower-economics:
+  :css: department-for-business-innovation-skills
+  :furl: www.gov.uk/ome
+regulatory-policy-committee:
+  :css: department-for-business-innovation-skills
+  :furl: www.gov.uk/rpc
+uk-atomic-energy-authority:
+  :css: department-for-business-innovation-skills
+  :furl: www.gov.uk/ukaea
+directgov:
+  :css: directgov
+  :furl: www.gov.uk
+cabinet-office:
+  :css: cabinet-office
+  :furl: www.gov.uk/cabinet-office
+department-for-communities-and-local-government:
+  :css: department-for-communities-and-local-government
+  :furl: www.gov.uk/dclg
+department-for-culture-media-sport:
+  :css: department-for-culture-media-sport
+  :furl: www.gov.uk/dcms
+department-of-energy-climate-change:
+  :css: department-of-energy-climate-change
+  :furl: www.gov.uk/decc
+department-for-environment-food-rural-affairs:
+  :css: department-for-environment-food-rural-affairs
+  :furl: www.gov.uk/defra
+rural-payments-agency:
+  :css: defra
+  :furl: www.gov.uk/rpa
+department-for-education:
+  :css: department-for-education
+  :furl: www.gov.uk/dfe
+department-for-international-development:
+  :css: department-for-international-development
+  :furl: www.gov.uk/dfid
+department-for-transport:
+  :css: department-for-transport
+  :furl: www.gov.uk/dft
+department-of-health:
+  :css: department-of-health
+  :furl: www.gov.uk/dh
+deputy-prime-ministers-office:
+  :css: dpm
+  :furl: www.gov.uk/dpm
+department-for-work-pensions:
+  :css: department-for-work-pensions
+  :furl: www.gov.uk/dwp
+foreign-commonwealth-office:
+  :css: foreign-commonwealth-office
+  :furl: www.gov.uk/fco
+government-actuarys-department:
+  :css: 
+  :furl: www.gov.uk/gad
+hm-revenue-customs:
+  :css: 
+  :furl: www.gov.uk/hmrc
+home-office:
+  :css: home-office
+  :furl: www.gov.uk/home-office
+ministry-of-defence:
+  :css: ministry-of-defence
+  :furl: www.gov.uk/mod
+uk-hydrographic-office:
+  :css: ministry-of-defence
+  :furl: www.gov.uk/ukho
+ministry-of-justice:
+  :css: ministry-of-justice
+  :furl: www.gov.uk/moj
+northern-ireland-office:
+  :css: northern-ireland-office
+  :furl: www.gov.uk/nio
+prime-ministers-office-10-downing-street:
+  :css: number10
+  :furl: www.gov.uk/number10
+office-of-the-advocate-general-for-scotland:
+  :css: 
+  :furl: www.gov.uk/oag
+scotland-office:
+  :css: scotland-office
+  :furl: www.gov.uk/scotland-office
+hm-treasury:
+  :css: hm-treasury
+  :furl: www.gov.uk/treasury
+bona-vacantia:
+  :css: 
+  :furl: www.gov.uk/bonavacantia
+uk-export-finance:
+  :css: 
+  :furl: www.gov.uk/uk-export-finance
+wales-office:
+  :css: wales-office
+  :furl: www.gov.uk/wales-office
