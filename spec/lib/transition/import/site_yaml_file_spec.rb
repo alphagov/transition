@@ -14,7 +14,12 @@ describe Transition::Import::SiteYamlFile do
     end
 
     describe '#import!' do
-      before { redirector_yaml_file.import! }
+      let(:ago) { build :organisation, whitehall_slug: 'attorney-generals-office' }
+
+      before do
+        Organisation.stub(:find_by_whitehall_slug).and_return(ago)
+        redirector_yaml_file.import!
+      end
 
       subject(:site) { Site.find_by_abbr('ago') }
 
@@ -22,6 +27,7 @@ describe Transition::Import::SiteYamlFile do
       its(:tna_timestamp)         { should be_a(Time) }
       its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-generals-office') }
       its(:managed_by_transition) { should eql(false) }
+      its(:organisation)          { should eql(ago)}
 
       describe 'updates' do
         before do
