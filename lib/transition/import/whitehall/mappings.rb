@@ -33,7 +33,7 @@ module Transition
         rescue Redis::Lock::LockNotAcquired => e
           Rails.logger.debug("Failed to get lock for Whitehall Document URLs import (#{e.message}). Another process probably got there first.")
         rescue StandardError => e
-          ExceptionNotifier.notify_exception(e)
+          ExceptionNotifier::Notifier.background_exception_notification(e)
           raise
         end
 
