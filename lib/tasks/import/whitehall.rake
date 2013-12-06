@@ -1,9 +1,9 @@
+require 'transition/import/whitehall/mappings'
+
 namespace :import do
   namespace :whitehall do
     desc "Import mappings from Whitehall. You must set either: FILENAME or AUTH_USERNAME and AUTH_PASSWORD"
     task :mappings => :environment do
-      require 'transition/import/whitehall/mappings'
-
       if ENV['FILENAME']
         options = { filename: ENV['FILENAME'] }
       else
