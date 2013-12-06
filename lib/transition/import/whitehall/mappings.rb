@@ -43,15 +43,10 @@ module Transition
         end
 
         def as_user
-          user = User.find_by_email(AS_USER_EMAIL)
-          unless user
-            user = User.new
-            user.email = AS_USER_EMAIL
+          User.first_or_create!(email: AS_USER_EMAIL) do |user|
             user.name  = 'Whitehall URL Robot'
             user.is_robot = true
-            user.save!
           end
-          user
         end
 
         def default_filename
