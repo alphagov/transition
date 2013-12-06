@@ -8,10 +8,11 @@ Given(/^there is a (.*) organisation named (.*) abbreviated (.*) with these site
   puts
 end
 
-Given(/^there are these organisations:$/) do |org_table|
+Given(/^there are these organisations with sites:$/) do |org_table|
   # org_table is like | abbr | Title |
   org_table.rows.each do |abbr, title|
-    create(:organisation, whitehall_slug: abbr, title: title)
+    org = create(:organisation, whitehall_slug: abbr, title: title)
+    site = create(:site_with_default_host, organisation: org, abbr: abbr)
   end
 end
 

@@ -5,7 +5,7 @@ Feature: List organisations
 
   Scenario: Visit the list page
     Given I have logged in as an admin
-    And there are these organisations:
+    And there are these organisations with sites:
       | abbr | title                                          |
       | bis  | Department for Business, Innovation and Skills |
       | fco  | Foreign Office                                 |
