@@ -1,6 +1,6 @@
 class OrganisationsController < ApplicationController
   def index
-    @organisations = Organisation.order(:title).select {|org| org.sites.count > 0}
+    @organisations = Organisation.with_sites.order(:title)
     @site_count = Site.count
   end
 

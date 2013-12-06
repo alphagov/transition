@@ -22,6 +22,12 @@ class Organisation < ActiveRecord::Base
   validates_presence_of :whitehall_slug
   validates_uniqueness_of :whitehall_slug
 
+  scope :with_sites,
+        select('organisations.*, count(sites.id) AS site_count').
+        joins(:sites).
+        group('organisations.id').  # Using a sloppy mySQL GROUP. Note well, Postgres upgraders
+        having('site_count > 0')
+
   def to_param
     whitehall_slug
   end
