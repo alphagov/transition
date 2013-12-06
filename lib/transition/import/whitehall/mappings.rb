@@ -14,6 +14,10 @@ module Transition
           @filename = options[:filename]
           @username = options[:username]
           @password = options[:password]
+
+          if @filename.nil? && (@username.nil? && @password.nil?)
+            raise ArgumentError, 'Either filename or username and password must provided for processing Whitehall mappings'
+          end
         end
 
         def call
