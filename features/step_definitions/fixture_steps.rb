@@ -9,10 +9,17 @@ Given(/^there is a (.*) organisation named (.*) abbreviated (.*) with these site
 end
 
 Given(/^there are these organisations with sites:$/) do |org_table|
-  # org_table is like | abbr | Title |
-  org_table.rows.each do |abbr, title|
-    org = create(:organisation, whitehall_slug: abbr, title: title)
-    site = create(:site_with_default_host, organisation: org, abbr: abbr)
+  # org_table is like | whitehall_slug | Title |
+  org_table.rows.each do |slug, title|
+    org = create(:organisation, whitehall_slug: slug, title: title)
+    create(:site_with_default_host, organisation: org, abbr: slug)
+  end
+end
+
+Given(/^there are these organisations without sites:$/) do |org_table|
+  # org_table is like | whitehall_slug | Title |
+  org_table.rows.each do |slug, title|
+    create(:organisation, whitehall_slug: slug, title: title)
   end
 end
 
