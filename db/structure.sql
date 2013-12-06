@@ -54,6 +54,7 @@ CREATE TABLE `mappings` (
   `new_url` text COLLATE utf8_unicode_ci,
   `suggested_url` text COLLATE utf8_unicode_ci,
   `archive_url` text COLLATE utf8_unicode_ci,
+  `from_redirector` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_mappings_on_site_id_and_path_hash` (`site_id`,`path_hash`),
   KEY `index_mappings_on_site_id_and_http_status` (`site_id`,`http_status`),
@@ -130,6 +131,7 @@ CREATE TABLE `users` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `organisation_slug` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_robot` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -190,5 +192,9 @@ INSERT INTO schema_migrations (version) VALUES ('20131128150000');
 INSERT INTO schema_migrations (version) VALUES ('20131128155022');
 
 INSERT INTO schema_migrations (version) VALUES ('20131202093544');
+
+INSERT INTO schema_migrations (version) VALUES ('20131202174921');
+
+INSERT INTO schema_migrations (version) VALUES ('20131203102650');
 
 INSERT INTO schema_migrations (version) VALUES ('20131203115518');

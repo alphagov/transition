@@ -28,6 +28,7 @@ describe Transition::Import::Mappings do
         its(:new_url)   { should eql('https://www.gov.uk/government/organisations/attorney-generals-office') }
         its(:path)      { should eql('/_layouts/feed.aspx') }
         its(:path_hash) { should eql('160d40c3b5400e446d0c5f2f62fd7a419b62f7f6') }
+        its(:from_redirector) { should be_true }
       end
     end
 

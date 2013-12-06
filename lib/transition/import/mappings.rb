@@ -21,8 +21,8 @@ module Transition
       mySQL
 
       INSERT_FROM_STAGING = <<-mySQL
-        INSERT INTO mappings (site_id, path, path_hash, http_status, new_url, suggested_url, archive_url)
-        SELECT h.site_id, st.path, st.path_hash, st.http_status, st.new_url, st.suggested_url, st.archive_url
+        INSERT INTO mappings (site_id, path, path_hash, http_status, new_url, suggested_url, archive_url, from_redirector)
+        SELECT h.site_id, st.path, st.path_hash, st.http_status, st.new_url, st.suggested_url, st.archive_url, true
         FROM
           mappings_staging st
         INNER JOIN hosts h on h.hostname = st.host

@@ -19,4 +19,8 @@ class User < ActiveRecord::Base
     @_organisation ||=
       Organisation.find_by_whitehall_slug(organisation_slug) if organisation_slug
   end
+
+  def is_human?
+    ! is_robot?
+  end
 end

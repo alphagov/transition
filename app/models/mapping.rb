@@ -62,6 +62,24 @@ class Mapping < ActiveRecord::Base
     "http://webarchive.nationalarchives.gov.uk/#{self.tna_timestamp}/#{self.old_url}"
   end
 
+  def edited_by_human?
+    # Intent: has this mapping (ever) been edited by a human? We treat
+    # redirector's mappings as human-edited because they are curated.
+    #
+    # Assumptions:
+    #
+    #   * humans only edit when paper trail is recording changes
+    #   * all machine edits are done by a 'robot' user or when paper trail is
+    #     turned off or isn't applicable (eg redirector import)
+    #
+    if from_redirector == true
+      true
+    else originator.present?
+      user = User.find_by_id(originator)
+      user.present? && user.is_human?
+    end
+  end
+
   protected
   def set_path_hash
     self.path_hash = Digest::SHA1.hexdigest(path) if path_changed?
