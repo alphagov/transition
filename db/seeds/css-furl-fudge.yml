@@ -72,7 +72,7 @@ department-of-health:
   :furl: www.gov.uk/dh
 deputy-prime-ministers-office:
   :css: dpm
-  :furl: www.gov.uk
+  :furl: www.gov.uk/dpm
 department-for-work-pensions:
   :css: department-for-work-pensions
   :furl: www.gov.uk/dwp
@@ -102,7 +102,7 @@ northern-ireland-office:
   :furl: www.gov.uk/nio
 prime-ministers-office-10-downing-street:
   :css: number10
-  :furl: www.gov.uk
+  :furl: www.gov.uk/number10
 office-of-the-advocate-general-for-scotland:
   :css: 
   :furl: www.gov.uk/oag
