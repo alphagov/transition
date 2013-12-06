@@ -1,17 +1,6 @@
 require 'spec_helper'
 require 'transition/import/whitehall/mappings_csv'
 
-# From: https://github.com/airblade/paper_trail/tree/2.7-stable#turning-papertrail-offon
-def with_versioning
-  was_enabled = PaperTrail.enabled?
-  PaperTrail.enabled = true
-  begin
-    yield
-  ensure
-    PaperTrail.enabled = was_enabled
-  end
-end
-
 def csv_for(old_path, govuk_path, whitehall_state = 'published')
   StringIO.new(<<-END)
 Old Url,New Url,Status,Slug,Admin Url,State
@@ -120,14 +109,12 @@ END
       end
     end
 
-    context 'testing version recording' do
+    context 'testing version recording', versioning: true do
       let!(:site) { create(:site_with_default_host, abbr: 'www.dft', query_params: 'significant') }
       let(:csv) { csv_for('/oldurl', '/new') }
 
       before do
-        with_versioning do
-          Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(csv)
-        end
+        Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(csv)
       end
 
       subject(:mapping) { Mapping.first }
