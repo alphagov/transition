@@ -34,17 +34,17 @@
 <% if @mappings.any? %>
   <table class="mappings table table-bordered">
     <thead>
-    <tr>
-      <th class="mapping-type-header" scope="col">Type</th>
-      <th scope="col">
-        Original path from <%= @site.default_host.hostname %>
-        <br>
-        (where it redirects to when applicable)
-      </th>
-      <% if current_user.can_edit?(@site.organisation) %>
-        <th></th>
-      <% end %>
-    </tr>
+      <tr>
+        <th class="mapping-type-header" scope="col">Type</th>
+        <th scope="col">
+          Original path from <%= @site.default_host.hostname %>
+          <br>
+          (where it redirects to when applicable)
+        </th>
+        <% if current_user.can_edit?(@site.organisation) %>
+          <th></th>
+        <% end %>
+      </tr>
     </thead>
     <tbody>
     <% @mappings.each do |mapping| %>
