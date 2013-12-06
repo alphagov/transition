@@ -32,13 +32,13 @@ module Transition
             # Rows are like:
             # Old Url,New Url,Status,Slug,Admin Url,State
             CSV.new(urls_io, headers: true).each do |row|
-              next if row[0].blank?
-              next unless row[5] == 'published'
+              next if row['Old Url'].blank?
+              next unless row['State'] == 'published'
 
               begin
-                old_uri = URI.parse(row[0])
+                old_uri = URI.parse(row['Old Url'])
               rescue URI::InvalidURIError => e
-                Rails.logger.warn("Skipping mapping for unparseable Old Url in Whitehall URL CSV: #{row[0]}")
+                Rails.logger.warn("Skipping mapping for unparseable Old Url in Whitehall URL CSV: #{row['Old Url']}")
                 next
               end
 
@@ -49,14 +49,14 @@ module Transition
               elsif ! host.site.managed_by_transition?
                 Rails.logger.warn("Skipping mapping for a site managed by redirector in Whitehall URL CSV: '#{old_uri.host}'")
               else
-                canonical_path = host.site.canonical_path_from_url(row[0])
+                canonical_path = host.site.canonical_path_from_url(row['Old Url'])
                 existing_mapping = host.site.mappings.where(path_hash: path_hash(canonical_path)).first
 
                 unless existing_mapping && existing_mapping.edited_by_human?
                   if existing_mapping
-                    existing_mapping.update_attributes(new_url: row[1], http_status: '301')
+                    existing_mapping.update_attributes(new_url: row['New Url'], http_status: '301')
                   else
-                    host.site.mappings.create(path: canonical_path, new_url: row[1], http_status: '301')
+                    host.site.mappings.create(path: canonical_path, new_url: row['New Url'], http_status: '301')
                   end
                 end
               end
