@@ -31,7 +31,7 @@
         <%= link_to org.title, organisation_path(org) %>
       </td>
       <td>
-        <%= pluralize(org.sites.count, 'site') %>
+        <%= pluralize(org.site_count, 'site') %>
       </td>
     </tr>
   <% end %>
