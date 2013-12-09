@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe 'HostPresenter' do
   describe '#as_hash' do
-    let(:site) { create(:site, :with_default_host) }
-    let(:host) { site.hosts.first }
+    let(:site) { create(:site) }
+    let(:host) { site.default_host }
+
     subject { HostPresenter.new(host).as_hash }
 
     it { should have_key(:hostname) }

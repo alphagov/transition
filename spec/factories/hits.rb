@@ -7,5 +7,4 @@ FactoryGirl.define do
 
     association :host
   end
-
 end
