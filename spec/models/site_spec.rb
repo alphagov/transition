@@ -49,4 +49,15 @@ describe Site do
       subject.should eql('')
     end
   end
+
+  describe 'factory issues' do
+    it 'should not produce two orgs for the following pattern' do
+      slug, title = 'slug', 'title'
+
+      org = create(:organisation, whitehall_slug: slug, title: title)
+      create(:site_with_default_host, organisation: org, abbr: slug)
+
+      Organisation.count.should == 1
+    end
+  end
 end
