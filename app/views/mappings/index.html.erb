@@ -25,7 +25,7 @@
 <% end %>
 
 <% if @mappings.any? %>
-  <table class="mappings table table-bordered">
+  <table class="mappings table table-bordered" <% if current_user.can_edit?(@site.organisation) %>data-module="selectable-table"<% end %>>
     <thead>
       <tr class="table-header">
         <% if current_user.can_edit?(@site.organisation) %>
@@ -94,6 +94,10 @@
     </tbody>
   </table>
   <%= paginate(@mappings) %>
+
+  <% if current_user.can_edit?(@site.organisation) %>
+    <script>GOVUK.Mappings.setupTables()</script>
+  <% end %>
 
 <% else %>
   <p class="no-content no-content-bordered">
