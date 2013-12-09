@@ -9,7 +9,7 @@ FactoryGirl.define do
 
     association :organisation
 
-    factory :site_with_default_host do
+    trait :with_default_host do
       after(:build) do |site|
         site.hosts << FactoryGirl.build(:host, hostname: "#{site.abbr}.gov.uk", site: site)
       end

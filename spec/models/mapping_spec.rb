@@ -16,7 +16,7 @@ describe Mapping do
   end
 
   describe 'url generation (based on mapping path and site host)' do
-    subject(:mapping) { create :mapping, site: create(:site_with_default_host, abbr: 'cic_regulator'), path: '/some-path' }
+    subject(:mapping) { create :mapping, site: create(:site, :with_default_host, abbr: 'cic_regulator'), path: '/some-path' }
 
     its(:old_url)                    { should == 'http://cic_regulator.gov.uk/some-path' }
     its(:national_archive_url)       { should == 'http://webarchive.nationalarchives.gov.uk/20120816224015/http://cic_regulator.gov.uk/some-path' }

@@ -4,7 +4,7 @@ require 'transition/import/daily_hit_totals'
 describe HitsController do
   describe '#category' do
     let(:site) do
-      create :site_with_default_host do |site|
+      create :site, :with_default_host do |site|
         site.hosts << create(:host, hostname: 'alias.gov.uk')
       end
     end
