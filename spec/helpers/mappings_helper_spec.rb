@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe MappingsHelper do
-  let(:site)    { build(:site_with_default_host) }
+  let(:site)    { build(:site, :with_default_host) }
   let(:hostname){ site.default_host.hostname }
   let(:mapping) { build :mapping, site: site }
 

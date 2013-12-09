@@ -7,7 +7,7 @@ FactoryGirl.define do
     sequence(:whitehall_slug) { |n| "org-#{n}" }
 
     trait :with_site do
-      after(:create) { |o| o.sites = FactoryGirl.create_list(:sequenced_site, 1) }
+      after(:create) { |o| o.sites = FactoryGirl.create_list(:site, 1) }
     end
   end
 end
