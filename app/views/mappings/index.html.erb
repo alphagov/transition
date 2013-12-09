@@ -41,7 +41,13 @@
       </tr>
       <% if current_user.can_edit?(@site.organisation) %>
         <tr class="table-header-secondary">
-          <th class="select-rows"></th>
+          <th class="selectable-row">
+            <div class="relative">
+              <label>
+                <input type="checkbox" />
+              </label>
+            </div>
+          </th>
           <th colspan="3">
             <div class="btn-group">
               <a href="#" class="btn">Redirect selected paths</a>
@@ -58,7 +64,13 @@
     <% @mappings.each do |mapping| %>
       <tr data-status-code="<%= mapping.http_status %>">
         <% if current_user.can_edit?(@site.organisation) %>
-          <td></td>
+          <td class="selectable-row">
+            <div class="relative">
+              <label>
+                <input type="checkbox" />
+              </label>
+            </div>
+          </td>
         <% end %>
         <td class="<%= "mapping-type-#{mapping.type}" %>">
           <%= mapping.type.titleize %>
