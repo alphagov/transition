@@ -57,7 +57,7 @@ describe ApplicationHelper do
     end
 
     context 'for the versions in a mapping', versioning: true do
-      let(:mapping) { create :mapping_with_versions }
+      let(:mapping) { create :mapping, :with_versions }
       let(:site)    { mapping.site }
 
       subject { helper.breadcrumb mapping.versions.last }

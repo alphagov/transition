@@ -34,7 +34,7 @@ describe MappingsHelper do
   end
 
   describe '#mapping_edit_tabs', versioning: true do
-    let!(:mapping) { create :mapping_with_versions, site: site }
+    let!(:mapping) { create :mapping, :with_versions, site: site }
     before         { @mapping = mapping }
 
     subject { helper.mapping_edit_tabs active: 'Edit' }
