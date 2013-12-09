@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'HostsPresenter' do
-  let!(:site)   { create :site, :with_default_host }
+  let!(:site)   { create :site }
   let!(:host_b) { create :host, site: site }
   let!(:host_c) { create :host, site: site }
 

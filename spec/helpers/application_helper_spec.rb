@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe ApplicationHelper do
   describe '#breadcrumb' do
-    let(:mapping)       { create :mapping_with_default_host }
+    let(:mapping)       { create :mapping }
     let(:site)          { mapping.site }
     let(:organisation)  { site.organisation }
-    let(:hit)           { build :hit, host: build(:host, site: site) }
+    let(:hit)           { build :hit, host: site.default_host }
 
     context 'at the top level' do
       subject { helper.breadcrumb }

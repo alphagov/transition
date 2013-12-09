@@ -13,7 +13,7 @@ describe Transition::Import::Whitehall::MappingsCSV do
     let(:as_user) { create(:user, name: 'C-3PO', is_robot: true) }
 
     context 'site and host exists' do
-      let!(:site) { create(:site, :with_default_host, abbr: 'www.dft', query_params: 'significant') }
+      let!(:site) { create(:site, abbr: 'www.dft', query_params: 'significant') }
 
       before do
         Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(csv)
@@ -100,7 +100,7 @@ END
     end
 
     context 'site is not managed by transition' do
-      let!(:site) { create(:site, :with_default_host, abbr: 'www.dft', managed_by_transition: false) }
+      let!(:site) { create(:site, abbr: 'www.dft', managed_by_transition: false) }
       let(:csv) { csv_for('/oldurl', '/new') }
 
       it 'logs it' do
@@ -110,7 +110,7 @@ END
     end
 
     context 'testing version recording', versioning: true do
-      let!(:site) { create(:site, :with_default_host, abbr: 'www.dft', query_params: 'significant') }
+      let!(:site) { create(:site, abbr: 'www.dft', query_params: 'significant') }
       let(:csv) { csv_for('/oldurl', '/new') }
 
       before do
