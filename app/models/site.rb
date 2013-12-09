@@ -7,6 +7,8 @@ class Site < ActiveRecord::Base
   has_many :daily_hit_totals, through: :hosts
 
   validates_presence_of :abbr
+  validates_presence_of :tna_timestamp
+  validates_presence_of :organisation
   validates_uniqueness_of :abbr
 
   def to_param

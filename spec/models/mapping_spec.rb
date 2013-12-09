@@ -16,7 +16,7 @@ describe Mapping do
   end
 
   describe 'url generation (based on mapping path and site host)' do
-    subject(:mapping) { create :mapping, site: create(:site_with_default_host), path: '/some-path' }
+    subject(:mapping) { create :mapping, site: create(:site_with_default_host, abbr: 'cic_regulator'), path: '/some-path' }
 
     its(:old_url)                    { should == 'http://cic_regulator.gov.uk/some-path' }
     its(:national_archive_url)       { should == 'http://webarchive.nationalarchives.gov.uk/20120816224015/http://cic_regulator.gov.uk/some-path' }
@@ -41,8 +41,9 @@ describe Mapping do
     it { should validate_presence_of(:http_status) }
     it { should ensure_length_of(:http_status).is_at_most(3) }
     it 'ensures paths are unique to a site' do
-      create(:mapping_410)
-      lambda { build(:mapping_410).save }.should raise_error(ActiveRecord::StatementInvalid)
+      site = create(:site)
+      create(:mapping_410, site: site)
+      lambda { build(:mapping_410, site: site).save! }.should raise_error(ActiveRecord::RecordInvalid)
     end
 
     it { should ensure_length_of(:new_url).is_at_most(64.kilobytes - 1)}

@@ -9,6 +9,9 @@ describe Organisation do
 
   describe 'validations' do
     it { should validate_presence_of(:whitehall_slug) }
-    it { should validate_uniqueness_of(:whitehall_slug) }
+    it 'ensures whitehall_slugs are unique' do
+      create :organisation
+      should validate_uniqueness_of(:whitehall_slug)
+    end
   end
 end

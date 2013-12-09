@@ -33,8 +33,8 @@ CREATE TABLE `hits_staging` (
 
 CREATE TABLE `hosts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `site_id` int(11) DEFAULT NULL,
-  `hostname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `site_id` int(11) NOT NULL,
+  `hostname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ttl` int(11) DEFAULT NULL,
   `cname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `live_cname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE `organisational_relationships` (
 
 CREATE TABLE `organisations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `homepage` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `furl` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
@@ -105,10 +105,10 @@ CREATE TABLE `schema_migrations` (
 
 CREATE TABLE `sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `organisation_id` int(11) DEFAULT NULL,
-  `abbr` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `organisation_id` int(11) NOT NULL,
+  `abbr` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `query_params` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tna_timestamp` datetime DEFAULT NULL,
+  `tna_timestamp` datetime NOT NULL,
   `homepage` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -184,6 +184,8 @@ INSERT INTO schema_migrations (version) VALUES ('20131108121241');
 INSERT INTO schema_migrations (version) VALUES ('20131112133657');
 
 INSERT INTO schema_migrations (version) VALUES ('20131127140136');
+
+INSERT INTO schema_migrations (version) VALUES ('20131127164943');
 
 INSERT INTO schema_migrations (version) VALUES ('20131128120152');
 
