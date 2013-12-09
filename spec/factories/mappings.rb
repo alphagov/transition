@@ -4,9 +4,6 @@ FactoryGirl.define do
     path '/about/branding'
     association :site, strategy: :build
 
-    factory :mapping_410
-
-
     factory :archived
     factory :redirect do
       http_status '301'

@@ -42,8 +42,8 @@ describe Mapping do
     it { should ensure_length_of(:http_status).is_at_most(3) }
     it 'ensures paths are unique to a site' do
       site = create(:site)
-      create(:mapping_410, site: site)
-      lambda { build(:mapping_410, site: site).save! }.should raise_error(ActiveRecord::RecordInvalid)
+      create(:archived, site: site)
+      lambda { build(:archived, site: site).save! }.should raise_error(ActiveRecord::RecordInvalid)
     end
 
     it { should ensure_length_of(:new_url).is_at_most(64.kilobytes - 1)}
