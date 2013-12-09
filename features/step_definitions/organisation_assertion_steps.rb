@@ -14,6 +14,10 @@ Then(/^I should see a link to the organisation (.*)$/) do |org_abbr|
   expect(page).to have_link('', href: organisation_path(org_abbr))
 end
 
+Then(/^I should not see a link to the organisation (.*)$/) do |org_abbr|
+  expect(page).not_to have_link('', href: organisation_path(org_abbr))
+end
+
 Then(/^I should see all the old homepages for the sites of the given organisation$/) do
   @organisation.sites.each do |site|
     expect(page).to have_content(site.default_host.hostname)
