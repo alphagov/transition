@@ -15,6 +15,5 @@ FactoryGirl.define do
       after(:create) { |mapping| mapping.update_attributes(new_url: 'http://somewhere.new') }
       after(:create) { |mapping| mapping.site.hosts << create(:host) }
     end
-
   end
 end
