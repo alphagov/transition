@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :site do
-    sequence(:abbr) { |n| "cic_regulator-#{n}" }
-    homepage 'https://www.gov.uk/government/organisations/cic-regulator'
+    sequence(:abbr) { |n| "site-#{n}" }
+    homepage 'https://www.gov.uk/government/organisations/example-org'
     query_params ''
     launch_date { 1.month.ago }
     tna_timestamp '2012-08-16 22:40:15'
