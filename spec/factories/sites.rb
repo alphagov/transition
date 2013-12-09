@@ -9,10 +9,6 @@ FactoryGirl.define do
 
     association :organisation
 
-    factory :sequenced_site do
-      sequence(:abbr) { |n| "site-#{n}" }
-    end
-
     factory :site_with_default_host do
       after(:build) do |site|
         site.hosts << FactoryGirl.build(:host, hostname: "#{site.abbr}.gov.uk")
