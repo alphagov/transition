@@ -3,13 +3,13 @@ class NationalArchivesURLValidator < ActiveModel::EachValidator
 
   def validate_each(record, attribute, value)
     return if value.blank?
-    valid_url = false
-    begin
+    valid_url = begin
       uri = URI.parse(value)
-      valid_url = uri.host == NATIONAL_ARCHIVES_HOST
+      uri.host == NATIONAL_ARCHIVES_HOST
     rescue URI::InvalidURIError
-      # ignore
+      false
     end
-    record.errors.add attribute, (options[:message] || "must be on the National Archives domain, #{NATIONAL_ARCHIVES_HOST}") unless valid_url
+    record.errors.add attribute, (options[:message] || \
+      "must be on the National Archives domain, #{NATIONAL_ARCHIVES_HOST}") unless valid_url
   end
 end

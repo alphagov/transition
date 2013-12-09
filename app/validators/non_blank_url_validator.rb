@@ -1,12 +1,11 @@
 class NonBlankURLValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return if value.blank?
-    valid_url = false
-    begin
+    valid_url = begin
       uri = URI.parse(value)
-      valid_url = !uri.scheme.blank? && !uri.host.blank?
+      !uri.scheme.blank? && !uri.host.blank?
     rescue URI::InvalidURIError
-      # ignore
+      false
     end
     record.errors.add attribute, (options[:message] || 'is not a URL') unless valid_url
   end
