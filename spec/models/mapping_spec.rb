@@ -76,6 +76,14 @@ describe Mapping do
         end
       end
 
+      context 'Archive URL is not webarchive.nationalarchives.gov.uk' do
+        subject(:mapping) { build(:archived, archive_url: 'http://malicious.com/foo')}
+
+        it 'fails' do
+          mapping.errors[:archive_url].should == ['must be on the National Archives domain, webarchive.nationalarchives.gov.uk']
+        end
+      end
+
       context 'path is blank' do
         subject(:mapping) { build(:archived, path: '') }
 
