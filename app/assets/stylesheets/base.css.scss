@@ -164,6 +164,22 @@ main a {
 }
 
 /* ==========================================================================
+   Table headers
+   ========================================================================== */
+
+.table-header {
+  background-color: $grayLighter;
+}
+
+.table-header-secondary {
+  background-color: $tableBackgroundAccent;
+}
+
+.table-header-secondary th {
+  border-bottom: 1px solid #ccc;
+}
+
+/* ==========================================================================
    Common content patterns
    ========================================================================== */
 
