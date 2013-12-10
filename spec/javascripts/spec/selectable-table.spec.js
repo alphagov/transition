@@ -19,6 +19,18 @@ describe('A selectable table module', function() {
         <tr>\
           <td><input type="checkbox" /></td>\
         </tr>\
+        <tr>\
+          <td><input type="checkbox" /></td>\
+        </tr>\
+        <tr>\
+          <td><input type="checkbox" /></td>\
+        </tr>\
+        <tr>\
+          <td><input type="checkbox" /></td>\
+        </tr>\
+        <tr>\
+          <td><input type="checkbox" /></td>\
+        </tr>\
       </tbody>\
     </table>');
 
@@ -53,16 +65,76 @@ describe('A selectable table module', function() {
       expect(headerInput.prop('indeterminate')).toBe(true);
       expect(headerInput.prop('checked')).toBe(false);
 
-      secondInput.click();
+      firstInput.click();
+      table.find('tbody input').each(function() {
+        $(this).click();
+      });
+
       expect(headerInput.prop('indeterminate')).toBe(false);
       expect(headerInput.prop('checked')).toBe(true);
 
-      secondInput.click();
-      firstInput.click();
+      table.find('tbody input').each(function() {
+        $(this).click();
+      });
+
       expect(headerInput.prop('indeterminate')).toBe(false);
       expect(headerInput.prop('checked')).toBe(false);
 
     });
+
+  });
+
+  describe('when a row has been selected', function() {
+
+    var tableRows,
+        tableInputs;
+
+    beforeEach(function() {
+      tableRows = table.find('tbody tr');
+      tableInputs = tableRows.find('input');
+    });
+
+    describe('when another row is selected using the shift key', function() {
+
+      it('selects all rows between the (above) previously selected and the newly selected', function() {
+
+        tableInputs.eq(1).click();
+        simulateShiftClick(tableInputs.get(5));
+
+        expect(tableRows.eq(0).is('.selected-row')).toBe(false);
+        expect(tableRows.eq(1).is('.selected-row')).toBe(true);
+        expect(tableRows.eq(2).is('.selected-row')).toBe(true);
+        expect(tableRows.eq(3).is('.selected-row')).toBe(true);
+        expect(tableRows.eq(4).is('.selected-row')).toBe(true);
+        expect(tableRows.eq(5).is('.selected-row')).toBe(true);
+      });
+
+      it('selects all rows between the (below) previously selected and the newly selected', function() {
+
+        tableInputs.eq(5).click();
+        simulateShiftClick(tableInputs.get(1));
+
+        expect(tableRows.eq(0).is('.selected-row')).toBe(false);
+        expect(tableRows.eq(1).is('.selected-row')).toBe(true);
+        expect(tableRows.eq(2).is('.selected-row')).toBe(true);
+        expect(tableRows.eq(3).is('.selected-row')).toBe(true);
+        expect(tableRows.eq(4).is('.selected-row')).toBe(true);
+        expect(tableRows.eq(5).is('.selected-row')).toBe(true);
+      });
+
+    });
+
+    // Bypass jQuery, setting shiftKey on jQuery event didn't pass through as expected
+    function simulateShiftClick(element) {
+      var evt = document.createEvent('HTMLEvents');
+
+          // See https://developer.mozilla.org/en-US/docs/Web/API/Event.initEvent
+          // bubbles, not cancelable
+          evt.initEvent('click', true, false);
+          evt.shiftKey = true;
+
+      element.dispatchEvent(evt);
+    }
 
   });
 
