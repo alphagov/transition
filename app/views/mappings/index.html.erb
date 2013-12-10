@@ -25,6 +25,7 @@
 <% end %>
 
 <% if @mappings.any? %>
+  <%= form_tag edit_multiple_site_mappings_path(@site) do %>
   <table class="mappings table table-bordered" <% if current_user.can_edit?(@site.organisation) %>data-module="selectable-table"<% end %>>
     <thead>
       <tr class="table-header">
@@ -52,6 +53,7 @@
             <div class="btn-group">
               <a href="#" class="btn">Redirect selected paths</a>
               <a href="#" class="btn">Archive selected paths</a>
+              <%= submit_tag "Edit Checked", class: 'btn' %>
             </div>
             <div class="pull-right">
               <%= render partial: 'add_button' %>
@@ -67,7 +69,7 @@
           <td class="selectable-row">
             <div class="relative">
               <label>
-                <input type="checkbox" />
+                <%= check_box_tag "mapping_ids[]", mapping.id %>
               </label>
             </div>
           </td>
@@ -93,6 +95,7 @@
     <% end %>
     </tbody>
   </table>
+  <% end %>
   <%= paginate(@mappings) %>
 
   <% if current_user.can_edit?(@site.organisation) %>

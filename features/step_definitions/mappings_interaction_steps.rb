@@ -19,6 +19,11 @@ When(/^I go to edit the first mapping$/) do
   click_link 'Edit'
 end
 
+When(/^I click on the checkboxes for the first and second mappings$/) do
+  find(:css, ".mappings tbody tr:first-child input").set(true)
+  find(:css, ".mappings tbody tr:first-child + tr input").set(true)
+end
+
 When(/^I filter the path by ([^"]*)$/) do |path_contains|
   fill_in 'Filter by path', with: path_contains
   click_button 'Filter'

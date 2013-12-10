@@ -5,7 +5,7 @@ class MappingsController < ApplicationController
     @site = Site.find_by_abbr(params[:site_id])
   end
 
-  before_filter :check_user_can_edit, only: [:new, :create, :edit, :update]
+  before_filter :check_user_can_edit, only: [:new, :create, :edit, :update, :edit_multiple]
 
   def new
     @mapping = @site.mappings.build(path: params[:path])
@@ -37,11 +37,17 @@ class MappingsController < ApplicationController
     end
   end
 
+  def edit_multiple
+    @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
+    unless @mappings.present?
+      return redirect_to back_or_mappings_index, notice: 'No mappings were selected'
+    end
+  end
+
   def find
     path = @site.canonicalize_path(params[:path])
 
     if path.empty?
-      back_or_mappings_index = request.env['HTTP_REFERER'] || site_mappings_path(@site)
       notice = t('not_possible_to_edit_homepage_mapping')
       return redirect_to back_or_mappings_index, notice: notice
     end
@@ -60,5 +66,9 @@ private
       message = "You don't have permission to edit site mappings for #{@site.organisation.title}"
       redirect_to site_mappings_path(@site), alert: message
     end
+  end
+
+  def back_or_mappings_index
+    request.env['HTTP_REFERER'] || site_mappings_path(@site)
   end
 end
