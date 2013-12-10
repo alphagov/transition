@@ -9,7 +9,7 @@ describe('A selectable table module', function() {
     table = $('<table>\
       <thead>\
         <tr>\
-          <th><input type="checkbox" /></th>\
+          <th><input type="checkbox" class="js-toggle-all" /></th>\
         </tr>\
       </thead>\
       <tbody>\

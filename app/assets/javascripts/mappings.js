@@ -75,7 +75,7 @@
           SELECTED_ROW_CLASS = 'selected-row';
 
       element.on('click', 'tbody input', toggleRow);
-      element.on('click', 'thead input', toggleAllRows);
+      element.on('click', 'thead .js-toggle-all', toggleAllRows);
 
       function toggleRow(event) {
 
