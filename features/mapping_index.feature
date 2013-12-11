@@ -12,11 +12,22 @@ Feature: List mappings for a site
       | 410         | /about/corporate |                                         |
     And I visit the path /sites/directgov/mappings
 
-  Scenario: Selecting multiple mappings to edit without javascript
+  Scenario: Selecting multiple mappings to redirect without javascript
     When I click on the checkboxes for the first and second mappings
-    And I submit the form with the "Edit Checked" button
-    Then the page title should be "Edit mappings"
+    And I submit the form with the "Edit selected" button
+    Then the page title should be "Redirect mappings"
     And I should see "/a"
     And I should see "/about/branding"
     And I should have 2 hidden inputs for mapping IDs
+    And I should see a "Redirect to" input
     But I should not see "/about/corporate"
+
+  Scenario: Selecting multiple mappings to archive without javascript
+    When I click on the checkboxes for the first and second mappings
+    And I select "Archive"
+    And I submit the form with the "Edit selected" button
+    Then the page title should be "Archive mappings"
+    And I should see "/a"
+    And I should see "/about/branding"
+    And I should have 2 hidden inputs for mapping IDs
+    And I should not see a "Redirect to" input

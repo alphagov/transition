@@ -81,3 +81,11 @@ end
 Then(/^I should have (\d+) hidden inputs for mapping IDs$/) do |n|
   expect(page).to have_selector('input[id="mapping_ids_"]', count: n)
 end
+
+Then(/^I should see a "Redirect to" input$/) do
+  expect(page).to have_selector('label', text: 'Redirect to')
+end
+
+Then(/^I should not see a "Redirect to" input$/) do
+  expect(page).not_to have_selector('label', text: 'Redirect to')
+end

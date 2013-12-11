@@ -39,8 +39,12 @@ class MappingsController < ApplicationController
 
   def edit_multiple
     @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
+    @new_status = params[:new_status] if ['redirect', 'archive'].include?(params[:new_status])
     unless @mappings.present?
       return redirect_to back_or_mappings_index, notice: 'No mappings were selected'
+    end
+    unless @new_status.present?
+      return redirect_to back_or_mappings_index, notice: 'Please select either redirect or archive'
     end
   end
 

@@ -50,11 +50,19 @@
             </div>
           </th>
           <th colspan="3">
-            <div class="btn-group">
-              <a href="#" class="btn">Redirect selected paths</a>
-              <a href="#" class="btn">Archive selected paths</a>
-              <%= submit_tag "Edit Checked", class: 'btn' %>
+            <div class="pull-left">
+              <div>
+                <%= label_tag :new_status_redirect, class: 'radio inline add-right-margin' do %>
+                  <%= radio_button_tag(:new_status, 'redirect', checked = true) %> Redirect
+                <% end %>
+                <%= label_tag :new_status_archive, class: 'radio inline' do %>
+                  <%= radio_button_tag(:new_status, 'archive') %> Archive
+                <% end %>
+
+                <%= submit_tag "Edit selected", class: 'btn' %>
+              </div>
             </div>
+
             <div class="pull-right">
               <%= render partial: 'add_button' %>
             </div>

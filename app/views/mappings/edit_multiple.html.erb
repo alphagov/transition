@@ -1,11 +1,11 @@
-<% content_for(:page_title, 'Edit mappings') %>
+<% content_for(:page_title, "#{ @new_status.titleize } mappings") %>
 
 <%= breadcrumb(@site) %>
 
 <div class="page-title">
   <h1>
     <span class="small"><%= @site.default_host.hostname %></span>
-    Edit mappings
+    <%= @new_status.titleize %> mappings
   </h1>
 </div>
 
@@ -34,6 +34,17 @@
       <% end %>
     </tbody>
   </table>
+
+  <%= hidden_field_tag "http_status", @new_status %>
+  <% if @new_status == 'redirect' %>
+    <%= field_set_tag nil, class: 'add-bottom-margin' do %>
+      <legend class="if-js-rm">
+        Redirect
+      </legend>
+      <%= label_tag(:new_url, 'Redirect to') %>
+      <%= text_field_tag(:new_url, @new_url, class: 'span8') %>
+    <% end %>
+  <% end %>
 
   <%= link_to 'Cancel', :back, class: 'btn add-right-margin' %>
   <%= submit_tag 'Save', class: 'btn btn-success' %>
