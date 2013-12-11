@@ -18,4 +18,5 @@ Feature: List mappings for a site
     Then the page title should be "Edit mappings"
     And I should see "/a"
     And I should see "/about/branding"
+    And I should have 2 hidden inputs for mapping IDs
     But I should not see "/about/corporate"

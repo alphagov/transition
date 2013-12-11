@@ -2,13 +2,40 @@
 
 <%= breadcrumb(@site) %>
 
-<div class="page-title-with-border">
+<div class="page-title">
   <h1>
     <span class="small"><%= @site.default_host.hostname %></span>
     Edit mappings
   </h1>
 </div>
 
-<% @mappings.each do |m| %>
-  <%= m.path %><br />
+<%= form_tag update_multiple_site_mappings_path(@site) do %>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Original paths</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @mappings.each do |m| %>
+        <tr>
+          <td>
+            <strong><%= link_to m.path, m.old_url, class: 'breakable' %></strong>
+            <span class="muted">
+              <% if m.redirect? %>
+                currently redirects to <%= link_to m.new_url, m.new_url, class: 'muted-link breakable' %>
+              <% else %>
+                currently archived
+              <% end %>
+            </span>
+            <%= hidden_field_tag "mapping_ids[]", m.id %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to 'Cancel', :back, class: 'btn add-right-margin' %>
+  <%= submit_tag 'Save', class: 'btn btn-success' %>
+
 <% end %>

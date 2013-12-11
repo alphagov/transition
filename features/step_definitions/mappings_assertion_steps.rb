@@ -77,3 +77,7 @@ Then(/^I should see the link replaced with a suggested URL field$/) do
   expect(page).to have_selector('#mapping_suggested_url')
   expect(page).not_to have_selector('a[href="#suggest-url"]')
 end
+
+Then(/^I should have (\d+) hidden inputs for mapping IDs$/) do |n|
+  expect(page).to have_selector('input[id="mapping_ids_"]', count: n)
+end

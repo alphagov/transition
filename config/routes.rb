@@ -14,6 +14,7 @@ Transition::Application.routes.draw do
 
       collection do
         post 'edit_multiple'
+        post 'update_multiple'
       end
     end
 
