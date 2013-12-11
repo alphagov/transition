@@ -1,7 +1,7 @@
-Feature: List mappings for a site
-  As a GDS User with an interest in the quality of mappings,
-  I want to see the list of mappings
-  so that I can see the status of many mappings at once
+Feature: Editing multiple mappings for a site
+  As a GDS User,
+  I want to update many existing mappings at once
+  so that I can efficiently improve the quailty of mappings
 
   Background:
     Given I have logged in as an admin
@@ -31,3 +31,10 @@ Feature: List mappings for a site
     And I should see "/about/branding"
     And I should have 2 hidden inputs for mapping IDs
     And I should not see a "Redirect to" input
+
+  Scenario: Confirming multiple mappings to redirect without javascript
+    When I click on the checkboxes for the first and second mappings
+    And I submit the form with the "Edit selected" button
+    And I enter a new URL to redirect to
+    And I submit the form with the "Save" button
+    Then I should see "Mappings updated"

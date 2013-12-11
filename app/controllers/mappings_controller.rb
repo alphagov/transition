@@ -5,7 +5,7 @@ class MappingsController < ApplicationController
     @site = Site.find_by_abbr(params[:site_id])
   end
 
-  before_filter :check_user_can_edit, only: [:new, :create, :edit, :update, :edit_multiple]
+  before_filter :check_user_can_edit, only: [:new, :create, :edit, :update, :edit_multiple, :update_multiple]
 
   def new
     @mapping = @site.mappings.build(path: params[:path])
@@ -48,6 +48,31 @@ class MappingsController < ApplicationController
     end
   end
 
+  def update_multiple
+    # FIXME: validate new_url before doing any queries, to save time
+    redirect_new_url = params[:new_url]
+
+    @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
+    unless @mappings.present?
+      return redirect_to back_or_mappings_index, notice: 'No mappings were selected'
+    end
+
+    http_status, new_url = '410', nil
+    if params[:http_status] == 'redirect'
+      http_status, new_url = '301', redirect_new_url
+    end
+
+    if bulk_update_mappings(http_status, new_url).all?
+      # FIXME: redirect back to index, preserving path filter and pagination
+      redirect_to site_mappings_path(@site), notice: 'Mappings updated'
+    else
+      @new_status = Mapping::TYPES[http_status]
+      @new_url = new_url
+      # FIXME: doesn't display notice or invalid URL error message
+      render action: 'edit_multiple', notice: 'Mappings could not be updated'
+    end
+  end
+
   def find
     path = @site.canonicalize_path(params[:path])
 
@@ -74,5 +99,15 @@ private
 
   def back_or_mappings_index
     request.env['HTTP_REFERER'] || site_mappings_path(@site)
+  end
+
+  def bulk_update_mappings(http_status, new_url)
+    # FIXME: should we remove suggested and archive urls if http_status is
+    # redirect, and new_url if http_status is archive?
+    @mappings.map do |m|
+      update_data = { http_status: http_status }
+      update_data[:new_url] = new_url if http_status == '301'
+      m.update_attributes(update_data)
+    end
   end
 end

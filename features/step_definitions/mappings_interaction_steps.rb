@@ -47,3 +47,7 @@ When(/^I enter an archive URL but then click "Cancel"$/) do
   fill_in 'Alternative national archive URL', with: 'anything'
   click_link 'Cancel'
 end
+
+When(/^I enter a new URL to redirect to$/) do
+  fill_in 'Redirect to', with: 'https://www.gov.uk'
+end
