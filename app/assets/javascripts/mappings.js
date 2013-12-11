@@ -78,24 +78,31 @@
       element.on('click', 'tbody input', toggleRow);
       element.on('click', 'thead .js-toggle-all', toggleAllRows);
 
+      onLoadMarkSelectedRowsWithClass();
+      updateHeaderToggleState();
+
+      function onLoadMarkSelectedRowsWithClass() {
+
+        var selectedRows = tableRows.find('input:checked').parents('tr');
+        selectedRows.addClass(SELECTED_ROW_CLASS);
+
+      }
+
       function toggleRow(event) {
 
-        var row = $(event.target).parents('tr'),
-            selectedRowsCount,
-            inputHeader;
+        var row = $(event.target).parents('tr');
 
-        if (event.shiftKey) {
-          shiftToggleRow(event);
-          markRowAsRecentlyChanged(row);
-          return;
-        }
+        event.shiftKey ? shiftToggleRow(row) : row.toggleClass(SELECTED_ROW_CLASS);
 
         markRowAsRecentlyChanged(row);
+        updateHeaderToggleState();
+      }
 
-        row.toggleClass(SELECTED_ROW_CLASS);
-        selectedRowsCount = tableRows.filter('.' + SELECTED_ROW_CLASS).length;
+      function updateHeaderToggleState() {
 
-        inputHeader = element.find('thead input');
+        var selectedRowsCount = tableRows.filter('.' + SELECTED_ROW_CLASS).length,
+            inputHeader = element.find('thead input');
+
         if (selectedRowsCount > 0 && selectedRowsCount < tableRows.length) {
           inputHeader.prop('indeterminate', true);
           inputHeader.prop('checked', false);
@@ -114,14 +121,18 @@
         row.addClass(RECENTLY_CHANGED_CLASS);
       }
 
-      function shiftToggleRow(event) {
+      function shiftToggleRow(targetRow) {
 
-        var targetRow = $(event.target).parents('tr'),
-            targetIndex = tableRows.index(targetRow),
+        var targetIndex = tableRows.index(targetRow),
             targetState = targetRow.is('.' + SELECTED_ROW_CLASS),
             mostRecentlyChanged = tableRows.filter('.' + RECENTLY_CHANGED_CLASS),
             mostRecentlyChangedIndex = tableRows.index(mostRecentlyChanged),
             rows, range;
+
+        // If we don't have a most recently changed, only toggle the current row
+        if (mostRecentlyChangedIndex < 0) {
+          mostRecentlyChangedIndex = targetIndex;
+        }
 
         range = mostRecentlyChangedIndex < targetIndex ? [mostRecentlyChangedIndex, targetIndex + 1] : [targetIndex, mostRecentlyChangedIndex + 1];
         rows = tableRows.slice.apply(tableRows, range);

@@ -2,7 +2,21 @@ describe('A selectable table module', function() {
   "use strict"
 
   var root = window,
-      table;
+      table,
+      tableRows,
+      tableInputs;
+
+  // Bypass jQuery, setting shiftKey on jQuery event didn't pass through as expected
+  function simulateShiftClick(element) {
+    var evt = document.createEvent('HTMLEvents');
+
+        // See https://developer.mozilla.org/en-US/docs/Web/API/Event.initEvent
+        // Event bubbles but is not cancelable
+        evt.initEvent('click', true, false);
+        evt.shiftKey = true;
+
+    element.dispatchEvent(evt);
+  }
 
   beforeEach(function() {
 
@@ -36,10 +50,57 @@ describe('A selectable table module', function() {
 
     $('body').append(table);
     root.GOVUK.Mappings.selectableTable(table);
+
+    tableRows = table.find('tbody tr');
+    tableInputs = tableRows.find('input');
+
   });
 
   afterEach(function() {
     table.remove();
+  });
+
+  describe('when the page loads', function() {
+
+    var tableWithSelection;
+
+    beforeEach(function() {
+
+      tableWithSelection = $('<table>\
+        <thead>\
+          <tr>\
+            <th><input type="checkbox" class="js-toggle-all" /></th>\
+          </tr>\
+        </thead>\
+        <tbody>\
+          <tr>\
+            <td><input type="checkbox" checked="checked"/></td>\
+          </tr>\
+          <tr>\
+            <td><input type="checkbox" /></td>\
+          </tr>\
+        </tbody>\
+      </table>');
+
+      $('body').append(tableWithSelection);
+      root.GOVUK.Mappings.selectableTable(tableWithSelection);
+
+    });
+
+    afterEach(function() {
+      tableWithSelection.remove();
+    });
+
+    it('marks rows as selected if the checkbox is already checked', function() {
+      expect(tableWithSelection.find('tr:first-child').is('.selected-row')).toBe(true);
+      expect(tableWithSelection.find('tr.selected-row').length).toBe(1);
+    });
+
+    it('marks the header checkbox based on the loaded state of the checkboxes', function() {
+      expect(tableWithSelection.find('.js-toggle-all').prop('indeterminate')).toBe(true);
+      expect(tableWithSelection.find('.js-toggle-all').prop('checked')).toBe(false);
+    });
+
   });
 
   describe('when clicking a checkbox on a body row', function() {
@@ -84,15 +145,16 @@ describe('A selectable table module', function() {
 
   });
 
-  describe('when a row has been selected', function() {
+  describe('when a row is shift clicked without any other previous rows being changed', function() {
 
-    var tableRows,
-        tableInputs;
-
-    beforeEach(function() {
-      tableRows = table.find('tbody tr');
-      tableInputs = tableRows.find('input');
+    it('toggles the row as normal', function() {
+      simulateShiftClick(tableInputs.get(1));
+      expect(tableRows.eq(1).is('.selected-row')).toBe(true);
     });
+
+  });
+
+  describe('when a row has been selected', function() {
 
     describe('when another row is selected using the shift key', function() {
 
@@ -122,6 +184,13 @@ describe('A selectable table module', function() {
         expect(tableRows.eq(5).is('.selected-row')).toBe(true);
       });
 
+      it('updates the state of the header toggle', function() {
+
+        tableInputs.eq(0).click();
+        simulateShiftClick(tableInputs.get(5));
+        expect(table.find('.js-toggle-all').prop('checked')).toBe(true);
+      });
+
     });
 
     describe('when another row is unselected using the shift key', function() {
@@ -142,18 +211,6 @@ describe('A selectable table module', function() {
       });
 
     });
-
-    // Bypass jQuery, setting shiftKey on jQuery event didn't pass through as expected
-    function simulateShiftClick(element) {
-      var evt = document.createEvent('HTMLEvents');
-
-          // See https://developer.mozilla.org/en-US/docs/Web/API/Event.initEvent
-          // Event bubbles but is not cancelable
-          evt.initEvent('click', true, false);
-          evt.shiftKey = true;
-
-      element.dispatchEvent(evt);
-    }
 
   });
 
