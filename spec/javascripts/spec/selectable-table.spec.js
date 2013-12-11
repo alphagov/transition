@@ -96,7 +96,7 @@ describe('A selectable table module', function() {
 
     describe('when another row is selected using the shift key', function() {
 
-      it('selects all rows between the (above) previously selected and the newly selected', function() {
+      it('selects all rows between the (above) previously changed and the newly changed', function() {
 
         tableInputs.eq(1).click();
         simulateShiftClick(tableInputs.get(5));
@@ -109,7 +109,7 @@ describe('A selectable table module', function() {
         expect(tableRows.eq(5).is('.selected-row')).toBe(true);
       });
 
-      it('selects all rows between the (below) previously selected and the newly selected', function() {
+      it('selects all rows between the (below) previously changed and the newly changed', function() {
 
         tableInputs.eq(5).click();
         simulateShiftClick(tableInputs.get(1));
@@ -124,12 +124,31 @@ describe('A selectable table module', function() {
 
     });
 
+    describe('when another row is unselected using the shift key', function() {
+
+      it('unselects all rows between the previously changed and newly changed', function() {
+
+        tableInputs.eq(1).click();
+        simulateShiftClick(tableInputs.get(5));
+        simulateShiftClick(tableInputs.get(2));
+
+        expect(tableRows.eq(0).is('.selected-row')).toBe(false);
+        expect(tableRows.eq(1).is('.selected-row')).toBe(true);
+        expect(tableRows.eq(2).is('.selected-row')).toBe(false);
+        expect(tableRows.eq(3).is('.selected-row')).toBe(false);
+        expect(tableRows.eq(4).is('.selected-row')).toBe(false);
+        expect(tableRows.eq(5).is('.selected-row')).toBe(false);
+
+      });
+
+    });
+
     // Bypass jQuery, setting shiftKey on jQuery event didn't pass through as expected
     function simulateShiftClick(element) {
       var evt = document.createEvent('HTMLEvents');
 
           // See https://developer.mozilla.org/en-US/docs/Web/API/Event.initEvent
-          // bubbles, not cancelable
+          // Event bubbles but is not cancelable
           evt.initEvent('click', true, false);
           evt.shiftKey = true;
 
