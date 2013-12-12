@@ -49,7 +49,7 @@ describe('A selectable table module', function() {
     </table>');
 
     $('body').append(table);
-    root.GOVUK.Mappings.selectableTable(table);
+    root.GOVUK.SelectableTable.start(table);
 
     tableRows = table.find('tbody tr');
     tableInputs = tableRows.find('input');
@@ -83,7 +83,7 @@ describe('A selectable table module', function() {
       </table>');
 
       $('body').append(tableWithSelection);
-      root.GOVUK.Mappings.selectableTable(tableWithSelection);
+      root.GOVUK.SelectableTable.start(tableWithSelection);
 
     });
 
