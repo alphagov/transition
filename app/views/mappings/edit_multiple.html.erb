@@ -12,8 +12,8 @@
 <%= form_tag update_multiple_site_mappings_path(@site) do %>
   <table class="table table-bordered table-striped">
     <thead>
-      <tr>
-        <th>Original paths</th>
+      <tr class="table-header">
+        <th>Original path from <%= @site.default_host.hostname %></th>
       </tr>
     </thead>
     <tbody>
