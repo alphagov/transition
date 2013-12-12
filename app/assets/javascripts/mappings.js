@@ -75,15 +75,15 @@
           SELECTED_ROW_CLASS = 'selected-row',
           RECENTLY_CHANGED_CLASS = 'js-most-recently-changed';
 
-      element.on('click', 'tbody input', toggleRow);
-      element.on('click', 'thead .js-toggle-all', toggleAllRows);
+      element.on('click', '.js-toggle-row', toggleRow);
+      element.on('click', '.js-toggle-all', toggleAllRows);
 
       onLoadMarkSelectedRowsWithClass();
       updateHeaderToggleState();
 
       function onLoadMarkSelectedRowsWithClass() {
 
-        var selectedRows = tableRows.find('input:checked').parents('tr');
+        var selectedRows = tableRows.find('.js-toggle-row:checked').parents('tr');
         selectedRows.addClass(SELECTED_ROW_CLASS);
 
       }
@@ -101,7 +101,7 @@
       function updateHeaderToggleState() {
 
         var selectedRowsCount = tableRows.filter('.' + SELECTED_ROW_CLASS).length,
-            inputHeader = element.find('thead input');
+            inputHeader = element.find('.js-toggle-all');
 
         if (selectedRowsCount > 0 && selectedRowsCount < tableRows.length) {
           inputHeader.prop('indeterminate', true);

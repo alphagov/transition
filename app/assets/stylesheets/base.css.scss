@@ -190,6 +190,10 @@ main a {
   border-bottom: 1px solid #ccc;
 }
 
+.radio.table-header-radio {
+  padding-top: 0;
+}
+
 /* Selectable rows
    ==========================================================================
    Fill table cell with label to make the whole cell clickable.
@@ -221,7 +225,7 @@ main a {
   vertical-align: top;
 
   input {
-    margin-top: 16px;
+    margin-top: 18px;
   }
 }
 

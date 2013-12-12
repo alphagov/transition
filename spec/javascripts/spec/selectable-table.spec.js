@@ -28,22 +28,22 @@ describe('A selectable table module', function() {
       </thead>\
       <tbody>\
         <tr>\
-          <td><input type="checkbox" /></td>\
+          <td><input type="checkbox" class="js-toggle-row" /></td>\
         </tr>\
         <tr>\
-          <td><input type="checkbox" /></td>\
+          <td><input type="checkbox" class="js-toggle-row" /></td>\
         </tr>\
         <tr>\
-          <td><input type="checkbox" /></td>\
+          <td><input type="checkbox" class="js-toggle-row" /></td>\
         </tr>\
         <tr>\
-          <td><input type="checkbox" /></td>\
+          <td><input type="checkbox" class="js-toggle-row" /></td>\
         </tr>\
         <tr>\
-          <td><input type="checkbox" /></td>\
+          <td><input type="checkbox" class="js-toggle-row" /></td>\
         </tr>\
         <tr>\
-          <td><input type="checkbox" /></td>\
+          <td><input type="checkbox" class="js-toggle-row" /></td>\
         </tr>\
       </tbody>\
     </table>');
@@ -74,10 +74,10 @@ describe('A selectable table module', function() {
         </thead>\
         <tbody>\
           <tr>\
-            <td><input type="checkbox" checked="checked"/></td>\
+            <td><input type="checkbox" class="js-toggle-row" checked="checked"/></td>\
           </tr>\
           <tr>\
-            <td><input type="checkbox" /></td>\
+            <td><input type="checkbox" class="js-toggle-row" /></td>\
           </tr>\
         </tbody>\
       </table>');
