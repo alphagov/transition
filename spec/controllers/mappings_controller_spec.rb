@@ -1,3 +1,5 @@
+# encoding = utf-8
+
 require 'spec_helper'
 
 describe MappingsController do
@@ -161,6 +163,31 @@ describe MappingsController do
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, new_status: 'archive'
         expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+
+    context 'when no mapping ids which exist on this site are posted' do
+      let!(:other_site)    { create :site }
+      let!(:other_mapping) { create :mapping, path: '/z', site: other_site }
+      before do
+        login_as admin_bob
+      end
+
+      context 'when no previous page is available' do
+        it 'redirects to the index page' do
+          request.env['HTTP_REFERER'] = nil
+          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], new_status: 'archive'
+          expect(response).to redirect_to site_mappings_path(site)
+        end
+      end
+
+      context 'when a previous page is available' do
+        it 'redirects back to the previous page' do
+          previous_page = site_mappings_path(site) + '?contains=%2Fnews&page=2&utf8=✓'
+          request.env['HTTP_REFERER'] = previous_page
+          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], new_status: 'archive'
+          expect(response).to redirect_to previous_page
+        end
       end
     end
   end
