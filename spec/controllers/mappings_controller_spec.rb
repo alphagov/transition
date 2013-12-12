@@ -215,7 +215,28 @@ describe MappingsController do
         end
       end
     end
+  end
 
+  describe '#update_multiple' do
+    let!(:mapping_a) { create :mapping, path: '/a', site: site }
+    let!(:mapping_b) { create :mapping, path: '/b', site: site }
+    let!(:mapping_c) { create :mapping, path: '/c', site: site }
+
+    context 'when user doesn\'t have permission' do
+      before do
+        login_as unaffiliated_user
+        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'redirect', new_url: 'http://www.example.com'
+      end
+
+      it 'redirects to the index page' do
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+
+      it 'does not update any mappings' do
+        expect(site.mappings.where(http_status: '301').count).to be(0)
+      end
+    end
   end
 
   describe 'rejecting an invalid or missing authenticity (CSRF) token' do
