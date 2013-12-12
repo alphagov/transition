@@ -11,6 +11,9 @@ class Site < ActiveRecord::Base
   validates_presence_of :organisation
   validates_uniqueness_of :abbr
 
+  scope :managed_by_transition, where(managed_by_transition: true)
+  scope :not_managed_by_transition, where(managed_by_transition: false)
+
   def to_param
     abbr
   end
