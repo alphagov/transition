@@ -147,6 +147,24 @@ describe MappingsController do
     end
   end
 
+  describe '#edit_multiple' do
+    let!(:mapping_a) { create :mapping, path: '/a', site: site }
+    let!(:mapping_b) { create :mapping, path: '/b', site: site }
+    let!(:mapping_c) { create :mapping, path: '/c', site: site }
+
+    context 'when user doesn\'t have permission' do
+      before do
+        login_as unaffiliated_user
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, new_status: 'archive'
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+  end
+
   describe 'rejecting an invalid or missing authenticity (CSRF) token' do
     before do
       login_as admin_bob
