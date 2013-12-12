@@ -190,6 +190,32 @@ describe MappingsController do
         end
       end
     end
+
+    context 'when an invalid new status is posted' do
+      before do
+        login_as admin_bob
+      end
+
+      context 'when no previous page is available' do
+        it 'redirects to the index page' do
+          request.env['HTTP_REFERER'] = nil
+          mapping_ids = [ mapping_a.id, mapping_b.id ]
+          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, new_status: 'bad'
+          expect(response).to redirect_to site_mappings_path(site)
+        end
+      end
+
+      context 'when a previous page is available' do
+        it 'redirects back to the previous page' do
+          previous_page = site_mappings_path(site) + '?contains=%2Fnews&page=2&utf8=✓'
+          request.env['HTTP_REFERER'] = previous_page
+          mapping_ids = [ mapping_a.id, mapping_b.id ]
+          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, new_status: 'bad'
+          expect(response).to redirect_to previous_page
+        end
+      end
+    end
+
   end
 
   describe 'rejecting an invalid or missing authenticity (CSRF) token' do
