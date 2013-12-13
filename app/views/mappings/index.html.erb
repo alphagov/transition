@@ -14,11 +14,11 @@
 
 <h2><%= pluralize(number_with_delimiter(@mappings.total_count, :delimiter => ','), 'mapping', 'mappings') %></h2>
 
-<% if (@mappings.empty? or @mappings.total_count < Mapping.default_per_page) && current_user.can_edit?(@site.organisation) %>
+<% if (@mappings.empty? or @mappings.total_count < Mapping.default_per_page) && current_user.can_edit_site?(@site) %>
   <div class="add-bottom-margin">
     <%= render partial: 'add_button' %>
   </div>
-<% elsif current_user.can_edit?(@site.organisation) %>
+<% elsif current_user.can_edit_site?(@site) %>
   <div class="pull-left">
     <%= paginate(@mappings) %>
   </div>
@@ -41,7 +41,7 @@
         <br>
         (where it redirects to when applicable)
       </th>
-      <% if current_user.can_edit?(@site.organisation) %>
+      <% if current_user.can_edit_site?(@site) %>
         <th></th>
       <% end %>
     </tr>
@@ -59,7 +59,7 @@
             <%= link_to mapping.new_url, mapping.new_url, class: 'muted-link breakable' if mapping.new_url.present? %>
           <% end %>
         </td>
-        <% if current_user.can_edit?(@site.organisation) %>
+        <% if current_user.can_edit_site?(@site) %>
           <td class="text-right">
             <%= link_to edit_site_mapping_path(@site, mapping), class: 'btn btn-mini' do %>
               Edit&nbsp;mapping

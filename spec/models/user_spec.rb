@@ -86,4 +86,18 @@ describe User do
       specify { user.can_edit?(agency_of_soul).should be_true }
     end
   end
+
+  describe 'can_edit_site?' do
+    subject(:user) { create(:user, permissions: ['admin']) }
+
+    context 'site is managed_by_transition' do
+      let(:site) { create(:site, managed_by_transition: true) }
+      specify { user.can_edit_site?(site).should be_true }
+    end
+
+    context 'site is not managed_by_transition' do
+      let(:site) { create(:site, managed_by_transition: false) }
+      specify { user.can_edit_site?(site).should be_false }
+    end
+  end
 end

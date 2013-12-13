@@ -15,6 +15,10 @@ class User < ActiveRecord::Base
       organisation_to_edit.parent_organisations.include?(organisation)
   end
 
+  def can_edit_site?(site)
+    (site.managed_by_transition == true) && can_edit?(site.organisation)
+  end
+
   def organisation
     @_organisation ||=
       Organisation.find_by_whitehall_slug(organisation_slug) if organisation_slug
