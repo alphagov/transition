@@ -52,19 +52,29 @@ class MappingsController < ApplicationController
   end
 
   def update_multiple
-    # FIXME: validate new_url before doing any queries, to save time
-    redirect_new_url = params[:new_url]
+    @http_status = params[:http_status] if ['301', '410'].include?(params[:http_status])
+    @update_data = { http_status: @http_status }
+    if @http_status == '301'
+      @new_url = params[:new_url]
+      @update_data[:new_url] = @new_url
+    end
+
+    # Before trying to update any real mappings, construct a test mapping using
+    # the submitted data to see if it validates:
+    test_data = { site: @site, path: '/this/is/a/test/and/will/not/be/saved' }.merge(@update_data)
+    test_mapping = Mapping.new(test_data)
+    unless test_mapping.valid?
+      # test_mapping.errors now contains useful things which we could display
+      return redirect_to site_mappings_path(@site), notice: 'Validation failed'
+    end
 
     @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
-    @http_status = params[:http_status] if ['301', '410'].include?(params[:http_status])
 
     unless @mappings.present?
       return redirect_to back_or_mappings_index, notice: 'No mappings were selected'
     end
 
-    @new_url = @http_status == '301' ? redirect_new_url : nil
-
-    if bulk_update_mappings(@http_status, @new_url).all?
+    if bulk_update_mappings.all?
       # FIXME: redirect back to index, preserving path filter and pagination
       redirect_to site_mappings_path(@site), notice: 'Mappings updated'
     else
@@ -101,13 +111,11 @@ private
     request.env['HTTP_REFERER'] || site_mappings_path(@site)
   end
 
-  def bulk_update_mappings(http_status, new_url)
+  def bulk_update_mappings
     # FIXME: should we remove suggested and archive urls if http_status is
     # redirect, and new_url if http_status is archive?
     @mappings.map do |m|
-      update_data = { http_status: http_status }
-      update_data[:new_url] = new_url if http_status == '301'
-      m.update_attributes(update_data)
+      m.update_attributes(@update_data)
     end
   end
 end

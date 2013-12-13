@@ -262,6 +262,22 @@ describe MappingsController do
         end
       end
     end
+
+    context 'when the posted new_url is not a valid URL' do
+      before do
+        login_as admin_bob
+        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: 'heythisaintvalid'
+      end
+
+      it 'redirects to the mappings index' do
+          expect(response).to redirect_to site_mappings_path(site)
+      end
+
+      it 'does not update any mappings' do
+        expect(site.mappings.where(http_status: '301').count).to be(0)
+      end
+    end
   end
 
   describe 'rejecting an invalid or missing authenticity (CSRF) token' do
