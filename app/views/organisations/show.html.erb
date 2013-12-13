@@ -16,28 +16,19 @@
   </p>
 <% end %>
 
-<% unless @organisation.sites.empty? %>
-  <h2>Sites</h2>
-  <table class="sites table table-hover table-striped table-bordered">
-    <thead>
-      <tr>
-        <th scope="col">Old site</th>
-        <th scope="col">Mappings</th>
-        <th scope="col">Analytics</th>
-        <th scope="col">New homepage</th>
-        <th scope="col">Launch date</th>
-      </tr>
-    </thead>
-    <tbody>
-    <% @sites.each do |site| %>
-      <tr>
-        <td><span class="breakable"><%= site.default_host.hostname %></span></td>
-        <td><%= link_to "Mappings", site_mappings_path(site) %></td>
-        <td><%= link_to 'Analytics', summary_site_hits_path(site) %></td>
-        <td><%= link_to site.homepage, site.homepage, class: 'breakable' %></td>
-        <td><%= date_or_not_yet(site.launch_date) %></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+<% unless @organisation.sites.managed_by_transition.empty? %>
+  <h2 class="add-bottom-margin">Sites you manage</h2>
+  <%= render partial: 'sites_table', locals: { sites: @sites_managed_by_transition } %>
+<% end %>
+
+<% unless @organisation.sites.not_managed_by_transition.empty? %>
+  <h2>
+    Other sites
+  </h2>
+  <p class="subtitle muted">
+    Sites that cannot be edited because they are configured by older tools (such as <i>redirector</i>).
+    <br/>
+    You can still view mappings and analytics data.
+  </p>
+  <%= render partial: 'sites_table', locals: { sites: @sites_not_managed_by_transition } %>
 <% end %>

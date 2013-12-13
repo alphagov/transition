@@ -6,6 +6,7 @@ class OrganisationsController < ApplicationController
 
   def show
     @organisation = Organisation.find_by_whitehall_slug(params[:id])
-    @sites = @organisation.sites.order(:abbr)
+    @sites_managed_by_transition = @organisation.sites.managed_by_transition.order(:abbr)
+    @sites_not_managed_by_transition = @organisation.sites.not_managed_by_transition.order(:abbr)
   end
 end
