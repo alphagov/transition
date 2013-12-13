@@ -20,33 +20,41 @@ describe('A selectable table module', function() {
 
   beforeEach(function() {
 
-    table = $('<table>\
-      <thead>\
-        <tr>\
-          <th><input type="checkbox" class="js-toggle-all" /></th>\
-        </tr>\
-      </thead>\
-      <tbody>\
-        <tr>\
-          <td><input type="checkbox" class="js-toggle-row" /></td>\
-        </tr>\
-        <tr>\
-          <td><input type="checkbox" class="js-toggle-row" /></td>\
-        </tr>\
-        <tr>\
-          <td><input type="checkbox" class="js-toggle-row" /></td>\
-        </tr>\
-        <tr>\
-          <td><input type="checkbox" class="js-toggle-row" /></td>\
-        </tr>\
-        <tr>\
-          <td><input type="checkbox" class="js-toggle-row" /></td>\
-        </tr>\
-        <tr>\
-          <td><input type="checkbox" class="js-toggle-row" /></td>\
-        </tr>\
-      </tbody>\
-    </table>');
+    table = $('<div>\
+      <form>\
+        <table>\
+          <thead>\
+            <tr>\
+              <th>\
+                <input type="checkbox" class="js-toggle-all" />\
+                <input type="radio" value="type" />\
+                <a href="#" class="js-submit-form" data-type="type">Submit form hook</a>\
+              </th>\
+            </tr>\
+          </thead>\
+          <tbody>\
+            <tr>\
+              <td><input type="checkbox" class="js-toggle-row" /></td>\
+            </tr>\
+            <tr>\
+              <td><input type="checkbox" class="js-toggle-row" /></td>\
+            </tr>\
+            <tr>\
+              <td><input type="checkbox" class="js-toggle-row" /></td>\
+            </tr>\
+            <tr>\
+              <td><input type="checkbox" class="js-toggle-row" /></td>\
+            </tr>\
+            <tr>\
+              <td><input type="checkbox" class="js-toggle-row" /></td>\
+            </tr>\
+            <tr>\
+              <td><input type="checkbox" class="js-toggle-row" /></td>\
+            </tr>\
+          </tbody>\
+        </table>\
+      </form>\
+    </div>');
 
     $('body').append(table);
     root.GOVUK.SelectableTable.start(table);
@@ -278,5 +286,39 @@ describe('A selectable table module', function() {
     });
 
   });
+
+  describe('when clicking a submit button hook', function() {
+
+    it('selects the correct radio button and submits the form', function() {
+
+      var formSubmitted = false;
+
+      table.on('submit', function(evt) {
+        evt.preventDefault();
+        formSubmitted = true;
+      });
+
+      table.find('.js-submit-form').click();
+
+      expect(table.find('[value="type"]').prop('checked')).toBe(true);
+      expect(formSubmitted).toBe(true);
+    });
+
+  });
+
+  describe('when the rails ajax response successfully returns', function() {
+
+    afterEach(function() {
+      $('body').find('.returned-content').remove();
+    });
+
+    it('appends the returned HTML to the body', function() {
+
+      table.find('form').trigger('ajax:success', '<div class="returned-content"></div>');
+      expect($('body').find('.returned-content').length).toBe(1);
+    });
+
+  });
+
 
 });

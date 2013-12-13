@@ -21,8 +21,10 @@
           SELECTED_ROW_CLASS = 'selected-row',
           RECENTLY_CHANGED_CLASS = 'js-most-recently-changed';
 
-      element.on('click', '.js-toggle-row', toggleRow);
-      element.on('click', '.js-toggle-all', toggleAllRows);
+      element.on('click',        '.js-toggle-row',  toggleRow);
+      element.on('click',        '.js-toggle-all',  toggleAllRows);
+      element.on('click',        '.js-submit-form', submitForm);
+      element.on('ajax:success', 'form',            createModal);
 
       onLoadMarkSelectedRowsWithClass();
       updateHeaderToggleState();
@@ -110,6 +112,23 @@
         rows.find('input').prop('checked', select);
       }
 
+      function submitForm(event) {
+        var target = $(event.target),
+            type = target.data('type');
+
+        element.find('input[type="radio"][value="' + type + '"]').prop('checked', true);
+        element.find('form').submit();
+      }
+
+      function createModal(event, html, status) {
+        var modal = $(html);
+
+        $('body').append(modal);
+
+        modal.modal('show').on('hidden', function () {
+          modal.remove();
+        });
+      }
     }
 
   };

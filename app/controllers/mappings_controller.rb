@@ -46,6 +46,9 @@ class MappingsController < ApplicationController
     unless @http_status.present?
       return redirect_to back_or_mappings_index, notice: 'Please select either redirect or archive'
     end
+    if request.xhr?
+      render 'edit_multiple_modal', layout: nil
+    end
   end
 
   def update_multiple
