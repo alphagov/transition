@@ -49,4 +49,16 @@ describe MappingsHelper do
       helper.options_for_supported_statuses.should == [['Redirect', '301'], ['Archive', '410']]
     end
   end
+
+  describe '#http_status_name' do
+    context 'status is \'301\'' do
+      subject { helper.http_status_name('301') }
+      it { should eql('Redirect') }
+    end
+
+    context 'status is \'410\'' do
+      subject { helper.http_status_name('410') }
+      it { should eql('Archive') }
+    end
+  end
 end
