@@ -1,0 +1,15 @@
+<%= form_tag update_multiple_site_mappings_path(@site), id: 'bulk-editing-modal', class: 'modal hide' do %>
+  <header class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>
+      <%= http_status_name(@http_status) %> mappings
+    </h3>
+  </header>
+  <div class="modal-body">
+    <%= render partial: 'edit_multiple_table', locals: { modal: true, mappings: @mappings, site: @site, new_url: @new_url, http_status: @http_status } %>
+  </div>
+  <footer class="modal-footer">
+    <a href="#close" data-dismiss="modal" class="btn add-right-margin">Cancel</a>
+    <%= submit_tag 'Save', class: 'btn btn-success' %>
+  </footer>
+<% end %>

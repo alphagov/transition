@@ -10,43 +10,7 @@
 </div>
 
 <%= form_tag update_multiple_site_mappings_path(@site) do %>
-  <table class="table table-bordered table-striped">
-    <thead>
-      <tr class="table-header">
-        <th>Original path from <%= @site.default_host.hostname %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @mappings.each do |m| %>
-        <tr>
-          <td>
-            <strong><%= link_to m.path, m.old_url, class: 'breakable' %></strong>
-            <span class="muted">
-              <% if m.redirect? %>
-                currently redirects to <%= link_to m.new_url, m.new_url, class: 'muted-link breakable' %>
-              <% else %>
-                currently archived
-              <% end %>
-            </span>
-            <%= hidden_field_tag "mapping_ids[]", m.id %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-
-  <%= hidden_field_tag "http_status", @http_status %>
-  <% if @http_status == '301' %>
-    <%= field_set_tag nil, class: 'add-bottom-margin' do %>
-      <legend class="if-js-rm">
-        Redirect
-      </legend>
-      <%= label_tag(:new_url, 'Redirect to') %>
-      <%= text_field_tag(:new_url, @new_url, class: 'span8') %>
-    <% end %>
-  <% end %>
-
+  <%= render partial: 'edit_multiple_table', locals: { modal: false, mappings: @mappings, site: @site, new_url: @new_url, http_status: @http_status } %>
   <%= link_to 'Cancel', :back, class: 'btn add-right-margin' %>
   <%= submit_tag 'Save', class: 'btn btn-success' %>
-
 <% end %>

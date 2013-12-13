@@ -1,0 +1,37 @@
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr class="table-header">
+      <th>Original path from <%= site.default_host.hostname %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% mappings.each do |m| %>
+      <tr>
+        <td>
+          <strong><%= link_to m.path, m.old_url, class: 'breakable' %></strong>
+          <% unless modal %>
+            <span class="muted">
+              <% if m.redirect? %>
+                currently redirects to <%= link_to m.new_url, m.new_url, class: 'muted-link breakable' %>
+              <% else %>
+                currently archived
+              <% end %>
+            </span>
+          <% end %>
+          <%= hidden_field_tag "mapping_ids[]", m.id %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= hidden_field_tag "http_status", http_status %>
+<% if http_status == '301' %>
+  <%= field_set_tag nil, class: 'add-bottom-margin' do %>
+    <legend class="if-js-rm">
+      Redirect
+    </legend>
+    <%= label_tag(:new_url, 'Redirect to') %>
+    <%= text_field_tag(:new_url, new_url, class: modal ? 'span5' : 'span8') %>
+  <% end %>
+<% end %>
