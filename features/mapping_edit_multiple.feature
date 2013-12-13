@@ -38,3 +38,30 @@ Feature: Editing multiple mappings for a site
     And I enter a new URL to redirect to
     And I submit the form with the "Save" button
     Then I should see "Mappings updated"
+
+  @javascript
+  Scenario: Selecting multiple mappings to redirect with javascript
+    When I click on the checkboxes for the first and second mappings
+    And I click the link "Redirect selected"
+    Then I should see an open modal window
+    And I should see "Redirect mappings" in the modal window
+    And I should see "/about/branding" in the modal window
+    And I should have 2 hidden inputs for mapping IDs
+    And I should see a "Redirect to" input
+    But I should not see "/about/corporate" in the modal window
+    When I enter a new URL to redirect to
+    And I submit the form with the "Save" button
+    Then I should see "Mappings updated"
+    
+  @javascript
+  Scenario: Selecting multiple mappings to archive with javascript
+    When I click on the checkboxes for the first and second mappings
+    And I click the link "Archive selected"
+    Then I should see an open modal window
+    And I should see "Archive mappings" in the modal window
+    And I should see "/about/branding" in the modal window
+    And I should have 2 hidden inputs for mapping IDs
+    But I should not see a "Redirect to" input
+    And I should not see "/about/corporate" in the modal window
+    When I submit the form with the "Save" button
+    Then I should see "Mappings updated"

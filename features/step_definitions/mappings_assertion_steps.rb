@@ -79,7 +79,7 @@ Then(/^I should see the link replaced with a suggested URL field$/) do
 end
 
 Then(/^I should have (\d+) hidden inputs for mapping IDs$/) do |n|
-  expect(page).to have_selector('input[id="mapping_ids_"]', count: n)
+  expect(page).to have_selector('input[type="hidden"][name="mapping_ids[]"]', visible: false, count: n)
 end
 
 Then(/^I should see a "Redirect to" input$/) do
