@@ -17,18 +17,18 @@
 <% end %>
 
 <% unless @organisation.sites.managed_by_transition.empty? %>
-  <h2>Sites you manage</h2>
+  <h2 class="add-bottom-margin">Sites you manage</h2>
   <%= render partial: 'sites_table', locals: { sites: @sites_managed_by_transition } %>
 <% end %>
 
 <% unless @organisation.sites.not_managed_by_transition.empty? %>
   <h2>
     Other sites
-    <small class="subtitle">
-      Sites that cannot be edited because they are configured by older tools (such as <i>redirector</i>).
-      <br/>
-      You can still view mappings and analytics data.
-    </small>
   </h2>
+  <p class="subtitle muted">
+    Sites that cannot be edited because they are configured by older tools (such as <i>redirector</i>).
+    <br/>
+    You can still view mappings and analytics data.
+  </p>
   <%= render partial: 'sites_table', locals: { sites: @sites_not_managed_by_transition } %>
 <% end %>
