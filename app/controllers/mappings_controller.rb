@@ -39,7 +39,7 @@ class MappingsController < ApplicationController
 
   def edit_multiple
     @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
-    @new_status = params[:new_status] if ['redirect', 'archive'].include?(params[:new_status])
+    @new_status = params[:new_status] if ['301', '410'].include?(params[:new_status])
     unless @mappings.present?
       return redirect_to back_or_mappings_index, notice: 'No mappings were selected'
     end
@@ -53,21 +53,19 @@ class MappingsController < ApplicationController
     redirect_new_url = params[:new_url]
 
     @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
+    @http_status = params[:http_status] if ['301', '410'].include?(params[:http_status])
+
     unless @mappings.present?
       return redirect_to back_or_mappings_index, notice: 'No mappings were selected'
     end
 
-    http_status, new_url = '410', nil
-    if params[:http_status] == 'redirect'
-      http_status, new_url = '301', redirect_new_url
-    end
+    @new_url = @http_status == '301' ? redirect_new_url : nil
 
-    if bulk_update_mappings(http_status, new_url).all?
+    if bulk_update_mappings(@http_status, @new_url).all?
       # FIXME: redirect back to index, preserving path filter and pagination
       redirect_to site_mappings_path(@site), notice: 'Mappings updated'
     else
-      @new_status = Mapping::TYPES[http_status]
-      @new_url = new_url
+      @new_status = @http_status
       # FIXME: doesn't display notice or invalid URL error message
       render action: 'edit_multiple', notice: 'Mappings could not be updated'
     end

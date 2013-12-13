@@ -53,10 +53,10 @@
             <div class="pull-left">
               <div>
                 <%= label_tag :new_status_redirect, class: 'radio inline table-header-radio' do %>
-                  <%= radio_button_tag(:new_status, 'redirect', selected = true) %> Redirect
+                  <%= radio_button_tag(:new_status, '301', selected = true) %> Redirect
                 <% end %>
                 <%= label_tag :new_status_archive, class: 'radio inline table-header-radio add-right-margin' do %>
-                  <%= radio_button_tag(:new_status, 'archive') %> Archive
+                  <%= radio_button_tag(:new_status, '410') %> Archive
                 <% end %>
                 <%= submit_tag "Edit selected", class: 'btn' %>
               </div>

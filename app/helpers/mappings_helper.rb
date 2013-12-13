@@ -57,4 +57,11 @@ module MappingsHelper
       ["#{type.titleize}", status]
     end
   end
+
+  ##
+  # Convert '301'/'410' into 'Redirect'/'Archive' to use in title and heading
+  # for edit_multiple
+  def http_status_name(http_status)
+    Mapping::TYPES[http_status].titleize
+  end
 end
