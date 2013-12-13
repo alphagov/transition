@@ -51,7 +51,7 @@ module MappingsHelper
 
   ##
   # Return a FormBuilder-compatible list of HTTP Status codes with descriptions
-  # e.g. [['Moved Permanently', '301'], ['Gone', '410']]
+  # e.g. [['Archive', '301'], ['Redirect', '410']]
   def options_for_supported_statuses
     Mapping::TYPES.map do |status, type|
       ["#{type.titleize}", status]
