@@ -1,11 +1,11 @@
-<% content_for(:page_title, "#{ http_status_name(@new_status) } mappings") %>
+<% content_for(:page_title, "#{ http_status_name(@http_status) } mappings") %>
 
 <%= breadcrumb(@site) %>
 
 <div class="page-title">
   <h1>
     <span class="small"><%= @site.default_host.hostname %></span>
-    <%= http_status_name(@new_status) %> mappings
+    <%= http_status_name(@http_status) %> mappings
   </h1>
 </div>
 
@@ -35,8 +35,8 @@
     </tbody>
   </table>
 
-  <%= hidden_field_tag "http_status", @new_status %>
-  <% if @new_status == '301' %>
+  <%= hidden_field_tag "http_status", @http_status %>
+  <% if @http_status == '301' %>
     <%= field_set_tag nil, class: 'add-bottom-margin' do %>
       <legend class="if-js-rm">
         Redirect

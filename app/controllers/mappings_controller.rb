@@ -39,11 +39,11 @@ class MappingsController < ApplicationController
 
   def edit_multiple
     @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
-    @new_status = params[:new_status] if ['301', '410'].include?(params[:new_status])
+    @http_status = params[:http_status] if ['301', '410'].include?(params[:http_status])
     unless @mappings.present?
       return redirect_to back_or_mappings_index, notice: 'No mappings were selected'
     end
-    unless @new_status.present?
+    unless @http_status.present?
       return redirect_to back_or_mappings_index, notice: 'Please select either redirect or archive'
     end
   end
@@ -65,7 +65,6 @@ class MappingsController < ApplicationController
       # FIXME: redirect back to index, preserving path filter and pagination
       redirect_to site_mappings_path(@site), notice: 'Mappings updated'
     else
-      @new_status = @http_status
       # FIXME: doesn't display notice or invalid URL error message
       render action: 'edit_multiple', notice: 'Mappings could not be updated'
     end

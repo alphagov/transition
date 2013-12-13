@@ -161,7 +161,7 @@ describe MappingsController do
 
       it 'redirects to the index page and sets a flash message' do
         mapping_ids = [ mapping_a.id, mapping_b.id ]
-        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, new_status: '410'
+        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '410'
         expect(response).to redirect_to site_mappings_path(site)
       end
     end
@@ -176,7 +176,7 @@ describe MappingsController do
       context 'when no previous page is available' do
         it 'redirects to the index page' do
           request.env['HTTP_REFERER'] = nil
-          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], new_status: '410'
+          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410'
           expect(response).to redirect_to site_mappings_path(site)
         end
       end
@@ -185,7 +185,7 @@ describe MappingsController do
         it 'redirects back to the previous page' do
           previous_page = site_mappings_path(site) + '?contains=%2Fnews&page=2&utf8=✓'
           request.env['HTTP_REFERER'] = previous_page
-          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], new_status: '410'
+          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410'
           expect(response).to redirect_to previous_page
         end
       end
@@ -200,7 +200,7 @@ describe MappingsController do
         it 'redirects to the index page' do
           request.env['HTTP_REFERER'] = nil
           mapping_ids = [ mapping_a.id, mapping_b.id ]
-          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, new_status: 'bad'
+          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'bad'
           expect(response).to redirect_to site_mappings_path(site)
         end
       end
@@ -210,7 +210,7 @@ describe MappingsController do
           previous_page = site_mappings_path(site) + '?contains=%2Fnews&page=2&utf8=✓'
           request.env['HTTP_REFERER'] = previous_page
           mapping_ids = [ mapping_a.id, mapping_b.id ]
-          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, new_status: 'bad'
+          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'bad'
           expect(response).to redirect_to previous_page
         end
       end
