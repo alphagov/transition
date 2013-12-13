@@ -3,10 +3,10 @@ require 'transition/import/mappings'
 
 describe Transition::Import::Mappings do
   def create_test_sites
-    @ago_site = create :site, abbr: 'ago' do |site|
+    @ago_site = create(:site, abbr: 'ago', managed_by_transition: false) do |site|
       site.hosts << create(:host, hostname: 'www.ago.gov.uk')
     end
-    @directgov_site = create :site, abbr: 'dg' do |site|
+    @directgov_site = create(:site, abbr: 'dg', managed_by_transition: false) do |site|
       site.hosts << create(:host, hostname: 'www.direct.gov.uk')
     end
   end
@@ -49,6 +49,33 @@ describe Transition::Import::Mappings do
         its(:new_url)       { should eql('http://new.url') }
         its(:suggested_url) { should include('barrierbusting.updated') }
         its(:archive_url)   { should include('webarchive.updated') }
+      end
+    end
+
+    context 'an import for a site managed_by_transition' do
+      before do
+        create(:site, abbr: 'ago', managed_by_transition: true) do |site|
+          site.hosts << create(:host, hostname: 'www.ago.gov.uk')
+        end
+        Transition::Import::Mappings.from_redirector_csv_file!('spec/fixtures/mappings/ago_abridged.csv')
+      end
+
+      it 'imports no mappings' do
+        Mapping.count.should == 0
+      end
+    end
+
+    context 'handle a CSV with no rows' do
+      before do
+        create(:site, abbr: 'ago', managed_by_transition: true) do |site|
+          site.hosts << create(:host, hostname: 'www.ago.gov.uk')
+        end
+      end
+
+      specify 'no error raised' do
+        expect {
+          Transition::Import::Mappings.from_redirector_csv_file!('spec/fixtures/mappings/no_rows.csv')
+        }.to_not raise_error
       end
     end
   end
