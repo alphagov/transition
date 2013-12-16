@@ -90,7 +90,7 @@
           <th class="selectable-row">
             <div class="relative">
               <label>
-                <input type="checkbox" />
+                <input type="checkbox" class="js-toggle-all" />
               </label>
             </div>
           </th>
@@ -102,7 +102,7 @@
         <td class="selectable-row">
           <div class="relative">
             <label>
-              <input type="checkbox" checked="checked"/>
+              <input type="checkbox" checked="checked" class="js-toggle-row" />
             </label>
           </div>
         </td>
@@ -121,7 +121,7 @@
     </tbody>
     </table>
 
-    <script>GOVUK.Mappings.setupTables()</script>
+    <script>GOVUK.SelectableTable.setup();</script>
   </ul>
 </div>
 <hr>
