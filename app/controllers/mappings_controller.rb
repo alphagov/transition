@@ -83,8 +83,8 @@ class MappingsController < ApplicationController
       # FIXME: redirect back to index, preserving path filter and pagination
       redirect_to site_mappings_path(@site), notice: 'Mappings updated'
     else
-      # FIXME: doesn't display notice or invalid URL error message
-      render action: 'edit_multiple', notice: 'Mappings could not be updated'
+      flash[:notice] = 'Mappings could not be updated'
+      render action: 'edit_multiple'
     end
   end
 
