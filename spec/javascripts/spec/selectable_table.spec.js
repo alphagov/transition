@@ -26,7 +26,7 @@ describe('A selectable table module', function() {
           <thead>\
             <tr>\
               <th>\
-                <input type="checkbox" class="js-toggle-all" />\
+                <input type="checkbox" class="js-toggle-all disabled" />\
                 <input type="radio" value="type" />\
                 <a href="#" class="js-submit-form" data-type="type">Submit form hook</a>\
               </th>\
@@ -77,7 +77,7 @@ describe('A selectable table module', function() {
       tableWithSelection = $('<table>\
         <thead>\
           <tr>\
-            <th><input type="checkbox" class="js-toggle-all" /></th>\
+            <th><input type="checkbox" class="js-toggle-all disabled" /></th>\
           </tr>\
         </thead>\
         <tbody>\
@@ -109,13 +109,46 @@ describe('A selectable table module', function() {
       expect(tableWithSelection.find('.js-toggle-all').prop('checked')).toBe(false);
     });
 
+    it('enables the form submit buttons', function() {
+      expect(tableWithSelection.find('.js-submit-form.disabled').length).toBe(0);
+    });
+
+  });
+
+  describe('when no rows are selected and when clicking a submit button hook', function() {
+
+    it('doesn\'t submit the form', function() {
+
+      var formSubmitted = false;
+
+      table.on('submit', function(evt) {
+        evt.preventDefault();
+        formSubmitted = true;
+      });
+
+      table.find('.js-submit-form').click();
+
+      expect(table.find('[value="type"]').prop('checked')).toBe(false);
+      expect(formSubmitted).toBe(false);
+    });
+
   });
 
   describe('when clicking a checkbox on a body row', function() {
 
+    var firstRow,
+        firstInput,
+        secondInput,
+        headerInput;
+
+    beforeEach(function() {
+      firstRow = table.find('tbody tr:first-child');
+      firstInput = firstRow.find('input');
+      secondInput = table.find('tbody tr:first-child + tr input');
+      headerInput = table.find('thead input');
+    });
+
     it('toggles the selection', function() {
-      var firstRow = table.find('tbody tr:first-child'),
-          firstInput = firstRow.find('input');
 
       firstInput.click();
       expect(firstRow.is('.selected-row')).toBe(true);
@@ -126,9 +159,6 @@ describe('A selectable table module', function() {
     });
 
     it('updates the header checkbox', function() {
-      var firstInput = table.find('tbody tr:first-child input'),
-          secondInput = table.find('tbody tr:first-child + tr input'),
-          headerInput = table.find('thead input');
 
       firstInput.click();
       expect(headerInput.prop('indeterminate')).toBe(true);
@@ -148,6 +178,15 @@ describe('A selectable table module', function() {
 
       expect(headerInput.prop('indeterminate')).toBe(false);
       expect(headerInput.prop('checked')).toBe(false);
+    });
+
+    it('updates the interactive state of the form submit buttons', function() {
+
+      firstInput.click();
+      expect(table.find('.js-submit-form.disabled').length).toBe(0);
+
+      firstInput.click();
+      expect(table.find('.js-submit-form.disabled').length).toBe(1);
 
     });
 
@@ -220,6 +259,34 @@ describe('A selectable table module', function() {
 
     });
 
+    describe('and when clicking a submit button hook', function() {
+
+      var formSubmitted;
+
+      beforeEach(function() {
+        tableInputs.eq(1).click();
+
+        formSubmitted = false;
+        table.on('submit', function(evt) {
+          evt.preventDefault();
+          formSubmitted = true;
+        });
+      });
+
+      it('selects the correct radio button and submits the form', function() {
+        table.find('.js-submit-form').click();
+
+        expect(table.find('[value="type"]').prop('checked')).toBe(true);
+        expect(formSubmitted).toBe(true);
+      });
+
+      it('disables the submit form buttons to prevent multiple ajax requests', function() {
+        table.find('.js-submit-form').click();
+        expect(table.find('.js-submit-form.disabled').length).toBe(1);
+      });
+
+    });
+
   });
 
   describe('when clicking the checkbox in the header', function() {
@@ -287,35 +354,41 @@ describe('A selectable table module', function() {
 
   });
 
-  describe('when clicking a submit button hook', function() {
-
-    it('selects the correct radio button and submits the form', function() {
-
-      var formSubmitted = false;
-
-      table.on('submit', function(evt) {
-        evt.preventDefault();
-        formSubmitted = true;
-      });
-
-      table.find('.js-submit-form').click();
-
-      expect(table.find('[value="type"]').prop('checked')).toBe(true);
-      expect(formSubmitted).toBe(true);
-    });
-
-  });
-
   describe('when the rails ajax response successfully returns', function() {
+
+    beforeEach(function() {
+      table.find('form').trigger('ajax:success', '<div class="returned-content"></div>');
+      table.find('form').trigger('ajax:complete');
+    });
 
     afterEach(function() {
       $('body').find('.returned-content').remove();
     });
 
     it('appends the returned HTML to the body', function() {
-
-      table.find('form').trigger('ajax:success', '<div class="returned-content"></div>');
       expect($('body').find('.returned-content').length).toBe(1);
+    });
+
+    it('re-enables the submit form buttons', function() {
+      expect(table.find('.js-submit-form.disabled').length).toBe(0);
+    });
+
+  });
+
+  describe('when the rails ajax response errors', function() {
+
+    beforeEach(function() {
+      spyOn(window, 'alert');
+      table.find('form').trigger('ajax:error');
+      table.find('form').trigger('ajax:complete');
+    });
+
+    it('sends an alert message', function() {
+      expect(window.alert).toHaveBeenCalled();
+    });
+
+    it('re-enables the submit form buttons', function() {
+      expect(table.find('.js-submit-form.disabled').length).toBe(0);
     });
 
   });

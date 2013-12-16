@@ -21,10 +21,13 @@
           SELECTED_ROW_CLASS = 'selected-row',
           RECENTLY_CHANGED_CLASS = 'js-most-recently-changed';
 
-      element.on('click',        '.js-toggle-row',  toggleRow);
-      element.on('click',        '.js-toggle-all',  toggleAllRows);
-      element.on('click',        '.js-submit-form', submitForm);
-      element.on('ajax:success', 'form',            createModal);
+      element.on('click', '.js-toggle-row',  toggleRow);
+      element.on('click', '.js-toggle-all',  toggleAllRows);
+      element.on('click', '.js-submit-form', submitForm);
+
+      element.on('ajax:success', 'form', createModal);
+      element.on('ajax:error',   'form', handleModalError);
+      element.on('ajax:complete','form', resetSubmitButtons);
 
       onLoadMarkSelectedRowsWithClass();
       updateHeaderToggleState();
@@ -54,12 +57,15 @@
         if (selectedRowsCount > 0 && selectedRowsCount < tableRows.length) {
           inputHeader.prop('indeterminate', true);
           inputHeader.prop('checked', false);
+          resetSubmitButtons();
         } else if (selectedRowsCount === 0) {
           inputHeader.prop('checked', false);
           inputHeader.prop('indeterminate', false);
+          disableSubmitButtons();
         } else {
           inputHeader.prop('checked', true);
           inputHeader.prop('indeterminate', false);
+          resetSubmitButtons();
         }
 
       }
@@ -95,12 +101,11 @@
         // If everything selected
         if (tableRows.length == element.find('.' + SELECTED_ROW_CLASS).length) {
           toggleRows(rows, false);
-          $(event.target).prop('checked', false);
         } else {
           toggleRows(rows, true);
-          $(event.target).prop('checked', true);
         }
 
+        updateHeaderToggleState();
       }
 
       function toggleRows(rows, select) {
@@ -116,8 +121,17 @@
         var target = $(event.target),
             type = target.data('type');
 
+        if (target.is('.disabled')) {
+          event.preventDefault();
+          return;
+        }
+
+        disableSubmitButtons();
+        target.button('loading');
+
         element.find('input[type="radio"][value="' + type + '"]').prop('checked', true);
         element.find('form').submit();
+        event.preventDefault();
       }
 
       function createModal(event, html, status) {
@@ -129,6 +143,19 @@
           modal.remove();
         });
       }
+
+      function handleModalError(xhr, status, error) {
+        alert('There was a problem loading this. Please try again.');
+      }
+
+      function resetSubmitButtons() {
+        element.find('.js-submit-form').removeClass('disabled').button('reset');
+      }
+
+      function disableSubmitButtons() {
+        element.find('.js-submit-form').addClass('disabled');
+      }
+
     }
 
   };
