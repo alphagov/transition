@@ -23,9 +23,10 @@ class Organisation < ActiveRecord::Base
   validates_uniqueness_of :whitehall_slug
   validates_presence_of :title
 
-  scope :with_sites,
+  scope :with_sites_managed_by_transition,
         select('organisations.*, count(sites.id) AS site_count').
         joins(:sites).
+        where("sites.managed_by_transition = 1").
         group('organisations.id').  # Using a sloppy mySQL GROUP. Note well, Postgres upgraders
         having('site_count > 0')
 
