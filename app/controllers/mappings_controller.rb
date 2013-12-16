@@ -21,6 +21,8 @@ class MappingsController < ApplicationController
   end
 
   def index
+    store_site_return_url
+
     @mappings = @site.mappings.filtered_by_path(params[:contains]).order(:path).page(params[:page])
   end
 
@@ -41,10 +43,10 @@ class MappingsController < ApplicationController
     @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
     @http_status = params[:http_status] if ['301', '410'].include?(params[:http_status])
     unless @mappings.present?
-      return redirect_to back_or_mappings_index, notice: 'No mappings were selected'
+      return redirect_to site_return_url, notice: 'No mappings were selected'
     end
     unless @http_status.present?
-      return redirect_to back_or_mappings_index, notice: 'Please select either redirect or archive'
+      return redirect_to site_return_url, notice: 'Please select either redirect or archive'
     end
     if request.xhr?
       render 'edit_multiple_modal', layout: nil
@@ -61,7 +63,7 @@ class MappingsController < ApplicationController
 
     @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
     unless @mappings.present?
-      return redirect_to back_or_mappings_index, notice: 'No mappings were selected'
+      return redirect_to site_return_url, notice: 'No mappings were selected'
     end
 
     # Before trying to update any real mappings, construct a test mapping using
@@ -75,13 +77,13 @@ class MappingsController < ApplicationController
         render action: 'edit_multiple' and return
       else
         # Something else wasn't valid and the user can't do anything about it now:
-        return redirect_to site_mappings_path(@site), notice: 'Validation failed'
+        return redirect_to site_return_url, notice: 'Validation failed'
       end
     end
 
     if bulk_update_mappings.all?
-      # FIXME: redirect back to index, preserving path filter and pagination
-      redirect_to site_mappings_path(@site), notice: 'Mappings updated'
+      # FIXME: delete this site's return url from session?
+      redirect_to site_return_url, notice: 'Mappings updated'
     else
       flash[:notice] = 'Mappings could not be updated'
       render action: 'edit_multiple'
@@ -114,6 +116,14 @@ private
 
   def back_or_mappings_index
     request.env['HTTP_REFERER'] || site_mappings_path(@site)
+  end
+
+  def store_site_return_url
+    session["return_to_#{@site.abbr}".to_s] = request.url
+  end
+
+  def site_return_url
+    session["return_to_#{@site.abbr}".to_s] || site_mappings_path(@site)
   end
 
   def bulk_update_mappings

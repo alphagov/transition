@@ -66,8 +66,6 @@ describe MappingsController do
 
       context 'when no previous page is available' do
         it 'redirects to site mappings index' do
-          request.env['HTTP_REFERER'] = nil
-
           get :find, site_id: site.abbr, path: invalid_path
 
           expect(response).to redirect_to site_mappings_url(site)
@@ -173,18 +171,17 @@ describe MappingsController do
         login_as admin_bob
       end
 
-      context 'when no previous page is available' do
+      context 'when no site return URL is available' do
         it 'redirects to the index page' do
-          request.env['HTTP_REFERER'] = nil
           post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410'
           expect(response).to redirect_to site_mappings_path(site)
         end
       end
 
-      context 'when a previous page is available' do
-        it 'redirects back to the previous page' do
+      context 'when a site return URL is available' do
+        it 'redirects back to the site return URL' do
           previous_page = site_mappings_path(site) + '?contains=%2Fnews&page=2&utf8=✓'
-          request.env['HTTP_REFERER'] = previous_page
+          session["return_to_#{site.abbr}".to_s] = previous_page
           post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410'
           expect(response).to redirect_to previous_page
         end
@@ -196,19 +193,18 @@ describe MappingsController do
         login_as admin_bob
       end
 
-      context 'when no previous page is available' do
+      context 'when no site return URL is available' do
         it 'redirects to the index page' do
-          request.env['HTTP_REFERER'] = nil
           mapping_ids = [ mapping_a.id, mapping_b.id ]
           post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'bad'
           expect(response).to redirect_to site_mappings_path(site)
         end
       end
 
-      context 'when a previous page is available' do
-        it 'redirects back to the previous page' do
+      context 'when a site return URL is available' do
+        it 'redirects back to the site return URL' do
           previous_page = site_mappings_path(site) + '?contains=%2Fnews&page=2&utf8=✓'
-          request.env['HTTP_REFERER'] = previous_page
+          session["return_to_#{site.abbr}".to_s] = previous_page
           mapping_ids = [ mapping_a.id, mapping_b.id ]
           post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'bad'
           expect(response).to redirect_to previous_page
@@ -245,18 +241,17 @@ describe MappingsController do
         login_as admin_bob
       end
 
-      context 'when no previous page is available' do
+      context 'when no site return URL is available' do
         it 'redirects to the index page' do
-          request.env['HTTP_REFERER'] = nil
           post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com'
           expect(response).to redirect_to site_mappings_path(site)
         end
       end
 
-      context 'when a previous page is available' do
-        it 'redirects back to the previous page' do
+      context 'when a site return URL is available' do
+        it 'redirects back to the site return URL' do
           previous_page = site_mappings_path(site) + '?contains=%2Fnews&page=2&utf8=✓'
-          request.env['HTTP_REFERER'] = previous_page
+          session["return_to_#{site.abbr}".to_s] = previous_page
           post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com'
           expect(response).to redirect_to previous_page
         end
