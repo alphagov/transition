@@ -6,7 +6,7 @@
     </h3>
   </header>
   <div class="modal-body">
-    <%= render partial: 'edit_multiple_table', locals: { modal: true, mappings: @mappings, site: @site, new_url: @new_url, http_status: @http_status } %>
+    <%= render partial: 'edit_multiple_table', locals: { modal: true, mappings: @mappings, site: @site, new_url: @new_url, new_url_error: @new_url_error, http_status: @http_status } %>
   </div>
   <footer class="modal-footer">
     <a href="#close" data-dismiss="modal" class="btn add-right-margin">Cancel</a>

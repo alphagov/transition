@@ -270,10 +270,6 @@ describe MappingsController do
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: 'heythisaintvalid'
       end
 
-      it 'redirects to the mappings index' do
-          expect(response).to redirect_to site_mappings_path(site)
-      end
-
       it 'does not update any mappings' do
         expect(site.mappings.where(http_status: '301').count).to be(0)
       end

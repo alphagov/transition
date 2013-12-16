@@ -10,7 +10,7 @@
 </div>
 
 <%= form_tag update_multiple_site_mappings_path(@site) do %>
-  <%= render partial: 'edit_multiple_table', locals: { modal: false, mappings: @mappings, site: @site, new_url: @new_url, http_status: @http_status } %>
+  <%= render partial: 'edit_multiple_table', locals: { modal: false, mappings: @mappings, site: @site, new_url: @new_url, new_url_error: @new_url_error, http_status: @http_status } %>
   <%= link_to 'Cancel', :back, class: 'btn add-right-margin' %>
   <%= submit_tag 'Save', class: 'btn btn-success' %>
 <% end %>

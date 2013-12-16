@@ -59,19 +59,24 @@ class MappingsController < ApplicationController
       @update_data[:new_url] = @new_url
     end
 
+    @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
+    unless @mappings.present?
+      return redirect_to back_or_mappings_index, notice: 'No mappings were selected'
+    end
+
     # Before trying to update any real mappings, construct a test mapping using
     # the submitted data to see if it validates:
     test_data = { site: @site, path: '/this/is/a/test/and/will/not/be/saved' }.merge(@update_data)
     test_mapping = Mapping.new(test_data)
     unless test_mapping.valid?
-      # test_mapping.errors now contains useful things which we could display
-      return redirect_to site_mappings_path(@site), notice: 'Validation failed'
-    end
-
-    @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
-
-    unless @mappings.present?
-      return redirect_to back_or_mappings_index, notice: 'No mappings were selected'
+      if test_mapping.errors.size == 1 && test_mapping.errors[:new_url].present?
+        # Assume that new_url was blank or invalid:
+        @new_url_error = 'Enter a valid URL to redirect these paths to'
+        render action: 'edit_multiple' and return
+      else
+        # Something else wasn't valid and the user can't do anything about it now:
+        return redirect_to site_mappings_path(@site), notice: 'Validation failed'
+      end
     end
 
     if bulk_update_mappings.all?

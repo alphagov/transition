@@ -31,7 +31,18 @@
     <legend class="if-js-rm">
       Redirect
     </legend>
-    <%= label_tag(:new_url, 'Redirect to') %>
-    <%= text_field_tag(:new_url, new_url, class: modal ? 'span5' : 'span8') %>
+    <% if new_url_error %>
+      <div id="error_explanation" class="alert notice">
+        <ul>
+          <li><%= new_url_error %></li>
+        </ul>
+      </div>
+    <% end %>
+    <div <% if new_url_error %>class="field_with_errors"<% end %> >
+      <%= label_tag(:new_url, 'Redirect to') %>
+    </div>
+    <div <% if new_url_error %>class="field_with_errors"<% end %> >
+      <%= text_field_tag(:new_url, new_url, class: modal ? 'span5' : 'span8') %>
+    </div>
   <% end %>
 <% end %>

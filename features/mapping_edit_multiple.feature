@@ -39,6 +39,13 @@ Feature: Editing multiple mappings for a site
     And I submit the form with the "Save" button
     Then I should see "Mappings updated"
 
+  Scenario: Confirming multiple mappings to redirect but without entering a new URL
+    When I click on the checkboxes for the first and second mappings
+    And I submit the form with the "Edit selected" button
+    And I submit the form with the "Save" button
+    Then the page title should be "Redirect mappings"
+    And I should see "Enter a valid URL"
+
   @javascript
   Scenario: Selecting multiple mappings to redirect with javascript
     When I click on the checkboxes for the first and second mappings
