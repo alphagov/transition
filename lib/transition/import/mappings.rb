@@ -31,15 +31,37 @@ module Transition
       mySQL
 
       def self.from_redirector_csv_file!(filename)
-        $stderr.print "Importing #{filename} ... "
-        [TRUNCATE, LOAD_DATA.sub('$filename$', "'#{File.expand_path(filename)}'"), INSERT_FROM_STAGING].each do |statement|
-          ActiveRecord::Base.connection.execute(statement)
+        if managed_by_transition?(filename)
+          $stderr.puts "skipped #{filename} because this site is managed by Transition"
+        else
+          $stderr.print "Importing #{filename} ... "
+          [TRUNCATE, LOAD_DATA.sub('$filename$', "'#{File.expand_path(filename)}'"), INSERT_FROM_STAGING].each do |statement|
+            ActiveRecord::Base.connection.execute(statement)
+          end
+          $stderr.puts 'done.'
         end
-        $stderr.puts 'done.'
       end
 
       def self.from_redirector_mask!(filemask)
         Dir[File.expand_path(filemask)].each {|filename| Mappings.from_redirector_csv_file!(filename)}
+      end
+
+      def self.managed_by_transition?(filename)
+        file = File.new(filename)
+        headers = file.gets
+        first_row = file.gets
+        if first_row.blank?
+          false
+        else
+          first_old_url = first_row.split(',').first
+          hostname = URI.parse(first_old_url).host
+          host = Host.find_by_hostname(hostname)
+          if host
+            host.site.managed_by_transition?
+          else
+            false
+          end
+        end
       end
     end
   end
