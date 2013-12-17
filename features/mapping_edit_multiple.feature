@@ -25,7 +25,7 @@ Feature: Editing multiple mappings for a site
   Scenario: Selecting multiple mappings to archive without javascript
     When I click on the checkboxes for the first and second mappings
     And I select "Archive"
-    And I submit the form with the "Edit selected" button
+    And I submit the form with the first "Edit selected" button
     Then the page title should be "Archive mappings"
     And I should see "/a"
     And I should see "/about/branding"
@@ -34,14 +34,14 @@ Feature: Editing multiple mappings for a site
 
   Scenario: Confirming multiple mappings to redirect without javascript
     When I click on the checkboxes for the first and second mappings
-    And I submit the form with the "Edit selected" button
+    And I submit the form with the first "Edit selected" button
     And I enter a new URL to redirect to
     And I submit the form with the "Save" button
     Then I should see "Mappings updated"
 
   Scenario: Confirming multiple mappings to redirect but without entering a new URL
     When I click on the checkboxes for the first and second mappings
-    And I submit the form with the "Edit selected" button
+    And I submit the form with the first "Edit selected" button
     And I submit the form with the "Save" button
     Then the page title should be "Redirect mappings"
     And I should see "Enter a valid URL"
@@ -49,7 +49,7 @@ Feature: Editing multiple mappings for a site
   @javascript
   Scenario: Selecting multiple mappings to redirect with javascript
     When I click on the checkboxes for the first and second mappings
-    And I click the link "Redirect selected"
+    And I click the first link called "Redirect selected"
     Then I should see an open modal window
     And I should see "Redirect mappings" in the modal window
     And I should see "/about/branding" in the modal window
@@ -59,11 +59,11 @@ Feature: Editing multiple mappings for a site
     When I enter a new URL to redirect to
     And I submit the form with the "Save" button
     Then I should see "Mappings updated"
-    
+
   @javascript
   Scenario: Selecting multiple mappings to archive with javascript
     When I click on the checkboxes for the first and second mappings
-    And I click the link "Archive selected"
+    And I click the first link called "Archive selected"
     Then I should see an open modal window
     And I should see "Archive mappings" in the modal window
     And I should see "/about/branding" in the modal window
