@@ -190,7 +190,7 @@ main a {
   background-color: $tableBackgroundAccent;
 }
 
-.table-header-secondary th {
+thead .table-header-secondary td {
   border-bottom: 1px solid #ccc;
 }
 
@@ -225,7 +225,7 @@ main a {
 }
 
 /* Slightly different spacing for table headers */
-.table th.selectable-row {
+.table-header-secondary .selectable-row {
   vertical-align: top;
 
   input {
