@@ -232,6 +232,36 @@ describe MappingsController do
       end
     end
 
+    context 'when valid data is posted' do
+      before do
+        login_as admin_bob
+        get :index, site_id: site.abbr, contains: '/a'
+        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        @new_url = 'http://www.example.com'
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: @new_url
+      end
+
+      it 'updates the mappings correctly' do
+        mapping_a.reload
+        expect(mapping_a.http_status).to eql('301')
+        expect(mapping_a.new_url).to eql('http://www.example.com')
+        mapping_b.reload
+        expect(mapping_b.http_status).to eql('301')
+        expect(mapping_b.new_url).to eql('http://www.example.com')
+      end
+
+      it 'does not update other mappings' do
+        mapping_c.reload
+        expect(mapping_c.http_status).to eql('410')
+        expect(mapping_c.new_url).to be_nil
+      end
+
+      it 'redirects to the last-visited site index page' do
+        site_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
+        expect(response).to redirect_to site_index_with_filter
+      end
+    end
+
     context 'when no mapping ids which exist on this site are posted' do
       let!(:other_site)    { create :site }
       let!(:other_mapping) { create :mapping, path: '/z', site: other_site }
