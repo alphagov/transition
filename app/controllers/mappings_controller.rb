@@ -74,12 +74,13 @@ class MappingsController < ApplicationController
       end
     end
 
-    if bulk_update_mappings.all?
-      # FIXME: delete this site's return url from session?
-      redirect_to site_return_url, notice: 'Mappings updated'
-    else
-      flash[:notice] = 'Mappings could not be updated'
+    failed_update_ids = bulk_update_mappings.compact
+    if failed_update_ids.present?
+      @mappings = @site.mappings.where(id: failed_update_ids).order(:path)
+      flash[:notice] = 'Some mappings could not be updated'
       render action: 'edit_multiple'
+    else
+      redirect_to site_return_url, notice: 'Mappings updated successfully'
     end
   end
 
@@ -141,7 +142,8 @@ private
     # FIXME: should we remove suggested and archive urls if http_status is
     # redirect, and new_url if http_status is archive?
     @mappings.map do |m|
-      m.update_attributes(@update_data)
+      # update_attributes validates before saving
+      m.update_attributes(@update_data) ? nil : m.id
     end
   end
 end
