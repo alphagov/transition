@@ -139,8 +139,6 @@ private
   end
 
   def bulk_update_mappings
-    # FIXME: should we remove suggested and archive urls if http_status is
-    # redirect, and new_url if http_status is archive?
     @mappings.map do |m|
       # update_attributes validates before saving
       m.update_attributes(@update_data) ? nil : m.id
