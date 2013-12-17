@@ -44,7 +44,7 @@
         <% end %>
       </tr>
       <% if current_user.can_edit?(@site.organisation) %>
-        <%= render partial: 'mappings_table_header' %>
+        <%= render partial: 'mappings_table_header', locals: {footer: false} %>
       <% end %>
     </thead>
     <tbody>
@@ -80,8 +80,8 @@
     <% end %>
     </tbody>
     <% if current_user.can_edit?(@site.organisation) %>
-      <tfoot class="bold">
-        <%= render partial: 'mappings_table_header' %>
+      <tfoot class="if-no-js-hide bold">
+        <%= render partial: 'mappings_table_header', locals: {footer: true} %>
       </tfoot>
     <% end %>
   </table>
