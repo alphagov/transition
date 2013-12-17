@@ -232,7 +232,7 @@ describe MappingsController do
       end
     end
 
-    context 'when valid data is posted' do
+    context 'when valid data is posted', versioning: true do
       before do
         login_as admin_bob
         get :index, site_id: site.abbr, contains: '/a'
@@ -259,6 +259,14 @@ describe MappingsController do
       it 'redirects to the last-visited site index page' do
         site_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
         expect(response).to redirect_to site_index_with_filter
+      end
+
+      it 'saves a version for each mapping recording the change' do
+        [mapping_a, mapping_b].each do |mapping|
+          mapping.reload
+          expect(mapping.versions.count).to be(2)
+          expect(mapping.versions.last.whodunnit).to eql('Bob Terwhilliger')
+        end
       end
     end
 
