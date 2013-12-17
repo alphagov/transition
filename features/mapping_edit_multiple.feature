@@ -46,6 +46,14 @@ Feature: Editing multiple mappings for a site
     Then the page title should be "Redirect mappings"
     And I should see "Enter a valid URL"
 
+  Scenario: Cancelling an attempt to redirect multiple mappings after entering several invalid URLs
+    When I click on the checkboxes for the first and second mappings
+    And I submit the form with the first "Edit selected" button
+    And I submit the form with the "Save" button
+    And I submit the form with the "Save" button
+    And I click the link called "Cancel"
+    Then I should see "3 mappings"
+
   @javascript
   Scenario: Selecting multiple mappings to redirect with javascript
     When I click on the checkboxes for the first and second mappings

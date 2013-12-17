@@ -40,7 +40,7 @@ class MappingsController < ApplicationController
   end
 
   def edit_multiple
-    set_multiple_mappings_and_http_status
+    set_vars_from_params_for_edit_multiple
     error = mappings_or_status_error
     return error if error
 
@@ -50,7 +50,7 @@ class MappingsController < ApplicationController
   end
 
   def update_multiple
-    set_multiple_mappings_and_http_status
+    set_vars_from_params_for_edit_multiple
     error = mappings_or_status_error
     return error if error
 
@@ -124,9 +124,10 @@ private
     session[site_return_url_key] || site_mappings_path(@site)
   end
 
-  def set_multiple_mappings_and_http_status
+  def set_vars_from_params_for_edit_multiple
     @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
     @http_status = params[:http_status] if ['301', '410'].include?(params[:http_status])
+    @back_to_index = site_return_url
   end
 
   def mappings_or_status_error
