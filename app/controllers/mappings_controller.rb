@@ -56,8 +56,7 @@ class MappingsController < ApplicationController
 
     @update_data = { http_status: @http_status }
     if @http_status == '301'
-      @new_url = params[:new_url]
-      @update_data[:new_url] = @new_url
+      @update_data[:new_url] = @new_url = params[:new_url]
     end
 
     # Before trying to update any real mappings, construct a test mapping using
