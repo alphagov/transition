@@ -111,12 +111,16 @@ private
     request.env['HTTP_REFERER'] || site_mappings_path(@site)
   end
 
+  def site_return_url_key
+    "return_to_#{@site.abbr}".to_sym
+  end
+
   def store_site_return_url
-    session["return_to_#{@site.abbr}".to_s] = request.url
+    session[site_return_url_key] = request.url
   end
 
   def site_return_url
-    session["return_to_#{@site.abbr}".to_s] || site_mappings_path(@site)
+    session[site_return_url_key] || site_mappings_path(@site)
   end
 
   def set_multiple_mappings_and_http_status
