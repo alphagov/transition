@@ -40,30 +40,24 @@ class MappingsController < ApplicationController
   end
 
   def edit_multiple
-    @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
-    @http_status = params[:http_status] if ['301', '410'].include?(params[:http_status])
-    unless @mappings.present?
-      return redirect_to site_return_url, notice: 'No mappings were selected'
-    end
-    unless @http_status.present?
-      return redirect_to site_return_url, notice: 'Please select either redirect or archive'
-    end
+    set_multiple_mappings_and_http_status
+    error = mappings_or_status_error
+    return error if error
+
     if request.xhr?
       render 'edit_multiple_modal', layout: nil
     end
   end
 
   def update_multiple
-    @http_status = params[:http_status] if ['301', '410'].include?(params[:http_status])
+    set_multiple_mappings_and_http_status
+    error = mappings_or_status_error
+    return error if error
+
     @update_data = { http_status: @http_status }
     if @http_status == '301'
       @new_url = params[:new_url]
       @update_data[:new_url] = @new_url
-    end
-
-    @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
-    unless @mappings.present?
-      return redirect_to site_return_url, notice: 'No mappings were selected'
     end
 
     # Before trying to update any real mappings, construct a test mapping using
@@ -124,6 +118,20 @@ private
 
   def site_return_url
     session["return_to_#{@site.abbr}".to_s] || site_mappings_path(@site)
+  end
+
+  def set_multiple_mappings_and_http_status
+    @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
+    @http_status = params[:http_status] if ['301', '410'].include?(params[:http_status])
+  end
+
+  def mappings_or_status_error
+    case
+    when @mappings.empty?
+      redirect_to site_return_url, notice: 'No mappings were selected'
+    when @http_status.blank?
+      redirect_to site_return_url, notice: 'Please select either redirect or archive'
+    end
   end
 
   def bulk_update_mappings
