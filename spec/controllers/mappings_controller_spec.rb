@@ -242,12 +242,11 @@ describe MappingsController do
       end
 
       it 'updates the mappings correctly' do
-        mapping_a.reload
-        expect(mapping_a.http_status).to eql('301')
-        expect(mapping_a.new_url).to eql('http://www.example.com')
-        mapping_b.reload
-        expect(mapping_b.http_status).to eql('301')
-        expect(mapping_b.new_url).to eql('http://www.example.com')
+        [mapping_a, mapping_b].each do |mapping|
+          mapping.reload
+          expect(mapping.http_status).to eql('301')
+          expect(mapping.new_url).to eql('http://www.example.com')
+        end
       end
 
       it 'does not update other mappings' do
