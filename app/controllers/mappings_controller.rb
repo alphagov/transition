@@ -77,7 +77,7 @@ class MappingsController < ApplicationController
     failed_update_ids = bulk_update_mappings.compact
     if failed_update_ids.present?
       @mappings = @site.mappings.where(id: failed_update_ids).order(:path)
-      flash[:notice] = 'Some mappings could not be updated'
+      flash[:notice] = 'The following mappings could not be updated'
       render action: 'edit_multiple'
     else
       redirect_to site_return_url, notice: 'Mappings updated successfully'
