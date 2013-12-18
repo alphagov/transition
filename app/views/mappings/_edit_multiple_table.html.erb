@@ -24,25 +24,3 @@
     <% end %>
   </tbody>
 </table>
-
-<%= hidden_field_tag "http_status", http_status %>
-<% if http_status == '301' %>
-  <%= field_set_tag nil, class: 'add-bottom-margin' do %>
-    <legend class="if-js-rm">
-      Redirect
-    </legend>
-    <% if new_url_error %>
-      <div id="error_explanation" class="alert notice">
-        <ul>
-          <li><%= new_url_error %></li>
-        </ul>
-      </div>
-    <% end %>
-    <div <% if new_url_error %>class="field_with_errors"<% end %> >
-      <%= label_tag(:new_url, 'Redirect to') %>
-    </div>
-    <div <% if new_url_error %>class="field_with_errors"<% end %> >
-      <%= text_field_tag(:new_url, new_url, class: modal ? 'span5' : 'span8') %>
-    </div>
-  <% end %>
-<% end %>
