@@ -151,7 +151,7 @@ describe MappingsController do
     let!(:mapping_c) { create :mapping, path: '/c', site: site }
 
     before do
-      @site_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
+      @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
     end
 
     context 'when user doesn\'t have permission' do
@@ -173,18 +173,18 @@ describe MappingsController do
         login_as admin_bob
       end
 
-      context 'when the site index has not been visited' do
-        it 'redirects to the site index page' do
+      context 'when the mappings index has not been visited' do
+        it 'redirects to the mappings index page' do
           post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410'
           expect(response).to redirect_to site_mappings_path(site)
         end
       end
 
-      context 'when the site index was last visited with a path filter' do
-        it 'redirects back to the last-visited site index page' do
+      context 'when the mappings index was last visited with a path filter' do
+        it 'redirects back to the last-visited mappings index page' do
           get :index, site_id: site.abbr, contains: '/a'
           post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410'
-          expect(response).to redirect_to @site_index_with_filter
+          expect(response).to redirect_to @mappings_index_with_filter
         end
       end
     end
@@ -194,12 +194,12 @@ describe MappingsController do
         login_as admin_bob
       end
 
-      context 'when the site index was last visited with a path filter' do
-        it 'redirects back to the last-visited site index page' do
+      context 'when the mappings index was last visited with a path filter' do
+        it 'redirects back to the last-visited mappings index page' do
           get :index, site_id: site.abbr, contains: '/a'
           mapping_ids = [ mapping_a.id, mapping_b.id ]
           post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'bad'
-          expect(response).to redirect_to @site_index_with_filter
+          expect(response).to redirect_to @mappings_index_with_filter
         end
       end
     end
@@ -211,7 +211,7 @@ describe MappingsController do
     let!(:mapping_c) { create :mapping, path: '/c', site: site }
 
     before do
-      @site_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
+      @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
     end
 
     context 'when user doesn\'t have permission' do
@@ -253,9 +253,9 @@ describe MappingsController do
         expect(mapping_c.new_url).to be_nil
       end
 
-      it 'redirects to the last-visited site index page' do
-        site_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
-        expect(response).to redirect_to site_index_with_filter
+      it 'redirects to the last-visited mappings index page' do
+        mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
+        expect(response).to redirect_to mappings_index_with_filter
       end
 
       it 'saves a version for each mapping recording the change' do
@@ -274,18 +274,18 @@ describe MappingsController do
         login_as admin_bob
       end
 
-      context 'when the site index has not been visited' do
-        it 'redirects to the site index page' do
+      context 'when the mappings index has not been visited' do
+        it 'redirects to the mappings index page' do
           post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com'
           expect(response).to redirect_to site_mappings_path(site)
         end
       end
 
-      context 'when the site index was last visited with a path filter' do
-        it 'redirects back to the last-visited site index page' do
+      context 'when the mappings index was last visited with a path filter' do
+        it 'redirects back to the last-visited mappings index page' do
           get :index, site_id: site.abbr, contains: '/a'
           post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com'
-          expect(response).to redirect_to @site_index_with_filter
+          expect(response).to redirect_to @mappings_index_with_filter
         end
       end
     end
