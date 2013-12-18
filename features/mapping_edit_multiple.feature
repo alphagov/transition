@@ -13,70 +13,58 @@ Feature: Editing multiple mappings for a site
     And I visit the path /sites/directgov/mappings
 
   Scenario: Selecting multiple mappings to redirect without javascript
-    When I click on the checkboxes for the first and second mappings
-    And I submit the form with the "Edit selected" button
+    When I select the first two mappings
+    And I go to edit the selected mappings
     Then the page title should be "Redirect mappings"
-    And I should see "/a"
-    And I should see "/about/branding"
-    And I should have 2 hidden inputs for mapping IDs
+    And I should see a form that contains my selection
     And I should see a "Redirect to" input
-    But I should not see "/about/corporate"
 
   Scenario: Selecting multiple mappings to archive without javascript
-    When I click on the checkboxes for the first and second mappings
+    When I select the first two mappings
     And I select "Archive"
-    And I submit the form with the first "Edit selected" button
+    And I go to edit the selected mappings
     Then the page title should be "Archive mappings"
-    And I should see "/a"
-    And I should see "/about/branding"
-    And I should have 2 hidden inputs for mapping IDs
+    And I should see a form that contains my selection
     And I should not see a "Redirect to" input
 
   Scenario: Confirming multiple mappings to redirect without javascript
-    When I click on the checkboxes for the first and second mappings
-    And I submit the form with the first "Edit selected" button
+    When I select the first two mappings
+    And I go to edit the selected mappings
     And I enter a new URL to redirect to
-    And I submit the form with the "Save" button
+    And I save my changes
     Then I should see "Mappings updated"
 
   Scenario: Confirming multiple mappings to redirect but without entering a new URL
-    When I click on the checkboxes for the first and second mappings
-    And I submit the form with the first "Edit selected" button
-    And I submit the form with the "Save" button
+    When I select the first two mappings
+    And I go to edit the selected mappings
+    And I save my changes
     Then the page title should be "Redirect mappings"
     And I should see "Enter a valid URL"
 
   Scenario: Cancelling an attempt to redirect multiple mappings after entering several invalid URLs
-    When I click on the checkboxes for the first and second mappings
-    And I submit the form with the first "Edit selected" button
-    And I submit the form with the "Save" button
-    And I submit the form with the "Save" button
+    When I select the first two mappings
+    And I go to edit the selected mappings
+    And I save my changes
     And I click the link called "Cancel"
     Then I should see "3 mappings"
 
   @javascript
   Scenario: Selecting multiple mappings to redirect with javascript
-    When I click on the checkboxes for the first and second mappings
+    When I select the first two mappings
     And I click the first link called "Redirect selected"
     Then I should see an open modal window
+    And I should see a form that contains my selection within the modal
     And I should see "Redirect mappings" in the modal window
-    And I should see "/about/branding" in the modal window
-    And I should have 2 hidden inputs for mapping IDs
-    And I should see a "Redirect to" input
-    But I should not see "/about/corporate" in the modal window
     When I enter a new URL to redirect to
-    And I submit the form with the "Save" button
+    And I save my changes
     Then I should see "Mappings updated"
 
   @javascript
   Scenario: Selecting multiple mappings to archive with javascript
-    When I click on the checkboxes for the first and second mappings
+    When I select the first two mappings
     And I click the first link called "Archive selected"
     Then I should see an open modal window
+    And I should see a form that contains my selection within the modal
     And I should see "Archive mappings" in the modal window
-    And I should see "/about/branding" in the modal window
-    And I should have 2 hidden inputs for mapping IDs
-    But I should not see a "Redirect to" input
-    And I should not see "/about/corporate" in the modal window
-    When I submit the form with the "Save" button
+    When I save my changes
     Then I should see "Mappings updated"

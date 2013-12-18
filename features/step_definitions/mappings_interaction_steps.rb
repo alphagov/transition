@@ -19,9 +19,13 @@ When(/^I go to edit the first mapping$/) do
   click_link 'Edit'
 end
 
-When(/^I click on the checkboxes for the first and second mappings$/) do
+When(/^I select the first two mappings$/) do
   find(:css, ".mappings tbody tr:first-child input").set(true)
   find(:css, ".mappings tbody tr:first-child + tr input").set(true)
+end
+
+When (/^I go to edit the selected mappings$/) do
+  click_button "Edit selected"
 end
 
 When(/^I select "Archive"$/) do

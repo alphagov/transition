@@ -20,6 +20,12 @@ When(/^I submit the form with the "([^"]+)" button$/) do |button_text|
   click_button button_text
 end
 
+When(/^I save my changes$/) do
+  steps %{
+    And I submit the form with the "Save" button
+  }
+end
+
 When(/^I go to page ([0-9]+)$/) do |page|
   first(:link, page).click
 end
