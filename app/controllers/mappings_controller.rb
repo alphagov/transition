@@ -1,10 +1,7 @@
 class MappingsController < ApplicationController
   include PaperTrail::Controller
 
-  before_filter do
-    @site = Site.find_by_abbr(params[:site_id])
-  end
-
+  before_filter :find_site
   before_filter :check_user_can_edit, only: [:new, :create, :edit, :update, :edit_multiple, :update_multiple]
 
   def new
@@ -40,9 +37,9 @@ class MappingsController < ApplicationController
   end
 
   def edit_multiple
-    set_vars_from_params_for_edit_multiple
-    error = mappings_or_status_error
-    return error if error
+    @mappings, @http_status, @back_to_index =
+      bulk.mappings, bulk.http_status, site_return_url
+    redirect_to site_return_url, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
 
     if request.xhr?
       render 'edit_multiple_modal', layout: nil
@@ -50,33 +47,24 @@ class MappingsController < ApplicationController
   end
 
   def update_multiple
-    set_vars_from_params_for_edit_multiple
-    error = mappings_or_status_error
-    return error if error
+    @mappings, @http_status, @back_to_index =
+      bulk.mappings, bulk.http_status, site_return_url
+    redirect_to site_return_url, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
 
-    update_data = { http_status: @http_status }
-    if @http_status == '301'
-      update_data[:new_url] = @new_url = params[:new_url]
-    end
 
-    # Before trying to update any real mappings, construct a test mapping using
-    # the submitted data to see if it validates:
-    test_data = { site: @site, path: '/this/is/a/test/and/will/not/be/saved' }.merge(update_data)
-    test_mapping = Mapping.new(test_data)
-    unless test_mapping.valid?
-      if test_mapping.errors.size == 1 && test_mapping.errors[:new_url].present?
-        # Assume that new_url was blank or invalid:
+    if bulk.would_fail?
+      if bulk.would_fail_on_url?
         @new_url_error = 'Enter a valid URL to redirect these paths to'
         render action: 'edit_multiple' and return
       else
-        # Something else wasn't valid and the user can't do anything about it now:
         return redirect_to site_return_url, notice: 'Validation failed'
       end
     end
 
-    failed_update_ids = bulk_update_mappings(update_data).compact
-    if failed_update_ids.present?
-      @mappings = @site.mappings.where(id: failed_update_ids).order(:path)
+    bulk.update!
+
+    if bulk.failures?
+      @mappings = bulk.failed_updates
       flash[:notice] = 'The following mappings could not be updated'
       render action: 'edit_multiple'
     else
@@ -100,7 +88,16 @@ class MappingsController < ApplicationController
     end
   end
 
-private
+  private
+  def bulk
+    @bulk ||= View::Mappings::BulkEditor.new(@site, params)
+  end
+
+  private
+  def find_site
+    @site = Site.find_by_abbr(params[:site_id])
+  end
+
   def check_user_can_edit
     unless current_user.can_edit?(@site.organisation)
       message = "You don't have permission to edit site mappings for #{@site.organisation.title}"
@@ -122,27 +119,5 @@ private
 
   def site_return_url
     session[site_return_url_key] || site_mappings_path(@site)
-  end
-
-  def set_vars_from_params_for_edit_multiple
-    @mappings = @site.mappings.where(id: params[:mapping_ids]).order(:path)
-    @http_status = params[:http_status] if ['301', '410'].include?(params[:http_status])
-    @back_to_index = site_return_url
-  end
-
-  def mappings_or_status_error
-    case
-    when @mappings.empty?
-      redirect_to site_return_url, notice: 'No mappings were selected'
-    when @http_status.blank?
-      redirect_to site_return_url, notice: 'Please select either redirect or archive'
-    end
-  end
-
-  def bulk_update_mappings(update_data)
-    @mappings.map do |m|
-      # update_attributes validates before saving
-      m.update_attributes(update_data) ? nil : m.id
-    end
   end
 end
