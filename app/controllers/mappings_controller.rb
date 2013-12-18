@@ -54,14 +54,14 @@ class MappingsController < ApplicationController
     error = mappings_or_status_error
     return error if error
 
-    @update_data = { http_status: @http_status }
+    update_data = { http_status: @http_status }
     if @http_status == '301'
-      @update_data[:new_url] = @new_url = params[:new_url]
+      update_data[:new_url] = @new_url = params[:new_url]
     end
 
     # Before trying to update any real mappings, construct a test mapping using
     # the submitted data to see if it validates:
-    test_data = { site: @site, path: '/this/is/a/test/and/will/not/be/saved' }.merge(@update_data)
+    test_data = { site: @site, path: '/this/is/a/test/and/will/not/be/saved' }.merge(update_data)
     test_mapping = Mapping.new(test_data)
     unless test_mapping.valid?
       if test_mapping.errors.size == 1 && test_mapping.errors[:new_url].present?
@@ -74,7 +74,7 @@ class MappingsController < ApplicationController
       end
     end
 
-    failed_update_ids = bulk_update_mappings.compact
+    failed_update_ids = bulk_update_mappings(update_data).compact
     if failed_update_ids.present?
       @mappings = @site.mappings.where(id: failed_update_ids).order(:path)
       flash[:notice] = 'The following mappings could not be updated'
@@ -139,10 +139,10 @@ private
     end
   end
 
-  def bulk_update_mappings
+  def bulk_update_mappings(update_data)
     @mappings.map do |m|
       # update_attributes validates before saving
-      m.update_attributes(@update_data) ? nil : m.id
+      m.update_attributes(update_data) ? nil : m.id
     end
   end
 end
