@@ -1,7 +1,7 @@
 Feature: Editing multiple mappings for a site
   As a GDS User,
   I want to update many existing mappings at once
-  so that I can efficiently improve the quailty of mappings
+  so that I can efficiently improve the quality of mappings
 
   Background:
     Given I have logged in as an admin
