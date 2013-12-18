@@ -1,6 +1,6 @@
 <tr class="table-header-secondary">
   <td class="selectable-row">
-    <div class="relative">
+    <div class="relative if-no-js-hide">
       <label>
         <input type="checkbox" class="js-toggle-all"/>
       </label>
@@ -10,10 +10,10 @@
     <div class="pull-left">
       <% unless footer %>
         <div class="if-js-hide">
-          <%= label_tag :http_status_redirect, class: 'radio inline table-header-radio' do %>
+          <%= label_tag :http_status_301, class: 'radio inline table-header-radio' do %>
             <%= radio_button_tag(:http_status, '301', selected = true) %> Redirect
           <% end %>
-          <%= label_tag :http_status_archive, class: 'radio inline table-header-radio add-right-margin' do %>
+          <%= label_tag :http_status_410, class: 'radio inline table-header-radio add-right-margin' do %>
             <%= radio_button_tag(:http_status, '410') %> Archive
           <% end %>
           <%= submit_tag "Edit selected", class: 'btn bold' %>
