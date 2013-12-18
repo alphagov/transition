@@ -1,7 +1,10 @@
 <% breadcrumb(:new_mapping, @mapping) %>
 
 <%= content_for :page_title, 'New mapping' %>
-<h1 class="page-title">New mapping</h1>
+<h1 class="page-title">
+  <span class="small"><%= @site.default_host.hostname %></span>
+  Add mappings
+</h1>
 
 <%= render :partial => 'form' %>
 

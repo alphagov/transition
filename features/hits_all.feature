@@ -42,5 +42,5 @@ Scenario: Check mapping for a hit
   And no mapping exists for the top hit
   And I am on the Attorney General's office site's hits page
   When I click on the link to check the mapping for the top hit
-  Then I should be on the new mapping page
+  Then I should be on the add mappings page
   And the top hit's canonicalized path should already be in the form

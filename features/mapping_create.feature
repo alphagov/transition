@@ -9,8 +9,8 @@ Feature: Create a mapping
     And I visit the path /sites/bis/mappings
     And I go to create a new mapping
     Then I should see "http://bis.gov.uk"
-    When I make the mapping a redirect from /Needs/Canonicalizing/q=1 to http://gov.uk/organisations/bis
-    And I create the mapping
+    When I make the new mapping a redirect from /Needs/Canonicalizing/q=1 to http://gov.uk/organisations/bis
+    And I submit the mapping
     Then I should be returned to the edit mapping page with a success message
     And I should see "Mapping created."
     And I should see "/needs/canonicalizing"

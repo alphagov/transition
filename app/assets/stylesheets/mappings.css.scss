@@ -15,6 +15,17 @@
   background-color: $default-HTTP-status-color;
 }
 
+.old-urls textarea {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  height: 200px;
+}
+
+.old-urls .input-group-addon {
+  vertical-align: top;
+  padding-top: 9px;
+}
+
 .read-only-fields dt {
   margin-bottom: 5px;
 }

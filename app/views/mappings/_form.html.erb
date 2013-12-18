@@ -17,12 +17,17 @@
       </dd>
     </dl>
   <% else %>
-    <%= f.label :path, 'Old URL' %>
+    <%= f.label :path, class: 'add-top-margin' do %>
+      Old URLs
+      <p class="muted normal">
+        Please add one path per line. Each path should begin with a ‘/’.
+      </p>
+    <% end %>
     <div class="row">
-      <div class="col-md-8">
+      <div class="old-urls col-md-8">
         <div class="input-group">
           <span class="input-group-addon">http://<%= @site.default_host.hostname %></span>
-          <%= f.text_field :path, class: 'form-control', placeholder: '/path/to/page' %>
+          <%= f.text_area :path, class: 'form-control', placeholder: '/path/to/page' %>
         </div>
       </div>
     </div>
@@ -33,7 +38,11 @@
     <legend class="if-js-rm">
       Redirect
     </legend>
-    <%= f.label :new_url, 'Redirects to' %>
+    <% if @mapping.persisted? %>
+      <%= f.label :new_url, 'Redirects to' %>
+    <% else %>
+      <%= f.label :new_url, 'Redirect to' %>
+    <% end %>
     <div class="row">
       <div class="col-md-8">
         <%= f.text_field :new_url, class: 'form-control' %>
@@ -54,7 +63,7 @@
             <%= link_to @mapping.national_archive_url, @mapping.national_archive_url %><br />
             <span class="text-muted">Is this archive missing? <a href="#add-alternative-url" class="if-no-js-hide link-muted js-toggle">Use an alternative</a></span>
           <% else %>
-            <p>The archive URL will be automatically generated based on the old URL provided above.</p>
+            <p>The archive URLs will be automatically generated based on the old URLs provided above.</p>
           <% end %>
         </dd>
       </dl>
@@ -102,6 +111,6 @@
     </div>
   <% end %>
 
-  <%= f.submit @mapping.persisted? ? 'Save mapping' : 'Create mapping', class: 'add-top-margin btn btn-success' %>
+  <%= f.submit @mapping.persisted? ? 'Save mapping' : 'Submit mappings', class: 'add-top-margin btn btn-success' %>
 <% end %>
 <script>GOVUK.Mappings.edit()</script>

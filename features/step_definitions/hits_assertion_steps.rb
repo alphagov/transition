@@ -102,8 +102,8 @@ Then(/^each hit should have a link to check its mapping$/) do
   end
 end
 
-Then(/^I should be on the new mapping page$/) do
-  step 'I should see "New mapping"'
+Then(/^I should be on the add mappings page$/) do
+  step 'I should see "Add mappings"'
 end
 
 Then(/^the top hit's canonicalized path should already be in the form$/) do
