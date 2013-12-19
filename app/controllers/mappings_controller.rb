@@ -37,7 +37,6 @@ class MappingsController < ApplicationController
   end
 
   def edit_multiple
-    @back_to_index = site_return_url
     redirect_to site_return_url, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
 
     if request.xhr?
@@ -46,7 +45,6 @@ class MappingsController < ApplicationController
   end
 
   def update_multiple
-    @back_to_index = site_return_url
     redirect_to site_return_url, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
 
     if bulk.would_fail?
@@ -87,7 +85,7 @@ class MappingsController < ApplicationController
 
   private
   def bulk
-    @bulk ||= View::Mappings::BulkEditor.new(@site, params)
+    @bulk ||= View::Mappings::BulkEditor.new(@site, params, site_return_url)
   end
 
   private

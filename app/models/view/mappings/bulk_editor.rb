@@ -6,7 +6,7 @@ module View
     #
     # Needs a site and params to work out what is being edited
     # and what the new values are
-    class BulkEditor < Struct.new(:site, :params)
+    class BulkEditor < Struct.new(:site, :params, :back_to_index)
       def mappings
         @mappings ||= site.mappings.where(id: params[:mapping_ids]).order(:path)
       end
