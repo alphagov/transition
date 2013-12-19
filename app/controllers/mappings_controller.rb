@@ -37,8 +37,7 @@ class MappingsController < ApplicationController
   end
 
   def edit_multiple
-    @mappings, @http_status, @back_to_index =
-      bulk.mappings, bulk.http_status, site_return_url
+    @back_to_index = site_return_url
     redirect_to site_return_url, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
 
     if request.xhr?
@@ -47,8 +46,7 @@ class MappingsController < ApplicationController
   end
 
   def update_multiple
-    @mappings, @http_status, @back_to_index =
-      bulk.mappings, bulk.http_status, site_return_url
+    @back_to_index = site_return_url
     redirect_to site_return_url, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
 
     if bulk.would_fail?

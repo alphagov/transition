@@ -1,17 +1,20 @@
-<% content_for(:page_title, "#{ http_status_name(@http_status) } mappings") %>
+<% content_for(:page_title, "#{ http_status_name(@bulk.http_status) } mappings") %>
 
 <%= breadcrumb(@site) %>
 
 <div class="page-title">
   <h1>
     <span class="small"><%= @site.default_host.hostname %></span>
-    <%= http_status_name(@http_status) %> mappings
+    <%= http_status_name(@bulk.http_status) %> mappings
   </h1>
 </div>
 
 <%= form_tag update_multiple_site_mappings_path(@site) do %>
-  <%= render partial: 'edit_multiple_table', locals: { modal: false, mappings: @mappings, site: @site } %>
-  <%= render partial: 'edit_multiple_redirect', locals: { modal: false, new_url: @new_url, new_url_error: @new_url_error, http_status: @http_status } %>
+  <%= render partial: 'edit_multiple_table',
+             locals: { modal: false, mappings: @bulk.mappings, site: @site } %>
+  <%= render partial: 'edit_multiple_redirect',
+             locals: { modal: false, new_url: @bulk.updates[:new_url],
+                       new_url_error: @new_url_error, http_status: @bulk.http_status } %>
   <%= link_to 'Cancel', @back_to_index, class: 'btn add-right-margin' %>
   <%= submit_tag 'Save', class: 'btn btn-success' %>
 <% end %>
