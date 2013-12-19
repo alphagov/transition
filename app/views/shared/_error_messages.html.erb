@@ -1,9 +1,15 @@
 <% if model.errors.any? %>
-  <div id="error_explanation" class="alert alert-danger">
-    <ul>
+  <div class="alert alert-danger">
+    <% if model.errors.size == 1 %>
       <% model.errors.full_messages.each do |full_error_message| %>
-        <li><%= full_error_message %></li>
+        <p><%= full_error_message %></p>
       <% end %>
-    </ul>
+    <% else %>
+      <ul>
+        <% model.errors.full_messages.each do |full_error_message| %>
+          <li><%= full_error_message %></li>
+        <% end %>
+      </ul>
+    <% end %>
   </div>
 <% end %>

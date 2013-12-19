@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 require 'spec_helper'
 
 describe Mapping do
@@ -33,7 +35,7 @@ describe Mapping do
       before { homepage_mapping.should_not be_valid }
       it 'disallows homepages' do
         homepage_mapping.errors[:path].should ==
-          ["It's not currently possible to edit the mapping for a site's homepage."]
+          ["It’s not currently possible to edit the mapping for a site’s homepage."]
       end
     end
 

@@ -17,12 +17,18 @@
       </dd>
     </dl>
   <% else %>
-    <%= f.label :path, class: 'add-top-margin' do %>
+    <%#
+      Capture label HTML to avoid using a block, this circumvents a problem with
+      rails not wrapping the label with 'field_with_errors' on error
+      http://stackoverflow.com/questions/13862978/
+    %>
+    <% label_html = capture do %>
       Old URLs
-      <p class="muted normal">
+      <p class="text-muted normal">
         Please add one path per line. Each path should begin with a ‘/’.
       </p>
     <% end %>
+    <%= f.label :path, label_html, class: 'add-top-margin' %>
     <div class="row">
       <div class="old-urls col-md-8">
         <div class="input-group">
