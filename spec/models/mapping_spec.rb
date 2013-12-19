@@ -110,19 +110,24 @@ describe Mapping do
     end
   end
 
-  describe 'values normalised or changed on save' do
+  describe 'canonicalizing the path and setting the path_hash before validate' do
     let(:uncanonicalized_path) { '/A/b/c?significant=1&really-significant=2&insignificant=2' }
     let(:canonicalized_path)   { '/a/b/c?really-significant=2&significant=1' }
     let(:site)                 { build(:site, query_params: 'significant:really-significant')}
 
     subject(:mapping) do
-      build :mapping, path: uncanonicalized_path, site: site, http_status: '410', archive_url: ''
+      create(:mapping, path: uncanonicalized_path, site: site, http_status: '410')
     end
-
-    before { mapping.save! }
 
     its(:path)        { should eql(canonicalized_path) }
     its(:path_hash)   { should eql(Digest::SHA1.hexdigest(canonicalized_path)) }
+  end
+
+  describe 'nillifying blanks before validation' do
+    subject(:mapping) do
+      create :mapping, http_status: '410', archive_url: ''
+    end
+
     its(:archive_url) { should be_nil }
   end
 
