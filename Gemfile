@@ -21,6 +21,8 @@ gem 'whenever', '0.8.4'
 gem 'aws-ses', '0.4.4', require: 'aws/ses'
 gem 'exception_notification', '2.6.1'
 
+gem 'logstasher', '0.4.0'
+
 group :assets do
   gem 'sass', '3.2.8'
   gem 'sass-rails', '3.2.6'
