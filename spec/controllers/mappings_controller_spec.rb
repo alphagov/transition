@@ -294,7 +294,7 @@ describe MappingsController do
       before do
         login_as admin_bob
         mapping_ids = [ mapping_a.id, mapping_b.id ]
-        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: 'heythisaintvalid'
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: '___'
       end
 
       it 'does not update any mappings' do
