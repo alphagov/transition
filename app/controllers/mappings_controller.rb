@@ -37,8 +37,6 @@ class MappingsController < ApplicationController
   end
 
   def edit_multiple
-    @mappings, @http_status, @back_to_index =
-      bulk.mappings, bulk.http_status, site_return_url
     redirect_to site_return_url, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
 
     if request.xhr?
@@ -47,13 +45,10 @@ class MappingsController < ApplicationController
   end
 
   def update_multiple
-    @mappings, @http_status, @back_to_index =
-      bulk.mappings, bulk.http_status, site_return_url
     redirect_to site_return_url, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
 
-
     if bulk.would_fail?
-      if bulk.would_fail_on_url?
+      if bulk.would_fail_on_new_url?
         @new_url_error = 'Enter a valid URL to redirect these paths to'
         render action: 'edit_multiple' and return
       else
@@ -64,7 +59,7 @@ class MappingsController < ApplicationController
     bulk.update!
 
     if bulk.failures?
-      @mappings = bulk.failed_updates
+      @mappings = bulk.failures
       flash[:notice] = 'The following mappings could not be updated'
       render action: 'edit_multiple'
     else
@@ -90,7 +85,7 @@ class MappingsController < ApplicationController
 
   private
   def bulk
-    @bulk ||= View::Mappings::BulkEditor.new(@site, params)
+    @bulk ||= View::Mappings::BulkEditor.new(@site, params, site_return_url)
   end
 
   private

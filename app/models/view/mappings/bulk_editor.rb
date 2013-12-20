@@ -6,7 +6,7 @@ module View
     #
     # Needs a site and params to work out what is being edited
     # and what the new values are
-    class BulkEditor < Struct.new(:site, :params)
+    class BulkEditor < Struct.new(:site, :params, :back_to_index)
       def mappings
         @mappings ||= site.mappings.where(id: params[:mapping_ids]).order(:path)
       end
@@ -37,38 +37,37 @@ module View
       end
 
       def update!
-        @failures = mappings.map do |m|
+        @failure_ids = mappings.map do |m|
           # update_attributes validates before saving
           m.update_attributes(updates) ? nil : m.id
         end.compact
       end
 
       def failures?
-        @failures.any?
+        @failure_ids.any?
       end
 
-      def failed_updates
-        site.mappings.where(id: @failures).order(:path)
+      def failures
+        site.mappings.where(id: @failure_ids).order(:path)
       end
 
       def would_fail?
         !test_mapping.valid?
       end
 
-      def would_fail_on_url?
-        test_mapping.errors.size == 1 && test_mapping.errors[:new_url].present?
+      def would_fail_on_new_url?
+        would_fail? &&
+          test_mapping.errors.size == 1 && test_mapping.errors[:new_url].present?
       end
 
       def test_mapping
         # Before trying to update any real mappings, construct a test mapping using
         # the submitted data to see if it validates:
-        @test_mapping ||= begin
-          test_data = {
-            site: site,
-            path: '/this/is/a/test/and/will/not/be/saved'
-          }.merge(updates)
-          Mapping.new(test_data)
-        end
+        @test_mapping ||= Mapping.new({
+                                        site: site,
+                                        path: '/this/is/a/test/and/will/not/be/saved'
+                                      }.merge(updates))
+
       end
     end
   end
