@@ -73,7 +73,7 @@
     <% end %>
     </tbody>
     <% if current_user.can_edit?(@site.organisation) %>
-      <tfoot class="if-no-js-hide bold">
+      <tfoot class="if-no-js-hide">
         <%= render partial: 'mappings_table_header', locals: {footer: true} %>
       </tfoot>
     <% end %>
