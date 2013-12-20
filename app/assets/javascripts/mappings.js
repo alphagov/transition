@@ -62,7 +62,6 @@
         element.find('input').first().val('');
       }
     }
-
   };
 
   root.GOVUK.Mappings = Mappings;

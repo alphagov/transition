@@ -59,6 +59,10 @@ label {
   position: relative;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 /* Margin helpers
    ========================================================================== */
 
@@ -85,6 +89,17 @@ label {
 
 .remove-bottom-margin {
   margin-bottom: 0 !important;
+}
+
+.add-right-margin {
+  margin-right: $gridGutterWidth / 2 !important;
+}
+
+/* Padding helpers
+   ========================================================================== */
+
+.remove-padding {
+  padding: 0 !important;
 }
 
 /* ==========================================================================
@@ -161,6 +176,66 @@ main a {
   @extend .page-title;
   border-bottom: 1px solid #ddd;
   margin-bottom: 30px;
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+.table-header {
+  background-color: $grayLighter;
+}
+
+.table-header-secondary {
+  background-color: $tableBackgroundAccent;
+}
+
+thead .table-header-secondary td {
+  border-bottom: 1px solid #ccc;
+}
+
+.radio.table-header-radio {
+  padding-top: 0;
+}
+
+/* Selectable rows
+   ==========================================================================
+   Fill table cell with label to make the whole cell clickable.
+   This is achieved with a bit of a hack, the label is set to a height always
+   guaranteed to be larger than the cell height, and the cell has its overflow
+   hidden.
+*/
+
+.selectable-row {
+  padding: 0 !important;
+  overflow: hidden;
+  width: 40px;
+
+  label {
+    height: 300px;
+    width: 100%;
+    margin-bottom: 0;
+    position: absolute;
+    text-align: center;
+  }
+
+  input {
+    margin-top: 12px;
+  }
+}
+
+/* Slightly different spacing for table headers */
+.table-header-secondary .selectable-row {
+  vertical-align: top;
+
+  input {
+    margin-top: 18px;
+  }
+}
+
+.selected-row td,
+.table-hover .selected-row:hover td {
+  background-color: #fffbcc; /* yellow highlight */
 }
 
 /* ==========================================================================

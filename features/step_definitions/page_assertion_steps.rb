@@ -6,6 +6,21 @@ Then(/^I should not see "([^"]*)"$/) do |content|
   expect(page).not_to have_content(content)
 end
 
+# Modals
+
+Then(/^I should see an open modal window$/) do
+  expect(page).to have_selector('.modal-backdrop')
+  expect(page).to have_selector('.modal')
+end
+
+Then(/^I should see "([^"]*)" in (?:a|the) modal window$/) do |text|
+  expect(page).to have_selector('.modal', text: text)
+end
+
+Then(/^I should not see "([^"]*)" in (?:a|the) modal window$/) do |text|
+  expect(page).not_to have_selector('.modal', text: text)
+end
+
 # Title
 
 Then(/^the page title should be "([^"]*)"$/) do |title|

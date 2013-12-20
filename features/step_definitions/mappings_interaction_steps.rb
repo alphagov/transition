@@ -19,6 +19,19 @@ When(/^I go to edit the first mapping$/) do
   click_link 'Edit'
 end
 
+When(/^I select the first two mappings$/) do
+  find(:css, ".mappings tbody tr:first-child input").set(true)
+  find(:css, ".mappings tbody tr:first-child + tr input").set(true)
+end
+
+When (/^I go to edit the selected mappings$/) do
+  click_button "Edit selected"
+end
+
+When(/^I select "Archive"$/) do
+  choose 'Archive'
+end
+
 When(/^I filter the path by ([^"]*)$/) do |path_contains|
   fill_in 'Filter by path', with: path_contains
   click_button 'Filter'
@@ -37,4 +50,8 @@ end
 When(/^I enter an archive URL but then click "Cancel"$/) do
   fill_in 'Alternative national archive URL', with: 'anything'
   click_link 'Cancel'
+end
+
+When(/^I enter a new URL to redirect to$/) do
+  fill_in 'Redirect to', with: 'https://www.gov.uk'
 end

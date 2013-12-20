@@ -18,13 +18,6 @@
   <div class="add-bottom-margin">
     <%= render partial: 'add_button' %>
   </div>
-<% elsif current_user.can_edit?(@site.organisation) %>
-  <div class="pull-left">
-    <%= paginate(@mappings) %>
-  </div>
-  <div class="pull-right add-bottom-margin">
-    <%= render partial: 'add_button' %>
-  </div>
 <% else %>
   <div class="add-bottom-margin">
     <%= paginate(@mappings) %>
@@ -32,23 +25,40 @@
 <% end %>
 
 <% if @mappings.any? %>
+  <% if current_user.can_edit?(@site.organisation) %>
+    <div data-module="selectable-table">
+  <% end %>
+  <%= form_tag edit_multiple_site_mappings_path(@site), remote: true do %>
   <table class="mappings table table-bordered">
     <thead>
-    <tr>
-      <th class="mapping-type-header" scope="col">Type</th>
-      <th scope="col">
-        Original path from <%= @site.default_host.hostname %>
-        <br>
-        (where it redirects to when applicable)
-      </th>
+      <tr class="table-header">
+        <% if current_user.can_edit?(@site.organisation) %>
+          <th></th>
+        <% end %>
+        <th class="mapping-type-header" scope="col">Type</th>
+        <th scope="col">
+          Original path from <%= @site.default_host.hostname %>
+        </th>
+        <% if current_user.can_edit?(@site.organisation) %>
+          <th></th>
+        <% end %>
+      </tr>
       <% if current_user.can_edit?(@site.organisation) %>
-        <th></th>
+        <%= render partial: 'mappings_table_header', locals: {footer: false} %>
       <% end %>
-    </tr>
     </thead>
     <tbody>
     <% @mappings.each do |mapping| %>
       <tr data-status-code="<%= mapping.http_status %>">
+        <% if current_user.can_edit?(@site.organisation) %>
+          <td class="selectable-row">
+            <div class="relative">
+              <label>
+                <%= check_box_tag "mapping_ids[]", mapping.id, checked = false, class: 'js-toggle-row' %>
+              </label>
+            </div>
+          </td>
+        <% end %>
         <td class="<%= "mapping-type-#{mapping.type}" %>">
           <%= mapping.type.titleize %>
         </td>
@@ -69,7 +79,18 @@
       </tr>
     <% end %>
     </tbody>
+    <% if current_user.can_edit?(@site.organisation) %>
+      <tfoot class="if-no-js-hide bold">
+        <%= render partial: 'mappings_table_header', locals: {footer: true} %>
+      </tfoot>
+    <% end %>
   </table>
+  <% end %>
+  <% if current_user.can_edit?(@site.organisation) %>
+    </div>
+    <script>GOVUK.SelectableTable.setup()</script>
+  <% end %>
+
   <%= paginate(@mappings) %>
 
 <% else %>
