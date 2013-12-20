@@ -21,16 +21,17 @@ class Site < ActiveRecord::Base
     hosts.first
   end
 
-  def canonical_path_from_url(raw_url)
-    bluri = BLURI(raw_url).canonicalize!(allow_query: query_params.split(":"))
+  def canonical_path(path_or_url)
+    if path_or_url.start_with?('http')
+      url = path_or_url
+    else
+      # BLURI takes a full URL, but we only care about the path. There's no
+      # benefit in making an extra query to get a real hostname for the site.
+      url = 'http://www.example.com' + path_or_url
+    end
+
+    bluri = BLURI(url).canonicalize!(allow_query: query_params.split(":"))
     path = bluri.path
     bluri.query ? (path + '?' + bluri.query) : path
-  end
-
-  def canonicalize_path(raw_path)
-    # BLURI takes a full URL, but we only care about the path. There's no
-    # benefit in making an extra query to get a real hostname for the site.
-    raw_url = 'http://www.example.com' + raw_path
-    canonical_path_from_url(raw_url)
   end
 end

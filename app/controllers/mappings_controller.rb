@@ -38,7 +38,7 @@ class MappingsController < ApplicationController
   end
 
   def find
-    path = @site.canonicalize_path(params[:path])
+    path = @site.canonical_path(params[:path])
 
     if path.empty?
       back_or_mappings_index = request.env['HTTP_REFERER'] || site_mappings_path(@site)

@@ -87,7 +87,7 @@ class Mapping < ActiveRecord::Base
   end
 
   def canonicalize_path
-    self.path = site.canonicalize_path(path) unless (site.nil? || path == '/' || path =~ /^[^\/]/)
+    self.path = site.canonical_path(path) unless (site.nil? || path == '/' || path =~ /^[^\/]/)
   end
 
   def tna_timestamp
