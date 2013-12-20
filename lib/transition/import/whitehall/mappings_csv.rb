@@ -49,7 +49,7 @@ module Transition
               elsif ! host.site.managed_by_transition?
                 Rails.logger.warn("Skipping mapping for a site managed by redirector in Whitehall URL CSV: '#{old_uri.host}'")
               else
-                canonical_path = host.site.canonical_path_from_url(row['Old Url'])
+                canonical_path = host.site.canonical_path(row['Old Url'])
                 existing_mapping = host.site.mappings.where(path_hash: path_hash(canonical_path)).first
 
                 unless existing_mapping && existing_mapping.edited_by_human?

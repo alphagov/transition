@@ -23,11 +23,11 @@ describe Site do
     its(:default_host) { should eql(hosts.first) }
   end
 
-  describe '#canonicalize_path' do
+  describe '#canonical_path' do
     let(:site) do
       create(:site, query_params: "foo:bar")
     end
-    subject(:canonicalized_path) { site.canonicalize_path @raw_path }
+    subject(:canonicalized_path) { site.canonical_path(@raw_path) }
 
     it "should be a canonicalized path" do
       @raw_path = '/ABOUT/FUN///#noreally'
