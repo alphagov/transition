@@ -149,6 +149,12 @@ describe Mapping do
     mapping.new_url.should eql('https://www.gov.uk')
   end
 
+  it 'converts URLs supplied for path into a path, including query' do
+    site = create(:site, query_params: 'q')
+    mapping = create(:mapping, path: 'http://www.example.com/foobar?q=1', site: site)
+    mapping.path.should == '/foobar?q=1'
+  end
+
   describe '.filtered_by_path' do
     before do
       site = create :site

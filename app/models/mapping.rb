@@ -26,7 +26,7 @@ class Mapping < ActiveRecord::Base
 
   # set a hash of the path because we can't have a unique index on
   # the path (it's too long)
-  before_validation :fill_in_scheme, :canonicalize_path, :set_path_hash
+  before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path, :set_path_hash
   validates :path_hash, presence: true
 
   validates :new_url, :suggested_url, :archive_url, length: { maximum: (64.kilobytes - 1) }, non_blank_url: true
@@ -100,6 +100,13 @@ class Mapping < ActiveRecord::Base
     else
       'http://' + uri
     end
+  end
+
+  def trim_scheme_host_and_port_from_path
+    uri = URI.parse(path)
+    self.path = uri.request_uri if uri.respond_to?(:request_uri)
+  rescue URI::InvalidURIError
+    # The path isn't parseable, so leave it intact for validations to report
   end
 
   def set_path_hash
