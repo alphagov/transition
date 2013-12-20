@@ -11,6 +11,11 @@ Transition::Application.routes.draw do
     get 'mappings/find', as: 'mapping_find'
     resources :mappings, except: [:destroy] do
       resources :versions, only: [:index]
+
+      collection do
+        post 'edit_multiple'
+        post 'update_multiple'
+      end
     end
 
     resources :hits, only: [:index] do

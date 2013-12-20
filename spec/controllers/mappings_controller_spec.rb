@@ -64,8 +64,6 @@ describe MappingsController do
 
       context 'when no previous page is available' do
         it 'redirects to site mappings index' do
-          request.env['HTTP_REFERER'] = nil
-
           get :find, site_id: site.abbr, path: invalid_path
 
           expect(response).to redirect_to site_mappings_url(site)
@@ -143,6 +141,164 @@ describe MappingsController do
           its(:whodunnit) { should eql('Bob Terwhilliger') }
           its(:user_id)   { should eql(admin_bob.id) }
         end
+      end
+    end
+  end
+
+  describe '#edit_multiple' do
+    let!(:mapping_a) { create :mapping, path: '/a', site: site }
+    let!(:mapping_b) { create :mapping, path: '/b', site: site }
+    let!(:mapping_c) { create :mapping, path: '/c', site: site }
+
+    before do
+      @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
+    end
+
+    context 'when user doesn\'t have permission' do
+      before do
+        login_as unaffiliated_user
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '410'
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+
+    context 'when no mapping ids which exist on this site are posted' do
+      let!(:other_site)    { create :site }
+      let!(:other_mapping) { create :mapping, path: '/z', site: other_site }
+      before do
+        login_as admin_bob
+      end
+
+      context 'when the mappings index has not been visited' do
+        it 'redirects to the mappings index page' do
+          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410'
+          expect(response).to redirect_to site_mappings_path(site)
+        end
+      end
+
+      context 'when the mappings index was last visited with a path filter' do
+        it 'redirects back to the last-visited mappings index page' do
+          get :index, site_id: site.abbr, contains: '/a'
+          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410'
+          expect(response).to redirect_to @mappings_index_with_filter
+        end
+      end
+    end
+
+    context 'when an invalid new status is posted' do
+      before do
+        login_as admin_bob
+      end
+
+      context 'when the mappings index was last visited with a path filter' do
+        it 'redirects back to the last-visited mappings index page' do
+          get :index, site_id: site.abbr, contains: '/a'
+          mapping_ids = [ mapping_a.id, mapping_b.id ]
+          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'bad'
+          expect(response).to redirect_to @mappings_index_with_filter
+        end
+      end
+    end
+  end
+
+  describe '#update_multiple' do
+    let!(:mapping_a) { create :mapping, path: '/a', site: site }
+    let!(:mapping_b) { create :mapping, path: '/b', site: site }
+    let!(:mapping_c) { create :mapping, path: '/c', site: site }
+
+    before do
+      @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
+    end
+
+    context 'when user doesn\'t have permission' do
+      before do
+        login_as unaffiliated_user
+        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: 'http://www.example.com'
+      end
+
+      it 'redirects to the index page' do
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+
+      it 'does not update any mappings' do
+        expect(site.mappings.where(http_status: '301').count).to be(0)
+      end
+    end
+
+    context 'when valid data is posted', versioning: true do
+      before do
+        login_as admin_bob
+        get :index, site_id: site.abbr, contains: '/a'
+        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        @new_url = 'http://www.example.com'
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: @new_url
+      end
+
+      it 'updates the mappings correctly' do
+        [mapping_a, mapping_b].each do |mapping|
+          mapping.reload
+          expect(mapping.http_status).to eql('301')
+          expect(mapping.new_url).to eql('http://www.example.com')
+        end
+      end
+
+      it 'does not update other mappings' do
+        mapping_c.reload
+        expect(mapping_c.http_status).to eql('410')
+        expect(mapping_c.new_url).to be_nil
+      end
+
+      it 'redirects to the last-visited mappings index page' do
+        mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
+        expect(response).to redirect_to mappings_index_with_filter
+      end
+
+      it 'saves a version for each mapping recording the change' do
+        [mapping_a, mapping_b].each do |mapping|
+          mapping.reload
+          expect(mapping.versions.count).to be(2)
+          expect(mapping.versions.last.whodunnit).to eql('Bob Terwhilliger')
+        end
+      end
+    end
+
+    context 'when no mapping ids which exist on this site are posted' do
+      let!(:other_site)    { create :site }
+      let!(:other_mapping) { create :mapping, path: '/z', site: other_site }
+      before do
+        login_as admin_bob
+      end
+
+      context 'when the mappings index has not been visited' do
+        it 'redirects to the mappings index page' do
+          post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com'
+          expect(response).to redirect_to site_mappings_path(site)
+        end
+      end
+
+      context 'when the mappings index was last visited with a path filter' do
+        it 'redirects back to the last-visited mappings index page' do
+          get :index, site_id: site.abbr, contains: '/a'
+          post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com'
+          expect(response).to redirect_to @mappings_index_with_filter
+        end
+      end
+    end
+
+    context 'when the posted new_url is not a valid URL' do
+      before do
+        login_as admin_bob
+        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: 'heythisaintvalid'
+      end
+
+      it 'does not update any mappings' do
+        expect(site.mappings.where(http_status: '301').count).to be(0)
       end
     end
   end

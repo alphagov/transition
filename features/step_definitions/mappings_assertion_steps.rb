@@ -73,7 +73,31 @@ Then(/^the archive URL field should be empty$/) do
   field_labeled('Alternative national archive URL').value.should be_empty
 end
 
+Then(/^I should see a form that contains my selection$/) do
+  steps %{
+    And I should see "/a"
+    And I should see "/about/branding"
+    But I should not see "/about/corporate"
+  }
+end
+
+Then(/^I should see a form that contains my selection within the modal$/) do
+  steps %{
+    And I should see "/a" in the modal window
+    And I should see "/about/branding" in the modal window
+    But I should not see "/about/corporate" in the modal window
+  }
+end
+
 Then(/^I should see the link replaced with a suggested URL field$/) do
   expect(page).to have_selector('#mapping_suggested_url')
   expect(page).not_to have_selector('a[href="#suggest-url"]')
+end
+
+Then(/^I should see a "Redirect to" input$/) do
+  expect(page).to have_selector('label', text: 'Redirect to')
+end
+
+Then(/^I should not see a "Redirect to" input$/) do
+  expect(page).not_to have_selector('label', text: 'Redirect to')
 end
