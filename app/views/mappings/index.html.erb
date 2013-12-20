@@ -14,17 +14,10 @@
 
 <h2><%= pluralize(number_with_delimiter(@mappings.total_count, :delimiter => ','), 'mapping', 'mappings') %></h2>
 
-<% if (@mappings.empty? or @mappings.total_count < Mapping.default_per_page) && current_user.can_edit?(@site.organisation) %>
-  <div class="add-bottom-margin">
-    <%= render partial: 'add_button' %>
-  </div>
-<% else %>
-  <div class="add-bottom-margin">
-    <%= paginate(@mappings) %>
-  </div>
-<% end %>
-
 <% if @mappings.any? %>
+
+  <%= paginate(@mappings) %>
+
   <% if current_user.can_edit?(@site.organisation) %>
     <div data-module="selectable-table">
   <% end %>
@@ -80,7 +73,7 @@
     <% end %>
     </tbody>
     <% if current_user.can_edit?(@site.organisation) %>
-      <tfoot class="if-no-js-hide bold">
+      <tfoot class="if-no-js-hide">
         <%= render partial: 'mappings_table_header', locals: {footer: true} %>
       </tfoot>
     <% end %>
@@ -94,6 +87,11 @@
   <%= paginate(@mappings) %>
 
 <% else %>
+  <% if current_user.can_edit?(@site.organisation) %>
+    <div class="add-bottom-margin">
+      <%= render partial: 'add_button' %>
+    </div>
+  <% end %>
   <p class="no-content no-content-bordered">
     No mappings found
   </p>
