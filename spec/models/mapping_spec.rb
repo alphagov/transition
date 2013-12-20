@@ -46,16 +46,22 @@ describe Mapping do
       lambda { build(:archived, site: site).save! }.should raise_error(ActiveRecord::RecordInvalid)
     end
 
-    it { should ensure_length_of(:new_url).is_at_most(64.kilobytes - 1)}
-    it { should ensure_length_of(:suggested_url).is_at_most(64.kilobytes - 1)}
-    it { should ensure_length_of(:archive_url).is_at_most(64.kilobytes - 1)}
+    it 'constrains the length of all URL fields' do
+      too_long_url = 'http://'.ljust(65536, 'x')
+
+      [:new_url, :suggested_url, :archive_url].each do |url_attr|
+        mapping = build(:mapping, url_attr => too_long_url)
+        mapping.should_not be_valid
+        mapping.errors[url_attr].should include('is too long (maximum is 65535 characters)')
+      end
+    end
 
     describe 'URL validations' do
       before { mapping.should_not be_valid }
 
       context 'oh golly, everything is wrong' do
         subject(:mapping) do
-          build(:mapping, http_status: '301', new_url: 'not-a-url', suggested_url: 'http://', archive_url: '')
+          build(:mapping, http_status: '301', new_url: 'https://', suggested_url: 'http://', archive_url: '')
         end
 
         describe 'the errors' do
@@ -110,20 +116,37 @@ describe Mapping do
     end
   end
 
-  describe 'values normalised or changed on save' do
+  describe 'canonicalizing the path and setting the path_hash before validate' do
     let(:uncanonicalized_path) { '/A/b/c?significant=1&really-significant=2&insignificant=2' }
     let(:canonicalized_path)   { '/a/b/c?really-significant=2&significant=1' }
     let(:site)                 { build(:site, query_params: 'significant:really-significant')}
 
     subject(:mapping) do
-      build :mapping, path: uncanonicalized_path, site: site, http_status: '410', archive_url: ''
+      create(:mapping, path: uncanonicalized_path, site: site, http_status: '410')
     end
-
-    before { mapping.save! }
 
     its(:path)        { should eql(canonicalized_path) }
     its(:path_hash)   { should eql(Digest::SHA1.hexdigest(canonicalized_path)) }
+  end
+
+  describe 'nillifying blanks before validation' do
+    subject(:mapping) do
+      create :mapping, http_status: '410', archive_url: ''
+    end
+
     its(:archive_url) { should be_nil }
+  end
+
+  it 'should rewrite the URLs to ensure they have a scheme before validation' do
+    mapping = build(:mapping, http_status: '410', suggested_url: 'www.example.com',
+                                                  archive_url: 'webarchive.nationalarchives.gov.uk',
+                                                  new_url: 'www.gov.uk')
+
+    mapping.valid? # trigger before_validation hooks
+
+    mapping.suggested_url.should eql('http://www.example.com')
+    mapping.archive_url.should eql('http://webarchive.nationalarchives.gov.uk')
+    mapping.new_url.should eql('https://www.gov.uk')
   end
 
   describe '.filtered_by_path' do

@@ -44,7 +44,7 @@ Feature: Edit a site's mapping
     Then I should see the link replaced with a suggested URL field
 
   Scenario: Editing a mapping with invalid values
-    When I make the mapping a redirect to not-a-url
+    When I make the mapping a redirect to http:////not-a-url
     And I save the mapping
     Then I should still be editing a mapping
     And I should see "New URL is not a URL"
