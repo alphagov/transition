@@ -12,7 +12,7 @@
       <%= label_tag(:new_url, 'Redirect to') %>
     </div>
     <div <% if new_url_error %>class="field_with_errors"<% end %> >
-      <%= text_field_tag(:new_url, new_url, class: modal ? 'span5 form-control' : 'span8 form-control') %>
+      <%= text_field_tag(:new_url, new_url, class: 'form-control') %>
     </div>
   <% end %>
 <% end %>

@@ -1,9 +1,11 @@
 <%= form_for @mapping, url: polymorphic_url([@site, @mapping]), html: {role: 'form', class: 'js-edit-mapping-form'} do |f| %>
   <%= render 'shared/error_messages', model: f.object %>
 
-  <div class="form-group">
-    <%= f.label :http_status, 'Type' %>
-    <%= f.select :http_status, options_for_supported_statuses, {}, { class: 'form-control remove-bottom-margin js-http-status' } %>
+  <div class="form-group row">
+    <div class="col-md-2">
+      <%= f.label :http_status, 'Type' %>
+      <%= f.select :http_status, options_for_supported_statuses, {}, { class: 'form-control remove-bottom-margin js-http-status' } %>
+    </div>
   </div>
 
   <div class="form-group">
@@ -16,9 +18,13 @@
     </dl>
   <% else %>
     <%= f.label :path, 'Old URL' %>
-    <div class="input-group">
-      <span class="input-group-addon">http://<%= @site.default_host.hostname %></span>
-      <%= f.text_field :path, class: 'form-control', placeholder: '/path/to/page' %>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="input-group">
+          <span class="input-group-addon">http://<%= @site.default_host.hostname %></span>
+          <%= f.text_field :path, class: 'form-control', placeholder: '/path/to/page' %>
+        </div>
+      </div>
     </div>
   <% end %>
   </div>
@@ -28,7 +34,11 @@
       Redirect
     </legend>
     <%= f.label :new_url, 'Redirects to' %>
-    <%= f.text_field :new_url, class: 'form-control span8' %>
+    <div class="row">
+      <div class="col-md-8">
+        <%= f.text_field :new_url, class: 'form-control' %>
+      </div>
+    </div>
   <% end %>
 
   <%= field_set_tag nil, class: 'js-for-archive' do %>
@@ -53,11 +63,15 @@
           <%= f.label :archive_url do %>
             Alternative national archive URL (<%= link_to 'Find on the national archives', @mapping.national_archive_index_url %>)
           <% end %>
-          <div class="input-group">
-            <%= f.text_field :archive_url, class: 'form-control span8' %>
-            <a href="#remove" class="btn btn-default js-cancel if-no-js-hide input-group-addon">
-              <i class="glyphicon glyphicon-remove"></i> <%= @mapping.archive_url ? 'Remove' : 'Cancel' %>
-            </a>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="input-group">
+                <%= f.text_field :archive_url, class: 'form-control' %>
+                <a href="#remove" class="btn btn-default js-cancel if-no-js-hide input-group-addon">
+                  <i class="glyphicon glyphicon-remove"></i> <%= @mapping.archive_url ? 'Remove' : 'Cancel' %>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       <% end %>
@@ -74,12 +88,16 @@
         <%= f.label :suggested_url do %>
           Suggest URL to user
         <% end %>
-        <div class="input-group">
-          <%= f.text_field :suggested_url, class: 'form-control span8' %>
-          <a href="#remove" class="btn btn-default js-cancel if-no-js-hide input-group-addon">
-            <i class="glyphicon glyphicon-remove"></i> <%= @mapping.suggested_url ? 'Remove' : 'Cancel' %>
-          </a>
-        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="input-group">
+              <%= f.text_field :suggested_url, class: 'form-control' %>
+              <a href="#remove" class="btn btn-default js-cancel if-no-js-hide input-group-addon">
+                <i class="glyphicon glyphicon-remove"></i> <%= @mapping.suggested_url ? 'Remove' : 'Cancel' %>
+              </a>
+            </div>
+          </div>
+        <div>
       </div>
     </div>
   <% end %>
