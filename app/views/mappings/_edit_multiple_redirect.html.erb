@@ -1,6 +1,6 @@
 <%= hidden_field_tag "http_status", http_status %>
 <% if http_status == '301' %>
-  <%= field_set_tag nil, class: 'add-bottom-margin' do %>
+  <%= field_set_tag nil, class: 'form-group add-bottom-margin' do %>
     <% if new_url_error %>
       <div id="error_explanation" class="alert notice">
         <ul>
@@ -12,7 +12,7 @@
       <%= label_tag(:new_url, 'Redirect to') %>
     </div>
     <div <% if new_url_error %>class="field_with_errors"<% end %> >
-      <%= text_field_tag(:new_url, new_url, class: modal ? 'span5' : 'span8') %>
+      <%= text_field_tag(:new_url, new_url, class: modal ? 'span5 form-control' : 'span8 form-control') %>
     </div>
   <% end %>
 <% end %>

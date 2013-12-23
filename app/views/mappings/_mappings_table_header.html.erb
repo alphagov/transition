@@ -10,10 +10,10 @@
     <div class="pull-left">
       <% unless footer %>
         <div class="if-js-hide">
-          <%= label_tag :http_status_301, class: 'radio inline table-header-radio' do %>
+          <%= label_tag :http_status_301, class: 'radio-inline table-header-radio' do %>
             <%= radio_button_tag(:http_status, '301', selected = true) %> Redirect
           <% end %>
-          <%= label_tag :http_status_410, class: 'radio inline table-header-radio add-right-margin' do %>
+          <%= label_tag :http_status_410, class: 'radio-inline table-header-radio add-right-margin' do %>
             <%= radio_button_tag(:http_status, '410') %> Archive
           <% end %>
           <%= submit_tag "Edit selected", class: 'btn btn-default bold' %>

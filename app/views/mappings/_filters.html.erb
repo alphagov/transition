@@ -1,13 +1,13 @@
-<%= form_tag(site_mappings_path(@site), method: 'get', class: 'form-inline') do %>
-  <div class="control-group">
+<%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form-inline') do %>
+  <div class="form-group">
     <%= label_tag :contains, class: 'control-label' do %>
       Filter by path <% if params[:contains] and params[:contains].length > 0 %>(<%= link_to 'Remove filter', site_mappings_path(@site) %>)<% end %>
     <% end %>
-    <div class="controls">
-      <div class="input-append">
-        <%= text_field_tag :contains, params[:contains], class: 'span4', placeholder: 'eg /home'  %>
-        <%= submit_tag 'Filter', name: nil, class: 'btn btn-default' %>
-      </div>
+    <div class="input-group">
+      <%= text_field_tag :contains, params[:contains], class: 'form-control span4', placeholder: 'eg /home'  %>
+      <span class="input-group-btn">
+        <%= submit_tag 'Filter', name: nil, class: 'btn btn-default ' %>
+      </span>
     </div>
   </div>
 <% end %>
