@@ -8,11 +8,11 @@
 }
 
 .mapping-type-redirect {
-  background-color: $goodHTTPStatusColor;
+  background-color: $good-HTTP-status-color;
 }
 
 .mapping-type-archive {
-  background-color: $defaultHTTPStatusColor;
+  background-color: $default-HTTP-status-color;
 }
 
 .read-only-fields dt {
@@ -21,5 +21,5 @@
 
 .read-only-fields dd {
   margin-left: 0;
-  margin-bottom: $baseLineHeight;
+  margin-bottom: $line-height-base;
 }
