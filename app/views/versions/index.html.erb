@@ -1,6 +1,7 @@
 <% content_for :page_title, 'History' %>
 
-<%= breadcrumb(@versions.last) %>
+<% breadcrumb(:history, @mapping) %>
+
 <h1>History</h1>
 
 <%= mapping_edit_tabs active: 'History' %>

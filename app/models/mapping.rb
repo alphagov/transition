@@ -26,7 +26,7 @@ class Mapping < ActiveRecord::Base
 
   # set a hash of the path because we can't have a unique index on
   # the path (it's too long)
-  before_validation :canonicalize_path, :set_path_hash
+  before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path, :set_path_hash
   validates :path_hash, presence: true
 
   validates :new_url, :suggested_url, :archive_url, length: { maximum: (64.kilobytes - 1) }, non_blank_url: true
@@ -82,6 +82,33 @@ class Mapping < ActiveRecord::Base
   end
 
   protected
+  def fill_in_scheme
+    self.new_url       = Mapping.ensure_url(new_url)
+    self.suggested_url = Mapping.ensure_url(suggested_url)
+    self.archive_url   = Mapping.ensure_url(archive_url)
+  end
+
+  # uri can be a URL or something that is intended to be a URL,
+  # eg www.gov.uk/foo is technically not a URL, but we can prepend https:// and
+  # it becomes a URL.
+  def self.ensure_url(uri)
+    case
+    when uri.blank? || uri =~ %r{^https?:}
+      uri
+    when uri =~ %r{^www.gov.uk}
+      'https://' + uri
+    else
+      'http://' + uri
+    end
+  end
+
+  def trim_scheme_host_and_port_from_path
+    uri = URI.parse(path)
+    self.path = uri.request_uri if uri.respond_to?(:request_uri)
+  rescue URI::InvalidURIError
+    # The path isn't parseable, so leave it intact for validations to report
+  end
+
   def set_path_hash
     self.path_hash = Digest::SHA1.hexdigest(path) if path_changed?
   end

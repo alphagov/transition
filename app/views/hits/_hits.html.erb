@@ -1,5 +1,5 @@
 <% content_for :page_title, title %>
-<%= breadcrumb(site.default_host.hits.build) %>
+<% breadcrumb(:hits, @site) %>
 
 <div class="page-title">
   <h1>

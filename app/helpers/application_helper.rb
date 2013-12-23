@@ -1,32 +1,4 @@
 module ApplicationHelper
-  ##
-  # Render a bootstrap style-compatible breadcrumb. Knows about our models.
-  # Pass in the current significant model to generate, or nothing if you're
-  # at the top level.
-  def breadcrumb(model = nil)
-    content_tag(:ul, nil, class: 'breadcrumb') do
-      crumb_li('Organisations', organisations_path, model == nil) + list_items_for(model)
-    end
-  end
-
-  def list_items_for(model, active = true)
-    case model
-    when Organisation
-      crumb_li(model.title, organisation_path(model), active)
-    when Site
-      list_items_for(model.organisation, false) + crumb_li("#{model.default_host.hostname} mappings", site_mappings_path(model), active)
-    when Mapping
-      title, mapping_path = model.persisted? ?
-        ['Mapping', edit_site_mapping_path(model.site, model)] :
-        ['New mapping', '']
-      list_items_for(model.site, false) + crumb_li(title, mapping_path, active)
-    when Hit
-      list_items_for(model.host.site.organisation, false) + crumb_li("#{model.host.site.default_host.hostname} analytics", '#', true)
-    when Version
-      list_items_for(model.item, false) + crumb_li('History', '#', true)
-    end
-  end
-
   def crumb_li(title, path, active)
     options = {}
     options[:class] = 'active' if active
