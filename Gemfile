@@ -15,6 +15,7 @@ gem 'google-api-client', '0.6.4'
 gem 'gds-api-adapters', '7.14.0'
 gem 'mlanett-redis-lock', '0.2.2'
 gem 'whenever', '0.8.4'
+gem 'gretel', '3.0.5'
 
 # Exception notification is configured in alphagov-deployment. These gems are
 # needed by that code.

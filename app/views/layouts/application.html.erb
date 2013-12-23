@@ -55,7 +55,15 @@
           <%= flash[k] %>
         </div>
       <% end %>
-      
+
+      <% breadcrumbs do |links| %>
+        <% if links.any? %>
+          <ul class='breadcrumb'>
+            <% links.each do |link| %><%= crumb_li(link.text, link.url, link.current?) %><% end %>
+          </ul>
+        <% end %>
+      <% end %>
+
       <%= yield %>
     </main>
 
