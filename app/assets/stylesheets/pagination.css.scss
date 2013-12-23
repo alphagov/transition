@@ -22,11 +22,11 @@
 
   a:hover,
   a:focus {
-    background-color: $pagination-active-bg;
+    background-color: $pagination-hover-bg;
   }
 
   .current {
-    background: $gray-lighter;
+    background: #eee;
   }
 
   .first a,
