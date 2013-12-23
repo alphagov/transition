@@ -51,7 +51,7 @@
           <% end %>
           <div class="input-append">
             <%= f.text_field :archive_url, class: 'span8' %>
-            <a href="#remove" class="btn js-cancel if-no-js-hide"><i class="icon-remove"></i> <%= @mapping.archive_url ? 'Remove' : 'Cancel' %></a>
+            <a href="#remove" class="btn btn-default js-cancel if-no-js-hide"><i class="glyphicon glyphicon-remove"></i> <%= @mapping.archive_url ? 'Remove' : 'Cancel' %></a>
           </div>
         </div>
       <% end %>
@@ -70,7 +70,7 @@
         <% end %>
         <div class="input-append">
           <%= f.text_field :suggested_url, class: 'span8' %>
-          <a href="#remove" class="btn js-cancel if-no-js-hide"><i class="icon-remove"></i> <%= @mapping.suggested_url ? 'Remove' : 'Cancel' %></a>
+          <a href="#remove" class="btn btn-default js-cancel if-no-js-hide"><i class="glyphicon glyphicon-remove"></i> <%= @mapping.suggested_url ? 'Remove' : 'Cancel' %></a>
         </div>
       </div>
     </div>
