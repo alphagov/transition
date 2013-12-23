@@ -6,22 +6,21 @@
   </h1>
 </div>
 
-<p class="lead">Transition’s UI is powered by <a href="http://getbootstrap.com/2.3.2/base-css.html">bootstrap 2.3.2</a>, using <a href="https://github.com/thomas-mcdonald/bootstrap-sass/tree/v2.3.2.1">bootstrap SASS</a> (v2.3.2.1). This guide documents how transition is using bootstrap, where the app has diverged from default styles and any custom styles needed to fill in the gaps.</p>
+<p class="lead">Transition’s UI is powered by <a href="http://getbootstrap.com/css/">bootstrap 3</a>, using <a href="https://github.com/thomas-mcdonald/bootstrap-sass/tree/v3.0.3.0">bootstrap SASS</a> (v3.0.3.0), but maintaining bootstrap 2 button styles. This guide documents how transition is using bootstrap, where the app has diverged from default styles and any custom styles needed to fill in the gaps.</p>
 
 <h2>Grid</h2>
 <div class="row">
-  <div class="col-md-6">
-    <p class="lead">Transition uses the <a href="http://getbootstrap.com/2.3.2/scaffolding.html#gridSystem">default bootstrap</a> <strong>12 column fixed responsive grid</strong>.</p>
-    <p>Columns remain at their defined pixel widths until a certain breakpoint is reached. Breakpoints are at 1200px, 980px and 768px, after which the grid is linearised. Use a <a href="http://alefeuvre.github.io/foundation-grid-displayer/">grid overlay tool</a> to check alignment.</p>
+  <div class="col-md-12">
+    <p class="lead">Transition uses the <a href="http://getbootstrap.com/css/#grid">default bootstrap</a> <strong>12 column scaleable responsive grid</strong>.</p>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-12">
     <div class="row add-bottom-margin">
-      <div class="grid-example col-md-1">col-md-1</div>
       <div class="grid-example col-md-2">col-md-2</div>
-      <div class="grid-example col-md-3">col-md-3</div>
+      <div class="grid-example col-md-4">col-md-4</div>
+      <div class="grid-example col-md-6">col-md-6</div>
     </div>
     <div class="row">
-      <div class="grid-example col-md-6">col-md-6</div>
+      <div class="grid-example col-md-12">col-md-12</div>
     </div>
   </div>
 </div>
@@ -230,29 +229,6 @@
         371
       </span>
     </nav>
-  </div>
-</div>
-<hr>
-
-<h2>Breadcrumbs</h2>
-<div class="row">
-  <p class="col-md-6 lead">Based on bootstrap, but with a custom divider.</p>
-  <div class="col-md-6">
-
-    <ul class="breadcrumb">
-      <li class="active">Organisations</li>
-    </ul>
-
-    <ul class="breadcrumb">
-      <li><a href="#">Organisations</a><span class="divider"></span></li>
-      <li class="active">Business Link</li>
-    </ul>
-
-    <ul class="breadcrumb">
-      <li><a href="#">Organisations</a><span class="divider"></span></li>
-      <li><a href="#">Business Link</a><span class="divider"></span></li>
-      <li class="active">businesslink Mappings</li>
-    </ul>
   </div>
 </div>
 <hr>
