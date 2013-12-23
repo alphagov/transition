@@ -67,12 +67,12 @@ label {
    ========================================================================== */
 
 .add-vertical-margins {
-  margin-top: $line-height-base !important;
-  margin-bottom: $line-height-base !important;
+  margin-top: $default-vertical-margin !important;
+  margin-bottom: $default-vertical-margin !important;
 }
 
 .add-top-margin {
-  margin-top: $line-height-base !important;
+  margin-top: $default-vertical-margin !important;
 }
 
 .remove-top-margin {
@@ -80,11 +80,11 @@ label {
 }
 
 .add-bottom-margin {
-  margin-bottom: $line-height-base !important;
+  margin-bottom: $default-vertical-margin !important;
 }
 
 .add-big-bottom-margin {
-  margin-bottom: $line-height-base * 2 !important;
+  margin-bottom: $default-vertical-margin * 2 !important;
 }
 
 .remove-bottom-margin {
@@ -244,16 +244,16 @@ thead .table-header-secondary td {
    ========================================================================== */
 
 .subtitle {
-  margin: -$line-height-base 0 $line-height-base;
+  margin: -$default-vertical-margin 0 $default-vertical-margin;
   font-size: $font-size-large;
 }
 
 .no-content {
   color: lighten($gray-light, 20%); // Large text needs a lighter colour for balance
   font-size: $font-size-base * 2;
-  line-height: $line-height-base * 2;
+  line-height: $default-vertical-margin * 2;
   text-align: center;
-  padding: ($line-height-base * 4) 0;
+  padding: ($default-vertical-margin * 4) 0;
 }
 
 .no-content-bordered {
