@@ -7,7 +7,7 @@
           <%= http_status_name(@bulk.http_status) %> mappings
         </h3>
       </header>
-      <div class="modal-body">
+      <div class="modal-body remove-bottom-padding">
         <%= render partial: 'edit_multiple_redirect',
                    locals: {
                            new_url: @bulk.new_url,
@@ -18,7 +18,7 @@
                              mappings: @bulk.mappings,
                              site: @site } %>
       </div>
-      <footer class="modal-footer">
+      <footer class="modal-footer remove-top-margin">
         <a href="#close" data-dismiss="modal" class="btn btn-default add-right-margin">Cancel</a>
         <%= button_tag 'Save', class: 'btn btn-success' %>
       </footer>
