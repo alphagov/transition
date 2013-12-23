@@ -4,7 +4,7 @@ module ApplicationHelper
     options[:class] = 'active' if active
 
     content_tag :li, nil, options do
-      active ? title : link_to(title, path) + content_tag(:span, nil, class: 'divider' )
+      active ? title : link_to(title, path)
     end
   end
 
