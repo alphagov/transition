@@ -1,45 +1,4 @@
-@import '_mixins';
-@import 'bootstrap/_variables';
-
-.versions {
-  table {
-    tr.selected  {
-      $highlight: #ff9744;
-      border-top: 2px solid $highlight;
-      border-bottom: 2px solid $highlight;
-      @include transition(border-color, 2s);
-    }
-
-    &.changes {
-      tr {
-        td {
-          word-break: break-all;
-
-          .blank {
-            font-style: italic;
-            color: silver;
-          }
-        }
-
-        .field-name {
-          text-align: right;
-        }
-
-        .becomes {
-          background: url(divider.gif) no-repeat center center;
-          border-left: none;
-        }
-
-        .new-value {
-          border-left: none;
-        }
-
-        &:nth-child(odd) {
-          .becomes {
-            background-color: $table-bg-accent;
-          }
-        }
-      }
-    }
-  }
+.mapping-versions {
+  list-style-type: none;
+  margin-left: 0;
 }

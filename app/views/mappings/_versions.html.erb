@@ -1,25 +1,32 @@
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th scope="col">By</th>
-    <th scope="col">On</th>
-    <th scope="col">Changes</th>
-  </tr>
-  </thead>
-  <tbody>
+<ol class="mapping-versions" reversed>
   <% @mapping.versions.reverse.each do |version| %>
-    <tr>
-      <td>
-        <%= anchor '[*]', version.id %>
-        <%= version.whodunnit %>
-      </td>
-      <td>
-        <%= version.created_at.strftime('%d/%m/%y %H:%M') %>
-      </td>
-      <td>
-        <%= render partial: 'versions/changeset_table', locals: { version: version } %>
-      </td>
-    </tr>
+    <li id="<%= version.id %>">
+      <h3 class="add-bottom-margin">
+        <%= changeset_title(version) %>
+      </h3>
+      <p class="subtitle muted">
+        Change made by <strong><%= version.whodunnit %></strong> on <%= version.created_at.to_formatted_s(:long) %>
+      </p>
+      <h4 class="rm">Changes</h4>
+      <dl class="well">
+        <% version.changeset.each_pair do |field, change| %>
+          <%
+
+            old_value = value_or_blank(change[0])
+            new_value = value_or_blank(change[1])
+
+            if field == "http_status"
+              field = "type"
+              old_value = change[0].blank? ? old_value : http_status_name(old_value)
+              new_value = change[1].blank? ? old_value : http_status_name(new_value)
+            elsif field == "archive_url"
+              field = "alternative archive url"
+            end
+          %>
+            <dt><%= field.titleize %></dt>
+            <dd><%= old_value %> &rarr; <%= new_value %></dd>
+        <% end %>
+      </dl>
+    </li>
   <% end %>
-  </tbody>
-</table>
+</ol>
