@@ -116,6 +116,7 @@ CREATE TABLE `sites` (
   `global_new_url` text COLLATE utf8_unicode_ci,
   `managed_by_transition` tinyint(1) NOT NULL DEFAULT '1',
   `launch_date` date DEFAULT NULL,
+  `transition_status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_sites_on_site` (`abbr`),
   KEY `index_sites_on_organisation_id` (`organisation_id`)
@@ -200,3 +201,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131202174921');
 INSERT INTO schema_migrations (version) VALUES ('20131203102650');
 
 INSERT INTO schema_migrations (version) VALUES ('20131203115518');
+
+INSERT INTO schema_migrations (version) VALUES ('20131230153315');

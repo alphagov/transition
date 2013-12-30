@@ -49,20 +49,4 @@ describe Site do
       subject.should eql('')
     end
   end
-
-  describe '#transition_state' do
-    let(:site) { create(:site) }
-    subject { site.transition_state }
-
-    context 'with no hosts pointing to us' do
-      it { should eql('pre-transition') }
-    end
-
-    context 'with one host pointing to us and one not' do
-      let!(:host2) { create :host, site: site, cname: 'redirector-cdn.production.govuk.service.gov.uk' }
-      before { site.reload }
-
-      it { should eql('live') }
-    end
-  end
 end
