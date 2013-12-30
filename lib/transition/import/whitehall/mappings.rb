@@ -7,7 +7,7 @@ module Transition
   module Import
     module Whitehall
       class Mappings
-        WHITEHALL_URL = 'https://whitehall-admin.production.alphagov.co.uk/government/all_document_attachment_and_non_document_mappings.csv'
+        WHITEHALL_URL = 'https://whitehall-admin.production.alphagov.co.uk/government/mappings.csv'
         AS_USER_EMAIL = 'whitehall-urls-robot@dummy.com'
 
         def initialize(options = {})
@@ -31,7 +31,7 @@ module Transition
             process(filename)
           end
         rescue Redis::Lock::LockNotAcquired => e
-          Rails.logger.debug("Failed to get lock for Whitehall Document URLs import (#{e.message}). Another process probably got there first.")
+          Rails.logger.debug("Failed to get lock for Whitehall Mappings import (#{e.message}). Another process probably got there first.")
         rescue StandardError => e
           ExceptionNotifier::Notifier.background_exception_notification(e)
           raise
@@ -54,11 +54,11 @@ module Transition
         end
 
         def default_filename
-          "tmp/#{Time.now.to_i}-all_document_attachment_and_non_document_mappings.csv"
+          "tmp/#{Time.now.to_i}-whitehall_mappings.csv"
         end
 
         def download(filename = default_filename)
-          Rails.logger.info("Downloading 50+ MB CSV to #{filename}")
+          Rails.logger.info("Downloading 30+ MB CSV to #{filename}")
           # Have to force the encoding because it isn't set on the response, so
           # Ruby defaults to BINARY
           urls_io = open(WHITEHALL_URL, 'r:utf-8', http_basic_authentication: [@username, @password])

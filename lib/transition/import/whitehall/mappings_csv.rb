@@ -10,35 +10,20 @@ module Transition
 
         def from_csv(urls_io)
           as_a_user(@user) do
-            # The structure of the CSV is:
-            #
-            # For every artefact in Whitehall
-            #   For each edition (in any state)
-            #     if the artefact has any Old URLs
-            #       include a line per Old URL
-            #     else
-            #       include a single line
-            #
-            # Where an 'artefact' is one of:
-            #   document
-            #   attachment
-            #   people
-            #   policy advisory groups
-            #   policy teams
-            #   roles
-            #   organisations
-            #   corporate information pages
+            # Includes a row for each Old URL associated with a Document or
+            # Attachment. Uses the current edition for a Document, whether it
+            # is imported, draft, submitted, rejected, published or archived.
             #
             # Rows are like:
-            # Old Url,New Url,Status,Slug,Admin Url,State
+            # Old URL,New URL,Admin URL,State
             CSV.new(urls_io, headers: true).each do |row|
-              next if row['Old Url'].blank?
+              next if row['Old URL'].blank?
               next unless row['State'] == 'published'
 
               begin
-                old_uri = URI.parse(row['Old Url'])
+                old_uri = URI.parse(row['Old URL'])
               rescue URI::InvalidURIError => e
-                Rails.logger.warn("Skipping mapping for unparseable Old Url in Whitehall URL CSV: #{row['Old Url']}")
+                Rails.logger.warn("Skipping mapping for unparseable Old URL in Whitehall URL CSV: #{row['Old URL']}")
                 next
               end
 
@@ -49,14 +34,14 @@ module Transition
               elsif ! host.site.managed_by_transition?
                 Rails.logger.warn("Skipping mapping for a site managed by redirector in Whitehall URL CSV: '#{old_uri.host}'")
               else
-                canonical_path = host.site.canonical_path(row['Old Url'])
+                canonical_path = host.site.canonical_path(row['Old URL'])
                 existing_mapping = host.site.mappings.where(path_hash: path_hash(canonical_path)).first
 
                 unless existing_mapping && existing_mapping.edited_by_human?
                   if existing_mapping
-                    existing_mapping.update_attributes(new_url: row['New Url'], http_status: '301')
+                    existing_mapping.update_attributes(new_url: row['New URL'], http_status: '301')
                   else
-                    host.site.mappings.create(path: canonical_path, new_url: row['New Url'], http_status: '301')
+                    host.site.mappings.create(path: canonical_path, new_url: row['New URL'], http_status: '301')
                   end
                 end
               end
