@@ -27,29 +27,29 @@
   left: 0;
   bottom: 0;
   
-  background-color: $defaultHTTPStatusColor;
+  background-color: $default-HTTP-status-color;
   
   min-width: 3px;
   min-height: 40px;
 }
 
 .bar-chart-row-301 {
-  background-color: $goodHTTPStatusColor;
+  background-color: $good-HTTP-status-color;
 }
 
 .bar-chart-row-500,
 .bar-chart-row-404 {
-  background-color: $badHTTPStatusColor;
+  background-color: $bad-HTTP-status-color;
 }
 
 
 .status {
-  width: $gridColumnWidth;
+  width: 60px;
   @include box-sizing();
 }
 
 .count {
-  width: $gridColumnWidth * 2;
+  width: 120px;
   @include box-sizing();
 }
 

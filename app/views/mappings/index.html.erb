@@ -64,7 +64,7 @@
         </td>
         <% if current_user.can_edit?(@site.organisation) %>
           <td class="text-right">
-            <%= link_to edit_site_mapping_path(@site, mapping), class: 'btn btn-mini' do %>
+            <%= link_to edit_site_mapping_path(@site, mapping), class: 'btn btn-default btn-xs' do %>
               Edit&nbsp;mapping
             <% end %>
           </td>

@@ -40,12 +40,14 @@ module MappingsHelper
   # Tabs for mapping editing
   def mapping_edit_tabs(options = {})
     if @mapping.versions.any?
-      bootstrap_flavour_tabs(
-        {
-          'Edit'    => edit_site_mapping_path(@mapping.site, @mapping),
-          'History' => site_mapping_versions_path(@mapping.site, @mapping)
-        },
-        options)
+      content_tag :div, class: 'add-bottom-margin' do
+        bootstrap_flavour_tabs(
+          {
+            'Edit'    => edit_site_mapping_path(@mapping.site, @mapping),
+            'History' => site_mapping_versions_path(@mapping.site, @mapping)
+          },
+          options)
+      end
     end
   end
 
