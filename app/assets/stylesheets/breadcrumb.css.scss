@@ -1,7 +1,3 @@
-.breadcrumb .active {
-  color: #535353;
-}
-ul.breadcrumb > li > .divider {
-  background: url('divider.gif') no-repeat;
-  padding: 0 8px 0 8px;
+.breadcrumb li + li:before {
+  padding: 0 4px 0 8px;
 }

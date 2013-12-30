@@ -13,8 +13,8 @@
   <%= render partial: 'edit_multiple_table',
              locals: { modal: false, mappings: @bulk.mappings, site: @site } %>
   <%= render partial: 'edit_multiple_redirect',
-             locals: { modal: false, new_url: @bulk.new_url,
+             locals: { new_url: @bulk.new_url,
                        new_url_error: @new_url_error, http_status: @bulk.http_status } %>
-  <%= link_to 'Cancel', @bulk.back_to_index, class: 'btn add-right-margin' %>
-  <%= submit_tag 'Save', class: 'btn btn-success' %>
+  <%= link_to 'Cancel', @bulk.back_to_index, class: 'btn btn-default add-right-margin' %>
+  <%= button_tag 'Save', class: 'btn btn-success' %>
 <% end %>

@@ -28,7 +28,7 @@
       <td class="count"><%= number_with_delimiter hit.count %></td>
       <% if current_user.can_edit?(@site.organisation) %>
         <td class="action">
-          <%= link_to 'Check mapping', site_mapping_find_path(@site, path: hit.path), class: 'btn btn-mini' %>
+          <%= link_to 'Check mapping', site_mapping_find_path(@site, path: hit.path), class: 'btn btn-default btn-xs' %>
         </td>
       <% end %>
     </tr>

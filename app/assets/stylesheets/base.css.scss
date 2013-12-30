@@ -12,6 +12,7 @@ footer {
 
 label {
   font-weight: bold;
+  cursor: pointer;
 }
 
 /* ==========================================================================
@@ -67,12 +68,12 @@ label {
    ========================================================================== */
 
 .add-vertical-margins {
-  margin-top: $baseLineHeight !important;
-  margin-bottom: $baseLineHeight !important;
+  margin-top: $default-vertical-margin !important;
+  margin-bottom: $default-vertical-margin !important;
 }
 
 .add-top-margin {
-  margin-top: $baseLineHeight !important;
+  margin-top: $default-vertical-margin !important;
 }
 
 .remove-top-margin {
@@ -80,11 +81,11 @@ label {
 }
 
 .add-bottom-margin {
-  margin-bottom: $baseLineHeight !important;
+  margin-bottom: $default-vertical-margin !important;
 }
 
 .add-big-bottom-margin {
-  margin-bottom: $baseLineHeight * 2 !important;
+  margin-bottom: $default-vertical-margin * 2 !important;
 }
 
 .remove-bottom-margin {
@@ -92,7 +93,7 @@ label {
 }
 
 .add-right-margin {
-  margin-right: $gridGutterWidth / 2 !important;
+  margin-right: $grid-gutter-width / 3 !important;
 }
 
 /* Padding helpers
@@ -102,50 +103,62 @@ label {
   padding: 0 !important;
 }
 
+.remove-bottom-padding {
+  padding-bottom: 0 !important;
+}
+
+/* ==========================================================================
+   Bootstrap modal overrides
+   ========================================================================== */
+
+.modal-footer {
+  background: #eee;
+}
+
 /* ==========================================================================
    Bootstrap link overrides
    ========================================================================== */
 
 main a {
   &:visited {
-    color: $linkColorVisited;
+    color: $link-color-visited;
   }
 
   // Don't give visited links that are buttons
   // the visited link colour
 
   &.btn:visited {
-    color: $defaultButtonColor;
+    color: $default-button-color;
   }
 
   &.btn-primary:visited {
-    color: $primaryButtonColor;
+    color: $primary-button-color;
   }
 
   &.btn-info:visited {
-    color: $infoButtonColor;
+    color: $info-button-color;
   }
 
   &.btn-success:visited {
-    color: $successButtonColor;
+    color: $success-button-color;
   }
 
   &.btn-warning:visited {
-    color: $warningButtonColor;
+    color: $warning-button-color;
   }
 
   &.btn-danger:visited {
-    color: $dangerButtonColor;
+    color: $danger-button-color;
   }
 
   &.btn-inverse:visited {
-    color: $inverseButtonColor;
+    color: $inverse-button-color;
   }
 }
 
 .muted-link,
 .muted-link:visited {
-  color: $grayLight;
+  color: $gray-light;
   text-decoration: underline;
 }
 
@@ -168,7 +181,7 @@ main a {
   font-size: 65%;
   font-weight: normal;
   line-height: 1.5;
-  color: $grayLight;
+  color: $gray-light;
   display: block;
 }
 
@@ -183,11 +196,11 @@ main a {
    ========================================================================== */
 
 .table-header {
-  background-color: $grayLighter;
+  background-color: $gray-lighter;
 }
 
 .table-header-secondary {
-  background-color: $tableBackgroundAccent;
+  background-color: $table-bg-accent;
   font-weight: bold;
 }
 
@@ -244,20 +257,20 @@ thead .table-header-secondary td {
    ========================================================================== */
 
 .subtitle {
-  margin: -$baseLineHeight 0 $baseLineHeight;
-  font-size: $fontSizeLarge;
+  margin: -$default-vertical-margin 0 $default-vertical-margin;
+  font-size: $font-size-large;
 }
 
 .no-content {
-  color: lighten($grayLight, 20%); // Large text needs a lighter colour for balance
-  font-size: $baseFontSize * 2;
-  line-height: $baseLineHeight * 2;
+  color: lighten($gray-light, 20%); // Large text needs a lighter colour for balance
+  font-size: $font-size-base * 2;
+  line-height: $default-vertical-margin * 2;
   text-align: center;
-  padding: ($baseLineHeight * 4) 0;
+  padding: ($default-vertical-margin * 4) 0;
 }
 
 .no-content-bordered {
-  border: 1px solid $tableBorder;
-  border-radius: $baseBorderRadius;
+  border: 1px solid $table-border-color;
+  border-radius: $border-radius-base;
 }
 

@@ -1,19 +1,22 @@
-$gillSansFontStack: "GillSans", "Gill Sans", "Helvetica Neue", Arial, sans-serif;
+@import 'bootstrap/_variables';
+
+$gill-sans-font-stack: "GillSans", "Gill Sans", "Helvetica Neue", Arial, sans-serif;
+$default-vertical-margin: $line-height-base * $font-size-base;
 
 // Colours
-$linkColorVisited       : #609; /* Purple */
+$link-color-visited       : #609; /* Purple */
 
-$goodHTTPStatusColor    : #dfd; /* Green */
-$badHTTPStatusColor     : #fdd; /* Red */
-$defaultHTTPStatusColor : #eee; /* Grey */
+$good-HTTP-status-color    : #dfd; /* Green */
+$bad-HTTP-status-color     : #fdd; /* Red */
+$default-HTTP-status-color : #eee; /* Grey */
 
-// Buttons 
-$defaultBtnHeight       : 30px;
+// Buttons
+$default-btn-height       : 30px;
 
-$primaryButtonColor     : #fff; /* White */
-$successButtonColor     : #fff;
-$infoButtonColor        : #fff;
-$inverseButtonColor     : #fff;
-$dangerButtonColor      : #fff;
-$warningButtonColor     : #fff;
-$defaultButtonColor     : #333; /* Dark grey */
+$primary-button-color     : #fff; /* White */
+$success-button-color     : #fff;
+$info-button-color        : #fff;
+$inverse-button-color     : #fff;
+$danger-button-color      : #fff;
+$warning-button-color     : #fff;
+$default-button-color     : #333; /* Dark grey */

@@ -17,38 +17,38 @@
   <%= yield :extra_headers %>
 </head>
 <body>
-  <header class="navbar navbar-inverse navbar-static-top add-bottom-margin" role="banner">
-    <div class="navbar-inner">
-      <div class="container">
-        
+  <header class="navbar navbar-default navbar-inverse navbar-static-top add-bottom-margin" role="banner">
+    <div class="container">
+      <div class="navbar-header">
         <%# Bootstrap toggle for collapsed navbar content, used at smaller widths %>
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        
-        <%= link_to 'GOV.UK Transition', root_path, :class => "brand" %>
-        <nav role="navigation" class="nav-collapse">
-          <ul class="nav">
-            <li <% if current_page?('/') or current_page?(organisations_path) %> class="active" <% end %>>
-              <a href="/">Organisations</a>
-            </li>
-            <% if current_user.organisation %>
-              <li <% if current_page?(organisation_path(current_user.organisation)) %> class="active" <% end %>>
-                <%= link_to "#{current_user.organisation.title} (#{current_user.organisation.abbreviation})", organisation_path(current_user.organisation), title: 'Your organisation' %>
-              </li>
-            <% end %>
-          </ul>
-          <p class="navbar-text pull-right">
-            Hello, <%= link_to current_user.name, Plek.current.find('signon') %> &bull; <%= link_to 'Sign out', gds_sign_out_path %>
-          </p>
-        </nav><!--/.nav-collapse -->
+        <%= link_to 'GOV.UK Transition', root_path, :class => 'navbar-brand' %>
       </div>
+
+      <nav role="navigation" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li <% if current_page?('/') or current_page?(organisations_path) %> class="active" <% end %>>
+            <a href="/">Organisations</a>
+          </li>
+          <% if current_user.organisation %>
+            <li <% if current_page?(organisation_path(current_user.organisation)) %> class="active" <% end %>>
+              <%= link_to "#{current_user.organisation.title} (#{current_user.organisation.abbreviation})", organisation_path(current_user.organisation), title: 'Your organisation' %>
+            </li>
+          <% end %>
+        </ul>
+        <p class="navbar-text pull-right">
+          Hello, <%= link_to current_user.name, Plek.current.find('signon') %> &bull; <%= link_to 'Sign out', gds_sign_out_path %>
+        </p>
+      </nav>
     </div>
   </header>
   <section class="container">
-    
+
     <main role="main">
       <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
         <div class="alert <%= k %>">

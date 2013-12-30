@@ -6,38 +6,38 @@
 
 .pagination {
 
-  height: $defaultBtnHeight;
-  margin: 0 0 $baseLineHeight;
+  height: $default-btn-height;
+  margin: 0 0 $default-vertical-margin;
 
   a,
   .current,
   .gap {
     float: left;
     padding: 0 14px;
-    line-height: $defaultBtnHeight;
+    line-height: $default-btn-height;
     text-decoration: none;
-    border: 1px solid $paginationBorder;
+    border: 1px solid $pagination-border;
     border-left-width: 0;
   }
 
   a:hover,
   a:focus {
-    background-color: $paginationActiveBackground;
+    background-color: $pagination-hover-bg;
   }
 
   .current {
-    background: $grayLighter;
+    background: #eee;
   }
 
   .first a,
   .page:first-child {
     border-left-width: 1px;
-    border-radius: $baseBorderRadius 0 0 $baseBorderRadius;
+    border-radius: $border-radius-base 0 0 $border-radius-base;
   }
 
   .last a,
   .page:last-child  {
-    border-radius: 0 $baseBorderRadius $baseBorderRadius 0;
+    border-radius: 0 $border-radius-base $border-radius-base 0;
   }
 
 }
