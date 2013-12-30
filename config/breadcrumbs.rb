@@ -7,14 +7,19 @@ crumb :organisation do |organisation|
   parent :root
 end
 
-crumb :hits do |site|
-  link "#{site.default_host.hostname} analytics", site_mappings_path(site)
+crumb :site do |site|
+  link site.default_host.hostname, site_path(site)
   parent :organisation, site.organisation
 end
 
+crumb :hits do |site|
+  link 'Analytics', site_mappings_path(site)
+  parent :site, site
+end
+
 crumb :mappings do |site|
-  link "#{site.default_host.hostname} mappings", site_mappings_path(site)
-  parent :organisation, site.organisation
+  link 'Mappings', site_mappings_path(site)
+  parent :site, site
 end
 
 crumb :new_mapping do |mapping|
