@@ -34,4 +34,8 @@ class Site < ActiveRecord::Base
     path = bluri.path
     bluri.query ? (path + '?' + bluri.query) : path
   end
+
+  def transition_state
+    (hosts.map { |h| h.redirected_by_gds? }).any? ? 'live' : 'pre-transition'
+  end
 end
