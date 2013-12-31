@@ -10,7 +10,7 @@
         <td>
           <strong><%= link_to m.path, m.old_url, class: 'breakable' %></strong>
           <% unless modal %>
-            <span class="muted">
+            <span class="text-muted">
               <% if m.redirect? %>
                 currently redirects to <%= link_to m.new_url, m.new_url, class: 'muted-link breakable' %>
               <% else %>
