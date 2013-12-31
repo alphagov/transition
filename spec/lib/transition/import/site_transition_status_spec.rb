@@ -16,12 +16,6 @@ describe Transition::Import::SiteTransitionStatus do
       let(:hosts) { [] }
 
       it { should eql('pre-transition') }
-
-      context 'when the site has been given indeterminate status' do
-        let(:site) { create :site, transition_status: 'indeterminate' }
-
-        it { should eql('indeterminate') }
-      end
     end
 
     context 'with one host pointing to us and one not' do
@@ -30,9 +24,20 @@ describe Transition::Import::SiteTransitionStatus do
       let(:hosts) { [host2] }
 
       it { should eql('live') }
+    end
 
-      context 'when the site has been given indeterminate status' do
-        let(:site) { create :site, transition_status: 'indeterminate' }
+    context 'when the site has been given indeterminate status' do
+      let(:site) { create :site, transition_status: 'indeterminate' }
+
+      context 'still with no hosts pointing to us' do
+        let(:hosts) { [] }
+
+        it { should eql('indeterminate') }
+      end
+
+      context 'when a host now points to us' do
+        let(:host2) { create :host, cname: 'redirector-cdn.production.govuk.service.gov.uk' }
+        let(:hosts) { [host2] }
 
         it { should eql('live') }
       end
