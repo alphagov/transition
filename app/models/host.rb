@@ -15,4 +15,8 @@ class Host < ActiveRecord::Base
       'aka-' + hostname
     end
   end
+
+  def redirected_by_gds?
+    /^redirector-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/.match(cname).present?
+  end
 end

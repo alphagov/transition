@@ -10,6 +10,7 @@ class Site < ActiveRecord::Base
   validates_presence_of :tna_timestamp
   validates_presence_of :organisation
   validates_uniqueness_of :abbr
+  validates_inclusion_of :special_redirect_strategy, in: %w{ via_aka supplier }, allow_nil: true
 
   scope :managed_by_transition, where(managed_by_transition: true)
 

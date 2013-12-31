@@ -18,3 +18,16 @@ Feature: View organisation
     Given I have logged in as a member of DCLG
     When I visit the path /organisations/department-for-communities-and-local-government
     Then I should see "You have permission to edit site mappings for Department for Communities and Local Government"
+
+  Scenario: Organisation page with sites in each transition state
+    Given I have logged in as an admin
+    And there is an organisation with the whitehall_slug "ukaea"
+    And the organisation has a site with a host with a GOV.UK cname
+    And the organisation has a site with a host with a third-party cname
+    And the organisation has a site with a special redirect strategy of "via_aka"
+    And the organisation has a site with a special redirect strategy of "supplier"
+    When I visit the path /organisations/ukaea
+    Then I should see "Live"
+    And I should see "Pre-Transition"
+    And I should see "Indeterminate (redirected by GDS)"
+    And I should see "Indeterminate (redirected by supplier)"
