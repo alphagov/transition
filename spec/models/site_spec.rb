@@ -9,6 +9,7 @@ describe Site do
 
   describe 'validations' do
     it { should validate_presence_of(:abbr) }
+    it { should ensure_inclusion_of(:transition_status).in_array(%w(live pre-transition indeterminate)) }
   end
 
   # given that hosts are site aliases
