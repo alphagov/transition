@@ -14,9 +14,19 @@ module Transition
       def update_sites!
         sites.each do |site|
           site.transition_status = case
+          # Override indeterminate status if at least one host is pointing at us
           when (site.hosts.map { |h| h.redirected_by_gds? }).any?
-            # Override indeterminate status if at least one host is pointing at us
             'live'
+          # 'indeterminate' is only ever set by hand. It is for sites which
+          # are either:
+          #   * redirected by the supplier
+          #   * redirected to the AKA version of the domain, which points at
+          #     us
+          #
+          # We can't automatically detect these scenarios from the hosts' DNS
+          # details, so they have to be managed manually. We should not update
+          # the status if it has been set to 'indeterminate' and no hosts point
+          # at us.
           when site.transition_status == 'indeterminate'
             'indeterminate'
           else
