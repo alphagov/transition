@@ -3,8 +3,8 @@ require 'transition/import/whitehall/mappings_csv'
 
 def csv_for(old_path, govuk_path, whitehall_state = 'published')
   StringIO.new(<<-END)
-Old Url,New Url,Status,Slug,Admin Url,State
-http://www.dft.gov.uk#{old_path},https://www.gov.uk#{govuk_path},301,new,http://whitehall-admin/#{rand(1000)},#{whitehall_state}
+Old URL,New URL,Admin URL,State
+http://www.dft.gov.uk#{old_path},https://www.gov.uk#{govuk_path},http://whitehall-admin/#{rand(1000)},#{whitehall_state}
 END
 end
 
@@ -45,7 +45,7 @@ describe Transition::Import::Whitehall::MappingsCSV do
         its(:http_status) { should == '301' }
       end
 
-      context 'existing mapping and the Old Url is not canonical' do
+      context 'existing mapping and the Old URL is not canonical' do
         let(:mapping) { create(:mapping, site: site, path: '/oldurl?significant=aha', new_url: 'https://www.gov.uk/mediocre') }
         let(:csv) { csv_for('/oldurl?significant=aha&ignored=ohyes', '/amazing') }
 
@@ -72,10 +72,10 @@ describe Transition::Import::Whitehall::MappingsCSV do
         its(:new_url)     { should == 'https://www.gov.uk/curated' }
       end
 
-      context 'CSV row without an Old Url' do
+      context 'CSV row without an Old URL' do
         let(:csv) { StringIO.new(<<-END)
-Old Url,New Url,Status,Slug,Admin Url,State
-,https://www.gov.uk/a-document,301,new,http://whitehall-admin/#{rand(1000)},published
+Old URL,New URL,Admin URL,State
+,https://www.gov.uk/a-document,http://whitehall-admin/#{rand(1000)},published
 END
 }
 
@@ -88,10 +88,10 @@ END
         specify { Mapping.all.count.should == 0 }
       end
 
-      context 'Old Url is unparseable' do
+      context 'Old URL is unparseable' do
         let(:csv) { StringIO.new(<<-END)
-Old Url,New Url,Status,Slug,Admin Url,State
-http://_____/old,https://www.gov.uk/a-document,301,new,http://whitehall-admin/#{rand(1000)},published
+Old URL,New URL,Admin URL,State
+http://_____/old,https://www.gov.uk/a-document,http://whitehall-admin/#{rand(1000)},published
 END
 }
 
@@ -129,7 +129,7 @@ END
       end
     end
 
-    context 'no site/host for Old Url' do
+    context 'no site/host for Old URL' do
       let(:csv) { csv_for('/oldurl', '/amazing') }
 
       it 'logs an unknown host' do
