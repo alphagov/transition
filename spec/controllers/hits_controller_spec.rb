@@ -5,7 +5,7 @@ describe HitsController do
   describe '#category' do
     let(:site) do
       create :site do |site|
-        site.hosts << create(:host, hostname: 'alias.gov.uk')
+        site.hosts << create(:host, hostname: 'alias.gov.uk', site: site)
       end
     end
 

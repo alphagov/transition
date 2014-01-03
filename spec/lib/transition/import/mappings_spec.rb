@@ -4,10 +4,10 @@ require 'transition/import/mappings'
 describe Transition::Import::Mappings do
   def create_test_sites
     @ago_site = create(:site, abbr: 'ago', managed_by_transition: false) do |site|
-      site.hosts << create(:host, hostname: 'www.ago.gov.uk')
+      create(:host, hostname: 'www.ago.gov.uk', site: site)
     end
     @directgov_site = create(:site, abbr: 'dg', managed_by_transition: false) do |site|
-      site.hosts << create(:host, hostname: 'www.direct.gov.uk')
+      create(:host, hostname: 'www.direct.gov.uk', site: site)
     end
   end
 
@@ -52,10 +52,10 @@ describe Transition::Import::Mappings do
       end
     end
 
-    context 'an import for a site managed_by_transition' do
+    context 'an import for a site managed_by_transition', truncate_everything: true do
       before do
         create(:site, abbr: 'ago', managed_by_transition: true) do |site|
-          site.hosts << create(:host, hostname: 'www.ago.gov.uk')
+          create(:host, hostname: 'www.ago.gov.uk', site: site)
         end
         Transition::Import::Mappings.from_redirector_csv_file!('spec/fixtures/mappings/ago_abridged.csv')
       end
@@ -65,10 +65,10 @@ describe Transition::Import::Mappings do
       end
     end
 
-    context 'handle a CSV with no rows' do
+    context 'handle a CSV with no rows', truncate_everything: true do
       before do
         create(:site, abbr: 'ago', managed_by_transition: true) do |site|
-          site.hosts << create(:host, hostname: 'www.ago.gov.uk')
+          create(:host, hostname: 'www.ago.gov.uk', site: site)
         end
       end
 

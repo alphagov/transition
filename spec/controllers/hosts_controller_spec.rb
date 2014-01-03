@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe HostsController do
   describe '#index' do
-    let(:site)   { create :site, :with_default_host }
+    let(:site)   { create :site }
 
     before do
       get :index
