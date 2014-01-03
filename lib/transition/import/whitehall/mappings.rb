@@ -47,7 +47,7 @@ module Transition
         end
 
         def as_user
-          User.first_or_create!(email: AS_USER_EMAIL) do |user|
+          User.where(email: AS_USER_EMAIL).first_or_create! do |user|
             user.name  = 'Whitehall URL Robot'
             user.is_robot = true
           end

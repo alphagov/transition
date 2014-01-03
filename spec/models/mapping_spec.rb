@@ -180,10 +180,13 @@ describe Mapping do
   end
 
   describe 'The paper trail', versioning: true do
-    let(:alice) { create :user }
-    let(:bob)   { create :user }
+    let(:alice) { create :user, name: 'Alice' }
+    let(:bob)   { create :user, name: 'Bob' }
 
-    before            { PaperTrail.whodunnit = alice }
+    before do
+      PaperTrail.whodunnit = alice.name
+      PaperTrail.controller_info = { user_id: alice.id }
+    end
     subject(:mapping) { create :mapping }
 
     it { should have(1).versions }
@@ -191,13 +194,15 @@ describe Mapping do
     describe 'the last version' do
       subject { mapping.versions.last }
 
-      its(:whodunnit) { should eql(alice.id.to_s) }
-      its(:event)     { should eql('create') }
+      its(:whodunnit) { should eql alice.name }
+      its(:user_id)   { should eql alice.id }
+      its(:event)     { should eql 'create' }
     end
 
     describe 'an update from Bob' do
       before do
-        PaperTrail.whodunnit = bob
+        PaperTrail.whodunnit = bob.name
+        PaperTrail.controller_info = { user_id: bob.id }
         mapping.update_attributes(new_url: 'http://updated.com')
       end
 
@@ -206,7 +211,8 @@ describe Mapping do
       describe 'the last version' do
         subject { mapping.versions.last }
 
-        its(:whodunnit)  { should eql bob.id.to_s }
+        its(:whodunnit)  { should eql bob.name }
+        its(:user_id)    { should eql bob.id }
         its(:event)      { should eql 'update'}
       end
     end
