@@ -52,7 +52,7 @@ describe Transition::Import::Mappings do
       end
     end
 
-    context 'an import for a site managed_by_transition' do
+    context 'an import for a site managed_by_transition', truncate_everything: true do
       before do
         create(:site, abbr: 'ago', managed_by_transition: true) do |site|
           site.hosts << create(:host, hostname: 'www.ago.gov.uk')
@@ -65,7 +65,7 @@ describe Transition::Import::Mappings do
       end
     end
 
-    context 'handle a CSV with no rows' do
+    context 'handle a CSV with no rows', truncate_everything: true do
       before do
         create(:site, abbr: 'ago', managed_by_transition: true) do |site|
           site.hosts << create(:host, hostname: 'www.ago.gov.uk')
