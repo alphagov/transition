@@ -121,7 +121,8 @@ END
 
       specify 'records the changes being made by a robot user' do
         mapping.versions.size.should == 1
-        mapping.versions.first.whodunnit.should == as_user.id.to_s
+        mapping.versions.first.whodunnit.should == as_user.name
+        mapping.versions.first.user_id.should == as_user.id
       end
 
       specify 'reverts the whodunnit user' do

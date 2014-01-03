@@ -55,11 +55,14 @@ module Transition
 
         def as_a_user(user)
           original_whodunnit = ::PaperTrail.whodunnit
-          ::PaperTrail.whodunnit = user
+          original_controller_info = ::PaperTrail.controller_info
+          ::PaperTrail.whodunnit = user.name
+          ::PaperTrail.controller_info = { user_id: user.id }
           begin
             yield
           ensure
             ::PaperTrail.whodunnit = original_whodunnit
+            ::PaperTrail.controller_info = original_controller_info
           end
         end
       end
