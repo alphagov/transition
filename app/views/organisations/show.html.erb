@@ -41,16 +41,14 @@
           <% if site.hosts.any?(&:redirected_by_gds?) %>
             Live
           <% elsif site.special_redirect_strategy == 'supplier' %>
-            Indeterminate
-            <br>
             <span class="text-muted">
-              <small>(redirected by supplier)</small>
+              Indeterminate <small>(redirected by supplier)</small>
+              <i style="opacity: 0.8" data-toggle="tooltip" title="Site is managed by an external supplier" class="glyphicon glyphicon-question-sign"></i>
             </span>
           <% elsif site.special_redirect_strategy == 'via_aka' %>
-            Indeterminate
-            <br>
             <span class="text-muted">
-              <small>(redirected by GDS)</small>
+              Indeterminate <small>(redirected by GDS)</small>
+              <i style="opacity: 0.8" data-toggle="tooltip" title="Site is partially redirected via an aka domain" class="glyphicon glyphicon-question-sign"></i>
             </span>
           <% else %>
             Pre-Transition
@@ -63,3 +61,7 @@
     </tbody>
   </table>
 <% end %>
+
+<script>
+  $('[data-toggle]').tooltip();
+</script>
