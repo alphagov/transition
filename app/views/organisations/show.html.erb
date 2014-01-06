@@ -24,8 +24,8 @@
         <th scope="col">Old site</th>
         <th scope="col">Mappings</th>
         <th scope="col">Analytics</th>
-        <th scope="col">New homepage</th>
         <th scope="col">Launch date</th>
+        <th scope="col">Site details</th>
       </tr>
     </thead>
     <tbody>
@@ -33,12 +33,11 @@
       <tr>
         <td>
           <span class="breakable"><%= site.default_host.hostname %></span>
-          <small><%= link_to 'Site details', site_path(site) %></small>
         </td>
-        <td><%= link_to "Mappings", site_mappings_path(site) %></td>
+        <td><%= link_to 'Mappings', site_mappings_path(site) %></td>
         <td><%= link_to 'Analytics', summary_site_hits_path(site) %></td>
-        <td><%= link_to site.homepage, site.homepage, class: 'breakable' %></td>
         <td><%= date_or_not_yet(site.launch_date) %></td>
+        <td><%= link_to 'Site details', site_path(site) %></td>
       </tr>
     <% end %>
     </tbody>
