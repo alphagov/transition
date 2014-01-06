@@ -38,21 +38,7 @@
         <td><%= link_to 'Mappings', site_mappings_path(site) %></td>
         <td><%= link_to 'Analytics', summary_site_hits_path(site) %></td>
         <td>
-          <% if site.hosts.any?(&:redirected_by_gds?) %>
-            Live
-          <% elsif site.special_redirect_strategy == 'supplier' %>
-            <span class="text-muted">
-              Indeterminate <small>(redirected by supplier)</small>
-              <i style="opacity: 0.8" data-toggle="tooltip" title="Site is managed by an external supplier" class="glyphicon glyphicon-question-sign"></i>
-            </span>
-          <% elsif site.special_redirect_strategy == 'via_aka' %>
-            <span class="text-muted">
-              Indeterminate <small>(redirected by GDS)</small>
-              <i style="opacity: 0.8" data-toggle="tooltip" title="Site is partially redirected via an aka domain" class="glyphicon glyphicon-question-sign"></i>
-            </span>
-          <% else %>
-            Pre-Transition
-          <% end %>
+          <%= render partial: 'sites/transition_status', locals: {site: site} %>
         </td>
         <td><%= date_or_not_yet(site.launch_date) %></td>
         <td><%= link_to 'Site details', site_path(site) %></td>
@@ -61,7 +47,3 @@
     </tbody>
   </table>
 <% end %>
-
-<script>
-  $('[data-toggle]').tooltip();
-</script>

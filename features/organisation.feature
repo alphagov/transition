@@ -28,6 +28,7 @@ Feature: View organisation
     And the organisation has a site with a special redirect strategy of "supplier"
     When I visit the path /organisations/ukaea
     Then I should see "Live"
-    And I should see "Pre-Transition"
-    And I should see "Indeterminate (redirected by GDS)"
-    And I should see "Indeterminate (redirected by supplier)"
+    And I should see "Pre-transition"
+    And I should see "Indeterminate"
+    And there should be a tooltip which includes "external supplier"
+    And there should be a tooltip which includes "partially redirected"

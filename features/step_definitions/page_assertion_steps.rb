@@ -6,6 +6,14 @@ Then(/^I should not see "([^"]*)"$/) do |content|
   expect(page).not_to have_content(content)
 end
 
+Then(/^there should be a tooltip "([^"]*)"$/) do |text|
+  expect(page).to have_selector("[title='#{text}']")
+end
+
+Then(/^there should be a tooltip which includes "([^"]*)"$/) do |text|
+  expect(page).to have_selector("[title*='#{text}']")
+end
+
 # Modals
 
 Then(/^I should see an open modal window$/) do
