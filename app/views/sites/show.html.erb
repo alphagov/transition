@@ -10,16 +10,16 @@
 </div>
 
 <dl class="dl-spaced">
+  <dt>Mappings</dt>
+  <dd><%= link_to 'Mappings', site_mappings_path(@site) %></dd>
+  <dt>Analytics</dt>
+  <dd><%= link_to 'Analytics', summary_site_hits_path(@site) %></dd>
   <dt>Default hostname</dt>
   <dd><%= @site.default_host.hostname %></dd>
   <dt>Hostname aliases</dt>
   <dd><%= @site.hosts.pluck(:hostname).join(', ') %></dd>
   <dt>New homepage</dt>
   <dd><%= link_to @site.homepage, @site.homepage, class: 'breakable' %></dd>
-  <dt>Mappings</dt>
-  <dd><%= link_to 'Mappings', site_mappings_path(@site) %></dd>
-  <dt>Analytics</dt>
-  <dd><%= link_to 'Analytics', summary_site_hits_path(@site) %></dd>
   <dt>Abbreviation</dt>
   <dd><%= @site.abbr %></dd>
   <dt>Significant query parameters</dt>
