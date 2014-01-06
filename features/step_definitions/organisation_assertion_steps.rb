@@ -1,7 +1,6 @@
-Then(/^I should see links to all this organisation's sites and homepages$/) do
+Then(/^I should see links to all this organisation's sites$/) do
   @organisation.sites.each do |site|
     expect(page).to have_link('', href: site_mappings_path(site.abbr))
-    expect(page).to have_link('', href: site.homepage)
   end
 end
 

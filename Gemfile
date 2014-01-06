@@ -22,7 +22,7 @@ gem 'gretel', '3.0.5'
 gem 'aws-ses', '0.4.4', require: 'aws/ses'
 gem 'exception_notification', '2.6.1'
 
-gem 'logstasher', '0.4.0'
+gem 'logstasher', '0.4.1'
 
 group :assets do
   gem 'sass', '3.2.8'

@@ -6,7 +6,7 @@ Transition::Application.routes.draw do
   resources :hosts, only: [:index]
 
   resources :organisations, only: [:show, :index]
-  resources :sites, only: [] do
+  resources :sites, only: [:show] do
 
     get 'mappings/find', as: 'mapping_find'
     resources :mappings, except: [:destroy] do

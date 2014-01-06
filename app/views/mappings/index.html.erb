@@ -9,7 +9,6 @@
   </h1>
 </div>
 
-<%= render partial: 'site', locals: { site: @site } %>
 <%= render partial: 'filters' %>
 
 <h2><%= pluralize(number_with_delimiter(@mappings.total_count, :delimiter => ','), 'mapping', 'mappings') %></h2>
