@@ -26,6 +26,7 @@
         <th scope="col">Analytics</th>
         <th scope="col">New homepage</th>
         <th scope="col">Launch date</th>
+        <th scope="col">Transition status</th>
       </tr>
     </thead>
     <tbody>
@@ -36,8 +37,13 @@
         <td><%= link_to 'Analytics', summary_site_hits_path(site) %></td>
         <td><%= link_to site.homepage, site.homepage, class: 'breakable' %></td>
         <td><%= date_or_not_yet(site.launch_date) %></td>
+        <td><%= display_transition_status(site) %></td>
       </tr>
     <% end %>
     </tbody>
   </table>
 <% end %>
+
+<script>
+  $('[data-toggle]').tooltip();
+</script>

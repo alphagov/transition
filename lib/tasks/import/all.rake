@@ -4,7 +4,8 @@ namespace :import do
     'import:all:orgs_sites_hosts',
     'import:all:mappings',
     'import:all:hits',
-    'import:dns_details'
+    'import:dns_details',
+    'import:site_transition_status'
   ]
 
   namespace :all do

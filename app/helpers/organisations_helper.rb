@@ -24,4 +24,15 @@ module OrganisationsHelper
     end
     all_links.to_sentence(last_word_connector: ' and ').html_safe
   end
+
+  def display_transition_status(site)
+    status = site.transition_status
+    if status.present?
+      status == 'indeterminate' ? indeterminate_status : status.capitalize
+    end
+  end
+
+  def indeterminate_status
+    '<span class="text-muted">Indeterminate <i style="opacity: 0.8" data-toggle="tooltip" title="Site may be managed by an external supplier, or may be partially redirected" class="glyphicon glyphicon-question-sign"></i></span>'.html_safe
+  end
 end
