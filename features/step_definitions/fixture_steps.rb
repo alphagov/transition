@@ -37,6 +37,24 @@ Given (/^a (\d+) mapping exists for the (.+) site with the path (.*)$/) do |stat
   site.mappings << create(:mapping, http_status: status, path: path)
 end
 
+Given(/^there is an organisation with the whitehall_slug "(.*?)"$/) do |abbr|
+  @organisation = create(:organisation, whitehall_slug: "ukaea")
+end
+
+Given(/^the organisation has a site with a host with a GOV\.UK cname$/) do
+  site = create(:site, organisation: @organisation)
+  create(:host, :with_govuk_cname, site: site)
+end
+
+Given(/^the organisation has a site with a host with a third\-party cname$/) do
+  site = create(:site, organisation: @organisation)
+  create(:host, :with_third_party_cname, site: site)
+end
+
+Given(/^the organisation has a site with a special redirect strategy of "(.*?)"$/) do |special_redirect_strategy|
+  create(:site, special_redirect_strategy: special_redirect_strategy, organisation: @organisation)
+end
+
 Given(/^there is a mapping that has no history$/) do
   with_papertrail_disabled do
     @mapping = create :mapping

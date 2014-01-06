@@ -24,7 +24,8 @@
         <th scope="col">Old site</th>
         <th scope="col">Mappings</th>
         <th scope="col">Analytics</th>
-        <th scope="col">Launch date</th>
+        <th scope="col">Transition status</th>
+        <th scope="col">Transition date</th>
         <th scope="col">Site details</th>
       </tr>
     </thead>
@@ -36,6 +37,9 @@
         </td>
         <td><%= link_to 'Mappings', site_mappings_path(site) %></td>
         <td><%= link_to 'Analytics', summary_site_hits_path(site) %></td>
+        <td>
+          <%= render partial: 'sites/transition_status', locals: {site: site} %>
+        </td>
         <td><%= date_or_not_yet(site.launch_date) %></td>
         <td><%= link_to 'Site details', site_path(site) %></td>
       </tr>
