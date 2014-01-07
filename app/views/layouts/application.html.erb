@@ -50,8 +50,9 @@
   <section class="container">
 
     <main role="main">
-      <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
-        <div class="alert <%= k %>">
+      <% # Map bootstrap alerts to Rails flashes, but keep notice and alert as they are pecial cased with redirect_to %>
+      <% [:success, :info, :warning, :danger, :notice, :alert].select { |k| flash[k].present? }.each do |k| %>
+        <div class="alert alert-<%= k == :notice || k == :alert ? 'warning' : k %>">
           <%= flash[k] %>
         </div>
       <% end %>

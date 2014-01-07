@@ -2,7 +2,7 @@
 <% if http_status == '301' %>
   <%= field_set_tag nil, class: 'form-group add-bottom-margin' do %>
     <% if new_url_error %>
-      <div id="error_explanation" class="alert notice">
+      <div id="error_explanation" class="alert alert-danger">
         <ul>
           <li><%= new_url_error %></li>
         </ul>
