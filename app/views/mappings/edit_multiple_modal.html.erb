@@ -4,18 +4,18 @@
       <header class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3 class="modal-title">
-          <%= http_status_name(@bulk.http_status) %> mappings
+          <%= http_status_name(@bulk_edit.http_status) %> mappings
         </h3>
       </header>
       <div class="modal-body remove-bottom-padding">
         <%= render partial: 'edit_multiple_redirect',
                    locals: {
-                           new_url: @bulk.new_url,
+                           new_url: @bulk_edit.new_url,
                            new_url_error: @new_url_error,
-                           http_status: @bulk.http_status } %>
+                           http_status: @bulk_edit.http_status } %>
         <%= render partial: 'edit_multiple_table',
                    locals: { modal: true,
-                             mappings: @bulk.mappings,
+                             mappings: @bulk_edit.mappings,
                              site: @site } %>
       </div>
       <footer class="modal-footer remove-top-margin">
