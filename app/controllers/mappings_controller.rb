@@ -92,12 +92,11 @@ class MappingsController < ApplicationController
     end
   end
 
-  private
+private
   def bulk
     @bulk ||= View::Mappings::BulkEditor.new(@site, params, site_return_path)
   end
 
-  private
   def find_site
     @site = Site.find_by_abbr(params[:site_id])
   end
