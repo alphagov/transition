@@ -2,7 +2,7 @@ class MappingsController < ApplicationController
   include PaperTrail::Controller
 
   before_filter :find_site
-  before_filter :check_user_can_edit, only: [:new, :create, :edit, :update, :edit_multiple, :update_multiple]
+  before_filter :check_user_can_edit, except: [:index, :find]
 
   def new
     @mapping = @site.mappings.build(path: params[:path])
