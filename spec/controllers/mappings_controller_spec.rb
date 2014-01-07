@@ -164,6 +164,45 @@ describe MappingsController do
     end
   end
 
+  describe '#new_multiple' do
+    context 'when user doesn\'t have permission' do
+      before do
+        login_as unaffiliated_user
+        get :new_multiple, site_id: site.abbr
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+  end
+
+  describe '#new_multiple_confirmation' do
+    context 'when user doesn\'t have permission' do
+      before do
+        login_as unaffiliated_user
+        post :new_multiple_confirmation, site_id: site.abbr
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+  end
+
+  describe '#create_multiple' do
+    context 'when user doesn\'t have permission' do
+      before do
+        login_as unaffiliated_user
+        post :create_multiple, site_id: site.abbr
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+  end
+
   describe '#edit_multiple' do
     let!(:mapping_a) { create :mapping, path: '/a', site: site }
     let!(:mapping_b) { create :mapping, path: '/b', site: site }

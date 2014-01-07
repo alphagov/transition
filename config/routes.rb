@@ -13,6 +13,10 @@ Transition::Application.routes.draw do
       resources :versions, only: [:index]
 
       collection do
+        get  'new_multiple'
+        post 'new_multiple_confirmation'
+        post 'create_multiple'
+
         post 'edit_multiple'
         post 'update_multiple'
       end

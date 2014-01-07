@@ -18,6 +18,15 @@ class MappingsController < ApplicationController
     end
   end
 
+  def new_multiple
+  end
+
+  def new_multiple_confirmation
+  end
+
+  def create_multiple
+  end
+
   def index
     store_site_return_path
 
