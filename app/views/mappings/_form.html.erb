@@ -52,7 +52,7 @@
         <dd>
           <% if @mapping.persisted? %>
             <%= link_to @mapping.national_archive_url, @mapping.national_archive_url %><br />
-            <span class="text-muted">Is this archive missing? <a href="#add-alternative-url" class="if-no-js-hide muted-link js-toggle">Use an alternative</a></span>
+            <span class="text-muted">Is this archive missing? <a href="#add-alternative-url" class="if-no-js-hide link-muted js-toggle">Use an alternative</a></span>
           <% else %>
             <p>The archive URL will be automatically generated based on the old URL provided above.</p>
           <% end %>
@@ -82,7 +82,7 @@
     <div data-module="toggle">
       <p class="if-no-js-hide js-toggle-target <% if @mapping.suggested_url %>if-js-hide<% end %>">
         Did this page contain content that shouldn’t be met by government?<br/>
-        <a href="#suggest-url" class="js-toggle muted-link">Suggest a private sector URL</a>
+        <a href="#suggest-url" class="js-toggle link-muted">Suggest a private sector URL</a>
       </p>
       <div class="<% unless @mapping.suggested_url %>if-js-hide<% end %> js-toggle-target">
         <%= f.label :suggested_url do %>

@@ -11,7 +11,8 @@ class MappingsController < ApplicationController
   def create
     @mapping = @site.mappings.build(params[:mapping])
     if @mapping.save
-      redirect_to edit_site_mapping_path(@site, @mapping), notice: view_context.created_mapping(@mapping)
+      flash[:success] = view_context.created_mapping(@mapping)
+      redirect_to edit_site_mapping_path(@site, @mapping)
     else
       render action: 'new'
     end
@@ -30,7 +31,8 @@ class MappingsController < ApplicationController
   def update
     @mapping = @site.mappings.find(params[:id])
     if @mapping.update_attributes(params[:mapping])
-      redirect_to edit_site_mapping_path(@site, @mapping), notice: 'Mapping saved.'
+      flash[:success] = 'Mapping saved'
+      redirect_to edit_site_mapping_path(@site, @mapping)
     else
       render action: 'edit'
     end
@@ -52,7 +54,8 @@ class MappingsController < ApplicationController
         @new_url_error = 'Enter a valid URL to redirect these paths to'
         render action: 'edit_multiple' and return
       else
-        return redirect_to site_return_url, notice: 'Validation failed'
+        flash[:danger] = 'Validation failed'
+        return redirect_to site_return_url
       end
     end
 
@@ -63,7 +66,8 @@ class MappingsController < ApplicationController
       flash[:notice] = 'The following mappings could not be updated'
       render action: 'edit_multiple'
     else
-      redirect_to site_return_url, notice: 'Mappings updated successfully'
+      flash[:success] = 'Mappings updated successfully'
+      redirect_to site_return_url
     end
   end
 
