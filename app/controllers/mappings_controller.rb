@@ -102,6 +102,10 @@ class MappingsController < ApplicationController
   end
 
 private
+  def bulk_add
+    @bulk_add ||= View::Mappings::BulkAdder.new(@site, params, site_return_path)
+  end
+
   def bulk_edit
     @bulk_edit ||= View::Mappings::BulkEditor.new(@site, params, site_return_path)
   end
