@@ -27,6 +27,11 @@ crumb :new_mapping do |mapping|
   parent :mappings, mapping.site
 end
 
+crumb :new_mappings do |site|
+  link "New mappings"
+  parent :mappings, site
+end
+
 crumb :edit_mapping do |mapping|
   link "Edit mapping", edit_site_mapping_path(mapping.site, mapping)
   parent :mappings, mapping.site
