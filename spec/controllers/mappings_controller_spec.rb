@@ -175,6 +175,17 @@ describe MappingsController do
         expect(response).to redirect_to site_mappings_path(site)
       end
     end
+
+    context 'when the user does have permission' do
+      before do
+        login_as admin_bob
+      end
+
+      it 'displays the form' do
+        get :new_multiple, site_id: site.abbr
+        expect(response.status).to eql(200)
+      end
+    end
   end
 
   describe '#new_multiple_confirmation' do

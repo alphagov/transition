@@ -23,3 +23,5 @@ Feature: Create a mapping
     Then I should not see "Add mapping"
     And I visit the path /sites/bis/mappings/new
     Then I should see "You don't have permission to edit site mappings for"
+    And I visit the path /sites/bis/mappings/new_multiple
+    Then I should see "You don't have permission to edit site mappings for"

@@ -5,3 +5,65 @@
   <span class="small"><%= @site.default_host.hostname %></span>
   Add mappings
 </h1>
+
+<%= form_tag new_multiple_confirmation_site_mappings_path(@site), role: 'form', class: 'js-edit-mapping-form' do %>
+  <div class="form-group row">
+    <div class="col-md-2">
+      <%= label_tag(:http_status, 'Type') %>
+      <%= select_tag :http_status, options_for_select(options_for_supported_statuses), { class: 'form-control remove-bottom-margin js-http-status' } %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%#
+      Capture label HTML to avoid using a block, this circumvents a problem with
+      rails not wrapping the label with 'field_with_errors' on error
+      http://stackoverflow.com/questions/13862978/
+    %>
+    <% label_html = capture do %>
+      Old URLs
+      <p class="text-muted normal">
+        Please add one path per line. Each path should begin with a ‘/’.
+      </p>
+    <% end %>
+    <%= label_tag :paths, label_html, class: 'add-top-margin' %>
+    <div class="row">
+      <div class="old-urls col-md-8">
+        <div class="input-group">
+          <span class="input-group-addon">http://<%= @site.default_host.hostname %></span>
+          <%= text_area_tag :paths, nil, class: 'form-control', placeholder: '/path/to/page' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= field_set_tag nil, class: 'form-group js-for-redirect' do %>
+    <legend class="if-js-rm">
+      Redirect
+    </legend>
+    <%= label_tag :new_url, 'Redirect to' %>
+    <div class="row">
+      <div class="col-md-8">
+        <%= text_field_tag(:new_url, nil, class: 'form-control') %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= field_set_tag nil, class: 'js-for-archive' do %>
+    <legend class="if-js-rm">
+      Archive
+    </legend>
+
+    <div data-module="toggle">
+      <dl class="read-only-fields js-toggle-target">
+        <dt>National archive</dt>
+        <dd>
+          <p>The archive URLs will be automatically generated based on the old URLs provided above.</p>
+        </dd>
+      </dl>
+    </div>
+  <% end %>
+
+  <%= button_tag 'Submit mappings', class: 'add-top-margin btn btn-success' %>
+<% end %>
+<script>GOVUK.Mappings.edit()</script>
