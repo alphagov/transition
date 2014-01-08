@@ -179,6 +179,30 @@ describe Mapping do
     end
   end
 
+  describe '.filtered_by_new_url' do
+    before do
+      site = create :site
+      ['/a', '/about', '/about/branding', '/other'].each do |new_path|
+        create :mapping, new_url: "http://f.co#{new_path}", site: site
+      end
+    end
+
+    context 'a filter is supplied' do
+      subject { Mapping.filtered_by_new_url('about').map(&:new_url) }
+
+      it { should include('http://f.co/about') }
+      it { should include('http://f.co/about/branding') }
+      it { should_not include('http://f.co/a') }
+      it { should_not include('http://f.co/other') }
+    end
+
+    context 'no filter is supplied' do
+      subject { Mapping.filtered_by_path(nil) }
+
+      it { should have(4).mappings }
+    end
+  end
+
   describe 'The paper trail', versioning: true do
     let(:alice) { create :user, name: 'Alice' }
     let(:bob)   { create :user, name: 'Bob' }
