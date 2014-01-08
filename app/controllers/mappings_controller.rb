@@ -22,6 +22,7 @@ class MappingsController < ApplicationController
   end
 
   def new_multiple_confirmation
+    redirect_to site_return_path, notice: bulk_add.params_invalid_notice and return if bulk_add.params_invalid?
   end
 
   def create_multiple

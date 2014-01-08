@@ -25,3 +25,16 @@ Feature: Create a mapping
     Then I should see "You don't have permission to edit site mappings for"
     And I visit the path /sites/bis/mappings/new_multiple
     Then I should see "You don't have permission to edit site mappings for"
+
+  Scenario: Create multiple mappings
+    Given I have logged in as an admin
+    And a site bis exists
+    And I visit the path /sites/bis/mappings/new_multiple
+    Then I should see "http://bis.gov.uk"
+    When I make the new mapping paths "/Needs/Canonicalizing/q=1, /a, noslash" redirect to www.gov.uk/organisations/bis
+    And I submit the mappings
+    Then I should see "Confirm new mappings"
+    And I should see "https://www.gov.uk/organisations/bis"
+    And I should see "/needs/canonicalizing"
+    And I should see "/a"
+    But I should not see "noslash"

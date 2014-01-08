@@ -1,0 +1,44 @@
+<% content_for(:page_title, 'Confirm new mappings') %>
+
+<% breadcrumb(:new_mappings_confirmation, @site) %>
+
+<div class="page-title">
+  <h1>
+    <span class="small"><%= @site.default_host.hostname %></span>
+    Confirm new mappings
+  </h1>
+
+  <h2>
+    <%= "#{ http_status_name(@bulk_add.http_status) }" %>
+    <% if @bulk_add.http_status == '301' %>
+      to <%= link_to @bulk_add.test_mapping.new_url, @bulk_add.test_mapping.new_url %>
+    <% end %>
+  </h2>
+</div>
+
+<%= form_tag create_multiple_site_mappings_path(@site) do %>
+  <%= hidden_field_tag "http_status", @bulk_add.http_status %>
+  <% if @bulk_add.http_status == '301' %>
+    <%= hidden_field_tag "new_url", @bulk_add.test_mapping.new_url %>
+  <% end %>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr class="table-header">
+        <th>Old paths from <%= @site.default_host.hostname %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @bulk_add.canonical_paths.each do |path| %>
+        <tr>
+          <td>
+            <strong><%= link_to path, path, class: 'breakable' %></strong>
+            <%= hidden_field_tag "paths[]", path %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= button_tag 'Save', class: 'btn btn-success' %>
+<% end %>

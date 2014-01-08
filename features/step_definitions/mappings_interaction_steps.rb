@@ -11,7 +11,7 @@ When(/^I make the mapping an archive$/) do
   select 'Archive', from: 'Type'
 end
 
-When(/^I (save|submit) the mapping$/) do |type|
+When(/^I (save|submit) the mappings?$/) do |type|
   click_button type.titleize
 end
 
@@ -44,6 +44,11 @@ end
 
 When(/^I make the new mapping a redirect from (.*) to (.*)$/) do |path, new_url|
   fill_in 'Old URLs', with: path
+  fill_in 'Redirect to', with: new_url
+end
+
+When(/^I make the new mapping paths "(.*)" redirect to (.*)$/) do |paths, new_url|
+  fill_in 'Old URLs', with: paths.gsub(/, /, "\n")
   fill_in 'Redirect to', with: new_url
 end
 
