@@ -31,6 +31,10 @@ group :assets do
   gem 'uglifier', '2.0.1'
 end
 
+group :development do
+  gem 'quiet_assets', '1.0.2'
+end
+
 group :test do
   gem 'poltergeist', '1.4.1'
   gem 'launchy', '2.3.0'                  # Primarily for save_and_open_page support in Capybara
