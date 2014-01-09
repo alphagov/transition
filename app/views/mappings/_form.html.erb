@@ -1,5 +1,5 @@
 <%= form_for @mapping, url: polymorphic_url([@site, @mapping]), html: {role: 'form', class: 'js-edit-mapping-form'} do |f| %>
-  <%= render 'shared/error_messages', model: f.object %>
+  <%= render 'shared/error_messages', error_messages: f.object.errors.full_messages %>
 
   <div class="form-group row">
     <div class="col-md-2">

@@ -1,13 +1,13 @@
-<% if model.errors.any? %>
+<% if error_messages.present? %>
   <div class="alert alert-danger">
-    <% if model.errors.size == 1 %>
-      <% model.errors.full_messages.each do |full_error_message| %>
-        <p><%= full_error_message %></p>
+    <% if error_messages.size == 1 %>
+      <% error_messages.each do |message| %>
+        <p><%= message %></p>
       <% end %>
     <% else %>
       <ul>
-        <% model.errors.full_messages.each do |full_error_message| %>
-          <li><%= full_error_message %></li>
+        <% error_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
       </ul>
     <% end %>

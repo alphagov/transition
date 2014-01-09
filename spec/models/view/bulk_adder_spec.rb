@@ -82,4 +82,18 @@ describe View::Mappings::BulkAdder do
       )}
     end
   end
+
+  describe '#params_errors' do
+    let!(:site) { create(:site) }
+    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: @http_status }, '').params_errors }
+
+    describe 'when no paths are given to archive, there is an error' do
+      before do
+        @paths_input = ''
+        @http_status = '410'
+      end
+
+      it { should have(1).errors }
+    end
+  end
 end

@@ -7,6 +7,8 @@
 </h1>
 
 <%= form_tag new_multiple_confirmation_site_mappings_path(@site), role: 'form', class: 'js-edit-mapping-form' do %>
+  <%= render 'shared/error_messages', error_messages: @errors %>
+
   <div class="form-group row">
     <div class="col-md-2">
       <%= label_tag(:http_status, 'Type') %>

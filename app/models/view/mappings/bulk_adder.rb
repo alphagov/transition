@@ -21,14 +21,15 @@ module View
       end
 
       def params_invalid?
-        params_invalid_notice.present?
+        params_errors.present?
       end
 
-      def params_invalid_notice
-        case
-        when http_status.blank? then 'Please select either redirect or archive'
-        when would_fail_on_new_url? then 'Enter a valid URL to redirect to'
-        end
+      def params_errors
+        errors = []
+        errors << 'Please select either redirect or archive' if http_status.blank?
+        errors << 'Enter at least one valid path' if canonical_paths.blank?
+        errors << 'Enter a valid URL to redirect to' if would_fail_on_new_url?
+        errors
       end
 
       def common_data
