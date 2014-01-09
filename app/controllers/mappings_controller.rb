@@ -37,7 +37,8 @@ class MappingsController < ApplicationController
 
     bulk_add.create!
 
-    redirect_to site_return_path, notice: "#{bulk_add.canonical_paths.size} mappings created"
+    flash[:success] = "#{bulk_add.canonical_paths.size} mappings created"
+    redirect_to site_return_path
   end
 
   def index
