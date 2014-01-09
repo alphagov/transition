@@ -33,7 +33,7 @@ When(/^I select "Archive"$/) do
 end
 
 When(/^I filter the path by ([^"]*)$/) do |path_contains|
-  fill_in 'Filter by path', with: path_contains
+  fill_in 'Filter by', with: path_contains
   click_button 'Filter'
 end
 

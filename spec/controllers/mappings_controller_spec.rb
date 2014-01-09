@@ -7,19 +7,38 @@ describe MappingsController do
   let(:mapping)           { create(:mapping) }
 
   describe '#index' do
-    let(:mapping_a) { create :mapping, path: '/a', site: site }
-    let(:mapping_b) { create :mapping, path: '/b', site: site }
-    let(:mapping_c) { create :mapping, path: '/c', site: site }
+    let(:mapping_a) { create :redirect, path: '/a', new_url: 'http://f.co/1', site: site }
+    let(:mapping_b) { create :redirect, path: '/b', new_url: 'http://f.co/2', site: site }
+    let(:mapping_c) { create :redirect, path: '/c', new_url: 'http://f.co/3', site: site }
 
     before do
       login_as_stub_user
       [mapping_c, mapping_b, mapping_a].each {|mapping| mapping.should be_persisted}
-
-      get :index, site_id: site.abbr
     end
 
     it 'orders mappings by path' do
+      get :index, site_id: site.abbr
       assigns(:mappings).should == [mapping_a, mapping_b, mapping_c]
+    end
+
+    it 'can filter mappings by path' do
+      get :index, site_id: site.abbr, contains: 'a'
+      assigns(:mappings).should == [mapping_a]
+    end
+
+    it 'can filter mappings by new_url' do
+      get :index, site_id: site.abbr, contains: 'f.co/1', filter_field: 'new_url'
+      assigns(:mappings).should == [mapping_a]
+    end
+
+    it 'ignores non-redirect mappings when filtering by new_url' do
+      # We don't blank new_url if a redirect is changed to an archive. It would
+      # be confusing to return archive mappings when filtering by new_url.
+
+      create :archived, new_url: 'http://f.co/1', site: site
+
+      get :index, site_id: site.abbr, contains: 'f.co/1', filter_field: 'new_url'
+      assigns(:mappings).should == [mapping_a]
     end
   end
 
