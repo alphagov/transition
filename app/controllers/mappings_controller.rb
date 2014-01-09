@@ -30,6 +30,14 @@ class MappingsController < ApplicationController
   end
 
   def create_multiple
+    if bulk_add.params_invalid?
+      @errors = bulk_add.params_errors
+      render action: 'new_multiple'
+    end
+
+    bulk_add.create!
+
+    redirect_to site_return_path, notice: "#{bulk_add.canonical_paths.size} mappings created"
   end
 
   def index

@@ -38,6 +38,10 @@ Feature: Create a mapping
     And I should see "/needs/canonicalizing"
     And I should see "/a"
     But I should not see "noslash"
+    When I save the mappings
+    Then I should see "2 mappings created"
+    And I should see "/needs/canonicalizing"
+    And I should see "/a"
 
   Scenario: Errors shown for invalid inputs
     Given I have logged in as an admin

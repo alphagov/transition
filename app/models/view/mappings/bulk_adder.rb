@@ -13,9 +13,17 @@ module View
       }
 
       def raw_paths
-        # Efficiently match any combination of new line characters:
-        #     http://stackoverflow.com/questions/10805125
-        params[:paths] ? params[:paths].split(/\r?\n|\r/).select { |p| p.present? } : []
+        paths = params[:paths]
+        if paths
+          if paths.is_a?(String)
+            # Efficiently match any combination of new line characters:
+            #     http://stackoverflow.com/questions/10805125
+            paths = paths.split(/\r?\n|\r/)
+          end
+          paths.select { |p| p.present? }
+        else
+          []
+        end
       end
 
       def canonical_paths
