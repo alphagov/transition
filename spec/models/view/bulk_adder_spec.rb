@@ -108,4 +108,36 @@ describe View::Mappings::BulkAdder do
       its([:new_url]) { should eql(View::Mappings::BulkAdder::ERRORS[:new_url_invalid]) }
     end
   end
+
+  describe '#create!' do
+    let!(:site) { create(:site) }
+    subject { site.mappings }
+
+    def call_create
+      View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: @http_status, new_url: @new_url }, '').create!
+    end
+
+    context 'with valid data' do
+      before do
+        @paths_input = "/a\n/B\n/c?canonical=no"
+        @http_status = '301'
+        @new_url = 'www.gov.uk'
+        call_create
+      end
+
+      it { should have(3).mappings }
+
+      specify 'all mappings are redirects' do
+        expect(Mapping.where(http_status: '301').count).to eql(3)
+      end
+
+      specify 'all mappings have the correct new_url' do
+        expect(Mapping.where(new_url: 'https://www.gov.uk').count).to eql(3)
+      end
+
+      specify 'all paths are canonical' do
+        expect(Mapping.pluck(:path)).to eql(['/a', '/b', '/c'])
+      end
+    end
+  end
 end

@@ -66,6 +66,15 @@ module View
                                       }.merge(common_data))
 
       end
+
+      def create!
+        canonical_paths.each do |path|
+          Mapping.create({
+                            site: site,
+                            path: path,
+                          }.merge(common_data))
+        end
+      end
     end
   end
 end
