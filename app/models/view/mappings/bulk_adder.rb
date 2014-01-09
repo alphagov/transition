@@ -6,10 +6,15 @@ module View
     #
     # Needs a site and params to work out what should be created
     class BulkAdder < Struct.new(:site, :params, :back_to_index)
+      ERRORS = {
+        http_status_invalid: 'Please select either redirect or archive',
+        paths_empty: 'Enter at least one valid path',
+        new_url_invalid: 'Enter a valid URL to redirect to'
+      }
       def raw_paths
         # Efficiently match any combination of new line characters:
         #     http://stackoverflow.com/questions/10805125
-        params[:paths].split(/\r?\n|\r/).select { |p| p.present? }
+        params[:paths] ? params[:paths].split(/\r?\n|\r/).select { |p| p.present? } : []
       end
 
       def canonical_paths
@@ -25,10 +30,10 @@ module View
       end
 
       def params_errors
-        errors = []
-        errors << 'Please select either redirect or archive' if http_status.blank?
-        errors << 'Enter at least one valid path' if canonical_paths.blank?
-        errors << 'Enter a valid URL to redirect to' if would_fail_on_new_url?
+        errors = {}
+        errors[:http_status] = ERRORS[:http_status_invalid] if http_status.blank?
+        errors[:paths]       = ERRORS[:paths_empty]         if canonical_paths.empty?
+        errors[:new_url]     = ERRORS[:new_url_invalid]     if would_fail_on_new_url?
         errors
       end
 

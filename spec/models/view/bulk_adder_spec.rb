@@ -85,15 +85,27 @@ describe View::Mappings::BulkAdder do
 
   describe '#params_errors' do
     let!(:site) { create(:site) }
-    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: @http_status }, '').params_errors }
+    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: @http_status, new_url: @new_url }, '').params_errors }
 
-    describe 'when no paths are given to archive, there is an error' do
+    describe 'when no http_status is given, there is an error for http_status' do
+      its([:http_status]) { should eql(View::Mappings::BulkAdder::ERRORS[:http_status_invalid]) }
+    end
+
+    describe 'when no paths are given, there is an error for paths' do
       before do
         @paths_input = ''
-        @http_status = '410'
       end
 
-      it { should have(1).errors }
+      its([:paths]) { should eql(View::Mappings::BulkAdder::ERRORS[:paths_empty]) }
+    end
+
+    describe 'when a new_url is required but an invalid new_url is given, there is an error for new_url' do
+      before do
+        @http_status = '301'
+        @new_url = '________'
+      end
+
+      its([:new_url]) { should eql(View::Mappings::BulkAdder::ERRORS[:new_url_invalid]) }
     end
   end
 end
