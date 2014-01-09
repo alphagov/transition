@@ -7,16 +7,19 @@
 </h1>
 
 <%= form_tag new_multiple_confirmation_site_mappings_path(@site), role: 'form', class: 'js-edit-mapping-form' do %>
-  <%= render 'shared/error_messages', error_messages: @errors %>
 
-  <div class="form-group row">
+  <% if @errors %>
+    <%= render 'shared/error_messages', error_messages: @errors.values %>
+  <% end %>
+
+  <div class="form-group row <% if @errors && @errors[:http_status] %>field_with_errors<% end %>">
     <div class="col-md-2">
       <%= label_tag(:http_status, 'Type') %>
       <%= select_tag :http_status, options_for_select(options_for_supported_statuses), { class: 'form-control remove-bottom-margin js-http-status' } %>
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group <% if @errors && @errors[:paths] %>field_with_errors<% end %>">
     <%#
       Capture label HTML to avoid using a block, this circumvents a problem with
       rails not wrapping the label with 'field_with_errors' on error
@@ -43,10 +46,12 @@
     <legend class="if-js-rm">
       Redirect
     </legend>
-    <%= label_tag :new_url, 'Redirect to' %>
-    <div class="row">
-      <div class="col-md-8">
-        <%= text_field_tag(:new_url, nil, class: 'form-control') %>
+    <div <% if @errors && @errors[:new_url] %>class="field_with_errors"<% end %>>
+      <%= label_tag :new_url, 'Redirect to' %>
+      <div class="row">
+        <div class="col-md-8">
+          <%= text_field_tag(:new_url, nil, class: 'form-control') %>
+        </div>
       </div>
     </div>
   <% end %>

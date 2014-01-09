@@ -101,3 +101,10 @@ end
 Then(/^I should not see a "Redirect to" input$/) do
   expect(page).not_to have_selector('label', text: 'Redirect to')
 end
+
+Then(/^I should see a highlighted "(.*?)" label and field$/) do |label|
+  expect(page).to have_selector('.field_with_errors label', text: label)
+
+  label = find('label', text: label)
+  expect(page).to have_selector(".field_with_errors *[name='#{label['for']}']")
+end

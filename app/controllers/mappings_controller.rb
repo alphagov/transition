@@ -23,7 +23,7 @@ class MappingsController < ApplicationController
 
   def new_multiple_confirmation
     if bulk_add.params_invalid?
-      @errors = bulk_add.params_errors.values
+      @errors = bulk_add.params_errors
       render action: 'new_multiple'
     end
   end

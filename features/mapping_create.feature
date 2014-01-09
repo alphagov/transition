@@ -38,3 +38,14 @@ Feature: Create a mapping
     And I should see "/needs/canonicalizing"
     And I should see "/a"
     But I should not see "noslash"
+
+  Scenario: Errors shown for invalid inputs
+    Given I have logged in as an admin
+    And a site bis exists
+    And I visit the path /sites/bis/mappings/new_multiple
+    When I make the new mapping paths "" redirect to ______
+    And I submit the mappings
+    Then I should see "Enter at least one valid path"
+    And I should see a highlighted "Old URLs" label and field
+    And I should see "Enter a valid URL to redirect to"
+    And I should see a highlighted "Redirect to" label and field
