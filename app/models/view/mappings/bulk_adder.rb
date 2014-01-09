@@ -20,7 +20,7 @@ module View
             #     http://stackoverflow.com/questions/10805125
             paths = paths.split(/\r?\n|\r/)
           end
-          paths.select { |p| p.present? }
+          paths.select { |p| p.present? }.map { |p| p.strip }
         else
           []
         end

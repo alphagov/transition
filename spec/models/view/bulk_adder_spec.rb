@@ -24,6 +24,12 @@ describe View::Mappings::BulkAdder do
       it { should eql(['a', 'b', 'c', 'd']) }
     end
 
+    context 'multiple lines with starting and trailing whitespace' do
+      before { @paths_input = "   a    \r\nb    \rc\n     d" }
+
+      it { should eql(['a', 'b', 'c', 'd']) }
+    end
+
     context 'multiple realistic paths' do
       before { @paths_input = "/sitecontent/documents/countries/491163/pvs-dis?view=binary\r\n/about us with spaces\r/arbitrary%20punctuation%3E" }
 
