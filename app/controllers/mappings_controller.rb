@@ -19,6 +19,7 @@ class MappingsController < ApplicationController
   end
 
   def new_multiple
+    bulk_add
   end
 
   def new_multiple_confirmation

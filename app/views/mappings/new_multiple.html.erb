@@ -15,7 +15,7 @@
   <div class="form-group row <% if @errors && @errors[:http_status] %>field_with_errors<% end %>">
     <div class="col-md-2">
       <%= label_tag(:http_status, 'Type') %>
-      <%= select_tag :http_status, options_for_select(options_for_supported_statuses), { class: 'form-control remove-bottom-margin js-http-status' } %>
+      <%= select_tag :http_status, options_for_select(options_for_supported_statuses, @bulk_add.http_status), { class: 'form-control remove-bottom-margin js-http-status' } %>
     </div>
   </div>
 
@@ -36,7 +36,7 @@
       <div class="old-urls col-md-8">
         <div class="input-group">
           <span class="input-group-addon">http://<%= @site.default_host.hostname %></span>
-          <%= text_area_tag :paths, nil, class: 'form-control', placeholder: '/path/to/page' %>
+          <%= text_area_tag :paths, @bulk_add.raw_paths.join("\n"), class: 'form-control', placeholder: '/path/to/page' %>
         </div>
       </div>
     </div>
@@ -50,7 +50,7 @@
       <%= label_tag :new_url, 'Redirect to' %>
       <div class="row">
         <div class="col-md-8">
-          <%= text_field_tag(:new_url, nil, class: 'form-control') %>
+          <%= text_field_tag(:new_url, @bulk_add.new_url, class: 'form-control') %>
         </div>
       </div>
     </div>

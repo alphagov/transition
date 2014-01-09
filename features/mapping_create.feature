@@ -43,9 +43,11 @@ Feature: Create a mapping
     Given I have logged in as an admin
     And a site bis exists
     And I visit the path /sites/bis/mappings/new_multiple
-    When I make the new mapping paths "" redirect to ______
+    When I make the new mapping paths "noslash" redirect to __INVALID_URL__
     And I submit the mappings
     Then I should see "Enter at least one valid path"
     And I should see a highlighted "Old URLs" label and field
+    And the "Old URLs" value should be "noslash"
     And I should see "Enter a valid URL to redirect to"
     And I should see a highlighted "Redirect to" label and field
+    And the "Redirect to" value should be "__INVALID_URL__"

@@ -60,3 +60,9 @@ end
 Then(/^I should see a table with class "([^"]*)" containing (\d+) rows?$/) do |classname, row_count|
   expect(page).to have_selector("table.#{classname} tbody tr", count: row_count)
 end
+
+# Forms
+
+Then(/^the "([^"]*)" value should be "([^"]*)"/) do |label, value|
+  expect(page).to have_field(label, with: value)
+end

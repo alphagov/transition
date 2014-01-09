@@ -11,6 +11,7 @@ module View
         paths_empty: 'Enter at least one valid path',
         new_url_invalid: 'Enter a valid URL to redirect to'
       }
+
       def raw_paths
         # Efficiently match any combination of new line characters:
         #     http://stackoverflow.com/questions/10805125
