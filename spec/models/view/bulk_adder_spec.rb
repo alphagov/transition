@@ -89,6 +89,63 @@ describe View::Mappings::BulkAdder do
     end
   end
 
+  describe '#existing_mappings' do
+    let!(:existing_mapping) { create(:mapping, site: site, path: '/exists_already') }
+    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: '410' }, '').existing_mappings }
+
+    context 'existing mapping\'s path is submitted' do
+      before { @paths_input = "/exists_already\n/new" }
+
+      it { should have(1).mapping }
+
+      it 'should only contain the existing mapping' do
+        expect(subject[0]).to eql(existing_mapping)
+      end
+    end
+
+    context 'existing mapping\'s path is not submitted' do
+      before { @paths_input = "/new\n/another_new" }
+
+      its(:size) { should eql(0) }
+    end
+  end
+
+  describe '#all_mappings' do
+    let!(:existing_mapping) { create(:mapping, site: site, path: '/exists_already') }
+    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: '410' }, '').all_mappings }
+
+    context 'with only valid paths input' do
+      before { @paths_input = "/exists_already\n/a\n/b" }
+
+      it 'should include a mapping for each valid path in the input' do
+        expect(subject).to have(3).mappings
+      end
+
+      it 'should be in the same order as the paths were input' do
+        expected_path_order = ['/exists_already', '/a', '/b']
+        expect(subject.map { |m| m.path }).to eql(expected_path_order)
+      end
+
+      it 'should not have created mappings which did not already exist' do
+        expected_persisteds = [true, false, false]
+        expect(subject.map { |m| m.persisted? }).to eql(expected_persisteds)
+      end
+
+      it 'should not assign http_status to mappings which do not already exist' do
+        expected_statuses = ['410', nil, nil]
+        expect(subject.map { |m| m.http_status }).to eql(expected_statuses)
+      end
+    end
+
+    context 'with an invalid path in the input' do
+      before { @paths_input = "/exists_already\n/a\nnoslash" }
+
+      it 'should not include a mapping for the invalid path' do
+        expect(subject).to have(2).mappings
+      end
+    end
+  end
+
   describe '#params_errors' do
     subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: @http_status, new_url: @new_url }, '').params_errors }
 

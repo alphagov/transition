@@ -28,20 +28,20 @@ Feature: Create a mapping
 
   Scenario: Create multiple mappings
     Given I have logged in as an admin
-    And a site bis exists
+    And there is a site called bis belonging to an organisation bis with these mappings:
+      | http_status | path | new_url               |
+      | 301         | /r   | http://somewhere.good |
+      | 410         | /a   |                       |
     And I visit the path /sites/bis/mappings/new_multiple
     Then I should see "http://bis.gov.uk"
-    When I make the new mapping paths "/Needs/Canonicalizing/q=1, /a, noslash" redirect to www.gov.uk/organisations/bis
+    When I make the new mapping paths "/Needs/Canonicalizing/?q=1, /a, /r, noslash" redirect to www.gov.uk/organisations/bis
     And I submit the mappings
     Then I should see "Confirm new mappings"
     And I should see "https://www.gov.uk/organisations/bis"
     And I should see "/needs/canonicalizing"
-    And I should see "/a"
+    And I should see "/a currently archived"
+    And I should see "/r currently redirects to http://somewhere.good"
     But I should not see "noslash"
-    When I save the mappings
-    Then I should see "2 mappings created"
-    And I should see "/needs/canonicalizing"
-    And I should see "/a"
 
   Scenario: Errors shown for invalid inputs
     Given I have logged in as an admin

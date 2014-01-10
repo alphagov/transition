@@ -29,11 +29,18 @@
       </tr>
     </thead>
     <tbody>
-      <% @bulk_add.canonical_paths.each do |path| %>
+      <% @bulk_add.all_mappings.each do |m| %>
         <tr>
           <td>
-            <strong><%= link_to path, path, class: 'breakable' %></strong>
-            <%= hidden_field_tag "paths[]", path %>
+            <strong><%= link_to m.path, m.old_url, class: 'breakable' %></strong>
+            <span class="text-muted">
+              <% if m.redirect? %>
+                currently redirects to <%= link_to m.new_url, m.new_url, class: 'link-muted breakable' %>
+              <% elsif m.archive? %>
+                currently archived
+              <% end %>
+            </span>
+            <%= hidden_field_tag "paths[]", m.path %>
           </td>
         </tr>
       <% end %>

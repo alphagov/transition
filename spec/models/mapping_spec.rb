@@ -17,6 +17,14 @@ describe Mapping do
     end
   end
 
+  describe '#archive?' do
+    its(:archive?) { should be_false }
+    it 'is true when http_status is 410' do
+      subject.http_status = '410'
+      subject.archive?.should be_true
+    end
+  end
+
   describe 'url generation (based on mapping path and site host)' do
     subject(:mapping) { create :mapping, site: create(:site, abbr: 'cic_regulator'), path: '/some-path' }
 

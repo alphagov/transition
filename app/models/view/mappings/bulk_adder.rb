@@ -35,6 +35,21 @@ module View
         raw_paths.map { |p| site.canonical_path(p) }.select { |p| p.present? }.uniq
       end
 
+      def existing_mappings
+        @existing_mappings ||= Mapping.where(site_id: site.id, path: canonical_paths)
+      end
+
+      def all_mappings
+        canonical_paths.map do |path|
+          i = existing_mappings.find_index { |m| m.path == path }
+          if i
+            existing_mappings[i]
+          else
+            Mapping.new(site: site, path: path)
+          end
+        end
+      end
+
       def http_status
         params[:http_status] if ['301', '410'].include?(params[:http_status])
       end
