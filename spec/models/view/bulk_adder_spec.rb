@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe View::Mappings::BulkAdder do
+  let!(:site) { create(:site) }
+
   describe '#raw_paths' do
-    let!(:site) { create(:site) }
     subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input }, '').raw_paths }
 
     context 'empty string' do
@@ -56,7 +57,6 @@ describe View::Mappings::BulkAdder do
   end
 
   describe '#canonical_paths' do
-    let!(:site) { create(:site) }
     subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input }, '').canonical_paths }
 
     describe 'multiple raw paths are canonicalized' do
@@ -90,7 +90,6 @@ describe View::Mappings::BulkAdder do
   end
 
   describe '#params_errors' do
-    let!(:site) { create(:site) }
     subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: @http_status, new_url: @new_url }, '').params_errors }
 
     describe 'when no http_status is given, there is an error for http_status' do
@@ -116,7 +115,6 @@ describe View::Mappings::BulkAdder do
   end
 
   describe '#create!' do
-    let!(:site) { create(:site) }
     subject { site.mappings }
 
     def call_create
