@@ -12,6 +12,11 @@ module View
         new_url_invalid: 'Enter a valid URL to redirect to'
       }
 
+      # Take either a multiline string of paths, one per line (as submitted by
+      # the new_multiple form) or an array of path strings (as submitted by the
+      # hidden fields on the confirmation page) and return the paths in an
+      # array, ignoring any lines which are blank and stripping whitespace from
+      # around the rest.
       def raw_paths
         paths = params[:paths]
         if paths
