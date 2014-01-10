@@ -37,7 +37,7 @@ class MappingsController < ApplicationController
 
     bulk_add.create!
 
-    flash[:success] = "#{bulk_add.canonical_paths.size} mappings created"
+    flash[:success] = "#{bulk_add.success_count} mapping".pluralize(bulk_add.success_count) + ' created.'
     redirect_to site_return_path
   end
 

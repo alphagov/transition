@@ -43,6 +43,9 @@ Feature: Create a mapping
     And I should see "/a currently archived"
     And I should see "/r currently redirects to http://somewhere.good"
     But I should not see "noslash"
+    When I save the mappings
+    Then I should see "1 mapping created"
+    And I should see "/needs/canonicalizing"
 
   Scenario: Errors shown for invalid inputs
     Given I have logged in as an admin

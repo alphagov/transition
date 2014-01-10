@@ -96,12 +96,24 @@ module View
       end
 
       def create!
-        canonical_paths.each do |path|
-          Mapping.create({
-                            site: site,
-                            path: path,
-                          }.merge(common_data))
+        @outcomes = canonical_paths.map do |path|
+          begin
+            Mapping.create!({
+                              site: site,
+                              path: path,
+                            }.merge(common_data))
+          rescue ActiveRecord::RecordInvalid
+            false
+          end
         end
+      end
+
+      def success_count
+        @outcomes.size - failure_count
+      end
+
+      def failure_count
+        @outcomes.count(false)
       end
     end
   end
