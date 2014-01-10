@@ -47,6 +47,16 @@
         </tr>
       <% end %>
     </tbody>
+    <tfoot>
+      <tr>
+        <td>
+          <%= label_tag(:update_existing_false, 'Only create new mappings') %>
+          <%= radio_button_tag 'update_existing', 'false', true %>
+          <%= label_tag(:update_existing_true, 'Also update existing mappings for these old URLs') %>
+          <%= radio_button_tag 'update_existing', 'true' %>
+        </td>
+      </tr>
+    </tfoot>
   </table>
 
   <%= button_tag 'Save', class: 'btn btn-success' %>

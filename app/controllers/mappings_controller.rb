@@ -35,9 +35,9 @@ class MappingsController < ApplicationController
       render action: 'new_multiple'
     end
 
-    bulk_add.create!
+    bulk_add.create_or_update!
 
-    flash[:success] = "#{bulk_add.success_count} mapping".pluralize(bulk_add.success_count) + ' created.'
+    flash[:success] = "#{bulk_add.created_count} mapping".pluralize(bulk_add.created_count) + " created and #{bulk_add.updated_count} mapping".pluralize(bulk_add.updated_count) + ' updated.'
     redirect_to site_return_path
   end
 

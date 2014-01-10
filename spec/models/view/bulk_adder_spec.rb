@@ -171,33 +171,93 @@ describe View::Mappings::BulkAdder do
     end
   end
 
-  describe '#create!' do
-    subject { site.mappings }
+  describe '#create_or_update!', versioning: true do
+    let!(:existing_mapping) { create(:mapping, site: site, path: '/exists') }
 
-    def call_create
-      View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: @http_status, new_url: @new_url }, '').create!
+    def call_create_or_update
+      params = {
+        paths:           @paths_input,
+        http_status:     @http_status,
+        new_url:         @new_url,
+        update_existing: @update_existing
+      }
+      @adder = View::Mappings::BulkAdder.new(site, params, '')
+      @adder.create_or_update!
     end
 
     context 'with valid data' do
       before do
-        @paths_input = "/a\n/B\n/c?canonical=no"
-        @http_status = '301'
-        @new_url = 'www.gov.uk'
-        call_create
+        @paths_input     = "/a\n/B\n/c?canonical=no\n/exists"
+        @http_status     = '301'
+        @new_url         = 'www.gov.uk'
       end
 
-      it { should have(3).mappings }
+      shared_examples 'the new mappings were correctly created' do
+        subject(:new_mappings) { Mapping.where(path: ['/a', '/b', '/c']) }
 
-      specify 'all mappings are redirects' do
-        expect(Mapping.where(http_status: '301').count).to eql(3)
+        specify 'there are 3 new mappings' do
+          expect(new_mappings.count).to eql(3)
+        end
+
+        specify 'all new mappings are redirects' do
+          expect(new_mappings.where(http_status: '301').count).to eql(3)
+        end
+
+        specify 'all new mappings have the correct new_url' do
+          expect(new_mappings.where(new_url: 'https://www.gov.uk').count).to eql(3)
+        end
+
+        specify 'all new mappings have a version recording their creation' do
+        end
       end
 
-      specify 'all mappings have the correct new_url' do
-        expect(Mapping.where(new_url: 'https://www.gov.uk').count).to eql(3)
+      context 'when not updating existing mappings' do
+        before do
+          @update_existing = "false"
+          call_create_or_update
+        end
+
+        it_behaves_like 'the new mappings were correctly created'
+
+        describe 'outcomes' do
+          subject { @adder.outcomes }
+
+          it { should eql(['created', 'created', 'created', 'not_updating']) }
+        end
+
+        describe 'the pre-existing mapping' do
+          subject { existing_mapping.reload }
+
+          its(:http_status) { should eql('410') }
+
+          it 'has no history' do
+          end
+        end
       end
 
-      specify 'all paths are canonical' do
-        expect(Mapping.pluck(:path)).to eql(['/a', '/b', '/c'])
+      context 'when updating existing mappings' do
+        before do
+          @update_existing = "true"
+          call_create_or_update
+        end
+
+        it_behaves_like 'the new mappings were correctly created'
+
+        describe 'outcomes' do
+          subject { @adder.outcomes }
+
+          it { should eql(['created', 'created', 'created', 'updated']) }
+        end
+
+        describe 'the pre-existing mapping' do
+          subject { existing_mapping.reload }
+
+          its(:http_status) { should eql('301') }
+          its(:new_url)     { should eql('https://www.gov.uk') }
+
+          it 'has a version recording its creation' do
+          end
+        end
       end
     end
   end

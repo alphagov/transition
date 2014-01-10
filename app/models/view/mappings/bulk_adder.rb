@@ -95,25 +95,33 @@ module View
 
       end
 
-      def create!
+      def update_existing?
+        params[:update_existing] == "true"
+      end
+
+      def create_or_update!
         @outcomes = canonical_paths.map do |path|
-          begin
-            Mapping.create!({
-                              site: site,
-                              path: path,
-                            }.merge(common_data))
-          rescue ActiveRecord::RecordInvalid
-            false
+          m = Mapping.where(site_id: site.id, path: path).first_or_initialize
+          if ! m.persisted?
+            m.update_attributes(common_data) ? 'created' : 'creation_failed'
+          elsif update_existing?
+            m.update_attributes(common_data) ? 'updated' : 'update_failed'
+          else
+            'not_updating'
           end
         end
       end
 
-      def success_count
-        @outcomes.size - failure_count
+      def outcomes
+        @outcomes
       end
 
-      def failure_count
-        @outcomes.count(false)
+      def created_count
+        outcomes.count('created')
+      end
+
+      def updated_count
+        outcomes.count('updated')
       end
     end
   end
