@@ -153,9 +153,9 @@ describe View::Mappings::BulkAdder do
       its([:http_status]) { should eql(View::Mappings::BulkAdder::ERRORS[:http_status_invalid]) }
     end
 
-    describe 'when no paths are given, there is an error for paths' do
+    describe 'when no valid paths are given, there is an error for paths' do
       before do
-        @paths_input = ''
+        @paths_input = 'a'
       end
 
       its([:paths]) { should eql(View::Mappings::BulkAdder::ERRORS[:paths_empty]) }
