@@ -61,4 +61,43 @@ describe MappingsHelper do
       it { should eql('Archive') }
     end
   end
+
+  describe 'counts of new and existing mappings' do
+    let!(:exists_1) { create(:mapping, site: site, path: '/exists_1') }
+    let!(:exists_2) { create(:mapping, site: site, path: '/exists_2') }
+
+    context 'with one new and one existing path submitted' do
+      before do
+        paths_input = "/exists_1\n/a"
+        @bulk_add = View::Mappings::BulkAdder.new(site, { paths: paths_input, http_status: '410' }, '')
+      end
+
+      describe '#new_mappings_count' do
+        subject { helper.new_mappings_count }
+        it { should eql('1 new mapping') }
+      end
+
+      describe '#existing_mappings_count' do
+        subject { helper.existing_mappings_count }
+        it { should eql('1 existing mapping') }
+      end
+    end
+
+    context 'with two new and two existing paths submitted' do
+      before do
+        paths_input = "/exists_1\n/exists_2\n/a\n/b"
+        @bulk_add = View::Mappings::BulkAdder.new(site, { paths: paths_input, http_status: '410' }, '')
+      end
+
+      describe '#new_mappings_count' do
+        subject { helper.new_mappings_count }
+        it { should eql('2 new mappings') }
+      end
+
+      describe '#existing_mappings_count' do
+        subject { helper.existing_mappings_count }
+        it { should eql('2 existing mappings') }
+      end
+    end
+  end
 end

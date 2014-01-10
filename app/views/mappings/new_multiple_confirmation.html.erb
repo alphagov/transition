@@ -16,6 +16,8 @@
   </h2>
 </div>
 
+<p>Saving will create <%= new_mappings_count %> and update <%= existing_mappings_count %>.</p>
+
 <%= form_tag create_multiple_site_mappings_path(@site) do %>
   <%= hidden_field_tag "http_status", @bulk_add.http_status %>
   <% if @bulk_add.http_status == '301' %>
