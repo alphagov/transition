@@ -35,7 +35,11 @@
         <td>
           <span class="breakable"><%= site.default_host.hostname %></span>
         </td>
-        <td><%= link_to 'Mappings', site_mappings_path(site) %></td>
+        <td>
+          <%= link_to site_mappings_path(site) do %>
+            <%= number_with_delimiter(site.mappings.count) %> Mappings
+          <% end %>
+        </td>
         <td><%= link_to 'Analytics', summary_site_hits_path(site) %></td>
         <td>
           <%= render partial: 'sites/transition_status', locals: {site: site} %>
