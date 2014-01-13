@@ -76,13 +76,7 @@ module MappingsHelper
     end
   end
 
-  def new_mappings_count
-    c = @bulk_add.canonical_paths.size - @bulk_add.existing_mappings.size
-    pluralize(c, "new mapping")
-  end
-
   def existing_mappings_count
-    c = @bulk_add.existing_mappings.size
-    pluralize(c, "existing mapping")
+    @bulk_add.existing_mappings.size
   end
 end

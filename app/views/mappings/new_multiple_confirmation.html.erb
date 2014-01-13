@@ -2,23 +2,36 @@
 
 <% breadcrumb(:new_mappings_confirmation, @site) %>
 
-<div class="page-title">
+<div class="page-title-with-border">
   <h1>
     <span class="small"><%= @site.default_host.hostname %></span>
     Confirm new mappings
   </h1>
-
-  <h2>
-    <%= "#{ http_status_name(@bulk_add.http_status) }" %>
-    <% if @bulk_add.http_status == '301' %>
-      to <%= link_to @bulk_add.test_mapping.new_url, @bulk_add.test_mapping.new_url %>
-    <% end %>
-  </h2>
 </div>
 
-<p>Saving will create <%= new_mappings_count %> and update <%= existing_mappings_count %>.</p>
-
 <%= form_tag create_multiple_site_mappings_path(@site) do %>
+
+  <% if existing_mappings_count > 0 %>
+    <div class="alert alert-warning">
+      <h4>We’ve found <%= pluralize(existing_mappings_count, "existing mapping") %> for the paths entered</h4>
+      <%= label_tag :update_existing_false, class: 'radio-inline' do %>
+        <%= radio_button_tag 'update_existing', 'false', true %> Ignore existing mappings
+      <% end %>
+      <%= label_tag :update_existing_true, class: 'radio-inline' do %>
+        <%= radio_button_tag 'update_existing', 'true' %> Overwrite existing mappings
+      <% end %>
+    </div>
+  <% else %>
+    <%= hidden_field_tag "update_existing", "false" %>
+  <% end %>
+
+  <h2 class="add-bottom-margin">
+    <%= "#{ http_status_name(@bulk_add.http_status) }" %> paths
+    <% if @bulk_add.http_status == '301' %>
+      to <%= link_to @bulk_add.test_mapping.new_url, @bulk_add.test_mapping.new_url, class: 'breakable' %>
+    <% end %>
+  </h2>
+
   <%= hidden_field_tag "http_status", @bulk_add.http_status %>
   <% if @bulk_add.http_status == '301' %>
     <%= hidden_field_tag "new_url", @bulk_add.test_mapping.new_url %>
@@ -27,7 +40,7 @@
   <table class="table table-bordered table-striped">
     <thead>
       <tr class="table-header">
-        <th>Old paths from <%= @site.default_host.hostname %></th>
+        <th><%= pluralize(@bulk_add.all_mappings.size, "old path") %> from <%= @site.default_host.hostname %></th>
       </tr>
     </thead>
     <tbody>
@@ -47,16 +60,6 @@
         </tr>
       <% end %>
     </tbody>
-    <tfoot>
-      <tr>
-        <td>
-          <%= label_tag(:update_existing_false, 'Only create new mappings') %>
-          <%= radio_button_tag 'update_existing', 'false', true %>
-          <%= label_tag(:update_existing_true, 'Also update existing mappings for these old URLs') %>
-          <%= radio_button_tag 'update_existing', 'true' %>
-        </td>
-      </tr>
-    </tfoot>
   </table>
 
   <%= button_tag 'Save', class: 'btn btn-success' %>

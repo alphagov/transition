@@ -37,7 +37,8 @@ Feature: Create a mapping
     When I make the new mapping paths "/Needs/Canonicalizing/?q=1, /a, /r, noslash" redirect to www.gov.uk/organisations/bis
     And I submit the mappings
     Then I should see "Confirm new mappings"
-    And I should see "Saving will create 1 new mapping and update 2 existing mappings"
+    And I should see "2 existing mappings"
+    And I should see "3 old paths"
     And I should see "https://www.gov.uk/organisations/bis"
     And I should see "/needs/canonicalizing"
     And I should see "/a currently archived"
