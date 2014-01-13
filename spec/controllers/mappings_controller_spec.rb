@@ -199,6 +199,17 @@ describe MappingsController do
         expect(response).to redirect_to site_mappings_path(site)
       end
     end
+
+    context 'when no new_url is posted for redirects' do
+      before do
+        login_as admin_bob
+      end
+
+      it 'renders the form with errors' do
+        post :new_multiple_confirmation, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: ''
+        expect(response).to render_template 'mappings/new_multiple'
+      end
+    end
   end
 
   describe '#create_multiple' do
