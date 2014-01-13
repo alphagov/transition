@@ -223,6 +223,33 @@ describe MappingsController do
         expect(response).to redirect_to site_mappings_path(site)
       end
     end
+
+    context 'when user can edit the site' do
+      before do
+        login_as admin_bob
+      end
+
+      context 'when no new_url is posted for redirects' do
+        it 'renders the form with errors' do
+          post :create_multiple, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: '', update_existing: 'true'
+          expect(response).to render_template 'mappings/new_multiple'
+        end
+      end
+
+      context 'with valid data' do
+        before do
+          post :create_multiple, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: 'www.gov.uk', update_existing: 'true'
+        end
+
+        it 'redirects to the site return URL' do
+          expect(response).to redirect_to site_mappings_path(site)
+        end
+
+        it 'creates new mappings' do
+          expect(site.mappings.count).to eql(2)
+        end
+      end
+    end
   end
 
   describe '#edit_multiple' do

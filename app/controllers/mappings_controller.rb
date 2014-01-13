@@ -32,7 +32,7 @@ class MappingsController < ApplicationController
   def create_multiple
     if bulk_add.params_invalid?
       @errors = bulk_add.params_errors
-      render action: 'new_multiple'
+      render action: 'new_multiple' and return
     end
 
     bulk_add.create_or_update!
