@@ -172,7 +172,7 @@ describe View::Mappings::BulkAdder do
   end
 
   describe '#create_or_update!', versioning: true do
-    let!(:existing_mapping) { create(:mapping, site: site, path: '/exists') }
+    let!(:existing_mapping) { create(:mapping, site: site, path: '/exists', http_status: '410') }
 
     def call_create_or_update
       params = {
@@ -183,6 +183,37 @@ describe View::Mappings::BulkAdder do
       }
       @adder = View::Mappings::BulkAdder.new(site, params, '')
       @adder.create_or_update!
+    end
+
+    # We expect this to never be called with invalid data because params_invalid?
+    # should be called first to display error messages on the form, but in case
+    # this method is called without data being validated first, check that it
+    # doesn't blow up or bypass validation when attempting to create the mappings.
+    context 'with invalid data: a redirect without a new_url' do
+      before do
+        @paths_input     = "/a\n/B\n/c?canonical=no\n/exists"
+        @http_status     = '301'
+        @new_url         = ''
+        @update_existing = "true"
+        call_create_or_update
+      end
+
+      specify 'there are no new mappings' do
+        expect(site.mappings.count).to eql(1)
+      end
+
+      describe 'the existing mapping is unchanged' do
+        subject { existing_mapping }
+
+        its(:http_status) { should eql('410') }
+        its(:new_url)     { should be_nil }
+      end
+
+      describe 'outcomes' do
+        subject { @adder.outcomes }
+
+        it { should eql(['creation_failed', 'creation_failed', 'creation_failed', 'update_failed']) }
+      end
     end
 
     context 'with valid data' do
