@@ -1,5 +1,7 @@
-When(/^I go to create a new mapping$/) do
-  click_link 'Add mapping'
+When(/^I go to create some mappings$/) do
+  steps %{
+    And I click the first link called "Add mappings"
+  }
 end
 
 When(/^I make the mapping a redirect to (.*)$/) do |new_url|
