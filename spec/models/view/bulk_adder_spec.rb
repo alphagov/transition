@@ -297,4 +297,22 @@ describe View::Mappings::BulkAdder do
       end
     end
   end
+
+  describe '#success_message' do
+    let!(:existing_mapping) { create(:mapping, site: site, path: '/exists', http_status: '410') }
+
+    before do
+      params = {
+        paths:           "/a\n/B\n/c?canonical=no\n/exists",
+        http_status:     '410',
+        update_existing: 'true'
+      }
+      @adder = View::Mappings::BulkAdder.new(site, params, '')
+      @adder.create_or_update!
+    end
+
+    subject { @adder.success_message }
+
+    it { should eql('3 mappings created and 1 mapping updated.') }
+  end
 end

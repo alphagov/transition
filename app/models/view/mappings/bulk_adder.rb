@@ -81,6 +81,12 @@ module View
       def updated_count
         outcomes.count('updated')
       end
+
+      def success_message
+        msg = "#{created_count} mapping".pluralize(created_count)
+        msg += " created and #{updated_count} mapping".pluralize(updated_count)
+        msg += ' updated.'
+      end
     end
   end
 end

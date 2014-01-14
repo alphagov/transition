@@ -23,7 +23,7 @@ class MappingsController < ApplicationController
 
     bulk_add.create_or_update!
 
-    flash[:success] = "#{bulk_add.created_count} mapping".pluralize(bulk_add.created_count) + " created and #{bulk_add.updated_count} mapping".pluralize(bulk_add.updated_count) + ' updated.'
+    flash[:success] = bulk_add.success_message
     redirect_to site_return_path
   end
 
