@@ -22,7 +22,7 @@ class Mapping < ActiveRecord::Base
             exclusion: { in: ['/'], message: I18n.t('not_possible_to_edit_homepage_mapping')},
             is_path: true
   validates :http_status, presence: true, length: { maximum: 3 }
-  validates :site_id, uniqueness: { scope: [:path], message: 'Mapping already exists for this site and path!' }
+  validates :site_id, uniqueness: { scope: [:path_hash], message: 'Mapping already exists for this site and path!' }
 
   # set a hash of the path because we can't have a unique index on
   # the path (it's too long)
