@@ -203,11 +203,16 @@ describe MappingsController do
     context 'when no new_url is posted for redirects' do
       before do
         login_as admin_bob
+        post :new_multiple_confirmation, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: ''
       end
 
-      it 'renders the form with errors' do
-        post :new_multiple_confirmation, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: ''
+      it 'renders the form again' do
         expect(response).to render_template 'mappings/new_multiple'
+      end
+
+      it 'sets an error for new_url' do
+        expected_errors = { 'new_url' => View::Mappings::BulkAdder::ERRORS[:new_url_invalid] }
+        expect(assigns(:errors)).to eq(expected_errors)
       end
     end
   end
