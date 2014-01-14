@@ -51,10 +51,10 @@ describe MappingsController do
     end
 
     context 'when no mapping exists yet for the canonicalized path' do
-      it 'redirects to the new mapping form' do
+      it 'redirects to the new mappings form' do
         get :find, site_id: site.abbr, path: raw_path
 
-        expect(response).to redirect_to new_site_mapping_path(site, path: canonicalized_path)
+        expect(response).to redirect_to new_multiple_site_mappings_path(site, paths: canonicalized_path)
       end
     end
 
@@ -87,32 +87,6 @@ describe MappingsController do
 
           expect(response).to redirect_to site_mappings_url(site)
         end
-      end
-    end
-  end
-
-  describe '#new' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
-        get :new, site_id: site.abbr
-      end
-
-      it 'redirects to the index page and sets a flash message' do
-        expect(response).to redirect_to site_mappings_path(site)
-      end
-    end
-  end
-
-  describe '#create' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
-        post :create, site_id: site.abbr
-      end
-
-      it 'redirects to the index page and sets a flash message' do
-        expect(response).to redirect_to site_mappings_path(site)
       end
     end
   end
@@ -426,8 +400,8 @@ describe MappingsController do
       # ActionController::RequestForgeryProtection::ClassMethods to return false
       # in order to test our override of the verify_authenticity_token method
       subject.stub(:verified_request?).and_return(false)
-      post :create, site_id: mapping.site,
-               mapping: { path: '/foo', http_status: '410' }
+      post :create_multiple, site_id: mapping.site,
+               mapping: { paths: ['/foo'], http_status: '410', update_existing: 'false' }
       response.status.should eql(403)
       response.body.should eql('Invalid authenticity token')
     end

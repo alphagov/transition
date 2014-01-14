@@ -44,11 +44,6 @@ When(/^I change the mapping's redirect to (.*)$/) do |value|
   step 'I save the mapping'
 end
 
-When(/^I make the new mapping a redirect from (.*) to (.*)$/) do |path, new_url|
-  fill_in 'Old URLs', with: path
-  fill_in 'Redirect to', with: new_url
-end
-
 When(/^I make the new mapping paths "(.*)" redirect to (.*)$/) do |paths, new_url|
   fill_in 'Old URLs', with: paths.gsub(/, /, "\n")
   fill_in 'Redirect to', with: new_url

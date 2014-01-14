@@ -22,11 +22,6 @@ crumb :mappings do |site|
   parent :site, site
 end
 
-crumb :new_mapping do |mapping|
-  link "New mapping"
-  parent :mappings, mapping.site
-end
-
 crumb :new_mappings do |site|
   link "New mappings", new_multiple_site_mappings_path(site)
   parent :mappings, site

@@ -4,20 +4,6 @@ class MappingsController < ApplicationController
   before_filter :find_site
   before_filter :check_user_can_edit, except: [:index, :find]
 
-  def new
-    @mapping = @site.mappings.build(path: params[:path])
-  end
-
-  def create
-    @mapping = @site.mappings.build(params[:mapping])
-    if @mapping.save
-      flash[:success] = view_context.created_mapping(@mapping)
-      redirect_to edit_site_mapping_path(@site, @mapping)
-    else
-      render action: 'new'
-    end
-  end
-
   def new_multiple
     bulk_add
   end
@@ -111,7 +97,7 @@ class MappingsController < ApplicationController
     if mapping.present?
       redirect_to edit_site_mapping_path(@site, mapping)
     else
-      redirect_to new_site_mapping_path(@site, path: path)
+      redirect_to new_multiple_site_mappings_path(@site, paths: path)
     end
   end
 

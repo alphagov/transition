@@ -9,46 +9,19 @@
   </div>
 
   <div class="form-group">
-  <% if @mapping.persisted? # we're editing, show the example URL  %>
     <dl class="read-only-fields add-vertical-margins">
       <dt>Old URL</dt>
       <dd>
         <%= link_to @mapping.old_url, @mapping.old_url %>
       </dd>
     </dl>
-  <% else %>
-    <%#
-      Capture label HTML to avoid using a block, this circumvents a problem with
-      rails not wrapping the label with 'field_with_errors' on error
-      http://stackoverflow.com/questions/13862978/
-    %>
-    <% label_html = capture do %>
-      Old URLs
-      <p class="text-muted normal">
-        Please add one path per line. Each path should begin with a ‘/’.
-      </p>
-    <% end %>
-    <%= f.label :path, label_html, class: 'add-top-margin' %>
-    <div class="row">
-      <div class="old-urls col-md-8">
-        <div class="input-group">
-          <span class="input-group-addon">http://<%= @site.default_host.hostname %></span>
-          <%= f.text_area :path, class: 'form-control', placeholder: '/path/to/page' %>
-        </div>
-      </div>
-    </div>
-  <% end %>
   </div>
 
   <%= field_set_tag nil, class: 'form-group js-for-redirect' do %>
     <legend class="if-js-rm">
       Redirect
     </legend>
-    <% if @mapping.persisted? %>
-      <%= f.label :new_url, 'Redirects to' %>
-    <% else %>
-      <%= f.label :new_url, 'Redirect to' %>
-    <% end %>
+    <%= f.label :new_url, 'Redirects to' %>
     <div class="row">
       <div class="col-md-8">
         <%= f.text_field :new_url, class: 'form-control' %>
@@ -65,31 +38,25 @@
       <dl class="read-only-fields js-toggle-target <% if @mapping.archive_url %>if-js-hide<% end %>">
         <dt>National archive</dt>
         <dd>
-          <% if @mapping.persisted? %>
-            <%= link_to @mapping.national_archive_url, @mapping.national_archive_url %><br />
-            <span class="text-muted">Is this archive missing? <a href="#add-alternative-url" class="if-no-js-hide link-muted js-toggle">Use an alternative</a></span>
-          <% else %>
-            <p>The archive URLs will be automatically generated based on the old URLs provided above.</p>
-          <% end %>
+          <%= link_to @mapping.national_archive_url, @mapping.national_archive_url %><br />
+          <span class="text-muted">Is this archive missing? <a href="#add-alternative-url" class="if-no-js-hide link-muted js-toggle">Use an alternative</a></span>
         </dd>
       </dl>
-      <% if @mapping.persisted? %>
-        <div class="add-bottom-margin js-toggle-target <% unless @mapping.archive_url %>if-js-hide<% end %>">
-          <%= f.label :archive_url do %>
-            Alternative national archive URL (<%= link_to 'Find on the national archives', @mapping.national_archive_index_url %>)
-          <% end %>
-          <div class="row">
-            <div class="col-md-8">
-              <div class="input-group">
-                <%= f.text_field :archive_url, class: 'form-control' %>
-                <a href="#remove" class="btn btn-default js-cancel if-no-js-hide input-group-addon">
-                  <i class="glyphicon glyphicon-remove"></i> <%= @mapping.archive_url ? 'Remove' : 'Cancel' %>
-                </a>
-              </div>
+      <div class="add-bottom-margin js-toggle-target <% unless @mapping.archive_url %>if-js-hide<% end %>">
+        <%= f.label :archive_url do %>
+          Alternative national archive URL (<%= link_to 'Find on the national archives', @mapping.national_archive_index_url %>)
+        <% end %>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="input-group">
+              <%= f.text_field :archive_url, class: 'form-control' %>
+              <a href="#remove" class="btn btn-default js-cancel if-no-js-hide input-group-addon">
+                <i class="glyphicon glyphicon-remove"></i> <%= @mapping.archive_url ? 'Remove' : 'Cancel' %>
+              </a>
             </div>
           </div>
         </div>
-      <% end %>
+      </div>
     </div>
 
     <hr>
@@ -117,6 +84,6 @@
     </div>
   <% end %>
 
-  <%= f.submit @mapping.persisted? ? 'Save mapping' : 'Submit mappings', class: 'add-top-margin btn btn-success' %>
+  <%= f.submit 'Save mapping', class: 'add-top-margin btn btn-success' %>
 <% end %>
 <script>GOVUK.Mappings.edit()</script>

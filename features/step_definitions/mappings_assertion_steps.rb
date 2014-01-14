@@ -12,7 +12,7 @@ end
 
 Then(/^I should be returned to the edit mapping page with a success message$/) do
   step 'I should see "Edit mapping"'
-  page.should satisfy {|page| page.has_content?('Mapping created') or page.has_content?('Mapping saved')}
+  step 'I should see "Mapping saved"'
 end
 
 Then(/^the filter box should contain "([^"]*)"$/) do |path|
