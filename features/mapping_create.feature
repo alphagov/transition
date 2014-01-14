@@ -14,14 +14,13 @@ Feature: Create mappings
     Then I should see "http://bis.gov.uk"
     When I make the new mapping paths "/Needs/Canonicalizing/?q=1, /a, /r, noslash" redirect to www.gov.uk/organisations/bis
     And I submit the mappings
-    Then I should see "Confirm new mappings"
-    And I should see "2 existing mappings"
-    And I should see "3 old paths"
-    And I should see "https://www.gov.uk/organisations/bis"
-    And I should see "/needs/canonicalizing"
+    Then the page title should be "Confirm new mappings"
+    And I should see options to ignore or overwrite the existing mappings
+    And I should see that the mappings will redirect to "https://www.gov.uk/organisations/bis"
+    And I should see the canonicalized paths "/needs/canonicalizing, /a, /r"
+    But I should not see "noslash"
     And I should see "/a currently archived"
     And I should see "/r currently redirects to http://somewhere.good"
-    But I should not see "noslash"
     When I save my changes
     Then I should see "1 mapping created and 0 mappings updated"
     And I should see "/needs/canonicalizing"

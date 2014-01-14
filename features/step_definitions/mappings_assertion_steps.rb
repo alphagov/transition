@@ -108,3 +108,18 @@ Then(/^I should see a highlighted "(.*?)" label and field$/) do |label|
   label = find('label', text: label)
   expect(page).to have_selector(".field_with_errors *[name='#{label['for']}']")
 end
+
+Then(/^I should see options to ignore or overwrite the existing mappings$/) do
+  expect(page).to have_field('Ignore existing mappings', type: 'radio')
+  expect(page).to have_field('Overwrite existing mappings', type: 'radio')
+end
+
+Then(/^I should see that the mappings will redirect to "(.*?)"$/) do |new_url|
+  step "I should see \"Redirect paths to #{new_url}\""
+end
+
+Then(/^I should see the canonicalized paths "(.*?)"$/) do |paths|
+  paths.split(', ').each do |path|
+    expect(page).to have_link(path)
+  end
+end
