@@ -239,6 +239,9 @@ describe View::Mappings::BulkAdder do
         end
 
         specify 'all new mappings have a version recording their creation' do
+          new_mappings.each do |m|
+            expect(m.versions.last.event).to eql('create')
+          end
         end
       end
 
@@ -261,7 +264,8 @@ describe View::Mappings::BulkAdder do
 
           its(:http_status) { should eql('410') }
 
-          it 'has no history' do
+          it 'has no new history after its creation' do
+            expect(existing_mapping.versions.last.event).to eql('create')
           end
         end
       end
@@ -286,7 +290,8 @@ describe View::Mappings::BulkAdder do
           its(:http_status) { should eql('301') }
           its(:new_url)     { should eql('https://www.gov.uk') }
 
-          it 'has a version recording its creation' do
+          it 'has a version recording the update' do
+            expect(existing_mapping.versions.last.event).to eql('update')
           end
         end
       end
