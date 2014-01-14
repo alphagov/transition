@@ -67,7 +67,7 @@ class MappingsController < ApplicationController
   end
 
   def edit_multiple
-    redirect_to site_return_path, notice: bulk_edit.params_invalid_notice and return if bulk_edit.params_invalid?
+    redirect_to site_return_path, notice: bulk_edit.params_errors and return if bulk_edit.params_invalid?
 
     if request.xhr?
       render 'edit_multiple_modal', layout: nil
@@ -75,7 +75,7 @@ class MappingsController < ApplicationController
   end
 
   def update_multiple
-    redirect_to site_return_path, notice: bulk_edit.params_invalid_notice and return if bulk_edit.params_invalid?
+    redirect_to site_return_path, notice: bulk_edit.params_errors and return if bulk_edit.params_invalid?
 
     if bulk_edit.would_fail?
       if bulk_edit.would_fail_on_new_url?
