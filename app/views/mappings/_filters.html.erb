@@ -1,16 +1,17 @@
 <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
   <div class="row">
     <div class="col-md-6">
-      <%= label_tag :contains, class: 'control-label' do %>
-        Filter by
-      <% end %>
-      <% [['path', 'Original path'], ['new_url', 'New URL']].each do |field_name, label_text| %>
-        <%= label_tag nil, class: 'radio-inline' do %>
-          <%= radio_button_tag :filter_field, field_name, filter_box_selected?(params[:filter_field], field_name) %>
-          <%= label_text %>
+      <fieldset class="add-label-margin">
+        <legend class="legend-inline bold">Filter by</legend>
+        <% [['path', 'Original path'], ['new_url', 'New URL']].each do |field_name, label_text| %>
+          <%= label_tag nil, class: 'radio-inline' do %>
+            <%= radio_button_tag :filter_field, field_name, filter_box_selected?(params[:filter_field], field_name) %>
+            <%= label_text %>
+          <% end %>
+          <% if params[:contains] and params[:contains].length > 0 %>(<%= link_to 'Remove filter', site_mappings_path(@site) %>)<% end %>
         <% end %>
-        <% if params[:contains] and params[:contains].length > 0 %>(<%= link_to 'Remove filter', site_mappings_path(@site) %>)<% end %>
-      <% end %>
+      </fieldset>
+      <%= label_tag :contains, 'Original path or new URL', class: 'rm' %>
       <div class="input-group">
         <%= text_field_tag :contains, params[:contains], class: 'form-control', placeholder: 'eg /home'  %>
         <span class="input-group-btn">
