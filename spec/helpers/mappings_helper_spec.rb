@@ -16,8 +16,8 @@ describe MappingsHelper do
 
     context 'mapping is an archive' do
       it 'indicates the path has been performed' do
-        helper.created_mapping(build(:archived)).should ==
-          'Mapping created. <strong>/about/branding</strong> has been archived'
+        helper.created_mapping(build(:archived, path: '/foo')).should ==
+          'Mapping created. <strong>/foo</strong> has been archived'
       end
 
       it_behaves_like 'it sanitises input'
@@ -25,8 +25,8 @@ describe MappingsHelper do
 
     context 'mapping is a redirect' do
       it 'links to the new url' do
-        helper.created_mapping(build(:redirect)).should ==
-          'Mapping created. <strong>/about/branding</strong> redirects to <strong>' +
+        helper.created_mapping(build(:redirect, path: '/foo')).should ==
+          'Mapping created. <strong>/foo</strong> redirects to <strong>' +
             '<a href="https://www.gov.uk/somewhere">https://www.gov.uk/somewhere</a></strong>'
       end
       it_behaves_like 'it sanitises input'

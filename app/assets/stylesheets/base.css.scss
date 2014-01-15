@@ -64,6 +64,26 @@ label {
   font-weight: bold;
 }
 
+/* Form helpers
+   ========================================================================== */
+
+/* Reset the default bootstrap legend styles, eg for use with radio buttons
+   See http://csswizardry.com/2014/01/extending-silent-classes-in-sass/ for % syntax */
+.legend-reset,
+%legend-reset {
+  font-size: 1em;
+  border: none;
+  margin-bottom: 0;
+  width: auto;
+}
+
+.legend-inline {
+  @extend %legend-reset;
+  float: left;
+  margin-top: 1px;
+  margin-right: 10px;
+}
+
 /* Margin helpers
    ========================================================================== */
 
@@ -96,8 +116,17 @@ label {
   margin-right: $grid-gutter-width / 3 !important;
 }
 
+.add-left-margin {
+  margin-left: $grid-gutter-width / 3 !important;
+}
+
 .dl-spaced dd {
   margin-bottom: $default-vertical-margin;
+}
+
+/* Simulate the margin bootstrap puts on its labels (no built-in variable for this) */
+.add-label-margin {
+  margin-bottom: 5px;
 }
 
 /* Padding helpers
@@ -159,6 +188,11 @@ main a {
   &.btn-inverse:visited {
     color: $inverse-button-color;
   }
+  
+  &.btn-link:visited {
+    color: $link-color;
+  }
+  
 }
 
 .link-muted,

@@ -66,4 +66,13 @@ module MappingsHelper
   def http_status_name(http_status)
     Mapping::TYPES[http_status].titleize
   end
+
+  DEFAULT_FILTER_FIELD = 'path'
+  def filter_box_selected?(query_parameter, field_name)
+    if query_parameter.blank?
+      field_name == DEFAULT_FILTER_FIELD
+    else
+      query_parameter == field_name
+    end
+  end
 end

@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :mapping do
     http_status '410'
-    path '/about/branding'
+    sequence(:path) { |n| "/foo-#{n}" }
     association :site, strategy: :build
 
     factory :archived
