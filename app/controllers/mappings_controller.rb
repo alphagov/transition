@@ -19,7 +19,7 @@ class MappingsController < ApplicationController
   end
 
   def index
-    store_site_return_url
+    store_site_return_path
 
     @mappings = @site.mappings.filtered_by_path(params[:contains]).order(:path).page(params[:page])
   end
@@ -39,7 +39,7 @@ class MappingsController < ApplicationController
   end
 
   def edit_multiple
-    redirect_to site_return_url, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
+    redirect_to site_return_path, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
 
     if request.xhr?
       render 'edit_multiple_modal', layout: nil
@@ -47,7 +47,7 @@ class MappingsController < ApplicationController
   end
 
   def update_multiple
-    redirect_to site_return_url, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
+    redirect_to site_return_path, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
 
     if bulk.would_fail?
       if bulk.would_fail_on_new_url?
@@ -55,7 +55,7 @@ class MappingsController < ApplicationController
         render action: 'edit_multiple' and return
       else
         flash[:danger] = 'Validation failed'
-        return redirect_to site_return_url
+        return redirect_to site_return_path
       end
     end
 
@@ -67,7 +67,7 @@ class MappingsController < ApplicationController
       render action: 'edit_multiple'
     else
       flash[:success] = 'Mappings updated successfully'
-      redirect_to site_return_url
+      redirect_to site_return_path
     end
   end
 
@@ -89,7 +89,7 @@ class MappingsController < ApplicationController
 
   private
   def bulk
-    @bulk ||= View::Mappings::BulkEditor.new(@site, params, site_return_url)
+    @bulk ||= View::Mappings::BulkEditor.new(@site, params, site_return_path)
   end
 
   private
@@ -108,15 +108,15 @@ class MappingsController < ApplicationController
     request.env['HTTP_REFERER'] || site_mappings_path(@site)
   end
 
-  def site_return_url_key
+  def site_return_path_key
     "return_to_#{@site.abbr}".to_sym
   end
 
-  def store_site_return_url
-    session[site_return_url_key] = request.url
+  def store_site_return_path
+    session[site_return_path_key] = request.fullpath
   end
 
-  def site_return_url
-    session[site_return_url_key] || site_mappings_path(@site)
+  def site_return_path
+    session[site_return_path_key] || site_mappings_path(@site)
   end
 end
