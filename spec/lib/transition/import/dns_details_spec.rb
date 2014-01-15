@@ -18,7 +18,7 @@ describe Transition::Import::DnsDetails do
       subject { transitioned }
 
       its(:cname) { should =~ /gov.uk$/ }
-      its(:ttl)   { should be > 1 && be < 999999 }
+      its(:ttl)   { should be_between(1, 999999) }
     end
 
     describe 'The host that is not transitioning' do
