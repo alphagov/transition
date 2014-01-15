@@ -8,7 +8,9 @@
             <%= radio_button_tag :filter_field, field_name, filter_box_selected?(params[:filter_field], field_name) %>
             <%= label_text %>
           <% end %>
-          <% if params[:contains] and params[:contains].length > 0 %>(<%= link_to 'Remove filter', site_mappings_path(@site) %>)<% end %>
+        <% end %>
+        <% if params[:contains] and params[:contains].length > 0 %>
+          <span class="add-left-margin">(<%= link_to 'Remove filter', site_mappings_path(@site) %>)</span>
         <% end %>
       </fieldset>
       <%= label_tag :contains, 'Original path or new URL', class: 'rm' %>

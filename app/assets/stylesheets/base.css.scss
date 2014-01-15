@@ -116,6 +116,10 @@ label {
   margin-right: $grid-gutter-width / 3 !important;
 }
 
+.add-left-margin {
+  margin-left: $grid-gutter-width / 3 !important;
+}
+
 .dl-spaced dd {
   margin-bottom: $default-vertical-margin;
 }
