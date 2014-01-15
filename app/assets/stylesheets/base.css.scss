@@ -188,6 +188,11 @@ main a {
   &.btn-inverse:visited {
     color: $inverse-button-color;
   }
+  
+  &.btn-link:visited {
+    color: $link-color;
+  }
+  
 }
 
 .link-muted,
