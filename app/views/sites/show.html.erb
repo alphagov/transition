@@ -11,7 +11,11 @@
 
 <dl class="dl-spaced">
   <dt>Mappings</dt>
-  <dd><%= link_to 'Mappings', site_mappings_path(@site) %></dd>
+  <dd>
+    <%= link_to site_mappings_path(@site) do %>
+      <%= number_with_delimiter(@site.mappings.count) %> Mappings
+    <% end %>
+  </dd>
   <dt>Analytics</dt>
   <dd><%= link_to 'Analytics', summary_site_hits_path(@site) %></dd>
   <dt>Default hostname</dt>
