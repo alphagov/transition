@@ -1,5 +1,3 @@
-require 'redis'
-require 'redis-lock'
 require 'open-uri'
 require 'transition/import/whitehall/mappings_csv'
 
@@ -21,31 +19,18 @@ module Transition
         end
 
         def call
-          redis.lock("transition:#{Rails.env}:import_whitehall_mappings", life: (5 * 60)) do
-            Rails.logger.debug('Successfully got a lock. Running...')
-            if @filename
-              filename = @filename
-            else
-              filename = download
-            end
-            process(filename)
+          if @filename
+            filename = @filename
+          else
+            filename = download
           end
-        rescue Redis::Lock::LockNotAcquired => e
-          Rails.logger.debug("Failed to get lock for Whitehall Mappings import (#{e.message}). Another process probably got there first.")
+          process(filename)
         rescue StandardError => e
           ExceptionNotifier::Notifier.background_exception_notification(e)
           raise
         end
 
       private
-
-        def redis
-          @_redis ||= begin
-            redis_config = YAML.load_file(File.join(Rails.root, "config", "redis.yml"))
-            Redis.new(redis_config.symbolize_keys)
-          end
-        end
-
         def as_user
           User.where(email: AS_USER_EMAIL).first_or_create! do |user|
             user.name  = 'Whitehall URL Robot'
