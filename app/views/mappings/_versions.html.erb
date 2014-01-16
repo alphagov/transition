@@ -1,11 +1,11 @@
 <ol class="mapping-versions" reversed>
   <% @mapping.versions.reverse.each do |version| %>
-    <li id="<%= version.id %>">
-      <h3 class="add-bottom-margin">
+    <li id="<%= version.id %>" class="add-big-bottom-margin">
+      <h3>
         <%= friendly_changeset_title(version) %>
       </h3>
-      <p class="subtitle muted">
-        Change made by <strong><%= version.whodunnit %></strong> on <%= version.created_at.to_formatted_s(:long) %>
+      <p class="text-muted add-bottom-margin">
+        <strong><%= version.whodunnit %></strong> — <%= version.created_at.to_formatted_s(:long) %>
       </p>
       <h4 class="rm">Changes</h4>
       <dl class="well">
