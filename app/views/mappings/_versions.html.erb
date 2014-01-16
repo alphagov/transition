@@ -2,7 +2,7 @@
   <% @mapping.versions.reverse.each do |version| %>
     <li id="<%= version.id %>">
       <h3 class="add-bottom-margin">
-        <%= changeset_title(version) %>
+        <%= friendly_changeset_title(version) %>
       </h3>
       <p class="subtitle muted">
         Change made by <strong><%= version.whodunnit %></strong> on <%= version.created_at.to_formatted_s(:long) %>
@@ -10,21 +10,8 @@
       <h4 class="rm">Changes</h4>
       <dl class="well">
         <% version.changeset.each_pair do |field, change| %>
-          <%
-
-            old_value = value_or_blank(change[0])
-            new_value = value_or_blank(change[1])
-
-            if field == "http_status"
-              field = "type"
-              old_value = change[0].blank? ? old_value : http_status_name(old_value)
-              new_value = change[1].blank? ? old_value : http_status_name(new_value)
-            elsif field == "archive_url"
-              field = "alternative archive url"
-            end
-          %>
-            <dt><%= field.titleize %></dt>
-            <dd><%= old_value %> &rarr; <%= new_value %></dd>
+          <dt><%= friendly_changeset_field(field) %></dt>
+          <dd><%= friendly_changeset_values(field, change) %></dd>
         <% end %>
       </dl>
     </li>
