@@ -83,9 +83,9 @@ module View
       end
 
       def success_message
-        msg = "#{created_count} mapping".pluralize(created_count)
-        msg += " created and #{updated_count} mapping".pluralize(updated_count)
-        msg += ' updated.'
+        "#{created_count} mapping".pluralize(created_count) +
+        " created and #{updated_count} mapping".pluralize(updated_count) +
+        ' updated.'
       end
     end
   end
