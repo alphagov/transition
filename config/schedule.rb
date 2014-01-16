@@ -11,3 +11,7 @@ job_type :rake, 'cd :path && /usr/local/bin/govuk_setenv transition bundle exec 
 every :day, at: ['3:30am', '1:15pm'] do
   rake 'import:whitehall:mappings'
 end
+
+every :hour do
+  rake 'import:dns_details'
+end
