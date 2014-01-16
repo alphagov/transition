@@ -22,7 +22,7 @@ module View
       end
 
       def canonical_paths
-        raw_paths.map { |p| site.canonical_path(p) }.select { |p| p.present? }.uniq
+        @canonical_paths ||= raw_paths.map { |p| site.canonical_path(p) }.select { |p| p.present? }.uniq
       end
 
       def existing_mappings
