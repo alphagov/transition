@@ -4,16 +4,14 @@ module View
     # Load and process params specific to bulk editing, to avoid stuffing
     # controllers full of fields.
     class BulkEditor < BulkBase
-      ERRORS[:mappings_empty] = 'No mappings were selected'
-
       def mappings
         @mappings ||= site.mappings.where(id: params[:mapping_ids]).order(:path)
       end
 
       def params_errors
         case
-        when mappings.empty?    then ERRORS[:mappings_empty]
-        when http_status.blank? then ERRORS[:http_status_invalid]
+        when mappings.empty?    then I18n.t 'mappings.bulk.edit.mappings_empty'
+        when http_status.blank? then I18n.t 'mappings.bulk.http_status_invalid'
         end
       end
 

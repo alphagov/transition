@@ -4,9 +4,6 @@ module View
     # Load and process params specific to bulk adding, to avoid stuffing
     # controllers full of fields.
     class BulkAdder < BulkBase
-      ERRORS[:paths_empty] = 'Enter at least one valid path'
-      ERRORS[:new_url_invalid] = 'Enter a valid URL to redirect to'
-
       # Take either a multiline string of paths, one per line (as submitted by
       # the new_multiple form) or an array of path strings (as submitted by the
       # hidden fields on the confirmation page) and return the paths in an
@@ -38,9 +35,9 @@ module View
 
       def params_errors
         {}.tap do |errors|
-          errors[:http_status] = ERRORS[:http_status_invalid] if http_status.blank?
-          errors[:paths]       = ERRORS[:paths_empty]         if canonical_paths.empty?
-          errors[:new_url]     = ERRORS[:new_url_invalid]     if would_fail_on_new_url?
+          errors[:http_status] = I18n.t 'mappings.bulk.http_status_invalid' if http_status.blank?
+          errors[:paths]       = I18n.t 'mappings.bulk.add.paths_empty'     if canonical_paths.empty?
+          errors[:new_url]     = I18n.t 'mappings.bulk.add.new_url_invalid' if would_fail_on_new_url?
         end
       end
 

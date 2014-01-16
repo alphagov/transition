@@ -3,10 +3,6 @@ module View
     ##
     # Load and validate params used by both bulk adding and editing.
     class BulkBase < Struct.new(:site, :params, :back_to_index)
-      ERRORS = {
-        http_status_invalid: 'Please select either redirect or archive',
-      }
-
       def http_status
         params[:http_status] if ['301', '410'].include?(params[:http_status])
       end

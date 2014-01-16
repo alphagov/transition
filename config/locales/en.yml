@@ -8,4 +8,12 @@ en:
   time:
     formats:
       govuk_date: "%-e %B %Y %-I:%m%P" # 1 January 2013 1:15pm
-  not_possible_to_edit_homepage_mapping: "It’s not currently possible to edit the mapping for a site’s homepage."
+  mappings:
+    not_possible_to_edit_homepage_mapping: 'It’s not currently possible to edit the mapping for a site’s homepage.'
+    bulk:
+      http_status_invalid: 'Please select either redirect or archive'
+      add:
+        paths_empty: 'Enter at least one valid path'
+        new_url_invalid: 'Enter a valid URL to redirect to'
+      edit:
+        mappings_empty: 'No mappings were selected'

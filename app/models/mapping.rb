@@ -19,7 +19,7 @@ class Mapping < ActiveRecord::Base
   validates :site, presence: true
   validates :path,
             length: { maximum: 1024 },
-            exclusion: { in: ['/'], message: I18n.t('not_possible_to_edit_homepage_mapping')},
+            exclusion: { in: ['/'], message: I18n.t('mappings.not_possible_to_edit_homepage_mapping')},
             is_path: true
   validates :http_status, presence: true, length: { maximum: 3 }
   validates :site_id, uniqueness: { scope: [:path_hash], message: 'Mapping already exists for this site and path!' }

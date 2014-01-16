@@ -185,7 +185,7 @@ describe MappingsController do
       end
 
       it 'sets an error for new_url' do
-        expected_errors = { 'new_url' => View::Mappings::BulkAdder::ERRORS[:new_url_invalid] }
+        expected_errors = { 'new_url' => I18n.t('mappings.bulk.add.new_url_invalid') }
         expect(assigns(:errors)).to eq(expected_errors)
       end
     end

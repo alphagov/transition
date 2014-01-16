@@ -89,7 +89,7 @@ class MappingsController < ApplicationController
     path = @site.canonical_path(params[:path])
 
     if path.empty?
-      notice = t('not_possible_to_edit_homepage_mapping')
+      notice = t('mappings.not_possible_to_edit_homepage_mapping')
       return redirect_to back_or_mappings_index, notice: notice
     end
 
