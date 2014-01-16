@@ -1,14 +1,5 @@
 module MappingsHelper
 
-  def created_mapping(mapping)
-    if mapping.redirect?
-      link = link_to(mapping.new_url, mapping.new_url)
-      "Mapping created. <strong>#{h(mapping.path)}</strong> redirects to <strong>#{link}</strong>".html_safe
-    else
-      "Mapping created. <strong>#{h(mapping.path)}</strong> has been archived".html_safe
-    end
-  end
-
   ##
   # Twitter bootstrap-flavour tabs.
   # Produce a <ul class="nav nav-tabs">
@@ -74,5 +65,9 @@ module MappingsHelper
     else
       query_parameter == field_name
     end
+  end
+
+  def existing_mappings_count
+    @bulk_add.existing_mappings.size
   end
 end

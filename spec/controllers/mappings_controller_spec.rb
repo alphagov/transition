@@ -51,10 +51,10 @@ describe MappingsController do
     end
 
     context 'when no mapping exists yet for the canonicalized path' do
-      it 'redirects to the new mapping form' do
+      it 'redirects to the new mappings form' do
         get :find, site_id: site.abbr, path: raw_path
 
-        expect(response).to redirect_to new_site_mapping_path(site, path: canonicalized_path)
+        expect(response).to redirect_to new_multiple_site_mappings_path(site, paths: canonicalized_path)
       end
     end
 
@@ -87,32 +87,6 @@ describe MappingsController do
 
           expect(response).to redirect_to site_mappings_url(site)
         end
-      end
-    end
-  end
-
-  describe '#new' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
-        get :new, site_id: site.abbr
-      end
-
-      it 'redirects to the index page and sets a flash message' do
-        expect(response).to redirect_to site_mappings_path(site)
-      end
-    end
-  end
-
-  describe '#create' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
-        post :create, site_id: site.abbr
-      end
-
-      it 'redirects to the index page and sets a flash message' do
-        expect(response).to redirect_to site_mappings_path(site)
       end
     end
   end
@@ -159,6 +133,99 @@ describe MappingsController do
 
           its(:whodunnit) { should eql('Bob Terwhilliger') }
           its(:user_id)   { should eql(admin_bob.id) }
+        end
+      end
+    end
+  end
+
+  describe '#new_multiple' do
+    context 'when user doesn\'t have permission' do
+      before do
+        login_as unaffiliated_user
+        get :new_multiple, site_id: site.abbr
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+
+    context 'when the user does have permission' do
+      before do
+        login_as admin_bob
+      end
+
+      it 'displays the form' do
+        get :new_multiple, site_id: site.abbr
+        expect(response.status).to eql(200)
+      end
+    end
+  end
+
+  describe '#new_multiple_confirmation' do
+    context 'when user doesn\'t have permission' do
+      before do
+        login_as unaffiliated_user
+        post :new_multiple_confirmation, site_id: site.abbr
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+
+    context 'when no new_url is posted for redirects' do
+      before do
+        login_as admin_bob
+        post :new_multiple_confirmation, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: ''
+      end
+
+      it 'renders the form again' do
+        expect(response).to render_template 'mappings/new_multiple'
+      end
+
+      it 'sets an error for new_url' do
+        expected_errors = { 'new_url' => View::Mappings::BulkAdder::ERRORS[:new_url_invalid] }
+        expect(assigns(:errors)).to eq(expected_errors)
+      end
+    end
+  end
+
+  describe '#create_multiple' do
+    context 'when user doesn\'t have permission' do
+      before do
+        login_as unaffiliated_user
+        post :create_multiple, site_id: site.abbr
+      end
+
+      it 'redirects to the index page and sets a flash message' do
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+
+    context 'when user can edit the site' do
+      before do
+        login_as admin_bob
+      end
+
+      context 'when no new_url is posted for redirects' do
+        it 'renders the form with errors' do
+          post :create_multiple, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: '', update_existing: 'true'
+          expect(response).to render_template 'mappings/new_multiple'
+        end
+      end
+
+      context 'with valid data' do
+        before do
+          post :create_multiple, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: 'www.gov.uk', update_existing: 'true'
+        end
+
+        it 'redirects to the site return URL' do
+          expect(response).to redirect_to site_mappings_path(site)
+        end
+
+        it 'creates new mappings' do
+          expect(site.mappings.count).to eql(2)
         end
       end
     end
@@ -333,8 +400,8 @@ describe MappingsController do
       # ActionController::RequestForgeryProtection::ClassMethods to return false
       # in order to test our override of the verify_authenticity_token method
       subject.stub(:verified_request?).and_return(false)
-      post :create, site_id: mapping.site,
-               mapping: { path: '/foo', http_status: '410' }
+      post :create_multiple, site_id: mapping.site,
+               mapping: { paths: ['/foo'], http_status: '410', update_existing: 'false' }
       response.status.should eql(403)
       response.body.should eql('Invalid authenticity token')
     end

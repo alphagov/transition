@@ -1,5 +1,7 @@
-When(/^I go to create a new mapping$/) do
-  click_link 'Add mapping'
+When(/^I go to create some mappings$/) do
+  steps %{
+    And I click the first link called "Add mappings"
+  }
 end
 
 When(/^I make the mapping a redirect to (.*)$/) do |new_url|
@@ -11,7 +13,7 @@ When(/^I make the mapping an archive$/) do
   select 'Archive', from: 'Type'
 end
 
-When(/^I (save|create) the mapping$/) do |type|
+When(/^I (save|submit) the mappings?$/) do |type|
   click_button type.titleize
 end
 
@@ -42,9 +44,9 @@ When(/^I change the mapping's redirect to (.*)$/) do |value|
   step 'I save the mapping'
 end
 
-When(/^I make the mapping a redirect from (.*) to (.*)$/) do |path, new_url|
-  fill_in 'Old URL', with: path
-  fill_in 'Redirects to', with: new_url
+When(/^I make the new mapping paths "(.*)" redirect to (.*)$/) do |paths, new_url|
+  fill_in 'Old URLs', with: paths.gsub(/, /, "\n")
+  fill_in 'Redirect to', with: new_url
 end
 
 When(/^I enter an archive URL but then click "Cancel"$/) do

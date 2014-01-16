@@ -1,7 +1,10 @@
 <% breadcrumb(:edit_mapping, @mapping) %>
 
 <%= content_for :page_title, 'Edit mapping' %>
-<h1 class="page-title">Edit mapping</h1>
+<h1 class="page-title">
+  <span class="small"><%= @site.default_host.hostname %></span>
+  Edit mapping
+</h1>
 
 <%= mapping_edit_tabs active: 'Edit' %>
 

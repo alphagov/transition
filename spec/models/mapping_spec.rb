@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 require 'spec_helper'
 
 describe Mapping do
@@ -12,6 +14,14 @@ describe Mapping do
     it 'is true when http_status is 301' do
       subject.http_status = '301'
       subject.redirect?.should be_true
+    end
+  end
+
+  describe '#archive?' do
+    its(:archive?) { should be_false }
+    it 'is true when http_status is 410' do
+      subject.http_status = '410'
+      subject.archive?.should be_true
     end
   end
 
@@ -33,7 +43,7 @@ describe Mapping do
       before { homepage_mapping.should_not be_valid }
       it 'disallows homepages' do
         homepage_mapping.errors[:path].should ==
-          ["It's not currently possible to edit the mapping for a site's homepage."]
+          ["It’s not currently possible to edit the mapping for a site’s homepage."]
       end
     end
 

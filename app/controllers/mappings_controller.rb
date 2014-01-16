@@ -2,20 +2,29 @@ class MappingsController < ApplicationController
   include PaperTrail::Controller
 
   before_filter :find_site
-  before_filter :check_user_can_edit, only: [:new, :create, :edit, :update, :edit_multiple, :update_multiple]
+  before_filter :check_user_can_edit, except: [:index, :find]
 
-  def new
-    @mapping = @site.mappings.build(path: params[:path])
+  def new_multiple
+    bulk_add
   end
 
-  def create
-    @mapping = @site.mappings.build(params[:mapping])
-    if @mapping.save
-      flash[:success] = view_context.created_mapping(@mapping)
-      redirect_to edit_site_mapping_path(@site, @mapping)
-    else
-      render action: 'new'
+  def new_multiple_confirmation
+    if bulk_add.params_invalid?
+      @errors = bulk_add.params_errors
+      render action: 'new_multiple'
     end
+  end
+
+  def create_multiple
+    if bulk_add.params_invalid?
+      @errors = bulk_add.params_errors
+      render action: 'new_multiple' and return
+    end
+
+    bulk_add.create_or_update!
+
+    flash[:success] = bulk_add.success_message
+    redirect_to site_return_path
   end
 
   def index
@@ -44,7 +53,7 @@ class MappingsController < ApplicationController
   end
 
   def edit_multiple
-    redirect_to site_return_path, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
+    redirect_to site_return_path, notice: bulk_edit.params_errors and return if bulk_edit.params_invalid?
 
     if request.xhr?
       render 'edit_multiple_modal', layout: nil
@@ -52,10 +61,10 @@ class MappingsController < ApplicationController
   end
 
   def update_multiple
-    redirect_to site_return_path, notice: bulk.params_invalid_notice and return if bulk.params_invalid?
+    redirect_to site_return_path, notice: bulk_edit.params_errors and return if bulk_edit.params_invalid?
 
-    if bulk.would_fail?
-      if bulk.would_fail_on_new_url?
+    if bulk_edit.would_fail?
+      if bulk_edit.would_fail_on_new_url?
         @new_url_error = 'Enter a valid URL to redirect these paths to'
         render action: 'edit_multiple' and return
       else
@@ -64,10 +73,10 @@ class MappingsController < ApplicationController
       end
     end
 
-    bulk.update!
+    bulk_edit.update!
 
-    if bulk.failures?
-      @mappings = bulk.failures
+    if bulk_edit.failures?
+      @mappings = bulk_edit.failures
       flash[:notice] = 'The following mappings could not be updated'
       render action: 'edit_multiple'
     else
@@ -88,16 +97,19 @@ class MappingsController < ApplicationController
     if mapping.present?
       redirect_to edit_site_mapping_path(@site, mapping)
     else
-      redirect_to new_site_mapping_path(@site, path: path)
+      redirect_to new_multiple_site_mappings_path(@site, paths: path)
     end
   end
 
-  private
-  def bulk
-    @bulk ||= View::Mappings::BulkEditor.new(@site, params, site_return_path)
+private
+  def bulk_add
+    @bulk_add ||= View::Mappings::BulkAdder.new(@site, params, site_return_path)
   end
 
-  private
+  def bulk_edit
+    @bulk_edit ||= View::Mappings::BulkEditor.new(@site, params, site_return_path)
+  end
+
   def find_site
     @site = Site.find_by_abbr(params[:site_id])
   end

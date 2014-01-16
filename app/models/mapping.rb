@@ -42,6 +42,10 @@ class Mapping < ActiveRecord::Base
     http_status == '301'
   end
 
+  def archive?
+    http_status == '410'
+  end
+
   def type
     TYPES[http_status] || 'unknown'
   end

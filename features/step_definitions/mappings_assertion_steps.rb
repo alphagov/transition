@@ -12,7 +12,7 @@ end
 
 Then(/^I should be returned to the edit mapping page with a success message$/) do
   step 'I should see "Edit mapping"'
-  page.should satisfy {|page| page.has_content?('Mapping created') or page.has_content?('Mapping saved')}
+  step 'I should see "Mapping saved"'
 end
 
 Then(/^the filter box should contain "([^"]*)"$/) do |path|
@@ -100,4 +100,26 @@ end
 
 Then(/^I should not see a "Redirect to" input$/) do
   expect(page).not_to have_selector('label', text: 'Redirect to')
+end
+
+Then(/^I should see a highlighted "(.*?)" label and field$/) do |label|
+  expect(page).to have_selector('.field_with_errors label', text: label)
+
+  label = find('label', text: label)
+  expect(page).to have_selector(".field_with_errors *[name='#{label['for']}']")
+end
+
+Then(/^I should see options to ignore or overwrite the existing mappings$/) do
+  expect(page).to have_field('Ignore existing mappings', type: 'radio')
+  expect(page).to have_field('Overwrite existing mappings', type: 'radio')
+end
+
+Then(/^I should see that the mappings will redirect to "(.*?)"$/) do |new_url|
+  step "I should see \"Redirect paths to #{new_url}\""
+end
+
+Then(/^I should see the canonicalized paths "(.*?)"$/) do |paths|
+  paths.split(', ').each do |path|
+    expect(page).to have_link(path)
+  end
 end

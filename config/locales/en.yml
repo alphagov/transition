@@ -2,4 +2,4 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  not_possible_to_edit_homepage_mapping: "It's not currently possible to edit the mapping for a site's homepage."
+  not_possible_to_edit_homepage_mapping: "It’s not currently possible to edit the mapping for a site’s homepage."

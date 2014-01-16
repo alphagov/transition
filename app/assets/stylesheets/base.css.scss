@@ -64,6 +64,10 @@ label {
   font-weight: bold;
 }
 
+.normal {
+  font-weight: normal;
+}
+
 /* Form helpers
    ========================================================================== */
 
@@ -188,11 +192,11 @@ main a {
   &.btn-inverse:visited {
     color: $inverse-button-color;
   }
-  
+
   &.btn-link:visited {
     color: $link-color;
   }
-  
+
 }
 
 .link-muted,
@@ -313,3 +317,18 @@ thead .table-header-secondary td {
   border-radius: $border-radius-base;
 }
 
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+/* Use an error style that matches bootstrap style guide
+   http://getbootstrap.com/css/#forms */
+form .field_with_errors input,
+form .field_with_errors textarea {
+  border-color: $state-danger-text;
+}
+
+form .field_with_errors label {
+  color: $state-danger-text;
+  display: block;
+}

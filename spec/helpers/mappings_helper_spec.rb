@@ -5,34 +5,6 @@ describe MappingsHelper do
   let(:hostname){ site.default_host.hostname }
   let(:mapping) { build :mapping, site: site }
 
-  describe '#created_mapping' do
-    shared_examples 'it sanitises input' do
-      it 'sanitises input' do
-        helper.created_mapping(
-          build(:archived, path: '<script>alert("abusive");</script>')
-        ).should_not include('<script>')
-      end
-    end
-
-    context 'mapping is an archive' do
-      it 'indicates the path has been performed' do
-        helper.created_mapping(build(:archived, path: '/foo')).should ==
-          'Mapping created. <strong>/foo</strong> has been archived'
-      end
-
-      it_behaves_like 'it sanitises input'
-    end
-
-    context 'mapping is a redirect' do
-      it 'links to the new url' do
-        helper.created_mapping(build(:redirect, path: '/foo')).should ==
-          'Mapping created. <strong>/foo</strong> redirects to <strong>' +
-            '<a href="https://www.gov.uk/somewhere">https://www.gov.uk/somewhere</a></strong>'
-      end
-      it_behaves_like 'it sanitises input'
-    end
-  end
-
   describe '#mapping_edit_tabs', versioning: true do
     let!(:mapping) { create :mapping, :with_versions, site: site }
     before         { @mapping = mapping }
@@ -59,6 +31,33 @@ describe MappingsHelper do
     context 'status is \'410\'' do
       subject { helper.http_status_name('410') }
       it { should eql('Archive') }
+    end
+  end
+
+  describe '#existing_mappings_count' do
+    let!(:exists_1) { create(:mapping, site: site, path: '/exists_1') }
+    let!(:exists_2) { create(:mapping, site: site, path: '/exists_2') }
+
+    context 'with no existing paths submitted' do
+      before do
+        paths_input = "/a"
+        @bulk_add = View::Mappings::BulkAdder.new(site, { paths: paths_input, http_status: '410' }, '')
+      end
+
+      subject { helper.existing_mappings_count }
+      it { should eql(0) }
+    end
+
+    context 'with two existing paths submitted' do
+      before do
+        paths_input = "/exists_1\n/exists_2\n/a\n/b"
+        @bulk_add = View::Mappings::BulkAdder.new(site, { paths: paths_input, http_status: '410' }, '')
+      end
+
+      describe '#existing_mappings_count' do
+        subject { helper.existing_mappings_count }
+        it { should eql(2) }
+      end
     end
   end
 end
