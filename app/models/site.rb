@@ -13,6 +13,10 @@ class Site < ActiveRecord::Base
   validates_inclusion_of :special_redirect_strategy, in: %w{ via_aka supplier }, allow_nil: true
 
   scope :managed_by_transition, where(managed_by_transition: true)
+  scope :with_mapping_count,
+        select('sites.*, COUNT(*) as mapping_count').
+          joins('LEFT JOIN mappings on mappings.site_id = sites.id').
+          group('sites.id')
 
   def to_param
     abbr

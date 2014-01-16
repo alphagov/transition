@@ -37,7 +37,7 @@
         </td>
         <td>
           <%= link_to site_mappings_path(site) do %>
-            <%= number_with_delimiter(site.mappings.count) %> Mappings
+            <%= number_with_delimiter(site.mapping_count) %> Mappings
           <% end %>
         </td>
         <td><%= link_to 'Analytics', summary_site_hits_path(site) %></td>
