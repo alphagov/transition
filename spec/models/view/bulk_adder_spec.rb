@@ -123,17 +123,17 @@ describe View::Mappings::BulkAdder do
 
       it 'should be in the same order as the paths were input' do
         expected_path_order = ['/exists_already', '/a', '/b']
-        expect(subject.map { |m| m.path }).to eql(expected_path_order)
+        expect(subject.map(&:path)).to eql(expected_path_order)
       end
 
       it 'should not have created mappings which did not already exist' do
         expected_persisteds = [true, false, false]
-        expect(subject.map { |m| m.persisted? }).to eql(expected_persisteds)
+        expect(subject.map(&:persisted?)).to eql(expected_persisteds)
       end
 
       it 'should not assign http_status to mappings which do not already exist' do
         expected_statuses = ['410', nil, nil]
-        expect(subject.map { |m| m.http_status }).to eql(expected_statuses)
+        expect(subject.map(&:http_status)).to eql(expected_statuses)
       end
     end
 
