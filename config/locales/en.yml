@@ -2,4 +2,10 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  date:
+    formats:
+      govuk_date: "%-e %B %Y" # 1 January 2013 - https://www.gov.uk/design-principles/style-guide/style-points#style-dates-and-times
+  time:
+    formats:
+      govuk_date: "%-e %B %Y %-I:%m%P" # 1 January 2013 1:15pm
   not_possible_to_edit_homepage_mapping: "It’s not currently possible to edit the mapping for a site’s homepage."

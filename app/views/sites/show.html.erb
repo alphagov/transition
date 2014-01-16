@@ -29,7 +29,7 @@
   <dt>Significant query parameters</dt>
   <dd><%= @site.query_params.presence || 'None' %></dd>
   <dt>The National Archive (<abbr>TNA</abbr>) timestamp</dt>
-  <dd><%= @site.tna_timestamp.to_formatted_s(:long) %> <span class="text-muted"> — <%= @site.tna_timestamp.to_formatted_s(:number) %></span></dd>
+  <dd><%= I18n.l @site.tna_timestamp, :format => :govuk_date %> <span class="text-muted"> — <%= @site.tna_timestamp.to_formatted_s(:number) %></span></dd>
   <dt>Transition status</dt>
   <dd><%= render partial: 'transition_status', locals: {site: @site} %></dd>
   <dt>Transition date</dt>
