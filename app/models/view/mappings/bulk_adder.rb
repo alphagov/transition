@@ -13,17 +13,12 @@ module View
       # array, ignoring any lines which are blank and stripping whitespace from
       # around the rest.
       def raw_paths
-        paths = params[:paths]
-        if paths
-          if paths.is_a?(String)
-            # Efficiently match any combination of new line characters:
-            #     http://stackoverflow.com/questions/10805125
-            paths = paths.split(/\r?\n|\r/)
-          end
-          paths.select { |p| p.present? }.map { |p| p.strip }
-        else
-          []
-        end
+        return [] unless (paths = params[:paths])
+
+        # Efficiently match any combination of new line characters:
+        #     http://stackoverflow.com/questions/10805125
+        paths = paths.split(/\r?\n|\r/) if paths.is_a?(String)
+        paths.select(&:present?).map(&:strip)
       end
 
       def canonical_paths
@@ -36,21 +31,17 @@ module View
 
       def all_mappings
         canonical_paths.map do |path|
-          i = existing_mappings.find_index { |m| m.path == path }
-          if i
-            existing_mappings[i]
-          else
+          existing_mappings.find { |m| m.path == path } ||
             Mapping.new(site: site, path: path)
-          end
         end
       end
 
       def params_errors
-        errors = {}
-        errors[:http_status] = ERRORS[:http_status_invalid] if http_status.blank?
-        errors[:paths]       = ERRORS[:paths_empty]         if canonical_paths.empty?
-        errors[:new_url]     = ERRORS[:new_url_invalid]     if would_fail_on_new_url?
-        errors
+        {}.tap do |errors|
+          errors[:http_status] = ERRORS[:http_status_invalid] if http_status.blank?
+          errors[:paths]       = ERRORS[:paths_empty]         if canonical_paths.empty?
+          errors[:new_url]     = ERRORS[:new_url_invalid]     if would_fail_on_new_url?
+        end
       end
 
       def update_existing?
