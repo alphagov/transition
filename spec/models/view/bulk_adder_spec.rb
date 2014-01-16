@@ -167,7 +167,7 @@ describe View::Mappings::BulkAdder do
         @new_url = '________'
       end
 
-      its([:new_url]) { should eql(I18n.t('mappings.bulk.add.new_url_invalid')) }
+      its([:new_url]) { should eql(I18n.t('mappings.bulk.new_url_invalid')) }
     end
   end
 

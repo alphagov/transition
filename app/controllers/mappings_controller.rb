@@ -65,7 +65,7 @@ class MappingsController < ApplicationController
 
     if bulk_edit.would_fail?
       if bulk_edit.would_fail_on_new_url?
-        @new_url_error = 'Enter a valid URL to redirect these paths to'
+        @new_url_error = t('mappings.bulk.new_url_invalid')
         render action: 'edit_multiple' and return
       else
         flash[:danger] = 'Validation failed'
