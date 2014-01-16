@@ -52,11 +52,11 @@ module View
         @outcomes = canonical_paths.map do |path|
           m = Mapping.where(site_id: site.id, path: path).first_or_initialize
           if ! m.persisted?
-            m.update_attributes(common_data) ? 'created' : 'creation_failed'
+            m.update_attributes(common_data) ? :created : :creation_failed
           elsif update_existing?
-            m.update_attributes(common_data) ? 'updated' : 'update_failed'
+            m.update_attributes(common_data) ? :updated : :update_failed
           else
-            'not_updating'
+            :not_updating
           end
         end
       end
@@ -66,11 +66,11 @@ module View
       end
 
       def created_count
-        outcomes.count('created')
+        outcomes.count(:created)
       end
 
       def updated_count
-        outcomes.count('updated')
+        outcomes.count(:updated)
       end
 
       def success_message

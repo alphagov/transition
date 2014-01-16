@@ -212,7 +212,7 @@ describe View::Mappings::BulkAdder do
       describe 'outcomes' do
         subject { @adder.outcomes }
 
-        it { should eql(['creation_failed', 'creation_failed', 'creation_failed', 'update_failed']) }
+        it { should eql([:creation_failed, :creation_failed, :creation_failed, :update_failed]) }
       end
     end
 
@@ -256,7 +256,7 @@ describe View::Mappings::BulkAdder do
         describe 'outcomes' do
           subject { @adder.outcomes }
 
-          it { should eql(['created', 'created', 'created', 'not_updating']) }
+          it { should eql([:created, :created, :created, :not_updating]) }
         end
 
         describe 'the pre-existing mapping' do
@@ -281,7 +281,7 @@ describe View::Mappings::BulkAdder do
         describe 'outcomes' do
           subject { @adder.outcomes }
 
-          it { should eql(['created', 'created', 'created', 'updated']) }
+          it { should eql([:created, :created, :created, :updated]) }
         end
 
         describe 'the pre-existing mapping' do
