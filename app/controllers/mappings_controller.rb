@@ -30,6 +30,13 @@ class MappingsController < ApplicationController
   def index
     store_site_return_path
 
+    if params[:contains] =~ %r{^https?://}
+      begin
+        params[:contains] = URI.parse(params[:contains]).path
+      rescue URI::InvalidURIError
+      end
+    end
+
     @mappings = @site.mappings.order(:path).page(params[:page])
     @mappings = if params[:filter_field] == 'new_url'
        @mappings.redirects.filtered_by_new_url(params[:contains])
