@@ -1,3 +1,4 @@
+require 'transition/distributed_lock'
 require 'transition/import/whitehall/mappings'
 
 namespace :import do
@@ -13,7 +14,9 @@ namespace :import do
           password: govuk_basic_auth[:password] || ENV['AUTH_PASSWORD'] || raise('Basic AUTH_PASSWORD is required'),
         }
       end
-      Transition::Import::Whitehall::Mappings.new(options).call
+      Transition::DistributedLock.new('import_whitehall_mappings').lock do
+        Transition::Import::Whitehall::Mappings.new(options).call
+      end
     end
   end
 end
