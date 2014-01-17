@@ -65,7 +65,7 @@ class MappingsController < ApplicationController
 
     if bulk_edit.would_fail?
       if bulk_edit.would_fail_on_new_url?
-        @new_url_error = 'Enter a valid URL to redirect these paths to'
+        @new_url_error = t('mappings.bulk.new_url_invalid')
         render action: 'edit_multiple' and return
       else
         flash[:danger] = 'Validation failed'
@@ -89,7 +89,7 @@ class MappingsController < ApplicationController
     path = @site.canonical_path(params[:path])
 
     if path.empty?
-      notice = t('not_possible_to_edit_homepage_mapping')
+      notice = t('mappings.not_possible_to_edit_homepage_mapping')
       return redirect_to back_or_mappings_index, notice: notice
     end
 

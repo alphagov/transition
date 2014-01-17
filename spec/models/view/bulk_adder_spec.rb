@@ -150,7 +150,7 @@ describe View::Mappings::BulkAdder do
     subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: @http_status, new_url: @new_url }, '').params_errors }
 
     describe 'when no http_status is given, there is an error for http_status' do
-      its([:http_status]) { should eql(View::Mappings::BulkAdder::ERRORS[:http_status_invalid]) }
+      its([:http_status]) { should eql(I18n.t('mappings.bulk.http_status_invalid')) }
     end
 
     describe 'when no valid paths are given, there is an error for paths' do
@@ -158,7 +158,7 @@ describe View::Mappings::BulkAdder do
         @paths_input = 'a'
       end
 
-      its([:paths]) { should eql(View::Mappings::BulkAdder::ERRORS[:paths_empty]) }
+      its([:paths]) { should eql(I18n.t('mappings.bulk.add.paths_empty')) }
     end
 
     describe 'when a new_url is required but an invalid new_url is given, there is an error for new_url' do
@@ -167,7 +167,7 @@ describe View::Mappings::BulkAdder do
         @new_url = '________'
       end
 
-      its([:new_url]) { should eql(View::Mappings::BulkAdder::ERRORS[:new_url_invalid]) }
+      its([:new_url]) { should eql(I18n.t('mappings.bulk.new_url_invalid')) }
     end
   end
 
