@@ -10,8 +10,8 @@ module View
 
       def params_errors
         case
-        when mappings.empty?    then I18n.t 'mappings.bulk.edit.mappings_empty'
-        when http_status.blank? then I18n.t 'mappings.bulk.http_status_invalid'
+        when mappings.empty?    then I18n.t('mappings.bulk.edit.mappings_empty')
+        when http_status.blank? then I18n.t('mappings.bulk.http_status_invalid')
         end
       end
 
