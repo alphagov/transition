@@ -9,13 +9,13 @@
             <%= label_text %>
           <% end %>
         <% end %>
-        <% if params[:contains] and params[:contains].length > 0 %>
+        <% if @path_contains.present? %>
           <span class="add-left-margin">(<%= link_to 'Remove filter', site_mappings_path(@site) %>)</span>
         <% end %>
       </fieldset>
       <%= label_tag :contains, 'Original path or new URL', class: 'rm' %>
       <div class="input-group">
-        <%= text_field_tag :contains, params[:contains], class: 'form-control', placeholder: 'eg /home'  %>
+        <%= text_field_tag :contains, @path_contains, class: 'form-control', placeholder: 'eg /home'  %>
         <span class="input-group-btn">
           <%= button_tag 'Filter', name: nil, class: 'btn btn-default ' %>
         </span>
