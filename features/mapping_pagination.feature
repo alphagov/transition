@@ -8,8 +8,8 @@ Feature: Paginated mappings
     And there is a site called bis_lowpay belonging to an organisation bis with these mappings:
       | http_status | path             | new_url           |
     When I visit the path /organisations/bis
-    And I click the link called "Mappings"
-    Then I should see the header "Mappings"
+    And I click the link called "0 mappings"
+    Then I should see the header "0 mappings"
     And the page title should be "bis_lowpay.gov.uk Mappings | GOV.UK Transition"
     And I should see "0 mappings"
 
@@ -22,8 +22,8 @@ Feature: Paginated mappings
       | 410         | /something       |                   |
     And the mappings page size is 2
     When I visit the path /organisations/bis
-    And I click the link called "Mappings"
-    Then I should see the header "Mappings"
+    And I click the link called "3 mappings"
+    Then I should see the header "3 mappings"
     And  I should see "bis_lowpay"
     And  I should see a table with class "mappings" containing 2 rows
     And  I should see 1 as the current page
@@ -38,7 +38,7 @@ Feature: Paginated mappings
       | 410         | /something       |                   |
     And the mappings page size is 2
     When I visit the path /organisations/bis
-    And I click the link called "Mappings"
+    And I click the link called "3 mappings"
     And I go to page 2
     Then  I should see a table with class "mappings" containing 1 row
     And  I should see 2 as the current page

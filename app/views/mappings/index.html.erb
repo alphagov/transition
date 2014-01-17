@@ -11,7 +11,7 @@
 
 <%= render partial: 'filters' %>
 
-<h2><%= pluralize(number_with_delimiter(@mappings.total_count, :delimiter => ','), 'mapping', 'mappings') %></h2>
+<h2><%= pluralize(number_with_delimiter(@mappings.total_count), 'mapping') %></h2>
 
 <% if @mappings.any? %>
 

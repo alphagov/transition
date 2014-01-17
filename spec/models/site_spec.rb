@@ -11,6 +11,25 @@ describe Site do
     it { should validate_presence_of(:abbr) }
   end
 
+  describe '.with_mapping_count scope' do
+    let!(:site_with_mappings)    { create :site }
+    let!(:site_without_mappings) { create :site }
+    let!(:mappings) { [create(:mapping, site: site_with_mappings),
+                      create(:mapping, site: site_with_mappings)] }
+
+    subject(:site_list) { Site.with_mapping_count }
+
+    it 'has counts available on #mapping_count' do
+      site = site_list.find { |s| s.id == site_with_mappings.id }
+      site.mapping_count.should == 2
+    end
+
+    it 'correctly counts 0 for sites without mappings' do
+      site = site_list.find { |s| s.id == site_without_mappings.id }
+      site.mapping_count.should == 0
+    end
+  end
+
   # given that hosts are site aliases
   describe '#default_host' do
     let(:hosts) { [create(:host), create(:host)] }
