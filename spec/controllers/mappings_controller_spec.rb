@@ -43,12 +43,12 @@ describe MappingsController do
 
     it 'extracts paths from full URLs supplied for filtering' do
       get :index, site_id: site.abbr, contains: 'https://www.example.com/foobar'
-      controller.params[:contains].should eql('/foobar')
+      assigns(:path_contains).should eql('/foobar')
     end
 
     it 'gracefully degrades if the filtering value looks like a URL but is unparseable' do
       get :index, site_id: site.abbr, contains: 'https://____'
-      controller.params[:contains].should eql('https://____')
+      assigns(:path_contains).should eql('https://____')
     end
   end
 
