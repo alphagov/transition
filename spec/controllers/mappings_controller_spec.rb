@@ -105,11 +105,15 @@ describe MappingsController do
     context 'when user doesn\'t have permission' do
       before do
         login_as unaffiliated_user
+        get :edit, site_id: mapping.site.abbr, id: mapping.id
       end
 
-      it 'redirects to the index page and sets a flash message' do
-        get :edit, site_id: mapping.site.abbr, id: mapping.id
+      it 'redirects to the index page' do
         expect(response).to redirect_to site_mappings_path(mapping.site)
+      end
+
+      it 'sets a flash message' do
+        flash[:alert].should include('don\'t have permission to edit')
       end
     end
   end
@@ -123,6 +127,10 @@ describe MappingsController do
 
       it 'redirects to the index page' do
         expect(response).to redirect_to site_mappings_path(mapping.site)
+      end
+
+      it 'sets a flash message' do
+        flash[:alert].should include('don\'t have permission to edit')
       end
     end
 
@@ -155,9 +163,14 @@ describe MappingsController do
         get :new_multiple, site_id: site.abbr
       end
 
-      it 'redirects to the index page and sets a flash message' do
+      it 'redirects to the index page' do
         expect(response).to redirect_to site_mappings_path(site)
       end
+
+      it 'sets a flash message' do
+        flash[:alert].should include('don\'t have permission to edit')
+      end
+
     end
 
     context 'when the user does have permission' do
@@ -179,8 +192,12 @@ describe MappingsController do
         post :new_multiple_confirmation, site_id: site.abbr
       end
 
-      it 'redirects to the index page and sets a flash message' do
+      it 'redirects to the index page' do
         expect(response).to redirect_to site_mappings_path(site)
+      end
+
+      it 'sets a flash message' do
+        flash[:alert].should include('don\'t have permission to edit')
       end
     end
 
@@ -208,8 +225,12 @@ describe MappingsController do
         post :create_multiple, site_id: site.abbr
       end
 
-      it 'redirects to the index page and sets a flash message' do
+      it 'redirects to the index page' do
         expect(response).to redirect_to site_mappings_path(site)
+      end
+
+      it 'sets a flash message' do
+        flash[:alert].should include('don\'t have permission to edit')
       end
     end
 
@@ -257,12 +278,16 @@ describe MappingsController do
     context 'when user doesn\'t have permission' do
       before do
         login_as unaffiliated_user
-      end
-
-      it 'redirects to the index page and sets a flash message' do
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '410'
+      end
+
+      it 'redirects to the index page' do
         expect(response).to redirect_to site_mappings_path(site)
+      end
+
+      it 'sets a flash message' do
+        flash[:alert].should include('don\'t have permission to edit')
       end
     end
 
@@ -323,6 +348,10 @@ describe MappingsController do
 
       it 'redirects to the index page' do
         expect(response).to redirect_to site_mappings_path(site)
+      end
+
+      it 'sets a flash message' do
+        flash[:alert].should include('don\'t have permission to edit')
       end
 
       it 'does not update any mappings' do
