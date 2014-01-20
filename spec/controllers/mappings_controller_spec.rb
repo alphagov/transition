@@ -4,7 +4,22 @@ describe MappingsController do
   let(:site)              { create :site, abbr: 'moj' }
   let(:unaffiliated_user) { create(:user, organisation_slug: nil) }
   let(:admin_bob)         { create(:admin, name: 'Bob Terwhilliger') }
-  let(:mapping)           { create(:mapping) }
+  let(:mapping)           { create(:mapping, site: site) }
+
+  shared_examples 'disallows editing by unaffiliated user' do
+    before do
+      login_as unaffiliated_user
+      make_request
+    end
+
+    it 'redirects to the index page' do
+      expect(response).to redirect_to site_mappings_path(site)
+    end
+
+    it 'sets a flash message' do
+      flash[:alert].should include('don\'t have permission to edit')
+    end
+  end
 
   describe '#index' do
     let(:mapping_a) { create :redirect, path: '/a', new_url: 'http://f.co/1', site: site }
@@ -102,36 +117,22 @@ describe MappingsController do
   end
 
   describe '#edit' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
         get :edit, site_id: mapping.site.abbr, id: mapping.id
       end
 
-      it 'redirects to the index page' do
-        expect(response).to redirect_to site_mappings_path(mapping.site)
-      end
-
-      it 'sets a flash message' do
-        flash[:alert].should include('don\'t have permission to edit')
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
   end
 
   describe '#update' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
         put :update, site_id: mapping.site.abbr, id: mapping.id
       end
 
-      it 'redirects to the index page' do
-        expect(response).to redirect_to site_mappings_path(mapping.site)
-      end
-
-      it 'sets a flash message' do
-        flash[:alert].should include('don\'t have permission to edit')
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
     context 'when Bob has permission to update a mapping, but is acting Evilly' do
@@ -157,20 +158,12 @@ describe MappingsController do
   end
 
   describe '#new_multiple' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
         get :new_multiple, site_id: site.abbr
       end
 
-      it 'redirects to the index page' do
-        expect(response).to redirect_to site_mappings_path(site)
-      end
-
-      it 'sets a flash message' do
-        flash[:alert].should include('don\'t have permission to edit')
-      end
-
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
     context 'when the user does have permission' do
@@ -186,19 +179,12 @@ describe MappingsController do
   end
 
   describe '#new_multiple_confirmation' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
         post :new_multiple_confirmation, site_id: site.abbr
       end
 
-      it 'redirects to the index page' do
-        expect(response).to redirect_to site_mappings_path(site)
-      end
-
-      it 'sets a flash message' do
-        flash[:alert].should include('don\'t have permission to edit')
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
     context 'when no new_url is posted for redirects' do
@@ -219,19 +205,12 @@ describe MappingsController do
   end
 
   describe '#create_multiple' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
         post :create_multiple, site_id: site.abbr
       end
 
-      it 'redirects to the index page' do
-        expect(response).to redirect_to site_mappings_path(site)
-      end
-
-      it 'sets a flash message' do
-        flash[:alert].should include('don\'t have permission to edit')
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
     context 'when user can edit the site' do
@@ -275,20 +254,13 @@ describe MappingsController do
       @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
     end
 
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '410'
       end
 
-      it 'redirects to the index page' do
-        expect(response).to redirect_to site_mappings_path(site)
-      end
-
-      it 'sets a flash message' do
-        flash[:alert].should include('don\'t have permission to edit')
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
     context 'when no mapping ids which exist on this site are posted' do
@@ -339,22 +311,18 @@ describe MappingsController do
       @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
     end
 
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: 'http://www.example.com'
       end
 
-      it 'redirects to the index page' do
-        expect(response).to redirect_to site_mappings_path(site)
-      end
-
-      it 'sets a flash message' do
-        flash[:alert].should include('don\'t have permission to edit')
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
 
       it 'does not update any mappings' do
+        login_as unaffiliated_user
+        make_request
+
         expect(site.mappings.where(http_status: '301').count).to be(0)
       end
     end
