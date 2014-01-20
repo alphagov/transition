@@ -37,9 +37,9 @@ class MappingsController < ApplicationController
 
     @mappings = @site.mappings.order(:path).page(params[:page])
     @mappings = if params[:filter_field] == 'new_url'
-       @mappings.redirects.filtered_by_new_url(@path_contains)
+      @mappings.redirects.filtered_by_new_url(@path_contains)
     else
-       @mappings.filtered_by_path(@path_contains)
+      @mappings.filtered_by_path(@path_contains)
     end
   end
 
