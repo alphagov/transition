@@ -1,3 +1,5 @@
+require 'view/mappings/canonical_filter'
+
 class MappingsController < ApplicationController
   include PaperTrail::Controller
 
@@ -28,12 +30,12 @@ class MappingsController < ApplicationController
   end
 
   def index
-    @path_contains = begin
-      params[:contains] =~ %r{^https?://} ? URI.parse(params[:contains]).path :
-                                            params[:contains]
-    rescue URI::InvalidURIError
-      params[:contains]
-    end
+    @path_contains =
+      if (params[:filter_field] == 'new_url')
+        params[:contains]
+      else
+        View::Mappings::canonical_filter(@site, params[:contains])
+      end
 
     @mappings = @site.mappings.order(:path).page(params[:page])
     @mappings = if params[:filter_field] == 'new_url'

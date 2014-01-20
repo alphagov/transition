@@ -22,13 +22,12 @@ describe MappingsController do
   end
 
   describe '#index' do
-    let(:mapping_a) { create :redirect, path: '/a', new_url: 'http://f.co/1', site: site }
-    let(:mapping_b) { create :redirect, path: '/b', new_url: 'http://f.co/2', site: site }
-    let(:mapping_c) { create :redirect, path: '/c', new_url: 'http://f.co/3', site: site }
+    let!(:mapping_a) { create :redirect, path: '/a', new_url: 'http://f.co/1', site: site }
+    let!(:mapping_b) { create :redirect, path: '/b', new_url: 'http://f.co/2', site: site }
+    let!(:mapping_c) { create :redirect, path: '/c', new_url: 'http://f.co/3', site: site }
 
     before do
       login_as_stub_user
-      [mapping_c, mapping_b, mapping_a].each {|mapping| mapping.should be_persisted}
     end
 
     it 'orders mappings by path' do
@@ -36,34 +35,46 @@ describe MappingsController do
       assigns(:mappings).should == [mapping_a, mapping_b, mapping_c]
     end
 
-    it 'can filter mappings by path' do
-      get :index, site_id: site.abbr, contains: 'a'
-      assigns(:mappings).should == [mapping_a]
-    end
+    describe 'filtering' do
+      it 'filters mappings by path' do
+        get :index, site_id: site.abbr, contains: 'a'
+        assigns(:mappings).should == [mapping_a]
+      end
 
-    it 'can filter mappings by new_url' do
-      get :index, site_id: site.abbr, contains: 'f.co/1', filter_field: 'new_url'
-      assigns(:mappings).should == [mapping_a]
-    end
+      it 'canonicalises filter input' do
+        get :index, site_id: site.abbr, contains: '/A?q=1'
+        assigns(:mappings).should == [mapping_a]
+      end
 
-    it 'ignores non-redirect mappings when filtering by new_url' do
-      # We don't blank new_url if a redirect is changed to an archive. It would
-      # be confusing to return archive mappings when filtering by new_url.
+      it 'filters mappings by new_url' do
+        get :index, site_id: site.abbr, contains: 'f.co/1', filter_field: 'new_url'
+        assigns(:mappings).should == [mapping_a]
+      end
 
-      create :archived, new_url: 'http://f.co/1', site: site
+      it 'ignores non-redirect mappings when filtering by new_url' do
+        # We don't blank new_url if a redirect is changed to an archive. It would
+        # be confusing to return archive mappings when filtering by new_url.
 
-      get :index, site_id: site.abbr, contains: 'f.co/1', filter_field: 'new_url'
-      assigns(:mappings).should == [mapping_a]
-    end
+        create :archived, new_url: 'http://f.co/1', site: site
 
-    it 'extracts paths from full URLs supplied for filtering' do
-      get :index, site_id: site.abbr, contains: 'https://www.example.com/foobar'
-      assigns(:path_contains).should eql('/foobar')
-    end
+        get :index, site_id: site.abbr, contains: 'f.co/1', filter_field: 'new_url'
+        assigns(:mappings).should == [mapping_a]
+      end
 
-    it 'gracefully degrades if the filtering value looks like a URL but is unparseable' do
-      get :index, site_id: site.abbr, contains: 'https://____'
-      assigns(:path_contains).should eql('https://____')
+      it 'does not canonicalize the filter for new_url' do
+        get :index, site_id: site.abbr, contains: '/A/B/C/1?q=1', filter_field: 'new_url'
+        assigns(:path_contains).should == '/A/B/C/1?q=1'
+      end
+
+      it 'extracts paths from full URLs supplied for filtering' do
+        get :index, site_id: site.abbr, contains: 'https://www.example.com/foobar'
+        assigns(:path_contains).should eql('/foobar')
+      end
+
+      it 'gracefully degrades if the filtering value looks like a URL but is unparseable' do
+        get :index, site_id: site.abbr, contains: 'https://____'
+        assigns(:path_contains).should eql('https://____')
+      end
     end
   end
 
