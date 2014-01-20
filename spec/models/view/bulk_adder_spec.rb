@@ -4,7 +4,7 @@ describe View::Mappings::BulkAdder do
   let!(:site) { create(:site) }
 
   describe '#raw_paths' do
-    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input }, '').raw_paths }
+    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input }).raw_paths }
 
     context 'empty string' do
       before { @paths_input = '' }
@@ -57,7 +57,7 @@ describe View::Mappings::BulkAdder do
   end
 
   describe '#canonical_paths' do
-    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input }, '').canonical_paths }
+    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input }).canonical_paths }
 
     describe 'multiple raw paths are canonicalized' do
       before { @paths_input = "/sitecontent/documents/countries/491163/pvs-dis?view=binary\n/about us with spaces\n/LOWER" }
@@ -91,7 +91,7 @@ describe View::Mappings::BulkAdder do
 
   describe '#existing_mappings' do
     let!(:existing_mapping) { create(:mapping, site: site, path: '/exists_already') }
-    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: '410' }, '').existing_mappings }
+    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: '410' }).existing_mappings }
 
     context 'existing mapping\'s path is submitted' do
       before { @paths_input = "/exists_already\n/new" }
@@ -112,7 +112,7 @@ describe View::Mappings::BulkAdder do
 
   describe '#all_mappings' do
     let!(:existing_mapping) { create(:mapping, site: site, path: '/exists_already') }
-    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: '410' }, '').all_mappings }
+    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: '410' }).all_mappings }
 
     context 'with only valid paths input' do
       before { @paths_input = "/exists_already\n/a\n/b" }
@@ -147,7 +147,7 @@ describe View::Mappings::BulkAdder do
   end
 
   describe '#params_errors' do
-    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: @http_status, new_url: @new_url }, '').params_errors }
+    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: @http_status, new_url: @new_url }).params_errors }
 
     describe 'when no http_status is given, there is an error for http_status' do
       its([:http_status]) { should eql(I18n.t('mappings.bulk.http_status_invalid')) }
@@ -181,7 +181,7 @@ describe View::Mappings::BulkAdder do
         new_url:         @new_url,
         update_existing: @update_existing
       }
-      @adder = View::Mappings::BulkAdder.new(site, params, '')
+      @adder = View::Mappings::BulkAdder.new(site, params)
       @adder.create_or_update!
     end
 
@@ -307,7 +307,7 @@ describe View::Mappings::BulkAdder do
         http_status:     '410',
         update_existing: 'true'
       }
-      @adder = View::Mappings::BulkAdder.new(site, params, '')
+      @adder = View::Mappings::BulkAdder.new(site, params)
       @adder.create_or_update!
     end
 

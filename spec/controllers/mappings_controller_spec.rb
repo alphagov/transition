@@ -234,6 +234,10 @@ describe MappingsController do
           expect(response).to redirect_to site_mappings_path(site)
         end
 
+        it 'sets a success message' do
+          flash[:success].should include('mappings created')
+        end
+
         it 'creates new mappings' do
           expect(site.mappings.count).to eql(2)
         end

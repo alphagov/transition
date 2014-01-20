@@ -24,7 +24,7 @@ class MappingsController < ApplicationController
     bulk_add.create_or_update!
 
     flash[:success] = bulk_add.success_message
-    redirect_to site_return_path
+    redirect_to site_mappings_path(@site)
   end
 
   def index
@@ -110,7 +110,7 @@ class MappingsController < ApplicationController
 
 private
   def bulk_add
-    @bulk_add ||= View::Mappings::BulkAdder.new(@site, params, site_return_path)
+    @bulk_add ||= View::Mappings::BulkAdder.new(@site, params)
   end
 
   def bulk_edit
