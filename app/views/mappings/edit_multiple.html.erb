@@ -15,6 +15,7 @@
   <%= render partial: 'edit_multiple_redirect',
              locals: { new_url: @bulk_edit.new_url,
                        new_url_error: @new_url_error, http_status: @bulk_edit.http_status } %>
-  <%= link_to 'Cancel', @bulk_edit.back_to_index, class: 'btn btn-default add-right-margin' %>
+  <%= hidden_field_tag "return_url", @bulk_edit.return_url %>
+  <%= link_to 'Cancel', @bulk_edit.return_url, class: 'btn btn-default add-right-margin' %>
   <%= button_tag 'Save', class: 'btn btn-success' %>
 <% end %>
