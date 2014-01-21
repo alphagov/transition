@@ -112,7 +112,7 @@ private
   end
 
   def bulk_edit
-    @bulk_edit ||= View::Mappings::BulkEditor.new(@site, params, return_url)
+    @bulk_edit ||= View::Mappings::BulkEditor.new(@site, params, request.env['HTTP_REFERER'], site_mappings_url(@site))
   end
 
   def find_site
@@ -128,18 +128,5 @@ private
 
   def back_or_mappings_index
     request.env['HTTP_REFERER'] || site_mappings_path(@site)
-  end
-
-  def return_url
-    referer = request.env['HTTP_REFERER']
-    @return_url =
-      case
-      when referer && referer.start_with?(site_mappings_url(@site) + '?')
-        referer
-      when params[:return_url] && params[:return_url].start_with?(site_mappings_url(@site) + '?')
-        params[:return_url]
-      else
-        site_mappings_url(@site)
-      end
   end
 end

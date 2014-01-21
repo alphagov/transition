@@ -4,6 +4,22 @@ module View
     # Load and process params specific to bulk editing, to avoid stuffing
     # controllers full of fields.
     class BulkEditor < BulkBase
+      def return_url
+        @return_url =
+          case
+          # We've just left a non-default mappings index page, so pass its URL on to the form
+          when referer && referer.start_with?(site_mappings_url + '?')
+            referer
+          # We've received return_url and should either redirect to it or pass it back to a form
+          when params[:return_url] && params[:return_url].start_with?(site_mappings_url + '?')
+            params[:return_url]
+          # Use the default mappings index, either because the referer or params
+          # value weren't valid to use, weren't received or were this anyway
+          else
+            site_mappings_url
+          end
+      end
+
       def mappings
         @mappings ||= site.mappings.where(id: params[:mapping_ids]).order(:path)
       end
