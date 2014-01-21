@@ -6,6 +6,10 @@ $default-vertical-margin: $line-height-base * $font-size-base;
 // Colours
 $link-color-visited       : #609; /* Purple */
 
+// From https://www.gov.uk/service-manual/user-centered-design/resources/colour-palettes
+$turquoise                : #28a197;
+$orange                   : #f47738;
+
 $good-HTTP-status-color    : #dfd; /* Green */
 $bad-HTTP-status-color     : #fdd; /* Red */
 $default-HTTP-status-color : #eee; /* Grey */
