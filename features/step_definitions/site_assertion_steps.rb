@@ -1,4 +1,5 @@
 Then(/^I should see a big message that this organisation is (.*)$/) do |status|
+  save_and_open_page
   expect(page).to have_selector(".highlight-#{status}", text: status.capitalize)
 end
 
