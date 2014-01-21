@@ -39,12 +39,12 @@
   </ul>
 </div>
 
-<div class="highlight status highlight-pre-transition add-bottom-margin">
+<div class="highlight status highlight-<%= @site.transition_status %> add-bottom-margin">
   <span class="big-message"><%= render partial: 'transition_status', locals: {site: @site} %></span>
 </div>
 
 <div class="highlight date">
-  <span class="big-number"><%= (@site.launch_date - DateTime.now.utc + 1).to_i %> days</span>
-  until transition<br /><br />
+  <%= big_launch_days_number(@site) %>
+  <br/><br/>
   <%= date_or_not_yet(@site.launch_date) %>
 </div>

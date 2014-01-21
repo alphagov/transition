@@ -22,13 +22,12 @@ Scenario: Visit a post-transition organisation's page
   And I should see links to the site's analytics
   And I should see the site's configuration including all host aliases
 
-@wip
 Scenario: Visit a pre-transition organisation's page
   Given I have logged in as an admin
-  And the date is 15/11/12
+  And the date is 15/12/12
   And www.attorney-general.gov.uk site with abbr ago launched on 13/12/12 with the following aliases:
     | alias                     |
   When I visit this site page
   Then I should see a big message that this organisation is live
-  And I should see a big number "2 days after transition"
+  And I should see a big number "2 days since transition"
   And I should see the date of the site's transition
