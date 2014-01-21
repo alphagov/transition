@@ -4,13 +4,13 @@ module View
     # Load and process params specific to bulk editing, to avoid stuffing
     # controllers full of fields.
     class BulkEditor < BulkBase
-      def return_url
-        @return_url =
+      def return_path
+        @return_path =
           # Make sure that we're not redirecting to another site from user input
-          if params[:return_url] && params[:return_url].start_with?(site_mappings_url + '?')
-            params[:return_url]
+          if params[:return_path] && params[:return_path].start_with?(site_mappings_path + '?')
+            params[:return_path]
           else
-            site_mappings_url
+            site_mappings_path
           end
       end
 

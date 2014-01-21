@@ -28,14 +28,14 @@ class MappingsController < ApplicationController
   end
 
   def index
+    set_initial_return_path  # for bulk editing
+
     @path_contains = begin
       params[:contains] =~ %r{^https?://} ? URI.parse(params[:contains]).path :
                                             params[:contains]
     rescue URI::InvalidURIError
       params[:contains]
     end
-
-    set_initial_return_url  # for bulk editing
 
     @mappings = @site.mappings.order(:path).page(params[:page])
     @mappings = if params[:filter_field] == 'new_url'
@@ -60,7 +60,7 @@ class MappingsController < ApplicationController
   end
 
   def edit_multiple
-    redirect_to bulk_edit.return_url, notice: bulk_edit.params_errors and return if bulk_edit.params_invalid?
+    redirect_to bulk_edit.return_path, notice: bulk_edit.params_errors and return if bulk_edit.params_invalid?
 
     if request.xhr?
       render 'edit_multiple_modal', layout: nil
@@ -68,7 +68,7 @@ class MappingsController < ApplicationController
   end
 
   def update_multiple
-    redirect_to bulk_edit.return_url, notice: bulk_edit.params_errors and return if bulk_edit.params_invalid?
+    redirect_to bulk_edit.return_path, notice: bulk_edit.params_errors and return if bulk_edit.params_invalid?
 
     if bulk_edit.would_fail?
       if bulk_edit.would_fail_on_new_url?
@@ -76,7 +76,7 @@ class MappingsController < ApplicationController
         render action: 'edit_multiple' and return
       else
         flash[:danger] = 'Validation failed'
-        return redirect_to bulk_edit.return_url
+        return redirect_to bulk_edit.return_path
       end
     end
 
@@ -88,7 +88,7 @@ class MappingsController < ApplicationController
       render action: 'edit_multiple'
     else
       flash[:success] = 'Mappings updated successfully'
-      redirect_to bulk_edit.return_url
+      redirect_to bulk_edit.return_path
     end
   end
 
@@ -114,7 +114,7 @@ private
   end
 
   def bulk_edit
-    @bulk_edit ||= View::Mappings::BulkEditor.new(@site, params, site_mappings_url(@site))
+    @bulk_edit ||= View::Mappings::BulkEditor.new(@site, params, site_mappings_path(@site))
   end
 
   def find_site
@@ -132,7 +132,7 @@ private
     request.env['HTTP_REFERER'] || site_mappings_path(@site)
   end
 
-  def set_initial_return_url
-    @initial_return_url ||= request.url
+  def set_initial_return_path
+    @initial_return_path ||= request.fullpath
   end
 end

@@ -251,13 +251,13 @@ describe MappingsController do
     let!(:mapping_c) { create :mapping, path: '/c', site: site }
 
     before do
-      @mappings_index_with_filter = site_mappings_url(site) + '?contains=%2Fa'
+      @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
     end
 
     context 'without permission to edit' do
       def make_request
         mapping_ids = [ mapping_a.id, mapping_b.id ]
-        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '410', return_url: @mappings_index_with_filter
+        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '410', return_path: @mappings_index_with_filter
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -279,7 +279,7 @@ describe MappingsController do
 
       context 'when coming from the mappings index with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
-          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410', return_url: @mappings_index_with_filter
+          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410', return_path: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
       end
@@ -293,7 +293,7 @@ describe MappingsController do
       context 'when coming from the mappings index with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
           mapping_ids = [ mapping_a.id, mapping_b.id ]
-          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'bad', return_url: @mappings_index_with_filter
+          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'bad', return_path: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
       end
@@ -306,7 +306,7 @@ describe MappingsController do
     let!(:mapping_c) { create :mapping, path: '/c', site: site }
 
     before do
-      @mappings_index_with_filter = site_mappings_url(site) + '?contains=%2Fa'
+      @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
     end
 
     context 'without permission to edit' do
@@ -330,7 +330,7 @@ describe MappingsController do
         login_as admin_bob
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         @new_url = 'http://www.example.com'
-        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: @new_url, return_url: @mappings_index_with_filter
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: @new_url, return_path: @mappings_index_with_filter
       end
 
       it 'updates the mappings correctly' do
@@ -376,7 +376,7 @@ describe MappingsController do
 
       context 'when the mappings index was last visited with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
-          post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com', return_url: @mappings_index_with_filter
+          post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com', return_path: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
       end
