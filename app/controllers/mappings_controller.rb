@@ -35,6 +35,8 @@ class MappingsController < ApplicationController
       params[:contains]
     end
 
+    set_initial_return_url  # for bulk editing
+
     @mappings = @site.mappings.order(:path).page(params[:page])
     @mappings = if params[:filter_field] == 'new_url'
        @mappings.redirects.filtered_by_new_url(@path_contains)
@@ -112,7 +114,7 @@ private
   end
 
   def bulk_edit
-    @bulk_edit ||= View::Mappings::BulkEditor.new(@site, params, request.env['HTTP_REFERER'], site_mappings_url(@site))
+    @bulk_edit ||= View::Mappings::BulkEditor.new(@site, params, site_mappings_url(@site))
   end
 
   def find_site
@@ -128,5 +130,9 @@ private
 
   def back_or_mappings_index
     request.env['HTTP_REFERER'] || site_mappings_path(@site)
+  end
+
+  def set_initial_return_url
+    @initial_return_url ||= request.url
   end
 end

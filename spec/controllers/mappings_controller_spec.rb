@@ -257,7 +257,7 @@ describe MappingsController do
     context 'without permission to edit' do
       def make_request
         mapping_ids = [ mapping_a.id, mapping_b.id ]
-        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '410'
+        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '410', return_url: @mappings_index_with_filter
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -279,8 +279,7 @@ describe MappingsController do
 
       context 'when coming from the mappings index with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
-          request.env['HTTP_REFERER'] = @mappings_index_with_filter
-          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410'
+          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410', return_url: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
       end
@@ -293,9 +292,8 @@ describe MappingsController do
 
       context 'when coming from the mappings index with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
-          request.env['HTTP_REFERER'] = @mappings_index_with_filter
           mapping_ids = [ mapping_a.id, mapping_b.id ]
-          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'bad'
+          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'bad', return_url: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
       end
@@ -330,7 +328,6 @@ describe MappingsController do
     context 'when valid data is posted', versioning: true do
       before do
         login_as admin_bob
-        request.env['HTTP_REFERER'] = @mappings_index_with_filter
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         @new_url = 'http://www.example.com'
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: @new_url, return_url: @mappings_index_with_filter
@@ -379,7 +376,6 @@ describe MappingsController do
 
       context 'when the mappings index was last visited with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
-          request.env['HTTP_REFERER'] = @mappings_index_with_filter
           post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com', return_url: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
