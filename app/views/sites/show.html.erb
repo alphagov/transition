@@ -2,36 +2,49 @@
 
 <% breadcrumb :site, @site %>
 
-<div class="page-title-with-border">
-  <h1>
-    <span class="small"><%= @site.default_host.hostname %></span>
-    Site details
-  </h1>
+<h1><%= @site.default_host.hostname %></h1>
+
+<div class="mappings">
+  <h3>Mappings</h3>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <%= link_to site_mappings_path(@site) do %>
+        <h4 class="list-group-item-heading">Edit mappings</h4>
+      <% end %>
+    </li>
+    <li class="list-group-item">
+      <%= link_to new_multiple_site_mappings_path(@site) do %>
+        <h4 class="list-group-item-heading">Add mappings</h4>
+      <% end %>
+    </li>
+  </ul>
 </div>
 
-<dl class="dl-spaced">
-  <dt>Mappings</dt>
-  <dd>
-    <%= link_to site_mappings_path(@site) do %>
-      <%= number_with_delimiter(@site.mappings.count) %> Mappings
-    <% end %>
-  </dd>
-  <dt>Analytics</dt>
-  <dd><%= link_to 'Analytics', summary_site_hits_path(@site) %></dd>
-  <dt>Default hostname</dt>
-  <dd><%= @site.default_host.hostname %></dd>
-  <dt>Hostname aliases</dt>
-  <dd><%= @site.hosts.pluck(:hostname).join(', ') %></dd>
-  <dt>New homepage</dt>
-  <dd><%= link_to @site.homepage, @site.homepage, class: 'breakable' %></dd>
-  <dt>Abbreviation</dt>
-  <dd><%= @site.abbr %></dd>
-  <dt>Significant query parameters</dt>
-  <dd><%= @site.query_params.presence || 'None' %></dd>
-  <dt>The National Archive (<abbr>TNA</abbr>) timestamp</dt>
-  <dd><%= I18n.l @site.tna_timestamp, :format => :govuk_date %> <span class="text-muted"> — <%= @site.tna_timestamp.to_formatted_s(:number) %></span></dd>
-  <dt>Transition status</dt>
-  <dd><%= render partial: 'transition_status', locals: {site: @site} %></dd>
-  <dt>Transition date</dt>
-  <dd><%= date_or_not_yet(@site.launch_date) %></dd>
-</dl>
+<div class="performance">
+  <h3>Performance</h3>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <%= link_to site_hits_path(@site) do %>
+        <h4 class="list-group-item-heading">Analytics</h4>
+      <% end %>
+      <p class="list-group-item-text">
+        Graphs and tables charting
+        <abbr data-original-title="Resources served from the website including pages, images and file downloads."
+              data-toggle="tooltip" title="">hits</abbr>
+        to www.attorneygeneral.gov.uk. Use analytics to see how many users
+        are visiting old URLs and what proportion of them are being
+        redirected, seeing archives or finding errors.
+      </p>
+    </li>
+  </ul>
+</div>
+
+<div class="highlight status highlight-pre-transition add-bottom-margin">
+  <span class="big-message"><%= render partial: 'transition_status', locals: {site: @site} %></span>
+</div>
+
+<div class="highlight date">
+  <span class="big-number"><%= (@site.launch_date - DateTime.now.utc + 1).to_i %> days</span>
+  until transition<br /><br />
+  <%= date_or_not_yet(@site.launch_date) %>
+</div>
