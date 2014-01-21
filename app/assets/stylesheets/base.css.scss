@@ -304,6 +304,19 @@ thead .table-header-secondary td {
   font-size: $font-size-large;
 }
 
+.big-message {
+  font-size: $font-size-h1;
+  font-weight: bold;
+}
+
+.big-number {
+  font-size: $font-size-h1 * 1.5;
+  font-weight: bold;
+}
+
+/* No content
+   ========================================================================== */
+
 .no-content {
   color: lighten($gray-light, 20%); // Large text needs a lighter colour for balance
   font-size: $font-size-base * 2;
@@ -315,6 +328,29 @@ thead .table-header-secondary td {
 .no-content-bordered {
   border: 1px solid $table-border-color;
   border-radius: $border-radius-base;
+}
+
+/* Highlights
+   ========================================================================== */
+
+.highlight {
+  background: #aaa;
+  text-align: center;
+  padding: 2 * $default-vertical-margin;
+  color: #fff;
+  font-size: $font-size-base * 1.5;
+}
+
+.highlight > p:last-child {
+  margin-bottom: 0;
+}
+
+.highlight-turquoise {
+  background-color: $turquoise;
+}
+
+.highlight-orange {
+  background-color: $orange;
 }
 
 /* ==========================================================================
