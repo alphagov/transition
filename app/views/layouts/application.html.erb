@@ -37,7 +37,7 @@
           </li>
           <% if current_user.organisation %>
             <li <% if current_page?(organisation_path(current_user.organisation)) %> class="active" <% end %>>
-              <%= link_to "#{current_user.organisation.title} (#{current_user.organisation.abbreviation})", organisation_path(current_user.organisation), title: 'Your organisation' %>
+              <%= link_to "#{current_user.organisation.title} #{if current_user.organisation.abbreviation.present? then "(#{current_user.organisation.abbreviation})" end}", organisation_path(current_user.organisation), title: 'Your organisation' %>
             </li>
           <% end %>
         </ul>
