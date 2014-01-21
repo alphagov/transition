@@ -30,6 +30,36 @@ describe Site do
     end
   end
 
+  describe '#transition_status' do
+    let!(:site) { create :site }
+
+    subject(:transition_status) { site.transition_status }
+
+    context 'site has any host redirected by GDS' do
+      before do
+        site.default_host.tap do |host|
+          host.cname = 'redirector-cdn.production.govuk.service.gov.uk'
+          host.save
+        end
+      end
+      it { should eql('live') }
+    end
+
+    context 'site is under supplier redirect' do
+      before { site.special_redirect_strategy = 'supplier' }
+      it     { should eql('indeterminate') }
+    end
+
+    context 'site is under aka redirect' do
+      before { site.special_redirect_strategy = 'via_aka' }
+      it     { should eql('indeterminate') }
+    end
+
+    context 'in any other case' do
+      it { should eql('pre-transition') }
+    end
+  end
+
   # given that hosts are site aliases
   describe '#default_host' do
     let(:hosts) { [create(:host), create(:host)] }
