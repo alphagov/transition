@@ -28,8 +28,6 @@ class MappingsController < ApplicationController
   end
 
   def index
-    set_initial_return_path  # for bulk editing
-
     @path_contains = begin
       params[:contains] =~ %r{^https?://} ? URI.parse(params[:contains]).path :
                                             params[:contains]
@@ -130,9 +128,5 @@ private
 
   def back_or_mappings_index
     request.env['HTTP_REFERER'] || site_mappings_path(@site)
-  end
-
-  def set_initial_return_path
-    @initial_return_path ||= request.fullpath
   end
 end
