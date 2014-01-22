@@ -19,4 +19,13 @@ module ApplicationHelper
   def first_page?
     !past_first_page?
   end
+
+  def organisation_with_abbreviation(org)
+    if org.abbreviation.present?
+      "#{org.title} (#{org.abbreviation})"
+    else
+      org.title
+    end
+  end
+
 end
