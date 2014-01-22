@@ -48,6 +48,15 @@ Feature: Editing multiple mappings for a site
     And I click the link called "Cancel"
     Then I should see "3 mappings"
 
+  Scenario: Editing multiple mappings from a filtered index page
+    When I filter the path by /about
+    And I select the first two mappings
+    And I select "Archive"
+    And I go to edit the selected mappings
+    And I save my changes
+    Then I should see "2 mappings"
+    And the filter box should contain "/about"
+
   @javascript
   Scenario: Selecting multiple mappings to redirect with javascript
     When I select the first two mappings
