@@ -1,0 +1,19 @@
+<div class="mappings">
+  <h3 class="remove-top-margin add-bottom-margin">Mappings</h3>
+  <ul class="list-group add-big-bottom-margin">
+    <li class="list-group-item">
+      <%= link_to site_mappings_path(@site) do %>
+        <h4 class="list-group-item-heading">Edit mappings</h4>
+      <% end %>
+      <p class="list-group-item-text text-muted">
+        Manage mappings for <%= pluralize(@site.mappings.count, 'path') %>
+        from <%= @site.default_host.hostname %>.
+      </p>
+    </li>
+    <li class="list-group-item">
+      <%= link_to new_multiple_site_mappings_path(@site) do %>
+        <h4 class="list-group-item-heading">Add mappings</h4>
+      <% end %>
+    </li>
+  </ul>
+</div>
