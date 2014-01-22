@@ -6,8 +6,9 @@ module View
     class BulkEditor < BulkBase
       def return_path
         @return_path =
-          # Make sure that we're not redirecting to another site from user input
-          if params[:return_path] && params[:return_path].start_with?(site_mappings_path + '?')
+          # Make sure that this looks like a path and not a full URL (which
+          # might be for an external site)
+          if params[:return_path] && params[:return_path].start_with?('/')
             params[:return_path]
           else
             site_mappings_path
