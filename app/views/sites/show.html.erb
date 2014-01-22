@@ -2,67 +2,78 @@
 
 <% breadcrumb :site, @site %>
 
-<h1><%= @site.default_host.hostname %></h1>
-
-<div class="mappings">
-  <h3>Mappings</h3>
-  <ul class="list-group">
-    <li class="list-group-item">
-      <%= link_to site_mappings_path(@site) do %>
-        <h4 class="list-group-item-heading">Edit mappings</h4>
-      <% end %>
-    </li>
-    <li class="list-group-item">
-      <%= link_to new_multiple_site_mappings_path(@site) do %>
-        <h4 class="list-group-item-heading">Add mappings</h4>
-      <% end %>
-    </li>
-  </ul>
+<div class="page-title-with-border">
+  <h1><%= @site.default_host.hostname %></h1>
 </div>
 
-<div class="performance">
-  <h3>Performance</h3>
-  <ul class="list-group">
-    <li class="list-group-item">
-      <%= link_to site_hits_path(@site) do %>
-        <h4 class="list-group-item-heading">Analytics</h4>
-      <% end %>
-      <p class="list-group-item-text">
-        Graphs and tables charting
-        <abbr data-original-title="Resources served from the website including pages, images and file downloads."
-              data-toggle="tooltip" title="">hits</abbr>
-        to www.attorneygeneral.gov.uk. Use analytics to see how many users
-        are visiting old URLs and what proportion of them are being
-        redirected, seeing archives or finding errors.
-      </p>
-    </li>
-  </ul>
-</div>
+<div class="row">
+  <div class="col-md-8">
+    <div class="mappings">
+      <h3 class="remove-top-margin add-bottom-margin">Mappings</h3>
+      <ul class="list-group add-big-bottom-margin">
+        <li class="list-group-item">
+          <%= link_to site_mappings_path(@site) do %>
+            <h4 class="list-group-item-heading">Edit mappings</h4>
+          <% end %>
+        </li>
+        <li class="list-group-item">
+          <%= link_to new_multiple_site_mappings_path(@site) do %>
+            <h4 class="list-group-item-heading">Add mappings</h4>
+          <% end %>
+        </li>
+      </ul>
+    </div>
 
-<div class="highlight status highlight-<%= @site.transition_status %> add-bottom-margin">
-  <span class="big-message"><%= render partial: 'transition_status', locals: {site: @site} %></span>
-</div>
+    <div class="performance">
+      <h3 class="remove-top-margin add-bottom-margin">Performance</h3>
+      <ul class="list-group add-big-bottom-margin">
+        <li class="list-group-item">
+          <%= link_to site_hits_path(@site) do %>
+            <h4 class="list-group-item-heading">Analytics</h4>
+          <% end %>
+          <p class="list-group-item-text text-muted">
+            Graphs and tables charting
+            <abbr data-original-title="Resources served from the website including pages, images and file downloads."
+                  data-toggle="tooltip" title="">hits</abbr>
+            to www.attorneygeneral.gov.uk. Use analytics to see how many users
+            are visiting old URLs and what proportion of them are being
+            redirected, seeing archives or finding errors.
+          </p>
+        </li>
+      </ul>
+    </div>
 
-<div class="highlight date">
-  <%= big_launch_days_number(@site) %>
-  <br/><br/>
-  <%= date_or_not_yet(@site.launch_date) %>
-</div>
+    <h3 class="add-bottom-margin">Configuration</h3>
 
-<div class="configuration">
-  <h3>Configuration</h3>
-  <dl>
-    <dt>Default hostname</dt>
-    <dd><%= @site.default_host.hostname %></dd>
-    <dt>Hostname aliases</dt>
-    <dd class="aliases"><%= @site.hosts.pluck(:hostname).join(', ') %></dd>
-    <dt>New homepage</dt>
-    <dd><%= link_to @site.homepage, @site.homepage, class: 'breakable' %></dd>
-    <dt>Abbreviation</dt>
-    <dd><%= @site.abbr %></dd>
-    <dt>Significant query parameters</dt>
-    <dd><%= @site.query_params.presence || 'None' %></dd>
-    <dt>The National Archive (<abbr>TNA</abbr>) timestamp</dt>
-    <dd><%= @site.tna_timestamp.to_formatted_s(:long) %> <span class="text-muted"> — <%= @site.tna_timestamp.to_formatted_s(:number) %></span></dd>
-  </dl>
+    <div class="configuration panel panel-default">
+      <dl class="panel-body dl-spaced remove-bottom-margin">
+        <dt>Default hostname</dt>
+        <dd><%= @site.default_host.hostname %></dd>
+        <dt>Hostname aliases</dt>
+        <dd class="aliases"><%= @site.hosts.pluck(:hostname).join(', ') %></dd>
+        <dt>New homepage</dt>
+        <dd><%= link_to @site.homepage, @site.homepage, class: 'breakable' %></dd>
+        <dt>Abbreviation</dt>
+        <dd><%= @site.abbr %></dd>
+        <dt>Significant query parameters</dt>
+        <dd><%= @site.query_params.presence || 'None' %></dd>
+        <dt>The National Archive (<abbr>TNA</abbr>) timestamp</dt>
+        <dd><%= @site.tna_timestamp.to_formatted_s(:long) %> <span class="text-muted"> — <%= @site.tna_timestamp.to_formatted_s(:number) %></span></dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <h3 class="remove-top-margin add-bottom-margin">Transition</h3>
+
+    <div class="highlight highlight-<%= @site.transition_status %> add-bottom-margin">
+      <span class="big-message"><%= render partial: 'transition_status', locals: { site: @site } %></span>
+    </div>
+
+    <div class="highlight date">
+      <%= big_launch_days_number(@site) %>
+      <br/><br/>
+      <%= date_or_not_yet(@site.launch_date) %>
+    </div>
+  </div>
 </div>

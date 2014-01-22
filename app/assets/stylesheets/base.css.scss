@@ -314,6 +314,11 @@ thead .table-header-secondary td {
   font-weight: bold;
 }
 
+.list-group-item {
+  padding-top:    18px;
+  padding-bottom: 18px;
+}
+
 /* No content
    ========================================================================== */
 
@@ -345,11 +350,11 @@ thead .table-header-secondary td {
   margin-bottom: 0;
 }
 
-.highlight-turquoise {
+.highlight-turquoise, .highlight-live {
   background-color: $turquoise;
 }
 
-.highlight-orange {
+.highlight-orange, .highlight-pre-transition {
   background-color: $orange;
 }
 
