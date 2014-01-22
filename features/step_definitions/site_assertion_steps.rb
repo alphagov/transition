@@ -27,11 +27,26 @@ Then(/^I should see links to edit and add the site's mappings$/) do
 end
 
 Then(/^I should see the site's configuration including all host aliases$/) do
-  pending
+  within '.configuration' do
+    expected_definitions = {
+      'Default hostname' => 'www.attorney-general.gov.uk',
+      'New homepage' => 'https://www.gov.uk/government/organisations/attorney-generals-office',
+      'Significant query parameters' => 'None',
+      'The National Archive (TNA) timestamp' => 'None'
+    }
+
+    expected_definitions.each_pair do |dt, dd|
+      expect(page).to have_selector('dt', text: dt)
+      expect(page).to have_selector('dd', text: dd)
+    end
+
+    %w(www.attorney-general.gov.uk www.ago.gov.uk www.lslo.gov.uk).each do |hostname|
+      expect(page).to have_selector('.aliases', text: hostname)
+    end
+  end
 end
 
-
 Then(/^I should see the date of the site's transition$/) do
-  pending
+  expect(page).to have_content('13 December 2012')
 end
 

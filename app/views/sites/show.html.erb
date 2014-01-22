@@ -48,3 +48,21 @@
   <br/><br/>
   <%= date_or_not_yet(@site.launch_date) %>
 </div>
+
+<div class="configuration">
+  <h3>Configuration</h3>
+  <dl>
+    <dt>Default hostname</dt>
+    <dd><%= @site.default_host.hostname %></dd>
+    <dt>Hostname aliases</dt>
+    <dd class="aliases"><%= @site.hosts.pluck(:hostname).join(', ') %></dd>
+    <dt>New homepage</dt>
+    <dd><%= link_to @site.homepage, @site.homepage, class: 'breakable' %></dd>
+    <dt>Abbreviation</dt>
+    <dd><%= @site.abbr %></dd>
+    <dt>Significant query parameters</dt>
+    <dd><%= @site.query_params.presence || 'None' %></dd>
+    <dt>The National Archive (<abbr>TNA</abbr>) timestamp</dt>
+    <dd><%= @site.tna_timestamp.to_formatted_s(:long) %> <span class="text-muted"> — <%= @site.tna_timestamp.to_formatted_s(:number) %></span></dd>
+  </dl>
+</div>
