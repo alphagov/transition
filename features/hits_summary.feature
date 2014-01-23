@@ -53,7 +53,7 @@ Background: I start at the summary page
     | 200         | /9   | 18/10/12 | 100   |
     | 200         | /10  | 18/10/12 | 100   |
     | 200         | /11  | 18/10/12 | 10    |
-  When I visit the associated organisation
+  When I visit the associated site
   And I click the link "Analytics"
 
 Scenario: Hits exist and are summarised for a site, displayed with a graph
@@ -103,7 +103,7 @@ Scenario: There are multiple pages for a category
 
 Scenario: No hits exist at all
   Given no hits exist for the Attorney General's office site
-  When I visit the associated organisation
+  When I visit the associated site
   And I click the link "Analytics"
   Then I should not see a graph
   And I should see "There are no known hits for the ago summary yet"
