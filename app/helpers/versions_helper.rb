@@ -6,7 +6,10 @@ module VersionsHelper
   end
 
   def friendly_changeset_title(version)
-    if version.changeset['http_status']
+
+    if version.changeset['id']
+      "Mapping created"
+    elsif version.changeset['http_status']
       if version.changeset['http_status'][0] == '410'
         "Archive → Redirect"
       else
