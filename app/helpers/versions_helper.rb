@@ -9,10 +9,12 @@ module VersionsHelper
     if changeset['id']
       "Mapping created"
     elsif changeset['http_status']
-      if changeset['http_status'][0] == '410'
+      if changeset['http_status'][1] == '301'
         "Switched mapping to a Redirect"
-      else
+      elsif changeset['http_status'][1] == '410'
         "Switched mapping to an Archive"
+      else
+        "Switched mapping type"
       end
     elsif changeset.length == 1
       first = changeset.first[0].titleize

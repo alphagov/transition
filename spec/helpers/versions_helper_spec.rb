@@ -13,8 +13,8 @@ describe VersionsHelper do
     specify { helper.friendly_changeset_title({'archive_url' => 1}).should == 'Alternative Archive URL updated' }
     specify { helper.friendly_changeset_title({'miscellaneous' => 1}).should == 'Miscellaneous updated' }
     specify { helper.friendly_changeset_title({'archive_url' => 1, 'miscellaneous' => 1}).should == 'Multiple properties updated' }
-    specify { helper.friendly_changeset_title({'http_status' => ['301']}).should == 'Switched mapping to an Archive' }
-    specify { helper.friendly_changeset_title({'http_status' => ['410']}).should == 'Switched mapping to a Redirect' }
+    specify { helper.friendly_changeset_title({'http_status' => ['301', '410']}).should == 'Switched mapping to an Archive' }
+    specify { helper.friendly_changeset_title({'http_status' => ['410', '301']}).should == 'Switched mapping to a Redirect' }
   end
 
   describe '#friendly_changeset_values' do
