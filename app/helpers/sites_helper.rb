@@ -1,5 +1,7 @@
 module SitesHelper
   def big_launch_days_number(site)
+    return nil if site.launch_date.nil?
+
     big_day_span = content_tag(
       :span,
       pluralize(days_before_or_after_launch(site), 'day'),

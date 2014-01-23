@@ -13,6 +13,13 @@ describe SitesHelper do
 
     subject { helper.big_launch_days_number(site) }
 
+    context 'when launch date is not set' do
+      let(:launch_date)       { nil }
+      let(:transition_status) { :pre_transition }
+
+      it { should be_nil }
+    end
+
     context 'when launching 14 days in the future' do
       let(:launch_date)       { Date.new(2013, 11, 14) }
       let(:transition_status) { :pre_transition }
