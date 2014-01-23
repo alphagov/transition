@@ -11,9 +11,9 @@ module VersionsHelper
       "Mapping created"
     elsif version.changeset['http_status']
       if version.changeset['http_status'][0] == '410'
-        "Archive → Redirect"
+        "Switched mapping to a Redirect"
       else
-        "Redirect → Archive"
+        "Switched mapping to an Archive"
       end
     elsif version.changeset.length == 1
       first = version.changeset.first[0].titleize
