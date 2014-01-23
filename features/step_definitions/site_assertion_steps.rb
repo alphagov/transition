@@ -9,14 +9,14 @@ Then(/^I should see a big number "(\d+) days (.*)"$/) do |days, message|
   end
 end
 
-Then(/^I should see links to the site's analytics$/) do
+Then(/^I should be able to view the site's analytics$/) do
   within '.performance' do
     expect(page).to have_selector('.list-group-item-heading', text: 'Analytics')
     expect(page).to have_link('a', site_hits_path(@site))
   end
 end
 
-Then(/^I should see links to edit and add the site's mappings$/) do
+Then(/^I should be able to edit the site's mappings$/) do
   within '.mappings' do
     expect(page).to have_selector('.list-group-item-heading', text: 'Edit mappings')
     expect(page).to have_link('a', href: site_mappings_path(@site))
@@ -24,6 +24,15 @@ Then(/^I should see links to edit and add the site's mappings$/) do
     expect(page).to have_link('a', href: new_multiple_site_mappings_path(@site))
   end
 end
+
+Then(/^I should not be able to edit the site's mappings$/) do
+  within '.mappings' do
+    expect(page).not_to have_selector('.list-group-item-heading', text: 'Edit mappings')
+    expect(page).not_to have_selector('.list-group-item-heading', text: 'Add mappings')
+    expect(page).not_to have_link('a', href: new_multiple_site_mappings_path(@site))
+  end
+end
+
 
 Then(/^I should see the site's configuration including all host aliases$/) do
   within '.configuration' do
@@ -49,3 +58,10 @@ Then(/^I should see the date of the site's transition$/) do
   expect(page).to have_content('13 December 2012')
 end
 
+
+Then(/^I should be able to view the site's mappings$/) do
+  within '.mappings' do
+    expect(page).to have_selector('.list-group-item-heading', text: 'View mappings')
+    expect(page).to have_link('a', href: site_mappings_path(@site))
+  end
+end

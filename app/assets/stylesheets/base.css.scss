@@ -315,13 +315,8 @@ thead .table-header-secondary td {
 }
 
 .list-group-item {
-  padding-top:    18px;
-  padding-bottom: 18px;
-}
-
-.list-group-item-heading {
-  margin-bottom: 6px;
-  color: #428bca !important;
+  padding-top:    $default-vertical-margin;
+  padding-bottom: $default-vertical-margin;
 }
 
 /* No content
