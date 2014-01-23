@@ -5,18 +5,17 @@ module VersionsHelper
     value.blank? ? '<blank>' : value
   end
 
-  def friendly_changeset_title(version)
-
-    if version.changeset['id']
+  def friendly_changeset_title(changeset)
+    if changeset['id']
       "Mapping created"
-    elsif version.changeset['http_status']
-      if version.changeset['http_status'][0] == '410'
+    elsif changeset['http_status']
+      if changeset['http_status'][0] == '410'
         "Switched mapping to a Redirect"
       else
         "Switched mapping to an Archive"
       end
-    elsif version.changeset.length == 1
-      first = version.changeset.first[0].titleize
+    elsif changeset.length == 1
+      first = changeset.first[0].titleize
       first = "Alternative Archive URL" if first == "Archive URL"
       "#{first} updated"
     else

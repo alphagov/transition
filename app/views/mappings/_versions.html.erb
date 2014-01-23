@@ -2,7 +2,7 @@
   <% @mapping.versions.reverse.each do |version| %>
     <li id="<%= version.id %>" class="add-big-bottom-margin">
       <h3>
-        <%= friendly_changeset_title(version) %>
+        <%= friendly_changeset_title(version.changeset) %>
       </h3>
       <p class="text-muted add-bottom-margin">
         <strong><%= version.whodunnit %></strong> — <%= version.created_at.to_formatted_s(:long) %>
