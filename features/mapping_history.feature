@@ -24,6 +24,7 @@ Feature: History of edits to a mapping
     And I click the link "Edit"
     And I click the tab "History"
     Then I should see that New URL was changed from http://somewhere.good to http://somewhere.bad
+    And I should see "New URL updated"
     And I should see a link to "Edit"
 
   Scenario: Looking at a mapping that has been bulk uploaded from redirector

@@ -1,0 +1,19 @@
+<ol class="mapping-versions" reversed>
+  <% @mapping.versions.reverse.each do |version| %>
+    <li id="<%= version.id %>" class="add-big-bottom-margin">
+      <h3>
+        <%= friendly_changeset_title(version.changeset) %>
+      </h3>
+      <p class="text-muted add-bottom-margin">
+        <strong><%= version.whodunnit %></strong> — <%= version.created_at.to_formatted_s(:long) %>
+      </p>
+      <h4 class="rm">Changes</h4>
+      <dl class="well">
+        <% version.changeset.each_pair do |field, change| %>
+          <dt><%= friendly_field_name(field) %></dt>
+          <dd><%= friendly_changeset_old_to_new(field, change) %></dd>
+        <% end %>
+      </dl>
+    </li>
+  <% end %>
+</ol>
