@@ -28,7 +28,10 @@
   <h2 class="add-bottom-margin">
     <%= "#{ http_status_name(@bulk_add.http_status) }" %> paths
     <% if @bulk_add.http_status == '301' %>
-      to <%= link_to @bulk_add.test_mapping.new_url, @bulk_add.test_mapping.new_url, class: 'breakable' %>
+      <br />
+      <span class="subtitle">
+        to <%= link_to @bulk_add.test_mapping.new_url, @bulk_add.test_mapping.new_url, class: 'breakable' %>
+      </span>
     <% end %>
   </h2>
 
