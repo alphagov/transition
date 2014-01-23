@@ -35,7 +35,7 @@ module VersionsHelper
     end
   end
 
-  def friendly_changeset_values(field, change)
+  def friendly_changeset_old_to_new(field, change)
 
     if field == "http_status"
       old_value = change[0].blank? ? value_or_blank(change[0]) : http_status_name(change[0])

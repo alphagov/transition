@@ -17,10 +17,10 @@ describe VersionsHelper do
     specify { helper.friendly_changeset_title({'http_status' => ['410', '301']}).should == 'Switched mapping to a Redirect' }
   end
 
-  describe '#friendly_changeset_values' do
-    specify { helper.friendly_changeset_values('misc', ['old', 'new']).should == 'old → new' }
-    specify { helper.friendly_changeset_values('misc', ['', 'new']).should == '<blank> → new' }
-    specify { helper.friendly_changeset_values('http_status', ['410', '301']).should == 'Archive → Redirect' }
-    specify { helper.friendly_changeset_values('http_status', ['', '301']).should == '<blank> → Redirect' }
+  describe '#friendly_changeset_old_to_new' do
+    specify { helper.friendly_changeset_old_to_new('misc', ['old', 'new']).should == 'old → new' }
+    specify { helper.friendly_changeset_old_to_new('misc', ['', 'new']).should == '<blank> → new' }
+    specify { helper.friendly_changeset_old_to_new('http_status', ['410', '301']).should == 'Archive → Redirect' }
+    specify { helper.friendly_changeset_old_to_new('http_status', ['', '301']).should == '<blank> → Redirect' }
   end
 end

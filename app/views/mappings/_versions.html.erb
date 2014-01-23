@@ -11,7 +11,7 @@
       <dl class="well">
         <% version.changeset.each_pair do |field, change| %>
           <dt><%= friendly_changeset_field(field) %></dt>
-          <dd><%= friendly_changeset_values(field, change) %></dd>
+          <dd><%= friendly_changeset_old_to_new(field, change) %></dd>
         <% end %>
       </dl>
     </li>
