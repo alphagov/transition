@@ -1,22 +1,18 @@
 <div class="mappings">
   <h3 class="remove-top-margin add-bottom-margin">Mappings</h3>
-  <ul class="list-group add-big-bottom-margin">
-    <li class="list-group-item">
-      <%= link_to site_mappings_path(@site) do %>
-        <h4 class="list-group-item-heading"><%= mappings_view_or_edit %> mappings</h4>
-      <% end %>
+  <div class="list-group add-big-bottom-margin">
+    <%= link_to site_mappings_path(@site), class: 'list-group-item' do %>
+      <h4 class="list-group-item-heading"><%= mappings_view_or_edit %> mappings</h4>
       <p class="list-group-item-text text-muted">
         <%= mappings_manage_or_view %> mappings for <%= pluralize(@site.mappings.count, 'path') %>
         from <%= @site.default_host.hostname %>.
       </p>
-    </li>
+  <% end %>
 
     <% if current_user.can_edit?(@site.organisation) %>
-      <li class="list-group-item">
-        <%= link_to new_multiple_site_mappings_path(@site) do %>
-          <h4 class="list-group-item-heading">Add mappings</h4>
-        <% end %>
-      </li>
+      <%= link_to new_multiple_site_mappings_path(@site), class: 'list-group-item' do %>
+        <h4 class="list-group-item-heading">Add mappings</h4>
+      <% end %>
     <% end %>
-  </ul>
+  </div>
 </div>

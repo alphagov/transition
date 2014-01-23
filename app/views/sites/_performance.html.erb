@@ -1,10 +1,8 @@
 <div class="performance">
   <h3 class="remove-top-margin add-bottom-margin">Performance</h3>
-  <ul class="list-group add-big-bottom-margin">
-    <li class="list-group-item">
-      <%= link_to summary_site_hits_path(@site) do %>
-        <h4 class="list-group-item-heading">Analytics</h4>
-      <% end %>
+  <div class="list-group add-big-bottom-margin">
+    <%= link_to summary_site_hits_path(@site), class: 'list-group-item' do %>
+      <h4 class="list-group-item-heading">Analytics</h4>
       <p class="list-group-item-text text-muted">
         Graphs and tables charting
         <abbr title="Resources served from the website including pages, images and file downloads."
@@ -13,6 +11,6 @@
         are visiting old URLs and what proportion of them are being
         redirected, seeing archives or finding errors.
       </p>
-    </li>
-  </ul>
+    <% end %>
+  </div>
 </div>
