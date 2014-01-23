@@ -3,7 +3,7 @@ Then(/^I should see a big message that this organisation is (.*)$/) do |status|
 end
 
 Then(/^I should see a big number "(\d+) days (.*)"$/) do |days, message|
-  within '.highlight.date' do
+  within '.days-from-launch' do
     expect(page).to have_selector('.big-number', text: "#{days} days")
     expect(page).to have_content(message)
   end

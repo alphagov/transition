@@ -22,7 +22,7 @@
       <span class="big-message"><%= render partial: 'transition_status', locals: { site: @site } %></span>
     </div>
 
-    <div class="highlight date">
+    <div class="highlight days-from-launch">
       <%= big_launch_days_number(@site) %>
       <%= date_or_not_yet(@site.launch_date) %>
     </div>
