@@ -9,19 +9,44 @@
 <p class="lead">Transition’s UI is powered by <a href="http://getbootstrap.com/css/">bootstrap 3</a>, using <a href="https://github.com/thomas-mcdonald/bootstrap-sass/tree/v3.0.3.0">bootstrap SASS</a> (v3.0.3.0), but maintaining bootstrap 2 button styles. This guide documents how transition is using bootstrap, where the app has diverged from default styles and any custom styles needed to fill in the gaps.</p>
 
 <h2>Grid</h2>
+<p class="lead">Transition uses the <a href="http://getbootstrap.com/css/#grid">default bootstrap</a> <strong>12 column scaleable responsive grid</strong>.</p>
+<div class="row add-bottom-margin">
+  <div class="grid-example col-md-2">col-md-2</div>
+  <div class="grid-example col-md-4">col-md-4</div>
+  <div class="grid-example col-md-6">col-md-6</div>
+</div>
 <div class="row">
-  <div class="col-md-12">
-    <p class="lead">Transition uses the <a href="http://getbootstrap.com/css/#grid">default bootstrap</a> <strong>12 column scaleable responsive grid</strong>.</p>
+  <div class="grid-example col-md-12">col-md-12</div>
+</div>
+<hr>
+
+<h2>Buttons</h2>
+<div class="row">
+  <p class="col-md-6 lead">Despite using bootstrap 3 transition uses the classic bootstrap button styles for consistency with other admin apps and for improved usability. The source to override the buttons with the originals is from <a href="https://gist.github.com/Erve1879/6167373">https://gist.github.com/Erve1879/6167373</a>.</p>
+  <div class="col-md-6">
+    <a href="#" class="btn btn-default">Default</a>
+    <a href="#" class="btn btn-primary">Primary</a>
+    <a href="#" class="btn btn-success">Success</a>
+    <a href="#" class="btn btn-info">Info</a>
+    <a href="#" class="btn btn-warning">Warning</a>
+    <a href="#" class="btn btn-danger">Danger</a>
+    <a href="#" class="btn btn-link">Link</a>
   </div>
-  <div class="col-md-12">
-    <div class="row add-bottom-margin">
-      <div class="grid-example col-md-2">col-md-2</div>
-      <div class="grid-example col-md-4">col-md-4</div>
-      <div class="grid-example col-md-6">col-md-6</div>
-    </div>
-    <div class="row">
-      <div class="grid-example col-md-12">col-md-12</div>
-    </div>
+</div>
+<div class="row">
+  <p class="col-md-6 lead">Create and success actions use <code>btn-success</code>.</p>
+  <div class="col-md-6">
+    <a href="#" class="btn btn-success">
+      Save mapping
+    </a>
+  </div>
+</div>
+<div class="row">
+  <p class="col-md-6 lead">When adding an item include an <code>icon-plus</code> icon.</p>
+  <div class="col-md-6">
+    <a href="#" class="btn btn-default">
+      <i class="glyphicon glyphicon-plus"></i> Add mapping
+    </a>
   </div>
 </div>
 <hr>
@@ -138,25 +163,6 @@
     <a href="/style" class="btn btn-default">Visited button link</a><br><br>
     <a href="/style" class="btn btn-success">Another visited button link</a><br><br>
   </ul>
-</div>
-<hr>
-
-<h2>Buttons</h2>
-<div class="row">
-  <p class="col-md-6 lead">Create and success actions use <code>btn-success</code>.</p>
-  <div class="col-md-6">
-    <a href="#" class="btn btn-success">
-      Save mapping
-    </a>
-  </div>
-</div>
-<div class="row">
-  <p class="col-md-6 lead">When adding an item include an <code>icon-plus</code> icon.</p>
-  <div class="col-md-6">
-    <a href="#" class="btn btn-default">
-      <i class="glyphicon glyphicon-plus"></i> Add mapping
-    </a>
-  </div>
 </div>
 <hr>
 
