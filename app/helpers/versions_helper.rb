@@ -25,7 +25,7 @@ module VersionsHelper
     end
   end
 
-  def friendly_changeset_field(field)
+  def friendly_field_name(field)
     if field == "http_status"
       "Type"
     elsif field == "archive_url"

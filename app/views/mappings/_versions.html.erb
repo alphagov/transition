@@ -10,7 +10,7 @@
       <h4 class="rm">Changes</h4>
       <dl class="well">
         <% version.changeset.each_pair do |field, change| %>
-          <dt><%= friendly_changeset_field(field) %></dt>
+          <dt><%= friendly_field_name(field) %></dt>
           <dd><%= friendly_changeset_old_to_new(field, change) %></dd>
         <% end %>
       </dl>

@@ -2,10 +2,10 @@
 require 'spec_helper'
 
 describe VersionsHelper do
-  describe '#friendly_changeset_field' do
-    specify { helper.friendly_changeset_field('http_status').should == 'Type' }
-    specify { helper.friendly_changeset_field('archive_url').should == 'Alternative Archive URL' }
-    specify { helper.friendly_changeset_field('miscellaneous').should == 'Miscellaneous' }
+  describe '#friendly_field_name' do
+    specify { helper.friendly_field_name('http_status').should == 'Type' }
+    specify { helper.friendly_field_name('archive_url').should == 'Alternative Archive URL' }
+    specify { helper.friendly_field_name('miscellaneous').should == 'Miscellaneous' }
   end
 
   describe '#friendly_changeset_title' do
