@@ -28,16 +28,13 @@
     <% label_html = capture do %>
       Old URLs
       <p class="text-muted normal">
-        Please add one path per line. Each path should begin with a ‘/’.
+        Please add one path or URL per line, eg “/about” or “http://<%= @site.default_host.hostname %>/about”.
       </p>
     <% end %>
     <%= label_tag :paths, label_html, class: 'add-top-margin' %>
     <div class="row">
       <div class="old-urls col-md-8">
-        <div class="input-group">
-          <span class="input-group-addon">http://<%= @site.default_host.hostname %></span>
-          <%= text_area_tag :paths, @bulk_add.raw_paths.join("\n"), class: 'form-control', placeholder: '/path/to/page' %>
-        </div>
+        <%= text_area_tag :paths, @bulk_add.raw_paths.join("\n"), class: 'form-control', placeholder: '/path/to/page' %>
       </div>
     </div>
   </div>
