@@ -42,21 +42,21 @@ describe Site do
           host.save
         end
       end
-      it { should eql('live') }
+      it { should eql(:live) }
     end
 
     context 'site is under supplier redirect' do
       before { site.special_redirect_strategy = 'supplier' }
-      it     { should eql('indeterminate') }
+      it     { should eql(:indeterminate) }
     end
 
     context 'site is under aka redirect' do
       before { site.special_redirect_strategy = 'via_aka' }
-      it     { should eql('indeterminate') }
+      it     { should eql(:indeterminate) }
     end
 
     context 'in any other case' do
-      it { should eql('pre-transition') }
+      it { should eql(:pre_transition) }
     end
   end
 

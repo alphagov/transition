@@ -27,9 +27,9 @@ class Site < ActiveRecord::Base
   end
 
   def transition_status
-    return 'live'          if hosts.any?(&:redirected_by_gds?)
-    return 'indeterminate' if %w(supplier via_aka).include?(special_redirect_strategy)
-           'pre-transition'
+    return :live          if hosts.any?(&:redirected_by_gds?)
+    return :indeterminate if %w(supplier via_aka).include?(special_redirect_strategy)
+           :pre_transition
   end
 
   def canonical_path(path_or_url)

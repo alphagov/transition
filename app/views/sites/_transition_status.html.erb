@@ -1,4 +1,4 @@
-<%= site.transition_status.capitalize %>
+<%= site.transition_status.to_s.capitalize.dasherize %>
 <% if site.special_redirect_strategy == 'supplier' %>
   <span class="text-muted">
     <i data-toggle="tooltip" title="Site is managed by an external supplier" class="glyphicon glyphicon-question-sign"></i>
