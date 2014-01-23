@@ -13,8 +13,12 @@ When(/^I make the mapping an archive$/) do
   select 'Archive', from: 'Type'
 end
 
-When(/^I (save|submit) the mappings?$/) do |type|
-  click_button type.titleize
+When(/^I submit the mappings?$/) do
+  click_button 'Continue'
+end
+
+When(/^I save the mappings?$/) do
+  click_button 'Save'
 end
 
 When(/^I go to edit the first mapping$/) do
