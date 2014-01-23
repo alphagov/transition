@@ -14,7 +14,7 @@
     <%= render 'shared/error_messages', error_messages: @errors.values %>
   <% end %>
 
-  <div class="form-group row <% if @errors && @errors[:http_status] %>field_with_errors<% end %>">
+  <div class="row <% if @errors && @errors[:http_status] %>field_with_errors<% end %>">
     <div class="col-md-2">
       <%= label_tag(:http_status, 'Type') %>
       <%= select_tag :http_status, options_for_select(options_for_supported_statuses, @bulk_add.http_status), { class: 'form-control remove-bottom-margin js-http-status' } %>
