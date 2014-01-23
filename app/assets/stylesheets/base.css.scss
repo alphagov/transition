@@ -314,18 +314,22 @@ thead .table-header-secondary td {
   font-weight: bold;
 }
 
-.list-group-item-heading {
-  margin-bottom: 6px;
-  color: #428bca !important;
-}
-
-.list-group-item {
+a.list-group-item {
   padding-top:    $default-vertical-margin;
   padding-bottom: $default-vertical-margin;
 
   &:hover .list-group-item-heading {
     text-decoration: underline;
   }
+
+  .list-group-item-heading {
+    color: $link-color;
+  }
+  
+  &:visited .list-group-item-heading {
+    color: $link-color-visited;
+  }
+
 }
 
 /* No content
