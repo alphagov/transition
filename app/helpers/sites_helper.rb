@@ -9,13 +9,17 @@ module SitesHelper
     )
 
     should_have_launched = Date.today > site.launch_date
-    small_text = if should_have_launched
-                   site.transition_status == :pre_transition ?
-                     'overdue' :
-                     'since transition'
-                 else
-                   'until transition'
-                 end
+    small_text = content_tag(
+      :span,
+      if should_have_launched
+        site.transition_status == :pre_transition ?
+          'overdue' :
+          'since transition'
+      else
+        'until transition'
+      end,
+      class: 'smaller-text add-bottom-margin'
+    )
 
     big_day_span + ' ' + small_text
   end
