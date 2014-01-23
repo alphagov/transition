@@ -1,10 +1,12 @@
 <% breadcrumb(:new_mappings, @site) %>
 
 <%= content_for :page_title, 'New mappings' %>
-<h1 class="page-title">
-  <span class="small"><%= @site.default_host.hostname %></span>
-  Add mappings
-</h1>
+<div class="page-title-with-border">
+  <h1>
+    <span class="small"><%= @site.default_host.hostname %></span>
+    Add mappings
+  </h1>
+</div>
 
 <%= form_tag new_multiple_confirmation_site_mappings_path(@site), role: 'form', class: 'js-edit-mapping-form' do %>
 
