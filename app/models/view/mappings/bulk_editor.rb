@@ -5,7 +5,7 @@ module View
     # controllers full of fields.
     class BulkEditor < BulkBase
       def return_path
-        @return_path =
+        @return_path ||=
           # Make sure that this looks like a path and not a full URL (which
           # might be for an external site)
           if params[:return_path] && params[:return_path].start_with?('/')
