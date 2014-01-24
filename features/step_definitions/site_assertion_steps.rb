@@ -1,4 +1,4 @@
-Then(/^I should see a big message that this organisation is (.*)$/) do |status|
+Then(/^I should see a big message that this site is (.*)$/) do |status|
   expect(page).to have_selector(".highlight-#{status}", text: status.capitalize)
 end
 

@@ -4,7 +4,7 @@ Feature: The site dashboard
     what I can do in the app and how I should do it
   so that I can manage mappings without creating errors
 
-Scenario: Visit a post-transition organisation's page
+Scenario: Visit a post-transition site's page
   Given I have logged in as an admin
   Given the date is 29/11/12
   And www.attorney-general.gov.uk site with abbr ago launches on 13/12/12 with the following aliases:
@@ -13,20 +13,20 @@ Scenario: Visit a post-transition organisation's page
     | www.ago.gov.uk            |
   When I visit this site page
   Then I should see the header "www.attorney-general.gov.uk"
-  And I should see a big message that this organisation is pre-transition
+  And I should see a big message that this site is pre-transition
   And I should see a big number "14 days until transition"
   And I should see the date of the site's transition
   And I should be able to edit the site's mappings
   And I should be able to view the site's analytics
   And I should see the site's configuration including all host aliases
 
-Scenario: Visit a pre-transition organisation's page
+Scenario: Visit a pre-transition site's page
   Given I have logged in as an admin
   Given the date is 15/12/12
   And www.attorney-general.gov.uk site with abbr ago launched on 13/12/12 with the following aliases:
     | alias                     |
   When I visit this site page
-  Then I should see a big message that this organisation is live
+  Then I should see a big message that this site is live
   And I should see a big number "2 days since transition"
   And I should see the date of the site's transition
 
