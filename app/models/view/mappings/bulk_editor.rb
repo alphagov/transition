@@ -4,6 +4,17 @@ module View
     # Load and process params specific to bulk editing, to avoid stuffing
     # controllers full of fields.
     class BulkEditor < BulkBase
+      def return_path
+        @return_path ||=
+          # Make sure that this looks like a path and not a full URL (which
+          # might be for an external site)
+          if params[:return_path] && params[:return_path].start_with?('/')
+            params[:return_path]
+          else
+            site_mappings_path
+          end
+      end
+
       def mappings
         @mappings ||= site.mappings.where(id: params[:mapping_ids]).order(:path)
       end

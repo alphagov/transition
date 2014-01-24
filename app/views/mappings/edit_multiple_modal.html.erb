@@ -17,6 +17,7 @@
                    locals: { modal: true,
                              mappings: @bulk_edit.mappings,
                              site: @site } %>
+      <%= hidden_field_tag "return_path", @bulk_edit.return_path %>
       </div>
       <footer class="modal-footer remove-top-margin">
         <a href="#close" data-dismiss="modal" class="btn btn-default add-right-margin">Cancel</a>

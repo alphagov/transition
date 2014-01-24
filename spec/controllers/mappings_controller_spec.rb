@@ -4,7 +4,22 @@ describe MappingsController do
   let(:site)              { create :site, abbr: 'moj' }
   let(:unaffiliated_user) { create(:user, organisation_slug: nil) }
   let(:admin_bob)         { create(:admin, name: 'Bob Terwhilliger') }
-  let(:mapping)           { create(:mapping) }
+  let(:mapping)           { create(:mapping, site: site) }
+
+  shared_examples 'disallows editing by unaffiliated user' do
+    before do
+      login_as unaffiliated_user
+      make_request
+    end
+
+    it 'redirects to the index page' do
+      expect(response).to redirect_to site_mappings_path(site)
+    end
+
+    it 'sets a flash message' do
+      flash[:alert].should include('don\'t have permission to edit')
+    end
+  end
 
   describe '#index' do
     let(:mapping_a) { create :redirect, path: '/a', new_url: 'http://f.co/1', site: site }
@@ -102,28 +117,22 @@ describe MappingsController do
   end
 
   describe '#edit' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
+        get :edit, site_id: mapping.site.abbr, id: mapping.id
       end
 
-      it 'redirects to the index page and sets a flash message' do
-        get :edit, site_id: mapping.site.abbr, id: mapping.id
-        expect(response).to redirect_to site_mappings_path(mapping.site)
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
   end
 
   describe '#update' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
         put :update, site_id: mapping.site.abbr, id: mapping.id
       end
 
-      it 'redirects to the index page' do
-        expect(response).to redirect_to site_mappings_path(mapping.site)
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
     context 'when Bob has permission to update a mapping, but is acting Evilly' do
@@ -131,7 +140,10 @@ describe MappingsController do
         before do
           login_as admin_bob
           post :update, site_id: mapping.site, id: mapping.id,
-               mapping: { path: '/Needs/Canonicalization?has=some&query=parts', new_url: 'http://somewhere.bad' }
+               mapping: {
+                  path: '/Needs/Canonicalization?has=some&query=parts',
+                  new_url: 'http://somewhere.bad'
+               }
         end
 
         it 'canonicalises the path' do
@@ -149,15 +161,12 @@ describe MappingsController do
   end
 
   describe '#new_multiple' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
         get :new_multiple, site_id: site.abbr
       end
 
-      it 'redirects to the index page and sets a flash message' do
-        expect(response).to redirect_to site_mappings_path(site)
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
     context 'when the user does have permission' do
@@ -173,21 +182,19 @@ describe MappingsController do
   end
 
   describe '#new_multiple_confirmation' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
         post :new_multiple_confirmation, site_id: site.abbr
       end
 
-      it 'redirects to the index page and sets a flash message' do
-        expect(response).to redirect_to site_mappings_path(site)
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
     context 'when no new_url is posted for redirects' do
       before do
         login_as admin_bob
-        post :new_multiple_confirmation, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: ''
+        post :new_multiple_confirmation, site_id: site.abbr, paths: "/a\n/b",
+             http_status: '301', new_url: ''
       end
 
       it 'renders the form again' do
@@ -202,15 +209,12 @@ describe MappingsController do
   end
 
   describe '#create_multiple' do
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
         post :create_multiple, site_id: site.abbr
       end
 
-      it 'redirects to the index page and sets a flash message' do
-        expect(response).to redirect_to site_mappings_path(site)
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
     context 'when user can edit the site' do
@@ -220,18 +224,24 @@ describe MappingsController do
 
       context 'when no new_url is posted for redirects' do
         it 'renders the form with errors' do
-          post :create_multiple, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: '', update_existing: 'true'
+          post :create_multiple, site_id: site.abbr, paths: "/a\n/b",
+               http_status: '301', new_url: '', update_existing: 'true'
           expect(response).to render_template 'mappings/new_multiple'
         end
       end
 
       context 'with valid data' do
         before do
-          post :create_multiple, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: 'www.gov.uk', update_existing: 'true'
+          post :create_multiple, site_id: site.abbr, paths: "/a\n/b",
+               http_status: '301', new_url: 'www.gov.uk', update_existing: 'true'
         end
 
         it 'redirects to the site return URL' do
           expect(response).to redirect_to site_mappings_path(site)
+        end
+
+        it 'sets a success message' do
+          flash[:success].should include('mappings created')
         end
 
         it 'creates new mappings' do
@@ -250,16 +260,14 @@ describe MappingsController do
       @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
     end
 
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
+        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
+             http_status: '410', return_path: @mappings_index_with_filter
       end
 
-      it 'redirects to the index page and sets a flash message' do
-        mapping_ids = [ mapping_a.id, mapping_b.id ]
-        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '410'
-        expect(response).to redirect_to site_mappings_path(site)
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
     context 'when no mapping ids which exist on this site are posted' do
@@ -271,15 +279,17 @@ describe MappingsController do
 
       context 'when the mappings index has not been visited' do
         it 'redirects to the mappings index page' do
-          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410'
+          post :edit_multiple, site_id: site.abbr,
+               mapping_ids: [other_mapping.id], http_status: '410'
           expect(response).to redirect_to site_mappings_path(site)
         end
       end
 
-      context 'when the mappings index was last visited with a path filter' do
+      context 'when coming from the mappings index with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
-          get :index, site_id: site.abbr, contains: '/a'
-          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410'
+          post :edit_multiple, site_id: site.abbr,
+               mapping_ids: [other_mapping.id], http_status: '410',
+               return_path: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
       end
@@ -290,11 +300,11 @@ describe MappingsController do
         login_as admin_bob
       end
 
-      context 'when the mappings index was last visited with a path filter' do
+      context 'when coming from the mappings index with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
-          get :index, site_id: site.abbr, contains: '/a'
           mapping_ids = [ mapping_a.id, mapping_b.id ]
-          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'bad'
+          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
+               http_status: 'bad', return_path: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
       end
@@ -310,18 +320,19 @@ describe MappingsController do
       @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
     end
 
-    context 'when user doesn\'t have permission' do
-      before do
-        login_as unaffiliated_user
+    context 'without permission to edit' do
+      def make_request
         mapping_ids = [ mapping_a.id, mapping_b.id ]
-        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: 'http://www.example.com'
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
+             http_status: '301', new_url: 'http://www.example.com'
       end
 
-      it 'redirects to the index page' do
-        expect(response).to redirect_to site_mappings_path(site)
-      end
+      it_behaves_like 'disallows editing by unaffiliated user'
 
       it 'does not update any mappings' do
+        login_as unaffiliated_user
+        make_request
+
         expect(site.mappings.where(http_status: '301').count).to be(0)
       end
     end
@@ -329,10 +340,11 @@ describe MappingsController do
     context 'when valid data is posted', versioning: true do
       before do
         login_as admin_bob
-        get :index, site_id: site.abbr, contains: '/a'
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         @new_url = 'http://www.example.com'
-        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: @new_url
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
+             http_status: '301', new_url: @new_url,
+             return_path: @mappings_index_with_filter
       end
 
       it 'updates the mappings correctly' do
@@ -350,8 +362,7 @@ describe MappingsController do
       end
 
       it 'redirects to the last-visited mappings index page' do
-        mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
-        expect(response).to redirect_to mappings_index_with_filter
+        expect(response).to redirect_to @mappings_index_with_filter
       end
 
       it 'saves a version for each mapping recording the change' do
@@ -372,15 +383,19 @@ describe MappingsController do
 
       context 'when the mappings index has not been visited' do
         it 'redirects to the mappings index page' do
-          post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com'
+          post :update_multiple, site_id: site.abbr,
+               mapping_ids: [other_mapping.id], http_status: '301',
+               new_url: 'http://www.example.com'
           expect(response).to redirect_to site_mappings_path(site)
         end
       end
 
       context 'when the mappings index was last visited with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
-          get :index, site_id: site.abbr, contains: '/a'
-          post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com'
+          post :update_multiple, site_id: site.abbr,
+               mapping_ids: [other_mapping.id], http_status: '301',
+               new_url: 'http://www.example.com',
+               return_path: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
       end
@@ -390,7 +405,8 @@ describe MappingsController do
       before do
         login_as admin_bob
         mapping_ids = [ mapping_a.id, mapping_b.id ]
-        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: '___'
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
+             http_status: '301', new_url: '___'
       end
 
       it 'does not update any mappings' do
@@ -411,7 +427,7 @@ describe MappingsController do
       # in order to test our override of the verify_authenticity_token method
       subject.stub(:verified_request?).and_return(false)
       post :create_multiple, site_id: mapping.site,
-               mapping: { paths: ['/foo'], http_status: '410', update_existing: 'false' }
+           mapping: { paths: ['/foo'], http_status: '410', update_existing: 'false' }
       response.status.should eql(403)
       response.body.should eql('Invalid authenticity token')
     end
