@@ -311,6 +311,37 @@ thead .table-header-secondary td {
   font-size: $font-size-large;
 }
 
+.big-message {
+  font-size: $font-size-h1;
+  font-weight: bold;
+}
+
+.big-number {
+  font-size: $font-size-h1 * 1.5;
+  font-weight: bold;
+}
+
+a.list-group-item {
+  padding-top:    $default-vertical-margin;
+  padding-bottom: $default-vertical-margin;
+
+  &:hover .list-group-item-heading {
+    text-decoration: underline;
+  }
+
+  .list-group-item-heading {
+    color: $link-color;
+  }
+  
+  &:visited .list-group-item-heading {
+    color: $link-color-visited;
+  }
+
+}
+
+/* No content
+   ========================================================================== */
+
 .no-content {
   color: lighten($gray-light, 20%); // Large text needs a lighter colour for balance
   font-size: $font-size-base * 2;
@@ -322,6 +353,29 @@ thead .table-header-secondary td {
 .no-content-bordered {
   border: 1px solid $table-border-color;
   border-radius: $border-radius-base;
+}
+
+/* Highlights
+   ========================================================================== */
+
+.highlight {
+  background: #aaa;
+  text-align: center;
+  padding: 2 * $default-vertical-margin;
+  color: #fff;
+  font-size: $font-size-base * 1.5;
+}
+
+.highlight > p:last-child {
+  margin-bottom: 0;
+}
+
+.highlight-turquoise, .highlight-live {
+  background-color: $turquoise;
+}
+
+.highlight-orange, .highlight-pre-transition {
+  background-color: $orange;
 }
 
 /* ==========================================================================

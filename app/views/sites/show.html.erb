@@ -3,35 +3,28 @@
 <% breadcrumb :site, @site %>
 
 <div class="page-title-with-border">
-  <h1>
-    <span class="small"><%= @site.default_host.hostname %></span>
-    Site details
-  </h1>
+  <h1><%= @site.default_host.hostname %></h1>
 </div>
 
-<dl class="dl-spaced">
-  <dt>Mappings</dt>
-  <dd>
-    <%= link_to site_mappings_path(@site) do %>
-      <%= number_with_delimiter(@site.mappings.count) %> Mappings
-    <% end %>
-  </dd>
-  <dt>Analytics</dt>
-  <dd><%= link_to 'Analytics', summary_site_hits_path(@site) %></dd>
-  <dt>Default hostname</dt>
-  <dd><%= @site.default_host.hostname %></dd>
-  <dt>Hostname aliases</dt>
-  <dd><%= @site.hosts.pluck(:hostname).join(', ') %></dd>
-  <dt>New homepage</dt>
-  <dd><%= link_to @site.homepage, @site.homepage, class: 'breakable' %></dd>
-  <dt>Abbreviation</dt>
-  <dd><%= @site.abbr %></dd>
-  <dt>Significant query parameters</dt>
-  <dd><%= @site.query_params.presence || 'None' %></dd>
-  <dt>The National Archive (<abbr>TNA</abbr>) timestamp</dt>
-  <dd><%= I18n.l @site.tna_timestamp, :format => :govuk_date %> <span class="text-muted"> — <%= @site.tna_timestamp.to_formatted_s(:number) %></span></dd>
-  <dt>Transition status</dt>
-  <dd><%= render partial: 'transition_status', locals: {site: @site} %></dd>
-  <dt>Transition date</dt>
-  <dd><%= date_or_not_yet(@site.launch_date) %></dd>
-</dl>
+<div class="row">
+  <div class="col-md-8">
+    <%= render 'mappings' %>
+
+    <%= render 'performance' %>
+
+    <%= render 'configuration' %>
+  </div>
+
+  <div class="col-md-4">
+    <h3 class="remove-top-margin add-bottom-margin">Transition</h3>
+
+    <div class="highlight highlight-<%= @site.transition_status.to_s.dasherize %> add-bottom-margin">
+      <span class="big-message"><%= render partial: 'transition_status', locals: { site: @site } %></span>
+    </div>
+
+    <div class="highlight days-from-launch">
+      <%= big_launch_days_number(@site) %>
+      <%= date_or_not_yet(@site.launch_date) %>
+    </div>
+  </div>
+</div>

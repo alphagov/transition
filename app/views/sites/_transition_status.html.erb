@@ -1,17 +1,12 @@
-<% if site.hosts.any?(&:redirected_by_gds?) %>
-  Live
-<% elsif site.special_redirect_strategy == 'supplier' %>
+<%= site.transition_status.to_s.capitalize.dasherize %>
+<% if site.special_redirect_strategy == 'supplier' %>
   <span class="text-muted">
-    Indeterminate
     <i data-toggle="tooltip" title="Site is managed by an external supplier" class="glyphicon glyphicon-question-sign"></i>
   </span>
 <% elsif site.special_redirect_strategy == 'via_aka' %>
   <span class="text-muted">
-    Indeterminate
     <i data-toggle="tooltip" title="Site is partially redirected via an aka domain" class="glyphicon glyphicon-question-sign"></i>
   </span>
-<% else %>
-  Pre-transition
 <% end %>
 <script>
   $('[data-toggle]').tooltip();

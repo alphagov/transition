@@ -26,6 +26,12 @@ class Site < ActiveRecord::Base
     hosts.first
   end
 
+  def transition_status
+    return :live          if hosts.any?(&:redirected_by_gds?)
+    return :indeterminate if special_redirect_strategy.present?
+           :pre_transition
+  end
+
   def canonical_path(path_or_url)
     if path_or_url.start_with?('http')
       url = path_or_url

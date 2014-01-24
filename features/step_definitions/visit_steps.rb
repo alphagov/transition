@@ -10,8 +10,8 @@ When(/^I go to edit that mapping$/) do
   visit edit_site_mapping_path(@mapping.site, @mapping)
 end
 
-When(/^I visit the associated organisation$/) do
-  visit organisation_path(@site.organisation)
+When(/^I visit the associated site$/) do
+  visit site_path(@site)
 end
 
 When(/^I visit the associated site's hits$/) do

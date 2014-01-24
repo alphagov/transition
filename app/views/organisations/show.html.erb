@@ -22,30 +22,20 @@
     <thead>
       <tr class="table-header">
         <th scope="col">Old site</th>
-        <th scope="col">Mappings</th>
-        <th scope="col">Analytics</th>
         <th scope="col">Transition status</th>
         <th scope="col">Transition date</th>
-        <th scope="col">Site details</th>
       </tr>
     </thead>
     <tbody>
     <% @sites.each do |site| %>
       <tr>
         <td>
-          <span class="breakable"><%= site.default_host.hostname %></span>
+          <%= link_to site.default_host.hostname, site_path(site), class: 'breakable' %>
         </td>
-        <td>
-          <%= link_to site_mappings_path(site) do %>
-            <%= pluralize(number_with_delimiter(site.mapping_count), 'mapping') %>
-          <% end %>
-        </td>
-        <td><%= link_to 'Analytics', summary_site_hits_path(site) %></td>
         <td>
           <%= render partial: 'sites/transition_status', locals: {site: site} %>
         </td>
         <td><%= date_or_not_yet(site.launch_date) %></td>
-        <td><%= link_to 'Site details', site_path(site) %></td>
       </tr>
     <% end %>
     </tbody>
