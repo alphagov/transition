@@ -2,7 +2,7 @@
   <h3 class="remove-top-margin add-bottom-margin">Mappings</h3>
   <div class="list-group add-big-bottom-margin">
     <%= link_to site_mappings_path(@site), class: 'list-group-item' do %>
-      <h4 class="list-group-item-heading"><%= mappings_view_or_edit %> mappings</h4>
+      <h4 class="list-group-item-heading"><%= mappings_edit_or_view %> mappings</h4>
       <p class="list-group-item-text text-muted">
         <%= mappings_manage_or_view %> mappings for <%= pluralize(@site.mappings.count, 'path') %>
         from <%= @site.default_host.hostname %>.

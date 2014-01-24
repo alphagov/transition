@@ -27,7 +27,7 @@ module SitesHelper
     (site.launch_date - DateTime.now.midnight.utc).to_i.abs
   end
 
-  def mappings_view_or_edit
+  def mappings_edit_or_view
     current_user.can_edit?(@site.organisation) ? 'Edit' : 'View'
   end
 
