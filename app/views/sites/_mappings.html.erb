@@ -7,7 +7,7 @@
         <%= mappings_manage_or_view %> mappings for <%= pluralize(@site.mappings.count, 'path') %>
         from <%= @site.default_host.hostname %>.
       </p>
-  <% end %>
+    <% end %>
 
     <% if current_user.can_edit?(@site.organisation) %>
       <%= link_to new_multiple_site_mappings_path(@site), class: 'list-group-item' do %>
