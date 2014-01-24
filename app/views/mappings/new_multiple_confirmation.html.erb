@@ -28,7 +28,10 @@
   <h2 class="add-bottom-margin">
     <%= "#{ http_status_name(@bulk_add.http_status) }" %> paths
     <% if @bulk_add.http_status == '301' %>
-      to <%= link_to @bulk_add.test_mapping.new_url, @bulk_add.test_mapping.new_url, class: 'breakable' %>
+      <br />
+      <span class="subtitle">
+        to <%= link_to @bulk_add.test_mapping.new_url, @bulk_add.test_mapping.new_url, class: 'breakable' %>
+      </span>
     <% end %>
   </h2>
 
@@ -46,7 +49,7 @@
     <tbody>
       <% @bulk_add.all_mappings.each do |m| %>
         <tr>
-          <td>
+          <td <% if m.redirect? || m.archive? %>class="warning"<% end %>>
             <strong><%= link_to m.path, m.old_url, class: 'breakable' %></strong>
             <span class="text-muted">
               <% if m.redirect? %>
