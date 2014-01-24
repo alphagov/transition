@@ -37,7 +37,6 @@ end
 Then(/^I should see the site's configuration including all host aliases$/) do
   within '.configuration' do
     expected_definitions = {
-      'Default hostname' => 'www.attorney-general.gov.uk',
       'New homepage' => 'https://www.gov.uk/government/organisations/attorney-generals-office',
       'Significant query parameters' => 'None',
       'The National Archive (TNA) timestamp' => 'None'
@@ -49,7 +48,7 @@ Then(/^I should see the site's configuration including all host aliases$/) do
     end
 
     %w(www.attorney-general.gov.uk www.ago.gov.uk www.lslo.gov.uk).each do |hostname|
-      expect(page).to have_selector('.aliases', text: hostname)
+      expect(page).to have_selector('.host-aliases li', text: hostname)
     end
   end
 end

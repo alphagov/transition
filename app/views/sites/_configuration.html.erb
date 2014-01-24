@@ -2,10 +2,19 @@
 
 <div class="configuration panel panel-default">
   <dl class="panel-body dl-spaced remove-bottom-margin">
-    <dt>Default hostname</dt>
-    <dd><%= @site.default_host.hostname %></dd>
-    <dt>Hostname aliases</dt>
-    <dd class="aliases"><%= @site.hosts.pluck(:hostname).join(', ') %></dd>
+    <dt>All hostname aliases</dt>
+    <dd class="host-aliases">
+      <ul>
+        <% @site.hosts.pluck(:hostname).each do |hostname| %>
+          <li>
+            <%= hostname %>
+            <% if @site.default_host.hostname == hostname %>
+              <span class="text-muted">default</span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </dd>
     <dt>New homepage</dt>
     <dd><%= link_to @site.homepage, @site.homepage, class: 'breakable' %></dd>
     <dt>Abbreviation</dt>
