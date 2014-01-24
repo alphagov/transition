@@ -140,7 +140,10 @@ describe MappingsController do
         before do
           login_as admin_bob
           post :update, site_id: mapping.site, id: mapping.id,
-               mapping: { path: '/Needs/Canonicalization?has=some&query=parts', new_url: 'http://somewhere.bad' }
+               mapping: {
+                  path: '/Needs/Canonicalization?has=some&query=parts',
+                  new_url: 'http://somewhere.bad'
+               }
         end
 
         it 'canonicalises the path' do
@@ -190,7 +193,8 @@ describe MappingsController do
     context 'when no new_url is posted for redirects' do
       before do
         login_as admin_bob
-        post :new_multiple_confirmation, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: ''
+        post :new_multiple_confirmation, site_id: site.abbr, paths: "/a\n/b",
+             http_status: '301', new_url: ''
       end
 
       it 'renders the form again' do
@@ -220,14 +224,16 @@ describe MappingsController do
 
       context 'when no new_url is posted for redirects' do
         it 'renders the form with errors' do
-          post :create_multiple, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: '', update_existing: 'true'
+          post :create_multiple, site_id: site.abbr, paths: "/a\n/b",
+               http_status: '301', new_url: '', update_existing: 'true'
           expect(response).to render_template 'mappings/new_multiple'
         end
       end
 
       context 'with valid data' do
         before do
-          post :create_multiple, site_id: site.abbr, paths: "/a\n/b", http_status: '301', new_url: 'www.gov.uk', update_existing: 'true'
+          post :create_multiple, site_id: site.abbr, paths: "/a\n/b",
+               http_status: '301', new_url: 'www.gov.uk', update_existing: 'true'
         end
 
         it 'redirects to the site return URL' do
@@ -257,7 +263,8 @@ describe MappingsController do
     context 'without permission to edit' do
       def make_request
         mapping_ids = [ mapping_a.id, mapping_b.id ]
-        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '410', return_path: @mappings_index_with_filter
+        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
+             http_status: '410', return_path: @mappings_index_with_filter
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -272,14 +279,17 @@ describe MappingsController do
 
       context 'when the mappings index has not been visited' do
         it 'redirects to the mappings index page' do
-          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410'
+          post :edit_multiple, site_id: site.abbr,
+               mapping_ids: [other_mapping.id], http_status: '410'
           expect(response).to redirect_to site_mappings_path(site)
         end
       end
 
       context 'when coming from the mappings index with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
-          post :edit_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '410', return_path: @mappings_index_with_filter
+          post :edit_multiple, site_id: site.abbr,
+               mapping_ids: [other_mapping.id], http_status: '410',
+               return_path: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
       end
@@ -293,7 +303,8 @@ describe MappingsController do
       context 'when coming from the mappings index with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
           mapping_ids = [ mapping_a.id, mapping_b.id ]
-          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: 'bad', return_path: @mappings_index_with_filter
+          post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
+               http_status: 'bad', return_path: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
       end
@@ -312,7 +323,8 @@ describe MappingsController do
     context 'without permission to edit' do
       def make_request
         mapping_ids = [ mapping_a.id, mapping_b.id ]
-        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: 'http://www.example.com'
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
+             http_status: '301', new_url: 'http://www.example.com'
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -330,7 +342,9 @@ describe MappingsController do
         login_as admin_bob
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         @new_url = 'http://www.example.com'
-        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: @new_url, return_path: @mappings_index_with_filter
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
+             http_status: '301', new_url: @new_url,
+             return_path: @mappings_index_with_filter
       end
 
       it 'updates the mappings correctly' do
@@ -369,14 +383,19 @@ describe MappingsController do
 
       context 'when the mappings index has not been visited' do
         it 'redirects to the mappings index page' do
-          post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com'
+          post :update_multiple, site_id: site.abbr,
+               mapping_ids: [other_mapping.id], http_status: '301',
+               new_url: 'http://www.example.com'
           expect(response).to redirect_to site_mappings_path(site)
         end
       end
 
       context 'when the mappings index was last visited with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
-          post :update_multiple, site_id: site.abbr, mapping_ids: [other_mapping.id], http_status: '301', new_url: 'http://www.example.com', return_path: @mappings_index_with_filter
+          post :update_multiple, site_id: site.abbr,
+               mapping_ids: [other_mapping.id], http_status: '301',
+               new_url: 'http://www.example.com',
+               return_path: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
       end
@@ -386,7 +405,8 @@ describe MappingsController do
       before do
         login_as admin_bob
         mapping_ids = [ mapping_a.id, mapping_b.id ]
-        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids, http_status: '301', new_url: '___'
+        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
+             http_status: '301', new_url: '___'
       end
 
       it 'does not update any mappings' do
@@ -407,7 +427,7 @@ describe MappingsController do
       # in order to test our override of the verify_authenticity_token method
       subject.stub(:verified_request?).and_return(false)
       post :create_multiple, site_id: mapping.site,
-               mapping: { paths: ['/foo'], http_status: '410', update_existing: 'false' }
+           mapping: { paths: ['/foo'], http_status: '410', update_existing: 'false' }
       response.status.should eql(403)
       response.body.should eql('Invalid authenticity token')
     end
