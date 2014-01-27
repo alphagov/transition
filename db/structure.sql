@@ -122,6 +122,26 @@ CREATE TABLE `sites` (
   KEY `index_sites_on_organisation_id` (`organisation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `taggings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tag_id` int(11) DEFAULT NULL,
+  `taggable_id` int(11) DEFAULT NULL,
+  `taggable_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tagger_id` int(11) DEFAULT NULL,
+  `tagger_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `context` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `taggings_idx` (`tag_id`,`taggable_id`,`taggable_type`,`context`,`tagger_id`,`tagger_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `tags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_tags_on_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -203,3 +223,7 @@ INSERT INTO schema_migrations (version) VALUES ('20131203102650');
 INSERT INTO schema_migrations (version) VALUES ('20131203115518');
 
 INSERT INTO schema_migrations (version) VALUES ('20131231133153');
+
+INSERT INTO schema_migrations (version) VALUES ('20140127151418');
+
+INSERT INTO schema_migrations (version) VALUES ('20140127151419');
