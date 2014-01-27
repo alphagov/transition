@@ -79,7 +79,19 @@
               </a>
             </div>
           </div>
-        <div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <%= field_set_tag nil, class: 'form-group' do %>
+    <legend class="rm">
+      Tagging
+    </legend>
+    <%= f.label :tags %>
+    <div class="row">
+      <div class="col-md-8">
+        <%= f.text_field :tags, class: 'form-control' %>
       </div>
     </div>
   <% end %>

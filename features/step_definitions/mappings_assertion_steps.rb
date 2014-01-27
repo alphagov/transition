@@ -123,3 +123,7 @@ Then(/^I should see the canonicalized paths "(.*?)"$/) do |paths|
     expect(page).to have_link(path)
   end
 end
+
+And(/^I should see the tags "([^"]*)"$/) do |tags|
+  expect(page).to have_selector('input#mapping_tags', text: tags)
+end

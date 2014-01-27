@@ -11,7 +11,9 @@ class Mapping < ActiveRecord::Base
     '410' => 'archive'
   }
 
-  attr_accessible :path, :site, :http_status, :new_url, :suggested_url, :archive_url
+  attr_accessor :tags
+
+  attr_accessible :path, :site, :http_status, :new_url, :suggested_url, :archive_url, :tags
 
   has_paper_trail
 

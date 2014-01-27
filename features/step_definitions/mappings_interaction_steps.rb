@@ -61,3 +61,12 @@ end
 When(/^I enter a new URL to redirect to$/) do
   fill_in 'Redirect to', with: 'https://www.gov.uk'
 end
+
+
+When(/^I edit that mapping$/) do
+  visit edit_site_mapping_path(@site, @mapping) 
+end
+
+When(/^I associate the tags "([^"]*)" with the mapping$/) do |comma_separated_tags|
+  fill_in 'Tags', with: comma_separated_tags
+end
