@@ -169,6 +169,24 @@ describe MappingsController do
         end
       end
     end
+
+    context 'when an admin is trying to tag a mapping' do
+      before do
+        login_as admin_bob
+        post :update, site_id: mapping.site, id: mapping.id,
+             mapping: {
+                path: '/Needs/Canonicalization?has=some&query=parts',
+                new_url: 'http://somewhere.good',
+                tag_list: 'fEE, fI, fO'
+             }
+      end
+
+      subject(:tags_as_strings) { mapping.reload.tags.map(&:to_s) }
+
+      it 'has saved all tags as lowercase' do
+        tags_as_strings.should == ['fee', 'fi', 'fo']
+      end
+    end
   end
 
   describe '#new_multiple' do
