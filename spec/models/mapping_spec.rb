@@ -124,6 +124,37 @@ describe Mapping do
         end
       end
     end
+
+    describe 'tagging behaviour for quoting and special characters' do
+      let(:mapping)      { create :mapping }
+
+      subject(:tag_list) { mapping.tag_list }
+
+      before { mapping.tag_list = test_input }
+
+      # We don't like this behaviour (it keeps quotes in tags with no spaces),
+      # but changing it means forking. And we can live with it.
+      context 'there are double-quoted tags' do
+        let(:test_input) { %("Fee fi", "FO", fum, thing:1234) }
+        it { should eql(['fee fi', '"fo"', 'fum', 'thing:1234']) }
+      end
+      context 'there are single-quoted tags' do
+        let(:test_input) { %('Fee fi', 'FO', fum, thing:1234) }
+        it { should eql(['fee fi', "'fo'", 'fum', 'thing:1234']) }
+      end
+      context 'there are special characters' do
+        let(:test_input) { %('<Fee fi>', '\\FO/', ¿fum?) }
+        it { should eql(['<fee fi>', "'\\fo/'", '¿fum?']) }
+      end
+      context 'there are blanks' do
+        let(:test_input) { %(,     ,    hello, hi    , ho) }
+        it { should eql(%w(hello hi ho)) }
+      end
+      context 'there are only blanks' do
+        let(:test_input) { %(,     ,       , ,   ) }
+        it { should eql([]) }
+      end
+    end
   end
 
   describe 'canonicalizing the path and setting the path_hash before validate' do
