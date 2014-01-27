@@ -124,6 +124,6 @@ Then(/^I should see the canonicalized paths "(.*?)"$/) do |paths|
   end
 end
 
-And(/^I should see the tags "([^"]*)"$/) do |tags|
-  expect(page).to have_selector('input#mapping_tags', text: tags)
+Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
+  expect(page).to have_field('Tags', with: tag_list)
 end
