@@ -64,17 +64,17 @@ describe View::Mappings::BulkAdder do
       it { should be_false }
     end
 
-    describe 'multiple invalid hosts should be false' do
+    describe 'multiple incorrect hosts should be false' do
       before { @paths_input = "http://www.google.com/google\nhttp://www.yahoo.com/yahoo" }
       it { should be_false }
     end
 
-    describe 'a combination of valid and invalid hosts should be false' do
+    describe 'a combination of correct and incorrect hosts should be false' do
       before { @paths_input = "http://#{site.default_host.hostname}/about\nhttp://www.yahoo.com/yahoo" }
       it { should be_false }
     end
 
-    describe 'a combination of valid paths and invalid hosts should be false' do
+    describe 'a combination of paths and incorrect hosts should be false' do
       before { @paths_input = "/about\nhttp://www.yahoo.com/yahoo" }
       it { should be_false }
     end
@@ -83,12 +83,16 @@ describe View::Mappings::BulkAdder do
       before { @paths_input = "http://#{site.default_host.hostname}/about\nhttp://#{site.default_host.hostname}/another" }
       it { should be_true }
     end
+    
+    describe 'invalid hosts should be false' do
+      before { @paths_input = "http//go<oglecom" }
+      it { should be_false }
+    end
 
     describe 'paths should be true' do
       before { @paths_input = "/path" }
       it { should be_true }
     end
-
   end
 
   describe '#canonical_paths' do

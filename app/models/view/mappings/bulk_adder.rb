@@ -20,7 +20,6 @@ module View
 
       def raw_hosts
         hosts = raw_paths.select {|p| p.start_with?('http')}.map do |path|
-          #TODO Handle error if parse fails
           uri = URI.parse(path)
           uri.host
         end
@@ -32,7 +31,11 @@ module View
       end
 
       def site_has_hosts?
-        hosts = raw_hosts
+        begin
+          hosts = raw_hosts
+        rescue URI::InvalidURIError
+          return false
+        end
         hosts.empty? || hosts.size == site.hosts.where(hostname: hosts).size
       end
 
