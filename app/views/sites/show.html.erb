@@ -22,19 +22,12 @@
       <span class="big-message"><%= render partial: 'transition_status', locals: { site: @site } %></span>
     </div>
 
-    <div class="highlight days-from-launch">
+    <div class="highlight days-from-launch add-big-bottom-margin">
       <%= big_launch_days_number(@site) %>
       <%= date_or_not_yet(@site.launch_date) %>
     </div>
 
-    <h3 class="add-top-margin add-bottom-margin">Tools</h3>
-    <div class="tools">
-      <p>
-        <ul>
-          <li>To test a redirection ahead of a DNS change for a Web site, drag this bookmarklet to your bookmarks bar: <a class='bookmakrlet' href='javascript:location%3Dlocation.href.replace(/:%5C/%5C//, "://aka-").replace(/-*www/,"")'>aka</a>
-          <li>To see if a page is in The National Archives, drag this bookmarklet to your bookmarks bar: <a class='bookmarklet' href='javascript:location%3Dlocation.href.replace(/%5E/,"http://webarchive.nationalarchives.gov.uk/*/")'>tna</a>
-        </ul>
-      </p>
-    </div>
+    <%= render 'tools' %>
+    
   </div>
 </div>
