@@ -4,35 +4,35 @@ describe View::Mappings::BulkAdder do
   let!(:site) { create(:site) }
 
   describe '#raw_paths' do
-    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input }).raw_paths }
+    subject { View::Mappings::BulkAdder.new(site, { paths: paths_input }).raw_paths }
 
     context 'empty string' do
-      before { @paths_input = '' }
+      let(:paths_input) { '' }
 
       it { should be_an(Array) }
       it { should have(0).paths }
     end
 
     context 'single line' do
-      before { @paths_input = '/a' }
+      let(:paths_input) { '/a' }
 
       it { should eql(['/a']) }
     end
 
     context 'multiple lines' do
-      before { @paths_input = "a\r\nb\rc\nd" }
+      let(:paths_input) { "a\r\nb\rc\nd" }
 
       it { should eql(['a', 'b', 'c', 'd']) }
     end
 
     context 'multiple lines with starting and trailing whitespace' do
-      before { @paths_input = "   a    \r\nb    \rc\n     d" }
+      let(:paths_input) { "   a    \r\nb    \rc\n     d" }
 
       it { should eql(['a', 'b', 'c', 'd']) }
     end
 
     context 'multiple realistic paths' do
-      before { @paths_input = "/sitecontent/documents/countries/491163/pvs-dis?view=binary\r\n/about us with spaces\r/arbitrary%20punctuation%3E" }
+      let(:paths_input) { "/sitecontent/documents/countries/491163/pvs-dis?view=binary\r\n/about us with spaces\r/arbitrary%20punctuation%3E" }
 
       it { should eql(
         [
@@ -44,7 +44,7 @@ describe View::Mappings::BulkAdder do
     end
 
     context 'multiple realistic paths with blank/whitespace lines in between' do
-      before { @paths_input = "\n/sitecontent/documents/countries/491163/pvs-dis?view=binary\r\n\r/about us with spaces\n        \n\n\n\n\n\n\n\r/arbitrary%20punctuation%3E" }
+      let(:paths_input) { "\n/sitecontent/documents/countries/491163/pvs-dis?view=binary\r\n\r/about us with spaces\n        \n\n\n\n\n\n\n\r/arbitrary%20punctuation%3E" }
 
       it { should eql(
         [
@@ -57,49 +57,49 @@ describe View::Mappings::BulkAdder do
   end
 
   describe '#site_has_hosts?' do
-    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input }).site_has_hosts? }
+    subject { View::Mappings::BulkAdder.new(site, { paths: paths_input }).site_has_hosts? }
 
     describe 'hosts not part of the current site should be false' do
-      before { @paths_input = "http://www.google.com/test" }
+      let(:paths_input) { "http://www.google.com/test" }
       it { should be_false }
     end
 
     describe 'multiple incorrect hosts should be false' do
-      before { @paths_input = "http://www.google.com/google\nhttp://www.yahoo.com/yahoo" }
+      let(:paths_input) { "http://www.google.com/google\nhttp://www.yahoo.com/yahoo" }
       it { should be_false }
     end
 
     describe 'a combination of correct and incorrect hosts should be false' do
-      before { @paths_input = "http://#{site.default_host.hostname}/about\nhttp://www.yahoo.com/yahoo" }
+      let(:paths_input) { "http://#{site.default_host.hostname}/about\nhttp://www.yahoo.com/yahoo" }
       it { should be_false }
     end
 
     describe 'a combination of paths and incorrect hosts should be false' do
-      before { @paths_input = "/about\nhttp://www.yahoo.com/yahoo" }
+      let(:paths_input) { "/about\nhttp://www.yahoo.com/yahoo" }
       it { should be_false }
     end
 
     describe 'hosts part of the current site should be true' do
-      before { @paths_input = "http://#{site.default_host.hostname}/about\nhttp://#{site.default_host.hostname}/another" }
+      let(:paths_input) { "http://#{site.default_host.hostname}/about\nhttp://#{site.default_host.hostname}/another" }
       it { should be_true }
     end
     
     describe 'invalid hosts should be false' do
-      before { @paths_input = "http//go<oglecom" }
+      let(:paths_input) { "http//go<oglecom" }
       it { should be_false }
     end
 
     describe 'paths should be true' do
-      before { @paths_input = "/path" }
+      let(:paths_input) { "/path" }
       it { should be_true }
     end
   end
 
   describe '#canonical_paths' do
-    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input }).canonical_paths }
+    subject { View::Mappings::BulkAdder.new(site, { paths: paths_input }).canonical_paths }
 
     describe 'multiple raw paths are canonicalized' do
-      before { @paths_input = "/sitecontent/documents/countries/491163/pvs-dis?view=binary\n/about us with spaces\n/LOWER" }
+      let(:paths_input) { "/sitecontent/documents/countries/491163/pvs-dis?view=binary\n/about us with spaces\n/LOWER" }
 
       it { should eql(
         [
@@ -111,13 +111,13 @@ describe View::Mappings::BulkAdder do
     end
 
     describe 'paths which canonicalize to empty strings are ignored' do
-      before { @paths_input = "noslash" }
+      let(:paths_input) { "noslash" }
 
       it { should eql([]) }
     end
 
     describe 'paths which are duplicated once canonicalized are de-duplicated' do
-      before { @paths_input = "/about\n/another\n/about?view=on\n/about?view=off" }
+      let(:paths_input) { "/about\n/another\n/about?view=on\n/about?view=off" }
 
       it { should eql(
         [
@@ -130,10 +130,10 @@ describe View::Mappings::BulkAdder do
 
   describe '#existing_mappings' do
     let!(:existing_mapping) { create(:mapping, site: site, path: '/exists_already') }
-    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: '410' }).existing_mappings }
+    subject { View::Mappings::BulkAdder.new(site, { paths: paths_input, http_status: '410' }).existing_mappings }
 
     context 'existing mapping\'s path is submitted' do
-      before { @paths_input = "/exists_already\n/new" }
+      let(:paths_input) { "/exists_already\n/new" }
 
       it { should have(1).mapping }
 
@@ -143,7 +143,7 @@ describe View::Mappings::BulkAdder do
     end
 
     context 'existing mapping\'s path is not submitted' do
-      before { @paths_input = "/new\n/another_new" }
+      let(:paths_input) { "/new\n/another_new" }
 
       its(:size) { should eql(0) }
     end
@@ -151,10 +151,10 @@ describe View::Mappings::BulkAdder do
 
   describe '#all_mappings' do
     let!(:existing_mapping) { create(:mapping, site: site, path: '/exists_already') }
-    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: '410' }).all_mappings }
+    subject { View::Mappings::BulkAdder.new(site, { paths: paths_input, http_status: '410' }).all_mappings }
 
     context 'with only valid paths input' do
-      before { @paths_input = "/exists_already\n/a\n/b" }
+      let(:paths_input) { "/exists_already\n/a\n/b" }
 
       it 'should include a mapping for each valid path in the input' do
         expect(subject).to have(3).mappings
@@ -177,7 +177,7 @@ describe View::Mappings::BulkAdder do
     end
 
     context 'with an invalid path in the input' do
-      before { @paths_input = "/exists_already\n/a\nnoslash" }
+      let(:paths_input) { "/exists_already\n/a\nnoslash" }
 
       it 'should not include a mapping for the invalid path' do
         expect(subject).to have(2).mappings
@@ -186,25 +186,28 @@ describe View::Mappings::BulkAdder do
   end
 
   describe '#params_errors' do
-    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input, http_status: @http_status, new_url: @new_url }).params_errors }
+    let(:paths_input)   { nil }
+    let(:http_status)   { nil }
+    let(:new_url)       { nil }
+
+    subject do
+      View::Mappings::BulkAdder.new(
+        site, { paths: paths_input, http_status: http_status, new_url: new_url }).params_errors
+    end
 
     describe 'when no http_status is given, there is an error for http_status' do
       its([:http_status]) { should eql(I18n.t('mappings.bulk.http_status_invalid')) }
     end
 
     describe 'when no valid paths are given, there is an error for paths' do
-      before do
-        @paths_input = 'a'
-      end
+      let(:paths_input) { 'a' }
 
       its([:paths]) { should eql(I18n.t('mappings.bulk.add.paths_empty')) }
     end
 
     describe 'when a new_url is required but an invalid new_url is given, there is an error for new_url' do
-      before do
-        @http_status = '301'
-        @new_url = '________'
-      end
+      let(:http_status) { '301' }
+      let(:new_url)     { '________' }
 
       its([:new_url]) { should eql(I18n.t('mappings.bulk.new_url_invalid')) }
     end
@@ -212,31 +215,28 @@ describe View::Mappings::BulkAdder do
 
   describe '#create_or_update!', versioning: true do
     let!(:existing_mapping) { create(:mapping, site: site, path: '/exists', http_status: '410') }
+    let(:tag_list) { nil }
 
-    def call_create_or_update
-      params = {
-        paths:           @paths_input,
-        http_status:     @http_status,
-        new_url:         @new_url,
-        update_existing: @update_existing,
-        tag_list:        @tag_list
-      }
-      @adder = View::Mappings::BulkAdder.new(site, params)
-      @adder.create_or_update!
-    end
+    let(:adder)  { View::Mappings::BulkAdder.new(site, params) }
+    let(:params) { {
+      paths:           paths_input,
+      http_status:     http_status,
+      new_url:         new_url,
+      update_existing: update_existing,
+      tag_list:        tag_list
+    } }
 
     # We expect this to never be called with invalid data because params_invalid?
     # should be called first to display error messages on the form, but in case
     # this method is called without data being validated first, check that it
     # doesn't blow up or bypass validation when attempting to create the mappings.
     context 'with invalid data: a redirect without a new_url' do
-      before do
-        @paths_input     = "/a\n/B\n/c?canonical=no\n/exists"
-        @http_status     = '301'
-        @new_url         = ''
-        @update_existing = "true"
-        call_create_or_update
-      end
+      let(:paths_input)     { "/a\n/B\n/c?canonical=no\n/exists" }
+      let(:http_status)     { '301' }
+      let(:new_url)         { '' }
+      let(:update_existing) { "true" }
+
+      before { adder.create_or_update! }
 
       specify 'there are no new mappings' do
         expect(site.mappings.count).to eql(1)
@@ -249,20 +249,20 @@ describe View::Mappings::BulkAdder do
         its(:new_url)     { should be_nil }
       end
 
-      describe 'outcomes' do
-        subject { @adder.outcomes }
-
-        it { should eql([:creation_failed, :creation_failed, :creation_failed, :update_failed]) }
+      it 'has one outcome symbol for each failure' do
+        adder.outcomes.should eql([
+          :creation_failed, :creation_failed, :creation_failed, :update_failed
+        ])
       end
     end
 
     context 'with valid data' do
-      before do
-        @paths_input     = "/a\n/B\n/c?canonical=no\n/exists"
-        @http_status     = '301'
-        @new_url         = 'www.gov.uk'
-        @tag_list        = 'fee, fi, FO'
-      end
+      let(:paths_input) { "/a\n/B\n/c?canonical=no\n/exists" }
+      let(:http_status) { '301' }
+      let(:new_url)     { 'www.gov.uk' }
+      let(:tag_list)    { 'fee, fi, FO' }
+
+      before { adder.create_or_update! }
 
       shared_examples 'the new mappings were correctly created' do
         subject(:new_mappings) { Mapping.where(path: ['/a', '/b', '/c']) }
@@ -293,17 +293,12 @@ describe View::Mappings::BulkAdder do
       end
 
       context 'when not updating existing mappings' do
-        before do
-          @update_existing = "false"
-          call_create_or_update
-        end
+        let(:update_existing) { "false" }
 
         it_behaves_like 'the new mappings were correctly created'
 
-        describe 'outcomes' do
-          subject { @adder.outcomes }
-
-          it { should eql([:created, :created, :created, :not_updating]) }
+        it 'has one symbol per failure' do
+          adder.outcomes.should eql([:created, :created, :created, :not_updating])
         end
 
         describe 'the pre-existing mapping' do
@@ -318,17 +313,12 @@ describe View::Mappings::BulkAdder do
       end
 
       context 'when updating existing mappings' do
-        before do
-          @update_existing = "true"
-          call_create_or_update
-        end
+        let(:update_existing) { "true" }
 
         it_behaves_like 'the new mappings were correctly created'
 
-        describe 'outcomes' do
-          subject { @adder.outcomes }
-
-          it { should eql([:created, :created, :created, :updated]) }
+        it 'has one symbol per failure' do
+          adder.outcomes.should eql([:created, :created, :created, :updated])
         end
 
         describe 'the pre-existing mapping' do
@@ -353,35 +343,30 @@ describe View::Mappings::BulkAdder do
       tag_list:        'fee, fi, FO'
     } }
 
-    subject { @adder.success_message }
+    let(:bulk_adder) { View::Mappings::BulkAdder.new(site, params) }
 
-    context 'when updating at least one mapping' do
-      before do
-        create(:mapping, site: site, path: '/might-exist', http_status: '410')
-        @adder = View::Mappings::BulkAdder.new(site, params)
-        @adder.create_or_update!
-      end
+    subject { bulk_adder.success_message }
+
+    context 'when updating at least one existing mapping' do
+      let!(:existing_mapping) { create(:mapping, site: site, path: '/might-exist', http_status: '410') }
+
+      before { bulk_adder.create_or_update! }
 
       it { should eql('3 mappings created and 1 mapping updated. All tagged with "fee, fi, fo".') }
     end
 
-    context 'when creating some mappings and updating none' do
-      before do
-        @adder = View::Mappings::BulkAdder.new(site, params)
-        @adder.create_or_update!
+    context 'there are no pre-existing mappings' do
+      before  { bulk_adder.create_or_update! }
+
+      context 'when creating some mappings and updating none' do
+        it { should eql('4 mappings created and tagged with "fee, fi, fo". 0 mappings updated.') }
       end
 
-      it { should eql('4 mappings created and tagged with "fee, fi, fo". 0 mappings updated.') }
-    end
+      context 'when creating some mappings, updating none and tagging none' do
+        before { params.delete(:tag_list) }
 
-    context 'when creating some mappings and updating none and tagging none' do
-      before do
-        params.delete(:tag_list)
-        @adder = View::Mappings::BulkAdder.new(site, params)
-        @adder.create_or_update!
+        it { should eql('4 mappings created. 0 mappings updated.') }
       end
-
-      it { should eql('4 mappings created. 0 mappings updated.') }
     end
   end
 end
