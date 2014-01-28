@@ -12,4 +12,15 @@ Scenario: Adding tags to a mapping
   Then I should see "Mapping saved"
   And I should see the tags "fee, fi, fo"
 
+Scenario: Adding tags when bulk adding mappings
+  Given I have logged in as an admin
+  And a site ukba exists
+  When I add multiple paths with tags "fee, fi, FO" and continue
+  Then the page title should be "Confirm new mappings"
+  And I should see the tags "fee, fi, fo"
+  When I save the mappings
+  Then the mappings should be saved with tags "fee, fi, fo"
+
+
+
 

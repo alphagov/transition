@@ -235,6 +235,21 @@ describe MappingsController do
         expect(assigns(:errors)).to eq(expected_errors)
       end
     end
+
+    context 'when adding tags to multiple paths' do
+      before do
+        login_as admin_bob
+        post :new_multiple_confirmation, site_id: site.abbr, paths: "/a\n/b",
+             http_status: '301', new_url: 'http://gov.uk/somewhere',
+             tag_list: 'fee, fi, FO'
+      end
+
+      let(:bulk_adder) { assigns(:bulk_add) }
+
+      it 'has assigned the tag list to the bulk adder' do
+        bulk_adder.tag_list.map(&:to_s).should == %w(fee fi fo)
+      end
+    end
   end
 
   describe '#create_multiple' do

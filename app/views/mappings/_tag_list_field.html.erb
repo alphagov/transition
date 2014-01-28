@@ -1,0 +1,20 @@
+<%= field_set_tag nil, class: 'form-group' do %>
+  <legend class="rm">
+    Tagging
+  </legend>
+  <% if defined? form %>
+    <%= form.label :tag_list, 'Tags' %>
+  <% else %>
+    <%= label_tag :tag_list, 'Tags' %>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-8">
+      <% if defined? form %>
+        <%= form.text_field :tag_list, class: 'form-control' %>
+      <% else %>
+        <%= text_field_tag :tag_list, @bulk_add.tag_list.to_s, class: 'form-control' %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

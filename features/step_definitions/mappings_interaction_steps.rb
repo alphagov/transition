@@ -13,7 +13,7 @@ When(/^I make the mapping an archive$/) do
   select 'Archive', from: 'Type'
 end
 
-When(/^I submit the mappings?$/) do
+When(/^I continue?$/) do
   click_button 'Continue'
 end
 
@@ -67,6 +67,20 @@ When(/^I edit that mapping$/) do
   visit edit_site_mapping_path(@site, @mapping) 
 end
 
-When(/^I associate the tags "([^"]*)" with the mapping$/) do |comma_separated_tags|
+When(/^I associate the tags "([^"]*)" with the mappings?$/) do |comma_separated_tags|
   fill_in 'Tags', with: comma_separated_tags
+end
+
+
+When(/^I add multiple paths with tags "([^"]*)" and continue$/) do |tag_list|
+  # When I add multiple paths to the site
+  visit new_multiple_site_mappings_path(@site)
+
+  step 'I make the new mapping paths "/1, /2, /3" redirect to www.gov.uk/organisations/ukba'
+  step "I associate the tags \"#{tag_list}\" with the mappings"
+  step 'I continue'
+end
+
+When(/^I confirm the new mappings$/) do
+  pending
 end

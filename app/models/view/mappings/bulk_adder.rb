@@ -26,6 +26,13 @@ module View
         hosts.uniq
       end
 
+      def tag_list
+        @tag_list ||= begin
+          test_mapping.tag_list = params[:tag_list]
+          test_mapping.tag_list
+        end
+      end
+
       def canonical_paths
         @canonical_paths ||= raw_paths.map { |p| site.canonical_path(p) }.select(&:present?).uniq
       end
@@ -66,10 +73,13 @@ module View
       def create_or_update!
         @outcomes = canonical_paths.map do |path|
           m = Mapping.where(site_id: site.id, path: path).first_or_initialize
+          m.attributes = common_data
+          m.tag_list = params[:tag_list]
+
           if m.new_record?
-            m.update_attributes(common_data) ? :created : :creation_failed
+            m.save ? :created : :creation_failed
           elsif update_existing?
-            m.update_attributes(common_data) ? :updated : :update_failed
+            m.save ? :updated : :update_failed
           else
             :not_updating
           end
@@ -88,10 +98,24 @@ module View
         outcomes.count(:updated)
       end
 
+      def all_tagged_with
+        %(. All tagged with "#{tag_list.join(', ')}") if tag_list.any?
+      end
+
+      def tagged_with
+        %( and tagged with "#{tag_list.join(', ')}") if tag_list.any?
+      end
+
       def success_message
-        "#{created_count} mapping".pluralize(created_count) +
-        " created and #{updated_count} mapping".pluralize(updated_count) +
-        ' updated.'
+        if updated_count == 0
+          "#{created_count} mapping".pluralize(created_count) +
+          " created#{tagged_with}. #{updated_count} mapping".pluralize(updated_count) +
+          " updated."
+        else
+          "#{created_count} mapping".pluralize(created_count) +
+          " created and #{updated_count} mapping".pluralize(updated_count) +
+          " updated#{all_tagged_with}."
+        end
       end
     end
   end

@@ -84,17 +84,7 @@
     </div>
   <% end %>
 
-  <%= field_set_tag nil, class: 'form-group' do %>
-    <legend class="rm">
-      Tagging
-    </legend>
-    <%= f.label :tag_list, 'Tags' %>
-    <div class="row">
-      <div class="col-md-8">
-        <%= f.text_field :tag_list, class: 'form-control' %>
-      </div>
-    </div>
-  <% end %>
+  <%= render partial: 'tag_list_field', locals: { form: f } %>
 
   <%= f.submit 'Save mapping', class: 'add-top-margin btn btn-success' %>
 <% end %>

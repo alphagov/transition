@@ -218,7 +218,8 @@ describe View::Mappings::BulkAdder do
         paths:           @paths_input,
         http_status:     @http_status,
         new_url:         @new_url,
-        update_existing: @update_existing
+        update_existing: @update_existing,
+        tag_list:        @tag_list
       }
       @adder = View::Mappings::BulkAdder.new(site, params)
       @adder.create_or_update!
@@ -260,6 +261,7 @@ describe View::Mappings::BulkAdder do
         @paths_input     = "/a\n/B\n/c?canonical=no\n/exists"
         @http_status     = '301'
         @new_url         = 'www.gov.uk'
+        @tag_list        = 'fee, fi, FO'
       end
 
       shared_examples 'the new mappings were correctly created' do
@@ -280,6 +282,12 @@ describe View::Mappings::BulkAdder do
         specify 'all new mappings have a version recording their creation' do
           new_mappings.each do |m|
             expect(m.versions.last.event).to eql('create')
+          end
+        end
+
+        it 'records the tags against each new mapping' do
+          new_mappings.each do |m|
+            expect(m.tag_list).to eql(%w(fee fi fo))
           end
         end
       end
@@ -338,20 +346,32 @@ describe View::Mappings::BulkAdder do
   end
 
   describe '#success_message' do
-    let!(:existing_mapping) { create(:mapping, site: site, path: '/exists', http_status: '410') }
-
-    before do
-      params = {
-        paths:           "/a\n/B\n/c?canonical=no\n/exists",
-        http_status:     '410',
-        update_existing: 'true'
-      }
-      @adder = View::Mappings::BulkAdder.new(site, params)
-      @adder.create_or_update!
-    end
+    let(:params) { {
+      paths:           "/a\n/B\n/c?canonical=no\n/might-exist",
+      http_status:     '410',
+      update_existing: 'true',
+      tag_list:        'fee, fi, FO'
+    } }
 
     subject { @adder.success_message }
 
-    it { should eql('3 mappings created and 1 mapping updated.') }
+    context 'when updating at least one mapping' do
+      before do
+        create(:mapping, site: site, path: '/might-exist', http_status: '410')
+        @adder = View::Mappings::BulkAdder.new(site, params)
+        @adder.create_or_update!
+      end
+
+      it { should eql('3 mappings created and 1 mapping updated. All tagged with "fee, fi, fo".') }
+    end
+
+    context 'when creating some mappings and updating none' do
+      before do
+        @adder = View::Mappings::BulkAdder.new(site, params)
+        @adder.create_or_update!
+      end
+
+      it { should eql('4 mappings created and tagged with "fee, fi, fo". 0 mappings updated.') }
+    end
   end
 end

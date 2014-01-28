@@ -62,7 +62,7 @@ Given(/^there is a mapping that has no history$/) do
 end
 
 Given(/^a site (.*) exists$/) do |site_abbr|
-  create :site, abbr: site_abbr
+  @site = create(:site, abbr: site_abbr)
 end
 
 Given(/^these hits exist for the Attorney General's office site:$/) do |table|
