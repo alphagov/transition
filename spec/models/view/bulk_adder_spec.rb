@@ -373,5 +373,15 @@ describe View::Mappings::BulkAdder do
 
       it { should eql('4 mappings created and tagged with "fee, fi, fo". 0 mappings updated.') }
     end
+
+    context 'when creating some mappings and updating none and tagging none' do
+      before do
+        params.delete(:tag_list)
+        @adder = View::Mappings::BulkAdder.new(site, params)
+        @adder.create_or_update!
+      end
+
+      it { should eql('4 mappings created. 0 mappings updated.') }
+    end
   end
 end

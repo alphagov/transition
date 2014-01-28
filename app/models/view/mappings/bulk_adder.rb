@@ -98,23 +98,28 @@ module View
         outcomes.count(:updated)
       end
 
-      def all_tagged_with
-        %(. All tagged with "#{tag_list.join(', ')}") if tag_list.any?
+      def tagged_with(opts = {and: false})
+        %(#{opts[:and] ? ' and ' : ''}tagged with "#{tag_list.join(', ')}") if tag_list.any?
       end
 
-      def tagged_with
-        %( and tagged with "#{tag_list.join(', ')}") if tag_list.any?
+      def mappings_created
+        "#{created_count} #{'mapping'.pluralize(created_count)} created"
+      end
+
+      def mappings_updated
+        "#{updated_count} #{'mapping'.pluralize(updated_count)} updated"
       end
 
       def success_message
-        if updated_count == 0
-          "#{created_count} mapping".pluralize(created_count) +
-          " created#{tagged_with}. #{updated_count} mapping".pluralize(updated_count) +
-          " updated."
+        if updated_count.zero?
+          I18n.t('mappings.bulk.add.success.all_created',
+                 created: mappings_created,
+                 tagged_with: tagged_with(and: true))
         else
-          "#{created_count} mapping".pluralize(created_count) +
-          " created and #{updated_count} mapping".pluralize(updated_count) +
-          " updated#{all_tagged_with}."
+          I18n.t('mappings.bulk.add.success.some_updated',
+                 created: mappings_created,
+                 updated: mappings_updated,
+                 tagged_with: tagged_with)
         end
       end
     end

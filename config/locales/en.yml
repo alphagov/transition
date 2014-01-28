@@ -16,5 +16,8 @@ en:
       add:
         paths_empty: 'Enter at least one valid path'
         hosts_invalid: 'One or more of the URLs entered are not part of this site'
+        success:
+          all_created: '%{created}%{tagged_with}. 0 mappings updated.'
+          some_updated: '%{created} and %{updated}. All %{tagged_with}.'
       edit:
         mappings_empty: 'No mappings were selected'
