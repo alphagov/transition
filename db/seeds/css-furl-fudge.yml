@@ -10,9 +10,9 @@
 # In the meantime, this is where Organisation CSS and FURL get
 # set predictably and repeatably for both dev and production.
 ---
-uk-border-agency:
+uk-visas-and-immigration:
   :css: home-office
-  :furl: www.gov.uk/ukba
+  :furl:
 attorney-generals-office:
   :css: attorney-generals-office
   :furl: www.gov.uk/ago
