@@ -56,6 +56,45 @@ describe View::Mappings::BulkAdder do
     end
   end
 
+  describe '#site_has_hosts?' do
+    subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input }).site_has_hosts? }
+
+    describe 'hosts not part of the current site should be false' do
+      before { @paths_input = "http://www.google.com/test" }
+      it { should be_false }
+    end
+
+    describe 'multiple incorrect hosts should be false' do
+      before { @paths_input = "http://www.google.com/google\nhttp://www.yahoo.com/yahoo" }
+      it { should be_false }
+    end
+
+    describe 'a combination of correct and incorrect hosts should be false' do
+      before { @paths_input = "http://#{site.default_host.hostname}/about\nhttp://www.yahoo.com/yahoo" }
+      it { should be_false }
+    end
+
+    describe 'a combination of paths and incorrect hosts should be false' do
+      before { @paths_input = "/about\nhttp://www.yahoo.com/yahoo" }
+      it { should be_false }
+    end
+
+    describe 'hosts part of the current site should be true' do
+      before { @paths_input = "http://#{site.default_host.hostname}/about\nhttp://#{site.default_host.hostname}/another" }
+      it { should be_true }
+    end
+    
+    describe 'invalid hosts should be false' do
+      before { @paths_input = "http//go<oglecom" }
+      it { should be_false }
+    end
+
+    describe 'paths should be true' do
+      before { @paths_input = "/path" }
+      it { should be_true }
+    end
+  end
+
   describe '#canonical_paths' do
     subject { View::Mappings::BulkAdder.new(site, { paths: @paths_input }).canonical_paths }
 

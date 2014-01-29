@@ -18,8 +18,25 @@ module View
         paths.select(&:present?).map(&:strip)
       end
 
+      def raw_hosts
+        hosts = raw_paths.select {|p| p.start_with?('http')}.map do |path|
+          uri = URI.parse(path)
+          uri.host
+        end
+        hosts.uniq
+      end
+
       def canonical_paths
         @canonical_paths ||= raw_paths.map { |p| site.canonical_path(p) }.select(&:present?).uniq
+      end
+
+      def site_has_hosts?
+        begin
+          hosts = raw_hosts
+        rescue URI::InvalidURIError
+          return false
+        end
+        hosts.empty? || hosts.size == site.hosts.where(hostname: hosts).size
       end
 
       def existing_mappings
@@ -37,6 +54,7 @@ module View
         {}.tap do |errors|
           errors[:http_status] = I18n.t('mappings.bulk.http_status_invalid') if http_status.blank?
           errors[:paths]       = I18n.t('mappings.bulk.add.paths_empty')     if canonical_paths.empty?
+          errors[:paths]       = I18n.t('mappings.bulk.add.hosts_invalid')   if !site_has_hosts?
           errors[:new_url]     = I18n.t('mappings.bulk.new_url_invalid')     if would_fail_on_new_url?
         end
       end

@@ -15,5 +15,6 @@ en:
       new_url_invalid: 'Enter a valid URL to redirect to'
       add:
         paths_empty: 'Enter at least one valid path'
+        hosts_invalid: 'One or more of the URLs entered are not part of this site'
       edit:
         mappings_empty: 'No mappings were selected'
