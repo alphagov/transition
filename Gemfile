@@ -6,7 +6,7 @@ gem 'unicorn', '4.6.2'
 gem 'mysql2', '0.3.13'
 gem 'jquery-rails', '3.0.4'
 gem 'optic14n', '1.0.0'     # Ideally version should be synced with bouncer
-gem 'gds-sso', '7.0.0'
+gem 'gds-sso', '9.2.0'
 gem 'plek', '1.2.0'
 gem 'htmlentities', '4.3.1'
 gem 'kaminari', '0.14.1'
