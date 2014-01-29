@@ -30,8 +30,4 @@ module SitesHelper
   def mappings_edit_or_view
     current_user.can_edit?(@site.organisation) ? 'Edit' : 'View'
   end
-
-  def mappings_manage_or_view
-    current_user.can_edit?(@site.organisation) ? 'Manage' : 'View'
-  end
 end
