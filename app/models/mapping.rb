@@ -108,8 +108,10 @@ class Mapping < ActiveRecord::Base
   end
 
   def trim_scheme_host_and_port_from_path
-    uri = URI.parse(path)
-    self.path = uri.request_uri if uri.respond_to?(:request_uri)
+    if path =~ %r{^https?:}
+      url = URI.parse(path)
+      self.path = url.request_uri
+    end
   rescue URI::InvalidURIError
     # The path isn't parseable, so leave it intact for validations to report
   end
