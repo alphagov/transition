@@ -364,6 +364,7 @@ a.list-group-item {
   padding: 2 * $default-vertical-margin;
   color: #fff;
   font-size: $font-size-base * 1.5;
+  border-radius: $border-radius-base;
 }
 
 .highlight > p:last-child {
