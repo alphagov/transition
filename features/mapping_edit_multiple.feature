@@ -60,7 +60,7 @@ Feature: Editing multiple mappings for a site
   @javascript
   Scenario: Selecting multiple mappings to redirect with javascript
     When I select the first two mappings
-    And I click the first link called "Redirect selected"
+    And I click the first link called "Redirect"
     Then I should see an open modal window
     And I should see a form that contains my selection within the modal
     And I should see "Redirect mappings" in the modal window
@@ -71,7 +71,7 @@ Feature: Editing multiple mappings for a site
   @javascript
   Scenario: Selecting multiple mappings to archive with javascript
     When I select the first two mappings
-    And I click the first link called "Archive selected"
+    And I click the first link called "Archive"
     Then I should see an open modal window
     And I should see a form that contains my selection within the modal
     And I should see "Archive mappings" in the modal window
