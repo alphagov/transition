@@ -2,3 +2,5 @@
   url   : git@github.com:alphagov/redirector.git
 - path  : data/transition-stats
   url   : git@github.com:alphagov/transition-stats.git
+- path  : data/pre-transition-stats
+  url   : git@github.com:alphagov/pre-transition-stats.git

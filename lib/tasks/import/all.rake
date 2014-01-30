@@ -1,3 +1,7 @@
+def glob_from_array(array)
+  '{' + array.join(',') + '}'
+end
+
 namespace :import do
   desc 'Import Organisations, Sites, Hosts, Mappings and Hits'
   task :all => [
@@ -14,8 +18,7 @@ namespace :import do
         'data/redirector/data/transition-sites/*.yml',
         'data/redirector/data/sites/*.yml',
       ]
-      glob = '{' + patterns.join(',') + '}'
-      Rake::Task['import:orgs_sites_hosts'].invoke(glob)
+      Rake::Task['import:orgs_sites_hosts'].invoke(glob_from_array(patterns))
     end
 
     desc 'Import all mappings'
@@ -25,7 +28,11 @@ namespace :import do
 
     desc 'Import all hits'
     task :hits do
-      Rake::Task['import:hits'].invoke('data/transition-stats/hits/*.tsv')
+      patterns = [
+        'data/transition-stats/hits/*.tsv',
+        'data/pre-transition-stats/hits/*.tsv',
+      ]
+      Rake::Task['import:hits'].invoke(glob_from_array(patterns))
     end
   end
 end
