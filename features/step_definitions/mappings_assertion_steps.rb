@@ -128,9 +128,19 @@ Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
   expect(page).to have_field('Tags', with: tag_list)
 end
 
-Then(/^the mappings should be saved with tags "([^"]*)"$/) do |tag_list|
-  # Temporary assertion - the flash message will move to tag display in the table
+Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|
   within '.alert-success' do
-    expect(page).to have_content("3 mappings created and tagged with \"#{tag_list}\". 0 mappings updated.")
+    expect(page).to have_content(
+      %(0 mappings created and 3 mappings updated. All tagged with "#{tag_list}")
+    )
   end
 end
+
+Then(/^the mappings should be saved with tags "([^"]*)"$/) do |tag_list|
+  @site.mappings.each do |mapping|
+    mapping.reload
+    mapping.tag_list.should =~ tag_list.split(',').map(&:strip)
+  end
+end
+
+

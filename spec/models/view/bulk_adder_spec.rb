@@ -284,12 +284,6 @@ describe View::Mappings::BulkAdder do
             expect(m.versions.last.event).to eql('create')
           end
         end
-
-        it 'records the tags against each new mapping' do
-          new_mappings.each do |m|
-            expect(m.tag_list).to eql(%w(fee fi fo))
-          end
-        end
       end
 
       context 'when not updating existing mappings' do
@@ -309,11 +303,18 @@ describe View::Mappings::BulkAdder do
           it 'has no new history after its creation' do
             expect(existing_mapping.versions.last.event).to eql('create')
           end
+
+          it 'has not updated its tags' do
+            expect(existing_mapping.tag_list).to be_empty
+          end
         end
       end
 
       context 'when updating existing mappings' do
-        let(:update_existing) { "true" }
+        let!(:existing_mapping) {
+          create(:mapping, site: site, path: '/exists', http_status: '410', tag_list: 'fum')
+        }
+        let(:update_existing)   { "true" }
 
         it_behaves_like 'the new mappings were correctly created'
 
@@ -326,6 +327,7 @@ describe View::Mappings::BulkAdder do
 
           its(:http_status) { should eql('301') }
           its(:new_url)     { should eql('https://www.gov.uk') }
+          its(:tag_list)    { should =~ %w(fee fi fo fum) }
 
           it 'has a version recording the update' do
             expect(existing_mapping.versions.last.event).to eql('update')

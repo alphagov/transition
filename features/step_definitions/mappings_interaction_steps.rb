@@ -81,6 +81,6 @@ When(/^I add multiple paths with tags "([^"]*)" and continue$/) do |tag_list|
   step 'I continue'
 end
 
-When(/^I confirm the new mappings$/) do
-  pending
+When(/^I choose "([^"]*)"$/) do |radio_label|
+  choose(radio_label)
 end
