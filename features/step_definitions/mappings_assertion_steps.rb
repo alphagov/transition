@@ -136,10 +136,14 @@ Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|
   end
 end
 
-Then(/^the mappings should be saved with tags "([^"]*)"$/) do |tag_list|
-  @site.mappings.each do |mapping|
-    mapping.reload
-    mapping.tag_list.should =~ tag_list.split(',').map(&:strip)
+Then(/^the mappings should all have the tags "([^"]*)"$/) do |tag_list|
+  expect(page).to have_selector('.mapping-tags', count: @site.mappings.count)
+
+  expected_tags = tag_list.split(',').map(&:strip)
+  page.all('ul.mapping-tags').each do |mapping_tags_list|
+    expected_tags.each do |tag|
+      expect(mapping_tags_list).to have_selector('.tag', text: tag)
+    end
   end
 end
 

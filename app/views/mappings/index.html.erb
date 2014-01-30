@@ -54,12 +54,14 @@
         <td class="<%= "mapping-type-#{mapping.type}" %>">
           <%= mapping.type.titleize %>
         </td>
-        <td>
+        <td class="mapping-path">
           <strong><%= link_to mapping.path, mapping.old_url, class: 'breakable' %></strong>
           <% if mapping.redirect? %>
             <br><span class="text-muted">redirects to</span>
             <%= link_to mapping.new_url, mapping.new_url, class: 'link-muted breakable' if mapping.new_url.present? %>
           <% end %>
+          <br>
+          <%= render partial: 'tags', locals: { mapping: mapping } %>
         </td>
         <% if current_user.can_edit?(@site.organisation) %>
           <td class="text-right">

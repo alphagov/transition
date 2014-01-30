@@ -1,0 +1,7 @@
+<% if mapping.tags.any? %>
+  <ul class="mapping-tags">
+    <% mapping.tag_list.each do |tag| %>
+      <li class="tag"><%= tag %></li>
+    <% end %>
+  </ul>
+<% end %>
