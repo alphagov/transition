@@ -167,7 +167,7 @@
 <hr>
 
 <h2>Tags</h2>
-<div class="row">
+<div class="row add-bottom-margin">
   <div class="col-md-6 lead">
     <p>Tags are metadata added to mappings. They are white with a blue border, purposefully set back from the main content so they don’t impede the scanning of paths.</p>
     <p>When they are links they have the usual visited link styles. They should also use the <code>rel="tag"</code> attribute.</p>
@@ -176,8 +176,23 @@
     <span class="tag">tag as a span</span><br />
     <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">tag as a link</a><br />
     <a href="/style" class="tag" rel="tag">tag as a visited link</a><br />
-    <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">many</a> <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">tags</a> <a href="#" class="tag" rel="tag">in a</a> <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">row</a> <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">and one</a> <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">of them</a> <a href="/style" class="tag" rel="tag">is visited</a>
-    <hr>
+    <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">many</a> <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">tags</a> <a href="#" class="tag" rel="tag">in a</a> <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">row</a> <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">and one</a> <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">of them</a> <a href="/style" class="tag" rel="tag">is visited</a><br />
+    <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">A very long tag. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6 lead">
+    <p>Include a <code>glyphicon-remove</code> icon for dismissible tags.</p>
+  </div>
+  <div class="col-md-6">
+    <a href="#" class="tag"><span class="glyphicon glyphicon-remove"></span> dismissible tag</a> <a href="#" class="tag"><span class="glyphicon glyphicon-remove"></span> another dismissible tag</a> <a href="#" class="tag"><span class="glyphicon glyphicon-remove"></span> this tag should go</a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6 lead">
+    <p>Tags can be wrapped in a list using the <code>tag-list</code> class.</p>
+  </div>
+  <div class="col-md-6">
     <ul class="tag-list">
       <li>
        <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">tags in a list</a>
@@ -185,10 +200,26 @@
       <li>
        <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">this tag is in an li</a>
       </li>
-      <li>
-       <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">A very long tag. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</a>
-      </li>
     </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6 lead">
+    <p>Tags can be used in all shapes and sizes.</p>
+  </div>
+  <div class="col-md-6">
+    <h1>
+      <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">tag in an h1</a>
+      <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag"><span class="glyphicon glyphicon-remove"></span> tag in an h1</a>
+    </h1>
+    <h2>
+      <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">tag in an h2</a>
+      <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag"><span class="glyphicon glyphicon-remove"></span> tag in an h2</a>
+    </h2>
+    <h3>
+      <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag">tag in an h3</a>
+      <a href="#<%= "#{Time.now.utc.to_i}" %>" class="tag" rel="tag"><span class="glyphicon glyphicon-remove"></span> tag in an h3</a>
+    </h3>
   </div>
 </div>
 <hr>

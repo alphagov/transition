@@ -388,7 +388,7 @@ a.list-group-item {
 
 .tag {
  color: $link-color;
- padding: 0 3px;
+ padding: (2em/14) (5em/14);
  display: inline-block;
  border-radius: $border-radius-base;
  border: 1px solid $link-color;
@@ -411,6 +411,12 @@ a.tag:hover {
 a.tag:focus:visited,
 a.tag:hover:visited {
   background-color: $link-color-visited;
+}
+
+.tag .glyphicon-remove {
+  font-size: 80%;
+  position: relative;
+  top: (1em/14);
 }
 
 .tag-list {
