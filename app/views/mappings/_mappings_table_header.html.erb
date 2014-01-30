@@ -1,7 +1,7 @@
 <tr class="table-header-secondary">
   <td class="selectable-row">
     <div class="relative if-no-js-hide">
-      <label>
+      <label title="Select or unselect all paths on this page">
         <input type="checkbox" class="js-toggle-all"/>
       </label>
     </div>
@@ -21,8 +21,8 @@
         </div>
       <% end %>
       <div class="if-no-js-hide btn-group">
-        <a href="#redirect-selected" class="btn btn-default js-submit-form disabled" data-type="301" data-loading-text="Loading…">Redirect selected</a>
-        <a href="#archive-selected" class="btn btn-default js-submit-form disabled" data-type="410" data-loading-text="Loading…">Archive selected</a>
+        <a href="#redirect-paths" class="btn btn-default js-submit-form disabled" data-type="301" data-loading-text="Loading…" title="Redirect the paths you’ve selected to a new URL">Redirect</a>
+        <a href="#archive-paths" class="btn btn-default js-submit-form disabled" data-type="410" data-loading-text="Loading…" title="Archive the paths you’ve selected">Archive </a>
       </div>
     </div>
     <div class="pull-right">

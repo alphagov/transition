@@ -1,7 +1,7 @@
 <table class="table table-bordered table-striped">
   <thead>
     <tr class="table-header">
-      <th>Original path from <%= site.default_host.hostname %></th>
+      <th><%= pluralize(mappings.count, 'path') %> from <%= site.default_host.hostname %></th>
     </tr>
   </thead>
   <tbody>
