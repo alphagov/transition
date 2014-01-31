@@ -73,7 +73,6 @@ end
 
 
 When(/^I add multiple paths with tags "([^"]*)" and continue$/) do |tag_list|
-  # When I add multiple paths to the site
   visit new_multiple_site_mappings_path(@site)
 
   step 'I make the new mapping paths "/1, /2, /3" redirect to www.gov.uk/organisations/ukba'
