@@ -32,4 +32,3 @@ Feature: History of edits to a mapping
     And there is a mapping that has no history
     When I go to edit that mapping
     Then I should see no history
-

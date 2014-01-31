@@ -32,5 +32,3 @@ Feature: Filter mappings
     Then the filter box should contain "/is-not-there"
     And I should see "0 mappings"
     And I should see a link to remove the filter
-
-

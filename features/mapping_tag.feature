@@ -27,7 +27,3 @@ Scenario: Adding tags when bulk adding mappings
   And I save the mappings
   Then I should see that all were tagged "fee, fi, fo"
   And the mappings should all have the tags "fee, fi, fo, fum"
-
-
-
-
