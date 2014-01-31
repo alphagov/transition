@@ -291,7 +291,7 @@ describe View::Mappings::BulkAdder do
 
         it_behaves_like 'the new mappings were correctly created'
 
-        it 'has one symbol per failure' do
+        it 'has one symbol per outcome' do
           adder.outcomes.should eql([:created, :created, :created, :not_updating])
         end
 
@@ -318,7 +318,7 @@ describe View::Mappings::BulkAdder do
 
         it_behaves_like 'the new mappings were correctly created'
 
-        it 'has one symbol per failure' do
+        it 'has one symbol per outcome' do
           adder.outcomes.should eql([:created, :created, :created, :updated])
         end
 
