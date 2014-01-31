@@ -14,7 +14,6 @@ Scenario: Adding tags to a mapping
 
 Scenario: Adding tags when bulk adding mappings
   Given I have logged in as an admin
-  And the mappings page size is 50
   And a site ukba exists with these tagged mappings:
   | path  | tags     |
   | /1    | fee, fum |
