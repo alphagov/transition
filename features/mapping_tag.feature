@@ -26,3 +26,17 @@ Scenario: Adding tags when bulk adding mappings
   And I save the mappings
   Then I should see that all were tagged "fee, fi, fo"
   And the mappings should all have the tags "fee, fi, fo, fum"
+
+Scenario: Bulk adding tags to existing mappings
+  Given I have logged in as an admin
+  And a site ukba exists with these tagged mappings:
+  | path  | tags     |
+  | /1    | fee, fum |
+  | /2    | fi, fum  |
+  | /3    | fo, fum  |
+  When I select the first two mappings and go to tag them
+  Then the page title should be "Tag mappings"
+  When I tag the mappings "fee, fi, fo"
+  Then I should see that 2 were tagged "fee, fi, fo"
+  And the first two mappings should have the tags "fee, fi, fo, fum"
+  And the last mapping should have the tags "fo, fum"

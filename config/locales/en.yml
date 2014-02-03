@@ -21,3 +21,4 @@ en:
           some_updated: '%{created} and %{updated}. All %{tagged_with}.'
       edit:
         mappings_empty: 'No mappings were selected'
+        tag_list_empty: "No tags were given"

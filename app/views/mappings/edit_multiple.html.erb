@@ -16,6 +16,11 @@
              locals: { new_url: @bulk_edit.new_url,
                        new_url_error: @new_url_error, http_status: @bulk_edit.http_status } %>
   <%= hidden_field_tag "return_path", @bulk_edit.return_path %>
+
+  <% if @bulk_edit.http_status == 'tag' %>
+    <%= render partial: 'tag_list_field', locals: { bulk_tagger: @bulk_edit } %>
+  <% end %>
+
   <%= link_to 'Cancel', @bulk_edit.return_path, class: 'btn btn-default add-right-margin' %>
   <%= button_tag 'Save', class: 'btn btn-success' %>
 <% end %>

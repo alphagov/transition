@@ -51,11 +51,12 @@ module MappingsHelper
     end
   end
 
+  OTHER_OPERATIONS = { 'tag' => 'tag' }
   ##
-  # Convert '301'/'410' into 'Redirect'/'Archive' to use in title and heading
+  # Convert '301'/'410'/tag into 'Redirect'/'Archive'/'Tag' to use in title and heading
   # for edit_multiple
   def http_status_name(http_status)
-    Mapping::TYPES[http_status].titleize
+    (Mapping::TYPES[http_status] || OTHER_OPERATIONS[http_status]).titleize
   end
 
   DEFAULT_FILTER_FIELD = 'path'

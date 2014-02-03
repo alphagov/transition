@@ -18,7 +18,7 @@
       <% if defined? form %>
         <%= form.text_field :tag_list, class: 'form-control' %>
       <% else %>
-        <%= text_field_tag :tag_list, @bulk_add.tag_list.to_s, class: 'form-control' %>
+        <%= text_field_tag :tag_list, bulk_tagger.tag_list.to_s, class: 'form-control' %>
       <% end %>
     </div>
   </div>

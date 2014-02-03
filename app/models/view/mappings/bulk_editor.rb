@@ -40,6 +40,10 @@ module View
       def failures
         site.mappings.where(id: @failure_ids).order(:path)
       end
+
+      def success_message
+        'Mappings updated successfully'
+      end
     end
   end
 end

@@ -70,7 +70,7 @@
     </div>
   <% end %>
 
-  <%= render 'tag_list_field' %>
+  <%= render partial: 'tag_list_field', locals: { bulk_tagger: @bulk_add } %>
 
   <%= button_tag 'Continue', class: 'add-vertical-margins btn btn-success' %>
 

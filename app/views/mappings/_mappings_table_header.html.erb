@@ -17,6 +17,9 @@
           <%= label_tag :http_status_410, class: 'radio-inline table-header-radio add-right-margin' do %>
             <%= radio_button_tag(:http_status, '410') %> Archive
           <% end %>
+          <%= label_tag :http_status_tag, class: 'radio-inline table-header-radio add-right-margin' do %>
+            <%= radio_button_tag(:http_status, 'tag') %> Tag
+          <% end %>
           <%= submit_tag "Edit selected", class: 'btn btn-default bold' %>
         </div>
       <% end %>
