@@ -51,7 +51,12 @@ class MappingsController < ApplicationController
 
   def update
     @mapping = @site.mappings.find(params[:id])
-    if @mapping.update_attributes(params[:mapping])
+
+    # Tags must be assigned to separately
+    @mapping.tag_list = params[:mapping].delete(:tag_list)
+    @mapping.attributes = params[:mapping]
+
+    if @mapping.save
       flash[:success] = 'Mapping saved'
       redirect_to edit_site_mapping_path(@site, @mapping)
     else

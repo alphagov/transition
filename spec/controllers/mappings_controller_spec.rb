@@ -169,6 +169,24 @@ describe MappingsController do
         end
       end
     end
+
+    context 'when an admin is trying to tag a mapping' do
+      before do
+        login_as admin_bob
+        post :update, site_id: mapping.site, id: mapping.id,
+             mapping: {
+                path: '/Needs/Canonicalization?has=some&query=parts',
+                new_url: 'http://somewhere.good',
+                tag_list: 'fEE, fI, fO'
+             }
+      end
+
+      subject(:tags_as_strings) { mapping.reload.tags.map(&:to_s) }
+
+      it 'has saved all tags as lowercase' do
+        tags_as_strings.should == ['fee', 'fi', 'fo']
+      end
+    end
   end
 
   describe '#new_multiple' do
@@ -215,6 +233,21 @@ describe MappingsController do
       it 'sets an error for new_url' do
         expected_errors = { 'new_url' => I18n.t('mappings.bulk.new_url_invalid') }
         expect(assigns(:errors)).to eq(expected_errors)
+      end
+    end
+
+    context 'when adding tags to multiple paths' do
+      before do
+        login_as admin_bob
+        post :new_multiple_confirmation, site_id: site.abbr, paths: "/a\n/b",
+             http_status: '301', new_url: 'http://gov.uk/somewhere',
+             tag_list: 'fee, fi, FO'
+      end
+
+      let(:bulk_adder) { assigns(:bulk_add) }
+
+      it 'has assigned the tag list to the bulk adder' do
+        bulk_adder.tag_list.map(&:to_s).should == %w(fee fi fo)
       end
     end
   end

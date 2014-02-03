@@ -337,7 +337,7 @@ a.list-group-item {
   .list-group-item-heading {
     color: $link-color;
   }
-  
+
   &:visited .list-group-item-heading {
     color: $link-color-visited;
   }
@@ -382,6 +382,51 @@ a.list-group-item {
 
 .highlight-orange, .highlight-pre-transition {
   background-color: $orange;
+}
+
+/* Tags
+   ========================================================================== */
+
+.tag {
+ color: $link-color;
+ padding: (2em/14) (5em/14);
+ display: inline-block;
+ border-radius: $border-radius-base;
+ border: 1px solid $link-color;
+ margin-bottom: $default-vertical-margin / 3;
+ text-transform: lowercase;
+}
+
+a.tag:focus,
+a.tag:hover {
+ background: $link-color;
+ color: #fff;
+ text-decoration: none;
+}
+
+.tag:visited {
+  color: $link-color-visited;
+  border-color: $link-color-visited;
+}
+
+a.tag:focus:visited,
+a.tag:hover:visited {
+  background-color: $link-color-visited;
+}
+
+.tag .glyphicon-remove {
+  font-size: 80%;
+  position: relative;
+  top: (1em/14);
+}
+
+.tag-list {
+  padding: 0;
+  list-style-type: none;
+}
+
+.tag-list li {
+  display: inline;
 }
 
 /* ==========================================================================

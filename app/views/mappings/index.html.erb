@@ -54,8 +54,9 @@
         <td class="<%= "mapping-type-#{mapping.type}" %>">
           <%= mapping.type.titleize %>
         </td>
-        <td>
-          <strong><%= link_to mapping.path, mapping.old_url, class: 'breakable' %></strong>
+        <td class="mapping-path">
+          <strong class="pull-left"><%= link_to mapping.path, mapping.old_url, class: 'breakable' %></strong>
+          <%= render partial: 'tags', locals: { mapping: mapping } %>
           <% if mapping.redirect? %>
             <br><span class="text-muted">redirects to</span>
             <%= link_to mapping.new_url, mapping.new_url, class: 'link-muted breakable' if mapping.new_url.present? %>

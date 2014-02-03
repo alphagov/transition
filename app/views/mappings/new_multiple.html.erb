@@ -29,7 +29,7 @@
     %>
     <% label_html = capture do %>
       Old URLs
-      <p class="text-muted normal">
+      <p class="text-muted normal add-label-margin">
         Please add one path or URL per line, eg “/about” or “http://<%= @site.default_host.hostname %>/about”.
       </p>
     <% end %>
@@ -69,6 +69,8 @@
       </dl>
     </div>
   <% end %>
+
+  <%= render 'tag_list_field' %>
 
   <%= button_tag 'Continue', class: 'add-vertical-margins btn btn-success' %>
 

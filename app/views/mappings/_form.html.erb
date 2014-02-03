@@ -79,10 +79,13 @@
               </a>
             </div>
           </div>
-        <div>
+        </div>
       </div>
     </div>
+    <hr>
   <% end %>
+
+  <%= render partial: 'tag_list_field', locals: { form: f } %>
 
   <%= f.submit 'Save mapping', class: 'add-top-margin btn btn-success' %>
 <% end %>

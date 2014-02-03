@@ -13,7 +13,7 @@ Feature: Create mappings
     And I go to create some mappings
     Then I should see "http://bis.gov.uk"
     When I make the new mapping paths "/Needs/Canonicalizing/?q=1, /a, /r, noslash" redirect to www.gov.uk/organisations/bis
-    And I submit the mappings
+    And I continue
     Then the page title should be "Confirm new mappings"
     And I should see options to ignore or overwrite the existing mappings
     And I should see that the mappings will redirect to "https://www.gov.uk/organisations/bis"
@@ -22,7 +22,7 @@ Feature: Create mappings
     And I should see "/a currently archived"
     And I should see "/r currently redirects to http://somewhere.good"
     When I save my changes
-    Then I should see "1 mapping created and 0 mappings updated"
+    Then I should see "1 mapping created. 0 mappings updated."
     And I should see "/needs/canonicalizing"
 
   Scenario: I don't have access
@@ -39,7 +39,7 @@ Feature: Create mappings
     And I visit the path /sites/bis/mappings
     And I go to create some mappings
     When I make the new mapping paths "noslash" redirect to __INVALID_URL__
-    And I submit the mappings
+    And I continue
     Then I should see "Enter at least one valid path"
     And I should see a highlighted "Old URLs" label and field
     And the "Old URLs" value should be "noslash"

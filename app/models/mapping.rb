@@ -13,6 +13,7 @@ class Mapping < ActiveRecord::Base
 
   attr_accessible :path, :site, :http_status, :new_url, :suggested_url, :archive_url
 
+  acts_as_taggable
   has_paper_trail
 
   belongs_to :site

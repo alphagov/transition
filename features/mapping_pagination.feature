@@ -43,5 +43,3 @@ Feature: Paginated mappings
     Then  I should see a table with class "mappings" containing 1 row
     And  I should see 2 as the current page
     And  I should see links top and bottom to page 1
-
-

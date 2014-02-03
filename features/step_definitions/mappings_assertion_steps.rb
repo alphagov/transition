@@ -123,3 +123,28 @@ Then(/^I should see the canonicalized paths "(.*?)"$/) do |paths|
     expect(page).to have_link(path)
   end
 end
+
+Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
+  expect(page).to have_field('Tags', with: tag_list)
+end
+
+Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|
+  within '.alert-success' do
+    expect(page).to have_content(
+      %(0 mappings created and 3 mappings updated. All tagged with "#{tag_list}")
+    )
+  end
+end
+
+Then(/^the mappings should all have the tags "([^"]*)"$/) do |tag_list|
+  expect(page).to have_selector('.tag-list', count: @site.mappings.count)
+
+  expected_tags = tag_list.split(',').map(&:strip)
+  page.all('.tag-list').each do |mapping_tags_list|
+    expected_tags.each do |tag|
+      expect(mapping_tags_list).to have_selector('.tag', text: tag)
+    end
+  end
+end
+
+
