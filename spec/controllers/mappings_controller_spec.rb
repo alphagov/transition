@@ -471,21 +471,6 @@ describe MappingsController do
         expect(site.mappings.where(http_status: '301').count).to be(0)
       end
     end
-
-    context 'when tagging existing mappings' do
-      before do
-        login_as admin_bob
-        mapping_ids = [ mapping_a.id, mapping_b.id ]
-        post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
-             http_status: 'tag', tag_list: 'fee, fi, FO'
-      end
-
-      it 'tags selected mappings' do
-        mapping_a.reload.tag_list.should =~ %w(fee fi fo fum)
-        mapping_b.reload.tag_list.should =~ %w(fee fi fo fum)
-        mapping_c.reload.tag_list.should =~ %w(fum)
-      end
-    end
   end
 
   describe 'rejecting an invalid or missing authenticity (CSRF) token' do

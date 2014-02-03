@@ -1,3 +1,5 @@
+require 'set'
+
 module View
   module Mappings
     ##
@@ -13,7 +15,21 @@ module View
       end
 
       def tag_list
-        params[:tag_list]
+        params[:tag_list] || common_tags.join(ActsAsTaggableOn.delimiter)
+      end
+
+      ##
+      # Returns an array of common tags from the mappings
+      def common_tags
+        # reduce by intersection of Enumerable
+        @common_tags ||= mappings.map(&:tag_list).reduce(&:&)
+      end
+
+      def tags_as_array
+        @tags_as_array ||= begin
+          test_mapping.tag_list = tag_list
+          test_mapping.tag_list
+        end
       end
 
       def update!
