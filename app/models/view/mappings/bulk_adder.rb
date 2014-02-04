@@ -4,6 +4,10 @@ module View
     # Load and process params specific to bulk adding, to avoid stuffing
     # controllers full of fields.
     class BulkAdder < BulkBase
+      def http_status
+        params[:http_status] if ['301', '410'].include?(params[:http_status])
+      end
+
       # Take either a multiline string of paths, one per line (as submitted by
       # the new_multiple form) or an array of path strings (as submitted by the
       # hidden fields on the confirmation page) and return the paths in an

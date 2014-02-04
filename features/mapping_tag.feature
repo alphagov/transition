@@ -45,7 +45,7 @@ Scenario: Bulk adding tags to existing mappings
   And mapping 3 should have the tags "fo, fum"
 
 @javascript
-Scenario: Bulk adding tags to existing mappings
+Scenario: Bulk adding tags to existing mappings (JS)
   Given I have logged in as an admin
   And a site ukba exists with these tagged mappings:
   | path  | tags             |

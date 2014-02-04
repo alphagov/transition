@@ -360,7 +360,7 @@ describe MappingsController do
       before do
         login_as admin_bob
         post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
-             http_status: 'tag', return_path: 'should_not_return'
+             operation: 'tag', return_path: 'should_not_return'
       end
 
       it 'shows the tagging page' do
@@ -382,7 +382,7 @@ describe MappingsController do
       def make_request
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
-             http_status: '301', new_url: 'http://www.example.com'
+             operation: '301', new_url: 'http://www.example.com'
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -401,7 +401,7 @@ describe MappingsController do
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         @new_url = 'http://www.example.com'
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
-             http_status: '301', new_url: @new_url,
+             operation: '301', new_url: @new_url,
              return_path: @mappings_index_with_filter
       end
 

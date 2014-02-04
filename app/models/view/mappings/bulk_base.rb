@@ -3,10 +3,6 @@ module View
     ##
     # Load and validate params used by both bulk adding and editing.
     class BulkBase < Struct.new(:site, :params, :site_mappings_path)
-      def http_status
-        params[:http_status] if ['301', '410'].include?(params[:http_status])
-      end
-
       def new_url
         params[:new_url]
       end

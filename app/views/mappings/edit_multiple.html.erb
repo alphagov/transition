@@ -1,11 +1,11 @@
-<% content_for(:page_title, "#{ http_status_name(@bulk_edit.http_status) } mappings") %>
+<% content_for(:page_title, "#{ operation_name(@bulk_edit.operation) } mappings") %>
 
 <% breadcrumb(:edit_multiple_mappings, @site) %>
 
 <div class="page-title">
   <h1>
     <span class="small"><%= @site.default_host.hostname %></span>
-    <%= http_status_name(@bulk_edit.http_status) %> mappings
+    <%= operation_name(@bulk_edit.operation) %> mappings
   </h1>
 </div>
 
@@ -14,10 +14,10 @@
              locals: { modal: false, mappings: @bulk_edit.mappings, site: @site } %>
   <%= render partial: 'edit_multiple_redirect',
              locals: { new_url: @bulk_edit.new_url,
-                       new_url_error: @new_url_error, http_status: @bulk_edit.http_status } %>
+                       new_url_error: @new_url_error, operation: @bulk_edit.operation } %>
   <%= hidden_field_tag "return_path", @bulk_edit.return_path %>
 
-  <% if @bulk_edit.http_status == 'tag' %>
+  <% if @bulk_edit.operation == 'tag' %>
     <%= render partial: 'tag_list_field', locals: { bulk_tagger: @bulk_edit } %>
   <% end %>
 

@@ -10,8 +10,12 @@ module View
         I18n.t('mappings.bulk.edit.mappings_empty') if mappings.empty?
       end
 
-      def http_status
-        super || ('tag' if params[:http_status] == 'tag')
+      def common_data
+        {}
+      end
+
+      def would_fail?
+        false
       end
 
       def tag_list

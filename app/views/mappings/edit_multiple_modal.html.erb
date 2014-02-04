@@ -4,18 +4,18 @@
       <header class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3 class="modal-title">
-          <%= http_status_name(@bulk_edit.http_status) %> mappings
+          <%= operation_name(@bulk_edit.operation) %> mappings
         </h3>
       </header>
       <div class="modal-body remove-bottom-padding">
-        <% if @bulk_edit.http_status == 'tag' %>
+        <% if @bulk_edit.operation == 'tag' %>
           <%= render partial: 'tag_list_field', locals: { bulk_tagger: @bulk_edit } %>
         <% end %>
         <%= render partial: 'edit_multiple_redirect',
                    locals: {
                            new_url: @bulk_edit.new_url,
                            new_url_error: @new_url_error,
-                           http_status: @bulk_edit.http_status } %>
+                           operation: @bulk_edit.operation } %>
         <%= render partial: 'edit_multiple_table',
                    locals: { modal: true,
                              mappings: @bulk_edit.mappings,

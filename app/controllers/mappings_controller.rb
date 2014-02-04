@@ -123,7 +123,7 @@ private
   end
 
   def bulk_editor_class
-    params[:http_status] == 'tag' ? View::Mappings::BulkTagger : View::Mappings::BulkEditor
+    params[:operation] == 'tag' ? View::Mappings::BulkTagger : View::Mappings::BulkEditor
   end
 
   def find_site

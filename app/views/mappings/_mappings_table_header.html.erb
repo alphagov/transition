@@ -11,14 +11,14 @@
       <% unless footer %>
         <%= hidden_field_tag "return_path", request.fullpath %>
         <div class="if-js-hide">
-          <%= label_tag :http_status_301, class: 'radio-inline table-header-radio' do %>
-            <%= radio_button_tag(:http_status, '301', selected = true) %> Redirect
+          <%= label_tag :operation_301, class: 'radio-inline table-header-radio' do %>
+            <%= radio_button_tag(:operation, '301', selected = true) %> Redirect
           <% end %>
-          <%= label_tag :http_status_410, class: 'radio-inline table-header-radio add-right-margin' do %>
-            <%= radio_button_tag(:http_status, '410') %> Archive
+          <%= label_tag :operation_410, class: 'radio-inline table-header-radio add-right-margin' do %>
+            <%= radio_button_tag(:operation, '410') %> Archive
           <% end %>
-          <%= label_tag :http_status_tag, class: 'radio-inline table-header-radio add-right-margin' do %>
-            <%= radio_button_tag(:http_status, 'tag') %> Tag
+          <%= label_tag :operation_tag, class: 'radio-inline table-header-radio add-right-margin' do %>
+            <%= radio_button_tag(:operation, 'tag') %> Tag
           <% end %>
           <%= submit_tag "Edit selected", class: 'btn btn-default bold' %>
         </div>
