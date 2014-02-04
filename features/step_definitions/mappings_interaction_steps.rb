@@ -87,8 +87,13 @@ When(/^I select the first two mappings and go to tag them$/) do
   visit site_mappings_path(@site)
 
   step 'I select the first two mappings'
-  choose 'Tag'
-  click_button 'Edit selected'
+
+  if @_javascript
+    first(:link, 'Tag').click
+  else
+    choose 'Tag'
+    click_button 'Edit selected'
+  end
 end
 
 When(/^I tag the mappings "([^"]*)"$/) do |tag_list|

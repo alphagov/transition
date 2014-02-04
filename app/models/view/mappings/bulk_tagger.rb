@@ -15,7 +15,7 @@ module View
       end
 
       def tag_list
-        params[:tag_list] || common_tags.join(ActsAsTaggableOn.delimiter)
+        params[:tag_list] || common_tags.join(ActsAsTaggableOn.delimiter + ' ')
       end
 
       ##

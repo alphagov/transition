@@ -8,6 +8,9 @@
         </h3>
       </header>
       <div class="modal-body remove-bottom-padding">
+        <% if @bulk_edit.http_status == 'tag' %>
+          <%= render partial: 'tag_list_field', locals: { bulk_tagger: @bulk_edit } %>
+        <% end %>
         <%= render partial: 'edit_multiple_redirect',
                    locals: {
                            new_url: @bulk_edit.new_url,
