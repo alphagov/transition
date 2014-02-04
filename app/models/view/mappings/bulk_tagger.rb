@@ -10,10 +10,6 @@ module View
         I18n.t('mappings.bulk.edit.mappings_empty') if mappings.empty?
       end
 
-      def common_data
-        {}
-      end
-
       def would_fail?
         false
       end
