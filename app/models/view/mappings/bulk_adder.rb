@@ -5,7 +5,7 @@ module View
     # controllers full of fields.
     class BulkAdder < BulkBase
       def http_status
-        params[:http_status] if ['301', '410'].include?(params[:http_status])
+        params[:http_status] if Mapping::TYPES.keys.include?(params[:http_status])
       end
 
       # Take either a multiline string of paths, one per line (as submitted by

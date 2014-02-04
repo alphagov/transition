@@ -5,7 +5,7 @@ module View
     # controllers full of fields.
     class BulkEditor < BulkBase
       def http_status
-        operation if ['301', '410'].include?(operation)
+        operation if Mapping::TYPES.keys.include?(operation)
       end
 
       def operation
