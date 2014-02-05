@@ -37,8 +37,7 @@ Scenario: Bulk adding tags to existing mappings
   When I select the first two mappings and go to tag them
   Then the page title should be "Tag mappings"
   And I should see only the common tags "fum"
-  When I tag the mappings "fee, fo"
-  # I have deleted fum
+  When I delete "fum" and tag the mappings "fee, fo"
   Then I should see that 2 were tagged "fee, fo"
   And mapping 1 should have the tags "fee, fo, fiddle" but not "fum"
   And mapping 2 should have the tags "fee, fi, fo" but not "fum"

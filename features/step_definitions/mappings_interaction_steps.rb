@@ -96,6 +96,10 @@ When(/^I select the first two mappings and go to tag them$/) do
   end
 end
 
+When(/^I delete "(?:[^"]*)" and tag the mappings "([^"]*)"$/) do |tag_list|
+  step "I tag the mappings \"#{tag_list}\""
+end
+
 When(/^I tag the mappings "([^"]*)"$/) do |tag_list|
   fill_in 'Tags', with: tag_list
   click_button 'Save'
