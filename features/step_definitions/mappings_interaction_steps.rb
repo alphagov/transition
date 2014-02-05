@@ -62,7 +62,6 @@ When(/^I enter a new URL to redirect to$/) do
   fill_in 'Redirect to', with: 'https://www.gov.uk'
 end
 
-
 When(/^I edit that mapping$/) do
   visit edit_site_mapping_path(@site, @mapping) 
 end
@@ -82,4 +81,26 @@ end
 
 When(/^I choose "([^"]*)"$/) do |radio_label|
   choose(radio_label)
+end
+
+When(/^I select the first two mappings and go to tag them$/) do
+  visit site_mappings_path(@site)
+
+  step 'I select the first two mappings'
+
+  if @_javascript
+    first(:link, 'Tag').click
+  else
+    choose 'Tag'
+    click_button 'Edit selected'
+  end
+end
+
+When(/^I delete "(?:[^"]*)" and tag the mappings "([^"]*)"$/) do |tag_list|
+  step "I tag the mappings \"#{tag_list}\""
+end
+
+When(/^I tag the mappings "([^"]*)"$/) do |tag_list|
+  fill_in 'Tags', with: tag_list
+  click_button 'Save'
 end

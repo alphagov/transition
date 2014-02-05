@@ -353,12 +353,26 @@ describe MappingsController do
         end
       end
     end
+
+    context 'when requesting tagging for selected existing mappings with no JS' do
+      let(:mapping_ids) { [mapping_a.id, mapping_b.id] }
+
+      before do
+        login_as admin_bob
+        post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
+             operation: 'tag', return_path: 'should_not_return'
+      end
+
+      it 'shows the tagging page' do
+        expect(response).to have_rendered 'mappings/edit_multiple'
+      end
+    end
   end
 
   describe '#update_multiple' do
-    let!(:mapping_a) { create :mapping, path: '/a', site: site }
-    let!(:mapping_b) { create :mapping, path: '/b', site: site }
-    let!(:mapping_c) { create :mapping, path: '/c', site: site }
+    let!(:mapping_a) { create :mapping, path: '/a', site: site, tag_list: 'fum' }
+    let!(:mapping_b) { create :mapping, path: '/b', site: site, tag_list: 'fum' }
+    let!(:mapping_c) { create :mapping, path: '/c', site: site, tag_list: 'fum' }
 
     before do
       @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
@@ -368,7 +382,7 @@ describe MappingsController do
       def make_request
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
-             http_status: '301', new_url: 'http://www.example.com'
+             operation: '301', new_url: 'http://www.example.com'
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -387,7 +401,7 @@ describe MappingsController do
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         @new_url = 'http://www.example.com'
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
-             http_status: '301', new_url: @new_url,
+             operation: '301', new_url: @new_url,
              return_path: @mappings_index_with_filter
       end
 

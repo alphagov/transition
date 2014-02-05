@@ -147,4 +147,33 @@ Then(/^the mappings should all have the tags "([^"]*)"$/) do |tag_list|
   end
 end
 
+Then(/^I should see that (\d+) were tagged "([^"]*)"$/) do |n, tag_list|
+  within '.alert-success' do
+    expect(page).to have_content(
+      %(#{n} mappings tagged "#{tag_list}")
+    )
+  end
+end
 
+Then(/^I should see only the common tags "([^"]*)"$/) do |tag_list|
+  expect(page).to have_field('Tags', with: tag_list)
+end
+
+Then(/^mapping (\d+) should have the tags "([^"]*)"$/) do |nth, tag_list|
+  within ".mappings tbody tr:nth-child(#{nth}) .tag-list" do
+    tag_list.split(',').map(&:strip).each do |tag|
+      expect(page).to have_selector('.tag', text:tag)
+    end
+  end
+end
+
+Then(/^mapping (\d+) should have the tags "([^"]*)" but not "([^"]*)"$/) do |nth, tag_list, without_tag_list|
+  within ".mappings tbody tr:nth-child(#{nth}) .tag-list" do
+    tag_list.split(',').map(&:strip).each do |tag|
+      expect(page).to have_selector('.tag', text:tag)
+    end
+    without_tag_list.split(',').map(&:strip).each do |without_tag|
+      expect(page).not_to have_selector('.tag', text: without_tag)
+    end
+  end
+end

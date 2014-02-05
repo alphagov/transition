@@ -92,7 +92,7 @@ class MappingsController < ApplicationController
       flash[:notice] = 'The following mappings could not be updated'
       render action: 'edit_multiple'
     else
-      flash[:success] = 'Mappings updated successfully'
+      flash[:success] = bulk_edit.success_message
       redirect_to bulk_edit.return_path
     end
   end
@@ -119,7 +119,11 @@ private
   end
 
   def bulk_edit
-    @bulk_edit ||= View::Mappings::BulkEditor.new(@site, params, site_mappings_path(@site))
+    @bulk_edit ||= bulk_editor_class.new(@site, params, site_mappings_path(@site))
+  end
+
+  def bulk_editor_class
+    params[:operation] == 'tag' ? View::Mappings::BulkTagger : View::Mappings::BulkEditor
   end
 
   def find_site

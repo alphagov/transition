@@ -65,7 +65,7 @@
     </tbody>
   </table>
 
-  <%= render 'tag_list_field' %>
+  <%= render partial: 'tag_list_field', locals: { bulk_tagger: @bulk_add } %>
 
   <%= button_tag 'Save', class: 'btn btn-success' %>
 <% end %>

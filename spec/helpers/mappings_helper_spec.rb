@@ -34,6 +34,23 @@ describe MappingsHelper do
     end
   end
 
+  describe '#operation_name' do
+    context 'operation is \'301\'' do
+      subject { helper.operation_name('301') }
+      it { should eql('Redirect') }
+    end
+
+    context 'operation is \'410\'' do
+      subject { helper.operation_name('410') }
+      it { should eql('Archive') }
+    end
+
+    context 'operation is \'tag\'' do
+      subject { helper.operation_name('tag') }
+      it { should eql('Tag') }
+    end
+  end
+
   describe '#existing_mappings_count' do
     let!(:exists_1) { create(:mapping, site: site, path: '/exists_1') }
     let!(:exists_2) { create(:mapping, site: site, path: '/exists_2') }

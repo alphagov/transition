@@ -1,5 +1,5 @@
-<%= hidden_field_tag "http_status", http_status %>
-<% if http_status == '301' %>
+<%= hidden_field_tag "operation", operation %>
+<% if operation == '301' %>
   <%= field_set_tag nil, class: 'form-group add-bottom-margin' do %>
     <% if new_url_error %>
       <div id="error_explanation" class="alert alert-danger">

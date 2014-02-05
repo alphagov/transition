@@ -4,6 +4,14 @@ module View
     # Load and process params specific to bulk editing, to avoid stuffing
     # controllers full of fields.
     class BulkEditor < BulkBase
+      def http_status
+        operation if Mapping::TYPES.keys.include?(operation)
+      end
+
+      def operation
+        params[:operation]
+      end
+
       def return_path
         @return_path ||=
           # Make sure that this looks like a path and not a full URL (which
@@ -39,6 +47,10 @@ module View
 
       def failures
         site.mappings.where(id: @failure_ids).order(:path)
+      end
+
+      def success_message
+        'Mappings updated successfully'
       end
     end
   end

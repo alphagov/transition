@@ -11,18 +11,22 @@
       <% unless footer %>
         <%= hidden_field_tag "return_path", request.fullpath %>
         <div class="if-js-hide">
-          <%= label_tag :http_status_301, class: 'radio-inline table-header-radio' do %>
-            <%= radio_button_tag(:http_status, '301', selected = true) %> Redirect
+          <%= label_tag :operation_301, class: 'radio-inline table-header-radio' do %>
+            <%= radio_button_tag(:operation, '301', selected = true) %> Redirect
           <% end %>
-          <%= label_tag :http_status_410, class: 'radio-inline table-header-radio add-right-margin' do %>
-            <%= radio_button_tag(:http_status, '410') %> Archive
+          <%= label_tag :operation_410, class: 'radio-inline table-header-radio add-right-margin' do %>
+            <%= radio_button_tag(:operation, '410') %> Archive
+          <% end %>
+          <%= label_tag :operation_tag, class: 'radio-inline table-header-radio add-right-margin' do %>
+            <%= radio_button_tag(:operation, 'tag') %> Tag
           <% end %>
           <%= submit_tag "Edit selected", class: 'btn btn-default bold' %>
         </div>
       <% end %>
       <div class="if-no-js-hide btn-group">
         <a href="#redirect-paths" class="btn btn-default js-submit-form disabled" data-type="301" data-loading-text="Loading…" title="Redirect the paths you’ve selected to a new URL">Redirect</a>
-        <a href="#archive-paths" class="btn btn-default js-submit-form disabled" data-type="410" data-loading-text="Loading…" title="Archive the paths you’ve selected">Archive </a>
+        <a href="#archive-paths" class="btn btn-default js-submit-form disabled" data-type="410" data-loading-text="Loading…" title="Archive the paths you’ve selected">Archive</a>
+        <a href="#tag-paths" class="btn btn-default js-submit-form disabled" data-type="tag" data-loading-text="Loading…" title="Tag the paths you’ve selected">Tag</a>
       </div>
     </div>
     <div class="pull-right">
