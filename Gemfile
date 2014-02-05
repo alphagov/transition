@@ -26,9 +26,9 @@ gem 'exception_notification', '2.6.1'
 gem 'logstasher', '0.4.1'
 
 group :assets do
-  gem 'sass', '3.2.8'
+  gem 'sass', '3.2.12'
   gem 'sass-rails', '3.2.6'
-  gem 'bootstrap-sass', '3.0.3.0'
+  gem 'bootstrap-sass', '3.1.0'
   gem 'uglifier', '2.0.1'
 end
 
