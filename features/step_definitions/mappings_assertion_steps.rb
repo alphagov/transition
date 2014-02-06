@@ -156,7 +156,13 @@ Then(/^I should see that (\d+) were tagged "([^"]*)"$/) do |n, tag_list|
 end
 
 Then(/^I should see only the common tags "([^"]*)"$/) do |tag_list|
-  expect(page).to have_field('Tags', with: tag_list)
+  if @_javascript
+    tag_list.split(',').map(&:strip).each do |tag|
+      expect(page).to have_selector('li.select2-search-choice', text: tag)
+    end
+  else
+    expect(page).to have_field('Tags', with: tag_list)
+  end
 end
 
 Then(/^mapping (\d+) should have the tags "([^"]*)"$/) do |nth, tag_list|
