@@ -51,5 +51,5 @@ end
 
 group :development, :test do
   gem 'rspec-rails', '2.13.2'
-  gem 'jasmine', '2.0.0.rc3'
+  gem 'jasmine', '2.0.0'
 end
