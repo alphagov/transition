@@ -15,7 +15,11 @@ module View
       end
 
       def tag_list
-        params[:tag_list] || common_tags.join(ActsAsTaggableOn.delimiter + ' ')
+        prettified_tag_list || common_tags.join(glue)
+      end
+
+      def prettified_tag_list
+        params[:tag_list].present? && params[:tag_list].split(delimiter).map(&:strip).join(glue)
       end
 
       ##
@@ -43,6 +47,15 @@ module View
       def success_message
         successes = mappings.count - @failure_ids.length
         "#{successes} #{ 'mapping'.pluralize(successes) } tagged \"#{tag_list}\""
+      end
+
+    private
+      def delimiter
+        ActsAsTaggableOn.delimiter
+      end
+
+      def glue
+        delimiter + ' '
       end
     end
   end

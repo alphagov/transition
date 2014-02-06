@@ -7,19 +7,35 @@ describe View::Mappings::BulkTagger do
     create(:mapping, site: site, tag_list: 'fi, fum, fox'),
     create(:mapping, site: site, tag_list: 'fo, fum, fox')
   ] }
+  let(:tag_list) { 'fox, fiddle' }
   let(:bulk_tagger) {
     View::Mappings::BulkTagger.new(
       site,
       {
         mapping_ids: mappings.map(&:id),
-        tag_list:    'fiddle, fox'
+        tag_list:    tag_list
       }
     )
   }
 
-  describe '#common_tags' do
-    it 'has common tags from the mappings' do
-      bulk_tagger.common_tags.should =~ %w(fum fox)
+  it 'has common tags from the mappings' do
+    bulk_tagger.common_tags.should =~ %w(fum fox)
+  end
+
+  describe '#tag_list' do
+    subject { bulk_tagger.tag_list }
+
+    context 'when the tag list is compact' do
+      let(:tag_list) { 'fox,fiddle' }
+      it { should eql('fox, fiddle') }
+    end
+    context 'when the tag list is expanded' do
+      let(:tag_list) { 'fox,    fiddle' }
+      it { should eql('fox, fiddle') }
+    end
+    context 'when the tag list is not supplied' do
+      let(:tag_list) { nil }
+      it { should eql(bulk_tagger.common_tags.join(', ')) }
     end
   end
 
