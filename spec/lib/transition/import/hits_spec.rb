@@ -46,6 +46,22 @@ describe Transition::Import::Hits do
         Hit.count.should eql(1)
       end
     end
+
+    context 'a hits row already exists with a different count', testing_before_all: true do
+      before :all do
+        create_test_hosts
+        create(:hit, host: @businesslink_host, path: '/', count: 10, http_status: '301', hit_on: '2012-10-15')
+        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/businesslink_2012-10-15.tsv')
+      end
+
+      it 'does not create a second hits row' do
+        Hit.count.should eql(1)
+      end
+
+      it 'updates the count for the existing row' do
+        Hit.first.count.should eql(21)
+      end
+    end
   end
 
   describe '.from_redirector_mask!', testing_before_all: true do

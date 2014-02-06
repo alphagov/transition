@@ -46,12 +46,13 @@ module Transition
       mySQL
 
       INSERT_FROM_STAGING = <<-mySQL
-        INSERT IGNORE INTO hits (host_id, path, path_hash, http_status, `count`, hit_on)
+        INSERT INTO hits (host_id, path, path_hash, http_status, `count`, hit_on)
         SELECT h.id, st.path, SHA1(st.path), st.http_status, st.count, st.hit_on
         FROM   hits_staging st
         INNER JOIN hosts h on h.hostname = st.hostname
         WHERE  st.count >= 10
         AND    st.path NOT IN (#{BOUNCER_PATHS.map { |path| "'" + path + "'" }.join(', ')})
+        ON DUPLICATE KEY UPDATE hits.count=st.count
       mySQL
 
       def self.from_redirector_tsv_file!(filename)
