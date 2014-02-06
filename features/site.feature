@@ -19,6 +19,7 @@ Scenario: Visit a post-transition site's page
   And I should be able to edit the site's mappings
   And I should be able to view the site's analytics
   And I should see the site's configuration including all host aliases
+  And I should see a link to the side by side browser
 
 Scenario: Visit a pre-transition site's page
   Given I have logged in as an admin
