@@ -108,3 +108,8 @@ end
   end
   click_button 'Save'
 end
+
+
+When(/^I type "([^"]*)" in the tags box$/) do |letters|
+  fill_in 'Tags', with: letters
+end

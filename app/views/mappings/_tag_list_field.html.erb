@@ -25,5 +25,5 @@
 <% end %>
 
 <script>
-  GOVUK.Tagging.ready({autocompleteWith: []});
+  GOVUK.Tagging.ready({autocompleteWith: <%= most_used_tags(limit: 200) %>});
 </script>
