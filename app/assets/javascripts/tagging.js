@@ -9,7 +9,7 @@
 
   root.GOVUK.Tagging = {
     ready: function () {
-      $('#tag_list, #mapping_tag_list').select2({
+      $('.js-tag-list').select2({
         tags: true,
         initSelection: function (input, setTags) {
           setTags(

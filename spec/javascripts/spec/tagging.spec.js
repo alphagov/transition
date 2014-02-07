@@ -7,7 +7,7 @@ describe('A tagging selector', function() {
   describe('when wrapping an input with comma-separated tags', function() {
 
     beforeEach(function() {
-      input = '<input id="tag_list" value="tag 1, tag 2, tag_3">';
+      input = '<input class="js-tag-list" value="tag 1, tag 2, tag_3">';
       container = $('<div>' + input + '</div>');
 
       $('body').append(container);
