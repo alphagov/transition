@@ -11,6 +11,7 @@
     ready: function () {
       $('.js-tag-list').select2({
         tags: true,
+        tokenSeparators: [','],
         initSelection: function (input, setTags) {
           setTags(
             $(input.val().split(",")).map(function () {
