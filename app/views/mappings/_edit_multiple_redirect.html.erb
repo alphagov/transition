@@ -2,11 +2,9 @@
 <% if operation == '301' %>
   <%= field_set_tag nil, class: 'form-group add-bottom-margin' do %>
     <% if new_url_error %>
-      <div id="error_explanation" class="alert alert-danger">
-        <ul>
-          <li><%= new_url_error %></li>
-        </ul>
-      </div>
+      <p class="alert alert-danger">
+        <%= new_url_error %>
+      </p>
     <% end %>
     <div <% if new_url_error %>class="field_with_errors"<% end %> >
       <%= label_tag(:new_url, 'Redirect to') %>
