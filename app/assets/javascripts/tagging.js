@@ -8,9 +8,9 @@
   }
 
   root.GOVUK.Tagging = {
-    ready: function () {
+    ready: function(options) {
       $('.js-tag-list').select2({
-        tags: true,
+        tags: options['autocompleteWith'],
         tokenSeparators: [','],
         initSelection: function (input, setTags) {
           setTags(
