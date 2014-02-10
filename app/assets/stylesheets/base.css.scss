@@ -377,9 +377,12 @@ a.list-group-item {
 /* Tags
    ========================================================================== */
 
+$tag-padding-top-bottom: (2em/14);
+$tag-padding-left-right: (5em/14);
+
 .tag {
  color: $link-color;
- padding: (2em/14) (5em/14);
+ padding: $tag-padding-top-bottom $tag-padding-left-right;
  display: inline-block;
  border-radius: $border-radius-base;
  border: 1px solid $link-color;
@@ -424,7 +427,7 @@ a.tag:hover:visited {
    ========================================================================== */
 
 /* Use an error style that matches bootstrap style guide
-   http://getbootstrap.com/css/#forms */
+http://getbootstrap.com/css/#forms */
 form .field_with_errors input,
 form .field_with_errors textarea {
   border-color: $state-danger-text;
@@ -433,4 +436,45 @@ form .field_with_errors textarea {
 form .field_with_errors label {
   color: $state-danger-text;
   display: block;
+}
+
+/* ==========================================================================
+   Select2 tag overrides
+   ========================================================================== */
+
+.select2-container.js-tag-list {
+  .select2-search-choice {
+    @extend .tag;       // Use what we can
+
+    background: white;  // Override what's left
+    margin-top: 5px;
+    padding: ($tag-padding-top-bottom * 3) $tag-padding-left-right !important;
+    padding-left: 1.5em !important;
+
+    .select2-search-choice-close {
+      background: none;
+      /*
+      Simulating the following without importing Other Bootstrap:
+
+      @extend .glyphicon;
+      @extend .glyphicon-remove;
+      */
+      display: inline-block;
+      font-family: 'Glyphicons Halflings';
+      font-style: normal;
+      font-weight: normal;
+      line-height: 1;
+      font-size: 0.8em;
+      color: $link-color;
+      margin-top: $tag-padding-top-bottom * 2;
+      padding-left: $tag-padding-left-right / 2;
+      padding-right: $tag-padding-left-right;
+      &:before {
+        content: "\e014";
+      }
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
 }
