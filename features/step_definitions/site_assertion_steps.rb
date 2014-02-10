@@ -64,3 +64,7 @@ Then(/^I should be able to view the site's mappings$/) do
     expect(page).to have_link('a', href: site_mappings_path(@site))
   end
 end
+
+Then(/^I should see a link to the side by side browser$/) do
+  expect(page).to have_selector('a[href*="www.attorney-general.gov.uk.side-by-side"]')
+end
