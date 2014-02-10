@@ -454,16 +454,14 @@ form .field_with_errors label {
     .select2-search-choice-close {
       background: none;
       /*
-      Simulating the following without importing Other Bootstrap:
+      Simulating the following while omitting things we'd
+      otherwise have to override:
 
       @extend .glyphicon;
       @extend .glyphicon-remove;
       */
       display: inline-block;
       font-family: 'Glyphicons Halflings';
-      font-style: normal;
-      font-weight: normal;
-      line-height: 1;
       font-size: 0.8em;
       color: $link-color;
       margin-top: $tag-padding-top-bottom * 2;
