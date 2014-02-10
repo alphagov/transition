@@ -406,13 +406,7 @@ a.tag:hover {
 }
 
 .tag:visited {
-  color: $link-color-visited;
-  border-color: $link-color-visited;
-}
-
-a.tag:focus:visited,
-a.tag:hover:visited {
-  background-color: $link-color-visited;
+  color: $link-color;
 }
 
 .tag .glyphicon-remove {
@@ -447,6 +441,10 @@ a.tag:hover:visited {
   &:hover,
   &:focus {
     text-decoration: none;
+  }
+
+  &:visited {
+    color: $link-color;
   }
 }
 
