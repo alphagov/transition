@@ -9,7 +9,23 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require_tree .
  */
- 
- @import "bootstrap";
+
+@import "bootstrap";
+@import "buttons"; // overrides bootstrap buttons
+@import "mixins";
+@import "theme";
+
+// Components
+@import "base";
+@import "breadcrumb";
+@import "pagination";
+@import "navbar";
+@import "validation_errors";
+
+// Page types
+@import "hits";
+@import "mappings";
+@import "organisations";
+@import "style";
+@import "versions";

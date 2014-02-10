@@ -1,6 +1,3 @@
-@import 'bootstrap/_variables';
-@import '_theme';
-
 /* ==========================================================================
    Base
    ========================================================================== */
@@ -257,13 +254,6 @@ thead .table-header-secondary td {
 
 .radio.table-header-radio {
   padding-top: 0;
-}
-
-/* A known issue with Bootstrap 3.0.3, warning classes
-   get overwritten by grey stripes because of specificity
-   https://github.com/twbs/bootstrap/issues/11728 */
-.table-striped > tbody > tr:nth-child(odd) > td.warning {
-  background-color: $state-warning-bg !important;
 }
 
 /* Selectable rows

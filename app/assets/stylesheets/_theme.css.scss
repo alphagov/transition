@@ -1,7 +1,7 @@
 @import 'bootstrap/_variables';
 
-$gill-sans-font-stack: "GillSans", "Gill Sans", "Helvetica Neue", Arial, sans-serif;
-$default-vertical-margin: $line-height-base * $font-size-base;
+$font-family-gill-sans: "GillSans", "Gill Sans", "Helvetica Neue", Arial, sans-serif;
+$default-vertical-margin: $line-height-computed;
 
 // Colours
 $link-color-visited       : #609; /* Purple */

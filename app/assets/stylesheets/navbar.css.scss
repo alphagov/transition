@@ -1,10 +1,7 @@
-@import 'bootstrap/_variables';
-@import '_theme';
-
 .navbar .container .navbar-brand {
   background: url("/assets/header-crown.png") 0 0.67em no-repeat;
   color: #fff;
-  font-family: $gill-sans-font-stack;
+  font-family: $font-family-gill-sans;
   font-size: 20px;
   margin-left: 0;
   padding-left: 2.3em;
