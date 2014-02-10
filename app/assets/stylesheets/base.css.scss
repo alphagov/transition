@@ -448,8 +448,10 @@ a.tag:hover {
   }
 }
 
+// Align text-input more cleanly with existing tags
 .select2-container .select2-choices .select2-search-field input {
   padding-left: 7px;
+  padding-top: 3px;
 }
 
 /* ==========================================================================
