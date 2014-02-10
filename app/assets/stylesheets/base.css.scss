@@ -380,21 +380,29 @@ a.list-group-item {
 $tag-padding-top-bottom: (2em/14);
 $tag-padding-left-right: (5em/14);
 
+%tag-foundation {
+  color: $link-color;
+  border-radius: $border-radius-base;
+  border: 1px solid $link-color;
+  text-transform: lowercase;
+}
+
+%tag-icon {
+  font-size: 80%;
+}
+
 .tag {
- color: $link-color;
- padding: $tag-padding-top-bottom $tag-padding-left-right;
- display: inline-block;
- border-radius: $border-radius-base;
- border: 1px solid $link-color;
- margin-bottom: $default-vertical-margin / 3;
- text-transform: lowercase;
+  @extend %tag-foundation;
+  padding: $tag-padding-top-bottom $tag-padding-left-right;
+  display: inline-block;
+  margin-bottom: $default-vertical-margin / 3;
 }
 
 a.tag:focus,
 a.tag:hover {
- background: $link-color;
- color: #fff;
- text-decoration: none;
+  background: $link-color;
+  color: #fff;
+  text-decoration: none;
 }
 
 .tag:visited {
@@ -408,7 +416,7 @@ a.tag:hover:visited {
 }
 
 .tag .glyphicon-remove {
-  font-size: 80%;
+  @extend %tag-icon;
   position: relative;
   top: (1em/14);
 }
@@ -420,6 +428,30 @@ a.tag:hover:visited {
 
 .tag-list li {
   display: inline;
+}
+
+/* Select2 tag overrides
+   ========================================================================== */
+
+.select2-container .select2-choices .select2-search-choice {
+  @extend %tag-foundation;
+}
+
+.select2-search-choice-close {
+  @extend .glyphicon;
+  @extend .glyphicon-remove;
+  @extend %tag-icon;
+  background-image: none;
+  top: 11px;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+.select2-container .select2-choices .select2-search-field input {
+  padding-left: 7px;
 }
 
 /* ==========================================================================
@@ -436,43 +468,4 @@ form .field_with_errors textarea {
 form .field_with_errors label {
   color: $state-danger-text;
   display: block;
-}
-
-/* ==========================================================================
-   Select2 tag overrides
-   ========================================================================== */
-
-.select2-container.js-tag-list {
-  li.select2-search-choice {
-    @extend .tag;       // Use what we can
-
-    background: white;  // Override what's left
-    margin-top: 5px;
-    padding: ($tag-padding-top-bottom * 3) $tag-padding-left-right;
-    padding-left: 1.5em;
-
-    .select2-search-choice-close {
-      background: none;
-      /*
-      Simulating the following while omitting things we'd
-      otherwise have to override:
-
-      @extend .glyphicon;
-      @extend .glyphicon-remove;
-      */
-      display: inline-block;
-      font-family: 'Glyphicons Halflings';
-      font-size: 0.8em;
-      color: $link-color;
-      margin-top: $tag-padding-top-bottom * 2;
-      padding-left: $tag-padding-left-right / 2;
-      padding-right: $tag-padding-left-right;
-      &:before {
-        content: "\e014";
-      }
-      &:hover {
-        text-decoration: none;
-      }
-    }
-  }
 }
