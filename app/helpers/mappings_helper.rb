@@ -77,12 +77,12 @@ module MappingsHelper
   end
 
   def filter_by_tag_path(tag)
-    tagged = params[:tagged].present? ? params[:tagged].split(',') : []
+    tagged = params[:tagged].present? ? params[:tagged].split(ActsAsTaggableOn.delimiter) : []
     if tagged.include?(tag)
       params.except(:page).merge(:tagged => tag)
     else
       tagged << tag
-      params.except(:page).merge(:tagged => tagged.join(','))
+      params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
     end
   end
 
