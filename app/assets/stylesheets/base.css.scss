@@ -443,13 +443,13 @@ form .field_with_errors label {
    ========================================================================== */
 
 .select2-container.js-tag-list {
-  .select2-search-choice {
+  li.select2-search-choice {
     @extend .tag;       // Use what we can
 
     background: white;  // Override what's left
     margin-top: 5px;
-    padding: ($tag-padding-top-bottom * 3) $tag-padding-left-right !important;
-    padding-left: 1.5em !important;
+    padding: ($tag-padding-top-bottom * 3) $tag-padding-left-right;
+    padding-left: 1.5em;
 
     .select2-search-choice-close {
       background: none;
