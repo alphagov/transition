@@ -22,6 +22,36 @@ describe MappingsHelper do
     end
   end
 
+  describe '#filter_by_tag_path' do
+    subject { helper.filter_by_tag_path('tag') }
+    let(:page){2}
+    let(:tag_list){''}
+    before do
+      helper.stub(:params).and_return({page: page, tagged: tag_list})
+    end
+
+    context 'without any parameters' do
+      before do
+        helper.stub(:params).and_return({})
+      end
+      it { should eql({tagged: 'tag'}) }
+    end
+
+    context 'with a page parameter' do
+      it { should eql({tagged: 'tag'}) }
+    end
+
+    context 'with existing tags' do
+      let(:tag_list){'a,b'}
+      it { should eql({tagged: 'a,b,tag'}) }
+    end
+
+    context 'with tag already present' do
+      let(:tag_list){'a,tag'}
+      it { should eql({tagged: 'tag'}) }
+    end
+  end
+
   describe '#http_status_name' do
     context 'status is \'301\'' do
       subject { helper.http_status_name('301') }

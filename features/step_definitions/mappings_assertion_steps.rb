@@ -191,3 +191,19 @@ end
 But(/^I should not see "([^"]*)" available for selection as it's already selected$/) do |tag|
   expect(page).not_to have_selector('.select2-results .select2-result-label', text: tag)
 end
+
+Then(/^I should see mappings tagged with "fum"$/) do
+  steps %{
+    And I should see "/1"
+    And I should see "/2"
+    But I should not see "/3"
+  }
+end
+
+Then(/^I should see mappings tagged with "fum" and "fiddle"$/) do
+  steps %{
+    And I should see "/1"
+    But I should not see "/2"
+    And I should not see "/3"
+  }
+end

@@ -43,6 +43,10 @@ class MappingsController < ApplicationController
     else
       @mappings.filtered_by_path(@path_contains)
     end
+
+    if params[:tagged]
+      @mappings = @mappings.tagged_with(params[:tagged])
+    end
   end
 
   def edit

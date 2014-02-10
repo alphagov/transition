@@ -2,7 +2,9 @@
   <span class="rm">Tagged with:</span>
   <ul class="tag-list remove-bottom-margin pull-right">
     <% mapping.tag_list.each do |tag| %>
-      <li class="tag"><%= tag %></li>
+      <li>
+        <%= link_to tag, filter_by_tag_path(tag), class: 'tag' %>
+      </li>
     <% end %>
   </ul>
 <% end %>

@@ -6,6 +6,10 @@ When(/^I click the first (?:link|tab)(?: called)? "([^"]+)"$/) do |link_title|
   first(:link, link_title).click
 end
 
+When(/^I click the first tag(?: called)? "([^"]+)"$/) do |tag|
+  page.find('a.tag', text: tag, :match => :first).click
+end
+
 When(/^I click the (?:link|tab)(?: called)? "([^"]+)" within "([^"]+)"$/) do |link_title, selector|
   within selector do
     click_link link_title

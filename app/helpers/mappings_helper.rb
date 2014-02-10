@@ -75,4 +75,15 @@ module MappingsHelper
   def existing_mappings_count
     @bulk_add.existing_mappings.size
   end
+
+  def filter_by_tag_path(tag)
+    tagged = params[:tagged].present? ? params[:tagged].split(',') : []
+    if tagged.include?(tag)
+      params.except(:page).merge(:tagged => tag)
+    else
+      tagged << tag
+      params.except(:page).merge(:tagged => tagged.join(','))
+    end
+  end
+
 end
