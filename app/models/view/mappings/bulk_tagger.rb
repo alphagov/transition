@@ -19,7 +19,7 @@ module View
       end
 
       def prettified_tag_list
-        params[:tag_list].present? && params[:tag_list].split(delimiter).map(&:strip).join(glue)
+        params[:tag_list] && params[:tag_list].split(delimiter).map(&:strip).join(glue)
       end
 
       ##
