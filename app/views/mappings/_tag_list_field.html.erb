@@ -1,3 +1,5 @@
+<% modal ||= false %>
+
 <%= field_set_tag nil, class: 'form-group' do %>
   <legend class="rm">
     Tagging
@@ -14,7 +16,7 @@
     <%= label_tag :tag_list, tag_list_label %>
   <% end %>
   <div class="row">
-    <div class="col-md-8">
+    <div class="<%= modal ? 'col-md-12' : 'col-md-8' %>">
       <% if defined? form %>
         <%= form.text_field :tag_list, class: 'form-control js-tag-list' %>
       <% else %>
