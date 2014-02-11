@@ -11,10 +11,10 @@ module SitesHelper
     should_have_launched = Date.today > site.launch_date
     small_text = content_tag(
       :div,
-      if should_have_launched
-        site.transition_status == :pre_transition ?
-          'overdue' :
+      if site.transition_status == :live
           'since transition'
+      elsif should_have_launched && site.transition_status == :pre_transition
+          'overdue'
       else
         'until transition'
       end

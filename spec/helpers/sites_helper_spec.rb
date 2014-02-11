@@ -42,6 +42,22 @@ describe SitesHelper do
       it { should include('since transition')}
     end
 
+    context 'when launching later today' do
+      let(:launch_date) { Date.new(2013, 10, 31) }
+      let(:transition_status) { :pre_transition }
+
+      it { should include('0 days')}
+      it { should include('until transition')}
+    end
+
+    context 'when launched earlier today' do
+      let(:launch_date) { Date.new(2013, 10, 31) }
+      let(:transition_status) { :live }
+
+      it { should include('0 days')}
+      it { should include('since transition')}
+    end
+
     context 'when launching tomorrow' do
       let(:launch_date) { Date.new(2013, 11, 1) }
       let(:transition_status) { :pre_transition }
