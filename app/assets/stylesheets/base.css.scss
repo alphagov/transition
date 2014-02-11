@@ -377,35 +377,40 @@ a.list-group-item {
 /* Tags
    ========================================================================== */
 
+$tag-padding-top-bottom: (2em/14);
+$tag-padding-left-right: (5em/14);
+
+%tag-foundation {
+  color: $link-color;
+  border-radius: $border-radius-base;
+  border: 1px solid $link-color;
+  text-transform: lowercase;
+}
+
+%tag-icon {
+  font-size: 80%;
+}
+
 .tag {
- color: $link-color;
- padding: (2em/14) (5em/14);
- display: inline-block;
- border-radius: $border-radius-base;
- border: 1px solid $link-color;
- margin-bottom: $default-vertical-margin / 3;
- text-transform: lowercase;
+  @extend %tag-foundation;
+  padding: $tag-padding-top-bottom $tag-padding-left-right;
+  display: inline-block;
+  margin-bottom: $default-vertical-margin / 3;
 }
 
 a.tag:focus,
 a.tag:hover {
- background: $link-color;
- color: #fff;
- text-decoration: none;
+  background: $link-color;
+  color: #fff;
+  text-decoration: none;
 }
 
 .tag:visited {
-  color: $link-color-visited;
-  border-color: $link-color-visited;
-}
-
-a.tag:focus:visited,
-a.tag:hover:visited {
-  background-color: $link-color-visited;
+  color: $link-color;
 }
 
 .tag .glyphicon-remove {
-  font-size: 80%;
+  @extend %tag-icon;
   position: relative;
   top: (1em/14);
 }
@@ -419,12 +424,42 @@ a.tag:hover:visited {
   display: inline;
 }
 
+/* Select2 tag overrides
+   ========================================================================== */
+
+.select2-container .select2-choices .select2-search-choice {
+  @extend %tag-foundation;
+}
+
+.select2-search-choice-close {
+  @extend .glyphicon;
+  @extend .glyphicon-remove;
+  @extend %tag-icon;
+  background-image: none;
+  top: 11px;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+
+  &:visited {
+    color: $link-color;
+  }
+}
+
+// Align text-input more cleanly with existing tags
+.select2-container .select2-choices .select2-search-field input {
+  padding-left: 7px;
+  padding-top: 3px;
+}
+
 /* ==========================================================================
    Forms
    ========================================================================== */
 
 /* Use an error style that matches bootstrap style guide
-   http://getbootstrap.com/css/#forms */
+http://getbootstrap.com/css/#forms */
 form .field_with_errors input,
 form .field_with_errors textarea {
   border-color: $state-danger-text;

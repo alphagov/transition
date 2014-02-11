@@ -100,7 +100,16 @@ When(/^I delete "(?:[^"]*)" and tag the mappings "([^"]*)"$/) do |tag_list|
   step "I tag the mappings \"#{tag_list}\""
 end
 
-When(/^I tag the mappings "([^"]*)"$/) do |tag_list|
-  fill_in 'Tags', with: tag_list
+ When(/^I tag the mappings "([^"]*)"$/) do |tag_list|
+  if @_javascript
+    find(:xpath, '//input[contains(@class, "select2-offscreen")]').set(tag_list)
+  else
+    fill_in 'Tags', with: tag_list
+  end
   click_button 'Save'
+end
+
+
+When(/^I type "([^"]*)" in the tags box$/) do |letters|
+  fill_in 'Tags', with: letters
 end

@@ -9,13 +9,13 @@
       </header>
       <div class="modal-body remove-bottom-padding">
         <% if @bulk_edit.operation == 'tag' %>
-          <%= render partial: 'tag_list_field', locals: { bulk_tagger: @bulk_edit } %>
+          <%= render partial: 'tag_list_field',
+                     locals: { bulk_tagger: @bulk_edit, modal: true } %>
         <% end %>
         <%= render partial: 'edit_multiple_redirect',
-                   locals: {
-                           new_url: @bulk_edit.new_url,
-                           new_url_error: @new_url_error,
-                           operation: @bulk_edit.operation } %>
+                   locals: { new_url: @bulk_edit.new_url,
+                             new_url_error: @new_url_error,
+                             operation: @bulk_edit.operation } %>
         <%= render partial: 'edit_multiple_table',
                    locals: { modal: true,
                              mappings: @bulk_edit.mappings,
