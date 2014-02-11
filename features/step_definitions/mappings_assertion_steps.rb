@@ -193,8 +193,18 @@ But(/^I should not see "([^"]*)" available for selection as it's already selecte
 end
 
 Then(/^I should see the highlighted tags? "([^"]*)"$/) do |tag_list|
-  tag_list.split(',').map(&:strip).each do |tag|
-    expect(page).to have_selector('.tag-active', text:tag)
+  within ".mappings tbody tr:first-child .tag-list" do
+    tag_list.split(',').map(&:strip).each do |tag|
+      expect(page).to have_selector('.tag-active', text:tag)
+    end
+  end
+end
+
+Then(/^I should see a link to remove the tags? "([^"]*)"$/) do |tag_list|
+  within ".filtered-tags" do
+    tag_list.split(',').map(&:strip).each do |tag|
+      expect(page).to have_selector('.tag', text:tag)
+    end
   end
 end
 

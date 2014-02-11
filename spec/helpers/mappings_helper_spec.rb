@@ -52,6 +52,36 @@ describe MappingsHelper do
     end
   end
 
+  describe '#remove_tag_from_filter_path' do
+    subject { helper.remove_tag_from_filter_path('tag') }
+    let(:page){2}
+    let(:tag_list){''}
+    before do
+      helper.stub(:params).and_return({page: page, tagged: tag_list})
+    end
+
+    context 'without any parameters' do
+      before do
+        helper.stub(:params).and_return({})
+      end
+      it { should eql({}) }
+    end
+
+    context 'with a page parameter' do
+      it { should eql({}) }
+    end
+
+    context 'with tag present' do
+      let(:tag_list){'a,tag'}
+      it { should eql({tagged: 'a'}) }
+    end
+
+    context 'with only tag' do
+      let(:tag_list){'tag'}
+      it { should eql({}) }
+    end
+  end
+
   describe '#http_status_name' do
     context 'status is \'301\'' do
       subject { helper.http_status_name('301') }

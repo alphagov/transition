@@ -44,7 +44,7 @@ class MappingsController < ApplicationController
       @mappings.filtered_by_path(@path_contains)
     end
 
-    if params[:tagged]
+    if params[:tagged].present?
       @mappings = @mappings.tagged_with(params[:tagged])
     end
   end

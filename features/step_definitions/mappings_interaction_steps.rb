@@ -87,6 +87,10 @@ When(/^I choose "([^"]*)"$/) do |radio_label|
   choose(radio_label)
 end
 
+When(/^I remove the tag "([^"]*)"$/) do |tag|
+  page.find('.filtered-tags a', text: tag).click
+end
+
 When(/^I select the first two mappings and go to tag them$/) do
   visit site_mappings_path(@site)
 
