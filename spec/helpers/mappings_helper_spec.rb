@@ -48,7 +48,7 @@ describe MappingsHelper do
 
     context 'with tag already present' do
       let(:tag_list){'a,tag'}
-      it { should eql({tagged: 'tag'}) }
+      it { should eql({tagged: 'a,tag'}) }
     end
   end
 

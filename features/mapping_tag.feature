@@ -88,5 +88,7 @@ Scenario: Filtering mappings by tag
   When I visit the site's mappings
   And I click the first tag "fum"
   Then I should see mappings tagged with "fum"
+  And I should see the highlighted tag "fum"
   When I click the first tag "fiddle"
   Then I should see mappings tagged with "fum" and "fiddle"
+  And I should see the highlighted tags "fum, fiddle"

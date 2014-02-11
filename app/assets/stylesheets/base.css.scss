@@ -398,6 +398,7 @@ $tag-padding-left-right: (5em/14);
   margin-bottom: $default-vertical-margin / 3;
 }
 
+.tag-active,
 a.tag:focus,
 a.tag:hover {
   background: $link-color;

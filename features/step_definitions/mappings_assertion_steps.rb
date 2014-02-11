@@ -192,6 +192,12 @@ But(/^I should not see "([^"]*)" available for selection as it's already selecte
   expect(page).not_to have_selector('.select2-results .select2-result-label', text: tag)
 end
 
+Then(/^I should see the highlighted tags? "([^"]*)"$/) do |tag_list|
+  tag_list.split(',').map(&:strip).each do |tag|
+    expect(page).to have_selector('.tag-active', text:tag)
+  end
+end
+
 Then(/^I should see mappings tagged with "fum"$/) do
   steps %{
     And I should see "/1"

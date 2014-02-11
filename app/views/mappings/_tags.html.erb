@@ -3,7 +3,11 @@
   <ul class="tag-list remove-bottom-margin pull-right">
     <% mapping.tag_list.each do |tag| %>
       <li>
-        <%= link_to tag, filter_by_tag_path(tag), class: 'tag' %>
+        <% if filtered_by_tag?(tag) %>
+          <span class="tag tag-active"><%= tag %></span>
+        <% else %>
+          <%= link_to tag, filter_by_tag_path(tag), class: 'tag' %>
+        <% end %>
       </li>
     <% end %>
   </ul>

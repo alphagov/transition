@@ -76,10 +76,18 @@ module MappingsHelper
     @bulk_add.existing_mappings.size
   end
 
+  def filtered_by_tag?(tag)
+    filtered_by_tags.include?(tag)
+  end
+
+  def filtered_by_tags
+    params[:tagged].present? ? params[:tagged].split(ActsAsTaggableOn.delimiter) : []
+  end
+
   def filter_by_tag_path(tag)
-    tagged = params[:tagged].present? ? params[:tagged].split(ActsAsTaggableOn.delimiter) : []
+    tagged = filtered_by_tags
     if tagged.include?(tag)
-      params.except(:page).merge(:tagged => tag)
+      params.except(:page)
     else
       tagged << tag
       params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
