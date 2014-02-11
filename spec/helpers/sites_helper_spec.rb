@@ -68,5 +68,21 @@ describe SitesHelper do
       it { should include('30 days') }
       it { should include('overdue') }
     end
+
+    context 'when the site\'s status is indeterminate' do
+      context 'when launching tomorrow' do
+        let(:launch_date) { Date.new(2013, 11, 1) }
+        let(:transition_status) { :indeterminate }
+        it { should include('1 day') }
+        it { should include('until transition') }
+      end
+
+      context 'when launched yesterday' do
+        let(:launch_date) { Date.new(2013, 10, 30) }
+        let(:transition_status) { :indeterminate }
+        it { should include('1 day')}
+        it { should include('since transition')}
+      end
+    end
   end
 end
