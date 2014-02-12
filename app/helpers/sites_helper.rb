@@ -29,8 +29,4 @@ module SitesHelper
   def days_before_or_after_launch(site)
     (site.launch_date - DateTime.now.midnight.utc).to_i.abs
   end
-
-  def mappings_edit_or_view
-    current_user.can_edit?(@site.organisation) ? 'Edit' : 'View'
-  end
 end
