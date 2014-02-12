@@ -1,6 +1,10 @@
 <% content_for(:page_title, "#{@site.default_host.hostname} Mappings") %>
 
-<% breadcrumb(:mappings, @site) %>
+<% if filtered_by_tags? || @path_contains.present? %>
+  <% breadcrumb(:filtered_mappings, @site) %>
+<% else %>
+  <% breadcrumb(:mappings, @site) %>
+<% end %>
 
 <div class="page-title-with-border">
   <h1>
