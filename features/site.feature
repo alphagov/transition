@@ -31,6 +31,17 @@ Scenario: Visit a pre-transition site's page
   And I should see a big number "2 days since transition"
   And I should see the date of the site's transition
 
+Scenario: Mappings by tag
+  Given I have logged in as an admin
+  And a site ukba exists with these tagged mappings:
+  | path  | tags                          |
+  | /1    | 1, 2, 3, 4, 5, 6, 7, 8 ,9, 10 |
+  | /2    | 1, 2, 3, 4, 5, 6, 7, 8 ,9, 10 |
+  | /3    | 12, 13, 14                    |
+  When I visit this site page
+  Then I should see "Mappings by tag"
+  And I should see the top 10 most used tags "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"
+
 Scenario: I belong to a different organisation
   Given I have logged in as a member of DCLG
   And www.attorney-general.gov.uk site with abbr ago launched on 13/12/12 with the following aliases:

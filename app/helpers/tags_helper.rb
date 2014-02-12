@@ -12,4 +12,10 @@ module TagsHelper
   def most_used_tags_json(options = {})
     most_used_tags(options).to_json.html_safe
   end
+
+  def most_used_tags_for_site(site, options = {})
+    options.merge!(order: 'count desc')
+    site.mappings.tag_counts_on(:tags, options).map(&:name)
+  end
+
 end

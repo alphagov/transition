@@ -316,9 +316,12 @@ thead .table-header-secondary td {
   font-weight: bold;
 }
 
-a.list-group-item {
+.list-group-item {
   padding-top:    $default-vertical-margin;
   padding-bottom: $default-vertical-margin;
+}
+
+a.list-group-item {
 
   &:hover .list-group-item-heading {
     text-decoration: underline;
@@ -326,10 +329,6 @@ a.list-group-item {
 
   .list-group-item-heading {
     color: $link-color;
-  }
-
-  &:visited .list-group-item-heading {
-    color: $link-color-visited;
   }
 
 }

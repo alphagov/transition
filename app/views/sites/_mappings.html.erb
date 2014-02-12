@@ -15,5 +15,21 @@
         <h4 class="list-group-item-heading">Add mappings</h4>
       <% end %>
     <% end %>
+    <% most_used_tags = most_used_tags_for_site(@site, limit: 10) %>
+    <% if most_used_tags.any? %>
+      <div class="list-group-item">
+        <h4 class="list-group-item-heading">Mappings by tag</h4>
+        <div class="list-group-item-text">
+          <p class="text-muted add-bottom-margin">Tags used for grouping <%= @site.default_host.hostname %> mappings</p>
+          <ul class="tag-list remove-bottom-margin">
+            <% most_used_tags.each do |tag| %>
+              <li>
+                <%= link_to tag, site_mappings_path(@site, tagged: tag), class: 'tag' %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
