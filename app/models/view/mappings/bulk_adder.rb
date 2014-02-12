@@ -44,7 +44,7 @@ module View
       def site_has_hosts?
         begin
           hosts = raw_hosts
-        rescue URI::InvalidURIError
+        rescue Addressable::URI::InvalidURIError
           return false
         end
         hosts.empty? || hosts.size == site.hosts.where(hostname: hosts).size
