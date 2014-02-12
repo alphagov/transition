@@ -137,10 +137,10 @@ describe View::Mappings::BulkAdder do
       )}
     end
 
-    describe '< and > characters are encoded in paths' do
+    describe '< and > characters in paths don\'t cause an exception' do
       let(:paths_input) { "/>text<" }
 
-      it { should eql(["/%3etext%3c"]) }
+      it { should eql(["/>text<"]) }
     end
   end
 

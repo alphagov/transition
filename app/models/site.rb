@@ -41,7 +41,11 @@ class Site < ActiveRecord::Base
       url = 'http://www.example.com' + path_or_url
     end
 
-    bluri = BLURI(url).canonicalize!(allow_query: query_params.split(":"))
+    begin
+      bluri = BLURI(url).canonicalize!(allow_query: query_params.split(":"))
+    rescue Addressable::URI::InvalidURIError
+      return false
+    end
     path = bluri.path
     bluri.query ? (path + '?' + bluri.query) : path
   end

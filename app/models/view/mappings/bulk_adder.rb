@@ -24,7 +24,7 @@ module View
 
       def raw_hosts
         hosts = raw_paths.select {|p| p.start_with?('http')}.map do |path|
-          uri = URI.parse(encode_url_characters(path))
+          uri = URI::BLURI.parse(path)
           uri.host
         end
         hosts.uniq
@@ -38,11 +38,7 @@ module View
       end
 
       def canonical_paths
-        @canonical_paths ||= raw_paths.map { |p| site.canonical_path(encode_url_characters(p)) }.select(&:present?).uniq
-      end
-
-      def encode_url_characters(path)
-        path.gsub("<", "%3C").gsub(">", "%3E")
+        @canonical_paths ||= raw_paths.map { |p| site.canonical_path(p) }.select(&:present?).uniq
       end
 
       def site_has_hosts?
