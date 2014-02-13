@@ -4,7 +4,9 @@
     <%= link_to site_mappings_path(@site), class: 'list-group-item' do %>
       <h4 class="list-group-item-heading"><%= mappings_edit_or_view %> mappings</h4>
       <p class="list-group-item-text text-muted">
-        <strong><%= pluralize(number_with_delimiter(@site.mappings.count), 'path') %></strong> from <%= @site.default_host.hostname %>.
+        <strong><%= pluralize(number_with_delimiter(@site.mappings.count), 'path') %></strong> &mdash;
+        <%= pluralize(number_with_delimiter(@site.mappings.redirects.count), 'redirect') %> and
+        <%= pluralize(number_with_delimiter(@site.mappings.archives.count), 'archive') %>
       </p>
     <% end %>
 
