@@ -4,6 +4,10 @@ When(/^I go to create some mappings$/) do
   }
 end
 
+When(/^I visit the site\'s mappings$/) do
+  visit site_mappings_path(@site)
+end
+
 When(/^I make the mapping a redirect to (.*)$/) do |new_url|
   select 'Redirect', from: 'Type'
   fill_in 'Redirects to', with: new_url
@@ -81,6 +85,10 @@ end
 
 When(/^I choose "([^"]*)"$/) do |radio_label|
   choose(radio_label)
+end
+
+When(/^I remove the tag "([^"]*)"$/) do |tag|
+  page.find('.filtered-tags a', text: tag).click
 end
 
 When(/^I select the first two mappings and go to tag them$/) do

@@ -18,7 +18,7 @@ end
 
 Then(/^I should be able to edit the site's mappings$/) do
   within '.mappings' do
-    expect(page).to have_selector('.list-group-item-heading', text: 'Edit mappings')
+    expect(page).to have_selector('.list-group-item-heading', text: 'Mappings')
     expect(page).to have_link('a', href: site_mappings_path(@site))
     expect(page).to have_selector('.list-group-item-heading', text: 'Add mappings')
     expect(page).to have_link('a', href: new_multiple_site_mappings_path(@site))
@@ -27,7 +27,6 @@ end
 
 Then(/^I should not be able to edit the site's mappings$/) do
   within '.mappings' do
-    expect(page).not_to have_selector('.list-group-item-heading', text: 'Edit mappings')
     expect(page).not_to have_selector('.list-group-item-heading', text: 'Add mappings')
     expect(page).not_to have_link('a', href: new_multiple_site_mappings_path(@site))
   end
@@ -60,11 +59,21 @@ end
 
 Then(/^I should be able to view the site's mappings$/) do
   within '.mappings' do
-    expect(page).to have_selector('.list-group-item-heading', text: 'View mappings')
+    expect(page).to have_selector('.list-group-item-heading', text: 'Mappings')
     expect(page).to have_link('a', href: site_mappings_path(@site))
   end
 end
 
 Then(/^I should see a link to the side by side browser$/) do
   expect(page).to have_selector('a[href*="www.attorney-general.gov.uk.side-by-side"]')
+end
+
+Then(/^I should see the top (\d+) most used tags "([^"]*)"$/) do |count, tag_list|
+  expected_tags = tag_list.split(',').map(&:strip)
+  within('.tag-list') do
+    expect(page).to have_selector('.tag', count: count)
+    expected_tags.each do |tag|
+      expect(page).to have_selector('.tag', text: tag)
+    end
+  end
 end

@@ -6,6 +6,16 @@ module TagsHelper
   # so any param you can use there you can use here (we use +limit+)
   def most_used_tags(options = {})
     options.merge!(order: 'count desc')
-    Mapping.tag_counts_on(:tags, options).map(&:name).to_json.html_safe
+    Mapping.tag_counts_on(:tags, options).map(&:name)
   end
+
+  def most_used_tags_json(options = {})
+    most_used_tags(options).to_json.html_safe
+  end
+
+  def most_used_tags_for_site(site, options = {})
+    options.merge!(order: 'count desc')
+    site.mappings.tag_counts_on(:tags, options).map(&:name)
+  end
+
 end

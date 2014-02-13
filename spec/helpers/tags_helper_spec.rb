@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe TagsHelper do
-  describe '#most_used_tags' do
+  describe '#most_used_tags_json' do
     let!(:mappings) {
       [
         create(:mapping, tag_list: %w(tag1 tag2 tag3)),
@@ -12,7 +12,7 @@ describe TagsHelper do
     }
 
     subject(:tags_as_array) do
-      helper.most_used_tags(options).gsub(/[\[\]"]/, '').split(',')
+      helper.most_used_tags_json(options).gsub(/[\[\]"]/, '').split(',')
     end
 
     context 'when no limit is set' do

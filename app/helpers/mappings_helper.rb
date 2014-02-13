@@ -75,4 +75,38 @@ module MappingsHelper
   def existing_mappings_count
     @bulk_add.existing_mappings.size
   end
+
+  def filtered_by_tag?(tag)
+    filtered_by_tags.include?(tag)
+  end
+
+  def filtered_by_tags
+    params[:tagged].present? ? params[:tagged].split(ActsAsTaggableOn.delimiter) : []
+  end
+
+  def filtered_by_tags?
+    filtered_by_tags.present?
+  end
+
+  def filter_by_tag_path(tag)
+    tagged = filtered_by_tags
+    if tagged.include?(tag)
+      params.except(:page)
+    else
+      tagged << tag
+      params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
+    end
+  end
+
+  def remove_tag_from_filter_path(tag)
+    tagged = filtered_by_tags
+    tagged.delete(tag)
+
+    if tagged.empty?
+      params.except(:page, :tagged)
+    else
+      params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
+    end
+  end
+
 end
