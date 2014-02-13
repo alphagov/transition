@@ -36,6 +36,7 @@ class Mapping < ActiveRecord::Base
 
   scope :with_status, -> status { where(http_status: Rack::Utils.status_code(status)) }
   scope :redirects, with_status(:moved_permanently)
+  scope :archives,  with_status(:gone)
   scope :filtered_by_path,    -> term { where(term.blank? ? true : Mapping.arel_table[:path].matches("%#{term}%")) }
   scope :filtered_by_new_url, -> term { where(term.blank? ? true : Mapping.arel_table[:new_url].matches("%#{term}%")) }
 
