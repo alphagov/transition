@@ -24,7 +24,7 @@ module View
 
       def raw_hosts
         hosts = raw_paths.select {|p| p.start_with?('http')}.map do |path|
-          uri = URI.parse(path)
+          uri = URI::BLURI.parse(path)
           uri.host
         end
         hosts.uniq
@@ -44,7 +44,7 @@ module View
       def site_has_hosts?
         begin
           hosts = raw_hosts
-        rescue URI::InvalidURIError
+        rescue Addressable::URI::InvalidURIError
           return false
         end
         hosts.empty? || hosts.size == site.hosts.where(hostname: hosts).size

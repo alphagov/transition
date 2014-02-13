@@ -56,6 +56,16 @@ describe View::Mappings::BulkAdder do
     end
   end
 
+  describe '#raw_hosts' do
+    subject { View::Mappings::BulkAdder.new(site, { paths: paths_input }).raw_hosts }
+
+    context 'can parse the hostname without < and > characters affecting the parsing' do
+      let(:paths_input) { "http://www.attorneygeneral.gov.uk/>text<" }
+
+      it { should eql(["www.attorneygeneral.gov.uk"]) }
+    end
+  end
+
   describe '#site_has_hosts?' do
     subject { View::Mappings::BulkAdder.new(site, { paths: paths_input }).site_has_hosts? }
 
@@ -125,6 +135,12 @@ describe View::Mappings::BulkAdder do
           "/another",
         ]
       )}
+    end
+
+    describe '< and > characters in paths don\'t cause an exception' do
+      let(:paths_input) { "/>text<" }
+
+      it { should eql(["/>text<"]) }
     end
   end
 
