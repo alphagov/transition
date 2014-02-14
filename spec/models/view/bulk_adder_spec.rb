@@ -54,6 +54,17 @@ describe View::Mappings::BulkAdder do
         ]
       )}
     end
+
+    context 'multiple paths with and without < or >' do
+      let(:paths_input) { "\n/foobar\r\n/foo<bar\r\n/>\r\n/<\r\n<\r\nhi there"}
+
+      it { should eql(
+        [
+          "/foobar",
+          "hi there"
+        ]
+      )}
+    end
   end
 
   describe '#site_has_hosts?' do
@@ -85,7 +96,7 @@ describe View::Mappings::BulkAdder do
     end
     
     describe 'invalid hosts should be false' do
-      let(:paths_input) { "http//go<oglecom" }
+      let(:paths_input) { "http//googlecomnopunctuation" }
       it { should be_false }
     end
 
