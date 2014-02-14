@@ -2,11 +2,6 @@
    Base
    ========================================================================== */
 
-footer {
-  clear: left;
-  padding-top: 2em;
-}
-
 label {
   font-weight: bold;
   cursor: pointer;
@@ -67,6 +62,10 @@ label {
 
 .bookmarklet {
   cursor: move;
+}
+
+.inherit {
+  color: inherit;
 }
 
 /* Form helpers
@@ -233,6 +232,15 @@ main a {
   @extend .page-title;
   border-bottom: 1px solid #ddd;
   margin-bottom: 30px;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.page-footer {
+ clear: left;
+ margin: $default-vertical-margin 0 $default-vertical-margin;
 }
 
 /* ==========================================================================
