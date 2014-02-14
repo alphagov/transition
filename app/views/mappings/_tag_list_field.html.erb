@@ -1,9 +1,17 @@
 <% modal ||= false %>
 
 <%= field_set_tag nil, class: 'form-group' do %>
-  <legend class="rm">
-    Tagging
-  </legend>
+
+  <%
+    # Rendering a legend with hidden content in a bootstrap modal
+    # causes the entire modal to disappear in Chrome ~32
+    # Firefox and Safari don't seem affected
+  %>
+  <% unless modal %>
+    <legend class="rm">
+      Tagging
+    </legend>
+  <% end %>
 
   <% tag_list_label = capture do %>
     Tags
