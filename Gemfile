@@ -24,7 +24,7 @@ gem 'select2-rails', '3.5.2'
 gem 'aws-ses', '0.4.4', require: 'aws/ses'
 gem 'exception_notification', '2.6.1'
 
-gem 'logstasher', '0.4.1'
+gem 'logstasher', '0.4.8'
 
 group :assets do
   gem 'sass', '3.2.12'
