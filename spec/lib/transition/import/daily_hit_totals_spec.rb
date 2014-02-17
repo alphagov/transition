@@ -15,6 +15,9 @@ describe Transition::Import::DailyHitTotals do
                   create(:hit, host: @host, path: '/1', count: 10, http_status: 301, hit_on: Date.new(2013, 11, 1)),
                   create(:hit, host: @host, path: '/1', count: 10, http_status: 404, hit_on: Date.new(2013, 11, 1))
                 ]
+        @previous_total = create(:daily_hit_total, host: @host,
+                            http_status: 404, total_on: @halloween,
+                            count: 13)
         2.times { Transition::Import::DailyHitTotals.from_hits! }
       end
 
