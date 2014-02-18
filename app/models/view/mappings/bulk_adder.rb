@@ -20,7 +20,7 @@ module View
         #     http://stackoverflow.com/questions/10805125
         paths = paths.split(/\r?\n|\r/) if paths.is_a?(String)
         # Ignore all URLs or paths with < or > in them.
-        paths = paths.select {|p| p.present? && (p.exclude?("<") && p.exclude?(">"))}
+        paths = paths.select(&:present?).reject { |p| p =~ /(<|>)/ }
         paths.map(&:strip)
       end
 
