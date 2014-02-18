@@ -19,7 +19,9 @@ module View
         # Efficiently match any combination of new line characters:
         #     http://stackoverflow.com/questions/10805125
         paths = paths.split(/\r?\n|\r/) if paths.is_a?(String)
-        paths.select(&:present?).map(&:strip)
+        # Ignore all URLs or paths with < or > in them.
+        paths = paths.select(&:present?).reject { |p| p =~ /(<|>)/ }
+        paths.map(&:strip)
       end
 
       def raw_hosts
