@@ -16,7 +16,9 @@
   <%= favicon_link_tag 'favicon.ico' %>
   <%= yield :extra_headers %>
   <% # Google Analytics tracking, minified via http://mathiasbynens.be/notes/async-analytics-snippet %>
-  <script>var _gaq=[['_setAccount','UA-48150192-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+  <% if Rails.env.production? %>
+    <script>var _gaq=[['_setAccount','UA-48150192-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+  <% end %>
 </head>
 <body>
   <header class="navbar navbar-default navbar-inverse navbar-static-top add-bottom-margin" role="banner">
