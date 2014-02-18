@@ -1,0 +1,20 @@
+.glossary {
+
+  font-size: 16px;
+
+  h3 {
+    // Use padding not margin for better spacing when clicking
+    // anchor links
+    padding-top: 2 * $default-vertical-margin;
+  }
+
+  h3:first-child {
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+}
+
+.glossary-list li {
+  margin-bottom: 5px;
+}

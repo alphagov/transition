@@ -2,6 +2,7 @@ Transition::Application.routes.draw do
   root to: 'organisations#index'
 
   resources :style, only: [:index]
+  resources :glossary, only: [:index]
 
   resources :hosts, only: [:index]
 
