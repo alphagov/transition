@@ -15,15 +15,15 @@
     <ul class="list-unstyled glossary-list">
       <li><a href="#aka">AKA domain</a></li>
       <li><a href="#archive">Archive</a></li>
-      <li><a href="#canonical">Canonical</a></li>
       <li><a href="#dns">DNS</a></li>
       <li><a href="#domain">Domain</a></li>
       <li><a href="#furl">Friendly URLs (FURLs)</a></li>
+      <li><a href="#global-archive">Global archive</a></li>
       <li><a href="#global-redirect">Global redirect</a></li>
       <li><a href="#hits">Hits</a></li>
-      <li><a href="#host">Host/Hostname</a></li>
+      <li><a href="#host">Host, Hostname</a></li>
       <li><a href="#mapping">Mapping</a></li>
-      <li><a href="#partial">Partial transition (domain)</a></li>
+      <li><a href="#partial">Partial transition</a></li>
       <li><a href="#path">Path</a></li>
       <li><a href="#protocol">Protocol</a></li>
       <li><a href="#query-parameters">Query parameters</a></li>
@@ -31,7 +31,7 @@
       <li><a href="#site">Site</a></li>
       <li><a href="#status-codes">(HTTP) Status codes</a></li>
       <li><a href="#subdomain">Subdomain</a></li>
-      <li><a href="#tna">TNA</a></li>
+      <li><a href="#tna">The National Archives (TNA)</a></li>
       <li><a href="#tna-timestamp">TNA Timestamp</a></li>
       <li><a href="#ttl">TTL</a></li>
       <li><a href="#url">URL</a></li>
@@ -43,14 +43,11 @@
   <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12 glossary">
 
     <h3 id="aka">AKA domain</h3>
-    <p>An ‘AKA domain’ creates a parallel version of a site (or domain) for our redirection software so we can check redirects are correct before we put a site live.</p>
+    <p>An AKA domain creates a parallel version of a site (or domain) for our redirection software. This allows us to preview redirects before going live.</p>
 
     <h3 id="archive">Archive</h3>
     <p>In the Transition app, ‘archive’ is a link to a page on GOV.UK with the option of either viewing the old page on the National Archive website or going to the new organisation’s GOV.UK homepage.
     </p>
-
-    <h3 id="canonical">Canonical</h3>
-    <p>The ‘canonical’ list has all duplicates removed and creates a single version of mappings to work on.</p>
 
     <h3 id="dns">DNS</h3>
     <p>The Domain Name System (DNS) connects domain names (eg www.gov.uk) with a server address. The switchover itself happens when the DNS entries for your site are changed to point at our servers, enabling our servers to redirect or show Archive pages.</p>
@@ -60,20 +57,23 @@
 
     <h3 id="furl">Friendly URLs (FURLs)</h3>
     <p>A customised URL designed to be easily memorable to direct people at a specifc page with a simple title, eg gov.uk/taxdisc. These are not picked up in log files so we need to know about these in advance.</p>
+    
+    <h3 id="global-archive">Global archive</h3>
+    <p>All pages on a site are <a href="#archive">archived</a>.</p>
 
     <h3 id="global-redirect">Global redirect</h3>
-    <p>All pages on a site are pointed to the same place.</p>
+    <p>All pages on a site are <a href="#redirect">redirected</a> to the same URL.</p>
 
     <h3 id="hits">Hits</h3>
-    <p>Requests for a URL or document.</p>
+    <p>Requests for a URL or document. This includes pages, images and file downloads.</p>
 
-    <h3 id="host">Host/Hostname</h3>
+    <h3 id="host">Host, Hostname</h3>
     <p>In this context, a host or hostname is the same as a domain name.</p>
 
     <h3 id="mapping">Mapping</h3>
     <p>A mapping is the relationship between an old URL and either a new URL or the decision to present an archive page to the user.</p>
 
-    <h3 id="partial">Partial transition (domain)</h3>
+    <h3 id="partial">Partial transition, Partial domain</h3>
     <p>In some situations it isn’t possible to switch an entire site over at once. This can happen in several situations:</p>
     <ul>
       <li>multiple organisations share a site</li>
@@ -81,18 +81,19 @@
     </ul>
 
     <h3 id="path">Path</h3>
-    <p>This is the part of a URL after the domain name. For example, in the URL https://www.gov.uk/government/organisations, the path is: /government/organisations</p>
+    <p>The part of a URL immediately following the domain name.</p>
+    <p>For example, in the URL:<br /><code>https://www.gov.uk/government/organisations</code><br />the path is: <code>/government/organisations</code></p>
 
     <h3 id="protocol">Protocol</h3>
-    <p>This is the first part of a URL, either http or https.</p>
+    <p>The first part of a URL, either <code>http</code> or <code>https</code>.</p>
 
     <h3 id="query-parameters">Query parameters</h3>
-    <p>A query parameter might appear in some URLs. It’s the part of a URL written to be read by a computer, for example:</p>
+    <p>A query parameter might appear in some URLs. It’s the part of a URL written to be read by a computer.</p>
 
     <p>In order to reduce the number of mappings for you to write and maintain, we identify the significant query parameters in use on your site, which lets us deduplicate many URLs. A query parameter is significant if changing it means a user sees different content.</p>
 
     <h3 id="redirect">Redirect</h3>
-    <p>A redirect means automatically taking a user from the old URL they requested to the new one identified in the mapping. For example http://www.bis.gov.uk redirects to https://www.gov.uk/government/organisations/department-for-business-innovation-skills
+    <p>A redirect means automatically taking a user from the old URL they requested to the new one identified in the mapping. For example <code>http://www.bis.gov.uk</code> redirects to <code class="breakable">https://www.gov.uk/government/organisations/department-for-business-innovation-skills</code>
 </p>
 
     <h3 id="site">Site</h3>
@@ -104,14 +105,15 @@
     <h3 id="subdomain">Subdomain</h3>
     <p>Subdomains are domain names which have a parent domain name. For example: en.wikipedia.org and www.wikipedia.org are different subdomains of their parent domain wikipedia.org.</p>
 
-    <h3 id="tna">TNA</h3>
-    <p>The National Archives is the government organisation responsible for creating archives of UK government websites to maintain the public record in the digital age. The Transition app provides users with a link to TNA to view archived pages on transitioned sites. Here is a link to the Web Archive homepage: http://webarchive.nationalarchives.gov.uk/</p>
+    <h3 id="tna">The National Archives (TNA)</h3>
+    <p>The National Archives is the government organisation responsible for creating archives of UK government websites to maintain the public record in the digital age. The Transition app provides users with a link to TNA to view archived pages on transitioned sites.</p>
+    <p><a href="http://webarchive.nationalarchives.gov.uk/">Web Archive homepage</a></p>
 
     <h3 id="tna-timestamp">TNA Timestamp</h3>
-    <p>The National Archives Web Archive will produce snapshots (or “crawl”) of a given website, which are labelled with timestamps, for example 20100202072553 is for a snapshot taken on the 2 February 2010 at 07:25:53.</p>
+    <p>The National Archives Web Archive will produce snapshots (or “crawl”) of a given website, which are labelled with timestamps, for example <code>20100202072553</code> is for a snapshot taken on the 2 February 2010 at 7:25am.</p>
 
-    <h3 id="ttl">TTL</h3>
-    <p>Time To Live. This is the number of seconds for which a DNS record can be cached by your computer, for example, before being checked with a DNS server. We ask for the TTL for your sites to be lowered to 5 minutes before switchover so that there is a clean cut-over - rather than different users getting the old or new site until the change has propagated. Commonly TTLs can be set to a day, which would lead to poor user experience as they would see the old or new site unpredictably.</p>
+    <h3 id="ttl">Time to live (TTL)</h3>
+    <p>The number of seconds for which a <a href="#dns">DNS</a> record can be cached by your computer. For example, before being checked with a DNS server. We ask for the TTL for your sites to be lowered to 5 minutes before switchover so that there is a clean cut-over — rather than different users getting the old or new site until the change has propagated. Commonly TTLs can be set to a day, which would lead to poor user experience as they would see the old or new site unpredictably.</p>
 
     <h3 id="url">URL</h3>
     <p>A URL is how a web browser requests pages, images and other data from a website.</p>
