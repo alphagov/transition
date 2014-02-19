@@ -4,7 +4,7 @@ class GlossaryController < ApplicationController
 
     @example_site = Site.where(abbr: 'cabinetoffice').first
     @example_archive = Mapping.where(http_status: '410').first
-    @example_redirect = @example_site.mappings.where(http_status: '301').first
+    @example_redirect = Mapping.where(http_status: '301').first
 
   end
 
