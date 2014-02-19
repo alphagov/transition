@@ -44,6 +44,9 @@
               <%= link_to organisation_with_abbreviation(current_user.organisation), organisation_path(current_user.organisation), title: 'Your organisation' %>
             </li>
           <% end %>
+          <li <% if current_page?(glossary_index_path) %> class="active" <% end %>>
+            <%= link_to 'Glossary', glossary_index_path %>
+          </li>
         </ul>
         <p class="navbar-text pull-right">
           Hello, <%= link_to current_user.name, Plek.current.find('signon') %> &bull; <%= link_to 'Sign out', gds_sign_out_path %>
