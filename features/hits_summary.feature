@@ -112,3 +112,11 @@ Scenario: No hits exist at all
   And I should not see a graph
   When I filter by the date period "Last seven days"
   Then I should see "There are no errors for ago in this time period"
+
+@allow-rescue
+Scenario: Visit the hits summary page for an non-existent site
+  Given I have logged in as an admin
+  And I visit the path /sites/not_a_site/hits/summary
+  Then the HTTP status should be 'Not Found'
+  And I should see "Page could not be found"
+  And I should see a link to "GOV.UK Transition"
