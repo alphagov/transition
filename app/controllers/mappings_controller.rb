@@ -131,7 +131,7 @@ private
   end
 
   def find_site
-    @site = Site.find_by_abbr(params[:site_id])
+    @site = Site.find_by_abbr!(params[:site_id])
   end
 
   def check_user_can_edit
