@@ -1,3 +1,4 @@
+<% include_bulk_add ||= false %>
 <tr class="table-header-secondary">
   <td class="selectable-row">
     <div class="relative if-no-js-hide">
@@ -29,8 +30,10 @@
         <a href="#tag-paths" class="btn btn-default js-submit-form disabled" data-type="tag" data-loading-text="Loading…" title="Tag the paths you’ve selected">Tag</a>
       </div>
     </div>
-    <div class="pull-right">
-      <%= render partial: 'add_button' %>
-    </div>
+    <% if include_bulk_add %>
+      <div class="pull-right">
+        <%= render partial: 'add_button' %>
+      </div>
+    <% end %>
   </td>
 </tr>

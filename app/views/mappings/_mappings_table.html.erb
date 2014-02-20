@@ -1,4 +1,7 @@
 <% css ||= false %>
+<% include_footer ||= false %>
+<% include_bulk_add ||= false %>
+
 <% if current_user.can_edit?(site.organisation) %>
   <div data-module="selectable-table">
 <% end %>
@@ -18,7 +21,7 @@
       <% end %>
     </tr>
     <% if current_user.can_edit?(site.organisation) %>
-      <%= render partial: 'mappings_table_header', locals: {footer: false} %>
+      <%= render partial: 'mappings_table_header', locals: {footer: false, include_bulk_add: include_bulk_add} %>
     <% end %>
   </thead>
   <tbody>
@@ -54,9 +57,9 @@
     </tr>
   <% end %>
   </tbody>
-  <% if current_user.can_edit?(site.organisation) %>
+  <% if include_footer && current_user.can_edit?(site.organisation) %>
     <tfoot class="if-no-js-hide">
-      <%= render partial: 'mappings_table_header', locals: {footer: true} %>
+      <%= render partial: 'mappings_table_header', locals: {footer: true, include_bulk_add: include_bulk_add} %>
     </tfoot>
   <% end %>
 </table>
