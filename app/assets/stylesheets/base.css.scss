@@ -344,17 +344,25 @@ a.list-group-item {
 /* No content
    ========================================================================== */
 
-.no-content {
-  color: lighten($gray-light, 20%); // Large text needs a lighter colour for balance
+%large-and-spaced {
   font-size: $font-size-base * 2;
   line-height: $default-vertical-margin * 2;
   text-align: center;
   padding: ($default-vertical-margin * 4) 0;
 }
 
+.no-content {
+  color: lighten($gray-light, 20%); // Large text needs a lighter colour for balance
+  @extend %large-and-spaced;
+}
+
 .no-content-bordered {
   border: 1px solid $table-border-color;
   border-radius: $border-radius-base;
+}
+
+.error-page {
+  @extend %large-and-spaced;
 }
 
 /* Highlights
