@@ -103,6 +103,7 @@ class MappingsController < ApplicationController
       render action: 'edit_multiple'
     else
       flash[:success] = bulk_edit.success_message
+      flash[:saved_mapping_ids] = bulk_edit.mappings.map {|m| m.id}
       redirect_to bulk_edit.return_path
     end
   end

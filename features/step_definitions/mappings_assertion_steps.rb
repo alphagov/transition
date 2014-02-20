@@ -89,12 +89,8 @@ Then(/^I should see a form that contains my selection within the modal$/) do
   }
 end
 
-Then(/^I should see a table that contains the mappings I saved within the modal$/) do
-  expect(page).to have_selector('.modal .mappings tbody tr', count: 1)
-  steps %{
-    And I should see "/about" in the modal window
-    And I should see "new-url" in the modal window
-  }
+Then(/^I should see a table with (\d+) saved mappings? in the modal$/) do |count|
+  expect(page).to have_selector('.modal .mappings tbody tr', count: count)
 end
 
 Then(/^I should see the link replaced with a suggested URL field$/) do
@@ -165,7 +161,7 @@ Then(/^the mappings should all have the tags "([^"]*)"$/) do |tag_list|
 end
 
 Then(/^I should see that (\d+) were tagged "([^"]*)"$/) do |n, tag_list|
-  within '.alert-success' do
+  within '.alert-success', :match => :first do
     expect(page).to have_content(
       %(#{n} mappings tagged "#{tag_list}")
     )
@@ -183,7 +179,7 @@ Then(/^I should see only the common tags "([^"]*)"$/) do |tag_list|
 end
 
 Then(/^mapping (\d+) should have the tags "([^"]*)"$/) do |nth, tag_list|
-  within ".mappings tbody tr:nth-child(#{nth}) .tag-list" do
+  within ".mappings-index tbody tr:nth-child(#{nth}) .tag-list" do
     tag_list.split(',').map(&:strip).each do |tag|
       expect(page).to have_selector('.tag', text:tag)
     end
@@ -191,7 +187,7 @@ Then(/^mapping (\d+) should have the tags "([^"]*)"$/) do |nth, tag_list|
 end
 
 Then(/^mapping (\d+) should have the tags "([^"]*)" but not "([^"]*)"$/) do |nth, tag_list, without_tag_list|
-  within ".mappings tbody tr:nth-child(#{nth}) .tag-list" do
+  within ".mappings-index tbody tr:nth-child(#{nth}) .tag-list" do
     tag_list.split(',').map(&:strip).each do |tag|
       expect(page).to have_selector('.tag', text:tag)
     end

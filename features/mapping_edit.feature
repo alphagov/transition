@@ -22,7 +22,8 @@ Feature: Edit a site's mapping
     Then I should be returned to the mappings list I was on
     And I should see an open modal window
     And I should see "Mapping saved" in the modal window
-    And I should see a table that contains the mappings I saved within the modal
+    And I should see a table with 1 saved mapping in the modal
+    And I should see "/about" in the modal window
 
   @javascript
   Scenario: Editing a site mapping that is an archive

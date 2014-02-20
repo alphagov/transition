@@ -59,6 +59,8 @@ Scenario: Bulk adding tags to existing mappings (JS)
   And mapping 1 should have the tags "fee, fo, fiddle" but not "fum"
   And mapping 2 should have the tags "fee, fi, fo" but not "fum"
   And mapping 3 should have the tags "fo, fum"
+  And I should see an open modal window
+  And I should see a table with 2 saved mappings in the modal
 
 @javascript
 Scenario: Autocompleting popular tags

@@ -66,7 +66,11 @@ Feature: Editing multiple mappings for a site
     And I should see "Redirect mappings" in the modal window
     When I enter a new URL to redirect to
     And I save my changes
-    Then I should see "Mappings updated"
+    Then I should see an open modal window
+    And I should see "Mappings updated" in the modal window
+    And I should see a table with 2 saved mappings in the modal
+    And I should see "/a" in the modal window
+    And I should see "/about/branding" in the modal window
 
   @javascript
   Scenario: Selecting multiple mappings to archive with javascript
@@ -76,4 +80,8 @@ Feature: Editing multiple mappings for a site
     And I should see a form that contains my selection within the modal
     And I should see "Archive mappings" in the modal window
     When I save my changes
-    Then I should see "Mappings updated"
+    Then I should see an open modal window
+    And I should see "Mappings updated" in the modal window
+    And I should see a table with 2 saved mappings in the modal
+    And I should see "/a" in the modal window
+    And I should see "/about/branding" in the modal window
