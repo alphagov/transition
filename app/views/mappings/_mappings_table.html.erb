@@ -1,8 +1,9 @@
+<% css ||= false %>
 <% if current_user.can_edit?(site.organisation) %>
   <div data-module="selectable-table">
 <% end %>
 <%= form_tag edit_multiple_site_mappings_path(site), remote: true do %>
-<table class="mappings table table-bordered">
+<table class="mappings <%= css if css %> table table-bordered">
   <thead>
     <tr class="table-header">
       <% if current_user.can_edit?(site.organisation) %>
@@ -22,7 +23,7 @@
   </thead>
   <tbody>
   <% mappings.each do |mapping| %>
-    <tr data-status-code="<%= mapping.http_status %>">
+    <tr class="mapping-<%= mapping.id %>" data-status-code="<%= mapping.http_status %>">
       <% if current_user.can_edit?(site.organisation) %>
         <td class="selectable-row">
           <div class="relative">

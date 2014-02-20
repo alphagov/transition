@@ -10,11 +10,10 @@ Then(/^I should be editing the mapping for "([^"]*)"$/) do |path|
   expect(page).to have_selector("form a[href*='#{path}']")
 end
 
-Then(/^I should be returned to the mappings list with a success message$/) do
+Then(/^I should be returned to the mappings list$/) do
   within 'h1' do
     step 'I should see "Mappings"'
   end
-  step 'I should see "Mapping saved"'
 end
 
 Then(/^the filter box should contain "([^"]*)"$/) do |path|
@@ -91,6 +90,14 @@ Then(/^I should see a form that contains my selection within the modal$/) do
   }
 end
 
+Then(/^I should see a table that contains the mappings I saved within the modal$/) do
+  expect(page).to have_selector('.modal .mappings tbody tr', count: 1)
+  steps %{
+    And I should see "/about" in the modal window
+    And I should see "new-url" in the modal window
+  }
+end
+
 Then(/^I should see the link replaced with a suggested URL field$/) do
   expect(page).to have_selector('#mapping_suggested_url')
   expect(page).not_to have_selector('a[href="#suggest-url"]')
@@ -138,7 +145,16 @@ Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|
   end
 end
 
-Then(/^the mappings? should (?:all )?have the tags "([^"]*)"$/) do |tag_list|
+Then(/^the mapping should have the tags "([^"]*)"$/) do |tag_list|
+  expected_tags = tag_list.split(',').map(&:strip)
+  within ".mappings-index .mapping-#{@mapping.id}" do
+    expected_tags.each do |tag|
+      expect(page).to have_selector('.tag', text: tag)
+    end
+  end
+end
+
+Then(/^the mappings should all have the tags "([^"]*)"$/) do |tag_list|
   expect(page).to have_selector('.tag-list', count: @site.mappings.count)
 
   expected_tags = tag_list.split(',').map(&:strip)

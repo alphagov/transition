@@ -34,7 +34,7 @@
 
   <%= paginate(@mappings) %>
 
-  <%= render partial: 'mappings_table', locals: {mappings: @mappings, site: @site} %>
+  <%= render partial: 'mappings_table', locals: {mappings: @mappings, site: @site, css: 'mappings-index'} %>
 
   <%= paginate(@mappings) %>
 

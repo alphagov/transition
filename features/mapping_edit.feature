@@ -19,7 +19,10 @@ Feature: Edit a site's mapping
     Then I should see redirect fields
     But I should not see archive fields
     When I save the mapping
-    Then I should be returned to the mappings list with a success message
+    Then I should be returned to the mappings list
+    And I should see an open modal window
+    And I should see "Mapping saved" in the modal window
+    And I should see a table that contains the mappings I saved within the modal
 
   @javascript
   Scenario: Editing a site mapping that is an archive

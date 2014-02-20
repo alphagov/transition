@@ -1,0 +1,25 @@
+<div id="saved-mappings-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <header class="modal-header">
+        <h3 class="modal-title alert alert-success">
+            <span class="glyphicon glyphicon-ok text-success add-right-margin" style="font-size: 80%"></span> <%= message %>
+            <a href="#close" data-dismiss="modal" class="btn btn-success pull-right">OK</a>
+        </h3>
+      </header>
+      <div class="modal-body remove-bottom-padding">
+        <%= render partial: 'mappings_table',
+          locals: {
+            site: site,
+            mappings: mappings
+          }
+        %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $('#saved-mappings-modal').modal('show').on('hidden', function () {
+    $(this).remove();
+  });
+</script>

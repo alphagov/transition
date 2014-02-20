@@ -64,6 +64,16 @@
         </div>
       <% end %>
 
+      <% if flash[:saved_mapping_ids] %>
+        <%= render partial: 'mappings/saved_mappings_modal',
+          locals: {
+            site: @site,
+            message: flash[:success],
+            mappings: mappings_from_ids(flash[:saved_mapping_ids])
+          }
+        %>
+      <% end %>
+
       <% breadcrumbs do |links| %>
         <% if links.any? %>
           <ul class='breadcrumb'>

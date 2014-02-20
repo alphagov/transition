@@ -109,4 +109,8 @@ module MappingsHelper
     end
   end
 
+  def mappings_from_ids(ids)
+    Mapping.find(ids)
+  end
+
 end
