@@ -37,12 +37,13 @@ module Transition
                 canonical_path = host.site.canonical_path(row['Old URL'])
                 existing_mapping = host.site.mappings.where(path_hash: path_hash(canonical_path)).first
 
-                unless existing_mapping && existing_mapping.edited_by_human?
-                  if existing_mapping
-                    existing_mapping.update_attributes(new_url: row['New URL'], http_status: '301')
-                  else
-                    host.site.mappings.create(path: canonical_path, new_url: row['New URL'], http_status: '301')
-                  end
+                if existing_mapping
+                    if existing_mapping.http_status == '410' ||
+                        ! existing_mapping.edited_by_human?
+                      existing_mapping.update_attributes(new_url: row['New URL'], http_status: '301')
+                    end
+                else
+                  host.site.mappings.create(path: canonical_path, new_url: row['New URL'], http_status: '301')
                 end
               end
             end
