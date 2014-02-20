@@ -78,6 +78,44 @@ describe MappingsController do
     end
   end
 
+
+  describe "#find_global" do
+    before do
+      login_as_stub_user
+    end
+
+    context 'when the aka URL isn\'t supplied' do
+      it 'returns a 404 error' do
+        get :find_global, aka_url: nil
+        expect(response.status).to eq(404)
+      end
+    end
+
+    context 'when the aka URL isn\'t an HTTP(S) URL' do
+      it 'returns a 400 error' do
+        get :find_global, aka_url: "huihguifbelgfebigf"
+        expect(response.status).to eq(400)
+      end
+    end
+
+    context 'when the aka URL is an HTTP(S) URL' do
+      context 'when the www. site exists for an aka domain' do
+        let!(:host) { create :host, hostname: "www.attorneygeneral.gov.uk" }
+        it 'redirects to #find with the correct params' do
+          get :find_global, aka_url: "http://aka.attorneygeneral.gov.uk/foo/bar"
+          expect(response).to redirect_to site_mapping_find_url(host.site, path: "/foo/bar")
+        end
+      end
+
+      context 'when the www. site doesn\'t exist for an aka domain' do
+        it 'returns a 404 error' do
+          get :find_global, aka_url: "http://doesnotexist.gov.uk/no"
+          expect(response.status).to eq(404)
+        end
+      end
+    end
+  end
+
   describe '#find' do
     let(:raw_path)           { '/ABOUT/' }
     let(:canonicalized_path) { '/about' }

@@ -3,8 +3,8 @@ require 'view/mappings/canonical_filter'
 class MappingsController < ApplicationController
   include PaperTrail::Controller
 
-  before_filter :find_site
-  before_filter :check_user_can_edit, except: [:index, :find]
+  before_filter :find_site, except: [:find_global]
+  before_filter :check_user_can_edit, except: [:index, :find, :find_global]
 
   def new_multiple
     bulk_add
@@ -100,6 +100,25 @@ class MappingsController < ApplicationController
       redirect_to bulk_edit.return_path
     end
   end
+
+  def find_global
+    # This allows finding a mapping without knowing the site first.
+    render status: 404, text: "aka_url not present" and
+      return unless params[:aka_url].present?
+
+    uri = URI.parse(params[:aka_url])
+    render status: 400, text: "aka_url not an HTTP or HTTPS URI" and
+      return unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+
+    # Perform Bouncer's AKA matching to switch aka to www as per the
+    # comment in Host#aka_hostname.
+    uri.host = uri.host.sub(/^aka-/, '').sub(/^aka\./, 'www.')
+    site = Host.where(hostname: "#{uri.host}").first.try(:site)
+    render status: 404, text: "#{uri.host} not found" and
+      return unless site
+
+    redirect_to site_mapping_find_url(site, path: uri.path)
+     end
 
   def find
     path = @site.canonical_path(params[:path])
