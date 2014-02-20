@@ -32,3 +32,11 @@ Feature: View organisation
     And I should see "Indeterminate"
     And there should be a tooltip which includes "external supplier"
     And there should be a tooltip which includes "partially redirected"
+
+  @allow-rescue
+  Scenario: Visit the page of an non-existent organisation
+    Given I have logged in as an admin
+    When I visit the path /organisations/not-an-org
+    Then the HTTP status should be 'Not Found'
+    And I should see "Page could not be found"
+    And I should see a link to "GOV.UK Transition"
