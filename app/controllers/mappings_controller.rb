@@ -118,7 +118,7 @@ class MappingsController < ApplicationController
       return unless site
 
     redirect_to site_mapping_find_url(site, path: uri.path)
-     end
+  end
 
   def find
     path = @site.canonical_path(params[:path])
