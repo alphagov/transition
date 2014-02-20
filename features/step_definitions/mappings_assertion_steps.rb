@@ -10,8 +10,10 @@ Then(/^I should be editing the mapping for "([^"]*)"$/) do |path|
   expect(page).to have_selector("form a[href*='#{path}']")
 end
 
-Then(/^I should be returned to the edit mapping page with a success message$/) do
-  step 'I should see "Edit mapping"'
+Then(/^I should be returned to the mappings list with a success message$/) do
+  within 'h1' do
+    step 'I should see "Mappings"'
+  end
   step 'I should see "Mapping saved"'
 end
 
@@ -136,7 +138,7 @@ Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|
   end
 end
 
-Then(/^the mappings should all have the tags "([^"]*)"$/) do |tag_list|
+Then(/^the mappings? should (?:all )?have the tags "([^"]*)"$/) do |tag_list|
   expect(page).to have_selector('.tag-list', count: @site.mappings.count)
 
   expected_tags = tag_list.split(',').map(&:strip)

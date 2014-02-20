@@ -10,7 +10,7 @@ Scenario: Adding tags to a mapping
   And I associate the tags "fee, fi, FO" with the mapping
   And I save the mapping
   Then I should see "Mapping saved"
-  And I should see the tags "fee, fi, fo"
+  And the mapping should have the tags "fee, fi, fo"
 
 Scenario: Adding tags when bulk adding mappings
   Given I have logged in as an admin

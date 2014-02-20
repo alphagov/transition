@@ -19,9 +19,7 @@ Feature: Edit a site's mapping
     Then I should see redirect fields
     But I should not see archive fields
     When I save the mapping
-    Then I should be returned to the edit mapping page with a success message
-    And I should see "Mapping saved"
-    And I should be editing the mapping for "/about"
+    Then I should be returned to the mappings list with a success message
 
   @javascript
   Scenario: Editing a site mapping that is an archive
