@@ -48,3 +48,10 @@ Feature: Edit a site's mapping
     And I save the mapping
     Then I should still be editing a mapping
     And I should see "New URL is not a URL"
+
+  @allow-rescue
+  Scenario: Visit the page of an non-existent mapping
+    And I visit the path /sites/bis/mappings/123456789/edit
+    Then the HTTP status should be 'Not Found'
+    And I should see "Page could not be found"
+    And I should see a link to "GOV.UK Transition"

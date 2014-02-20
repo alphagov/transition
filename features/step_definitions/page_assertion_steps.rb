@@ -66,3 +66,9 @@ end
 Then(/^the "([^"]*)" value should be "([^"]*)"/) do |label, value|
   expect(page).to have_field(label, with: value)
 end
+
+# Status codes
+
+Then(/^the HTTP status should be 'Not Found'$/) do
+  page.status_code.should eql(404)
+end
