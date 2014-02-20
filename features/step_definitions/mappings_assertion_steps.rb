@@ -10,10 +10,9 @@ Then(/^I should be editing the mapping for "([^"]*)"$/) do |path|
   expect(page).to have_selector("form a[href*='#{path}']")
 end
 
-Then(/^I should be returned to the mappings list$/) do
-  within 'h1' do
-    step 'I should see "Mappings"'
-  end
+Then(/^I should be returned to the mappings list I was on$/) do
+  uri = URI.parse(current_url)
+  expect("#{uri.path}?#{uri.query}").to eql(site_mappings_path('bis', fake_param: 1))
 end
 
 Then(/^the filter box should contain "([^"]*)"$/) do |path|

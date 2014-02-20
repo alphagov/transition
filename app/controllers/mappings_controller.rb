@@ -63,7 +63,12 @@ class MappingsController < ApplicationController
     if @mapping.save
       flash[:success] = 'Mapping saved'
       flash[:saved_mapping_ids] = [@mapping.id]
-      redirect_to site_mappings_path(@site)
+
+      if params[:return_path] && params[:return_path].start_with?('/')
+        redirect_to params[:return_path]
+      else
+        redirect_to site_mappings_path(@site)
+      end
     else
       render action: 'edit'
     end
