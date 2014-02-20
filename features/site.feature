@@ -49,3 +49,11 @@ Scenario: I belong to a different organisation
   When I visit this site page
   Then I should be able to view the site's mappings
   But I should not be able to edit the site's mappings
+
+@allow-rescue
+Scenario: Visit the page of an non-existent site
+  Given I have logged in as an admin
+  When I visit the path /sites/not_a_site
+  Then the HTTP status should be 'Not Found'
+  And I should see "Page could not be found"
+  And I should see a link to "GOV.UK Transition"
