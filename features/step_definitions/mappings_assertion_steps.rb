@@ -1,3 +1,5 @@
+#encoding: UTF-8
+
 Then(/^I should be returned to the mappings list for (.*)$/) do |site_abbr|
   expect(current_path).to eql(site_mappings_path(site_abbr))
 end
@@ -163,7 +165,7 @@ end
 Then(/^I should see that (\d+) were tagged "([^"]*)"$/) do |n, tag_list|
   within '.alert-success', :match => :first do
     expect(page).to have_content(
-      %(#{n} mappings tagged "#{tag_list}")
+      %(#{n} mappings tagged “#{tag_list}”)
     )
   end
 end
