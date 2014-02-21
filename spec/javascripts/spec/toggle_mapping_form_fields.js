@@ -1,14 +1,14 @@
 describe('A mappings module', function() {
   "use strict"
 
-  var root = window,
+  var toggle,
       form;
 
   describe('when editing or adding a mapping', function() {
 
     beforeEach(function() {
 
-      form = $('<form class="js-edit-mapping-form">\
+      form = $('<form>\
         <select class="js-http-status">\
           <option value="0"></option>\
           <option value="301">301 Moved Permanently</option>\
@@ -23,17 +23,13 @@ describe('A mappings module', function() {
         </div>\
       </form>');
 
-      $('body').append(form);
-    });
-
-    afterEach(function() {
-      form.remove();
+      toggle = new GOVUK.Modules.ToggleMappingFormFields();
     });
 
     it('shows only the archive fields when the mapping is a 410' , function() {
 
       form.find('.js-http-status').val(410);
-      root.GOVUK.Mappings.edit();
+      toggle.start(form);
 
       expect(form.find('.js-for-redirect:visible').length).toBe(0);
       expect(form.find('.js-for-archive:visible').length).toBe(1);
@@ -42,7 +38,7 @@ describe('A mappings module', function() {
     it('shows only the redirect fields when the mapping is a 301' , function() {
 
       form.find('.js-http-status').val(301);
-      root.GOVUK.Mappings.edit();
+      toggle.start(form);
 
       expect(form.find('.js-for-redirect:visible').length).toBe(1);
       expect(form.find('.js-for-archive:visible').length).toBe(0);
@@ -52,7 +48,7 @@ describe('A mappings module', function() {
 
       it('toggles the appropriate form fields' , function() {
 
-        root.GOVUK.Mappings.edit();
+        toggle.start(form);
         expect(form.find('.js-for-redirect:visible').length).toBe(1);
         expect(form.find('.js-for-archive:visible').length).toBe(1);
 
@@ -67,23 +63,11 @@ describe('A mappings module', function() {
 
       it('shows all fields if the new http status is not 301 or 410' , function() {
 
-        root.GOVUK.Mappings.edit();
+        toggle.start(form);
         form.find('.js-http-status').val(0).trigger('change');
 
         expect(form.find('.js-for-redirect:visible').length).toBe(1);
         expect(form.find('.js-for-archive:visible').length).toBe(1);
-      });
-
-    });
-
-    describe('when clicking a toggle within the form', function() {
-
-      it('toggles visibility of all toggle targets', function() {
-        root.GOVUK.Mappings.edit();
-        form.find('.js-toggle').click();
-
-        expect(form.find('strong.if-js-hide').length).toBe(0);
-        expect(form.find('span.if-js-hide').length).toBe(1);
       });
 
     });

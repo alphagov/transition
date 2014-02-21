@@ -36,25 +36,25 @@ Then(/^I should see that (.*) was changed from (.*) to (.*)$/) do |field_name, o
 end
 
 Then(/^I should see redirect fields$/) do
-  within '.js-edit-mapping-form' do
+  within '[data-module="toggle-mapping-form-fields"]' do
     expect(page).to have_selector('.js-for-redirect')
   end
 end
 
 Then(/^I should not see redirect fields$/) do
-  within '.js-edit-mapping-form' do
+  within '[data-module="toggle-mapping-form-fields"]' do
     expect(page).not_to have_selector('.js-for-redirect')
   end
 end
 
 Then(/^I should see archive fields$/) do
-  within '.js-edit-mapping-form' do
+  within '[data-module="toggle-mapping-form-fields"]' do
     expect(page).to have_selector('.js-for-archive')
   end
 end
 
 Then(/^I should not see archive fields$/) do
-  within '.js-edit-mapping-form' do
+  within '[data-module="toggle-mapping-form-fields"]' do
     expect(page).not_to have_selector('.js-for-archive')
   end
 end
