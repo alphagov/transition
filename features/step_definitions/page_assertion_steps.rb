@@ -72,3 +72,11 @@ end
 Then(/^the HTTP status should be 'Not Found'$/) do
   page.status_code.should eql(404)
 end
+
+Then(/^I should see our custom 404 page$/) do
+  steps %{
+    Then the HTTP status should be 'Not Found'
+    And I should see "Page could not be found"
+    And I should see a link to "GOV.UK Transition"
+  }
+end

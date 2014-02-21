@@ -52,6 +52,4 @@ Feature: Edit a site's mapping
   @allow-rescue
   Scenario: Visit the page of an non-existent mapping
     And I visit the path /sites/bis/mappings/123456789/edit
-    Then the HTTP status should be 'Not Found'
-    And I should see "Page could not be found"
-    And I should see a link to "GOV.UK Transition"
+    Then I should see our custom 404 page

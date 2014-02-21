@@ -7,6 +7,4 @@ Feature: Mappings index
   Scenario: Visit the mappings index page for an non-existent site
     Given I have logged in as an admin
     And I visit the path /sites/not_a_site/mappings/
-    Then the HTTP status should be 'Not Found'
-    And I should see "Page could not be found"
-    And I should see a link to "GOV.UK Transition"
+    Then I should see our custom 404 page
