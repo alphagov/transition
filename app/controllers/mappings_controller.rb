@@ -26,6 +26,7 @@ class MappingsController < ApplicationController
     bulk_add.create_or_update!
 
     flash[:success] = bulk_add.success_message
+    flash[:saved_mapping_ids] = bulk_add.modified_mappings.map {|m| m.id}
     redirect_to site_mappings_path(@site)
   end
 

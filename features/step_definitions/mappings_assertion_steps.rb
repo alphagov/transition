@@ -135,7 +135,7 @@ Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
 end
 
 Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|
-  within '.alert-success' do
+  within '.alert-success', :match => :first do
     expect(page).to have_content(
       %(0 mappings created and 3 mappings updated. All tagged with "#{tag_list}")
     )
@@ -152,7 +152,7 @@ Then(/^the mapping should have the tags "([^"]*)"$/) do |tag_list|
 end
 
 Then(/^the mappings should all have the tags "([^"]*)"$/) do |tag_list|
-  expect(page).to have_selector('.tag-list', count: @site.mappings.count)
+  expect(page).to have_selector('.mappings-index .tag-list', count: @site.mappings.count)
 
   expected_tags = tag_list.split(',').map(&:strip)
   page.all('.tag-list').each do |mapping_tags_list|
