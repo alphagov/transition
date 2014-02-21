@@ -1,21 +1,11 @@
-(function() {
+(function(Modules) {
   "use strict"
-  var root = this,
-      $ = root.jQuery;
 
-  if (typeof root.GOVUK === 'undefined') {
-    root.GOVUK = {};
-  }
+  Modules.SelectableTable = function() {
 
-  var SelectableTable = {
+    var that = this;
 
-    setup: function() {
-      $('[data-module="selectable-table"]').each(function() {
-        GOVUK.SelectableTable.start($(this));
-      });
-    },
-
-    start: function(element) {
+    that.start = function(element) {
 
       var tableRows = element.find('tbody tr'),
           SELECTED_ROW_CLASS = 'selected-row',
@@ -155,10 +145,6 @@
       function disableSubmitButtons() {
         element.find('.js-submit-form').addClass('disabled');
       }
-
     }
-
   };
-
-  root.GOVUK.SelectableTable = SelectableTable;
-}).call(this);
+})(window.GOVUK.Modules);
