@@ -16,6 +16,10 @@ class Host < ActiveRecord::Base
     end
   end
 
+  def self.canonical_hostname(hostname)
+    hostname.sub(/^aka-/, '').sub(/^aka\./, 'www.')
+  end
+
   def redirected_by_gds?
     /^redirector-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/.match(cname).present?
   end

@@ -103,21 +103,19 @@ class MappingsController < ApplicationController
 
   def find_global
     # This allows finding a mapping without knowing the site first.
-    render status: 404, text: "aka_url not present" and
-      return unless params[:aka_url].present?
+    render status: 400, text: "bad request: url not present" and
+      return unless params[:url].present?
 
-    uri = URI.parse(params[:aka_url])
-    render status: 400, text: "aka_url not an HTTP or HTTPS URI" and
-      return unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+    url = URI.parse(params[:url])
+    render status: 400, text: "bad request: url not an HTTP or HTTPS URL" and
+      return unless url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS)
 
-    # Perform Bouncer's AKA matching to switch aka to www as per the
-    # comment in Host#aka_hostname.
-    uri.host = uri.host.sub(/^aka-/, '').sub(/^aka\./, 'www.')
-    site = Host.where(hostname: "#{uri.host}").first.try(:site)
-    render status: 404, text: "#{uri.host} not found" and
+    url.host = Host.canonical_hostname(url.host)
+    site = Host.where(hostname: url.host).first.try(:site)
+    render status: 404, text: "#{url.host} not found" and
       return unless site
 
-    redirect_to site_mapping_find_url(site, path: uri.path)
+    redirect_to site_mapping_find_url(site, path: url.path)
   end
 
   def find
