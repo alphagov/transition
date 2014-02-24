@@ -12,12 +12,12 @@
       <% if current_user.can_edit?(site.organisation) %>
         <th></th>
       <% end %>
-      <th class="mapping-type-header" scope="col">Type</th>
+      <th class="mapping-type-column" scope="col">Type</th>
       <th scope="col">
         Original path from <%= site.default_host.hostname %>
       </th>
       <% if current_user.can_edit?(site.organisation) %>
-        <th></th>
+        <th class="mapping-edit-column"></th>
       <% end %>
     </tr>
     <% if current_user.can_edit?(site.organisation) %>
