@@ -8,7 +8,7 @@
   </h1>
 </div>
 
-<%= form_tag new_multiple_confirmation_site_mappings_path(@site), role: 'form', class: 'js-edit-mapping-form' do %>
+<%= form_tag new_multiple_confirmation_site_mappings_path(@site), role: 'form', 'data-module' => 'toggle-mapping-form-fields' do %>
 
   <% if @errors %>
     <%= render 'shared/error_messages', error_messages: @errors.values %>
@@ -60,14 +60,12 @@
       Archive
     </legend>
 
-    <div data-module="toggle">
-      <dl class="read-only-fields js-toggle-target">
-        <dt>National archive</dt>
-        <dd>
-          <p>The archive URLs will be automatically generated based on the old URLs provided above.</p>
-        </dd>
-      </dl>
-    </div>
+    <dl class="read-only-fields">
+      <dt>National archive</dt>
+      <dd>
+        <p>The archive URLs will be automatically generated based on the old URLs provided above.</p>
+      </dd>
+    </dl>
   <% end %>
 
   <%= render partial: 'tag_list_field', locals: { bulk_tagger: @bulk_add } %>
@@ -79,4 +77,3 @@
   </div>
 
 <% end %>
-<script>GOVUK.Mappings.edit()</script>

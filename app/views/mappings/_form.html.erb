@@ -1,4 +1,4 @@
-<%= form_for @mapping, url: polymorphic_url([@site, @mapping]), html: {role: 'form', class: 'js-edit-mapping-form'} do |f| %>
+<%= form_for @mapping, url: polymorphic_url([@site, @mapping]), html: {role: 'form', 'data-module' => 'toggle-mapping-form-fields'} do |f| %>
   <%= render 'shared/error_messages', error_messages: f.object.errors.full_messages %>
 
   <div class="form-group row">
@@ -89,4 +89,3 @@
 
   <%= f.submit 'Save mapping', class: 'add-top-margin btn btn-success' %>
 <% end %>
-<script>GOVUK.Mappings.edit()</script>

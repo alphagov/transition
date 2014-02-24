@@ -2,6 +2,7 @@ describe('A selectable table module', function() {
   "use strict"
 
   var root = window,
+      selectableTable,
       table,
       tableRows,
       tableInputs;
@@ -57,7 +58,9 @@ describe('A selectable table module', function() {
     </div>');
 
     $('body').append(table);
-    root.GOVUK.SelectableTable.start(table);
+
+    selectableTable = new GOVUK.Modules.SelectableTable();
+    selectableTable.start(table)
 
     tableRows = table.find('tbody tr');
     tableInputs = tableRows.find('input');
@@ -91,7 +94,9 @@ describe('A selectable table module', function() {
       </table>');
 
       $('body').append(tableWithSelection);
-      root.GOVUK.SelectableTable.start(tableWithSelection);
+
+      selectableTable = new GOVUK.Modules.SelectableTable();
+      selectableTable.start(tableWithSelection)
 
     });
 

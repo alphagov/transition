@@ -14,4 +14,12 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require select2
+//= require govuk
 //= require_tree .
+
+// Find and auto-start modules specified using the data-module="" pattern in markup
+(function($, GOVUK) {
+  $(function(){
+    GOVUK.startAll();
+  });
+})(jQuery, window.GOVUK);

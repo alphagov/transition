@@ -98,7 +98,6 @@
   <% end %>
   <% if current_user.can_edit?(@site.organisation) %>
     </div>
-    <script>GOVUK.SelectableTable.setup()</script>
   <% end %>
 
   <%= paginate(@mappings) %>
