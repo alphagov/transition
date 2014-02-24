@@ -5,6 +5,8 @@ class Hit < ActiveRecord::Base
   NEVER = Date.new(1970, 1, 1)
 
   belongs_to :host
+  belongs_to :mapping
+
   validates :host, :hit_on, presence: true
   validates :path, presence: true, length: { maximum: 1024 }
   validates :count, presence: true, numericality: { greater_than_or_equal_to: 0, only_integer: true }

@@ -16,11 +16,15 @@ CREATE TABLE `hits` (
   `http_status` varchar(3) COLLATE utf8_bin NOT NULL,
   `count` int(11) NOT NULL,
   `hit_on` date NOT NULL,
+  `mapping_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_hits_on_host_id_and_path_hash_and_hit_on_and_http_status` (`host_id`,`path_hash`,`hit_on`,`http_status`),
   KEY `index_hits_on_host_id` (`host_id`),
   KEY `index_hits_on_host_id_and_hit_on` (`host_id`,`hit_on`),
-  KEY `index_hits_on_host_id_and_http_status` (`host_id`,`http_status`)
+  KEY `index_hits_on_host_id_and_http_status` (`host_id`,`http_status`),
+  KEY `index_hits_on_mapping_id` (`mapping_id`),
+  KEY `index_hits_on_path_hash` (`path_hash`),
+  KEY `index_hits_on_host_id_and_path_hash` (`host_id`,`path_hash`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `hits_staging` (
@@ -30,6 +34,19 @@ CREATE TABLE `hits_staging` (
   `count` int(11) DEFAULT NULL,
   `hit_on` date DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `host_paths` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `path` varchar(2048) COLLATE utf8_bin DEFAULT NULL,
+  `path_hash` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `c14n_path_hash` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `host_id` int(11) DEFAULT NULL,
+  `mapping_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_host_paths_on_host_id_and_path_hash` (`host_id`,`path_hash`),
+  KEY `index_host_paths_on_c14n_path_hash` (`c14n_path_hash`),
+  KEY `index_host_paths_on_mapping_id` (`mapping_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `hosts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -240,3 +257,11 @@ INSERT INTO schema_migrations (version) VALUES ('20140127151418');
 INSERT INTO schema_migrations (version) VALUES ('20140127151419');
 
 INSERT INTO schema_migrations (version) VALUES ('20140225152616');
+
+INSERT INTO schema_migrations (version) VALUES ('20140225161453');
+
+INSERT INTO schema_migrations (version) VALUES ('20140225175741');
+
+INSERT INTO schema_migrations (version) VALUES ('20140227154306');
+
+INSERT INTO schema_migrations (version) VALUES ('20140227154752');
