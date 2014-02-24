@@ -8,14 +8,14 @@
   GOVUK.find = function(container) {
 
     var modules,
-        pattern = '[data-module]',
+        moduleSelector = '[data-module]',
         container = container || $('body');
 
-    modules = container.find(pattern);
+    modules = container.find(moduleSelector);
 
     // Include container if it matches pattern, as that could
     // be a module too
-    if (container.is(pattern)) {
+    if (container.is(moduleSelector)) {
       modules.push(container);
     }
 
