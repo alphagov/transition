@@ -1,4 +1,4 @@
-<div id="saved-mappings-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+<div id="saved-mappings-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-module="auto-show-modal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <header class="modal-header">
@@ -18,8 +18,3 @@
     </div>
   </div>
 </div>
-<script>
-  $('#saved-mappings-modal').modal('show').on('hidden', function () {
-    $(this).remove();
-  });
-</script>

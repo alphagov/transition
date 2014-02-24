@@ -129,7 +129,7 @@
 
         $('body').append(modal);
 
-        modal.modal('show').on('hidden', function () {
+        modal.modal('show').on('hidden.bs.modal', function () {
           modal.remove();
         });
       }
