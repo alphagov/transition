@@ -59,9 +59,23 @@
     <main role="main">
       <% # Map bootstrap alerts to Rails flashes, but keep notice and alert as they are pecial cased with redirect_to %>
       <% [:success, :info, :warning, :danger, :notice, :alert].select { |k| flash[k].present? }.each do |k| %>
-        <div class="alert alert-<%= k == :notice || k == :alert ? 'warning' : k %>">
+        <div class="
+          alert
+          alert-<%= k == :notice || k == :alert ? 'warning' : k %>
+          <% if k == :success && flash[:saved_mapping_ids] %>if-js-hide<% end %>
+        ">
           <%= flash[k] %>
         </div>
+      <% end %>
+
+      <% if flash[:saved_mapping_ids] %>
+        <%= render partial: 'mappings/saved_mappings_modal',
+          locals: {
+            site: @site,
+            message: flash[:success],
+            mappings: mappings_from_ids(flash[:saved_mapping_ids])
+          }
+        %>
       <% end %>
 
       <% breadcrumbs do |links| %>

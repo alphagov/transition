@@ -1,3 +1,5 @@
+#encoding: UTF-8
+
 Then(/^I should be returned to the mappings list for (.*)$/) do |site_abbr|
   expect(current_path).to eql(site_mappings_path(site_abbr))
 end
@@ -10,9 +12,9 @@ Then(/^I should be editing the mapping for "([^"]*)"$/) do |path|
   expect(page).to have_selector("form a[href*='#{path}']")
 end
 
-Then(/^I should be returned to the edit mapping page with a success message$/) do
-  step 'I should see "Edit mapping"'
-  step 'I should see "Mapping saved"'
+Then(/^I should be returned to the mappings list I was on$/) do
+  uri = URI.parse(current_url)
+  expect("#{uri.path}?#{uri.query}").to eql(site_mappings_path('bis', fake_param: 1))
 end
 
 Then(/^the filter box should contain "([^"]*)"$/) do |path|
@@ -89,6 +91,10 @@ Then(/^I should see a form that contains my selection within the modal$/) do
   }
 end
 
+Then(/^I should see a table with (\d+) saved mappings? in the modal$/) do |count|
+  expect(page).to have_selector('.modal .mappings tbody tr', count: count)
+end
+
 Then(/^I should see the link replaced with a suggested URL field$/) do
   expect(page).to have_selector('#mapping_suggested_url')
   expect(page).not_to have_selector('a[href="#suggest-url"]')
@@ -129,15 +135,24 @@ Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
 end
 
 Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|
-  within '.alert-success' do
+  within '.alert-success', :match => :first do
     expect(page).to have_content(
       %(0 mappings created and 3 mappings updated. All tagged with "#{tag_list}")
     )
   end
 end
 
+Then(/^the mapping should have the tags "([^"]*)"$/) do |tag_list|
+  expected_tags = tag_list.split(',').map(&:strip)
+  within ".mappings-index .mapping-#{@mapping.id}" do
+    expected_tags.each do |tag|
+      expect(page).to have_selector('.tag', text: tag)
+    end
+  end
+end
+
 Then(/^the mappings should all have the tags "([^"]*)"$/) do |tag_list|
-  expect(page).to have_selector('.tag-list', count: @site.mappings.count)
+  expect(page).to have_selector('.mappings-index .tag-list', count: @site.mappings.count)
 
   expected_tags = tag_list.split(',').map(&:strip)
   page.all('.tag-list').each do |mapping_tags_list|
@@ -148,9 +163,9 @@ Then(/^the mappings should all have the tags "([^"]*)"$/) do |tag_list|
 end
 
 Then(/^I should see that (\d+) were tagged "([^"]*)"$/) do |n, tag_list|
-  within '.alert-success' do
+  within '.alert-success', :match => :first do
     expect(page).to have_content(
-      %(#{n} mappings tagged "#{tag_list}")
+      %(#{n} mappings tagged “#{tag_list}”)
     )
   end
 end
@@ -166,7 +181,7 @@ Then(/^I should see only the common tags "([^"]*)"$/) do |tag_list|
 end
 
 Then(/^mapping (\d+) should have the tags "([^"]*)"$/) do |nth, tag_list|
-  within ".mappings tbody tr:nth-child(#{nth}) .tag-list" do
+  within ".mappings-index tbody tr:nth-child(#{nth}) .tag-list" do
     tag_list.split(',').map(&:strip).each do |tag|
       expect(page).to have_selector('.tag', text:tag)
     end
@@ -174,7 +189,7 @@ Then(/^mapping (\d+) should have the tags "([^"]*)"$/) do |nth, tag_list|
 end
 
 Then(/^mapping (\d+) should have the tags "([^"]*)" but not "([^"]*)"$/) do |nth, tag_list, without_tag_list|
-  within ".mappings tbody tr:nth-child(#{nth}) .tag-list" do
+  within ".mappings-index tbody tr:nth-child(#{nth}) .tag-list" do
     tag_list.split(',').map(&:strip).each do |tag|
       expect(page).to have_selector('.tag', text:tag)
     end

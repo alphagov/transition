@@ -77,15 +77,26 @@ module View
       end
 
       def create_or_update!
+        @modified_mappings = []
         @outcomes = canonical_paths.map do |path|
           m = Mapping.where(site_id: site.id, path: path).first_or_initialize
           m.attributes = common_data
           m.tag_list = [m.tag_list, params[:tag_list]].join(',')
 
           if m.new_record?
-            m.save ? :created : :creation_failed
+            if m.save
+              @modified_mappings << m
+              :created
+            else
+              :creation_failed
+            end
           elsif update_existing?
-            m.save ? :updated : :update_failed
+            if m.save
+              @modified_mappings << m
+              :updated
+            else
+              :update_failed
+            end
           else
             :not_updating
           end
@@ -102,6 +113,10 @@ module View
 
       def updated_count
         outcomes.count(:updated)
+      end
+      
+      def modified_mappings
+        @modified_mappings
       end
 
       def tagged_with(opts = {and: false})

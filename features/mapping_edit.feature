@@ -6,7 +6,7 @@ Feature: Edit a site's mapping
   Background:
     Given I have logged in as an admin
     And a 410 mapping exists for the bis site with the path /about
-    And I visit the path /sites/bis/mappings
+    And I visit the path /sites/bis/mappings?fake_param=1
     And I go to edit the first mapping
 
   Scenario: Looking at the example URL
@@ -19,9 +19,11 @@ Feature: Edit a site's mapping
     Then I should see redirect fields
     But I should not see archive fields
     When I save the mapping
-    Then I should be returned to the edit mapping page with a success message
-    And I should see "Mapping saved"
-    And I should be editing the mapping for "/about"
+    Then I should be returned to the mappings list I was on
+    And I should see an open modal window
+    And I should see "Mapping saved" in the modal window
+    And I should see a table with 1 saved mapping in the modal
+    And I should see "/about" in the modal window
 
   @javascript
   Scenario: Editing a site mapping that is an archive

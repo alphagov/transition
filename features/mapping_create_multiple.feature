@@ -3,6 +3,7 @@ Feature: Create mappings
   I want to create mappings
   so that previously unknown URLs start to send people to the right place
 
+  @javascript
   Scenario:
     Given I have logged in as an admin
     And there is a site called bis belonging to an organisation bis with these mappings:
@@ -22,8 +23,9 @@ Feature: Create mappings
     And I should see "/a currently archived"
     And I should see "/r currently redirects to http://somewhere.good"
     When I save my changes
-    Then I should see "1 mapping created. 0 mappings updated."
-    And I should see "/needs/canonicalizing"
+    Then I should see "1 mapping created. 0 mappings updated." in a modal window
+    And I should see a table with 1 saved mapping in the modal
+    And I should see "/needs/canonicalizing" in a modal window
 
   Scenario: I don't have access
     Given I have logged in as a member of another organisation

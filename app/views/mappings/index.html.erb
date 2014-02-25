@@ -34,71 +34,15 @@
 
   <%= paginate(@mappings) %>
 
-  <% if current_user.can_edit?(@site.organisation) %>
-    <div data-module="selectable-table">
-  <% end %>
-  <%= form_tag edit_multiple_site_mappings_path(@site), remote: true do %>
-  <table class="mappings table table-bordered">
-    <thead>
-      <tr class="table-header">
-        <% if current_user.can_edit?(@site.organisation) %>
-          <th></th>
-        <% end %>
-        <th class="mapping-type-header" scope="col">Type</th>
-        <th scope="col">
-          Original path from <%= @site.default_host.hostname %>
-        </th>
-        <% if current_user.can_edit?(@site.organisation) %>
-          <th></th>
-        <% end %>
-      </tr>
-      <% if current_user.can_edit?(@site.organisation) %>
-        <%= render partial: 'mappings_table_header', locals: {footer: false} %>
-      <% end %>
-    </thead>
-    <tbody>
-    <% @mappings.each do |mapping| %>
-      <tr data-status-code="<%= mapping.http_status %>">
-        <% if current_user.can_edit?(@site.organisation) %>
-          <td class="selectable-row">
-            <div class="relative">
-              <label>
-                <%= check_box_tag "mapping_ids[]", mapping.id, checked = false, class: 'js-toggle-row' %>
-              </label>
-            </div>
-          </td>
-        <% end %>
-        <td class="<%= "mapping-type-#{mapping.type}" %>">
-          <%= mapping.type.titleize %>
-        </td>
-        <td class="mapping-path">
-          <strong class="pull-left"><%= link_to mapping.path, mapping.old_url, class: 'breakable' %></strong>
-          <%= render partial: 'tags', locals: { mapping: mapping } %>
-          <% if mapping.redirect? %>
-            <br><span class="text-muted">redirects to</span>
-            <%= link_to mapping.new_url, mapping.new_url, class: 'link-muted breakable' if mapping.new_url.present? %>
-          <% end %>
-        </td>
-        <% if current_user.can_edit?(@site.organisation) %>
-          <td class="text-right">
-            <%= link_to edit_site_mapping_path(@site, mapping), class: 'btn btn-default btn-xs' do %>
-              Edit&nbsp;mapping
-            <% end %>
-          </td>
-        <% end %>
-      </tr>
-    <% end %>
-    </tbody>
-    <% if current_user.can_edit?(@site.organisation) %>
-      <tfoot class="if-no-js-hide">
-        <%= render partial: 'mappings_table_header', locals: {footer: true} %>
-      </tfoot>
-    <% end %>
-  </table>
-  <% end %>
-  <% if current_user.can_edit?(@site.organisation) %>
-    </div>
-  <% end %>
+  <%= render partial: 'mappings_table',
+    locals: {
+      mappings: @mappings,
+      site: @site,
+      css: 'mappings-index',
+      include_footer: true,
+      include_bulk_add: true
+    }
+  %>
 
   <%= paginate(@mappings) %>
 

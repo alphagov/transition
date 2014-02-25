@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 require 'set'
 
 module View
@@ -46,7 +48,7 @@ module View
 
       def success_message
         successes = mappings.count - @failure_ids.length
-        "#{successes} #{ 'mapping'.pluralize(successes) } tagged \"#{tag_list}\""
+        "#{successes} #{ 'mapping'.pluralize(successes) } tagged “#{tag_list}”"
       end
 
     private

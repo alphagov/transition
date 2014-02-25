@@ -1,6 +1,10 @@
 <%= form_for @mapping, url: polymorphic_url([@site, @mapping]), html: {role: 'form', 'data-module' => 'toggle-mapping-form-fields'} do |f| %>
   <%= render 'shared/error_messages', error_messages: f.object.errors.full_messages %>
 
+  <% if params[:return_path].present? %>
+    <%= hidden_field_tag 'return_path', params[:return_path] %>
+  <% end %>
+
   <div class="form-group row">
     <div class="col-md-2">
       <%= f.label :http_status, 'Type' %>
