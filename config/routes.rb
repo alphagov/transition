@@ -4,9 +4,9 @@ Transition::Application.routes.draw do
   resources :style, only: [:index]
   resources :glossary, only: [:index]
 
-  match '/404' => 'static_content#error_404'
-  match '/422' => 'static_content#error_422'
-  match '/500' => 'static_content#error_500'
+  match '/404' => 'errors#error_404'
+  match '/422' => 'errors#error_422'
+  match '/500' => 'errors#error_500'
 
   resources :hosts, only: [:index]
 

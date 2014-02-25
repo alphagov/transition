@@ -1,8 +1,9 @@
 require 'spec_helper'
 
-describe StaticContentController do
+describe ErrorsController do
   # This controller does not require authentication so its views must not
-  # require a logged-in user, so render them to make sure there are no errors
+  # require a logged-in user, so render them to make sure that no further
+  # exceptions are generated
   render_views
 
   shared_examples 'a JSON error' do
@@ -25,7 +26,7 @@ describe StaticContentController do
     end
 
     it 'renders our custom error page' do
-      expect(response).to render_template 'static_content/error_404'
+      expect(response).to render_template 'errors/error_404'
     end
 
     it 'uses the error page layout' do
@@ -60,7 +61,7 @@ describe StaticContentController do
     end
 
     it 'renders our custom error page' do
-      expect(response).to render_template 'static_content/error_422'
+      expect(response).to render_template 'errors/error_422'
     end
 
     it 'uses the error page layout' do
@@ -95,7 +96,7 @@ describe StaticContentController do
     end
 
     it 'renders our custom error page' do
-      expect(response).to render_template 'static_content/error_500'
+      expect(response).to render_template 'errors/error_500'
     end
 
     it 'uses the error page layout' do

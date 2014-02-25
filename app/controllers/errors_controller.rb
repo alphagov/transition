@@ -1,6 +1,6 @@
 #encoding: utf-8
 
-class StaticContentController < ActionController::Base
+class ErrorsController < ActionController::Base
   layout "error_page"
 
   def error_404
