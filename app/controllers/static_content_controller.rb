@@ -1,4 +1,8 @@
-class StaticContentController < ApplicationController
+#encoding: utf-8
+
+class StaticContentController < ActionController::Base
+  layout "error_page"
+
   def error_404
     respond_to do |format|
       format.html { render status: 404 }
@@ -7,10 +11,16 @@ class StaticContentController < ApplicationController
   end
 
   def error_422
-    render file: "#{Rails.root}/public/422.html", layout: false, status: 422
+    respond_to do |format|
+      format.html { render status: 422 }
+      format.any  { render text: "422 Unprocessable Entity", status: 422 }
+    end
   end
 
   def error_500
-    render file: "#{Rails.root}/public/500.html", layout: false, status: 500
+    respond_to do |format|
+      format.html { render status: 500 }
+      format.any  { render text: "500 Internal Server Error", status: 500 }
+    end
   end
 end
