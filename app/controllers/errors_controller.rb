@@ -4,30 +4,15 @@ class ErrorsController < ActionController::Base
   layout "error_page"
 
   def error_404
-    message = "404 Not Found"
-    respond_to do |format|
-      format.html { render status: 404 }
-      format.json { render status: 404, json: json_error(message) }
-      format.any  { render status: 404, text: message }
-    end
+    error_response(404, "404 Not Found")
   end
 
   def error_422
-    message = "422 Unprocessable Entity"
-    respond_to do |format|
-      format.html { render status: 422 }
-      format.json { render status: 422, json: json_error(message) }
-      format.any  { render status: 422, text: message }
-    end
+    error_response(422, "422 Unprocessable Entity")
   end
 
   def error_500
-    message = "500 Internal Server Error"
-    respond_to do |format|
-      format.html { render status: 500 }
-      format.json { render status: 500, json: json_error(message) }
-      format.any  { render status: 500, text: message }
-    end
+    error_response(500, "500 Internal Server Error")
   end
 
 private
@@ -39,5 +24,13 @@ private
         message: message
       },
     }
+  end
+
+  def error_response(status_code, message)
+    respond_to do |format|
+      format.html { render status: status_code }
+      format.json { render status: status_code, json: json_error(message) }
+      format.any  { render status: status_code, text: message }
+    end
   end
 end
