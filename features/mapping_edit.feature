@@ -50,3 +50,8 @@ Feature: Edit a site's mapping
     And I save the mapping
     Then I should still be editing a mapping
     And I should see "New URL is not a URL"
+
+  @allow-rescue
+  Scenario: Visit the page of an non-existent mapping
+    And I visit the path /sites/bis/mappings/123456789/edit
+    Then I should see our custom 404 page

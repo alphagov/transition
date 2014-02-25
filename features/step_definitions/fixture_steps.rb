@@ -22,6 +22,16 @@ Given(/^there are these organisations without sites:$/) do |org_table|
   end
 end
 
+Given(/^there are (\d+) sites with hosts$/) do |site_count|
+  site_count.to_i.times do
+    create(:site)
+  end
+end
+
+Given(/^that the first host's site does not exist$/) do
+  Host.first.site.delete
+end
+
 Given(/^there is a site called (.*) belonging to an organisation (.*) with these mappings:$/) do |site_abbr, org_abbr, mappings_table|
   # table is a | 410         | /about/corporate |                   |
   org  = create(:organisation, title: org_abbr, whitehall_slug: org_abbr)

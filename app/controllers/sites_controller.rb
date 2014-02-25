@@ -6,6 +6,6 @@ class SitesController < ApplicationController
 
 private
   def find_site
-    @site = Site.find_by_abbr(params[:id])
+    @site = Site.find_by_abbr!(params[:id])
   end
 end

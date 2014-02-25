@@ -32,3 +32,9 @@ Feature: View organisation
     And I should see "Indeterminate"
     And there should be a tooltip which includes "external supplier"
     And there should be a tooltip which includes "partially redirected"
+
+  @allow-rescue
+  Scenario: Visit the page of an non-existent organisation
+    Given I have logged in as an admin
+    When I visit the path /organisations/not-an-org
+    Then I should see our custom 404 page
