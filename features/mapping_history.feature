@@ -32,3 +32,11 @@ Feature: History of edits to a mapping
     And there is a mapping that has no history
     When I go to edit that mapping
     Then I should see no history
+
+  @allow-rescue
+  Scenario: Trying to look at a mapping's history on the wrong site
+    When I log in as a SIRO
+    And I visit the path /sites/directgov/mappings/1/versions
+    Then I should see "History"
+    When I visit the path /sites/not_a_site/mappings/1/versions
+    Then I should see our custom 404 page
