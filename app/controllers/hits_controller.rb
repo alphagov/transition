@@ -11,7 +11,7 @@ class HitsController < ApplicationController
   def summary
     @sections = View::Hits::Category.all.reject { |c| c.name == 'all' }.map do |category|
       category.tap do |c|
-        c.hits = hits_in_period.by_path_and_status.send(category.to_sym).top_ten.to_a
+        c.hits = hits_in_period.by_path_and_status.send(category.to_sym).top_ten
       end
     end
 

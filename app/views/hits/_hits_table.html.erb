@@ -22,13 +22,25 @@
       <td class="remove-padding">
         <div class="bar-chart-wrap">
           <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
-          <strong class="breakable path"><%= link_to_hit(hit, @site.default_host) %></strong>
+          <strong class="breakable path">
+            <%= link_to_hit(hit, @site.default_host) %>
+            <% if hit.mapping %>
+              <% if [hit.http_status, hit.mapping.http_status] == ['410', '301']  %>
+                <br>
+                <span class="text-muted"><%= "was archived, now redirecting" %></span>
+              <% elsif [hit.http_status, hit.mapping.http_status] == ['301', '410'] %>
+                <br>
+                <span class="text-muted"><%= "was redirecting, now archived" %></span>
+              <% end %>
+            <% end %>
+          </strong>
         </div>
       </td>
       <td class="count"><%= number_with_delimiter hit.count %></td>
       <% if current_user.can_edit?(@site.organisation) %>
         <td class="action">
-          <%= link_to 'Check mapping', site_mapping_find_path(@site, path: hit.path), class: 'btn btn-default btn-xs' %>
+          <%= link_to "#{hit.mapping.present? ? 'Edit' : 'Add'} mapping",
+                      site_mapping_find_path(@site, path: hit.path), class: 'btn btn-default btn-xs' %>
         </td>
       <% end %>
     </tr>

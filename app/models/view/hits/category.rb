@@ -3,8 +3,7 @@ module View
     ##
     # The categories for hits
     class Category < Struct.new(:name, :color)
-      attr_reader   :points
-      attr_accessor :hits
+      attr_reader :hits, :points
 
       COLORS = {
         'all'       => '#333',
@@ -12,6 +11,10 @@ module View
         'archives'  => '#aaa',
         'redirects' => '#9e9'
       }
+
+      def hits=(scope)
+        @hits = (name == 'errors') ? scope.without_mappings : scope
+      end
 
       def self.all
         COLORS.map do |name, color|

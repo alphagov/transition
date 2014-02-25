@@ -142,3 +142,43 @@ Then(/^the period "([^"]*)" should be selected$/) do |period_title|
     expect(page).to have_text(period_title)
   end
 end
+
+Then(/^I should not see any errors that were fixed$/) do
+  steps %{
+    Then I should see "/error"
+    But I should not see "/was_error_now_redirect"
+    And I should not see "/was_error_now_archive"
+  }
+end
+
+And(/^I should see that I can add mappings where they are missing$/) do
+  # There should be an "Add mapping button" for all the missing mappings
+  within '.hits-summary-errors' do
+    expect(page).to have_link('Add mapping')
+  end
+end
+
+But(/^I should see all redirects and archives, even those that have since changed type$/) do
+  steps %{
+    Then I should see "/was_archive_now_redirect"
+    And I should see "/always_an_archive"
+    And I should see "/always_a_redirect"
+    And I should see "/was_redirect_now_archive"
+  }
+end
+
+And(/^I should see an indication that they have since changed$/) do
+  steps %{
+    Then I should see "was archived, now redirecting"
+    And I should see "was redirecting, now archived"
+  }
+end
+
+And(/^I should see that I can edit redirects and archives$/) do
+  within '.hits-summary-archives' do
+    expect(page).to have_link('Edit mapping')
+  end
+  within '.hits-summary-redirects' do
+    expect(page).to have_link('Edit mapping')
+  end
+end
