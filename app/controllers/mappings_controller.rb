@@ -106,9 +106,13 @@ class MappingsController < ApplicationController
     render status: 400, text: "bad request: url not present" and
       return unless params[:url].present?
 
-    url = URI.parse(params[:url])
-    render status: 400, text: "bad request: url not an HTTP or HTTPS URL" and
-      return unless url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS)
+    begin
+      url = URI.parse(params[:url])
+      render status: 400, text: "bad request: url not an HTTP or HTTPS URL" and
+        return unless url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS)
+    rescue URI::InvalidURIError
+      render status: 404, text: "not a valid URL" and return
+    end
 
     url.host = Host.canonical_hostname(url.host)
     site = Host.where(hostname: url.host).first.try(:site)
