@@ -79,7 +79,7 @@ describe MappingsController do
   end
 
 
-  describe "#find_global" do
+  describe '#find_global' do
     before do
       login_as_stub_user
     end
@@ -87,6 +87,13 @@ describe MappingsController do
     context 'when the URL isn\'t supplied' do
       it 'returns a 400 error' do
         get :find_global, url: nil
+        expect(response.status).to eq(400)
+      end
+    end
+
+    context 'when the URL isn\'t a URL' do
+      it 'returns a 400 error' do
+        get :find_global, url: 'http://this_looks_bad.com/bang'
         expect(response.status).to eq(400)
       end
     end

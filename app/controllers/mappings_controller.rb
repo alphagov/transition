@@ -111,15 +111,15 @@ class MappingsController < ApplicationController
 
   def find_global
     # This allows finding a mapping without knowing the site first.
-    render status: 400, text: "bad request: url not present" and
+    render status: 400, text: 'bad request: url not present' and
       return unless params[:url].present?
 
     begin
       url = URI.parse(params[:url])
-      render status: 400, text: "bad request: url not an HTTP or HTTPS URL" and
+      render status: 400, text: 'bad request: url not an HTTP or HTTPS URL' and
         return unless url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS)
     rescue URI::InvalidURIError
-      render status: 404, text: "not a valid URL" and return
+      render status: 400, text: 'not a valid URL' and return
     end
 
     url.host = Host.canonical_hostname(url.host)
