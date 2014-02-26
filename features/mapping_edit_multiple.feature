@@ -10,6 +10,18 @@ Feature: Editing multiple mappings for a site
       | 301         | /a               | http://gov.uk/directgov                 |
       | 301         | /about/branding  | http://gov.uk/branding                  |
       | 410         | /about/corporate |                                         |
+      | 410         | /z1              |                                         |
+      | 410         | /z2              |                                         |
+      | 410         | /z3              |                                         |
+      | 410         | /z4              |                                         |
+      | 410         | /z5              |                                         |
+      | 410         | /z6              |                                         |
+      | 410         | /z7              |                                         |
+      | 410         | /z8              |                                         |
+      | 410         | /z9              |                                         |
+      | 410         | /z10             |                                         |
+      | 410         | /z11             |                                         |
+      | 410         | /z12             |                                         |
     And I visit the path /sites/directgov/mappings
 
   Scenario: Selecting multiple mappings to redirect without javascript
@@ -46,7 +58,7 @@ Feature: Editing multiple mappings for a site
     And I go to edit the selected mappings
     And I save my changes
     And I click the link called "Cancel"
-    Then I should see "3 mappings"
+    Then I should see "15 mappings"
 
   Scenario: Editing multiple mappings from a filtered index page
     When I filter the path by /about
