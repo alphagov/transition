@@ -63,6 +63,9 @@ Scenario: Bulk adding tags to existing mappings (JS)
 @javascript
 Scenario: Autocompleting popular tags
   Given I have logged in as an admin
+  And a site "foo" exists with these tagged mappings:
+  | path  | tags              |
+  | /1    | from another site |
   And a site "ukba" exists with these tagged mappings:
   | path  | tags             |
   | /1    | fee, fum, fiddle |
@@ -76,6 +79,7 @@ Scenario: Autocompleting popular tags
   When I type "f" in the tags box
   Then I should see "fo" available for selection
   And I should see "fox" available for selection
+  And I should not see "from another site" available for selection
   But I should not see "fum" available for selection as it's already selected
 
 Scenario: Filtering mappings by tag

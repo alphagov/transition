@@ -4,8 +4,8 @@ Given(/^a mapping exists for the site ukba$/) do
   @site.mappings = [@mapping]
 end
 
-Given(/^a site "ukba" exists with these tagged mappings:$/) do |tagged_paths|
-  @site = create :site, abbr: 'ukba'
+Given(/^a site "([^"]*)" exists with these tagged mappings:$/) do |site_abbr, tagged_paths|
+  @site = create :site, abbr: site_abbr
 
   # tagged_paths.hashes.keys # => [:path, :tags]
   tagged_paths.hashes.each do |row|

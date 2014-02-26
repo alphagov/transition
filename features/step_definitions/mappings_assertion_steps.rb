@@ -188,8 +188,12 @@ Then(/^I should see "([^"]*)" available for selection$/) do |tag|
   expect(page).to have_selector('.select2-results .select2-result-label', text: tag)
 end
 
-But(/^I should not see "([^"]*)" available for selection as it's already selected$/) do |tag|
+But(/^I should not see "([^"]*)" available for selection$/) do |tag|
   expect(page).not_to have_selector('.select2-results .select2-result-label', text: tag)
+end
+
+But(/^I should not see "([^"]*)" available for selection as it's already selected$/) do |tag|
+  step %Q{I should not see "#{tag}" available for selection}
 end
 
 Then(/^I should see the highlighted tags? "([^"]*)"$/) do |tag_list|
