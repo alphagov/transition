@@ -132,6 +132,8 @@
         modal.modal('show').on('hidden.bs.modal', function () {
           modal.remove();
         });
+
+        GOVUK.start(modal);
       }
 
       function handleModalError(xhr, status, error) {

@@ -97,3 +97,20 @@ Feature: Editing multiple mappings for a site
     And I should see a table with 2 saved mappings in the modal
     And I should see "/a" in the modal window
     And I should see "/about/branding" in the modal window
+
+  @javascript
+  Scenario: Truncating a table of mappings in a modal
+    When I select all the mappings
+    And I click the first link called "Redirect"
+    Then I should see an open modal window
+    And I should see a table with 9 mappings in the modal
+    When I click the link "and 6 more"
+    Then I should see a table with 15 mappings in the modal
+    And I should not see "and 6 more"
+
+  @javascript
+  Scenario: Don't truncate a table of exactly 10 mappings
+    When I select the first 10 mappings
+    And I click the first link called "Redirect"
+    Then I should see an open modal window
+    And I should see a table with 10 mappings in the modal

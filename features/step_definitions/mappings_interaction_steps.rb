@@ -34,6 +34,16 @@ When(/^I select the first two mappings$/) do
   find(:css, ".mappings tbody tr:first-child + tr input").set(true)
 end
 
+When(/^I select the first (\d+) mappings$/) do |count|
+  count.to_i.times do |i|
+    find(:css, ".mappings tbody tr input[value='#{i + 1}']").set(true)
+  end
+end
+
+When(/^I select all the mappings$/) do
+  find(:css, ".mappings thead input.js-toggle-all").set(true)
+end
+
 When (/^I go to edit the selected mappings$/) do
   click_button "Edit selected"
 end
