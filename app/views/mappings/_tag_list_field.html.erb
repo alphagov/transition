@@ -35,5 +35,5 @@
 <% end %>
 
 <script>
-  GOVUK.Tagging.ready({autocompleteWith: <%= most_used_tags_json(limit: 200) %>});
+  GOVUK.Tagging.ready({autocompleteWith: <%= most_used_tags_json(@site, limit: 200) %>});
 </script>

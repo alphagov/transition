@@ -33,7 +33,7 @@ Scenario: Visit a pre-transition site's page
 
 Scenario: Mappings by tag
   Given I have logged in as an admin
-  And a site ukba exists with these tagged mappings:
+  And a site "ukba" exists with these tagged mappings:
   | path  | tags                          |
   | /1    | 1, 2, 3, 4, 5, 6, 7, 8 ,9, 10 |
   | /2    | 1, 2, 3, 4, 5, 6, 7, 8 ,9, 10 |
