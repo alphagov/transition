@@ -14,7 +14,7 @@ Scenario: Adding tags to a mapping
 
 Scenario: Adding tags when bulk adding mappings
   Given I have logged in as an admin
-  And a site ukba exists with these tagged mappings:
+  And a site "ukba" exists with these tagged mappings:
   | path  | tags     |
   | /1    | fee, fum |
   | /2    | fi, fum  |
@@ -29,7 +29,7 @@ Scenario: Adding tags when bulk adding mappings
 
 Scenario: Bulk adding tags to existing mappings
   Given I have logged in as an admin
-  And a site ukba exists with these tagged mappings:
+  And a site "ukba" exists with these tagged mappings:
   | path  | tags             |
   | /1    | fee, fum, fiddle |
   | /2    | fi, fum          |
@@ -46,7 +46,7 @@ Scenario: Bulk adding tags to existing mappings
 @javascript
 Scenario: Bulk adding tags to existing mappings (JS)
   Given I have logged in as an admin
-  And a site ukba exists with these tagged mappings:
+  And a site "ukba" exists with these tagged mappings:
   | path  | tags             |
   | /1    | fee, fum, fiddle |
   | /2    | fi, fum          |
@@ -63,7 +63,7 @@ Scenario: Bulk adding tags to existing mappings (JS)
 @javascript
 Scenario: Autocompleting popular tags
   Given I have logged in as an admin
-  And a site ukba exists with these tagged mappings:
+  And a site "ukba" exists with these tagged mappings:
   | path  | tags             |
   | /1    | fee, fum, fiddle |
   | /2    | fi, fum          |
@@ -80,7 +80,7 @@ Scenario: Autocompleting popular tags
 
 Scenario: Filtering mappings by tag
   Given I have logged in as an admin
-  And a site ukba exists with these tagged mappings:
+  And a site "ukba" exists with these tagged mappings:
   | path  | tags             |
   | /1    | fee, fum, fiddle |
   | /2    | fi, fum          |
