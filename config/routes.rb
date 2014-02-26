@@ -11,6 +11,9 @@ Transition::Application.routes.draw do
   resources :hosts, only: [:index]
 
   resources :organisations, only: [:show, :index]
+
+  get 'mappings/find_global', to: 'mappings#find_global'
+
   resources :sites, only: [:show] do
 
     get 'mappings/find', as: 'mapping_find'

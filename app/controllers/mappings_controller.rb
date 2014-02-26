@@ -3,8 +3,8 @@ require 'view/mappings/canonical_filter'
 class MappingsController < ApplicationController
   include PaperTrail::Controller
 
-  before_filter :find_site
-  before_filter :check_user_can_edit, except: [:index, :find]
+  before_filter :find_site, except: [:find_global]
+  before_filter :check_user_can_edit, except: [:index, :find, :find_global]
 
   def new_multiple
     bulk_add
@@ -107,6 +107,27 @@ class MappingsController < ApplicationController
       flash[:saved_mapping_ids] = bulk_edit.mappings.map {|m| m.id}
       redirect_to bulk_edit.return_path
     end
+  end
+
+  def find_global
+    # This allows finding a mapping without knowing the site first.
+    render status: 400, text: "bad request: url not present" and
+      return unless params[:url].present?
+
+    begin
+      url = URI.parse(params[:url])
+      render status: 400, text: "bad request: url not an HTTP or HTTPS URL" and
+        return unless url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS)
+    rescue URI::InvalidURIError
+      render status: 404, text: "not a valid URL" and return
+    end
+
+    url.host = Host.canonical_hostname(url.host)
+    site = Host.where(hostname: url.host).first.try(:site)
+    render status: 404, text: "#{url.host} not found" and
+      return unless site
+
+    redirect_to site_mapping_find_url(site, path: url.path)
   end
 
   def find
