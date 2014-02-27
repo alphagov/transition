@@ -24,6 +24,10 @@ gem 'select2-rails', '3.5.2'
 gem 'aws-ses', '0.4.4', require: 'aws/ses'
 gem 'exception_notification', '2.6.1'
 
+# We're switching to Errbit for exception notifications instead of relying on
+# emails, and Errbit uses airbrake.
+gem "airbrake", "3.1.15"
+
 gem 'logstasher', '0.4.8'
 
 group :assets do
