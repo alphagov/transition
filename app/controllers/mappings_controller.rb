@@ -171,6 +171,11 @@ private
   end
 
   def back_or_mappings_index
-    request.env['HTTP_REFERER'] || site_mappings_path(@site)
+    referer = request.env['HTTP_REFERER']
+    if referer && URI.parse(referer).host == request.host
+      referer
+    else
+      site_mappings_path(@site)
+    end
   end
 end

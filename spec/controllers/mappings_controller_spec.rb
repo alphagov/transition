@@ -160,6 +160,16 @@ describe MappingsController do
 
           expect(response).to redirect_to site_hits_url(site)
         end
+
+        context 'when the previous page is on a different host' do
+          it 'should redirect to the mappings index' do
+            request.env['HTTP_REFERER'] = 'http://www.environment-agency.gov.uk.side-by-side'
+
+            get :find, site_id: site.abbr, path: invalid_path
+
+            expect(response).to redirect_to site_mappings_url(site)
+          end
+        end
       end
 
       context 'when no previous page is available' do
