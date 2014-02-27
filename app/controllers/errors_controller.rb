@@ -3,6 +3,10 @@
 class ErrorsController < ActionController::Base
   layout "error_page"
 
+  def error_400
+    error_response(400, "Bad Request")
+  end
+
   def error_404
     error_response(404, "404 Not Found")
   end

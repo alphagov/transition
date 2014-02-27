@@ -4,6 +4,7 @@ Transition::Application.routes.draw do
   resources :style, only: [:index]
   resources :glossary, only: [:index]
 
+  match '/400' => 'errors#error_400'
   match '/404' => 'errors#error_404'
   match '/422' => 'errors#error_422'
   match '/500' => 'errors#error_500'
