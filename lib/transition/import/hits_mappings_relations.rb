@@ -1,8 +1,11 @@
 require 'optic14n'
+require 'transition/import/console_job_wrapper'
 
 module Transition
   module Import
     class HitsMappingsRelations
+      extend Transition::Import::ConsoleJobWrapper
+
       ##
       #
       # Simulation of FIRST via GROUP_CONCAT
@@ -42,24 +45,27 @@ module Transition
       #    (using find_each, default batch size of 1000)
       # 3. Update hits with the mapping_id from host_paths
       def self.refresh!
-        Rails.logger.info 'Refreshing host paths...'
-        ActiveRecord::Base.connection.execute(REFRESH_HOST_PATHS)
-
-        Rails.logger.info 'Adding missing mapping_id/c14n_path_hash to host paths...'
-        HostPath.where(mapping_id: nil).includes(:host).find_each do |host_path|
-          site = host_path.host.site
-
-          c14nized_path_hash =
-            Digest::SHA1.hexdigest(site.canonical_path(host_path.path))
-          mapping_id = Mapping.where(
-            path_hash: c14nized_path_hash, site_id: site.id).pluck(:id).first
-          host_path.update_columns(
-            mapping_id: mapping_id,
-            c14n_path_hash: c14nized_path_hash)
+        start 'Refreshing host paths' do
+          ActiveRecord::Base.connection.execute(REFRESH_HOST_PATHS)
         end
 
-        Rails.logger.info 'Updating hits from host paths...'
-        ActiveRecord::Base.connection.execute(REFRESH_HITS_FROM_HOST_PATHS)
+        start 'Adding missing mapping_id/c14n_path_hash to host paths' do
+          HostPath.where(mapping_id: nil).includes(:host).find_each do |host_path|
+            site = host_path.host.site
+
+            c14nized_path_hash =
+              Digest::SHA1.hexdigest(site.canonical_path(host_path.path))
+            mapping_id = Mapping.where(
+              path_hash: c14nized_path_hash, site_id: site.id).pluck(:id).first
+            host_path.update_columns(
+              mapping_id: mapping_id,
+              c14n_path_hash: c14nized_path_hash)
+          end
+        end
+
+        start 'Updating hits from host paths' do
+          ActiveRecord::Base.connection.execute(REFRESH_HITS_FROM_HOST_PATHS)
+        end
       end
 
     end
