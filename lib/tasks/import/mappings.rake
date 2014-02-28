@@ -5,5 +5,6 @@ namespace :import do
   task :mappings, [:filename_or_mask] => :environment do |_, args|
     filename_or_mask = args[:filename_or_mask]
     Transition::Import::Mappings.from_redirector_mask!(filename_or_mask)
+    Transition::Import::HitsMappingsRelations.refresh!
   end
 end
