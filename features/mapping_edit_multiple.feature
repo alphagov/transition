@@ -18,10 +18,6 @@ Feature: Editing multiple mappings for a site
       | 410         | /z6              |                                         |
       | 410         | /z7              |                                         |
       | 410         | /z8              |                                         |
-      | 410         | /z9              |                                         |
-      | 410         | /z10             |                                         |
-      | 410         | /z11             |                                         |
-      | 410         | /z12             |                                         |
     And I visit the path /sites/directgov/mappings
 
   Scenario: Selecting multiple mappings to redirect without javascript
@@ -58,7 +54,7 @@ Feature: Editing multiple mappings for a site
     And I go to edit the selected mappings
     And I save my changes
     And I click the link called "Cancel"
-    Then I should see "15 mappings"
+    Then I should see "11 mappings"
 
   Scenario: Editing multiple mappings from a filtered index page
     When I filter the path by /about
@@ -104,9 +100,9 @@ Feature: Editing multiple mappings for a site
     And I click the first link called "Redirect"
     Then I should see an open modal window
     And I should see a table with 9 mappings in the modal
-    When I click the link "and 6 more"
-    Then I should see a table with 15 mappings in the modal
-    And I should not see "and 6 more"
+    When I click the link "and 2 more"
+    Then I should see a table with 11 mappings in the modal
+    And I should not see "and 2 more"
 
   @javascript
   Scenario: Don't truncate a table of exactly 10 mappings
