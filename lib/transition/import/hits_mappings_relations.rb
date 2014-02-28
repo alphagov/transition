@@ -55,7 +55,7 @@ module Transition
             path_hash: c14nized_path_hash, site_id: site.id).pluck(:id).first
           host_path.update_columns(
             mapping_id: mapping_id,
-            c14n_path_hash: c14nized_path_hash) if mapping_id && (host_path.mapping_id != mapping_id)
+            c14n_path_hash: c14nized_path_hash)
         end
 
         Rails.logger.info 'Updating hits from host paths...'
