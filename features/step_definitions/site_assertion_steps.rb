@@ -68,6 +68,10 @@ Then(/^I should see a link to the side by side browser$/) do
   expect(page).to have_selector('a[href*="www.attorney-general.gov.uk.side-by-side"]')
 end
 
+Then(/^I should not see a link to the side by side browser$/) do
+  expect(page).to_not have_selector('a[href*="www.attorney-general.gov.uk.side-by-side"]')
+end
+
 Then(/^I should see the top (\d+) most used tags "([^"]*)"$/) do |count, tag_list|
   expected_tags = tag_list.split(',').map(&:strip)
   within('.tag-list') do

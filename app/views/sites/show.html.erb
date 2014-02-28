@@ -27,7 +27,8 @@
       <%= date_or_not_yet(@site.launch_date) %>
     </div>
 
-    <%= render partial: 'tools', locals: {site: @site } %>
-    
+    <% unless @site.transition_status == :live %>
+      <%= render partial: 'tools', locals: {site: @site } %>
+    <% end %>
   </div>
 </div>

@@ -30,6 +30,7 @@ Scenario: Visit a post-transition site's page
   Then I should see a big message that this site is live
   And I should see a big number "2 days since transition"
   And I should see the date of the site's transition
+  And I should not see a link to the side by side browser
 
 Scenario: Mappings by tag
   Given I have logged in as an admin
