@@ -27,6 +27,10 @@ module Transition
             host.ip_address = a_record.address.to_s
             host.ttl        = a_record.ttl
           end
+
+          aka_record = record(host.aka_hostname, Resolv::DNS::Resource::IN::CNAME)
+          host.has_aka = aka_record.present?
+
           host.save!
         end
       end

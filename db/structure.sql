@@ -58,6 +58,7 @@ CREATE TABLE `hosts` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `ip_address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `has_aka` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_hosts_on_host` (`hostname`),
   KEY `index_hosts_on_site_id` (`site_id`)
@@ -268,3 +269,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140227154306');
 INSERT INTO schema_migrations (version) VALUES ('20140227154752');
 
 INSERT INTO schema_migrations (version) VALUES ('20140228173250');
+
+INSERT INTO schema_migrations (version) VALUES ('20140228174448');
