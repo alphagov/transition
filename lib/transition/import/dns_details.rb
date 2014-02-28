@@ -20,6 +20,8 @@ module Transition
           begin
             cname_record = resolver.getresource(host.hostname, Resolv::DNS::Resource::IN::CNAME)
           rescue Resolv::ResolvError
+            # Can be raised if the host didn't exist, or because we explicitly
+            # asked for a CNAME record and it doesn't have one.
             next
           end
           host.cname = cname_record.name.to_s
