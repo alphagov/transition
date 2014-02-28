@@ -16,8 +16,9 @@ describe Transition::Import::DnsDetails do
 
       subject { a_host }
 
-      its(:cname) { should =~ /gov.uk$/ }
-      its(:ttl)   { should be_between(1, 999999) }
+      its(:cname)      { should =~ /gov.uk$/ }
+      its(:ip_address) { should be_nil }
+      its(:ttl)        { should be_between(1, 999999) }
     end
 
     describe 'a host that does not have a CNAME' do
@@ -35,8 +36,9 @@ describe Transition::Import::DnsDetails do
 
       subject { a_host }
 
-      its(:cname) { should be_nil }
-      its(:ttl)   { should eql(100) }
+      its(:cname)      { should be_nil }
+      its(:ip_address) { should eql('1.1.1.1') }
+      its(:ttl)        { should eql(100) }
     end
   end
 end

@@ -18,12 +18,14 @@ module Transition
         hosts.each do |host|
           $stderr.print '.'
 
-          cname_record = record(host.hostname, Resolv::DNS::Resource::IN::CNAME)
-          if cname_record
-            host.cname = cname_record.name.to_s
-            host.ttl   = cname_record.ttl
+          if cname_record = record(host.hostname, Resolv::DNS::Resource::IN::CNAME)
+            host.cname      = cname_record.name.to_s
+            host.ip_address = nil
+            host.ttl        = cname_record.ttl
           elsif a_record = record(host.hostname, Resolv::DNS::Resource::IN::A)
-            host.ttl = a_record.ttl
+            host.cname      = nil
+            host.ip_address = a_record.address.to_s
+            host.ttl        = a_record.ttl
           end
           host.save!
         end
