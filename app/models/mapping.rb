@@ -135,7 +135,7 @@ class Mapping < ActiveRecord::Base
   def update_hit_mapping_ids(hits_hashes, mapping_id)
     Hit.joins(:host => :site)
       .where(path_hash: hits_hashes)
-      .where('`sites`.`id` = ?', site_id).each \
+      .where('`sites`.`id` = ?', site_id).find_each \
     do |hit|
       hit.update_column(:mapping_id, mapping_id)
     end
