@@ -1,12 +1,22 @@
-<table class="table table-bordered table-striped">
+<%
+  truncate_at_size = 10
+  truncate_paths_table = modal && mappings.size > truncate_at_size
+%>
+
+<table class="table table-bordered table-striped mappings" data-module="toggle">
   <thead>
     <tr class="table-header">
       <th><%= pluralize(mappings.count, 'path') %> from <%= site.default_host.hostname %></th>
     </tr>
   </thead>
   <tbody>
-    <% mappings.each do |m| %>
-      <tr>
+    <% mappings.each_with_index do |m, i| %>
+      <% if truncate_paths_table && i == truncate_at_size - 1 %>
+        <tr class="table-header">
+          <td class="bold js-toggle-target text-center"><a href="#" class="js-toggle">…and <%= mappings.size - (truncate_at_size - 1)%> more</a></td>
+        </tr>
+      <% end %>
+      <tr <% if truncate_paths_table && i > truncate_at_size - 2 %>class="js-toggle-target if-js-hide"<% end %>>
         <td>
           <strong><%= link_to m.path, m.old_url, class: 'breakable' %></strong>
           <% unless modal %>

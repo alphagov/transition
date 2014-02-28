@@ -10,6 +10,14 @@ Feature: Editing multiple mappings for a site
       | 301         | /a               | http://gov.uk/directgov                 |
       | 301         | /about/branding  | http://gov.uk/branding                  |
       | 410         | /about/corporate |                                         |
+      | 410         | /z1              |                                         |
+      | 410         | /z2              |                                         |
+      | 410         | /z3              |                                         |
+      | 410         | /z4              |                                         |
+      | 410         | /z5              |                                         |
+      | 410         | /z6              |                                         |
+      | 410         | /z7              |                                         |
+      | 410         | /z8              |                                         |
     And I visit the path /sites/directgov/mappings
 
   Scenario: Selecting multiple mappings to redirect without javascript
@@ -46,7 +54,7 @@ Feature: Editing multiple mappings for a site
     And I go to edit the selected mappings
     And I save my changes
     And I click the link called "Cancel"
-    Then I should see "3 mappings"
+    Then I should see "11 mappings"
 
   Scenario: Editing multiple mappings from a filtered index page
     When I filter the path by /about
@@ -85,3 +93,20 @@ Feature: Editing multiple mappings for a site
     And I should see a table with 2 saved mappings in the modal
     And I should see "/a" in the modal window
     And I should see "/about/branding" in the modal window
+
+  @javascript
+  Scenario: Truncating a table of mappings in a modal
+    When I select all the mappings
+    And I click the first link called "Redirect"
+    Then I should see an open modal window
+    And I should see a table with 9 mappings in the modal
+    When I click the link "and 2 more"
+    Then I should see a table with 11 mappings in the modal
+    And I should not see "and 2 more"
+
+  @javascript
+  Scenario: Don't truncate a table of exactly 10 mappings
+    When I select the first 10 mappings
+    And I click the first link called "Redirect"
+    Then I should see an open modal window
+    And I should see a table with 10 mappings in the modal

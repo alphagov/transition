@@ -91,6 +91,10 @@ Then(/^I should see a form that contains my selection within the modal$/) do
   }
 end
 
+Then(/^I should see a table with (\d+) mappings? in the modal$/) do |count|
+  expect(page).to have_selector('.modal .mappings tbody tr .breakable', count: count)
+end
+
 Then(/^I should see a table with (\d+) saved mappings? in the modal$/) do |count|
   expect(page).to have_selector('.modal .mappings tbody tr', count: count)
 end
