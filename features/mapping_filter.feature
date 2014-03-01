@@ -1,7 +1,7 @@
 Feature: Filter mappings
   As a GDS User with an interest in the quality of mappings,
   I want to filter the list of mappings
-  so that I can get to the things I need to change faster 
+  so that I can get to the things I need to change faster
 
   Background:
     Given I have logged in as an admin
