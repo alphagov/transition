@@ -82,7 +82,7 @@ When(/^I enter a new URL to redirect to$/) do
 end
 
 When(/^I edit that mapping$/) do
-  visit edit_site_mapping_path(@site, @mapping) 
+  visit edit_site_mapping_path(@site, @mapping)
 end
 
 When(/^I associate the tags "([^"]*)" with the mappings?$/) do |comma_separated_tags|
