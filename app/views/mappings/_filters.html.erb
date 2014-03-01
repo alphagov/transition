@@ -13,7 +13,7 @@
               <%= filter_option_link(@site, 'path') %>
               <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-path">
                 <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
-                  <%= render partial: 'mappings/filter/by_path', locals: {with_button: true, button_text: 'Filter'} %>
+                  <%= render partial: 'mappings/filter/by_path', locals: {single_filter_form: true, button_text: 'Filter'} %>
                 <% end %>
               </div>
             <% end %>
@@ -25,7 +25,7 @@
               <%= filter_option_link(@site, 'new url') %>
               <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-new-url">
                 <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
-                  <%= render partial: 'mappings/filter/by_new_url', locals: {with_button: true, button_text: 'Filter'} %>
+                  <%= render partial: 'mappings/filter/by_new_url', locals: {single_filter_form: true, button_text: 'Filter'} %>
                 <% end %>
               </div>
             <% end %>
@@ -40,12 +40,12 @@
         <div class="panel-body">
           <% if @path_contains %>
             <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
-              <%= render partial: 'mappings/filter/by_path', locals: {with_button: true, button_text: 'Update path'} %>
+              <%= render partial: 'mappings/filter/by_path', locals: {single_filter_form: true, button_text: 'Update path'} %>
             <% end %>
           <% end %>
           <% if @new_url_contains %>
             <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
-              <%= render partial: 'mappings/filter/by_new_url', locals: {with_button: true, button_text: 'Update URL'} %>
+              <%= render partial: 'mappings/filter/by_new_url', locals: {single_filter_form: true, button_text: 'Update URL'} %>
             <% end %>
           <% end %>
         </div>

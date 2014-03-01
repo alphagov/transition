@@ -1,12 +1,12 @@
-<% with_button ||= false %>
-<%= hidden_field_tag 'path_contains', @path_contains %>
+<% single_filter_form ||= false %>
 <div class="form-group">
   <%= label_tag :new_url_contains, 'New URL' %>
-  <% if with_button %>
+  <% if single_filter_form %>
+    <%= hidden_field_tag 'path_contains', @path_contains %>
     <div class="input-group">
   <% end %>
   <%= text_field_tag :new_url_contains, @new_url_contains, class: 'form-control', placeholder: 'eg https://www.gov.uk' %>
-  <% if with_button %>
+  <% if single_filter_form %>
     <span class="input-group-btn">
       <%= button_tag button_text, name: nil, class: 'btn btn-default ' %>
     </span>
