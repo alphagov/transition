@@ -144,6 +144,16 @@ label {
   padding-bottom: 0 !important;
 }
 
+/* Icon helpers
+   ========================================================================== */
+
+// Vanilla glyphicons when alongside text can appear too large
+// this is a helper to consistently downscale them
+%glyphicon-smaller-than-text,
+.glyphicon-smaller-than-text {
+  font-size: 80%;
+}
+
 /* ==========================================================================
    Bootstrap modal overrides
    ========================================================================== */
@@ -402,10 +412,6 @@ $tag-padding-left-right: (5em/14);
   text-transform: lowercase;
 }
 
-%tag-icon {
-  font-size: 80%;
-}
-
 .tag {
   @extend %tag-foundation;
   padding: $tag-padding-top-bottom $tag-padding-left-right;
@@ -426,7 +432,7 @@ a.tag:hover {
 }
 
 .tag .glyphicon-remove {
-  @extend %tag-icon;
+  @extend %glyphicon-smaller-than-text;
   position: relative;
   top: (1em/14);
 }
@@ -450,7 +456,7 @@ a.tag:hover {
 .select2-search-choice-close {
   @extend .glyphicon;
   @extend .glyphicon-remove;
-  @extend %tag-icon;
+  @extend %glyphicon-smaller-than-text;
   background-image: none;
   top: 11px;
 
