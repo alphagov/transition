@@ -10,6 +10,14 @@
   <div class="col-md-6">
     <%= render partial: 'mappings/filter/by_path' %>
     <%= render partial: 'mappings/filter/by_new_url' %>
+    <div class="form-group">
+      <% tag_list_label = capture do %>
+        Tags
+        <p class="text-muted normal add-label-margin">Separate each tag with a comma. eg “content, need:123, plan:2”</p>
+      <% end %>
+      <%= label_tag :tagged, tag_list_label %>
+      <%= text_field_tag :tagged, params[:tagged], class: 'form-control' %>
+    </div>
     <%= button_tag 'Filter', name: nil, class: 'btn btn-default ' %>
   </div>
 <% end %>
