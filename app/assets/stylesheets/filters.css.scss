@@ -22,7 +22,7 @@ a.filter-option:visited,
   color: inherit;
 
   .glyphicon {
-      @extend %glyphicon-smaller-than-text;
+    @extend %glyphicon-smaller-than-text;
   }
 
   &.filter-selected {
@@ -55,4 +55,10 @@ a.filter-option:visited,
 .dropdown-text-input {
   width: 600px;
   padding: $default-vertical-margin/2 $grid-gutter-width/2;
+}
+
+.remove-filters {
+  @extend .inherit;
+  float: right;
+  margin: 5px;
 }

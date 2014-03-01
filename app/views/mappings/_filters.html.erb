@@ -2,6 +2,11 @@
   <div class="col-md-8">
     <div class="panel panel-default">
       <header class="panel-heading">
+        <% if @filtered %>
+          <%= link_to site_mappings_path(@site), class: 'remove-filters', title: 'Remove all filters' do %>
+            <span class="glyphicon glyphicon-remove"></span>
+          <% end %>
+        <% end %>
         <ul class="nav nav-compact nav-pills">
           <li class="if-no-js-hide nav-pill-text">
             <strong>Filter by</strong>
