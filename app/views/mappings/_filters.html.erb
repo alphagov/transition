@@ -7,14 +7,8 @@
             <strong>Filter by</strong>
           </li>
           <li>
-            <%= link_to filter_site_mappings_path(@site),
-                class: 'filter-option',
-                'data-toggle' => 'dropdown',
-                role:'button',
-                'data-target' => 'filter-by-path-dialog' do %>
-              Path <span class="glyphicon glyphicon-chevron-down"></span>
-            <% end %>
-            <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-path-dialog">
+            <%= filter_option_link(@site, 'path') %>
+            <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-path">
               <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
                 <%= render partial: 'mappings/filter/by_path', locals: {with_button: true, button_text: 'Filter'} %>
               <% end %>
