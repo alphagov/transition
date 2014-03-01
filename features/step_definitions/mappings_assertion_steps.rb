@@ -17,6 +17,10 @@ Then(/^I should be returned to the mappings list I was on$/) do
   expect("#{uri.path}?#{uri.query}").to eql(site_mappings_path('bis', fake_param: 1))
 end
 
+Then(/^the path filter should be visible and contain "([^"]*)"$/) do |path|
+  expect(page).to have_field('Path', with: path)
+end
+
 Then(/^the filter box should contain "([^"]*)"$/) do |path|
   expect(page).to have_field('Path', with: path)
 end

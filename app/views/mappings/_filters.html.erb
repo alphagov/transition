@@ -1,29 +1,41 @@
-<nav class="filters row">
+<nav class="filters row" data-module="filters">
   <div class="col-md-8">
     <div class="panel panel-default">
       <header class="panel-heading">
         <ul class="nav nav-compact nav-pills">
-          <li class="if-js-hide">
-            <%= link_to 'Filter mappings', filter_site_mappings_path(@site) %>
-          </li>
           <li class="if-no-js-hide nav-pill-text">
             <strong>Filter by</strong>
           </li>
           <li>
-            <%= link_to filter_site_mappings_path(@site), class: 'filter-option' do %>
+            <%= link_to filter_site_mappings_path(@site),
+                class: 'filter-option',
+                'data-toggle' => 'dropdown',
+                role:'button',
+                'data-target' => 'filter-by-path-dialog' do %>
               Path <span class="glyphicon glyphicon-chevron-down"></span>
             <% end %>
-
-            <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form row') do %>
-              <div class="col-md-6">
-                <%= render partial: 'mappings/filter/by_path' %>
-                <%= button_tag 'Filter', name: nil, class: 'btn btn-default ' %>
-              </div>
-            <% end %>
-
+            <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-path-dialog">
+              <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
+                <%= render partial: 'mappings/filter/by_path', locals: {with_button: true, button_text: 'Filter'} %>
+              <% end %>
+            </div>
+          </li>
+          <li class="if-js-hide">
+            <%= link_to 'Filter mappings', filter_site_mappings_path(@site) %>
           </li>
         </ul>
       </header>
+
+      <% if @path_contains.present? %>
+        <div class="panel-body">
+          <% if @path_contains %>
+            <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
+              <%= render partial: 'mappings/filter/by_path', locals: {with_button: true, button_text: 'Update path'} %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+
     </div>
   </div>
 </nav>

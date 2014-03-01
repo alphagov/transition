@@ -23,8 +23,9 @@ Feature: Filter mappings
 
   @javascript
   Scenario: Filtering by start of path
-    When I filter the path by /about
-    Then the filter box should contain "/about"
+    When I open the path filter and filter by /about
+    Then I should see "Filtered mappings"
+    And the path filter should be visible and contain "/about"
     And I should see "/about/corporate"
     And I should see "/about/branding"
     But I should not see "/notinfilter"

@@ -52,6 +52,11 @@ When(/^I select "Archive"$/) do
   choose 'Archive'
 end
 
+When(/^I open the path filter and filter by ([^"]*)$/) do |path_contains|
+  click_link 'Path'
+  step "I filter the path by #{path_contains}"
+end
+
 When(/^I filter the path by ([^"]*)$/) do |path_contains|
   fill_in 'Path', with: path_contains
   click_button 'Filter'
