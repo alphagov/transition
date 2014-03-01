@@ -237,16 +237,16 @@ end
 
 Then(/^I should see mappings tagged with "fum"$/) do
   steps %{
-    And I should see "/1"
-    And I should see "/2"
-    But I should not see "/3"
+    And I should see "/about/corporate"
+    And I should see "/about/branding"
+    But I should not see "/another"
   }
 end
 
 Then(/^I should see mappings tagged with "fum" and "fiddle"$/) do
   steps %{
-    And I should see "/1"
-    But I should not see "/2"
-    And I should not see "/3"
+    And I should see "/about/corporate"
+    But I should not see "/about/branding"
+    And I should not see "/another"
   }
 end

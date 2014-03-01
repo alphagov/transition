@@ -83,22 +83,3 @@ Scenario: Autocompleting popular tags
   And I should see "fox" available for selection
   And I should not see "from another site" available for selection
   But I should not see "fum" available for selection as it's already selected
-
-Scenario: Filtering mappings by tag
-  Given I have logged in as an admin
-  And a site "ukba" exists with these tagged mappings:
-  | path  | tags             |
-  | /1    | fee, fum, fiddle |
-  | /2    | fi, fum          |
-  | /3    | fo, fiddle       |
-  When I visit the site's mappings
-  And I click the first tag "fum"
-  Then I should see mappings tagged with "fum"
-  And I should see the highlighted tag "fum"
-  And I should see a link to remove the tag "fum"
-  When I click the first tag "fiddle"
-  Then I should see mappings tagged with "fum" and "fiddle"
-  And I should see the highlighted tags "fum, fiddle"
-  And I should see a link to remove the tags "fum, fiddle"
-  When I remove the tag "fiddle"
-  Then I should see mappings tagged with "fum"

@@ -6,11 +6,11 @@ Feature: Filter mappings
   Background:
     Given I have logged in as an admin
     And there is a site called directgov belonging to an organisation directgov with these mappings:
-      | http_status | path             | new_url                   | tags         |
-      | 410         | /about/corporate |                           | fee          |
-      | 301         | /about/branding  | http://gov.uk/branding    | fee          |
-      | 301         | /another         | http://gov.uk/directgov   | fee, fi      |
-      | 410         | /notinfilter     |                           |              |
+      | http_status | path             | new_url                   | tags             |
+      | 410         | /about/corporate |                           | fee, fum, fiddle |
+      | 301         | /about/branding  | http://gov.uk/branding    | fi, fum          |
+      | 301         | /another         | http://gov.uk/directgov   | fo, fiddle       |
+      | 410         | /notinfilter     |                           |                  |
     And I visit the path /sites/directgov/mappings
 
   Scenario: Filtering by path without JavaScript
@@ -70,3 +70,16 @@ Feature: Filter mappings
     And I filter the path by /is-not-there
     Then the filter box should contain "/is-not-there"
     And I should see "0 mappings"
+
+  Scenario: Filtering by clicking tags
+    Given I have logged in as an admin
+    And I click the first tag "fum"
+    Then I should see mappings tagged with "fum"
+    And I should see the highlighted tag "fum"
+    And I should see a link to remove the tag "fum"
+    When I click the first tag "fiddle"
+    Then I should see mappings tagged with "fum" and "fiddle"
+    And I should see the highlighted tags "fum, fiddle"
+    And I should see a link to remove the tags "fum, fiddle"
+    When I remove the tag "fiddle"
+    Then I should see mappings tagged with "fum"

@@ -117,7 +117,9 @@ When(/^I select the first two mappings and go to tag them$/) do
   step 'I select the first two mappings'
 
   if @_javascript
-    first(:link, 'Tag').click
+    within '.mappings' do
+      first(:link, 'Tag').click
+    end
   else
     choose 'Tag'
     click_button 'Edit selected'
