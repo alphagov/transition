@@ -6,11 +6,11 @@ Feature: Filter mappings
   Background:
     Given I have logged in as an admin
     And there is a site called directgov belonging to an organisation directgov with these mappings:
-      | http_status | path             | new_url                                 |
-      | 410         | /about/corporate |                                         |
-      | 301         | /about/branding  | http://gov.uk/branding                  |
-      | 301         | /a               | http://gov.uk/directgov                 |
-      | 410         | /notinfilter     |                                         |
+      | http_status | path             | new_url                   | tags         |
+      | 410         | /about/corporate |                           | fee          |
+      | 301         | /about/branding  | http://gov.uk/branding    | fee          |
+      | 301         | /a               | http://gov.uk/directgov   | fee, fi      |
+      | 410         | /notinfilter     |                           |              |
     And I visit the path /sites/directgov/mappings
 
   Scenario: Filtering by start of path
