@@ -10,11 +10,11 @@
   </h1>
 </div>
 
-<%= render partial: 'filters' %>
-
 <h2>
   <%= pluralize(number_with_delimiter(@mappings.total_count), 'mapping') %>
 </h2>
+<%= render partial: 'filters' %>
+
 <% if filtered_by_tags? %>
   <section class="filtered-tags add-bottom-margin">
   <h3 class="rm">Tagged: </h3>

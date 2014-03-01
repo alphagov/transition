@@ -1,3 +1,7 @@
+/* ==========================================================================
+   Navbar
+   ========================================================================== */
+
 .navbar .container .navbar-brand {
   background: url("/assets/header-crown.png") 0 0.67em no-repeat;
   color: #fff;
@@ -30,4 +34,30 @@
 .navbar-inverse .nav-collapse .nav .active a:hover,
 .navbar-inverse .nav-collapse .nav .active a:focus {
   color: #fff;
+}
+
+/* ==========================================================================
+   Nav compact
+   ========================================================================== */
+
+.nav-compact > li > a {
+  padding: 5px 10px;
+}
+
+/* ==========================================================================
+   Nav pills
+   ========================================================================== */
+
+.nav-pill-text {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+}
+
+.nav-compact .nav-pill-text {
+  padding: 5px 10px;
+}
+
+.nav-pill-text:first-child {
+  padding-left: 0;
 }

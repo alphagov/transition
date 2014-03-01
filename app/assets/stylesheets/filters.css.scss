@@ -1,0 +1,24 @@
+.filters {
+  @extend %remove-bottom-margin;
+  @extend %add-top-margin;
+
+  .panel-heading {
+    background: transparent;
+  }
+
+}
+
+a.filter-option,
+a.filter-option:visited,
+.filter-option {
+  color: inherit;
+
+  .glyphicon {
+      @extend %glyphicon-smaller-than-text;
+  }
+
+  &.filter-selected {
+    font-weight: bold
+  }
+
+}

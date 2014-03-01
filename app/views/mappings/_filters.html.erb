@@ -1,25 +1,21 @@
-<%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
-  <div class="row">
-    <div class="col-md-6">
-      <fieldset class="add-label-margin">
-        <legend class="legend-inline bold">Filter by</legend>
-        <% [['path', 'Original path'], ['new_url', 'New URL']].each do |field_name, label_text| %>
-          <%= label_tag nil, class: 'radio-inline' do %>
-            <%= radio_button_tag :filter_field, field_name, filter_box_selected?(params[:filter_field], field_name) %>
-            <%= label_text %>
-          <% end %>
-        <% end %>
-        <% if @path_contains.present? %>
-          <span class="add-left-margin">(<%= link_to 'Remove filter', site_mappings_path(@site) %>)</span>
-        <% end %>
-      </fieldset>
-      <%= label_tag :contains, 'Original path or new URL', class: 'rm' %>
-      <div class="input-group">
-        <%= text_field_tag :contains, @path_contains, class: 'form-control', placeholder: 'eg /home'  %>
-        <span class="input-group-btn">
-          <%= button_tag 'Filter', name: nil, class: 'btn btn-default ' %>
-        </span>
-      </div>
+<nav class="filters row">
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <header class="panel-heading">
+        <ul class="nav nav-compact nav-pills">
+          <li class="if-js-hide">
+            <%= link_to 'Filter mappings', filter_site_mappings_path(@site) %>
+          </li>
+          <li class="if-no-js-hide nav-pill-text">
+            <strong>Filter by</strong>
+          </li>
+          <li>
+            <%= link_to filter_site_mappings_path(@site), class: 'filter-option' do %>
+              Path <span class="glyphicon glyphicon-chevron-down"></span>
+            <% end %>
+          </li>
+        </ul>
+      </header>
     </div>
   </div>
-<% end %>
+</nav>
