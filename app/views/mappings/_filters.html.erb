@@ -8,9 +8,9 @@
           </li>
           <li class="if-no-js-hide">
             <% if @path_contains.present? %>
-              <%= filter_remove_option_link(@site, 'path', :path_contains) %>
+              <%= filter_remove_option_link(@site, 'Path', :path_contains) %>
             <% else %>
-              <%= filter_option_link(@site, 'path') %>
+              <%= filter_option_link(@site, 'Path') %>
               <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-path">
                 <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
                   <%= render partial: 'mappings/filter/by_path', locals: {single_filter_form: true, button_text: 'Filter'} %>
@@ -20,9 +20,9 @@
           </li>
           <li class="if-no-js-hide">
             <% if @new_url_contains.present? %>
-              <%= filter_remove_option_link(@site, 'new url', :new_url_contains) %>
+              <%= filter_remove_option_link(@site, 'New URL', :new_url_contains) %>
             <% else %>
-              <%= filter_option_link(@site, 'new url') %>
+              <%= filter_option_link(@site, 'New URL') %>
               <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-new-url">
                 <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
                   <%= render partial: 'mappings/filter/by_new_url', locals: {single_filter_form: true, button_text: 'Filter'} %>
