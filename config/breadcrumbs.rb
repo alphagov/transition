@@ -22,6 +22,11 @@ crumb :mappings do |site|
   parent :site, site
 end
 
+crumb :filter_mappings do |site|
+  link 'Filter mappings', site_mappings_path(site)
+  parent :mappings, site
+end
+
 crumb :filtered_mappings do |site|
   link 'Filtered mappings', site_mappings_path(site)
   parent :mappings, site

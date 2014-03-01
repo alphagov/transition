@@ -28,6 +28,8 @@ Transition::Application.routes.draw do
 
         post 'edit_multiple'
         post 'update_multiple'
+
+        get 'filter'
       end
     end
 

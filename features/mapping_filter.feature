@@ -13,6 +13,15 @@ Feature: Filter mappings
       | 410         | /notinfilter     |                           |              |
     And I visit the path /sites/directgov/mappings
 
+  Scenario: Filtering by path without JavaScript
+    When I click the link "Filter mappings"
+    And I filter the path by /about
+    Then the filter box should contain "/about"
+    And I should see "/about/corporate"
+    And I should see "/about/branding"
+    But I should not see "/notinfilter"
+
+  @javascript
   Scenario: Filtering by start of path
     When I filter the path by /about
     Then the filter box should contain "/about"
