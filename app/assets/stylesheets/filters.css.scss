@@ -18,7 +18,8 @@ a.filter-option:visited,
   }
 
   &.filter-selected {
-    font-weight: bold
+    font-weight: bold;
+    background: #eee;
   }
 
 }

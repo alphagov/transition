@@ -7,12 +7,16 @@
             <strong>Filter by</strong>
           </li>
           <li>
-            <%= filter_option_link(@site, 'path') %>
-            <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-path">
-              <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
-                <%= render partial: 'mappings/filter/by_path', locals: {with_button: true, button_text: 'Filter'} %>
-              <% end %>
-            </div>
+            <% if @path_contains.present? %>
+              <%= filter_remove_option_link(@site, 'path', :path_contains) %>
+            <% else %>
+              <%= filter_option_link(@site, 'path') %>
+              <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-path">
+                <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
+                  <%= render partial: 'mappings/filter/by_path', locals: {with_button: true, button_text: 'Filter'} %>
+                <% end %>
+              </div>
+            <% end %>
           </li>
           <li class="if-js-hide">
             <%= link_to 'Filter mappings', filter_site_mappings_path(@site) %>

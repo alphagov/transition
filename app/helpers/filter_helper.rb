@@ -8,4 +8,11 @@ module FilterHelper
       "#{type.titleize} <span class=\"glyphicon glyphicon-chevron-down\"></span>".html_safe
     end
   end
+
+  def filter_remove_option_link(site, type, type_sym)
+    link_to site_mappings_path(@site, params.except(type_sym, :page)), class: 'filter-option filter-selected' do
+      "<span class=\"glyphicon glyphicon-remove\"></span> #{type.titleize}".html_safe
+    end
+  end
+
 end

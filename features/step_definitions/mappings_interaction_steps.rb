@@ -62,6 +62,10 @@ When(/^I filter the path by ([^"]*)$/) do |path_contains|
   click_button 'Filter'
 end
 
+When(/^I remove the filter "(.*?)"$/) do |filter|
+  click_link filter
+end
+
 When(/^I change the mapping's redirect to (.*)$/) do |value|
   fill_in 'Redirects to', with: value
   step 'I save the mapping'

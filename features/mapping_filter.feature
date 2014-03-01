@@ -29,6 +29,8 @@ Feature: Filter mappings
     And I should see "/about/corporate"
     And I should see "/about/branding"
     But I should not see "/notinfilter"
+    When I remove the filter "Path"
+    Then I should see "/notinfilter"
 
   Scenario: Filtering by part of path
     When I filter the path by bout
