@@ -44,7 +44,7 @@ Feature: Filter mappings
     Then I should see "/notinfilter"
 
   @javascript
-  Scenario: Filtering by new url and path
+  Scenario: Filtering by multiple properies
     When I open the "New URL" filter and filter by "gov.uk"
     And I open the "Path" filter and filter by "/about"
     Then I should see "Filtered mappings"
@@ -54,8 +54,11 @@ Feature: Filter mappings
     But I should not see "/another"
     But I should not see "/about/corporate"
     When I remove the filter "New URL"
+    And I open the tag filter and click the tag "fiddle"
     Then the "Path" filter should be visible and contain "/about"
+    And the tag filter should be visible with the tag "fiddle"
     And I should see "/about/corporate"
+    But I should not see "/about/branding"
 
   Scenario: Filtering by part of path
     When I click the link "Filter mappings"
@@ -83,3 +86,20 @@ Feature: Filter mappings
     And I should see a link to remove the tags "fum, fiddle"
     When I remove the tag "fiddle"
     Then I should see mappings tagged with "fum"
+
+  @javascript
+  Scenario: Filtering by tag
+    When I open the "Tag" filter
+    Then I should see the most popular tags for this site
+    When I click the tag filter "fum"
+    Then I should see "Filtered mappings"
+    And the tag filter should be visible with the tag "fum"
+    And I should see mappings tagged with "fum"
+
+  @javascript
+  Scenario: Filtering by multiple tags
+    When I open the tag filter and click the tag "fum"
+    And I open the tag filter and click the tag "fee"
+    Then the tag filter should be visible with the tags "fee, fum"
+    And I should see "/about/corporate"
+    But I should not see "/about/branding"

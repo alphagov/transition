@@ -52,10 +52,23 @@ When(/^I select "Archive"$/) do
   choose 'Archive'
 end
 
+When(/^I open the "(.*)" filter$/) do |filter_type|
+  within '.filters' do
+    click_link filter_type
+  end
+end
+
 When(/^I open the "(.*)" filter and filter by "(.*)"$/) do |filter_type, value|
-  click_link filter_type
-  fill_in filter_type, with: value
-  click_button 'Filter'
+  within '.filters' do
+    click_link filter_type
+    fill_in filter_type, with: value
+    click_button 'Filter'
+  end
+end
+
+When(/^I open the tag filter and click the tag "(.*)"$/) do |tag|
+  step 'I open the "Tag" filter'
+  step "I click the tag filter \"#{tag}\""
 end
 
 When(/^I filter the path by ([^"]*)$/) do |path_contains|
@@ -65,6 +78,12 @@ end
 
 When(/^I remove the filter "(.*?)"$/) do |filter_type|
   click_link filter_type
+end
+
+When(/^I click the tag filter "(.*?)"$/) do |tag_filter|
+  within '.filters' do
+    click_link tag_filter
+  end
 end
 
 When(/^I change the mapping's redirect to (.*)$/) do |value|

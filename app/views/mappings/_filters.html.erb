@@ -30,6 +30,19 @@
               </div>
             <% end %>
           </li>
+          <% tags = most_used_tags_for_site(@site, limit: 10) %>
+          <% if tags.any? %>
+          <li class="if-no-js-hide">
+            <%= filter_option_link(@site, 'Tag') %>
+            <ul class="dropdown-menu" role="menu">
+              <% tags.each do |tag| %>
+                <li>
+                  <%= link_to tag, filter_by_tag_path(tag), class: 'inherit' %>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+          <% end %>
           <li class="if-js-hide">
             <%= link_to 'Filter mappings', filter_site_mappings_path(@site) %>
           </li>
@@ -48,6 +61,22 @@
               <%= render partial: 'mappings/filter/by_new_url', locals: {single_filter_form: true, button_text: 'Update URL'} %>
             <% end %>
           <% end %>
+          <% if filtered_by_tags? %>
+            <dl class="remove-bottom-margin filtered-tags">
+              <dt class="add-label-margin">Tagged</dt>
+              <dd>
+                <ul class="remove-bottom-margin tag-list">
+                <% filtered_by_tags.each do |tag| %>
+                  <li>
+                    <%= link_to remove_tag_from_filter_path(tag), class: 'tag', title: "Remove “#{tag}” tag filter" do %>
+                      <span class="glyphicon glyphicon-remove"></span> <%= tag %>
+                    <% end %>
+                  </li>
+                <% end %>
+                </ul>
+              </dd>
+            </dl>
+          <% end%>
         </div>
       <% end %>
 

@@ -15,21 +15,6 @@
 </h2>
 <%= render partial: 'filters' %>
 
-<% if filtered_by_tags? %>
-  <section class="filtered-tags add-bottom-margin">
-  <h3 class="rm">Tagged: </h3>
-    <ul class="tag-list">
-    <% filtered_by_tags.each do |tag| %>
-      <li>
-        <%= link_to remove_tag_from_filter_path(tag), class: 'tag', title: "Remove “#{tag}” tag filter" do %>
-          <span class="glyphicon glyphicon-remove"></span> <%= tag %>
-        <% end %>
-      </li>
-    <% end %>
-    </ul>
-  </section>
-<% end%>
-
 <% if @mappings.any? %>
 
   <%= paginate(@mappings) %>

@@ -25,8 +25,14 @@ Then(/^the filter box should contain "([^"]*)"$/) do |path|
   expect(page).to have_field('Path', with: path)
 end
 
-Then(/^I should see a link to remove the filter$/) do
-  expect(page).to have_link('Remove filter')
+Then(/^the tag filter should be visible with the tags? "([^"]*)"$/) do |tag_list|
+  step "I should see a link to remove the tags \"#{tag_list}\""
+end
+
+Then(/^I should see the most popular tags for this site$/) do
+  within '.filters .dropdown-menu' do
+    step 'I should see the tag links "fee, fi, fo, fum, fiddle"'
+  end
 end
 
 Then(/^I should see no history$/) do
@@ -140,6 +146,13 @@ end
 
 Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
   expect(page).to have_field('Tags', with: tag_list)
+end
+
+Then(/^I should see the tag links "([^"]*)"$/) do |tag_list|
+  expected_tags = tag_list.split(',').map(&:strip)
+  expected_tags.each do |tag|
+    expect(page).to have_selector('a', text: tag)
+  end
 end
 
 Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|
