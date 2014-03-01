@@ -31,18 +31,19 @@ class MappingsController < ApplicationController
   end
 
   def index
-    @path_contains =
-      if (params[:filter_field] == 'new_url')
-        params[:contains]
-      else
-        View::Mappings::canonical_filter(@site, params[:contains])
-      end
 
     @mappings = @site.mappings.order(:path).page(params[:page])
-    @mappings = if params[:filter_field] == 'new_url'
-      @mappings.redirects.filtered_by_new_url(@path_contains)
-    else
-      @mappings.filtered_by_path(@path_contains)
+
+    if params[:path_contains].present?
+      @path_contains = View::Mappings::canonical_filter(@site, params[:path_contains])
+      if @path_contains.present?
+        @mappings = @mappings.filtered_by_path(@path_contains)
+      end
+    end
+
+    if params[:new_url_contains].present?
+      @new_url_contains = params[:new_url_contains]
+      @mappings = @mappings.redirects.filtered_by_new_url(@new_url_contains)
     end
 
     if params[:tagged].present?

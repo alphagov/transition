@@ -18,7 +18,7 @@ Then(/^I should be returned to the mappings list I was on$/) do
 end
 
 Then(/^the filter box should contain "([^"]*)"$/) do |path|
-  expect(page).to have_field('Original path', with: path)
+  expect(page).to have_field('Path', with: path)
 end
 
 Then(/^I should see a link to remove the filter$/) do

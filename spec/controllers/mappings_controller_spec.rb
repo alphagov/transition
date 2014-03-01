@@ -37,17 +37,17 @@ describe MappingsController do
 
     describe 'filtering' do
       it 'filters mappings by path' do
-        get :index, site_id: site.abbr, contains: 'a'
+        get :index, site_id: site.abbr, path_contains: 'a'
         assigns(:mappings).should == [mapping_a]
       end
 
       it 'canonicalises filter input' do
-        get :index, site_id: site.abbr, contains: '/A?q=1'
+        get :index, site_id: site.abbr, path_contains: '/A?q=1'
         assigns(:mappings).should == [mapping_a]
       end
 
       it 'filters mappings by new_url' do
-        get :index, site_id: site.abbr, contains: 'f.co/1', filter_field: 'new_url'
+        get :index, site_id: site.abbr, new_url_contains: 'f.co/1'
         assigns(:mappings).should == [mapping_a]
       end
 
@@ -57,22 +57,22 @@ describe MappingsController do
 
         create :archived, new_url: 'http://f.co/1', site: site
 
-        get :index, site_id: site.abbr, contains: 'f.co/1', filter_field: 'new_url'
+        get :index, site_id: site.abbr, new_url_contains: 'f.co/1'
         assigns(:mappings).should == [mapping_a]
       end
 
       it 'does not canonicalize the filter for new_url' do
-        get :index, site_id: site.abbr, contains: '/A/B/C/1?q=1', filter_field: 'new_url'
-        assigns(:path_contains).should == '/A/B/C/1?q=1'
+        get :index, site_id: site.abbr, new_url_contains: '/A/B/C/1?q=1'
+        assigns(:new_url_contains).should == '/A/B/C/1?q=1'
       end
 
       it 'extracts paths from full URLs supplied for filtering' do
-        get :index, site_id: site.abbr, contains: 'https://www.example.com/foobar'
+        get :index, site_id: site.abbr, path_contains: 'https://www.example.com/foobar'
         assigns(:path_contains).should eql('/foobar')
       end
 
       it 'gracefully degrades if the filtering value looks like a URL but is unparseable' do
-        get :index, site_id: site.abbr, contains: 'https://____'
+        get :index, site_id: site.abbr, path_contains: 'https://____'
         assigns(:path_contains).should eql('https://____')
       end
     end

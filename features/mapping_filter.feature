@@ -40,4 +40,3 @@ Feature: Filter mappings
     When I filter the path by /is-not-there
     Then the filter box should contain "/is-not-there"
     And I should see "0 mappings"
-    And I should see a link to remove the filter

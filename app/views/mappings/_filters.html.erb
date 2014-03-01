@@ -13,6 +13,14 @@
             <%= link_to filter_site_mappings_path(@site), class: 'filter-option' do %>
               Path <span class="glyphicon glyphicon-chevron-down"></span>
             <% end %>
+
+            <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form row') do %>
+              <div class="col-md-6">
+                <%= render partial: 'mappings/filter/by_path' %>
+                <%= button_tag 'Filter', name: nil, class: 'btn btn-default ' %>
+              </div>
+            <% end %>
+
           </li>
         </ul>
       </header>
