@@ -57,7 +57,8 @@ Feature: Editing multiple mappings for a site
     Then I should see "11 mappings"
 
   Scenario: Editing multiple mappings from a filtered index page
-    When I filter the path by /about
+    When I click the link "Filter mappings"
+    And I filter the path by /about
     And I select the first two mappings
     And I select "Archive"
     And I go to edit the selected mappings

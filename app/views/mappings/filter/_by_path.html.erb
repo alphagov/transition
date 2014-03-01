@@ -1,4 +1,5 @@
 <% with_button ||= false %>
+<%= hidden_field_tag 'new_url_contains', @new_url_contains %>
 <div class="form-group">
   <%= label_tag :path_contains, 'Path' %>
   <% if with_button %>
@@ -9,5 +10,6 @@
     <span class="input-group-btn">
       <%= button_tag button_text, name: nil, class: 'btn btn-default ' %>
     </span>
+    </div>
   <% end %>
 </div>

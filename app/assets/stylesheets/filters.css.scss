@@ -6,6 +6,14 @@
     background: transparent;
   }
 
+  .active-filter {
+    @extend %add-bottom-margin;
+
+    &:last-child {
+      @extend %remove-bottom-margin;
+    }
+  }
+
 }
 
 a.filter-option,

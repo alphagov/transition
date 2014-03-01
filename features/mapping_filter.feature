@@ -9,7 +9,7 @@ Feature: Filter mappings
       | http_status | path             | new_url                   | tags         |
       | 410         | /about/corporate |                           | fee          |
       | 301         | /about/branding  | http://gov.uk/branding    | fee          |
-      | 301         | /a               | http://gov.uk/directgov   | fee, fi      |
+      | 301         | /another         | http://gov.uk/directgov   | fee, fi      |
       | 410         | /notinfilter     |                           |              |
     And I visit the path /sites/directgov/mappings
 
@@ -38,19 +38,35 @@ Feature: Filter mappings
     Then I should see "Filtered mappings"
     And the "New URL" filter should be visible and contain "gov.uk"
     And I should see "/about/branding"
-    And I should see "/a"
+    And I should see "/another"
     But I should not see "/about/corporate"
     When I remove the filter "New URL"
     Then I should see "/notinfilter"
 
+  @javascript
+  Scenario: Filtering by new url and path
+    When I open the "New URL" filter and filter by "gov.uk"
+    And I open the "Path" filter and filter by "/about"
+    Then I should see "Filtered mappings"
+    And the "New URL" filter should be visible and contain "gov.uk"
+    And the "Path" filter should be visible and contain "/about"
+    And I should see "/about/branding"
+    But I should not see "/another"
+    But I should not see "/about/corporate"
+    When I remove the filter "New URL"
+    Then the "Path" filter should be visible and contain "/about"
+    And I should see "/about/corporate"
+
   Scenario: Filtering by part of path
-    When I filter the path by bout
+    When I click the link "Filter mappings"
+    And I filter the path by bout
     Then the filter box should contain "bout"
     And I should see "/about/corporate"
     And I should see "/about/branding"
     But I should not see "/notinfilter"
 
   Scenario: There are no matches
-    When I filter the path by /is-not-there
+    When I click the link "Filter mappings"
+    And I filter the path by /is-not-there
     Then the filter box should contain "/is-not-there"
     And I should see "0 mappings"

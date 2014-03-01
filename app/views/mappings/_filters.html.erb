@@ -6,7 +6,7 @@
           <li class="if-no-js-hide nav-pill-text">
             <strong>Filter by</strong>
           </li>
-          <li>
+          <li class="if-no-js-hide">
             <% if @path_contains.present? %>
               <%= filter_remove_option_link(@site, 'path', :path_contains) %>
             <% else %>
@@ -18,7 +18,7 @@
               </div>
             <% end %>
           </li>
-          <li>
+          <li class="if-no-js-hide">
             <% if @new_url_contains.present? %>
               <%= filter_remove_option_link(@site, 'new url', :new_url_contains) %>
             <% else %>
@@ -39,12 +39,12 @@
       <% if @filtered %>
         <div class="panel-body">
           <% if @path_contains %>
-            <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
+            <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
               <%= render partial: 'mappings/filter/by_path', locals: {with_button: true, button_text: 'Update path'} %>
             <% end %>
           <% end %>
           <% if @new_url_contains %>
-            <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
+            <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
               <%= render partial: 'mappings/filter/by_new_url', locals: {with_button: true, button_text: 'Update URL'} %>
             <% end %>
           <% end %>
