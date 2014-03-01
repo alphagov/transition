@@ -32,8 +32,13 @@
           </li>
           <% tags = most_used_tags_for_site(@site, limit: 10) %>
           <% if tags.any? %>
-          <li class="if-no-js-hide">
-            <%= filter_option_link(@site, 'Tag') %>
+          <li class="if-no-js-hide <% if filtered_by_tags? %>selected-and-available<% end %>">
+            <% if filtered_by_tags? %>
+              <%= filter_remove_option_link(@site, nil, :tagged) %>
+              <%= filter_option_link(@site, 'Tag', {selected: true}) %>
+            <% else %>
+              <%= filter_option_link(@site, 'Tag') %>
+            <% end %>
             <ul class="dropdown-menu" role="menu">
               <% tags.each do |tag| %>
                 <li>
