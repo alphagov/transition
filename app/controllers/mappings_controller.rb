@@ -37,16 +37,19 @@ class MappingsController < ApplicationController
     if params[:path_contains].present?
       @path_contains = View::Mappings::canonical_filter(@site, params[:path_contains])
       if @path_contains.present?
+        @filtered = true
         @mappings = @mappings.filtered_by_path(@path_contains)
       end
     end
 
     if params[:new_url_contains].present?
+      @filtered = true
       @new_url_contains = params[:new_url_contains]
       @mappings = @mappings.redirects.filtered_by_new_url(@new_url_contains)
     end
 
     if params[:tagged].present?
+      @filtered = true
       @mappings = @mappings.tagged_with(params[:tagged])
     end
   end

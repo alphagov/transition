@@ -1,4 +1,13 @@
+<% with_button ||= false %>
 <div class="form-group">
   <%= label_tag :new_url_contains, 'New URL' %>
+  <% if with_button %>
+    <div class="input-group">
+  <% end %>
   <%= text_field_tag :new_url_contains, @new_url_contains, class: 'form-control', placeholder: 'eg https://www.gov.uk' %>
+  <% if with_button %>
+    <span class="input-group-btn">
+      <%= button_tag button_text, name: nil, class: 'btn btn-default ' %>
+    </span>
+  <% end %>
 </div>

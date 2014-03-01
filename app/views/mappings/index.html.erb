@@ -1,4 +1,4 @@
-<% filtered_mappings = true if filtered_by_tags? || @path_contains.present? %>
+<% filtered_mappings = true if @filtered %>
 <% title = filtered_mappings ? 'Filtered mappings' : 'Mappings' %>
 <% content_for(:page_title, "#{title} | #{@site.default_host.hostname}") %>
 <% breadcrumb(filtered_mappings ? :filtered_mappings : :mappings, @site) %>

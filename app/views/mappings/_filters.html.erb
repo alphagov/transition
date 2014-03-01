@@ -18,17 +18,34 @@
               </div>
             <% end %>
           </li>
+          <li>
+            <% if @new_url_contains.present? %>
+              <%= filter_remove_option_link(@site, 'new url', :new_url_contains) %>
+            <% else %>
+              <%= filter_option_link(@site, 'new url') %>
+              <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-new-url">
+                <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
+                  <%= render partial: 'mappings/filter/by_new_url', locals: {with_button: true, button_text: 'Filter'} %>
+                <% end %>
+              </div>
+            <% end %>
+          </li>
           <li class="if-js-hide">
             <%= link_to 'Filter mappings', filter_site_mappings_path(@site) %>
           </li>
         </ul>
       </header>
 
-      <% if @path_contains.present? %>
+      <% if @filtered %>
         <div class="panel-body">
           <% if @path_contains %>
             <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
               <%= render partial: 'mappings/filter/by_path', locals: {with_button: true, button_text: 'Update path'} %>
+            <% end %>
+          <% end %>
+          <% if @new_url_contains %>
+            <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
+              <%= render partial: 'mappings/filter/by_new_url', locals: {with_button: true, button_text: 'Update URL'} %>
             <% end %>
           <% end %>
         </div>

@@ -23,13 +23,24 @@ Feature: Filter mappings
 
   @javascript
   Scenario: Filtering by start of path
-    When I open the path filter and filter by /about
+    When I open the "Path" filter and filter by "/about"
     Then I should see "Filtered mappings"
-    And the path filter should be visible and contain "/about"
+    And the "Path" filter should be visible and contain "/about"
     And I should see "/about/corporate"
     And I should see "/about/branding"
     But I should not see "/notinfilter"
     When I remove the filter "Path"
+    Then I should see "/notinfilter"
+
+  @javascript
+  Scenario: Filtering by new url
+    When I open the "New URL" filter and filter by "gov.uk"
+    Then I should see "Filtered mappings"
+    And the "New URL" filter should be visible and contain "gov.uk"
+    And I should see "/about/branding"
+    And I should see "/a"
+    But I should not see "/about/corporate"
+    When I remove the filter "New URL"
     Then I should see "/notinfilter"
 
   Scenario: Filtering by part of path
