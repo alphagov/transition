@@ -66,6 +66,13 @@ When(/^I open the "(.*)" filter and filter by "(.*)"$/) do |filter_type, value|
   end
 end
 
+When(/^I open the "(.*)" filter and select "(.*)"$/) do |filter_type, link|
+  within '.filters' do
+    click_link filter_type
+    click_link link
+  end
+end
+
 When(/^I open the tag filter and click the tag "(.*)"$/) do |tag|
   step 'I open the "Tag" filter'
   step "I click the tag filter \"#{tag}\""

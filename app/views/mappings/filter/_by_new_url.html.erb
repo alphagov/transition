@@ -4,6 +4,7 @@
   <% if single_filter_form %>
     <%= hidden_field_tag 'path_contains', @path_contains %>
     <%= hidden_field_tag 'tagged', params[:tagged] %>
+    <%= hidden_field_tag 'type', params[:type] %>
     <div class="input-group">
   <% end %>
   <%= text_field_tag :new_url_contains, @new_url_contains, class: 'form-control', placeholder: 'eg https://www.gov.uk' %>

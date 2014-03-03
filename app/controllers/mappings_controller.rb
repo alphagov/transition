@@ -34,6 +34,18 @@ class MappingsController < ApplicationController
 
     @mappings = @site.mappings.order(:path).page(params[:page])
 
+    if params[:type].present?
+      if params[:type] == 'redirect'
+        @filtered = true
+        @type = params[:type]
+        @mappings = @mappings.redirects
+      elsif params[:type] == 'archive'
+        @filtered = true
+        @type = params[:type]
+        @mappings = @mappings.archives
+      end
+    end
+
     if params[:path_contains].present?
       @path_contains = View::Mappings::canonical_filter(@site, params[:path_contains])
       if @path_contains.present?

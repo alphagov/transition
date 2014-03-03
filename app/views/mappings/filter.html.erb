@@ -8,6 +8,21 @@
 
 <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form row') do %>
   <div class="col-md-6">
+    <fieldset>
+      <legend class="legend-reset add-label-margin bold">Type</legend>
+      <div class="form-group">
+        <%= label_tag nil, class: 'radio-inline' do %>
+          <%= radio_button_tag :type, '', true %>
+          All types
+        <% end %>
+        <% Mapping::TYPES.each do |key, type| %>
+          <%= label_tag nil, class: 'radio-inline' do %>
+            <%= radio_button_tag :type, type %>
+            <%= type.titleize %>
+          <% end %>
+        <% end %>
+      </div>
+    </fieldset>
     <%= render partial: 'mappings/filter/by_path' %>
     <%= render partial: 'mappings/filter/by_new_url' %>
     <div class="form-group">
