@@ -29,6 +29,12 @@ Then(/^the tag filter should be visible with the tags? "([^"]*)"$/) do |tag_list
   step "I should see a link to remove the tags \"#{tag_list}\""
 end
 
+Then(/^I should see a warning about an incompatible filter$/) do
+  within '.filters' do
+    expect(page).to have_selector('.alert-warning')
+  end
+end
+
 Then(/^I should see the most popular tags for this site$/) do
   within '.filters .dropdown-menu' do
     step 'I should see the tag links "fee, fi, fo, fum, fiddle"'

@@ -34,16 +34,18 @@ class MappingsController < ApplicationController
 
     @mappings = @site.mappings.order(:path).page(params[:page])
 
-    if params[:type].present?
-      if params[:type] == 'redirect'
-        @filtered = true
-        @type = params[:type]
-        @mappings = @mappings.redirects
-      elsif params[:type] == 'archive'
-        @filtered = true
-        @type = params[:type]
-        @mappings = @mappings.archives
-      end
+    if params[:type] == 'archive' && params[:new_url_contains].present?
+      @incompatible_filter = true
+    end
+
+    if params[:type] == 'redirect'
+      @filtered = true
+      @type = params[:type]
+      @mappings = @mappings.redirects
+    elsif params[:type] == 'archive' && !@incompatible_filter
+      @filtered = true
+      @type = params[:type]
+      @mappings = @mappings.archives
     end
 
     if params[:path_contains].present?

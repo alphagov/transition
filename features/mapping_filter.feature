@@ -119,3 +119,9 @@ Feature: Filter mappings
     But I should not see "/another"
     When I open the "Archives" filter and select "All types"
     Then I should not see "Filtered mappings"
+
+  @javascript
+  Scenario: Filtering by type and New URL
+    When I open the "New URL" filter and filter by "gov.uk"
+    And I open the "Type" filter and select "Archive"
+    Then I should see a warning about an incompatible filter

@@ -23,7 +23,11 @@
           </li>
         </ul>
       </header>
-
+      <% if @incompatible_filter %>
+        <div class="alert alert-warning">
+          Your archive filter has been removed. Filtering by new URL is only possible with redirects.
+        </div>
+      <% end %>
       <% if @path_contains || @new_url_contains || filtered_by_tags? %>
         <div class="panel-body">
           <% if @path_contains %>
