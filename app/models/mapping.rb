@@ -30,7 +30,7 @@ class Mapping < ActiveRecord::Base
   before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path, :set_path_hash
   validates :path_hash, presence: true
 
-  after_save :update_hit_relations
+  after_create :update_hit_relations
 
   validates :new_url, :suggested_url, :archive_url, length: { maximum: (64.kilobytes - 1) }, non_blank_url: true
   validates :new_url, presence: { if: :redirect?, message: 'required when mapping is a redirect' }
@@ -132,23 +132,13 @@ class Mapping < ActiveRecord::Base
     self.site.tna_timestamp.to_formatted_s(:number)
   end
 
-  def update_hit_mapping_ids(hits_hashes, mapping_id)
+  def update_hit_relations
+    new_hits_hashes = HostPath.where(c14n_path_hash: path_hash).pluck(:path_hash)
     Hit.joins(:host => :site)
-      .where(path_hash: hits_hashes)
+      .where(path_hash: new_hits_hashes)
       .where('`sites`.`id` = ?', site_id).find_each \
     do |hit|
-      hit.update_column(:mapping_id, mapping_id)
+      hit.update_column(:mapping_id, self.id)
     end
-  end
-
-  def update_hit_relations
-    # unlink 'old' hits unless this is a create
-    if path_changed? && path_was.present?
-      old_hits_hashes = HostPath.where(c14n_path_hash: path_hash_was).pluck(:path_hash)
-      update_hit_mapping_ids(old_hits_hashes, nil)
-    end
-
-    new_hits_hashes = HostPath.where(c14n_path_hash: path_hash).pluck(:path_hash)
-    update_hit_mapping_ids(new_hits_hashes, self.id)
   end
 end

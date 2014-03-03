@@ -188,38 +188,6 @@ describe Mapping do
           hit_on_canonicalized.reload.mapping.should == mapping
         end
       end
-
-      context 'when changing the path of an old mapping' do
-        context 'to something that has a different hit' do
-          let!(:different_hit) { create :hit, path: '/different', host: site.default_host }
-          before do
-            Transition::Import::HitsMappingsRelations.refresh!
-            mapping.path = different_hit.path
-            mapping.save!
-          end
-
-          it 'points the different hit at the new mapping' do
-            different_hit.reload.mapping.should == mapping
-          end
-          it 'unlinks the old hits from this mapping' do
-            hit_on_canonicalized.reload.mapping.should be_nil
-            hit_on_uncanonicalized.reload.mapping.should be_nil
-          end
-        end
-
-        context 'to something that has no corresponding hits' do
-          before do
-            mapping.save!
-            Transition::Import::HitsMappingsRelations.refresh!
-            mapping.path = '/foo'
-            mapping.save!
-          end
-          it 'unlinks the old hits from this mapping' do
-            hit_on_canonicalized.reload.mapping.should be_nil
-            hit_on_uncanonicalized.reload.mapping.should be_nil
-          end
-        end
-      end
     end
   end
 
