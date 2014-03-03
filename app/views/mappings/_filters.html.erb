@@ -11,68 +11,10 @@
           <li class="if-no-js-hide nav-pill-text">
             <strong>Filter by</strong>
           </li>
-          <li class="if-no-js-hide">
-            <% if @path_contains.present? %>
-              <%= filter_remove_option_link(@site, 'Path', :path_contains) %>
-            <% else %>
-              <%= filter_option_link(@site, 'Path') %>
-              <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-path">
-                <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
-                  <%= render partial: 'mappings/filter/by_path', locals: {single_filter_form: true, button_text: 'Filter'} %>
-                <% end %>
-              </div>
-            <% end %>
-          </li>
-          <li class="if-no-js-hide">
-            <% if @new_url_contains.present? %>
-              <%= filter_remove_option_link(@site, 'New URL', :new_url_contains) %>
-            <% else %>
-              <%= filter_option_link(@site, 'New URL') %>
-              <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-new-url">
-                <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
-                  <%= render partial: 'mappings/filter/by_new_url', locals: {single_filter_form: true, button_text: 'Filter'} %>
-                <% end %>
-              </div>
-            <% end %>
-          </li>
-          <% tags = most_used_tags_for_site(@site, limit: 10) %>
-          <% if tags.any? %>
-          <li class="if-no-js-hide <% if filtered_by_tags? %>selected-and-available<% end %>">
-            <% if filtered_by_tags? %>
-              <%= filter_remove_option_link(@site, nil, :tagged) %>
-              <%= filter_option_link(@site, 'Tag', {selected: true}) %>
-            <% else %>
-              <%= filter_option_link(@site, 'Tag') %>
-            <% end %>
-            <ul class="dropdown-menu" role="menu">
-              <% tags.each do |tag| %>
-                <li>
-                  <%= link_to tag, filter_by_tag_path(tag), class: 'inherit' %>
-                </li>
-              <% end %>
-            </ul>
-          </li>
-          <% end %>
-          <li class="if-no-js-hide <% if @type %>selected-and-available<% end %>">
-            <% if @type %>
-              <%= filter_remove_option_link(@site, nil, :type) %>
-              <%= filter_option_link(@site, @type.pluralize.titleize, {selected: true}) %>
-            <% else %>
-              <%= filter_option_link(@site, 'Type') %>
-            <% end %>
-            <ul class="dropdown-menu" role="menu">
-              <% if @type %>
-                <li>
-                  <%= link_to 'All types', remove_filter_by_type_path, class: 'inherit' %>
-                </li>
-              <% end %>
-              <% Mapping::TYPES.each do |key, type| %>
-                <li>
-                  <%= link_to type.titleize, filter_by_type_path(type), class: 'inherit' %>
-                </li>
-              <% end %>
-            </ul>
-          </li>
+          <%= render partial: 'mappings/filter/by_path_menu' %>
+          <%= render partial: 'mappings/filter/by_new_url_menu' %>
+          <%= render partial: 'mappings/filter/by_tag_menu' %>
+          <%= render partial: 'mappings/filter/by_type_menu' %>
           <li class="nav-pill-text text-muted">
             Sorted by path
           </li>
@@ -86,12 +28,12 @@
         <div class="panel-body">
           <% if @path_contains %>
             <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
-              <%= render partial: 'mappings/filter/by_path', locals: {single_filter_form: true, button_text: 'Update path'} %>
+              <%= render partial: 'mappings/filter/by_path_field', locals: {single_filter_form: true, button_text: 'Update path'} %>
             <% end %>
           <% end %>
           <% if @new_url_contains %>
             <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
-              <%= render partial: 'mappings/filter/by_new_url', locals: {single_filter_form: true, button_text: 'Update URL'} %>
+              <%= render partial: 'mappings/filter/by_new_url_field', locals: {single_filter_form: true, button_text: 'Update URL'} %>
             <% end %>
           <% end %>
           <% if filtered_by_tags? %>
