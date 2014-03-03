@@ -36,13 +36,24 @@ describe Transition::Import::Hits do
       end
     end
 
-    context 'a single import from a file with bouncer-related paths' do
+    context 'a single import from a file with bouncer-related paths', testing_before_all: true do
       before :all do
         create_test_hosts
         Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/bouncer_paths.tsv')
       end
 
       it 'should ignore hits that are a bouncer implementation detail' do
+        Hit.count.should eql(1)
+      end
+    end
+
+    context 'import from a file with furniture asset paths', testing_before_all: true do
+      before :all do
+        create_test_hosts
+        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/furniture_paths.tsv')
+      end
+
+      it 'should ignore hits that are furniture so are uninteresting and unlikely to be mapped' do
         Hit.count.should eql(1)
       end
     end

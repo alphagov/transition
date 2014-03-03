@@ -31,6 +31,16 @@ module Transition
         '/wales_crest_18px_x2.png',
       ]
 
+      FURNITURE_PATTERNS = [
+        '.*\.css',
+        '.*\.js',
+        '.*\.gif',
+        '.*\.ico',
+        '.*\.jpg',
+        '.*\.jpeg',
+        '.*\.png',
+      ]
+
       TRUNCATE = <<-mySQL
         TRUNCATE hits_staging
       mySQL
@@ -52,6 +62,7 @@ module Transition
         INNER JOIN hosts h on h.hostname = st.hostname
         WHERE  st.count >= 10
         AND    st.path NOT IN (#{BOUNCER_PATHS.map { |path| "'" + path + "'" }.join(', ')})
+        AND    st.path NOT REGEXP '#{ FURNITURE_PATTERNS.join('|') }'
         ON DUPLICATE KEY UPDATE hits.count=st.count
       mySQL
 
