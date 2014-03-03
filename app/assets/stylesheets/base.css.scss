@@ -177,6 +177,10 @@ main a {
   &:visited {
     color: $link-color-visited;
   }
+  
+  &.no-visit:visited {
+    color: $link-color;
+  }
 
   // Don't give visited links that are buttons
   // the visited link colour

@@ -1,21 +1,24 @@
 <div class="mappings">
   <h3 class="remove-top-margin add-bottom-margin">Mappings</h3>
   <div class="list-group add-big-bottom-margin">
-    <%= link_to site_mappings_path(@site), class: 'list-group-item' do %>
-      <h4 class="list-group-item-heading">Mappings</h4>
+    <div class="list-group-item">
+      <h4 class="list-group-item-heading">
+        <%= link_to 'Mappings', site_mappings_path(@site), class: 'no-visit' %>
+      </h4>
       <p class="list-group-item-text text-muted">
         <strong><%= pluralize(number_with_delimiter(@site.mappings.count), 'path') %></strong> &mdash;
-        <%= pluralize(number_with_delimiter(@site.mappings.redirects.count), 'redirect') %> and
-        <%= pluralize(number_with_delimiter(@site.mappings.archives.count), 'archive') %>
+        <%= site_redirects_link(@site) %> and <%= site_archives_link(@site) %>
       </p>
-    <% end %>
+    </div>
     <% if current_user.can_edit?(@site.organisation) %>
-      <%= link_to new_multiple_site_mappings_path(@site), class: 'list-group-item' do %>
-        <h4 class="list-group-item-heading">Add mappings</h4>
+      <div class="list-group-item">
+        <h4 class="list-group-item-heading">
+          <%= link_to 'Add mappings', new_multiple_site_mappings_path(@site), class: 'no-visit' %>
+        </h4>
         <p class="list-group-item-text text-muted">
           Create new mappings from a list of paths
         </p>
-      <% end %>
+      </div>
     <% end %>
     <% most_used_tags = most_used_tags_for_site(@site, limit: 10) %>
     <% if most_used_tags.any? %>
