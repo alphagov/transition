@@ -17,18 +17,34 @@ describe View::Hits::TimePeriod do
       its(:query_slug) { should == 'yesterday' }
     end
 
-    describe 'the default, all-time' do
+    describe 'the default, last-30-days' do
       subject { View::Hits::TimePeriod.default }
 
-      its(:title)      { should == 'All time' }
-      its(:slug)       { should == 'all-time' }
+      its(:title)      { should == 'Last 30 days' }
+      its(:slug)       { should == 'last-30-days' }
       its(:query_slug) { should be_nil }
-      its(:no_content) { should == 'yet' }
+      its(:no_content) { should == 'in this time period' }
     end
 
     describe 'indexing on slug' do
       it 'returns nil on unrecognised time periods' do
         View::Hits::TimePeriod['non-existent'].should be_nil
+      end
+      
+      describe 'All time' do
+        subject { View::Hits::TimePeriod['all-time'] }
+
+        its(:title)      { should == 'All time' }
+        its(:range)      { should == (100.years.ago.to_date..Date.today) }
+        its(:start_date) { should == 100.years.ago.to_date }
+        its(:end_date)   { should == Date.today }
+        its(:no_content) { should == 'yet' }
+
+        it 'calculates dates correctly even if, say, the server has been up a few decades' do
+          Timecop.freeze(Date.new(2112, 10, 31)) do
+            View::Hits::TimePeriod['all-time'].range.should == (100.years.ago.to_date..Date.today)
+          end
+        end
       end
 
       describe 'Last 30 days' do

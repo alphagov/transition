@@ -21,6 +21,7 @@ module View
       end
 
       DATE_RANGE = /[0-9]{8}(?:-[0-9]{8})?/
+      DEFAULT_SLUG = 'last-30-days'
 
       PERIODS_BY_SLUG = {
         'Yesterday'       => lambda { Date.yesterday..Date.today },
@@ -49,7 +50,7 @@ module View
       end
 
       def self.default
-        PERIODS_BY_SLUG['all-time']
+        PERIODS_BY_SLUG[DEFAULT_SLUG]
       end
 
       def self.[](slug)
@@ -64,7 +65,7 @@ module View
       end
 
       def query_slug
-        slug unless slug == 'all-time'
+        slug unless slug == DEFAULT_SLUG
       end
 
       def range

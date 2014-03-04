@@ -27,6 +27,7 @@ describe HitsController do
     end
 
     before do
+      Timecop.freeze(Date.new(2013, 01, 01))
       login_as_stub_user
       Transition::Import::DailyHitTotals.from_hits!
       get :category, site_id: site, category: test_category_name

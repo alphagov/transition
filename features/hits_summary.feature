@@ -20,6 +20,7 @@ Background: I start at the summary page
     | 301         | /9   | 18/10/12 | 100   |
     | 301         | /10  | 18/10/12 | 100   |
     | 301         | /11  | 18/10/12 | 10    |
+    | 301         | /12  | 10/08/12 | 10    |
     | 410         | /    | 17/10/12 | 100   |
     | 410         | /2   | 17/10/12 | 100   |
     | 410         | /3   | 18/10/12 | 100   |
@@ -31,6 +32,7 @@ Background: I start at the summary page
     | 410         | /9   | 18/10/12 | 100   |
     | 410         | /10  | 18/10/12 | 100   |
     | 410         | /11  | 18/10/12 | 10    |
+    | 410         | /12  | 10/08/12 | 10    |
     | 404         | /    | 17/10/12 | 100   |
     | 404         | /2   | 17/10/12 | 100   |
     | 404         | /3   | 18/10/12 | 100   |
@@ -42,6 +44,7 @@ Background: I start at the summary page
     | 404         | /9   | 18/10/12 | 100   |
     | 404         | /10  | 18/10/12 | 100   |
     | 404         | /11  | 18/10/12 | 10    |
+    | 404         | /12  | 10/08/12 | 10    |
     | 200         | /    | 17/10/12 | 100   |
     | 200         | /2   | 17/10/12 | 100   |
     | 200         | /3   | 18/10/12 | 100   |
@@ -53,6 +56,7 @@ Background: I start at the summary page
     | 200         | /9   | 18/10/12 | 100   |
     | 200         | /10  | 18/10/12 | 100   |
     | 200         | /11  | 18/10/12 | 10    |
+    | 200         | /12  | 10/08/12 | 10    |
   When I visit the associated site
   And I click the link "Analytics"
 
@@ -70,9 +74,16 @@ Scenario: Hits exist and are summarised for a site, displayed with a graph
   And it should show only the top 9 errors in descending count order
   But I should not see a graph
 
+Scenario: Hits exist and show the last 30 days by default
+  When I click the link "Redirects"
+  Then I should see an redirects graph showing a green trend line with 2 points
+  And I should see a redirects graph showing a green trend line
+  And I should see hits from the last 30 days with a redirect status, in descending count order
+  And the period "Last 30 days" should be selected
+
 Scenario: Hits exist and can be filtered by error and time period "Yesterday"
   When I click the link "Errors"
-  Then I should see all hits with an error status for the Attorney General's office in descending count order
+  Then I should see hits from the last 30 days with an error status, in descending count order
   And I should see an errors graph showing a red trend line
   When I filter by the date period "Yesterday"
   Then I should see only yesterday's errors in descending count order
@@ -81,18 +92,16 @@ Scenario: Hits exist and can be filtered by error and time period "Yesterday"
 
 Scenario: Hits exist and can be filtered by archives and time period "Last seven days"
   When I click the link "Archives"
-  Then I should see all hits with an archive status for the Attorney General's office in descending count order
+  Then I should see hits from the last 30 days with an archive status, in descending count order
   When I filter by the date period "Last seven days"
   Then I should see an archives graph showing a grey trend line with 2 points
   And the period "Last seven days" should be selected
 
-Scenario: Hits exist and can be filtered by redirects and time period "Last 30 days"
+Scenario: Hits exist and can be filtered by redirects and time period "All time"
   When I click the link "Redirects"
-  Then I should see all hits with a redirect status for the Attorney General's office in descending count order
-  And I should see a redirects graph showing a green trend line
-  When I filter by the date period "Last 30 days"
-  Then I should see an redirects graph showing a green trend line with 2 points
-  And the period "Last 30 days" should be selected
+  And I filter by the date period "All time"
+  Then I should see all hits with a redirect status, in descending count order
+  And the period "All time" should be selected
 
 Scenario: There are multiple pages for a category
   Given the hits page size is 11
@@ -106,9 +115,9 @@ Scenario: No hits exist at all
   When I visit the associated site
   And I click the link "Analytics"
   Then I should not see a graph
-  And I should see "There are no known hits for the ago summary yet"
+  And I should see "There are no known hits for the ago summary"
   When I click the link "Errors"
-  Then I should see "There are no errors for ago yet"
+  Then I should see "There are no errors for ago"
   And I should not see a graph
   When I filter by the date period "Last seven days"
   Then I should see "There are no errors for ago in this time period"
