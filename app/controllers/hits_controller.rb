@@ -43,7 +43,7 @@ class HitsController < ApplicationController
   end
 
   def hits_in_period
-    @site.hits.in_range(@period.start_date, @period.end_date)
+    @site.hits.in_range(@period.start_date, @period.end_date).includes(:mapping)
   end
 
   def totals_in_period
