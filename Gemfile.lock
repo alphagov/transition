@@ -41,11 +41,6 @@ GEM
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
       multi_json (>= 1.0.0)
-    aws-ses (0.4.4)
-      builder
-      mail (> 2.2.5)
-      mime-types
-      xml-simple
     bootstrap-sass (3.1.0.0)
       sass (~> 3.2)
     builder (3.0.4)
@@ -73,8 +68,6 @@ GEM
     database_cleaner (1.0.1)
     diff-lcs (1.2.4)
     erubis (2.7.0)
-    exception_notification (2.6.1)
-      actionmailer (>= 3.0.4)
     execjs (2.0.1)
     extlib (0.9.16)
     factory_girl (4.1.0)
@@ -269,7 +262,6 @@ GEM
     whenever (0.8.4)
       activesupport (>= 2.3.4)
       chronic (>= 0.6.3)
-    xml-simple (1.1.2)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -279,13 +271,11 @@ PLATFORMS
 DEPENDENCIES
   acts-as-taggable-on (= 3.0.1)
   airbrake (= 3.1.15)
-  aws-ses (= 0.4.4)
   bootstrap-sass (= 3.1.0)
   capybara (= 2.1.0)
   ci_reporter (= 1.8.0)
   cucumber-rails
   database_cleaner (= 1.0.1)
-  exception_notification (= 2.6.1)
   factory_girl_rails (= 4.1.0)
   gds-api-adapters (= 7.14.0)
   gds-sso (= 9.2.0)
