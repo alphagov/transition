@@ -174,7 +174,7 @@ describe Mapping do
       let!(:hit_on_uncanonicalized) { create :hit, path: uncanonicalized_path, host: site.default_host }
       let!(:hit_on_canonicalized)   { create :hit, path: canonicalized_path, host: site.default_host }
 
-      context 'when creating a new mapping' do
+      context 'when creating a new mapping', need_mapping_callbacks: true do
         before do
           Transition::Import::HitsMappingsRelations.refresh!
           mapping.save!
