@@ -7,34 +7,22 @@ module Transition
       extend Transition::Import::ConsoleJobWrapper
 
       ##
-      #
-      # Simulation of FIRST via GROUP_CONCAT
-      # http://stackoverflow.com/questions/13957082/selecting-first-and-last-values-in-a-group
-      # USE INDEX hint also necessary to avoid query running till heat
-      # death of universe (it'll still take a couple of minutes).
-      #
-      # mySQL, you need to stop hiding Smirnoff in the cornflakes.
-      #
+      # Sloppy GROUP BY - path is not subject to aggregate. Note well,
+      # Postgres upgraders
       REFRESH_HOST_PATHS = <<-mySQL
         INSERT IGNORE INTO host_paths(host_id, path_hash, path)
-        SELECT hits.host_id,
-               hits.path_hash,
-               SUBSTRING_INDEX(GROUP_CONCAT(CAST(path AS CHAR)), ',', 1) # Simulate FIRST()
-               AS path
-        FROM   hits USE INDEX (index_hits_on_host_id_and_path_hash_and_hit_on_and_http_status)
-               INNER JOIN hosts ON hosts.id = hits.host_id
-               INNER JOIN sites ON sites.id = hosts.site_id
+        SELECT hits.host_id, hits.path_hash, path
+        FROM   hits
         GROUP  BY hits.host_id,
                   hits.path_hash
       mySQL
 
       REFRESH_HITS_FROM_HOST_PATHS = <<-mySQL
-        UPDATE hits
-        INNER JOIN host_paths ON
-          host_paths.host_id = hits.host_id AND host_paths.path_hash = hits.path_hash
-        SET hits.mapping_id = host_paths.mapping_id
-        WHERE
-          host_paths.mapping_id IS NOT NULL
+        UPDATE hits USE INDEX (index_hits_on_host_id_and_path_hash)
+               INNER JOIN host_paths
+                       ON host_paths.host_id = hits.host_id
+                          AND host_paths.path_hash = hits.path_hash
+        SET    hits.mapping_id = host_paths.mapping_id
       mySQL
 
       ##
