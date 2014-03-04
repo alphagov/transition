@@ -19,13 +19,8 @@ gem 'gretel', '3.0.5'
 gem 'acts-as-taggable-on', '3.0.1'
 gem 'select2-rails', '3.5.2'
 
-# Exception notification is configured in alphagov-deployment. These gems are
-# needed by that code.
-gem 'aws-ses', '0.4.4', require: 'aws/ses'
-gem 'exception_notification', '2.6.1'
-
-# We're switching to Errbit for exception notifications instead of relying on
-# emails, and Errbit uses airbrake.
+# We use Errbit for tracking exceptions, which needs the airbrake gem. Config
+# for Errbit is in alphagov-deployment.
 gem "airbrake", "3.1.15"
 
 gem 'logstasher', '0.4.8'
