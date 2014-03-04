@@ -17,12 +17,28 @@ Then(/^I should be returned to the mappings list I was on$/) do
   expect("#{uri.path}?#{uri.query}").to eql(site_mappings_path('bis', fake_param: 1))
 end
 
-Then(/^the filter box should contain "([^"]*)"$/) do |path|
-  expect(page).to have_field('Original path', with: path)
+Then(/^the "([^"]*)" filter should be visible and contain "([^"]*)"$/) do |filter_type, value|
+  expect(page).to have_field(filter_type, with: value)
 end
 
-Then(/^I should see a link to remove the filter$/) do
-  expect(page).to have_link('Remove filter')
+Then(/^the filter box should contain "([^"]*)"$/) do |path|
+  expect(page).to have_field('Path', with: path)
+end
+
+Then(/^the tag filter should be visible with the tags? "([^"]*)"$/) do |tag_list|
+  step "I should see a link to remove the tags \"#{tag_list}\""
+end
+
+Then(/^I should see a warning about an incompatible filter$/) do
+  within '.filters' do
+    expect(page).to have_selector('.alert-warning')
+  end
+end
+
+Then(/^I should see the most popular tags for this site$/) do
+  within '.filters .dropdown-menu' do
+    step 'I should see the tag links "fee, fi, fo, fum, fiddle"'
+  end
 end
 
 Then(/^I should see no history$/) do
@@ -138,6 +154,13 @@ Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
   expect(page).to have_field('Tags', with: tag_list)
 end
 
+Then(/^I should see the tag links "([^"]*)"$/) do |tag_list|
+  expected_tags = tag_list.split(',').map(&:strip)
+  expected_tags.each do |tag|
+    expect(page).to have_selector('a', text: tag)
+  end
+end
+
 Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|
   within '.alert-success', :match => :first do
     expect(page).to have_content(
@@ -233,16 +256,16 @@ end
 
 Then(/^I should see mappings tagged with "fum"$/) do
   steps %{
-    And I should see "/1"
-    And I should see "/2"
-    But I should not see "/3"
+    And I should see "/about/corporate"
+    And I should see "/about/branding"
+    But I should not see "/another"
   }
 end
 
 Then(/^I should see mappings tagged with "fum" and "fiddle"$/) do
   steps %{
-    And I should see "/1"
-    But I should not see "/2"
-    And I should not see "/3"
+    And I should see "/about/corporate"
+    But I should not see "/about/branding"
+    And I should not see "/another"
   }
 end

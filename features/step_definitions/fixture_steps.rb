@@ -37,8 +37,14 @@ Given(/^there is a site called (.*) belonging to an organisation (.*) with these
   org  = create(:organisation, title: org_abbr, whitehall_slug: org_abbr)
   site = create(:site, organisation: org, abbr: site_abbr)
 
-  site.mappings = mappings_table.rows.map do |http_status, path, new_url|
-    create(:mapping, site: site, http_status: http_status, path: path, new_url: new_url == '' ? nil : new_url)
+  site.mappings = mappings_table.rows.map do |http_status, path, new_url, tags|
+    create(:mapping,
+      site: site,
+      http_status: http_status,
+      path: path,
+      new_url: new_url == '' ? nil : new_url,
+      tag_list: tags
+    )
   end
 end
 

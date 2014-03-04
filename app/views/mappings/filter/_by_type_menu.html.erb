@@ -1,0 +1,20 @@
+<li class="if-no-js-hide <% if @type %>selected-and-available<% end %>">
+  <% if @type %>
+    <%= filter_remove_option_link(@site, nil, :type) %>
+    <%= filter_option_link(@site, @type.pluralize.titleize, {selected: true}) %>
+  <% else %>
+    <%= filter_option_link(@site, 'Type') %>
+  <% end %>
+  <ul class="dropdown-menu" role="menu">
+    <% if @type %>
+      <li>
+        <%= link_to 'All types', remove_filter_by_type_path, class: 'inherit' %>
+      </li>
+    <% end %>
+    <% Mapping::TYPES.each do |key, type| %>
+      <li>
+        <%= link_to type.titleize, filter_by_type_path(type), class: 'inherit' %>
+      </li>
+    <% end %>
+  </ul>
+</li>

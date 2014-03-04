@@ -1,0 +1,38 @@
+<% breadcrumb(:filter_mappings, @site) %>
+
+<%= content_for :page_title, 'Filter mappings' %>
+<h1 class="page-title-with-border">
+  <span class="small"><%= @site.default_host.hostname %></span>
+  Filter mappings
+</h1>
+
+<%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form row') do %>
+  <div class="col-md-6">
+    <fieldset>
+      <legend class="legend-reset add-label-margin bold">Type</legend>
+      <div class="form-group">
+        <%= label_tag nil, class: 'radio-inline' do %>
+          <%= radio_button_tag :type, '', true %>
+          All types
+        <% end %>
+        <% Mapping::TYPES.each do |key, type| %>
+          <%= label_tag nil, class: 'radio-inline' do %>
+            <%= radio_button_tag :type, type %>
+            <%= type.titleize %>
+          <% end %>
+        <% end %>
+      </div>
+    </fieldset>
+    <%= render partial: 'mappings/filter/by_path_field' %>
+    <%= render partial: 'mappings/filter/by_new_url_field' %>
+    <div class="form-group">
+      <% tag_list_label = capture do %>
+        Tags
+        <p class="text-muted normal add-label-margin">Separate each tag with a comma. eg “content, need:123, plan:2”</p>
+      <% end %>
+      <%= label_tag :tagged, tag_list_label %>
+      <%= text_field_tag :tagged, params[:tagged], class: 'form-control' %>
+    </div>
+    <%= button_tag 'Filter', name: nil, class: 'btn btn-default ' %>
+  </div>
+<% end %>

@@ -1,0 +1,17 @@
+<% single_filter_form ||= false %>
+<div class="form-group">
+  <%= label_tag :path_contains, 'Path' %>
+  <% if single_filter_form %>
+    <%= hidden_field_tag 'new_url_contains', @new_url_contains %>
+    <%= hidden_field_tag 'tagged', params[:tagged] %>
+    <%= hidden_field_tag 'type', params[:type] %>
+    <div class="input-group">
+  <% end %>
+  <%= text_field_tag :path_contains, @path_contains, class: 'form-control', placeholder: 'eg /home' %>
+  <% if single_filter_form %>
+    <span class="input-group-btn">
+      <%= button_tag button_text, name: nil, class: 'btn btn-default ' %>
+    </span>
+    </div>
+  <% end %>
+</div>

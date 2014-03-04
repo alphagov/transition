@@ -29,4 +29,17 @@ module SitesHelper
   def days_before_or_after_launch(site)
     (site.launch_date - DateTime.now.midnight.utc).to_i.abs
   end
+
+  def site_redirects_link(site)
+    link_to pluralize(number_with_delimiter(site.mappings.redirects.count), 'redirect'),
+      site_mappings_path(site, type: 'redirect'),
+      class: 'link-muted'
+  end
+
+  def site_archives_link(site)
+    link_to pluralize(number_with_delimiter(site.mappings.archives.count), 'archive'),
+      site_mappings_path(site, type: 'archive'),
+      class: 'link-muted'
+  end
+
 end

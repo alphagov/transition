@@ -1,7 +1,6 @@
-<% filtered_mappings = true if filtered_by_tags? || @path_contains.present? %>
-<% title = filtered_mappings ? 'Filtered mappings' : 'Mappings' %>
+<% title = @filtered ? 'Filtered mappings' : 'Mappings' %>
 <% content_for(:page_title, "#{title} | #{@site.default_host.hostname}") %>
-<% breadcrumb(filtered_mappings ? :filtered_mappings : :mappings, @site) %>
+<% breadcrumb(@filtered ? :filtered_mappings : :mappings, @site) %>
 
 <div class="page-title-with-border">
   <h1>
@@ -10,25 +9,10 @@
   </h1>
 </div>
 
-<%= render partial: 'filters' %>
-
 <h2>
   <%= pluralize(number_with_delimiter(@mappings.total_count), 'mapping') %>
 </h2>
-<% if filtered_by_tags? %>
-  <section class="filtered-tags add-bottom-margin">
-  <h3 class="rm">Tagged: </h3>
-    <ul class="tag-list">
-    <% filtered_by_tags.each do |tag| %>
-      <li>
-        <%= link_to remove_tag_from_filter_path(tag), class: 'tag', title: "Remove “#{tag}” tag filter" do %>
-          <span class="glyphicon glyphicon-remove"></span> <%= tag %>
-        <% end %>
-      </li>
-    <% end %>
-    </ul>
-  </section>
-<% end%>
+<%= render partial: 'filters' %>
 
 <% if @mappings.any? %>
 

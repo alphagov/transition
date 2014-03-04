@@ -1,25 +1,64 @@
-<%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
-  <div class="row">
-    <div class="col-md-6">
-      <fieldset class="add-label-margin">
-        <legend class="legend-inline bold">Filter by</legend>
-        <% [['path', 'Original path'], ['new_url', 'New URL']].each do |field_name, label_text| %>
-          <%= label_tag nil, class: 'radio-inline' do %>
-            <%= radio_button_tag :filter_field, field_name, filter_box_selected?(params[:filter_field], field_name) %>
-            <%= label_text %>
+<nav class="filters row" data-module="filters">
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <header class="panel-heading">
+        <% if @filtered %>
+          <%= link_to site_mappings_path(@site), class: 'remove-filters', title: 'Remove all filters' do %>
+            <span class="glyphicon glyphicon-remove"></span>
           <% end %>
         <% end %>
-        <% if @path_contains.present? %>
-          <span class="add-left-margin">(<%= link_to 'Remove filter', site_mappings_path(@site) %>)</span>
-        <% end %>
-      </fieldset>
-      <%= label_tag :contains, 'Original path or new URL', class: 'rm' %>
-      <div class="input-group">
-        <%= text_field_tag :contains, @path_contains, class: 'form-control', placeholder: 'eg /home'  %>
-        <span class="input-group-btn">
-          <%= button_tag 'Filter', name: nil, class: 'btn btn-default ' %>
-        </span>
-      </div>
+        <ul class="nav nav-compact nav-pills">
+          <li class="if-no-js-hide nav-pill-text">
+            <strong>Filter by</strong>
+          </li>
+          <%= render partial: 'mappings/filter/by_path_menu' %>
+          <%= render partial: 'mappings/filter/by_new_url_menu' %>
+          <%= render partial: 'mappings/filter/by_tag_menu' %>
+          <%= render partial: 'mappings/filter/by_type_menu' %>
+          <li class="nav-pill-text text-muted">
+            Sorted by path
+          </li>
+          <li class="if-js-hide">
+            <%= link_to 'Filter mappings', filter_site_mappings_path(@site) %>
+          </li>
+        </ul>
+      </header>
+      <% if @incompatible_filter %>
+        <div class="alert alert-warning">
+          Your archive filter has been removed. Filtering by new URL is only possible with redirects.
+        </div>
+      <% end %>
+      <% if @path_contains || @new_url_contains || filtered_by_tags? %>
+        <div class="panel-body">
+          <% if @path_contains %>
+            <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
+              <%= render partial: 'mappings/filter/by_path_field', locals: {single_filter_form: true, button_text: 'Update path'} %>
+            <% end %>
+          <% end %>
+          <% if @new_url_contains %>
+            <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
+              <%= render partial: 'mappings/filter/by_new_url_field', locals: {single_filter_form: true, button_text: 'Update URL'} %>
+            <% end %>
+          <% end %>
+          <% if filtered_by_tags? %>
+            <dl class="remove-bottom-margin filtered-tags">
+              <dt class="add-label-margin">Tagged</dt>
+              <dd>
+                <ul class="remove-bottom-margin tag-list">
+                <% filtered_by_tags.each do |tag| %>
+                  <li>
+                    <%= link_to remove_tag_from_filter_path(tag), class: 'tag', title: "Remove “#{tag}” tag filter" do %>
+                      <span class="glyphicon glyphicon-remove"></span> <%= tag %>
+                    <% end %>
+                  </li>
+                <% end %>
+                </ul>
+              </dd>
+            </dl>
+          <% end%>
+        </div>
+      <% end %>
+
     </div>
   </div>
-<% end %>
+</nav>
