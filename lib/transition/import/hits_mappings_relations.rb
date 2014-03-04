@@ -57,9 +57,12 @@ module Transition
               Digest::SHA1.hexdigest(site.canonical_path(host_path.path))
             mapping_id = Mapping.where(
               path_hash: c14nized_path_hash, site_id: site.id).pluck(:id).first
-            host_path.update_columns(
-              mapping_id: mapping_id,
-              c14n_path_hash: c14nized_path_hash)
+
+            if host_path.mapping_id != mapping_id || host_path.c14n_path_hash != c14nized_path_hash
+              host_path.update_columns(
+                mapping_id: mapping_id,
+                c14n_path_hash: c14nized_path_hash)
+            end
           end
         end
 
