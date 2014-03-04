@@ -25,9 +25,6 @@ module Transition
             filename = download
           end
           process(filename)
-        rescue StandardError => e
-          ExceptionNotifier::Notifier.background_exception_notification(e)
-          raise
         end
 
       private
