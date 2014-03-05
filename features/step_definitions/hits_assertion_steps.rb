@@ -92,12 +92,12 @@ Then(/^I should see all hits with a[n]? (\w+) status for the Attorney General's 
   end
 end
 
-Then(/^each hit should have a link to check its mapping$/) do
+Then(/^each hit except homepages should have a link to check its mapping$/) do
   within '.hits tbody' do
     page.all('tr').each do |row|
       path = row.find(:css, '.path').text
       mapping = row.find(:css, '.action')
-      expect(mapping).to have_link('', href: site_mapping_find_path(@site, path: path))
+      expect(mapping).to have_link('', href: site_mapping_find_path(@site, path: path)) unless path == '/'
     end
   end
 end

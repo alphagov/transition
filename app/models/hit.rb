@@ -38,6 +38,10 @@ class Hit < ActiveRecord::Base
   scope :redirects,  -> { where(http_status: '301') }
   scope :top_ten,    -> { order('count DESC').limit(10) }
 
+  def homepage?
+    path == '/' || path.starts_with?('/?')
+  end
+
   protected
   def set_path_hash
     self.path_hash = Digest::SHA1.hexdigest(path) if path_changed?
