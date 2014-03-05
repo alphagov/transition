@@ -76,7 +76,7 @@ Then(/^I should see a trend for all hits, errors, archives and redirects$/) do
   end
 end
 
-Then(/^I should see all hits with a[n]? (\w+) status for the Attorney General's office in descending count order$/) do |category|
+Then(/^I should see hits from the last 30 days with a[n]? (\w+) status, in descending count order$/) do |category|
 
   case category
   when 'error'
@@ -89,6 +89,22 @@ Then(/^I should see all hits with a[n]? (\w+) status for the Attorney General's 
 
   within '.hits' do
     expect(page).to have_sorted_bar_rows(11).for_status(status)
+  end
+end
+
+Then(/^I should see all hits with a[n]? (\w+) status, in descending count order$/) do |category|
+
+  case category
+  when 'error'
+    status = 404
+  when 'archive'
+    status = 410
+  when 'redirect'
+    status = 301
+  end
+
+  within '.hits' do
+    expect(page).to have_sorted_bar_rows(12).for_status(status)
   end
 end
 

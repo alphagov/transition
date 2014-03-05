@@ -5,6 +5,7 @@ Feature: All traffic for site
 
 Scenario: Hits exist and are ordered for a site
   Given I have logged in as an admin
+  And the date is 19/10/12
   And these hits exist for the Attorney General's office site:
     | http_status | path | hit_on   | count |
     | 410         | /    | 16/10/12 | 100   |
@@ -30,10 +31,11 @@ Scenario: No hits exist
   Given I have logged in as an admin
   And no hits exist for the Attorney General's office site
   When I visit the associated site's hits
-  Then I should see "We don’t have any traffic data for ago yet."
+  Then I should see "We don’t have any traffic data for ago"
 
 Scenario: Check mapping for a hit
   Given I have logged in as an admin
+  And the date is 19/10/12
   And these hits exist for the Attorney General's office site:
     | http_status | path | hit_on   | count |
     | 301         | /    | 16/10/12 | 100   |
