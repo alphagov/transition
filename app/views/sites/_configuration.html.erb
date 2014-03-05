@@ -4,16 +4,46 @@
   <dl class="panel-body dl-spaced remove-bottom-margin">
     <dt>All hostname aliases</dt>
     <dd class="host-aliases">
-      <ul>
-        <% @site.hosts.pluck(:hostname).each do |hostname| %>
-          <li>
-            <%= hostname %>
-            <% if @site.default_host.hostname == hostname %>
-              <span class="text-muted">default</span>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
+      <table class="table host-aliases">
+        <thead class="table-header">
+          <tr>
+            <th>Hostname</th>
+            <th><abbrev title="Time To Live">TTL</abbrev></th>
+            <th>CNAME/IP Address</th>
+            <th>Has AKA?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @site.hosts.each do |host| %>
+            <tr>
+              <td>
+                <%= host.hostname %>
+                <% if @site.default_host == host %>
+                  <span class="text-muted">default</span>
+                <% end %>
+              </td>
+              <td>
+                <% if host.ttl %>
+                  <%= number_with_delimiter(host.ttl) %> seconds
+                  <span class="text-muted"><%= distance_of_time_in_words(host.ttl) %></span>
+                <% else %>
+                  <span class="text-muted">Unknown</span>
+                <% end %>
+              </td>
+              <td><%= host.cname || host.ip_address || 'Unknown' %></td>
+              <td>
+                <% if host.has_aka == true %>
+                  <%= link_to 'Yes', "http://#{host.aka_hostname}" %>
+                <% elsif host.has_aka == false %>
+                  No
+                <% else %>
+                  <span class="text-muted">Unknown</span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </dd>
     <dt>New homepage</dt>
     <dd><%= link_to @site.homepage, @site.homepage, class: 'breakable' %></dd>
