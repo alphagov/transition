@@ -92,12 +92,12 @@ Then(/^I should see all hits with a[n]? (\w+) status for the Attorney General's 
   end
 end
 
-Then(/^each hit should have a link to check its mapping$/) do
+Then(/^each hit except homepages should have a link to check its mapping$/) do
   within '.hits tbody' do
     page.all('tr').each do |row|
       path = row.find(:css, '.path').text
       mapping = row.find(:css, '.action')
-      expect(mapping).to have_link('', href: site_mapping_find_path(@site, path: path))
+      expect(mapping).to have_link('', href: site_mapping_find_path(@site, path: path)) unless path == '/'
     end
   end
 end
@@ -140,5 +140,45 @@ end
 Then(/^the period "([^"]*)" should be selected$/) do |period_title|
   within '.date-range .dropdown-toggle' do
     expect(page).to have_text(period_title)
+  end
+end
+
+Then(/^I should not see any errors that were fixed$/) do
+  steps %{
+    Then I should see "/error"
+    But I should not see "/was_error_now_redirect"
+    And I should not see "/was_error_now_archive"
+  }
+end
+
+And(/^I should see that I can add mappings where they are missing$/) do
+  # There should be an "Add mapping button" for all the missing mappings
+  within '.hits-summary-errors' do
+    expect(page).to have_link('Add mapping')
+  end
+end
+
+But(/^I should see all redirects and archives, even those that have since changed type$/) do
+  steps %{
+    Then I should see "/was_archive_now_redirect"
+    And I should see "/always_an_archive"
+    And I should see "/always_a_redirect"
+    And I should see "/was_redirect_now_archive"
+  }
+end
+
+And(/^I should see an indication that they have since changed$/) do
+  steps %{
+    Then I should see "was archived, now redirecting"
+    And I should see "was redirecting, now archived"
+  }
+end
+
+And(/^I should see that I can edit redirects and archives$/) do
+  within '.hits-summary-archives' do
+    expect(page).to have_link('Edit mapping')
+  end
+  within '.hits-summary-redirects' do
+    expect(page).to have_link('Edit mapping')
   end
 end

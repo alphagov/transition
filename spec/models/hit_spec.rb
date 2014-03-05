@@ -19,4 +19,10 @@ describe Hit do
     its(:hit_on)    { should eql(DateTime.new(2014, 12, 31, 0, 0, 0)) }
     its(:path_hash) { should eql('ce81157034ae8c32f429d3dc03bed10cc0c47b65') }
   end
+
+  describe '#homepage?' do
+    specify { create(:hit, path: '/').homepage?.should be_true }
+    specify { create(:hit, path: '/?q=1').homepage?.should be_true }
+    specify { create(:hit, path: '/foo').homepage?.should be_false }
+  end
 end

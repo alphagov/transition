@@ -5,6 +5,8 @@ class Hit < ActiveRecord::Base
   NEVER = Date.new(1970, 1, 1)
 
   belongs_to :host
+  belongs_to :mapping
+
   validates :host, :hit_on, presence: true
   validates :path, presence: true, length: { maximum: 1024 }
   validates :count, presence: true, numericality: { greater_than_or_equal_to: 0, only_integer: true }
@@ -18,9 +20,10 @@ class Hit < ActiveRecord::Base
   validates :path_hash, presence: true
 
   scope :by_path_and_status, -> {
-    select('hits.path, sum(hits.count) as count, hits.http_status').
+    select('hits.path, sum(hits.count) as count, hits.http_status, hits.mapping_id').
       group(:path_hash, :http_status)
   }
+  scope :without_mappings, -> { where(mapping_id: nil) }
   scope :points_by_date, -> {
     select('hits.hit_on, sum(hits.count) as count').group(:hit_on)
   }
@@ -34,6 +37,10 @@ class Hit < ActiveRecord::Base
   scope :archives,   -> { where(http_status: '410') }
   scope :redirects,  -> { where(http_status: '301') }
   scope :top_ten,    -> { order('count DESC').limit(10) }
+
+  def homepage?
+    path == '/' || path.starts_with?('/?')
+  end
 
   protected
   def set_path_hash

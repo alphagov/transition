@@ -30,6 +30,8 @@ class Mapping < ActiveRecord::Base
   before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path, :set_path_hash
   validates :path_hash, presence: true
 
+  after_create :update_hit_relations
+
   validates :new_url, :suggested_url, :archive_url, length: { maximum: (64.kilobytes - 1) }, non_blank_url: true
   validates :new_url, presence: { if: :redirect?, message: 'required when mapping is a redirect' }
   validates :archive_url, national_archives_url: true
@@ -130,4 +132,13 @@ class Mapping < ActiveRecord::Base
     self.site.tna_timestamp.to_formatted_s(:number)
   end
 
+  def update_hit_relations
+    new_hits_hashes = HostPath.where(c14n_path_hash: path_hash).pluck(:path_hash)
+    Hit.joins(:host => :site)
+      .where(path_hash: new_hits_hashes)
+      .where('`sites`.`id` = ?', site_id).find_each \
+    do |hit|
+      hit.update_column(:mapping_id, self.id)
+    end
+  end
 end

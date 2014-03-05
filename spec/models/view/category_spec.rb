@@ -69,7 +69,32 @@ describe View::Hits::Category do
           end
         end
       end
+    end
+  end
 
+  describe 'the exclusion of hits with mappings on hits=', truncate_everything: true do
+    subject(:category) { View::Hits::Category[category_name] }
+
+    before { category.hits = Hit.scoped }
+
+    context 'when the category is "errors"' do
+      let(:category_name)  { 'errors' }
+      let!(:unfixed_error) { create(:hit, :error) }
+      let!(:fixed_error)   { create(:hit, :error, mapping: create(:archived)) }
+
+      it 'excludes hits that have already been fixed' do
+        category.hits.should == [unfixed_error]
+      end
+    end
+
+    context 'when the category is "redirects"' do
+      let(:category_name)     { 'redirects' }
+      let!(:vanilla_redirect) { create(:hit, :redirect) }
+      let!(:changed_redirect) { create(:hit, :redirect, mapping: create(:archived)) }
+
+      it 'includes all redirects, changed or not' do
+        category.hits.should == [vanilla_redirect, changed_redirect]
+      end
     end
   end
 end

@@ -1,6 +1,7 @@
 #encoding: utf-8
 
 require 'spec_helper'
+require 'transition/import/hits_mappings_relations'
 
 describe Mapping do
   specify { PaperTrail.should_not be_enabled } # testing our tests a little here, but if this fails, tests will be slow
@@ -157,10 +158,10 @@ describe Mapping do
     end
   end
 
-  describe 'canonicalizing the path and setting the path_hash before validate' do
+  describe 'path canonicalization and relation to hits', truncate_everything: true do
     let(:uncanonicalized_path) { '/A/b/c?significant=1&really-significant=2&insignificant=2' }
     let(:canonicalized_path)   { '/a/b/c?really-significant=2&significant=1' }
-    let(:site)                 { build(:site, query_params: 'significant:really-significant')}
+    let(:site)                 { create(:site, query_params: 'significant:really-significant')}
 
     subject(:mapping) do
       create(:mapping, path: uncanonicalized_path, site: site, http_status: '410')
@@ -168,6 +169,26 @@ describe Mapping do
 
     its(:path)        { should eql(canonicalized_path) }
     its(:path_hash)   { should eql(Digest::SHA1.hexdigest(canonicalized_path)) }
+
+    describe 'the linkage to hits' do
+      let!(:hit_on_uncanonicalized) { create :hit, path: uncanonicalized_path, host: site.default_host }
+      let!(:hit_on_canonicalized)   { create :hit, path: canonicalized_path, host: site.default_host }
+
+      context 'when creating a new mapping', need_mapping_callbacks: true do
+        before do
+          Transition::Import::HitsMappingsRelations.refresh!
+          mapping.save!
+        end
+
+        it 'links the uncanonicalized hit to the mapping' do
+          hit_on_uncanonicalized.reload.mapping.should == mapping
+        end
+
+        it 'links the canonicalized hit to the mapping' do
+          hit_on_canonicalized.reload.mapping.should == mapping
+        end
+      end
+    end
   end
 
   describe 'nillifying blanks before validation' do

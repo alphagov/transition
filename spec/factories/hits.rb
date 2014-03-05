@@ -6,5 +6,13 @@ FactoryGirl.define do
     hit_on 1.week.ago
 
     association :host
+
+    trait :error do
+      http_status '404'
+    end
+
+    trait :redirect do
+      http_status '301'
+    end
   end
 end

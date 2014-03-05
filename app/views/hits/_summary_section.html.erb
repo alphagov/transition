@@ -2,11 +2,11 @@
   
   <h2>
   <% if category.hits.count == 1 %>
-    <%= category.hits.count %> <%= category.title.singularize %>
-  <% elsif category.hits.count >= 2 and category.hits.count < 10 %>
-    <%= category.hits.count %> <%= category.title %>
+    <%= category.hits.length %> <%= category.title.singularize %>
+  <% elsif category.hits.length >= 2 and category.hits.length < 10 %>
+    <%= category.hits.length %> <%= category.title %>
   <% else %>
-    Top <%= category.hits.count %> <%= category.title %>
+    Top <%= category.hits.length %> <%= category.title %>
   <% end %>
   </h2>
   
