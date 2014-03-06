@@ -2,6 +2,8 @@
 
 <div class="configuration panel panel-default">
   <dl class="panel-body dl-spaced remove-bottom-margin">
+    <dt>New homepage</dt>
+    <dd><%= link_to @site.homepage, @site.homepage, class: 'breakable' %></dd>
     <dt>All hostname aliases</dt>
     <dd class="host-aliases">
       <table class="table host-aliases">
@@ -54,8 +56,6 @@
         </tbody>
       </table>
     </dd>
-    <dt>New homepage</dt>
-    <dd><%= link_to @site.homepage, @site.homepage, class: 'breakable' %></dd>
     <dt>Abbreviation</dt>
     <dd><%= @site.abbr %></dd>
     <dt>Significant query parameters</dt>
