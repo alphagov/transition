@@ -8,9 +8,17 @@
         <thead class="table-header">
           <tr>
             <th>Hostname</th>
-            <th><abbrev title="Time To Live">TTL</abbrev></th>
-            <th>CNAME/IP Address</th>
-            <th>Has AKA?</th>
+            <th>
+              <abbrev title="Time To Live">
+                <%= link_to 'TTL', glossary_index_path(anchor: 'ttl') %>
+              </abbrev>
+            </th>
+            <th>
+              <%= link_to 'CNAME', glossary_index_path(anchor: 'cname') %>
+              /
+              <%= link_to 'IP Address', glossary_index_path(anchor: 'a-record') %>
+            </th>
+            <th>Has <%= link_to 'AKA', glossary_index_path(anchor: 'aka') %>?</th>
           </tr>
         </thead>
         <tbody>
