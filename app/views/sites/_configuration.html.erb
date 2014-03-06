@@ -15,7 +15,7 @@
             </th>
             <th>
               <%= link_to 'CNAME', glossary_index_path(anchor: 'cname') %>
-              /
+              or
               <%= link_to 'IP Address', glossary_index_path(anchor: 'a-record') %>
             </th>
             <th>Has <%= link_to 'AKA', glossary_index_path(anchor: 'aka') %>?</th>
@@ -32,8 +32,9 @@
               </td>
               <td>
                 <% if host.ttl %>
-                  <%= number_with_delimiter(host.ttl) %> seconds
-                  <span class="text-muted"><%= distance_of_time_in_words(host.ttl) %></span>
+                  <span title="<%= number_with_delimiter(host.ttl) %> seconds">
+                    <%= distance_of_time_in_words(host.ttl) %>
+                  </span>
                 <% else %>
                   <span class="text-muted">Unknown</span>
                 <% end %>
