@@ -27,6 +27,7 @@ class MappingsController < ApplicationController
 
     flash[:success] = bulk_add.success_message
     flash[:saved_mapping_ids] = bulk_add.modified_mappings.map {|m| m.id}
+    flash[:saved_operation] = bulk_add.operation_description
     redirect_to site_mappings_path(@site)
   end
 
@@ -82,6 +83,7 @@ class MappingsController < ApplicationController
     if @mapping.save
       flash[:success] = 'Mapping saved'
       flash[:saved_mapping_ids] = [@mapping.id]
+      flash[:saved_operation] = "update-single"
 
       if params[:return_path] && params[:return_path].start_with?('/')
         redirect_to params[:return_path]
@@ -123,6 +125,7 @@ class MappingsController < ApplicationController
     else
       flash[:success] = bulk_edit.success_message
       flash[:saved_mapping_ids] = bulk_edit.mappings.map {|m| m.id}
+      flash[:saved_operation] = bulk_edit.operation_description
       redirect_to bulk_edit.return_path
     end
   end

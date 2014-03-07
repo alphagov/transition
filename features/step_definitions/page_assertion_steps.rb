@@ -51,6 +51,13 @@ Then(/^I should see (\d+) as the current page$/) do |page_number|
   expect(page).to have_selector('span.page.current', text: page_number)
 end
 
+# Google analytics tracking
+
+Then(/^an analytics event with "([^"]*)" has fired$/) do |contents|
+  gaq = page.evaluate_script('window._gaq').flatten
+  expect(gaq.include?(contents)).to be_true
+end
+
 # HTML structure
 
 Then(/^I should see the header "([^"]*)"$/) do |header_text|

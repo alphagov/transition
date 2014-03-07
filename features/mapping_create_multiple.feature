@@ -26,6 +26,7 @@ Feature: Create mappings
     Then I should see "1 mapping created. 0 mappings updated." in a modal window
     And I should see a table with 1 saved mapping in the modal
     And I should see "/needs/canonicalizing" in a modal window
+    And an analytics event with "bulk-add-redirect-ignore-existing" has fired
 
   Scenario: I don't have access
     Given I have logged in as a member of another organisation
