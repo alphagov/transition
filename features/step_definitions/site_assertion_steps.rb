@@ -47,7 +47,7 @@ Then(/^I should see the site's configuration including all host aliases$/) do
     end
 
     %w(www.attorney-general.gov.uk www.ago.gov.uk www.lslo.gov.uk).each do |hostname|
-      expect(page).to have_selector('.host-aliases li', text: hostname)
+      expect(page).to have_selector('.host-aliases td', text: hostname)
     end
   end
 end

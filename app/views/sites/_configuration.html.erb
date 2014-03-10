@@ -2,21 +2,60 @@
 
 <div class="configuration panel panel-default">
   <dl class="panel-body dl-spaced remove-bottom-margin">
-    <dt>All hostname aliases</dt>
-    <dd class="host-aliases">
-      <ul>
-        <% @site.hosts.pluck(:hostname).each do |hostname| %>
-          <li>
-            <%= hostname %>
-            <% if @site.default_host.hostname == hostname %>
-              <span class="text-muted">default</span>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    </dd>
     <dt>New homepage</dt>
     <dd><%= link_to @site.homepage, @site.homepage, class: 'breakable' %></dd>
+    <dt>All hostname aliases</dt>
+    <dd class="host-aliases">
+      <table class="table host-aliases">
+        <thead class="table-header">
+          <tr>
+            <th>Hostname</th>
+            <th>
+              <abbrev title="Time To Live">
+                <%= link_to 'TTL', glossary_index_path(anchor: 'ttl') %>
+              </abbrev>
+            </th>
+            <th>
+              <%= link_to 'CNAME', glossary_index_path(anchor: 'cname') %>
+              or
+              <%= link_to 'IP Address', glossary_index_path(anchor: 'a-record') %>
+            </th>
+            <th>Has <%= link_to 'AKA', glossary_index_path(anchor: 'aka') %>?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @site.hosts.each do |host| %>
+            <tr>
+              <td>
+                <%= host.hostname %>
+                <% if @site.default_host == host %>
+                  <span class="text-muted">default</span>
+                <% end %>
+              </td>
+              <td>
+                <% if host.ttl %>
+                  <span title="<%= number_with_delimiter(host.ttl) %> seconds">
+                    <%= distance_of_time_in_words(host.ttl) %>
+                  </span>
+                <% else %>
+                  <span class="text-muted">Unknown</span>
+                <% end %>
+              </td>
+              <td><%= host.cname || host.ip_address || 'Unknown' %></td>
+              <td>
+                <% if host.has_aka == true %>
+                  <%= link_to 'Yes', "http://#{host.aka_hostname}" %>
+                <% elsif host.has_aka == false %>
+                  No
+                <% else %>
+                  <span class="text-muted">Unknown</span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </dd>
     <dt>Abbreviation</dt>
     <dd><%= @site.abbr %></dd>
     <dt>Significant query parameters</dt>

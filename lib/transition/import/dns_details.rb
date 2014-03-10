@@ -17,15 +17,30 @@ module Transition
       def import!
         hosts.each do |host|
           $stderr.print '.'
-          begin
-            cname_record = resolver.getresource(host.hostname, Resolv::DNS::Resource::IN::CNAME)
-          rescue Resolv::ResolvError
-            next
+
+          if cname_record = record(host.hostname, Resolv::DNS::Resource::IN::CNAME)
+            host.cname      = cname_record.name.to_s
+            host.ip_address = nil
+            host.ttl        = cname_record.ttl
+          elsif a_record = record(host.hostname, Resolv::DNS::Resource::IN::A)
+            host.cname      = nil
+            host.ip_address = a_record.address.to_s
+            host.ttl        = a_record.ttl
           end
-          host.cname = cname_record.name.to_s
-          host.ttl   = cname_record.ttl
+
+          aka_record = record(host.aka_hostname, Resolv::DNS::Resource::IN::CNAME)
+          host.has_aka = aka_record.present?
+
           host.save!
         end
+      end
+
+      def record(hostname, type)
+        resolver.getresource(hostname, type)
+      rescue Resolv::ResolvError
+        # Can be raised if the host didn't exist, or because we explicitly
+        # asked for a type of record it doesn't have.
+        nil
       end
 
       def self.from_nameserver!(hosts = Host.all)

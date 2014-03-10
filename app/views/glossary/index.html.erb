@@ -15,6 +15,7 @@
     <ul class="list-unstyled glossary-list">
       <li><a href="#aka">AKA domain</a></li>
       <li><a href="#archive">Archive</a></li>
+      <li><a href="#cname">CNAME Record</a></li>
       <li><a href="#dns">DNS</a></li>
       <li><a href="#domain">Domain</a></li>
       <li><a href="#furl">Friendly URLs (FURLs)</a></li>
@@ -22,8 +23,9 @@
       <li><a href="#global-redirect">Global redirect</a></li>
       <li><a href="#hits">Hits</a></li>
       <li><a href="#host">Host, Hostname</a></li>
+      <li><a href="#a-record">A Record/IP Address</a></li>
       <li><a href="#mapping">Mapping</a></li>
-      <li><a href="#partial">Partial transition</a></li>
+      <li><a href="#partial">Partial transition, Partial domain</a></li>
       <li><a href="#path">Path</a></li>
       <li><a href="#protocol">Protocol</a></li>
       <li><a href="#query-parameters">Query parameters</a></li>
@@ -33,7 +35,7 @@
       <li><a href="#subdomain">Subdomain</a></li>
       <li><a href="#tna">The National Archives (TNA)</a></li>
       <li><a href="#tna-timestamp">TNA Timestamp</a></li>
-      <li><a href="#ttl">TTL</a></li>
+      <li><a href="#ttl">Time to live (TTL)</a></li>
       <li><a href="#url">URL</a></li>
       <li><a href="#301">301</a></li>
       <li><a href="#410">410</a></li>
@@ -51,6 +53,11 @@
     <h4>Example</h4>
     <%= link_to @example_archive.old_url, @example_archive.old_url %></p>
 
+    <h3 id="cname">CNAME Record</h3>
+    <p>Using a <code>CNAME</code> DNS record is one of the two ways of pointing a domain name at a server that hosts a website.</p>
+    <h4>Example</h4>
+    www.gov.uk has a CNAME record that points at www-gov-uk.map.fastly.net
+
     <h3 id="dns">DNS</h3>
     <p>The Domain Name System (DNS) connects domain names (eg www.gov.uk) with a server address.</p>
     <p>The switchover happens when the DNS entries for your site are changed to point at our servers, enabling our servers to redirect or show archive pages.</p>
@@ -61,7 +68,7 @@
     <h3 id="furl">Friendly URLs (FURLs)</h3>
     <p>A customised URL designed to be easily memorable to direct people at a specifc page with a simple title, eg gov.uk/taxdisc.</p>
     <p>These are not picked up in log files or analytics so we need to know about these in advance.</p>
-    
+
     <h3 id="global-archive">Global archive</h3>
     <p>All pages on a site are <a href="#archive">archived</a>.</p>
 
@@ -73,6 +80,11 @@
 
     <h3 id="host">Host, Hostname</h3>
     <p>In this context, a host or hostname is the same as a domain name.</p>
+
+    <h3 id="a-record">A Record/IP Address</h3>
+    <p>Using an <code>A</code> DNS record is one of the two ways of pointing a domain name at a server that hosts a website.</p>
+    <h4>Example</h4>
+    google.com has an A record that points at the IP address 62.253.3.88
 
     <h3 id="mapping">Mapping</h3>
     <p>A mapping is the relationship between an old URL and either a new URL or the decision to present an archive page to the user.</p>
@@ -106,12 +118,12 @@
 
     <h3 id="site">Site</h3>
     <p>Usually the smallest unit of transition. Note that one or more domains can be used for a single site, often for historical reasons.</p>
-    
+
     <p>An example site is: <%= link_to @example_site.default_host.hostname, site_path(@example_site) %></p>
 
     <h3 id="status-codes">(HTTP) Status codes</h3>
     <p>Examples of HTTP Status Codes are: 404, 410, 301, 200 and 502. In transition there are a few which are important. 301 is used for a redirect, 410 is used for archive, and 404 means that there isn’t a mapping for the old URL yet.</p>
-    
+
     <table class="table table-bordered add-top-margin">
       <thead>
         <tr class="table-header">
