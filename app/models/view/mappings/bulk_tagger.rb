@@ -52,7 +52,11 @@ module View
 
       def success_message
         successes = mappings.count - @failure_ids.length
-        "#{successes} #{ 'mapping'.pluralize(successes) } tagged “#{tag_list}”"
+        if tag_list.blank?
+          "Tags removed from #{successes} #{ 'mapping'.pluralize(successes) }"
+        else
+          "#{successes} #{ 'mapping'.pluralize(successes) } tagged “#{tag_list}”"
+        end
       end
 
     private
