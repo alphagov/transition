@@ -8,6 +8,12 @@ module View
         params[:http_status] if Mapping::TYPES.keys.include?(params[:http_status])
       end
 
+      def operation_description
+        type = Mapping::TYPES[http_status]
+        update_type = update_existing? ? 'overwrite' : 'ignore'
+        "bulk-add-#{type}-#{update_type}-existing"
+      end
+
       # Take either a multiline string of paths, one per line (as submitted by
       # the new_multiple form) or an array of path strings (as submitted by the
       # hidden fields on the confirmation page) and return the paths in an
@@ -114,7 +120,7 @@ module View
       def updated_count
         outcomes.count(:updated)
       end
-      
+
       def modified_mappings
         @modified_mappings
       end

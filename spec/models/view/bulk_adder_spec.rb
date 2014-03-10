@@ -94,7 +94,7 @@ describe View::Mappings::BulkAdder do
       let(:paths_input) { "http://#{site.default_host.hostname}/about\nhttp://#{site.default_host.hostname}/another" }
       it { should be_true }
     end
-    
+
     describe 'invalid hosts should be false' do
       let(:paths_input) { "http//googlecomnopunctuation" }
       it { should be_false }
@@ -380,6 +380,35 @@ describe View::Mappings::BulkAdder do
 
         it { should eql('4 mappings created. 0 mappings updated.') }
       end
+    end
+  end
+
+  describe '#operation_description' do
+    subject { bulk_adder.operation_description }
+    context 'bulk adding archives' do
+      let(:bulk_adder) { View::Mappings::BulkAdder.new(site, {http_status: '410'}) }
+      it { should eql('bulk-add-archive-ignore-existing') }
+    end
+
+    context 'bulk adding redirects' do
+      let(:bulk_adder) { View::Mappings::BulkAdder.new(site, {http_status: '301'}) }
+      it { should eql('bulk-add-redirect-ignore-existing') }
+    end
+
+    context 'bulk adding archives with overwrite' do
+      let(:bulk_adder) { View::Mappings::BulkAdder.new(site, {
+        http_status: '410',
+        update_existing: 'true'
+      }) }
+      it { should eql('bulk-add-archive-overwrite-existing') }
+    end
+
+    context 'bulk adding redirects with overwrite' do
+      let(:bulk_adder) { View::Mappings::BulkAdder.new(site, {
+        http_status: '301',
+        update_existing: 'true'
+      }) }
+      it { should eql('bulk-add-redirect-overwrite-existing') }
     end
   end
 end

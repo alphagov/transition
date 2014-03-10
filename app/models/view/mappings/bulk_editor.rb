@@ -12,6 +12,10 @@ module View
         params[:operation]
       end
 
+      def operation_description
+        "bulk-edit-#{Mapping::TYPES[operation]}"
+      end
+
       def return_path
         @return_path ||=
           # Make sure that this looks like a path and not a full URL (which

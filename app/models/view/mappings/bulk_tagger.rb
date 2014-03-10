@@ -16,6 +16,10 @@ module View
         false
       end
 
+      def operation_description
+        "bulk-edit-tag"
+      end
+
       def tag_list
         prettified_tag_list || common_tags.join(glue)
       end

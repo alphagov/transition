@@ -72,6 +72,7 @@
         <%= render partial: 'mappings/saved_mappings_modal',
           locals: {
             site: @site,
+            operation: flash[:saved_operation],
             message: flash[:success],
             mappings: mappings_from_ids(flash[:saved_mapping_ids])
           }

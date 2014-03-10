@@ -84,4 +84,42 @@ describe('A GOVUK app', function() {
     });
   });
 
+  describe('when events are tracked', function() {
+
+    beforeEach(function() {
+      window._gaq = [];
+    });
+
+    it('uses the current path as the category', function() {
+      GOVUK.track('action', 'label');
+      expect(window._gaq[0][1]).toEqual('/');
+    });
+
+    it('sends them to Google Analytics', function() {
+      GOVUK.track('action', 'label');
+      expect(window._gaq).toEqual([['_trackEvent', '/', 'action', 'label']]);
+    });
+
+    it('creates a _gaq object when one isn\'t already present', function() {
+      delete window._gaq;
+      GOVUK.track('action');
+      expect(window._gaq).toEqual([['_trackEvent', '/', 'action']]);
+    });
+
+    it('label is optional', function() {
+      GOVUK.track('action');
+      expect(window._gaq).toEqual([['_trackEvent', '/', 'action']]);
+    });
+
+    it('only sends values if they are parseable as numbers', function() {
+      GOVUK.track('action', 'label', '10');
+      expect(window._gaq[0]).toEqual(['_trackEvent', '/', 'action', 'label', 10]);
+
+      GOVUK.track('action', 'label', 10);
+      expect(window._gaq[1]).toEqual(['_trackEvent', '/', 'action', 'label', 10]);
+
+      GOVUK.track('action', 'label', 'not a number');
+      expect(window._gaq[2]).toEqual(['_trackEvent', '/', 'action', 'label']);
+    });
+  });
 });

@@ -61,4 +61,38 @@
     GOVUK.start();
   }
 
+  // Google Analytics event tracking
+  // https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide
+  // Label and value are optional
+  GOVUK.track = function(action, label, value) {
+
+    // Default category to the page an event occurs on
+    var category = root.location.pathname,
+        event;
+
+    // _gaq is the Google Analytics tracking object we
+    // push events to, GA asynchronously sends them on
+    root._gaq = root._gaq || [];
+
+    event = ["_trackEvent", category, action];
+
+    // Label is optional
+    if (typeof label === "string") {
+      event.push(label);
+    }
+
+    // Value is optional, but when used must be an
+    // integer, otherwise the event will be invalid
+    // and not logged
+    if (value) {
+      value = parseInt(value, 10);
+      if (typeof value === "number" && !isNaN(value)) {
+        event.push(value);
+      }
+    }
+
+    // Useful for debugging: console.log(event);
+    _gaq.push(event);
+  }
+
 })(jQuery, window);

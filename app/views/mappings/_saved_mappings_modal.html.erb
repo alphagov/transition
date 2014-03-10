@@ -1,5 +1,10 @@
 <div class="modal modal-saved-mappings" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-module="auto-show-modal">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg"
+    data-module="auto-track-event"
+    data-track-action="saved-mappings"
+    data-track-label="<%= operation %>"
+    data-track-value="<%= mappings.size %>"
+  >
     <div class="modal-content">
       <header class="modal-header">
         <h3 class="modal-title alert alert-success">
