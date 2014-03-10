@@ -177,7 +177,7 @@ main a {
   &:visited {
     color: $link-color-visited;
   }
-  
+
   &.no-visit:visited {
     color: $link-color;
   }
@@ -282,6 +282,18 @@ thead .table-header-secondary td {
 
 .radio.table-header-radio {
   padding-top: 0;
+}
+
+.fixed-table-header-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+
+  table {
+    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 0.3);
+  }
 }
 
 /* Selectable rows

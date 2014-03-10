@@ -1,9 +1,11 @@
 <% css ||= false %>
 <% include_footer ||= false %>
 <% include_bulk_add ||= false %>
+<% fix_header ||= false %>
 
 <% if current_user.can_edit?(site.organisation) %>
   <div data-module="selectable-table">
+    <% if fix_header %><div data-module="fixed-table-header"><% end %>
 <% end %>
 <%= form_tag edit_multiple_site_mappings_path(site), remote: true do %>
 <table class="mappings <%= css if css %> table table-bordered">
@@ -65,5 +67,6 @@
 </table>
 <% end %>
 <% if current_user.can_edit?(site.organisation) %>
+    <% if fix_header %></div><% end %>
   </div>
 <% end %>
