@@ -16,8 +16,8 @@
           setTags(
             $(input.val().split(",")).map(function () {
               return {
-                id: this.trim(),
-                text: this.trim()
+                id: $.trim(this),
+                text: $.trim(this)
               };
             })
           )
