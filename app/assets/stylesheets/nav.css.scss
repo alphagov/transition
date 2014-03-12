@@ -10,6 +10,10 @@
   margin-left: 0;
   padding-left: 2.3em;
   min-height: 37px;
+
+  .lte-ie8 & {
+    min-height: 20px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -34,6 +38,11 @@
 .navbar-inverse .nav-collapse .nav .active a:hover,
 .navbar-inverse .nav-collapse .nav .active a:focus {
   color: #fff;
+}
+
+.lte-ie8 .navbar .container {
+  padding-left: 30px;
+  padding-right: 0;
 }
 
 /* ==========================================================================
