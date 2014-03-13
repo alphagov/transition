@@ -1,6 +1,7 @@
 class Host < ActiveRecord::Base
   belongs_to :site
   has_many :hits
+  has_many :host_paths
   has_many :daily_hit_totals
 
   validate :hostname, presence: true
