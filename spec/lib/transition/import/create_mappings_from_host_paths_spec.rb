@@ -24,12 +24,7 @@ describe Transition::Import::CreateMappingsFromHostPaths do
   context 'a HostPath without a matching mapping' do
     before do
       path = "/foo?insignificant=1"
-      c14n_path = @site.canonical_path(path)
-      @host_path = create(:host_path,
-          path: path,
-          host: @host,
-          path_hash: Digest::SHA1.hexdigest(path),
-          c14n_path_hash: Digest::SHA1.hexdigest(c14n_path))
+      @host_path = create(:host_path, path: path, host: @host)
       Transition::Import::CreateMappingsFromHostPaths.call(@site)
     end
 
@@ -54,13 +49,7 @@ describe Transition::Import::CreateMappingsFromHostPaths do
     context 'another site has HostPaths' do
       before do
         @another_site = create(:site)
-        path = "/bar"
-        c14n_path = @site.canonical_path(path)
-        create(:host_path,
-            path: path,
-            host: @another_site.hosts.first,
-            path_hash: Digest::SHA1.hexdigest(path),
-            c14n_path_hash: Digest::SHA1.hexdigest(c14n_path))
+        create(:host_path, path: '/bar', host: @another_site.hosts.first)
         Transition::Import::CreateMappingsFromHostPaths.call(@site)
       end
 
@@ -73,14 +62,9 @@ describe Transition::Import::CreateMappingsFromHostPaths do
 
   context 'a HostPath with a matching mapping' do
     before do
-      path = "/foo?insignificant=1"
-      c14n_path = @site.canonical_path(path)
-      @host_path = create(:host_path,
-          path: path,
-          host: @host,
-          path_hash: Digest::SHA1.hexdigest(path),
-          c14n_path_hash: Digest::SHA1.hexdigest(c14n_path))
-      @mapping = create(:redirect, path: c14n_path, site: @site)
+      path = '/foo?insignificant=1'
+      create(:host_path, path: path, host: @host)
+      @mapping = create(:redirect, path: path, site: @site)
       Transition::Import::CreateMappingsFromHostPaths.call(@site)
     end
 
@@ -100,12 +84,7 @@ describe Transition::Import::CreateMappingsFromHostPaths do
       @site.hosts << @second_host = build(:host)
       @site.hosts.each do |host|
         path = "/foo-on-#{host.hostname}"
-        c14n_path = @site.canonical_path(path)
-        host_path = create(:host_path,
-            path: path,
-            host: host,
-            path_hash: Digest::SHA1.hexdigest(path),
-            c14n_path_hash: Digest::SHA1.hexdigest(c14n_path))
+        create(:host_path, path: path, host: host)
       end
       Transition::Import::CreateMappingsFromHostPaths.call(@site)
     end
@@ -120,12 +99,7 @@ describe Transition::Import::CreateMappingsFromHostPaths do
       @site.hosts << @second_host = build(:host)
       path = '/foo'
       @site.hosts.each do |host|
-        c14n_path = @site.canonical_path(path)
-        host_path = create(:host_path,
-            path: path,
-            host: host,
-            path_hash: Digest::SHA1.hexdigest(path),
-            c14n_path_hash: Digest::SHA1.hexdigest(c14n_path))
+        create(:host_path, path: path, host: host)
       end
       Transition::Import::CreateMappingsFromHostPaths.call(@site)
     end
