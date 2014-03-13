@@ -1,37 +1,27 @@
 module Transition
   module Import
     class Hits
-      # Bouncer/Redirector paths that should be ignored when importing hits
-      # These appear when a 404/410 page is rendered which includes assets
-      # served by the app.
-      #
       # Lines should probably never be removed from this, only added.
-      BOUNCER_PATHS = [
+      PATHS_TO_IGNORE = [
+        # Generic site furniture
+        '/browserconfig.xml',
+        '/favicon.ico',
         '/robots.txt',
         '/sitemap.xml',
-        '/favicon.ico',
-        '/gone.css',
-        '/ie.css',
-        '/bis_crest_13px_x2.png',
-        '/bis_crest_18px_x2.png',
-        '/businesslink-logo-2x.png',
-        '/directgov-logo-2x.png',
-        '/govuk-crest.png',
-        '/govuk-logo.gif',
-        '/govuk-logo.png',
-        '/ho_crest_13px_x2.png',
-        '/ho_crest_18px_x2.png',
-        '/mod_crest_13px_x2.png',
-        '/mod_crest_18px_x2.png',
-        '/org_crest_13px_x2.png',
-        '/org_crest_18px_x2.png',
-        '/so_crest_13px_x2.png',
-        '/so_crest_18px_x2.png',
-        '/wales_crest_13px_x2.png',
-        '/wales_crest_18px_x2.png',
+
+        # Used in our smokey tests
+        '/gdssupertestfakeurl',
+        '/whateverthisshouldntwork',
+
+        # Spam
+        '/admin.php',
+        '/admin/admin.php',
+        '/admin/password_forgotten.php?action=execute',
+        '/administrator/index.php',
       ]
 
-      FURNITURE_PATTERNS = [
+      PATTERNS_TO_IGNORE = [
+        # Generic site furniture
         '.*\.css',
         '.*\.js',
         '.*\.gif',
@@ -39,6 +29,24 @@ module Transition
         '.*\.jpg',
         '.*\.jpeg',
         '.*\.png',
+
+        # Often after transition, bots seem to think the old site has
+        # www.gov.uk URLs.
+        # There are definitely other www.gov.uk URLs, but they are harder to
+        # automatically exclude.
+        # Whilst we were able to find two *.gov.uk sites using /browse/ or
+        # /government/ the numbers of URLs were very small and they are not
+        # sites which will transition to GOV.UK.
+        '/browse/.*',
+        '/government/.*',
+
+        # Spam
+        '.*\.bat',
+        '.*/etc/passwd.*',
+        '.*/proc/self/environ.*',
+        '.*phpMyAdmin.*',
+        '.*sqlpatch.php.*',
+        '.*wp-admin.*',
       ]
 
       TRUNCATE = <<-mySQL
@@ -61,8 +69,8 @@ module Transition
         FROM   hits_staging st
         INNER JOIN hosts h on h.hostname = st.hostname
         WHERE  st.count >= 10
-        AND    st.path NOT IN (#{BOUNCER_PATHS.map { |path| "'" + path + "'" }.join(', ')})
-        AND    st.path NOT REGEXP '#{ FURNITURE_PATTERNS.join('|') }'
+        AND    st.path NOT IN (#{ PATHS_TO_IGNORE.map { |path| "'" + path + "'" }.join(', ') })
+        AND    st.path NOT REGEXP '#{ PATTERNS_TO_IGNORE.join('|') }'
         ON DUPLICATE KEY UPDATE hits.count=st.count
       mySQL
 
