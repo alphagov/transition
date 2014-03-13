@@ -113,13 +113,21 @@ Then(/^each hit except homepages should have a link to check its mapping$/) do
     page.all('tr').each do |row|
       path = row.find(:css, '.path').text
       mapping = row.find(:css, '.action')
-      expect(mapping).to have_link('', href: site_mapping_find_path(@site, path: path)) unless path == '/'
+      expect(mapping).to have_link('', href: site_mapping_find_path(@site, path: path, return_path: site_hits_path(@site))) unless path == '/'
     end
   end
 end
 
 Then(/^I should be on the add mapping page$/) do
   step 'I should see "Add mapping"'
+end
+
+Then(/^I should be on the edit mapping page$/) do
+  step 'I should see "Edit mapping"'
+end
+
+Then(/^I should be on the site's hits summary page$/) do
+  step "I should be on the path \"#{site_hits_path(@site)}\""
 end
 
 Then(/^the top hit's canonicalized path should already be in the form$/) do
