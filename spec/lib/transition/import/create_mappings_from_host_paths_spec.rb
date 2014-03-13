@@ -50,6 +50,25 @@ describe Transition::Import::CreateMappingsFromHostPaths do
     it 'should not modify the host_path' do
       @host_path.mapping_id.should be_nil
     end
+
+    context 'another site has HostPaths' do
+      before do
+        @another_site = create(:site)
+        path = "/bar"
+        c14n_path = @site.canonical_path(path)
+        create(:host_path,
+            path: path,
+            host: @another_site.hosts.first,
+            path_hash: Digest::SHA1.hexdigest(path),
+            c14n_path_hash: Digest::SHA1.hexdigest(c14n_path))
+        Transition::Import::CreateMappingsFromHostPaths.call(@site)
+      end
+
+      it 'should not create mappings for the other site' do
+        @another_site.mappings.count.should eql(0)
+        @site.mappings.count.should eql(1)
+      end
+    end
   end
 
   context 'a HostPath with a matching mapping' do
@@ -93,6 +112,26 @@ describe Transition::Import::CreateMappingsFromHostPaths do
 
     it 'should create mappings for HostPaths for each host' do
       @site.mappings.count.should eql(2)
+    end
+  end
+
+  context 'a site with multiple hosts and the same path on each host' do
+    before do
+      @site.hosts << @second_host = build(:host)
+      path = '/foo'
+      @site.hosts.each do |host|
+        c14n_path = @site.canonical_path(path)
+        host_path = create(:host_path,
+            path: path,
+            host: host,
+            path_hash: Digest::SHA1.hexdigest(path),
+            c14n_path_hash: Digest::SHA1.hexdigest(c14n_path))
+      end
+      Transition::Import::CreateMappingsFromHostPaths.call(@site)
+    end
+
+    it 'should create one mapping' do
+      @site.mappings.count.should eql(1)
     end
   end
 end
