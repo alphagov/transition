@@ -29,7 +29,7 @@ class MappingsController < ApplicationController
     flash[:saved_mapping_ids] = bulk_add.modified_mappings.map {|m| m.id}
     flash[:saved_operation] = bulk_add.operation_description
 
-    if params[:return_path] && params[:return_path].start_with?('/')
+    if params[:return_path] && not_an_off_site_redirect?(params[:return_path])
       redirect_to params[:return_path]
     else
       redirect_to site_mappings_path(@site)
@@ -90,7 +90,7 @@ class MappingsController < ApplicationController
       flash[:saved_mapping_ids] = [@mapping.id]
       flash[:saved_operation] = "update-single"
 
-      if params[:return_path] && params[:return_path].start_with?('/')
+      if params[:return_path] && not_an_off_site_redirect?(params[:return_path])
         redirect_to params[:return_path]
       else
         redirect_to site_mappings_path(@site)
@@ -201,5 +201,11 @@ private
     else
       site_mappings_path(@site)
     end
+  end
+
+  def not_an_off_site_redirect?(location)
+    # Someone could craft a link to the transition app with a malicious
+    # return_path which would result in the user ending up on their site.
+    location.start_with?('/')
   end
 end
