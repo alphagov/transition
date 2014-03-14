@@ -11,6 +11,7 @@ module Transition
 
         # Used in our smokey tests
         '/gdssupertestfakeurl',
+        '/thisshouldntwork',
         '/whateverthisshouldntwork',
 
         # Spam
@@ -47,6 +48,8 @@ module Transition
         '.*phpMyAdmin.*',
         '.*sqlpatch.php.*',
         '.*wp-admin.*',
+        '.*wp-cron.*',
+        '.*wp-login.*',
       ]
 
       TRUNCATE = <<-mySQL
