@@ -4,23 +4,23 @@
   <dl class="panel-body dl-spaced remove-bottom-margin">
     <dt>New homepage</dt>
     <dd><%= link_to @site.homepage, @site.homepage, class: 'breakable' %></dd>
-    <dt>All hostname aliases</dt>
+    <dt class="add-label-margin">All hostname aliases</dt>
     <dd class="host-aliases">
-      <table class="table host-aliases">
+      <table class="table table-bordered table-hover">
         <thead class="table-header">
           <tr>
             <th>Hostname</th>
             <th>
-              <abbrev title="Time To Live">
-                <%= link_to 'TTL', glossary_index_path(anchor: 'ttl') %>
-              </abbrev>
+              <abbr title="Time To Live">
+                <%= link_to 'TTL', glossary_index_path(anchor: 'ttl'), class: 'glossary-link' %>
+              </abbr>
             </th>
             <th>
-              <%= link_to 'CNAME', glossary_index_path(anchor: 'cname') %>
+              <%= link_to 'CNAME', glossary_index_path(anchor: 'cname'), class: 'glossary-link' %>
               or
-              <%= link_to 'IP Address', glossary_index_path(anchor: 'a-record') %>
+              <%= link_to 'IP Address', glossary_index_path(anchor: 'a-record'), class: 'glossary-link' %>
             </th>
-            <th>Has <%= link_to 'AKA', glossary_index_path(anchor: 'aka') %>?</th>
+            <th>Has <%= link_to 'AKA', glossary_index_path(anchor: 'aka'), class: 'glossary-link' %>?</th>
           </tr>
         </thead>
         <tbody>
@@ -29,13 +29,13 @@
               <td>
                 <%= host.hostname %>
                 <% if @site.default_host == host %>
-                  <span class="text-muted">default</span>
+                  <br /><span class="text-muted">default</span>
                 <% end %>
               </td>
               <td>
                 <% if host.ttl %>
                   <span title="<%= number_with_delimiter(host.ttl) %> seconds">
-                    <%= distance_of_time_in_words(host.ttl) %>
+                    <%= distance_of_time_in_words(host.ttl).capitalize %>
                   </span>
                 <% else %>
                   <span class="text-muted">Unknown</span>
