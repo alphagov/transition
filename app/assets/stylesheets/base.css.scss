@@ -231,6 +231,12 @@ main a {
   display: inline-block;
 }
 
+.glossary-link,
+.glossary-link:visited {
+  color: inherit;
+  text-decoration: underline;
+}
+
 /* ==========================================================================
    Page headers
    ========================================================================== */
