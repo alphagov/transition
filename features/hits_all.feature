@@ -33,7 +33,7 @@ Scenario: No hits exist
   When I visit the associated site's hits
   Then I should see "We don’t have any traffic data for ago"
 
-Scenario: Check mapping for a hit
+Scenario: Add mapping for a hit
   Given I have logged in as an admin
   And the date is 19/10/12
   And these hits exist for the Attorney General's office site:
@@ -46,3 +46,22 @@ Scenario: Check mapping for a hit
   When I click on the link to check the mapping for the top hit
   Then I should be on the add mapping page
   And the top hit's canonicalized path should already be in the form
+  When I make the mapping an archive
+  And I continue
+  And I save my changes
+  Then I should see "1 mapping created. 0 mappings updated." in a modal window
+  And I should be on the site's hits summary page
+
+Scenario: Edit mapping from a hit
+  Given I have logged in as an admin
+  And the date is 19/10/12
+  And these hits exist for the Attorney General's office site:
+    | http_status | path | hit_on   | count |
+    | 410         | /A   | 16/10/12 | 100   |
+  And a 410 mapping exists for the site with the path /A
+  And I am on the Attorney General's office site's hits page
+  When I click on the link to check the mapping for the top hit
+  Then I should be on the edit mapping page
+  When I save the mapping
+  Then I should see "Mapping saved" in a modal window
+  And I should be on the site's hits summary page

@@ -41,7 +41,7 @@
         <td class="action">
           <% unless hit.homepage? %>
             <%= link_to "#{hit.mapping.present? ? 'Edit' : 'Add'} mapping",
-                        site_mapping_find_path(@site, path: hit.path), class: 'btn btn-default btn-xs' %>
+                        site_mapping_find_path(@site, path: hit.path, return_path: request.fullpath), class: 'btn btn-default btn-xs' %>
           <% end %>
         </td>
       <% end %>

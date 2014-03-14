@@ -53,6 +53,10 @@ Given (/^a (\d+) mapping exists for the (.+) site with the path (.*)$/) do |stat
   site.mappings << create(:mapping, http_status: status, path: path)
 end
 
+Given (/^a (\d+) mapping exists for the site with the path (.*)$/) do |status, path|
+  @site.mappings << create(:mapping, http_status: status, path: path)
+end
+
 Given(/^there is an organisation with the whitehall_slug "(.*?)"$/) do |abbr|
   @organisation = create(:organisation, whitehall_slug: "ukaea")
 end

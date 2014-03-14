@@ -23,7 +23,7 @@
       <% end %>
     </tr>
     <% if current_user.can_edit?(site.organisation) %>
-      <%= render partial: 'mappings_table_header', locals: {footer: false, include_bulk_add: include_bulk_add} %>
+      <%= render partial: 'mappings/mappings_table_header', locals: {footer: false, include_bulk_add: include_bulk_add} %>
     <% end %>
   </thead>
   <tbody>
@@ -43,7 +43,7 @@
       </td>
       <td class="mapping-path">
         <strong class="pull-left"><%= link_to mapping.path, mapping.old_url, class: 'breakable' %></strong>
-        <%= render partial: 'tags', locals: { mapping: mapping } %>
+        <%= render partial: 'mappings/tags', locals: { mapping: mapping } %>
         <% if mapping.redirect? %>
           <br><span class="text-muted">redirects to</span>
           <%= link_to mapping.new_url, mapping.new_url, class: 'link-muted breakable' if mapping.new_url.present? %>
@@ -61,7 +61,7 @@
   </tbody>
   <% if include_footer && current_user.can_edit?(site.organisation) %>
     <tfoot class="if-no-js-hide">
-      <%= render partial: 'mappings_table_header', locals: {footer: true, include_bulk_add: include_bulk_add} %>
+      <%= render partial: 'mappings/mappings_table_header', locals: {footer: true, include_bulk_add: include_bulk_add} %>
     </tfoot>
   <% end %>
 </table>

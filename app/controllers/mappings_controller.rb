@@ -28,7 +28,12 @@ class MappingsController < ApplicationController
     flash[:success] = bulk_add.success_message
     flash[:saved_mapping_ids] = bulk_add.modified_mappings.map {|m| m.id}
     flash[:saved_operation] = bulk_add.operation_description
-    redirect_to site_mappings_path(@site)
+
+    if params[:return_path] && params[:return_path].start_with?('/')
+      redirect_to params[:return_path]
+    else
+      redirect_to site_mappings_path(@site)
+    end
   end
 
   def index
@@ -159,9 +164,9 @@ class MappingsController < ApplicationController
 
     mapping = @site.mappings.find_by_path(path)
     if mapping.present?
-      redirect_to edit_site_mapping_path(@site, mapping)
+      redirect_to edit_site_mapping_path(@site, mapping, return_path: params[:return_path])
     else
-      redirect_to new_multiple_site_mappings_path(@site, paths: path)
+      redirect_to new_multiple_site_mappings_path(@site, paths: path, return_path: params[:return_path])
     end
   end
 

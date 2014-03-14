@@ -13,6 +13,10 @@
   <% if @errors %>
     <%= render 'shared/error_messages', error_messages: @errors.values %>
   <% end %>
+  
+  <% if params[:return_path].present? %>
+    <%= hidden_field_tag 'return_path', params[:return_path] %>
+  <% end %>
 
   <div class="row <% if @errors && @errors[:http_status] %>field_with_errors<% end %>">
     <div class="col-md-2">

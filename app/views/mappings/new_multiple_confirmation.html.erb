@@ -11,6 +11,10 @@
 
 <%= form_tag create_multiple_site_mappings_path(@site) do %>
 
+  <% if params[:return_path].present? %>
+    <%= hidden_field_tag 'return_path', params[:return_path] %>
+  <% end %>
+
   <% if existing_mappings_count > 0 %>
     <div class="alert alert-warning">
       <h4>We’ve found <%= pluralize(existing_mappings_count, "existing mapping") %> for the paths entered</h4>

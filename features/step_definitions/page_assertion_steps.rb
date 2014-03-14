@@ -14,6 +14,11 @@ Then(/^there should be a tooltip which includes "([^"]*)"$/) do |text|
   expect(page).to have_selector("[title*='#{text}']")
 end
 
+Then(/^I should be on the path "([^"]*)"$/) do |path|
+  uri = URI.parse(current_url)
+  uri.path.should == path
+end
+
 # Modals
 
 Then(/^I should see an open modal window$/) do
