@@ -156,13 +156,13 @@
     <p>To match bootstrap’s muted text, a muted link class is available.</p>
     <p>Transition has also added purple <code>:visited</code> styles. These apply to the main content but not to buttons.</p>
   </div>
-  <ul class="col-md-6">
+  <div class="col-md-6">
     <a href="/style" class="link-muted">Muted link</a><br><br>
     <a href="/style">Visited link</a><br><br>
     <a href="/style#<%= "#{Time.now.utc.to_i}" %>">Normal link</a><br><br>
     <a href="/style" class="btn btn-default">Visited button link</a><br><br>
     <a href="/style" class="btn btn-success">Another visited button link</a><br><br>
-  </ul>
+  </div>
 </div>
 <hr>
 
@@ -241,6 +241,83 @@
     <script>
       GOVUK.Tagging.ready({autocompleteWith: ['fake', 'tag', 'list', 'fee', 'fi', 'fo', 'fum']});
     </script>
+  </div>
+</div>
+<hr>
+
+<h2>Filters</h2>
+<div class="row filters">
+  <div class="col-md-6 lead">
+    <p>Filters use bootstrap’s default <code>panel</code> styles in combination with the <code>nav-pill</code> navigation pattern. When no filters are active the <code>panel-body</code> isn’t present.</p>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <header class="panel-heading">
+        <ul class="nav nav-compact nav-pills">
+          <li class="if-no-js-hide nav-pill-text">
+            <strong>Heading</strong>
+          </li>
+          <li class="if-no-js-hide">
+            <a href="#" class="filter-option" data-toggle="dropdown" role="button">
+              Filter <span class="glyphicon glyphicon-chevron-down"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li>
+                <a href="#">Filter options</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-pill-text text-muted">
+            Text
+          </li>
+        </ul>
+      </header>
+    </div>
+  </div>
+</div>
+<div class="row filters">
+  <div class="col-md-6 lead">
+    <p>When active, each filter can be removed individually, or all filters reset. Some filters are either on or off. Others can change their values, in this case the filter menu remains, alongside the remove link.</p>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <header class="panel-heading">
+        <a href="#" class="remove-filters">
+          <span class="glyphicon glyphicon-remove"></span>
+        </a>
+        <ul class="nav nav-compact nav-pills">
+          <li class="if-no-js-hide nav-pill-text">
+            <strong>Heading</strong>
+          </li>
+          <li class="if-no-js-hide selected-and-available">
+            <a href="#" class="filter-option filter-selected" title="Remove filter">
+              <span class="glyphicon glyphicon-remove"></span>
+              <span class="rm">Remove</span>
+            </a>
+            <a href="#" class="filter-option filter-selected" data-toggle="dropdown" role="button">
+              Filter with options <span class="glyphicon glyphicon-chevron-down"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li>
+                <a href="#">Filter options</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#" class="filter-option filter-selected" title="Remove filter">
+              <span class="glyphicon glyphicon-remove"></span>
+              <span class="rm">Remove</span> Boolean filter
+            </a>
+          </li>
+        </ul>
+      </header>
+      <div class="alert alert-warning">
+        Filter warning
+      </div>
+      <div class="panel-body">
+        Active filter options
+      </div>
+    </div>
   </div>
 </div>
 <hr>
