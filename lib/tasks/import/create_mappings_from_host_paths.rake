@@ -6,6 +6,7 @@ namespace :import do
     site = Site.find_by_abbr(args[:site_abbr])
     raise "No site found for #{args[:site_abbr]}" unless site
     raise 'ABORT: This site is not managed by transition' unless site.managed_by_transition?
+    puts 'WARNING: This site has a global_http_status' if site.global_http_status
     Transition::Import::CreateMappingsFromHostPaths.call(site)
   end
 end
