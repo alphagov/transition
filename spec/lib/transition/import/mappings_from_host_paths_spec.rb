@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'transition/import/create_mappings_from_host_paths'
+require 'transition/import/mappings_from_host_paths'
 
-describe Transition::Import::CreateMappingsFromHostPaths do
+describe Transition::Import::MappingsFromHostPaths do
   before do
     @site = create(:site)
     @host = @site.hosts.first # default site factory creates a host
@@ -16,7 +16,7 @@ describe Transition::Import::CreateMappingsFromHostPaths do
 
   context 'a site with no HostPaths' do
     it 'should do nothing' do
-      Transition::Import::CreateMappingsFromHostPaths.call(@site)
+      Transition::Import::MappingsFromHostPaths.call(@site)
       Mapping.count.should eql(0)
     end
   end
@@ -25,7 +25,7 @@ describe Transition::Import::CreateMappingsFromHostPaths do
     before do
       path = "/foo?insignificant=1"
       @host_path = create(:host_path, path: path, host: @host)
-      Transition::Import::CreateMappingsFromHostPaths.call(@site)
+      Transition::Import::MappingsFromHostPaths.call(@site)
     end
 
     it 'should create a mapping' do
@@ -50,7 +50,7 @@ describe Transition::Import::CreateMappingsFromHostPaths do
       before do
         @another_site = create(:site)
         create(:host_path, path: '/bar', host: @another_site.hosts.first)
-        Transition::Import::CreateMappingsFromHostPaths.call(@site)
+        Transition::Import::MappingsFromHostPaths.call(@site)
       end
 
       it 'should not create mappings for the other site' do
@@ -65,7 +65,7 @@ describe Transition::Import::CreateMappingsFromHostPaths do
       path = '/foo?insignificant=1'
       create(:host_path, path: path, host: @host)
       @mapping = create(:redirect, path: path, site: @site)
-      Transition::Import::CreateMappingsFromHostPaths.call(@site)
+      Transition::Import::MappingsFromHostPaths.call(@site)
     end
 
     it 'should not create any more mappings' do
@@ -86,7 +86,7 @@ describe Transition::Import::CreateMappingsFromHostPaths do
         path = "/foo-on-#{host.hostname}"
         create(:host_path, path: path, host: host)
       end
-      Transition::Import::CreateMappingsFromHostPaths.call(@site)
+      Transition::Import::MappingsFromHostPaths.call(@site)
     end
 
     it 'should create mappings for HostPaths for each host' do
@@ -101,7 +101,7 @@ describe Transition::Import::CreateMappingsFromHostPaths do
       @site.hosts.each do |host|
         create(:host_path, path: path, host: host)
       end
-      Transition::Import::CreateMappingsFromHostPaths.call(@site)
+      Transition::Import::MappingsFromHostPaths.call(@site)
     end
 
     it 'should create one mapping' do

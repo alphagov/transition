@@ -2,7 +2,7 @@ require 'transition/import/console_job_wrapper'
 
 module Transition
   module Import
-    class CreateMappingsFromHostPaths
+    class MappingsFromHostPaths
       extend Transition::Import::ConsoleJobWrapper
 
       def self.call(site)
