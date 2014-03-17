@@ -41,7 +41,7 @@ describe MappingsController do
         assigns(:mappings).should == [mapping_a]
       end
 
-      it 'canonicalises filter input' do
+      it 'canonicalizes filter input' do
         get :index, site_id: site.abbr, path_contains: '/A?q=1'
         assigns(:mappings).should == [mapping_a]
       end
@@ -212,7 +212,7 @@ describe MappingsController do
                }
         end
 
-        it 'canonicalises the path' do
+        it 'canonicalizes the path' do
           mapping.reload.path.should == '/needs/canonicalization'
         end
 
