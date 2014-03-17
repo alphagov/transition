@@ -5,7 +5,7 @@ module Transition
     class MappingsFromHostPaths
       extend Transition::Import::ConsoleJobWrapper
 
-      def self.call(site)
+      def self.refresh!(site)
         start 'Creating mappings from HostPaths' do
           site_paths = site.host_paths.where('mapping_id is null').group('c14n_path_hash').pluck(:path)
           site_paths.map do |uncanonicalised_path|

@@ -16,6 +16,6 @@ namespace :import do
       end
     end
 
-    Transition::Import::MappingsFromHostPaths.call(site)
+    Transition::Import::MappingsFromHostPaths.refresh!(site)
   end
 end
