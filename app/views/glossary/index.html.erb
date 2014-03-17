@@ -15,6 +15,7 @@
     <ul class="list-unstyled glossary-list">
       <li><a href="#aka">AKA domain</a></li>
       <li><a href="#archive">Archive</a></li>
+      <li><a href="#canonical">Canonical</a></li>
       <li><a href="#cname">CNAME Record</a></li>
       <li><a href="#dns">DNS</a></li>
       <li><a href="#domain">Domain</a></li>
@@ -52,6 +53,9 @@
     </p>
     <h4>Example</h4>
     <%= link_to @example_archive.old_url, @example_archive.old_url %></p>
+
+    <h3 id="canonical">Canonical</h3>
+    <p>The ‘canonical’ list has all duplicates removed and creates a single version of mappings to work on.</p>
 
     <h3 id="cname">CNAME Record</h3>
     <p>Using a <code>CNAME</code> DNS record is one of the two ways of pointing a domain name at a server that hosts a website.</p>
