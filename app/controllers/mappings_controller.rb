@@ -29,7 +29,7 @@ class MappingsController < ApplicationController
     flash[:saved_mapping_ids] = bulk_add.modified_mappings.map {|m| m.id}
     flash[:saved_operation] = bulk_add.operation_description
 
-    if params[:return_path] && not_an_off_site_redirect?(params[:return_path])
+    if params[:return_path] && Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
       redirect_to params[:return_path]
     else
       redirect_to site_mappings_path(@site)
@@ -90,7 +90,7 @@ class MappingsController < ApplicationController
       flash[:saved_mapping_ids] = [@mapping.id]
       flash[:saved_operation] = "update-single"
 
-      if params[:return_path] && not_an_off_site_redirect?(params[:return_path])
+      if params[:return_path] && Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
         redirect_to params[:return_path]
       else
         redirect_to site_mappings_path(@site)
@@ -201,16 +201,5 @@ private
     else
       site_mappings_path(@site)
     end
-  end
-
-  def not_an_off_site_redirect?(location)
-    # Someone could craft a link to the transition app with a malicious
-    # return_path which would result in the user ending up on their site.
-    #
-    # Some clients (eg Firefox and Chrome) will happily accept an absolute URL
-    # which starts with ///, eg ///host.com
-    # This is also true with // - a "protocol-relative URL". More information:
-    # http://homakov.blogspot.co.uk/2014/01/evolution-of-open-redirect-vulnerability.html?m=1
-    location.start_with?('/') && ! location.start_with?('//')
   end
 end
