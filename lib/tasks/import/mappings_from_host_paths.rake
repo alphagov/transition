@@ -17,5 +17,6 @@ namespace :import do
     end
 
     Transition::Import::MappingsFromHostPaths.refresh!(site)
+    puts 'You may now want to run `rake import:hits_mappings_relations` to connect hits and any new mappings.'
   end
 end
