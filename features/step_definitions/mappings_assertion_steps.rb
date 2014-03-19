@@ -77,18 +77,18 @@ Then(/^I should not see archive fields$/) do
   end
 end
 
-Then(/^I should see the national archive link replaced with an alternative national archive field$/) do
+Then(/^I should see the National Archives link replaced with an alternative National Archives field$/) do
   expect(page).to have_selector('#mapping_archive_url')
   expect(page).not_to have_selector('a[href="#add-alternative-url"]')
 end
 
-Then(/^I should see the national archive link again$/) do
+Then(/^I should see the National Archives link again$/) do
   expect(page).not_to have_selector('#mapping_archive_url')
   expect(page).to have_selector('a[href="#add-alternative-url"]')
 end
 
 Then(/^the archive URL field should be empty$/) do
-  field_labeled('Alternative national archive URL').value.should be_empty
+  field_labeled('Alternative National Archives URL').value.should be_empty
 end
 
 Then(/^I should see a form that contains my selection$/) do
