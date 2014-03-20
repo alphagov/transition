@@ -34,9 +34,9 @@ Feature: Edit a site's mapping
   @javascript
   Scenario: Adding an alternative archive URL
     When I click the link "Use an alternative"
-    Then I should see the national archive link replaced with an alternative national archive field
+    Then I should see the National Archives link replaced with an alternative National Archives field
     When I enter an archive URL but then click "Cancel"
-    Then I should see the national archive link again
+    Then I should see the National Archives link again
     When I click the link "Use an alternative"
     Then the archive URL field should be empty
 

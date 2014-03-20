@@ -104,7 +104,7 @@ When(/^I make the new mapping paths "(.*)" redirect to (.*)$/) do |paths, new_ur
 end
 
 When(/^I enter an archive URL but then click "Cancel"$/) do
-  fill_in 'Alternative national archive URL', with: 'anything'
+  fill_in 'Alternative National Archives URL', with: 'anything'
   click_link 'Cancel'
 end
 

@@ -40,7 +40,7 @@
 
     <div data-module="toggle">
       <dl class="read-only-fields js-toggle-target <% if @mapping.archive_url %>if-js-hide<% end %>">
-        <dt>National archive</dt>
+        <dt>National Archives</dt>
         <dd>
           <%= link_to @mapping.national_archive_url, @mapping.national_archive_url %><br />
           <span class="text-muted">Is this archive missing? <a href="#add-alternative-url" class="if-no-js-hide link-muted js-toggle">Use an alternative</a></span>
@@ -48,7 +48,7 @@
       </dl>
       <div class="add-bottom-margin js-toggle-target <% unless @mapping.archive_url %>if-js-hide<% end %>">
         <%= f.label :archive_url do %>
-          Alternative national archive URL (<%= link_to 'Find on the national archives', @mapping.national_archive_index_url %>)
+          Alternative National Archives URL (<%= link_to 'Find on the National Archives', @mapping.national_archive_index_url %>)
         <% end %>
         <div class="row">
           <div class="col-md-8">
