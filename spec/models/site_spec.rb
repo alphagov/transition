@@ -31,16 +31,14 @@ describe Site do
   end
 
   describe '#transition_status' do
-    let!(:site) { create :site }
+    let!(:site) { create :site_without_host }
 
     subject(:transition_status) { site.transition_status }
 
     context 'site has any host redirected by GDS' do
       before do
-        site.hosts = [
-          create(:host, :with_govuk_cname),
-          create(:host, :with_third_party_cname)
-        ]
+        create(:host, :with_govuk_cname, site: site)
+        create(:host, :with_third_party_cname, site: site)
       end
 
       it     { should eql(:live) }
@@ -75,7 +73,7 @@ describe Site do
   describe '#default_host' do
     let(:hosts) { [create(:host), create(:host)] }
     subject(:site) do
-      create(:site) do |site|
+      create(:site_without_host) do |site|
         site.hosts = hosts
       end
     end
