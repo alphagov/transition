@@ -136,7 +136,7 @@ class Mapping < ActiveRecord::Base
   end
 
   def ensure_papertrail_user_config
-    Transition::History.ensure_papertrail_user_config
+    Transition::History.ensure_user!
   end
 
   def update_hit_relations
