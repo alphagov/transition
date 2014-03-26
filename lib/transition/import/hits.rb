@@ -43,6 +43,7 @@ module Transition
 
         # Spam
         '.*\.bat',
+        '.*/boot.ini',
         '.*/etc/passwd.*',
         '.*/proc/self/environ.*',
         '.*phpMyAdmin.*',
