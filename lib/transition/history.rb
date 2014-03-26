@@ -30,5 +30,13 @@ module Transition
         ::PaperTrail.controller_info = original_controller_info
       end
     end
+
+    def self.ensure_papertrail_user_config
+      if PaperTrail.enabled? &&
+         PaperTrail.whodunnit.nil? &&
+         PaperTrail.controller_info.try(:[], :user_id).nil?
+        raise PaperTrailUserNotSetError
+      end
+    end
   end
 end

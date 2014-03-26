@@ -136,11 +136,7 @@ class Mapping < ActiveRecord::Base
   end
 
   def ensure_papertrail_user_config
-    if PaperTrail.enabled? &&
-       PaperTrail.whodunnit.nil? &&
-       PaperTrail.controller_info.try(:[], :user_id).nil?
-      raise Transition::History::PaperTrailUserNotSetError
-    end
+    Transition::History.ensure_papertrail_user_config
   end
 
   def update_hit_relations

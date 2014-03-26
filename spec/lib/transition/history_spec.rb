@@ -60,5 +60,32 @@ module Transition
         PaperTrail.controller_info.should eql({ user_id: original_user.id })
       end
     end
+
+    describe '.ensure_papertrail_user_config' do
+      context 'when PaperTrail is disabled' do
+        before { PaperTrail.enabled = false }
+        after  { PaperTrail.enabled = true }
+
+        it 'should not raise an exception' do
+          expect { Transition::History.ensure_papertrail_user_config }.not_to raise_error(Transition::History::PaperTrailUserNotSetError)
+        end
+      end
+
+      context 'when PaperTrail is enabled' do
+        context 'with the correct configuration' do
+          it 'should not raise an exception' do
+            expect { Transition::History.ensure_papertrail_user_config }.not_to raise_error(Transition::History::PaperTrailUserNotSetError)
+          end
+        end
+
+        context 'without the correct configuration' do
+          before { Transition::History.clear_user! }
+
+          it 'should fail with an exception' do
+            expect { Transition::History.ensure_papertrail_user_config }.to raise_error(Transition::History::PaperTrailUserNotSetError)
+          end
+        end
+      end
+    end
   end
 end
