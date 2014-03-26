@@ -37,5 +37,28 @@ module Transition
         PaperTrail.whodunnit.should be_nil
       end
     end
+
+    describe '.as_a_user' do
+      let(:original_user)       { create :user, name: 'Original' }
+      let(:user_who_does_stuff) { create :user, name: 'Doer of Stuff' }
+
+      before do
+        Transition::History.set_user!(original_user)
+      end
+
+      it 'sets the new user for the block' do
+        Transition::History.as_a_user(user_who_does_stuff) do
+          PaperTrail.whodunnit.should eql(user_who_does_stuff.name)
+          PaperTrail.controller_info.should eql({ user_id: user_who_does_stuff.id })
+        end
+      end
+
+      it 'reverts to the original config afterwards' do
+        Transition::History.as_a_user(user_who_does_stuff) { }
+
+        PaperTrail.whodunnit.should eql(original_user.name)
+        PaperTrail.controller_info.should eql({ user_id: original_user.id })
+      end
+    end
   end
 end

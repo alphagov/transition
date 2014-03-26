@@ -1,4 +1,5 @@
 require 'csv'
+require 'transition/history'
 
 module Transition
   module Import
@@ -9,7 +10,7 @@ module Transition
         end
 
         def from_csv(urls_io)
-          as_a_user(@user) do
+          Transition::History.as_a_user(@user) do
             # Includes a row for each Old URL associated with a Document or
             # Attachment. Uses the current edition for a Document, whether it
             # is imported, draft, submitted, rejected, published or archived.
@@ -52,19 +53,6 @@ module Transition
 
         def path_hash(canonical_path)
           Digest::SHA1.hexdigest(canonical_path)
-        end
-
-        def as_a_user(user)
-          original_whodunnit = ::PaperTrail.whodunnit
-          original_controller_info = ::PaperTrail.controller_info
-          ::PaperTrail.whodunnit = user.name
-          ::PaperTrail.controller_info = { user_id: user.id }
-          begin
-            yield
-          ensure
-            ::PaperTrail.whodunnit = original_whodunnit
-            ::PaperTrail.controller_info = original_controller_info
-          end
         end
       end
     end

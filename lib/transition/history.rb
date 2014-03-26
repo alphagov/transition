@@ -18,5 +18,17 @@ module Transition
       ::PaperTrail.whodunnit = nil
       ::PaperTrail.controller_info = nil
     end
+
+    def self.as_a_user(user)
+      original_whodunnit = ::PaperTrail.whodunnit
+      original_controller_info = ::PaperTrail.controller_info
+      self.set_user!(user)
+      begin
+        yield
+      ensure
+        ::PaperTrail.whodunnit = original_whodunnit
+        ::PaperTrail.controller_info = original_controller_info
+      end
+    end
   end
 end
