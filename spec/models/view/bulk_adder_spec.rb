@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'transition/history'
 
 describe View::Mappings::BulkAdder do
   let!(:site) { create(:site) }
@@ -225,7 +226,10 @@ describe View::Mappings::BulkAdder do
   end
 
   describe '#create_or_update!', versioning: true do
-    let!(:existing_mapping) { create(:mapping, site: site, path: '/exists', http_status: '410') }
+    let(:user) { stub :user, id: 1, name: 'Test User' }
+    let(:existing_mapping) do
+      create(:mapping, site: site, path: '/exists', http_status: '410')
+    end
     let(:tag_list) { nil }
 
     let(:adder)  { View::Mappings::BulkAdder.new(site, params) }
@@ -236,6 +240,14 @@ describe View::Mappings::BulkAdder do
       update_existing: update_existing,
       tag_list:        tag_list
     } }
+
+    before do
+      # Because we have versioning turned on for this describe block, we need
+      # PaperTrail to be configured correctly so that mappings can be created
+      # by create_or_update!.
+      Transition::History.set_user!(user)
+      existing_mapping.should be_persisted
+    end
 
     # We expect this to never be called with invalid data because params_invalid?
     # should be called first to display error messages on the form, but in case

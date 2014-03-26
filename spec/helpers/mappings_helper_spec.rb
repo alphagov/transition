@@ -6,7 +6,8 @@ describe MappingsHelper do
   let(:mapping) { build :mapping, site: site }
 
   describe '#mapping_edit_tabs', versioning: true do
-    let!(:mapping) { create :mapping, :with_versions, site: site }
+    let(:user)     { stub :user, id: 1, name: 'Test User' }
+    let!(:mapping) { create :mapping, :with_versions, site: site, as_user: user }
     before         { @mapping = mapping }
 
     subject { helper.mapping_edit_tabs active: 'Edit' }

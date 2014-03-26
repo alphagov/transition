@@ -270,37 +270,40 @@ describe Mapping do
     let(:alice) { create :user, name: 'Alice' }
     let(:bob)   { create :user, name: 'Bob' }
 
-    before do
-      PaperTrail.whodunnit = alice.name
-      PaperTrail.controller_info = { user_id: alice.id }
-    end
-    subject(:mapping) { create :mapping }
+    context 'with the correct configuration' do
+      subject(:mapping) { create :mapping, as_user: alice }
 
-    it { should have(1).versions }
-
-    describe 'the last version' do
-      subject { mapping.versions.last }
-
-      its(:whodunnit) { should eql alice.name }
-      its(:user_id)   { should eql alice.id }
-      its(:event)     { should eql 'create' }
-    end
-
-    describe 'an update from Bob' do
-      before do
-        PaperTrail.whodunnit = bob.name
-        PaperTrail.controller_info = { user_id: bob.id }
-        mapping.update_attributes(new_url: 'http://updated.com')
-      end
-
-      it { should have(2).versions }
+      it { should have(1).versions }
 
       describe 'the last version' do
         subject { mapping.versions.last }
 
-        its(:whodunnit)  { should eql bob.name }
-        its(:user_id)    { should eql bob.id }
-        its(:event)      { should eql 'update'}
+        its(:whodunnit) { should eql alice.name }
+        its(:user_id)   { should eql alice.id }
+        its(:event)     { should eql 'create' }
+      end
+
+      describe 'an update from Bob' do
+        before do
+          Transition::History.set_user!(bob)
+          mapping.update_attributes(new_url: 'http://updated.com')
+        end
+
+        it { should have(2).versions }
+
+        describe 'the last version' do
+          subject { mapping.versions.last }
+
+          its(:whodunnit)  { should eql bob.name }
+          its(:user_id)    { should eql bob.id }
+          its(:event)      { should eql 'update'}
+        end
+      end
+    end
+
+    context 'without the correct configuration' do
+      it 'should fail with an exception' do
+        expect { create :mapping, as_user: nil }.to raise_error(Transition::History::PaperTrailUserNotSetError)
       end
     end
   end
