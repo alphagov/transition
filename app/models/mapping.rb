@@ -85,7 +85,7 @@ class Mapping < ActiveRecord::Base
     if from_redirector == true
       true
     else originator.present?
-      user = User.find_by_id(originator)
+      user = User.find_by_name(originator)
       user.present? && user.is_human?
     end
   end

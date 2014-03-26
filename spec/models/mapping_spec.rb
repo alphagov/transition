@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 require 'transition/import/hits_mappings_relations'
+require 'transition/history'
 
 describe Mapping do
   specify { PaperTrail.should_not be_enabled } # testing our tests a little here, but if this fails, tests will be slow
@@ -312,21 +313,17 @@ describe Mapping do
     end
 
     context 'has been edited by a human', versioning: true do
-      before do
-        PaperTrail.whodunnit = create(:user)
-      end
+      let(:human) { create :user }
 
-      subject(:mapping) { create(:mapping) }
+      subject(:mapping) { create(:mapping, as_user: human) }
 
       its(:edited_by_human?) { should be_true }
     end
 
     context 'has been edited by a robot', versioning: true do
-      before do
-        PaperTrail.whodunnit = create(:user, is_robot: true)
-      end
+      let(:robot) { create :user, is_robot: true }
 
-      subject(:mapping) { create(:mapping) }
+      subject(:mapping) { create(:mapping, as_user: robot) }
 
       its(:edited_by_human?) { should be_false }
     end
