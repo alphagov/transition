@@ -151,7 +151,7 @@ class MappingsController < ApplicationController
     site = Host.where(hostname: url.host).first.try(:site)
     render_error(404) and return unless site
 
-    redirect_to site_mapping_find_url(site, path: url.path)
+    redirect_to site_mapping_find_url(site, path: url.request_uri)
   end
 
   def find
