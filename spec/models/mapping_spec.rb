@@ -285,8 +285,9 @@ describe Mapping do
 
       describe 'an update from Bob' do
         before do
-          Transition::History.set_user!(bob)
-          mapping.update_attributes(new_url: 'http://updated.com')
+          Transition::History.as_a_user(bob) do
+            mapping.update_attributes(new_url: 'http://updated.com')
+          end
         end
 
         it { should have(2).versions }

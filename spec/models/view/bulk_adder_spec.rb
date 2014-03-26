@@ -227,7 +227,7 @@ describe View::Mappings::BulkAdder do
 
   describe '#create_or_update!', versioning: true do
     let(:user) { stub :user, id: 1, name: 'Test User' }
-    let(:existing_mapping) do
+    let!(:existing_mapping) do
       create(:mapping, site: site, path: '/exists', http_status: '410')
     end
     let(:tag_list) { nil }
@@ -242,11 +242,9 @@ describe View::Mappings::BulkAdder do
     } }
 
     before do
-      # Because we have versioning turned on for this describe block, we need
-      # PaperTrail to be configured correctly so that mappings can be created
-      # by create_or_update!.
-      Transition::History.set_user!(user)
-      existing_mapping.should be_persisted
+      Transition::History.as_a_user(user) do
+        adder.create_or_update!
+      end
     end
 
     # We expect this to never be called with invalid data because params_invalid?
@@ -258,8 +256,6 @@ describe View::Mappings::BulkAdder do
       let(:http_status)     { '301' }
       let(:new_url)         { '' }
       let(:update_existing) { "true" }
-
-      before { adder.create_or_update! }
 
       specify 'there are no new mappings' do
         expect(site.mappings.count).to eql(1)
@@ -284,8 +280,6 @@ describe View::Mappings::BulkAdder do
       let(:http_status) { '301' }
       let(:new_url)     { 'www.gov.uk' }
       let(:tag_list)    { 'fee, fi, FO' }
-
-      before { adder.create_or_update! }
 
       shared_examples 'the new mappings were correctly created' do
         subject(:new_mappings) { Mapping.where(path: ['/a', '/b', '/c']) }
