@@ -332,4 +332,35 @@ describe Mapping do
       its(:edited_by_human?) { should be_false }
     end
   end
+
+  describe 'last_editor' do
+    context 'no versions exist' do
+      subject(:mapping) { create(:mapping, from_redirector: true) }
+
+      its(:last_editor) { should be_nil }
+    end
+
+    context 'versions exist', versioning: true do
+      let(:user) { create :user }
+      subject(:mapping) { create(:mapping, as_user: user) }
+
+      context 'only one version exists' do
+        its(:last_editor) { should eql(user) }
+      end
+
+      context 'several versions exist' do
+        let(:other_user) { create :user }
+        before do
+          Transition::History.as_a_user(other_user) do
+            mapping.update_attributes(http_status: '301', new_url: 'http://updated.com')
+            mapping.update_attributes(http_status: '301', new_url: 'http://new.com')
+          end
+        end
+
+        it { should have(3).versions }
+
+        its(:last_editor) { should eql(other_user) }
+      end
+    end
+  end
 end

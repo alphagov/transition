@@ -87,9 +87,16 @@ class Mapping < ActiveRecord::Base
     #
     if from_redirector == true
       true
-    else originator.present?
-      user = User.find_by_name(originator)
-      user.present? && user.is_human?
+    else
+      last_editor.present? && last_editor.is_human?
+    end
+  end
+
+  def last_editor
+    # This will return nil if the mapping was imported from redirector and has
+    # not been edited since.
+    if versions.present? && versions.last.user_id.present?
+      User.find_by_id(versions.last.user_id)
     end
   end
 
