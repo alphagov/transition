@@ -71,12 +71,13 @@
       <% end %>
 
       <% if flash[:saved_mapping_ids] %>
+        <% mappings_from_ids = mappings_from_ids(flash[:saved_mapping_ids]) %>
         <%= render partial: 'mappings/saved_mappings_modal',
           locals: {
-            site: @site,
+            site: mappings_from_ids.first.site, # we *might* be able to use @site, but we may be on a page where it isn't loaded
             operation: flash[:saved_operation],
             message: flash[:success],
-            mappings: mappings_from_ids(flash[:saved_mapping_ids])
+            mappings: mappings_from_ids,
           }
         %>
       <% end %>
