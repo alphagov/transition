@@ -98,6 +98,14 @@ describe MappingsController do
       end
     end
 
+    context 'when the URL has a querystring' do
+      let!(:host) { create :host, hostname: 'example.com' }
+      it 'should preserve the querystring' do
+        get :find_global, url: 'http://example.com/baz?q=a'
+        expect(response).to redirect_to site_mapping_find_url(host.site, path: '/baz?q=a')
+      end
+    end
+
     context 'when the URL isn\'t an HTTP(S) URL' do
       it 'returns a 400 error' do
         get :find_global, url: "huihguifbelgfebigf"
