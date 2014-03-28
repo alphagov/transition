@@ -1,5 +1,6 @@
 require 'active_record/concerns/nilify_blanks'
 require 'digest/sha1'
+require 'transition/history'
 
 class Mapping < ActiveRecord::Base
   include ActiveRecord::Concerns::NilifyBlanks
@@ -29,6 +30,8 @@ class Mapping < ActiveRecord::Base
   # the path (it's too long)
   before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path, :set_path_hash
   validates :path_hash, presence: true
+
+  before_save :ensure_papertrail_user_config
 
   after_create :update_hit_relations
 
@@ -84,9 +87,16 @@ class Mapping < ActiveRecord::Base
     #
     if from_redirector == true
       true
-    else originator.present?
-      user = User.find_by_id(originator)
-      user.present? && user.is_human?
+    else
+      last_editor.present? && last_editor.is_human?
+    end
+  end
+
+  def last_editor
+    # This will return nil if the mapping was imported from redirector and has
+    # not been edited since.
+    if versions.present? && versions.last.user_id.present?
+      User.find_by_id(versions.last.user_id)
     end
   end
 
@@ -130,6 +140,10 @@ class Mapping < ActiveRecord::Base
 
   def tna_timestamp
     self.site.tna_timestamp.to_formatted_s(:number)
+  end
+
+  def ensure_papertrail_user_config
+    Transition::History.ensure_user!
   end
 
   def update_hit_relations

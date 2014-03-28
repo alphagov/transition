@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 require 'transition/import/hits_mappings_relations'
+require 'transition/history'
 
 describe Mapping do
   specify { PaperTrail.should_not be_enabled } # testing our tests a little here, but if this fails, tests will be slow
@@ -269,37 +270,41 @@ describe Mapping do
     let(:alice) { create :user, name: 'Alice' }
     let(:bob)   { create :user, name: 'Bob' }
 
-    before do
-      PaperTrail.whodunnit = alice.name
-      PaperTrail.controller_info = { user_id: alice.id }
-    end
-    subject(:mapping) { create :mapping }
+    context 'with the correct configuration' do
+      subject(:mapping) { create :mapping, as_user: alice }
 
-    it { should have(1).versions }
-
-    describe 'the last version' do
-      subject { mapping.versions.last }
-
-      its(:whodunnit) { should eql alice.name }
-      its(:user_id)   { should eql alice.id }
-      its(:event)     { should eql 'create' }
-    end
-
-    describe 'an update from Bob' do
-      before do
-        PaperTrail.whodunnit = bob.name
-        PaperTrail.controller_info = { user_id: bob.id }
-        mapping.update_attributes(new_url: 'http://updated.com')
-      end
-
-      it { should have(2).versions }
+      it { should have(1).versions }
 
       describe 'the last version' do
         subject { mapping.versions.last }
 
-        its(:whodunnit)  { should eql bob.name }
-        its(:user_id)    { should eql bob.id }
-        its(:event)      { should eql 'update'}
+        its(:whodunnit) { should eql alice.name }
+        its(:user_id)   { should eql alice.id }
+        its(:event)     { should eql 'create' }
+      end
+
+      describe 'an update from Bob' do
+        before do
+          Transition::History.as_a_user(bob) do
+            mapping.update_attributes(new_url: 'http://updated.com')
+          end
+        end
+
+        it { should have(2).versions }
+
+        describe 'the last version' do
+          subject { mapping.versions.last }
+
+          its(:whodunnit)  { should eql bob.name }
+          its(:user_id)    { should eql bob.id }
+          its(:event)      { should eql 'update'}
+        end
+      end
+    end
+
+    context 'without the correct configuration' do
+      it 'should fail with an exception' do
+        expect { create :mapping, as_user: nil }.to raise_error(Transition::History::PaperTrailUserNotSetError)
       end
     end
   end
@@ -312,23 +317,50 @@ describe Mapping do
     end
 
     context 'has been edited by a human', versioning: true do
-      before do
-        PaperTrail.whodunnit = create(:user)
-      end
+      let(:human) { create :user }
 
-      subject(:mapping) { create(:mapping) }
+      subject(:mapping) { create(:mapping, as_user: human) }
 
       its(:edited_by_human?) { should be_true }
     end
 
     context 'has been edited by a robot', versioning: true do
-      before do
-        PaperTrail.whodunnit = create(:user, is_robot: true)
-      end
+      let(:robot) { create :user, is_robot: true }
 
-      subject(:mapping) { create(:mapping) }
+      subject(:mapping) { create(:mapping, as_user: robot) }
 
       its(:edited_by_human?) { should be_false }
+    end
+  end
+
+  describe 'last_editor' do
+    context 'no versions exist' do
+      subject(:mapping) { create(:mapping, from_redirector: true) }
+
+      its(:last_editor) { should be_nil }
+    end
+
+    context 'versions exist', versioning: true do
+      let(:user) { create :user }
+      subject(:mapping) { create(:mapping, as_user: user) }
+
+      context 'only one version exists' do
+        its(:last_editor) { should eql(user) }
+      end
+
+      context 'several versions exist' do
+        let(:other_user) { create :user }
+        before do
+          Transition::History.as_a_user(other_user) do
+            mapping.update_attributes(http_status: '301', new_url: 'http://updated.com')
+            mapping.update_attributes(http_status: '301', new_url: 'http://new.com')
+          end
+        end
+
+        it { should have(3).versions }
+
+        its(:last_editor) { should eql(other_user) }
+      end
     end
   end
 end

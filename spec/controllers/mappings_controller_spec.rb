@@ -4,7 +4,7 @@ describe MappingsController do
   let(:site)              { create :site, abbr: 'moj' }
   let(:unaffiliated_user) { create(:user, organisation_slug: nil) }
   let(:admin_bob)         { create(:admin, name: 'Bob Terwhilliger') }
-  let(:mapping)           { create(:mapping, site: site) }
+  let(:mapping)           { create(:mapping, site: site, as_user: admin_bob) }
 
   shared_examples 'disallows editing by unaffiliated user' do
     before do
@@ -433,9 +433,9 @@ describe MappingsController do
   end
 
   describe '#update_multiple' do
-    let!(:mapping_a) { create :mapping, path: '/a', site: site, tag_list: 'fum' }
-    let!(:mapping_b) { create :mapping, path: '/b', site: site, tag_list: 'fum' }
-    let!(:mapping_c) { create :mapping, path: '/c', site: site, tag_list: 'fum' }
+    let!(:mapping_a) { create :mapping, path: '/a', site: site, tag_list: 'fum', as_user: admin_bob }
+    let!(:mapping_b) { create :mapping, path: '/b', site: site, tag_list: 'fum', as_user: admin_bob }
+    let!(:mapping_c) { create :mapping, path: '/c', site: site, tag_list: 'fum', as_user: admin_bob }
 
     before do
       @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'

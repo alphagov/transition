@@ -3,6 +3,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'transition/history'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -41,8 +42,7 @@ RSpec.configure do |config|
   config.filter_run_excluding :external_api => true
 
   config.before :each do
-    PaperTrail.controller_info = {}
-    PaperTrail.whodunnit = nil
+    Transition::History.clear_user!
   end
 
   config.before :all do
@@ -51,5 +51,9 @@ RSpec.configure do |config|
 
   config.before :all, versioning: true do
     PaperTrail.enabled = true
+  end
+
+  config.after :all, versioning: true do
+    PaperTrail.enabled = false
   end
 end
