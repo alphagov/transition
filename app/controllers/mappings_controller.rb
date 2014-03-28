@@ -29,7 +29,7 @@ class MappingsController < ApplicationController
     flash[:saved_mapping_ids] = bulk_add.modified_mappings.map {|m| m.id}
     flash[:saved_operation] = bulk_add.operation_description
 
-    if params[:return_path] && params[:return_path].start_with?('/')
+    if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
       redirect_to params[:return_path]
     else
       redirect_to site_mappings_path(@site)
@@ -90,7 +90,7 @@ class MappingsController < ApplicationController
       flash[:saved_mapping_ids] = [@mapping.id]
       flash[:saved_operation] = "update-single"
 
-      if params[:return_path] && params[:return_path].start_with?('/')
+      if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
         redirect_to params[:return_path]
       else
         redirect_to site_mappings_path(@site)

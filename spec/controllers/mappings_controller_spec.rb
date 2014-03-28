@@ -553,4 +553,45 @@ describe MappingsController do
       response.body.should eql('Invalid authenticity token')
     end
   end
+
+  describe 'rejecting an off-site return_path' do
+    before do
+      login_as admin_bob
+    end
+
+    context 'update' do
+      it 'should redirect to mappings index' do
+        post :update, site_id: mapping.site, id: mapping.id,
+               mapping: {
+                  path: '/Needs/Canonicalization?has=some&query=parts',
+                  new_url: 'http://somewhere.bad'
+               },
+               return_path: 'http://malicious.com'
+
+
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+
+    context '#update_multiple' do
+      let(:mapping) { create :mapping, path: '/a', site: site }
+
+      it 'should redirect to mappings index' do
+        post :update_multiple, site_id: site.abbr, mapping_ids: [mapping.id],
+             operation: '301', new_url: 'http://www.example.com',
+             return_path: 'http://malicious.com'
+
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+
+    context '#create_multiple' do
+      it 'should redirect to mappings index' do
+        post :create_multiple, site_id: site.abbr, paths: "/a\n/b",
+               http_status: '301', new_url: 'www.gov.uk', update_existing: 'true',
+               return_path: 'http://malicious.com'
+        expect(response).to redirect_to site_mappings_path(site)
+      end
+    end
+  end
 end

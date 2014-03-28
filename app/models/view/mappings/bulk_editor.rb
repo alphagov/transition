@@ -1,3 +1,5 @@
+require 'transition/off_site_redirect_checker'
+
 module View
   module Mappings
     ##
@@ -18,9 +20,7 @@ module View
 
       def return_path
         @return_path ||=
-          # Make sure that this looks like a path and not a full URL (which
-          # might be for an external site)
-          if params[:return_path] && params[:return_path].start_with?('/')
+          if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
             params[:return_path]
           else
             site_mappings_path
