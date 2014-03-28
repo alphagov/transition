@@ -149,7 +149,12 @@ class MappingsController < ApplicationController
 
     url.host = Host.canonical_hostname(url.host)
     site = Host.where(hostname: url.host).first.try(:site)
-    render_error(404) and return unless site
+    unless site
+      render_error(404,
+          header: 'Unknown site',
+          body:  "#{url.host} isn't configured in Transition yet. To add this site to Transition, please contact your Transition Manager")
+      return
+    end
 
     redirect_to site_mapping_find_url(site, path: url.request_uri)
   end
