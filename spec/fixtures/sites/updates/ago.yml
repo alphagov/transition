@@ -12,3 +12,5 @@ aliases:
 - www.ago.gov.uk
 - www.lslo.gov.uk
 css: attorney-generals-office
+organisation_slugs:
+- treasury-solicitor-s-office
