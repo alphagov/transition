@@ -1,6 +1,6 @@
 <% content_for(:page_title, '400') %>
 
 <h1 class="page-title">
-  Bad request
+  <%= @custom_header || 'Bad request' %>
 </h1>
-<p>Please check the web address you entered.</p>
+<p><%= @custom_body || 'Please check the web address you entered.' %></p>

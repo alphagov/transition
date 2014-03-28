@@ -1,6 +1,6 @@
 <% content_for(:page_title, '404') %>
 
 <h1 class="page-title">
-  Page could not be found
+  <%= @custom_header || 'Page could not be found' %>
 </h1>
-<p>Please check that you have entered the correct web address.</p>
+<p><%= @custom_body || 'Please check that you have entered the correct web address.' %></p>
