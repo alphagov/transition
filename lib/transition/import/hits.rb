@@ -39,6 +39,10 @@ module Transition
         '.*\.jpeg',
         '.*\.png',
 
+        # Image URLs on www.ukti.gov.uk
+        '^/[0-9]+\.image$',
+        '^/[0-9]+\.leadimage\?.*',
+
         # Often after transition, bots seem to think the old site has
         # www.gov.uk URLs.
         # There are definitely other www.gov.uk URLs, but they are harder to
