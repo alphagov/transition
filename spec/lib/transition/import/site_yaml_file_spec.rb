@@ -50,12 +50,14 @@ describe Transition::Import::SiteYamlFile do
       describe 'updates' do
         before do
           redirector_yaml_file.import!
+          Organisation.stub(:where).and_return([])
           Transition::Import::SiteYamlFile.load('spec/fixtures/sites/updates/ago.yml').import!
         end
 
         its(:launch_date)           { should eql(Date.new(2014, 12, 13)) }
         its(:tna_timestamp)         { should be_a(Time) }
         its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-update-office') }
+        its(:organisations)         { should eql([]) }
       end
     end
   end
