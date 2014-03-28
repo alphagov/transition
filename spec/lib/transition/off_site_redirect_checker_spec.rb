@@ -25,5 +25,10 @@ describe Transition::OffSiteRedirectChecker do
       let(:location) { '//malicious.com' }
       it { should == false }
     end
+
+    context 'nil' do
+      let(:location) { nil }
+      it { should == false }
+    end
   end
 end

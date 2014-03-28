@@ -20,7 +20,7 @@ module View
 
       def return_path
         @return_path ||=
-          if params[:return_path] && Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
+          if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
             params[:return_path]
           else
             site_mappings_path

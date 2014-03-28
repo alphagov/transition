@@ -124,14 +124,14 @@ CREATE TABLE `schema_migrations` (
 
 CREATE TABLE `sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `session_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `data` text COLLATE utf8_unicode_ci,
+  `session_id` varchar(255) NOT NULL,
+  `data` text,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

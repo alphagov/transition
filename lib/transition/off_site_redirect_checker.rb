@@ -8,6 +8,9 @@ module Transition
       # which starts with ///, eg ///host.com
       # This is also true with // - a "protocol-relative URL". More information:
       # http://homakov.blogspot.co.uk/2014/01/evolution-of-open-redirect-vulnerability.html?m=1
+
+      return false if location.blank?
+
       location.start_with?('/') && ! location.start_with?('//')
     end
   end
