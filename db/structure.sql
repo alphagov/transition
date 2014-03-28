@@ -118,6 +118,12 @@ CREATE TABLE `organisations` (
   KEY `index_organisations_on_title` (`title`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `organisations_sites` (
+  `site_id` int(11) NOT NULL,
+  `organisation_id` int(11) NOT NULL,
+  UNIQUE KEY `index_organisations_sites_on_site_id_and_organisation_id` (`site_id`,`organisation_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `schema_migrations` (
   `version` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   UNIQUE KEY `unique_schema_migrations` (`version`)
@@ -276,3 +282,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140228174448');
 INSERT INTO schema_migrations (version) VALUES ('20140331115315');
 
 INSERT INTO schema_migrations (version) VALUES ('20140331121029');
+
+INSERT INTO schema_migrations (version) VALUES ('20140404112839');

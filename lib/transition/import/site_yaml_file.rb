@@ -83,6 +83,7 @@ module Transition
 
           site.save!
         end
+        @site.organisations = Organisation.where(whitehall_slug: organisation_slugs)
       end
 
       def import_hosts!
