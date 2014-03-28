@@ -22,6 +22,10 @@ module Transition
         yaml['site']
       end
 
+      def organisation_slugs
+        yaml['organisation_slugs']
+      end
+
       def whitehall_slug
         yaml['whitehall_slug'] || case abbr
                                     when /^directgov.*/ then 'directgov'
