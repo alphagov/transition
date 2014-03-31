@@ -10,7 +10,7 @@
         <%= site_redirects_link(@site) %> and <%= site_archives_link(@site) %>
       </p>
     </div>
-    <% if current_user.can_edit?(@site.organisation) %>
+    <% if current_user.can_edit_site?(@site) %>
       <div class="list-group-item">
         <h4 class="list-group-item-heading">
           <%= link_to 'Add mappings', new_multiple_site_mappings_path(@site), class: 'no-visit' %>

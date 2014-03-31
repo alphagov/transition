@@ -3,7 +3,7 @@
 <% include_bulk_add ||= false %>
 <% fix_header ||= false %>
 
-<% if current_user.can_edit?(site.organisation) %>
+<% if current_user.can_edit_site?(site) %>
   <div data-module="selectable-table">
     <% if fix_header %><div data-module="fixed-table-header"><% end %>
 <% end %>
@@ -11,25 +11,25 @@
 <table class="mappings <%= css if css %> table table-bordered">
   <thead>
     <tr class="table-header">
-      <% if current_user.can_edit?(site.organisation) %>
+      <% if current_user.can_edit_site?(site) %>
         <th></th>
       <% end %>
       <th class="mapping-type-column" scope="col">Type</th>
       <th scope="col">
         Original path from <%= site.default_host.hostname %>
       </th>
-      <% if current_user.can_edit?(site.organisation) %>
+      <% if current_user.can_edit_site?(site) %>
         <th class="mapping-edit-column"></th>
       <% end %>
     </tr>
-    <% if current_user.can_edit?(site.organisation) %>
+    <% if current_user.can_edit_site?(site) %>
       <%= render partial: 'mappings/mappings_table_header', locals: {footer: false, include_bulk_add: include_bulk_add} %>
     <% end %>
   </thead>
   <tbody>
   <% mappings.each do |mapping| %>
     <tr class="mapping-<%= mapping.id %>" data-status-code="<%= mapping.http_status %>">
-      <% if current_user.can_edit?(site.organisation) %>
+      <% if current_user.can_edit_site?(site) %>
         <td class="selectable-row">
           <div class="relative">
             <label>
@@ -49,7 +49,7 @@
           <%= link_to mapping.new_url, mapping.new_url, class: 'link-muted breakable' if mapping.new_url.present? %>
         <% end %>
       </td>
-      <% if current_user.can_edit?(site.organisation) %>
+      <% if current_user.can_edit_site?(site) %>
         <td class="text-right">
           <%= link_to edit_site_mapping_path(site, mapping, :return_path => request.fullpath), class: 'btn btn-default btn-xs' do %>
             Edit&nbsp;mapping
@@ -59,14 +59,14 @@
     </tr>
   <% end %>
   </tbody>
-  <% if include_footer && current_user.can_edit?(site.organisation) %>
+  <% if include_footer && current_user.can_edit_site?(site) %>
     <tfoot class="if-no-js-hide">
       <%= render partial: 'mappings/mappings_table_header', locals: {footer: true, include_bulk_add: include_bulk_add} %>
     </tfoot>
   <% end %>
 </table>
 <% end %>
-<% if current_user.can_edit?(site.organisation) %>
+<% if current_user.can_edit_site?(site) %>
     <% if fix_header %></div><% end %>
   </div>
 <% end %>

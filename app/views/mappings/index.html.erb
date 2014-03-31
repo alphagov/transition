@@ -32,7 +32,7 @@
   <%= paginate(@mappings) %>
 
 <% else %>
-  <% if current_user.can_edit?(@site.organisation) %>
+  <% if current_user.can_edit_site?(@site) %>
     <div class="add-bottom-margin">
       <%= render partial: 'add_button' %>
     </div>
