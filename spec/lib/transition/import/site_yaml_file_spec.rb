@@ -12,7 +12,7 @@ describe Transition::Import::SiteYamlFile do
     it 'is not managed by transition - it doesn\'t have transition-sites in path' do
       redirector_yaml_file.should_not be_managed_by_transition
     end
-    its(:organisation_slugs) { should eql(['bona-vacantia', 'treasury-solicitor-s-office']) }
+    its(:extra_organisation_slugs) { should eql(['bona-vacantia', 'treasury-solicitor-s-office']) }
 
     describe '#import!' do
       let(:ago)  { build :organisation, whitehall_slug: 'attorney-generals-office' }

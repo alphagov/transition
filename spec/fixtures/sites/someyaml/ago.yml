@@ -12,6 +12,6 @@ aliases:
 - www.ago.gov.uk
 - www.lslo.gov.uk
 css: attorney-generals-office
-organisation_slugs:
+extra_organisation_slugs:
 - bona-vacantia
 - treasury-solicitor-s-office
