@@ -32,7 +32,7 @@ describe Transition::Import::SiteYamlFile do
       its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-generals-office') }
       its(:managed_by_transition) { should eql(false) }
       its(:organisation)          { should eql(ago) }
-      its(:organisations)         { should eql([bv, tsol]) }
+      its(:extra_organisations)   { should eql([bv, tsol]) }
 
       it 'should get hosts including aka hosts' do
         hosts = %w{
@@ -58,7 +58,7 @@ describe Transition::Import::SiteYamlFile do
         its(:launch_date)           { should eql(Date.new(2014, 12, 13)) }
         its(:tna_timestamp)         { should be_a(Time) }
         its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-update-office') }
-        its(:organisations)         { should eql([tsol]) }
+        its(:extra_organisations)   { should eql([tsol]) }
       end
     end
   end

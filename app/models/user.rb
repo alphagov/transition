@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
     admin? ||
       organisation == site_to_edit.organisation ||
       site_to_edit.organisation.parent_organisations.include?(organisation) ||
-      site_to_edit.organisations.include?(organisation)
+      site_to_edit.extra_organisations.include?(organisation)
   end
 
   def organisation

@@ -93,7 +93,7 @@ describe User do
       let(:shoe_procurement_bureau) { create(:organisation, whitehall_slug: "shoe-procurement-bureau") }
       let(:soulless_agency)         { create(:organisation, whitehall_slug: "soulless-agency") }
       let(:site)                    { create(:site, organisation: agency_of_soul,
-                                      organisations: [shoe_procurement_bureau, soulless_agency]) }
+                                             extra_organisations: [shoe_procurement_bureau, soulless_agency]) }
 
       context 'user is a member of an extra organisation' do
         subject(:user) { create(:user, organisation_slug: shoe_procurement_bureau.whitehall_slug) }
