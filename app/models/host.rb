@@ -7,7 +7,17 @@ class Host < ActiveRecord::Base
   validate :hostname, presence: true
   validate :site, presence: true
 
+  scope :excluding_aka, where('hostname not like "aka%"')
+
+  def aka?
+    hostname.start_with?('aka')
+  end
+
   def aka_hostname
+    Host.aka_hostname(hostname)
+  end
+
+  def self.aka_hostname(hostname)
     # This does the reverse of Bouncer's aka handling:
     #     hostname.sub(/^aka-/, '').sub(/^aka\./, 'www.')
     if hostname.start_with?('www.')

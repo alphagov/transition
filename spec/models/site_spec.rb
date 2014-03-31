@@ -64,6 +64,15 @@ describe Site do
       end
     end
 
+    context 'site is not redirected yet, but has aka set up (for testing)' do
+      before do
+        create(:host, :with_third_party_cname, hostname: 'foo.com', site: site)
+        create(:host, :with_govuk_cname,       hostname: 'aka-foo.com', site: site)
+      end
+
+      it { should eql(:pre_transition) }
+    end
+
     context 'in any other case' do
       it { should eql(:pre_transition) }
     end

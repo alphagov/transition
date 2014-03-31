@@ -43,7 +43,7 @@ module Transition
         nil
       end
 
-      def self.from_nameserver!(hosts = Host.all)
+      def self.from_nameserver!(hosts = Host.excluding_aka)
         DnsDetails.new(hosts).import!
       end
     end

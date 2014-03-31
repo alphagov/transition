@@ -24,7 +24,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @site.hosts.each do |host| %>
+          <% @site.hosts.excluding_aka.each do |host| %>
             <tr>
               <td>
                 <%= host.hostname %>

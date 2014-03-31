@@ -87,6 +87,11 @@ module Transition
             host.site = site
             host.save!
           end
+          aka_name = Host.aka_hostname(name)
+          Host.where(hostname: aka_name).first_or_create do |aka_host|
+            aka_host.site = site
+            aka_host.save!
+          end
         end
       end
 
