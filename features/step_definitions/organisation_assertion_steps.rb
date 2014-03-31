@@ -22,3 +22,13 @@ Then(/^I should see all the old homepages for the sites of the given organisatio
     expect(page).to have_content(site.default_host.hostname)
   end
 end
+
+Then(/^I should see that I have permission to edit each of DCLG's sites$/) do
+  expect(page).to have_selector('tbody tr', count: 3)
+  within '.sites tbody' do
+    page.all('tr').each do |row|
+      has_permission = row.find('td:last-child').text
+      expect(has_permission).to eql('Yes')
+    end
+  end
+end

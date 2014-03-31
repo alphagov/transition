@@ -10,12 +10,6 @@
   <%= render 'in_conjunction_with' %>
 </header>
 
-<% if current_user.can_edit?(@organisation) %>
-  <p class="alert alert-info">
-    You have permission to edit site mappings for <i><%= @organisation.title %></i>.
-  </p>
-<% end %>
-
 <% unless @sites.empty? %>
   <h2>Sites</h2>
   <table class="sites table table-hover table-striped table-bordered">
@@ -24,6 +18,7 @@
         <th scope="col">Old site</th>
         <th scope="col">Transition status</th>
         <th scope="col">Transition date</th>
+        <th scope="col">Permission to edit?</th>
       </tr>
     </thead>
     <tbody>
@@ -36,6 +31,7 @@
           <%= render partial: 'sites/transition_status', locals: {site: site} %>
         </td>
         <td><%= date_or_not_yet(site.launch_date) %></td>
+        <td><%= current_user.can_edit_site?(site) ? 'Yes' : '' %></td>
       </tr>
     <% end %>
     </tbody>

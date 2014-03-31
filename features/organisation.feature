@@ -16,8 +16,9 @@ Feature: View organisation
 
   Scenario: I can edit an organisation's mappings
     Given I have logged in as a member of DCLG
+    And DCLG has 3 sites
     When I visit the path /organisations/department-for-communities-and-local-government
-    Then I should see "You have permission to edit site mappings for Department for Communities and Local Government"
+    Then I should see that I have permission to edit each of DCLG's sites
 
   Scenario: Organisation page with sites in each transition state
     Given I have logged in as an admin

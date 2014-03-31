@@ -7,6 +7,13 @@ Given(/^there is a (.*) organisation named (.*) abbreviated (.*) with these site
   end
 end
 
+Given(/^DCLG has (\d+) sites$/) do |site_count|
+  @organisation = Organisation.find_by_whitehall_slug('department-for-communities-and-local-government')
+  site_count.to_i.times do
+    create(:site, organisation: @organisation)
+  end
+end
+
 Given(/^there are these organisations with sites:$/) do |org_table|
   # org_table is like | whitehall_slug | Title |
   org_table.rows.each do |slug, title|
