@@ -11,13 +11,13 @@ class User < ActiveRecord::Base
 
   def can_edit_site?(site_to_edit)
     admin? ||
-      organisation == site_to_edit.organisation ||
-      site_to_edit.organisation.parent_organisations.include?(organisation) ||
-      site_to_edit.extra_organisations.include?(organisation)
+      own_organisation == site_to_edit.organisation ||
+      site_to_edit.organisation.parent_organisations.include?(own_organisation) ||
+      site_to_edit.extra_organisations.include?(own_organisation)
   end
 
-  def organisation
-    @_organisation ||=
+  def own_organisation
+    @_own_organisation ||=
       Organisation.find_by_whitehall_slug(organisation_slug) if organisation_slug
   end
 
