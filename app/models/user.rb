@@ -9,12 +9,6 @@ class User < ActiveRecord::Base
     permissions.include?('admin')
   end
 
-  def can_edit?(organisation_to_edit)
-    admin? ||
-      organisation == organisation_to_edit ||
-      organisation_to_edit.parent_organisations.include?(organisation)
-  end
-
   def can_edit_site?(site_to_edit)
     admin? ||
       organisation == site_to_edit.organisation ||
