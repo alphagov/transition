@@ -43,10 +43,12 @@
               </td>
               <td><%= host.cname || host.ip_address || 'Unknown' %></td>
               <td>
-                <% if host.has_aka == true %>
-                  <%= link_to 'Yes', "http://#{host.aka_hostname}" %>
-                <% elsif host.has_aka == false %>
-                  No
+                <% if host.aka_host %>
+                  <% if host.aka_host.redirected_by_gds? %>
+                    <%= link_to 'Yes', "http://#{host.aka_hostname}" %>
+                  <% else %>
+                    No
+                  <% end %>
                 <% else %>
                   <span class="text-muted">Unknown</span>
                 <% end %>

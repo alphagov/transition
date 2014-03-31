@@ -58,10 +58,11 @@ CREATE TABLE `hosts` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `ip_address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `has_aka` tinyint(1) DEFAULT NULL,
+  `canonical_host_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_hosts_on_host` (`hostname`),
-  KEY `index_hosts_on_site_id` (`site_id`)
+  KEY `index_hosts_on_site_id` (`site_id`),
+  KEY `index_hosts_on_canonical_host_id` (`canonical_host_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `mappings` (
@@ -271,3 +272,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140227154752');
 INSERT INTO schema_migrations (version) VALUES ('20140228173250');
 
 INSERT INTO schema_migrations (version) VALUES ('20140228174448');
+
+INSERT INTO schema_migrations (version) VALUES ('20140331115315');
+
+INSERT INTO schema_migrations (version) VALUES ('20140331121029');

@@ -28,9 +28,6 @@ module Transition
             host.ttl        = a_record.ttl
           end
 
-          aka_record = record(host.aka_hostname, Resolv::DNS::Resource::IN::CNAME)
-          host.has_aka = aka_record.present?
-
           host.save!
         end
       end
@@ -43,7 +40,7 @@ module Transition
         nil
       end
 
-      def self.from_nameserver!(hosts = Host.excluding_aka)
+      def self.from_nameserver!(hosts = Host.all)
         DnsDetails.new(hosts).import!
       end
     end
