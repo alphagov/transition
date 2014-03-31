@@ -12,7 +12,8 @@ class User < ActiveRecord::Base
   def can_edit_site?(site_to_edit)
     admin? ||
       organisation == site_to_edit.organisation ||
-      site_to_edit.organisation.parent_organisations.include?(organisation)
+      site_to_edit.organisation.parent_organisations.include?(organisation) ||
+      site_to_edit.organisations.include?(organisation)
   end
 
   def organisation

@@ -10,7 +10,7 @@ describe User do
 
     context 'user has an organisation slug set' do
       subject(:user) { create(:user, organisation_slug: "ministry-of-funk") }
-      let(:ministry_of_funk) { create(:organisation, whitehall_slug: "ministry-of-funk")}
+      let(:ministry_of_funk) { create(:organisation, whitehall_slug: "ministry-of-funk") }
 
       its(:organisation) { should eql(ministry_of_funk) }
     end
@@ -86,6 +86,26 @@ describe User do
         subject(:user)      { create(:user, organisation_slug: ministry_of_funk.whitehall_slug) }
 
         specify { user.can_edit_site?(site_of_child).should be_true }
+      end
+    end
+
+    context 'the site has extra organisations whose members can edit it' do
+      let(:shoe_procurement_bureau) { create(:organisation, whitehall_slug: "shoe-procurement-bureau") }
+      let(:soulless_agency)         { create(:organisation, whitehall_slug: "soulless-agency") }
+      let(:site)                    { create(:site, organisation: agency_of_soul,
+                                      organisations: [shoe_procurement_bureau, soulless_agency]) }
+
+      context 'user is a member of an extra organisation' do
+        subject(:user) { create(:user, organisation_slug: shoe_procurement_bureau.whitehall_slug) }
+
+        specify { user.can_edit_site?(site).should be_true }
+      end
+
+      context 'user is a member of an extra organisation\'s parent' do
+        let(:ministry_of_silly_walks)   { create(:organisation, whitehall_slug: "ministry-of-silly-walks") }
+        subject(:user)                  { create(:user, organisation_slug: ministry_of_silly_walks.whitehall_slug) }
+
+        specify { user.can_edit_site?(site).should be_false }
       end
     end
   end
