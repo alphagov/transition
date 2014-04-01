@@ -36,7 +36,7 @@ module Transition
         end
 
         def default_filename
-          "tmp/#{Time.now.to_i}-whitehall_mappings.csv"
+          "tmp/#{Time.zone.now.to_i}-whitehall_mappings.csv"
         end
 
         def download(filename = default_filename)

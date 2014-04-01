@@ -27,7 +27,7 @@ module SitesHelper
   end
 
   def days_before_or_after_launch(site)
-    (site.launch_date - DateTime.now.midnight.utc).to_i.abs
+    (site.launch_date - DateTime.zone.now.midnight.utc).to_i.abs
   end
 
   def site_redirects_link(site)
