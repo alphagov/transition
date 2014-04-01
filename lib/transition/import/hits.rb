@@ -53,6 +53,10 @@ module Transition
         '/browse/.*',
         '/government/.*',
 
+        # This is used by TNA to resolve pages which are missing from their archive:
+        # http://www.nationalarchives.gov.uk/documents/information-management/redirection-technical-guidance-for-departments-v4.2-web-version.pdf
+        '/ukgwacnf.html.*',
+
         # Spam
         '.*\.bat',
         '.*\.ini',
