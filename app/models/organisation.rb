@@ -15,6 +15,10 @@ class Organisation < ActiveRecord::Base
   has_many :parent_organisations,
             through: :parent_organisational_relationships
 
+  has_and_belongs_to_many :extra_sites,
+                           join_table: 'organisations_sites',
+                           class_name: 'Site'
+
   has_many :sites
   has_many :hosts, through: :sites
   has_many :mappings, through: :sites

@@ -1,0 +1,24 @@
+<table class="<%= site_class %> table table-hover table-striped table-bordered">
+  <thead>
+    <tr class="table-header">
+      <th scope="col">Old site</th>
+      <th scope="col">Transition status</th>
+      <th scope="col">Transition date</th>
+      <th scope="col">Permission to edit?</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% sites.each do |site| %>
+    <tr>
+      <td>
+        <%= link_to site.default_host.hostname, site_path(site), class: 'breakable' %>
+      </td>
+      <td>
+        <%= render partial: 'sites/transition_status', locals: {site: site} %>
+      </td>
+      <td><%= date_or_not_yet(site.launch_date) %></td>
+      <td><%= current_user.can_edit_site?(site) ? 'Yes' : '' %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
