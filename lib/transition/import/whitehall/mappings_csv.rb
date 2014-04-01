@@ -28,7 +28,7 @@ module Transition
                 next
               end
 
-              host = Host.find_by_hostname(old_uri.host)
+              host = hosts_by_hostname[old_uri.host]
 
               if host.nil?
                 Rails.logger.warn("Skipping mapping for unknown host in Whitehall URL CSV: '#{old_uri.host}'")
@@ -49,6 +49,10 @@ module Transition
               end
             end
           end
+        end
+
+        def hosts_by_hostname
+          @_hosts ||= Host.all.inject({}) { |accumulator,host| accumulator.merge(host.hostname => host) }
         end
 
         def path_hash(canonical_path)
