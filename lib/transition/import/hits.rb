@@ -19,6 +19,14 @@ module Transition
         '/admin/admin.php',
         '/admin/password_forgotten.php?action=execute',
         '/administrator/index.php',
+        # Found in www.ukti.gov.uk logs. See: http://www.spambotsecurity.com/forum/viewtopic.php?p=15489&sid=83d6bc4bcddff28b0e124687e4d8a741#p15489
+        '//images/stories/0d4y.php',
+        '//images/stories/0day.php',
+        '//images/stories/3xp.php',
+        '//images/stories/70bex.php',
+        '//images/stories/iam.php',
+        '//images/stories/itil.php',
+        '//images/stories/jahat.php',
       ]
 
       PATTERNS_TO_IGNORE = [
@@ -30,6 +38,10 @@ module Transition
         '.*\.jpg',
         '.*\.jpeg',
         '.*\.png',
+
+        # Image URLs on www.ukti.gov.uk
+        '^/[0-9]+\.image$',
+        '^/[0-9]+\.leadimage\?.*',
 
         # Often after transition, bots seem to think the old site has
         # www.gov.uk URLs.
