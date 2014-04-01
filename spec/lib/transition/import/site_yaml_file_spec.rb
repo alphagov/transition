@@ -39,7 +39,7 @@ describe Transition::Import::SiteYamlFile do
           www.lslo.gov.uk
           aka.lslo.gov.uk
         }
-        site.hosts.pluck(:hostname).should eql(hosts)
+        site.hosts.pluck(:hostname).sort.should eql(hosts.sort)
       end
 
       describe 'updates' do
