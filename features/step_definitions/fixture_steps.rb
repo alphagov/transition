@@ -29,6 +29,12 @@ Given(/^there are these organisations without sites:$/) do |org_table|
   end
 end
 
+Given(/^(.*) is an extra organisation of (.*)$/) do |slug, hostname|
+  organisation = Organisation.find_by_whitehall_slug(slug)
+  site = Host.find_by_hostname(hostname).site
+  site.extra_organisations = [organisation]
+end
+
 Given(/^there are (\d+) sites with hosts$/) do |site_count|
   site_count.to_i.times do
     create(:site)

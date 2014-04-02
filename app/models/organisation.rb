@@ -27,10 +27,22 @@ class Organisation < ActiveRecord::Base
   validates_uniqueness_of :whitehall_slug
   validates_presence_of :title
 
+  # We have two ways of joining a site to an org:
+  # 1. By the site's FK relationship to organisations
+  # 2. Through the many-to-many organisations_sites
+  #
+  # UNION these two ways in an INNER JOIN to pretend that the FK relationship
+  # is in fact a row in organisations_sites.
   scope :with_sites_managed_by_transition,
         select('organisations.*, count(sites.id) AS site_count').
-        joins(:sites).
-        where("sites.managed_by_transition = 1").
+        joins(
+           'INNER JOIN (
+        	    SELECT organisation_id, site_id FROM organisations_sites
+        		  UNION
+        		  SELECT s.organisation_id, s.id FROM sites s
+        	) AS organisations_sites ON organisations_sites.organisation_id = organisations.id').
+        joins('INNER JOIN sites ON sites.id = organisations_sites.site_id').
+        where('sites.managed_by_transition = 1').
         group('organisations.id').  # Using a sloppy mySQL GROUP. Note well, Postgres upgraders
         having('site_count > 0')
 
