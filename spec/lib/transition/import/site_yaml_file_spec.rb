@@ -28,6 +28,19 @@ describe Transition::Import::SiteYamlFile do
       its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-generals-office') }
       its(:managed_by_transition) { should eql(false) }
       its(:organisation)          { should eql(ago)}
+      it 'should get hosts including aka hosts' do
+        hosts = %w{
+          www.attorneygeneral.gov.uk
+          aka.attorneygeneral.gov.uk
+          www.attorney-general.gov.uk
+          aka.attorney-general.gov.uk
+          www.ago.gov.uk
+          aka.ago.gov.uk
+          www.lslo.gov.uk
+          aka.lslo.gov.uk
+        }
+        site.hosts.pluck(:hostname).sort.should eql(hosts.sort)
+      end
 
       describe 'updates' do
         before do

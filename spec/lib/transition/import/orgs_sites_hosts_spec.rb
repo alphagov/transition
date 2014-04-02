@@ -33,7 +33,7 @@ describe Transition::Import::OrgsSitesHosts do
       end
 
       it 'has imported hosts' do
-        Host.count.should == 35
+        Host.count.should == (35 * 2) # 35 hosts plus 35 aka hosts
       end
 
       it 'sets managed_by_transition to false for sites not in transition-sites' do

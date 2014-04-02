@@ -5,6 +5,46 @@ describe Host do
     it { should belong_to(:site) }
   end
 
+  describe 'scopes' do
+    describe 'excluding_aka' do
+      let(:site) { create(:site_without_host) }
+
+      before do
+        create(:host, site: site, hostname: 'www.foo.com')
+        create(:host, site: site, hostname: 'foo.com')
+        create(:host, site: site, hostname: 'aka.foo.com')
+        create(:host, site: site, hostname: 'aka-foo.com')
+      end
+
+      subject { site.hosts.excluding_aka.pluck(:hostname) }
+      it { should eql(['www.foo.com', 'foo.com']) }
+    end
+  end
+
+  describe '#aka?' do
+    subject { host.aka? }
+
+    context 'a www host' do
+      let(:host) { build(:host, hostname: 'www.foo.com') }
+      it { should be_false }
+    end
+
+    context 'a non-www host' do
+      let(:host) { build(:host, hostname: 'foo.com') }
+      it { should be_false }
+    end
+
+    context 'an aka. host' do
+      let(:host) { build(:host, hostname: 'aka.foo.com') }
+      it { should be_true }
+    end
+
+    context 'an aka- host' do
+      let(:host) { build(:host, hostname: 'aka-foo.com') }
+      it { should be_true }
+    end
+  end
+
   describe '#aka_hostname' do
     subject { host.aka_hostname }
 

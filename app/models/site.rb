@@ -28,7 +28,7 @@ class Site < ActiveRecord::Base
   end
 
   def transition_status
-    return :live          if hosts.any?(&:redirected_by_gds?)
+    return :live          if hosts.excluding_aka.any?(&:redirected_by_gds?)
     return :indeterminate if special_redirect_strategy.present?
            :pre_transition
   end
