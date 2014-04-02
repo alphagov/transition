@@ -18,7 +18,7 @@ module Transition
       # for up to 24 hours.
       def cached_org_path
         @cached_org_path ||=
-          "/tmp/all_whitehall_orgs-#{DateTime.now.strftime('%Y-%m-%d')}.yaml"
+          "/tmp/all_whitehall_orgs-#{DateTime.zone.now.strftime('%Y-%m-%d')}.yaml"
       end
 
       def organisations
