@@ -17,7 +17,9 @@ class ApplicationController < ActionController::Base
     { user_id: current_user.id } if user_signed_in?
   end
 
-  def render_error(status)
+  def render_error(status, options={})
+    @custom_header = options[:header]
+    @custom_body = options[:body]
     render "errors/error_#{status}", status: status, layout: 'error_page'
   end
 

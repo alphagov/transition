@@ -69,7 +69,7 @@ describe ErrorsController do
     end
 
     it 'includes the friendly message' do
-      expect(response.body).to include('Maybe you tried to change something you didn\'t have access to.')
+      expect(HTMLEntities.new.decode(response.body)).to include('Maybe you tried to change something you didn\'t have access to.')
     end
 
     context 'when requesting JSON' do
