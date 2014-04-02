@@ -46,6 +46,14 @@ describe Transition::Import::MappingsFromHostPaths do
       @host_path.mapping_id.should be_nil
     end
 
+    describe 'should create a history entry', versioning: true do
+      let(:mapping) { @site.mappings.first }
+      subject { mapping.versions.first }
+
+      its(:item_id)   { should eql(mapping.id) }
+      its(:whodunnit) { should eql('Logs mappings robot') }
+    end
+
     context 'another site has HostPaths' do
       before do
         @another_site = create(:site)
