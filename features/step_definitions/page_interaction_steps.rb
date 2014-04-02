@@ -10,24 +10,8 @@ When(/^I click the first tag(?: called)? "([^"]+)"$/) do |tag|
   page.find('a.tag', text: tag, :match => :first).click
 end
 
-When(/^I click the (?:link|tab)(?: called)? "([^"]+)" within "([^"]+)"$/) do |link_title, selector|
-  within selector do
-    click_link link_title
-  end
-end
-
-When(/^I submit the form with the first "([^"]+)" button$/) do |button_text|
-  first(:button, button_text).click
-end
-
-When(/^I submit the form with the "([^"]+)" button$/) do |button_text|
-  click_button button_text
-end
-
 When(/^I save my changes$/) do
-  steps %{
-    And I submit the form with the "Save" button
-  }
+  click_button 'Save'
 end
 
 When(/^I go to page ([0-9]+)$/) do |page|
