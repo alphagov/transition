@@ -4,7 +4,6 @@
       <th scope="col">Old site</th>
       <th scope="col">Transition status</th>
       <th scope="col">Transition date</th>
-      <th scope="col">Permission to edit?</th>
     </tr>
   </thead>
   <tbody>
@@ -17,7 +16,6 @@
         <%= render partial: 'sites/transition_status', locals: {site: site} %>
       </td>
       <td><%= date_or_not_yet(site.launch_date) %></td>
-      <td><%= current_user.can_edit_site?(site) ? 'Yes' : '' %></td>
     </tr>
   <% end %>
   </tbody>

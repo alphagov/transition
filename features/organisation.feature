@@ -14,12 +14,6 @@ Feature: View organisation
     And I should see links to all this organisation's sites
     And I should see all the old homepages for the sites of the given organisation
 
-  Scenario: I can edit an organisation's mappings
-    Given I have logged in as a member of DCLG
-    And DCLG has 3 sites
-    When I visit the path /organisations/department-for-communities-and-local-government
-    Then I should see that I have permission to edit each of DCLG's sites
-
   Scenario: Organisation page with sites in each transition state
     Given I have logged in as an admin
     And there is an organisation with the whitehall_slug "ukaea"
