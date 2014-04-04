@@ -6,9 +6,8 @@ class OrganisationsController < ApplicationController
 
   def show
     @organisation = Organisation.find_by_whitehall_slug!(params[:id])
-    @sites = @organisation.sites.managed_by_transition.with_mapping_count.
-               includes(:hosts).order(:abbr)
-    @extra_sites = @organisation.extra_sites.managed_by_transition.
-                    with_mapping_count.includes(:hosts).order(:abbr)
+    sites = @organisation.sites.managed_by_transition.includes(:hosts)
+    extra_sites = @organisation.extra_sites.managed_by_transition.includes(:hosts)
+    @sites = sites.concat(extra_sites).sort_by!(&:abbr)
   end
 end

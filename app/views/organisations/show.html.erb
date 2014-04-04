@@ -12,10 +12,30 @@
 
 <% unless @sites.empty? %>
   <h2>Sites</h2>
-  <%= render 'sites_table', site_class: 'sites', sites: @sites %>
-<% end %>
-
-<% unless @extra_sites.empty? %>
-  <h2>Other organisations&rsquo; sites</h2>
-  <%= render 'sites_table', site_class: 'extra-sites', sites: @extra_sites %>
+  <table class="sites table table-hover table-striped table-bordered">
+    <thead>
+      <tr class="table-header">
+        <th scope="col">Old site</th>
+        <th scope="col">Transition status</th>
+        <th scope="col">Transition date</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @sites.each do |site| %>
+      <tr>
+        <td>
+          <%= link_to site.default_host.hostname, site_path(site), class: 'breakable' %>
+          <% if site.organisation != @organisation %>
+            <br><span class="text-muted">owned by</span>
+            <%= link_to site.organisation.title, site.organisation, class: 'link-muted breakable' %>
+          <% end %>
+        </td>
+        <td>
+          <%= render partial: 'sites/transition_status', locals: {site: site} %>
+        </td>
+        <td><%= date_or_not_yet(site.launch_date) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 <% end %>

@@ -30,14 +30,14 @@ describe OrganisationsController do
     end
 
     it 'shows the organisation\'s own site (the Shoe Procurement Bureau)' do
-      expect(response.body).to have_selector('.sites tbody tr:first-child td:first-child',
+      expect(response.body).to have_selector('.sites tbody tr:last-child td:first-child',
                                              text: 'spb.gov.uk')
     end
 
     it 'shows other sites the organisation can edit (through extra_sites)' do
       # For example the Agency of Sole.
-      expect(response.body).to have_selector('.extra-sites tbody tr:first-child td:first-child',
-                                             text: 'aos.gov.uk')
+      expect(response.body).to have_selector('.sites tbody tr:first-child td:first-child',
+                                             text: "aos.gov.uk\n            owned by\n            Orgtastic")
     end
   end
 end
