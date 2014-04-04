@@ -2,25 +2,33 @@
   <h3 class="panel-heading remove-top-margin">Tools</h3>
   <div class="panel-body">
     <h4 class="remove-top-margin">Side by side browser</h4>
-    <p>
-      Browse <i><%= site.default_host.hostname %></i> in the left panel, and, as you navigate, preview redirections and archives in the right panel.
-    </p>
-    <ul>
-      <li>
-        <a href="http://<%= site.default_host.hostname %>.side-by-side.alphagov.co.uk/__/#/">Open side by side browser</a>
-      </li>
-    </ul>
+    <% if site.default_host.aka_host && site.default_host.aka_host.redirected_by_gds? %>
+      <p>
+        Browse <i><%= site.default_host.hostname %></i> in the left panel, and, as you navigate, preview redirections and archives in the right panel.
+      </p>
+      <ul>
+        <li>
+          <a href="http://<%= site.default_host.hostname %>.side-by-side.alphagov.co.uk/__/#/">Open side by side browser</a>
+        </li>
+      </ul>
+    <% else %>
+      This tool requires <%= link_to 'AKA Domains', glossary_index_path(anchor: 'aka'), class: 'glossary-link' %> to be set up. Please contact your Transition Manager.
+    <% end %>
     <hr />
     <h4 class="remove-top-margin">Preview redirections</h4>
-    <p>
-      To test a redirection for a pre-transition website:
-    </p>
-    <ul>
-      <li>Drag this bookmarklet to your bookmarks bar</li>
-      <li>Visit a page on any transitioning site</li>
-      <li>Click the bookmarklet to preview the redirect</li>
-    </ul>
-    <a class="btn btn-default bookmarklet" title="Drag me to your bookmarks bar" data-toggle="tooltip" href="javascript:location%3Dlocation.href.replace(/:%5C/%5C//, '://aka-').replace(/-*www/,'')">Preview redirect</a>
+    <% if site.default_host.aka_host && site.default_host.aka_host.redirected_by_gds? %>
+      <p>
+        To test a redirection for a pre-transition website:
+      </p>
+      <ul>
+        <li>Drag this bookmarklet to your bookmarks bar</li>
+        <li>Visit a page on any transitioning site</li>
+        <li>Click the bookmarklet to preview the redirect</li>
+      </ul>
+      <a class="btn btn-default bookmarklet" title="Drag me to your bookmarks bar" data-toggle="tooltip" href="javascript:location%3Dlocation.href.replace(/:%5C/%5C//, '://aka-').replace(/-*www/,'')">Preview redirect</a>
+    <% else %>
+      This tool requires <%= link_to 'AKA Domains', glossary_index_path(anchor: 'aka'), class: 'glossary-link' %> to be set up. Please contact your Transition Manager.
+    <% end %>
     <hr />
     <h4 class="add-top-margin">National Archives checker</h4>
     <p>
