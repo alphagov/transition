@@ -19,7 +19,7 @@ Scenario: Visit a pre-transition site's page
   And I should be able to edit the site's mappings
   And I should be able to view the site's analytics
   And I should see the site's configuration including all host aliases
-  And I should see "This feature requires AKA Domains to be set up"
+  And I should see "This tool requires AKA Domains to be set up"
 
 Scenario: Visit a pre-transition site's page
   Given I have logged in as an admin
