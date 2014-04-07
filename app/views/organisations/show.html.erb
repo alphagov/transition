@@ -27,7 +27,7 @@
           <%= link_to site.default_host.hostname, site_path(site), class: 'breakable' %>
           <% if site.organisation != @organisation %>
             <br><span class="text-muted">owned by</span>
-            <%= link_to site.organisation.title, site.organisation, class: 'link-muted breakable' %>
+            <%= link_to site.organisation.title, site.organisation, class: 'link-muted' %>
           <% end %>
         </td>
         <td>
