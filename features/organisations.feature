@@ -17,7 +17,7 @@ Feature: List organisations
     When I visit the home page
     Then I should see "Hello"
     And I should see the header "Organisations"
-    And I should see a table with class "organisations" containing 3 rows
+    And I should see an organisations table with 3 rows
     And I should see a link to the organisation bis
     And I should see a link to the organisation fco
     And I should see a link to the organisation go-science

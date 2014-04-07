@@ -25,7 +25,7 @@ Feature: Paginated mappings
     And I click the link called "Mappings"
     Then I should see the header "3 mappings"
     And  I should see "bis_lowpay"
-    And  I should see a table with class "mappings" containing 2 rows
+    And  I should see a mappings table with 2 rows
     And  I should see 1 as the current page
     And  I should see links top and bottom to page 2
 
@@ -40,6 +40,6 @@ Feature: Paginated mappings
     When I visit the path /sites/bis_lowpay
     And I click the link called "Mappings"
     And I go to page 2
-    Then  I should see a table with class "mappings" containing 1 row
+    Then  I should see a mappings table with 1 row
     And  I should see 2 as the current page
     And  I should see links top and bottom to page 1
