@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
 
   before_filter :require_signin_permission!
+  before_filter :set_cache_buster
 
   protect_from_forgery
 
@@ -21,6 +22,13 @@ class ApplicationController < ActionController::Base
     @custom_header = options[:header]
     @custom_body = options[:body]
     render "errors/error_#{status}", status: status, layout: 'error_page'
+  end
+
+  # http://stackoverflow.com/questions/711418/how-to-prevent-browser-page-caching-in-rails
+  def set_cache_buster
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 
 private
