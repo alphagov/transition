@@ -130,3 +130,15 @@ Given(/^there are at least two pages of error hits$/) do
                  count: 1
   end
 end
+
+And(/^an organisation is trusted to edit the mappings of another organisation's site$/) do
+  @trusting_organisation = create :organisation, whitehall_slug: 'bis', title: 'Biz, Innovation and Stuff'
+  bis_site = create(:site, abbr: 'bis', organisation: @trusting_organisation)
+
+  @organisation = create :organisation, whitehall_slug: 'bhc'
+  @organisation.extra_sites = [bis_site]
+end
+
+And(/^that organisation also has its own site$/) do
+  @organisation.sites = [create(:site, abbr: 'britishhallmarkingcouncil')]
+end

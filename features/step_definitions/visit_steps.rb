@@ -25,3 +25,7 @@ end
 Given(/^I am on the Attorney General's office site's hits page$/) do
   visit site_hits_path(@site)
 end
+
+When(/^I visit the organisation's page$/) do
+  visit organisation_path(@organisation)
+end
