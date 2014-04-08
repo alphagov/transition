@@ -14,11 +14,6 @@ Feature: View organisation
     And I should see links to all this organisation's sites
     And I should see all the old homepages for the sites of the given organisation
 
-  Scenario: I can edit an organisation's mappings
-    Given I have logged in as a member of DCLG
-    When I visit the path /organisations/department-for-communities-and-local-government
-    Then I should see "You have permission to edit site mappings for Department for Communities and Local Government"
-
   Scenario: Organisation page with sites in each transition state
     Given I have logged in as an admin
     And there is an organisation with the whitehall_slug "ukaea"
@@ -32,6 +27,14 @@ Feature: View organisation
     And I should see "Indeterminate"
     And there should be a tooltip which includes "external supplier"
     And there should be a tooltip which includes "partially redirected"
+
+  Scenario: An organisation being trusted by another to edit its mappings
+    Given I have logged in as an admin
+    And an organisation is trusted to edit the mappings of another organisation's site
+    And that organisation also has its own site
+    When I visit the organisation's page
+    Then I should see the site that the organisation is trusted to edit
+    And I should see the organisation's own site
 
   @allow-rescue
   Scenario: Visit the page of an non-existent organisation

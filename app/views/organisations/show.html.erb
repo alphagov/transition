@@ -10,12 +10,6 @@
   <%= render 'in_conjunction_with' %>
 </header>
 
-<% if current_user.can_edit?(@organisation) %>
-  <p class="alert alert-info">
-    You have permission to edit site mappings for <i><%= @organisation.title %></i>.
-  </p>
-<% end %>
-
 <% unless @sites.empty? %>
   <h2>Sites</h2>
   <table class="sites table table-hover table-striped table-bordered">
@@ -31,6 +25,10 @@
       <tr>
         <td>
           <%= link_to site.default_host.hostname, site_path(site), class: 'breakable' %>
+          <% if site.organisation != @organisation %>
+            <br><span class="text-muted">owned by</span>
+            <%= link_to site.organisation.title, site.organisation, class: 'link-muted' %>
+          <% end %>
         </td>
         <td>
           <%= render partial: 'sites/transition_status', locals: {site: site} %>

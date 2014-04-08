@@ -22,6 +22,10 @@ module Transition
         yaml['site']
       end
 
+      def extra_organisation_slugs
+        yaml['extra_organisation_slugs']
+      end
+
       def whitehall_slug
         yaml['whitehall_slug'] || case abbr
                                     when /^directgov.*/ then 'directgov'
@@ -79,6 +83,7 @@ module Transition
 
           site.save!
         end
+        @site.extra_organisations = Organisation.where(whitehall_slug: extra_organisation_slugs)
       end
 
       def import_hosts!

@@ -22,6 +22,12 @@ Given(/^there are these organisations without sites:$/) do |org_table|
   end
 end
 
+Given(/^(.*) is an extra organisation of (.*)$/) do |slug, hostname|
+  organisation = Organisation.find_by_whitehall_slug(slug)
+  site = Host.find_by_hostname(hostname).site
+  site.extra_organisations = [organisation]
+end
+
 Given(/^there are (\d+) sites with hosts$/) do |site_count|
   site_count.to_i.times do
     create(:site)
@@ -131,4 +137,16 @@ Given(/^there are at least two pages of error hits$/) do
                  http_status: '404',
                  count: 1
   end
+end
+
+And(/^an organisation is trusted to edit the mappings of another organisation's site$/) do
+  @trusting_organisation = create :organisation, whitehall_slug: 'bis', title: 'Biz, Innovation and Stuff'
+  bis_site = create(:site, abbr: 'bis', organisation: @trusting_organisation)
+
+  @organisation = create :organisation, whitehall_slug: 'bhc'
+  @organisation.extra_sites = [bis_site]
+end
+
+And(/^that organisation also has its own site$/) do
+  @organisation.sites = [create(:site, abbr: 'britishhallmarkingcouncil')]
 end

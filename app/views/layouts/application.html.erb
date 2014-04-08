@@ -41,9 +41,9 @@
           <li <% if current_page?('/') or current_page?(organisations_path) %> class="active" <% end %>>
             <a href="/">Organisations</a>
           </li>
-          <% if current_user.organisation %>
-            <li <% if current_page?(organisation_path(current_user.organisation)) %> class="active" <% end %>>
-              <%= link_to organisation_with_abbreviation(current_user.organisation), organisation_path(current_user.organisation), title: 'Your organisation' %>
+          <% if current_user.own_organisation %>
+            <li <% if current_page?(organisation_path(current_user.own_organisation)) %> class="active" <% end %>>
+              <%= link_to organisation_with_abbreviation(current_user.own_organisation), organisation_path(current_user.own_organisation), title: 'Your organisation' %>
             </li>
           <% end %>
           <li <% if current_page?(glossary_index_path) %> class="active" <% end %>>

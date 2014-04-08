@@ -4,7 +4,7 @@
     <th class="status" scope="col">HTTP<br/>Status</th>
     <th scope="col">Path</th>
     <th class="count" scope="col">Hits</th>
-    <% if current_user.can_edit?(@site.organisation) %>
+    <% if current_user.can_edit_site?(@site) %>
       <th class="action" scope="col">Action</th>
     <% end %>
   </tr>
@@ -37,7 +37,7 @@
         </div>
       </td>
       <td class="count"><%= number_with_delimiter hit.count %></td>
-      <% if current_user.can_edit?(@site.organisation) %>
+      <% if current_user.can_edit_site?(@site) %>
         <td class="action">
           <% unless hit.homepage? %>
             <%= link_to "#{hit.mapping.present? ? 'Edit' : 'Add'} mapping",
