@@ -80,14 +80,18 @@ describe Site do
 
   # given that hosts are site aliases
   describe '#default_host' do
-    let(:hosts) { [create(:host), create(:host)] }
-    subject(:site) do
-      create(:site_without_host) do |site|
-        site.hosts = hosts
-      end
+    let(:site) { create :site_without_host }
+
+    before do
+      create(:host, hostname: 'aka.f.com', site: site)
+      create(:host, hostname: 'www.f.com', site: site)
     end
 
-    its(:default_host) { should eql(hosts.first) }
+    subject(:default_host) do
+      site.default_host
+    end
+
+    its(:hostname) { should eql('www.f.com') }
   end
 
   describe '#canonical_path' do
