@@ -4,6 +4,10 @@ When(/^I go to create some mappings$/) do
   }
 end
 
+When(/^I visit the site\'s mappings$/) do
+  visit site_mappings_path(@site)
+end
+
 When(/^I make the mapping a redirect to (.*)$/) do |new_url|
   select 'Redirect', from: 'Type'
   fill_in 'Redirects to', with: new_url
@@ -167,4 +171,10 @@ When(/^I jump to the mapping "(.*?)"$/) do |url|
   page.execute_script("Mousetrap.trigger('g m');")
   fill_in 'Old URL', with: url
   click_button 'Go to mapping'
+end
+
+When(/^I sort the mappings by traffic$/) do
+  click_link "Filter mappings"
+  choose('by traffic')
+  click_button 'Filter'
 end

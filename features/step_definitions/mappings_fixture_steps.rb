@@ -14,3 +14,12 @@ Given(/^a site "([^"]*)" exists with these tagged mappings:$/) do |site_abbr, ta
     end
   end
 end
+
+Given(/^a site has lots of mappings and lots of hits$/) do
+  @site = create :site
+  3.times do |n|
+    mapping = create :mapping, site: @site
+    create :hit, :error, host: @site.default_host, path: mapping.path, mapping_id: mapping.id, count: 10 * n
+    create :hit, :redirect, host: @site.default_host, path: mapping.path, mapping_id: mapping.id, count: 20 * n
+  end
+end
