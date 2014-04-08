@@ -378,13 +378,13 @@ describe View::Mappings::BulkAdder do
       before  { bulk_adder.create_or_update! }
 
       context 'when creating some mappings and updating none' do
-        it { should eql('4 mappings created and tagged with "fee, fi, fo". 0 mappings updated.') }
+        it { should eql('4 mappings created and tagged with "fee, fi, fo".') }
       end
 
       context 'when creating some mappings, updating none and tagging none' do
         before { params.delete(:tag_list) }
 
-        it { should eql('4 mappings created. 0 mappings updated.') }
+        it { should eql('4 mappings created.') }
       end
     end
   end
