@@ -44,7 +44,7 @@ When(/^I select all the mappings$/) do
   find(:css, ".mappings thead input.js-toggle-all").set(true)
 end
 
-When (/^I go to edit the selected mappings$/) do
+When(/^I go to edit the selected mappings$/) do
   click_button "Edit selected"
 end
 
