@@ -15,3 +15,7 @@ end
 every :hour do
   rake 'import:dns_details'
 end
+
+every :day, at: '3am' do
+  rake 'clear_expired_sessions'
+end
