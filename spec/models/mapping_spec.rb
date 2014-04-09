@@ -222,28 +222,17 @@ describe Mapping do
     end
 
     describe '.with_traffic_summary', testing_before_all: true do
-      def create_mappings_with_hits(site)
-        3.times do |n|
-          n += 1
-          mapping = create :mapping, site: site, path: "/path-#{n}"
-          create :hit, :error, host: site.default_host, path: mapping.path, mapping_id: mapping.id, count: 40 * n
-          create :hit, :redirect, host: site.default_host, path: mapping.path, mapping_id: mapping.id, count: 30 * n
-        end
-      end
-
       before :all do
-        @site = create :site
-        create_mappings_with_hits(@site)
-        Transition::Import::HitsMappingsRelations.refresh!
+        @site = create :site, :with_mappings_and_hits
 
         @mappings = @site.mappings.with_traffic_summary
       end
 
-      it 'has the sorted total of every type of status hit on each mapping' do
-        @mappings.map {|m| [ m.path, m.hit_count ] }.should == [
-          ['/path-3', 40 * 3 + 30 * 3],
+      it 'has the total of every type of status hit on each mapping' do
+        @mappings.map {|m| [ m.path, m.hit_count ] }.should =~ [
+          ['/path-1', 40 * 1 + 30 * 1],
           ['/path-2', 40 * 2 + 30 * 2],
-          ['/path-1', 40 * 1 + 30 * 1]
+          ['/path-3', 40 * 3 + 30 * 3]
         ]
       end
     end

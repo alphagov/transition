@@ -14,7 +14,7 @@
 </h2>
 <%= render partial: 'filters' %>
 
-<% if @mappings.any? %>
+<% if @mappings.length > 0 %>
 
   <%= paginate(@mappings) %>
 
