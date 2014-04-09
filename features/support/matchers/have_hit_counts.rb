@@ -7,9 +7,20 @@ RSpec::Matchers.define :have_hit_counts do |counts|
       expect(page).to have_selector('tr', count: counts.length)
 
       counts.each_with_index do |count, index|
-        expect(page).to have_selector("tr:nth-child(#{index + 1}) td.mapping-hits-column span.hit-count",
-                                      text: Regexp.new("^#{count.to_s}$"))
+        if @_total
+          expected = ((count.to_f / @_total) * 100).round(2).to_s + '%'
+          span_class = 'hit-percentage'
+        else
+          expected = count.to_s
+          span_class = 'hit-count'
+        end
+        expect(page).to have_selector("tr:nth-child(#{index + 1}) td.mapping-hits-column span.#{span_class}",
+                                      text: Regexp.new("^#{expected}$"))
       end
     end
+  end
+
+  chain :as_percentages_of do |total|
+    @_total = total
   end
 end

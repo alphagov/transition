@@ -22,4 +22,5 @@ end
 
 Given(/^a site has lots of mappings and lots of hits$/) do
   @site = create :site, :with_mappings_and_hits
+  Transition::Import::DailyHitTotals.from_hits!
 end

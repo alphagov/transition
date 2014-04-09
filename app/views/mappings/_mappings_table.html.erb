@@ -62,7 +62,7 @@
       <% if sorted_by_traffic %>
         <td class="mapping-hits-column">
           <span class="hit-count"><%= mapping.hit_count %></span>
-          <span class="text-muted">33.33%</span>
+          <span class="hit-percentage text-muted"><%= mapping.hit_percentage.round(2) %>%</span>
         </td>
       <% end %>
       <% if current_user.can_edit_site?(site) %>

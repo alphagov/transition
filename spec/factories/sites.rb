@@ -24,9 +24,10 @@ FactoryGirl.define do
         3.times do |n|
           n += 1
           mapping = create :mapping, site: site, path: "/path-#{n}"
-          create :hit, :error, host: site.default_host, path: mapping.path, mapping_id: mapping.id, count: 40 * n
-          create :hit, :redirect, host: site.default_host, path: mapping.path, mapping_id: mapping.id, count: 30 * n
+          create :hit, :error, host: site.default_host, path: mapping.path, count: 40 * n
+          create :hit, :redirect, host: site.default_host, path: mapping.path, count: 30 * n
         end
+        create :hit, :redirect, host: site.default_host, path: '/no-mapping', count: 17
 
         Transition::Import::HitsMappingsRelations.refresh!
       end

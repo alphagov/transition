@@ -50,4 +50,8 @@ class Site < ActiveRecord::Base
     path = bluri.path
     bluri.query ? (path + '?' + bluri.query) : path
   end
+
+  def hit_total_count
+    @hit_total_count ||= daily_hit_totals.pluck(:count).inject(0) { |total, count| total += count }
+  end
 end

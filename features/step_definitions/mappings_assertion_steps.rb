@@ -255,7 +255,6 @@ Then(/^I should see mappings tagged with "fum" and "fiddle"$/) do
   }
 end
 
-<<<<<<< HEAD
 Then(/^I should be redirected to the site dashboard$/) do
   i_should_be_on_the_path site_path(@site)
 end
@@ -266,7 +265,8 @@ end
 
 Then(/^I should not see a link to preview a mapping in the side\-by\-side browser$/) do
   expect(page).to_not have_link('Preview')
-=======
+end
+
 Then(/^I should see a column with traffic information$/) do
   within 'table.mappings .table-header' do
     expect(page).to have_selector('th:nth-child(4)', text: 'Hits')
@@ -284,8 +284,5 @@ Then(/^the cells should have hit counts$/) do
 end
 
 Then(/^the cells should have percentages$/) do
-  within 'table.mappings tbody' do
-    expect(page).to have_selector('tr:first-child td.mapping-hits-column span.text-muted', text: /^[\d.]+%$/)
-  end
->>>>>>> Add a basic feature to sort mappings by priority
+  expect(page).to have_hit_counts([210, 140, 70]).as_percentages_of(210 + 140 + 70 + 17)
 end

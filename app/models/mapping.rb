@@ -109,7 +109,13 @@ class Mapping < ActiveRecord::Base
     end
   end
 
-  protected
+  def hit_percentage
+    raise NoMethodError, 'This only works in the context of :with_traffic_summary' unless respond_to?(:hit_count)
+
+    site.hit_total_count.zero? ? 0 : (hit_count.to_f / site.hit_total_count) * 100
+  end
+
+protected
   def fill_in_scheme
     self.new_url       = Mapping.ensure_url(new_url)
     self.suggested_url = Mapping.ensure_url(suggested_url)
