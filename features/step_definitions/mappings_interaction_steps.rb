@@ -4,10 +4,6 @@ When(/^I go to create some mappings$/) do
   }
 end
 
-When(/^I visit the site\'s mappings$/) do
-  visit site_mappings_path(@site)
-end
-
 When(/^I make the mapping a redirect to (.*)$/) do |new_url|
   select 'Redirect', from: 'Type'
   fill_in 'Redirects to', with: new_url
@@ -153,18 +149,8 @@ When(/^I select the first two mappings and go to tag them$/) do
 end
 
 When(/^I delete "(?:[^"]*)" and tag the mappings "([^"]*)"$/) do |tag_list|
-  step "I tag the mappings \"#{tag_list}\""
+  i_tag_the_mappings tag_list
 end
-
- When(/^I tag the mappings "([^"]*)"$/) do |tag_list|
-  if @_javascript
-    find(:xpath, '//input[contains(@class, "select2-offscreen")]').set(tag_list)
-  else
-    fill_in 'Tags', with: tag_list
-  end
-  click_button 'Save'
-end
-
 
 When(/^I type "([^"]*)" in the tags box$/) do |letters|
   fill_in 'Tags', with: letters

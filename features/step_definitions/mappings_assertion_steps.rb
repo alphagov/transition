@@ -1,15 +1,7 @@
 #encoding: UTF-8
 
-Then(/^I should be returned to the mappings list for (.*)$/) do |site_abbr|
-  expect(current_path).to eql(site_mappings_path(site_abbr))
-end
-
 Then(/^I should still be editing a mapping$/) do
   step 'I should see "Edit mapping"'
-end
-
-Then(/^I should be editing the mapping for "([^"]*)"$/) do |path|
-  expect(page).to have_selector("form a[href*='#{path}']")
 end
 
 Then(/^I should be returned to the mappings list I was on$/) do
@@ -37,7 +29,7 @@ end
 
 Then(/^I should see the most popular tags for this site$/) do
   within '.filters .dropdown-menu' do
-    step 'I should see the tag links "fee, fi, fo, fum, fiddle"'
+    should_have_links_to_tags(%w(fee fi fo fum fiddle))
   end
 end
 
@@ -103,8 +95,8 @@ Then(/^I should see a form that contains my selection within the modal$/) do
   steps %{
     And I should see "/a" in the modal window
     And I should see "/about/branding" in the modal window
-    But I should not see "/about/corporate" in the modal window
   }
+  modal_should_not_contain('/about/corporate')
 end
 
 Then(/^I should see a table with (\d+) mappings? in the modal$/) do |count|
@@ -152,13 +144,6 @@ end
 
 Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
   expect(page).to have_field('Tags', with: tag_list)
-end
-
-Then(/^I should see the tag links "([^"]*)"$/) do |tag_list|
-  expected_tags = tag_list.split(',').map(&:strip)
-  expected_tags.each do |tag|
-    expect(page).to have_selector('a', text: tag)
-  end
 end
 
 Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|

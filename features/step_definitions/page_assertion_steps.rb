@@ -6,17 +6,8 @@ Then(/^I should not see "([^"]*)"$/) do |content|
   expect(page).not_to have_content(content)
 end
 
-Then(/^there should be a tooltip "([^"]*)"$/) do |text|
-  expect(page).to have_selector("[title='#{text}']")
-end
-
 Then(/^there should be a tooltip which includes "([^"]*)"$/) do |text|
   expect(page).to have_selector("[title*='#{text}']")
-end
-
-Then(/^I should be on the path "([^"]*)"$/) do |path|
-  uri = URI.parse(current_url)
-  uri.path.should == path
 end
 
 # Modals
@@ -28,10 +19,6 @@ end
 
 Then(/^I should see "([^"]*)" in (?:a|the) modal window$/) do |text|
   expect(page).to have_selector('.modal', text: text)
-end
-
-Then(/^I should not see "([^"]*)" in (?:a|the) modal window$/) do |text|
-  expect(page).not_to have_selector('.modal', text: text)
 end
 
 # Title
@@ -69,8 +56,8 @@ Then(/^I should see the header "([^"]*)"$/) do |header_text|
   expect(page).to have_selector('h1,h2,h3,h4,h5,h6', text: header_text)
 end
 
-Then(/^I should see a table with class "([^"]*)" containing (\d+) rows?$/) do |classname, row_count|
-  expect(page).to have_selector("table.#{classname} tbody tr", count: row_count)
+Then(/^I should see an? ([^ ]*) table with (\d+) rows?$/) do |type, row_count|
+  expect(page).to have_selector("table.#{type} tbody tr", count: row_count)
 end
 
 # Forms
@@ -81,26 +68,18 @@ end
 
 # Status codes
 
-Then(/^the HTTP status should be 'Not Found'$/) do
-  page.status_code.should eql(404)
-end
-
-Then(/^the HTTP status should be 'Internal Server Error'$/) do
-  page.status_code.should eql(500)
-end
-
 Then(/^I should see our custom 404 page$/) do
+  page.status_code.should eql(404)
   steps %{
-    Then the HTTP status should be 'Not Found'
-    And I should see "Page could not be found"
+    Then I should see "Page could not be found"
     And I should see a link to "GOV.UK Transition"
   }
 end
 
 Then(/^I should see our custom 500 page$/) do
+  page.status_code.should eql(500)
   steps %{
-    Then the HTTP status should be 'Internal Server Error'
-    And I should see "sorry, something went wrong"
+    Then I should see "sorry, something went wrong"
     And I should see a link to "GOV.UK Transition"
   }
 end

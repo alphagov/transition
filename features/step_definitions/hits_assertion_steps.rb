@@ -127,7 +127,7 @@ Then(/^I should be on the edit mapping page$/) do
 end
 
 Then(/^I should be on the site's hits summary page$/) do
-  step "I should be on the path \"#{site_hits_path(@site)}\""
+  i_should_be_on_the_path site_hits_path(@site)
 end
 
 Then(/^the top hit's canonicalized path should already be in the form$/) do
