@@ -39,6 +39,12 @@ class Mapping < ActiveRecord::Base
   validates :new_url, presence: { if: :redirect?, message: 'required when mapping is a redirect' }
   validates :archive_url, national_archives_url: true
 
+  scope :with_traffic_summary, -> {
+    select('mappings.*, SUM(hits.count) as hit_count').
+      joins('LEFT JOIN hits ON hits.mapping_id = mappings.id').
+      group('mappings.path_hash').
+      order('hit_count DESC')
+  }
   scope :with_status, -> status { where(http_status: Rack::Utils.status_code(status)) }
   scope :redirects, with_status(:moved_permanently)
   scope :archives,  with_status(:gone)
