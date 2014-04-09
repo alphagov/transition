@@ -273,6 +273,12 @@ Then(/^I should see a column with traffic information$/) do
   end
 end
 
+Then(/^I should not see a column with traffic information$/) do
+  within 'table.mappings .table-header' do
+    expect(page).not_to have_selector('th:nth-child(4)', text: 'Hits')
+  end
+end
+
 Then(/^the cells should have hit counts$/) do
   within 'table.mappings tbody' do
     expect(page).to have_selector('tr:first-child td.mapping-hits-column span.hit-count', text: /^\d+$/)
