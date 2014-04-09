@@ -61,7 +61,7 @@
       </td>
       <% if sorted_by_traffic %>
         <td class="mapping-hits-column">
-          <span class="hit-count"><%= mapping.hit_count %></span>
+          <span class="hit-count"><%= number_with_delimiter(mapping.hit_count) %></span>
           <span class="hit-percentage text-muted"><%= mapping.hit_percentage.round(2) %>%</span>
         </td>
       <% end %>

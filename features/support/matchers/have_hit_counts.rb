@@ -1,4 +1,6 @@
 RSpec::Matchers.define :have_hit_counts do |counts|
+  include ActionView::Helpers::NumberHelper
+
   match do |page|
     raise ArgumentError,
           "counts should be an array (got a #{counts.class})" unless counts.is_a?(Array)
@@ -11,7 +13,7 @@ RSpec::Matchers.define :have_hit_counts do |counts|
           expected = ((count.to_f / @_total) * 100).round(2).to_s + '%'
           span_class = 'hit-percentage'
         else
-          expected = count.to_s
+          expected = number_with_delimiter(count.to_s)
           span_class = 'hit-count'
         end
         expect(page).to have_selector("tr:nth-child(#{index + 1}) td.mapping-hits-column span.#{span_class}",
