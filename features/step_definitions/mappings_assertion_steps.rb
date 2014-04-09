@@ -280,14 +280,7 @@ Then(/^I should not see a column with traffic information$/) do
 end
 
 Then(/^the cells should have hit counts$/) do
-  within 'table.mappings tbody' do
-    expect(page).to have_selector('tr:first-child td.mapping-hits-column span.hit-count',
-                                  text: /^210$/)
-    expect(page).to have_selector('tr:nth-child(2) td.mapping-hits-column span.hit-count',
-                                  text: /^140$/)
-    expect(page).to have_selector('tr:nth-child(3) td.mapping-hits-column span.hit-count',
-                                  text: /^70$/)
-  end
+  expect(page).to have_hit_counts([210, 140, 70])
 end
 
 Then(/^the cells should have percentages$/) do
