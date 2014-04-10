@@ -12,7 +12,9 @@
   <thead>
     <tr class="table-header">
       <% if current_user.can_edit_site?(site) %>
-        <th></th>
+        <th scope="col">
+          <span class="selectable-row-helper" data-toggle="tooltip" data-placement="bottom" title="Use checkboxes to select mappings you want to edit, and edit them using the ‘Archive’, ‘Redirect’ or ‘Tag’ buttons">Edit</span>
+        </th>
       <% end %>
       <th class="mapping-type-column" scope="col">Type</th>
       <th scope="col">

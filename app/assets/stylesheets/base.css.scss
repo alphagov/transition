@@ -333,6 +333,11 @@ thead .table-header-secondary td {
   }
 }
 
+.selectable-row-helper {
+  border-bottom: 1px dotted #999;
+  cursor: help;
+}
+
 /* Slightly different spacing for table headers */
 .table-header-secondary .selectable-row {
   vertical-align: top;
