@@ -315,6 +315,10 @@ thead .table-header-secondary td {
   overflow: hidden;
   width: 40px;
 
+  tbody & {
+    background-color: #ccc;
+  }
+
   label {
     height: 300px;
     width: 100%;
