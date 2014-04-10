@@ -11,6 +11,7 @@
     ready: function(options) {
       $('.js-tag-list').select2({
         tags: options['autocompleteWith'],
+        selectOnBlur: true,
         tokenSeparators: [','],
         initSelection: function (input, setTags) {
           setTags(
