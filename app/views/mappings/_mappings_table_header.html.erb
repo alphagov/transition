@@ -24,7 +24,7 @@
           <%= submit_tag "Edit selected", class: 'btn btn-default bold' %>
         </div>
       <% end %>
-      <div class="if-no-js-hide btn-group">
+      <div class="if-no-js-hide js-submit-container btn-group" data-toggle="tooltip" title="Select mappings using checkboxes then edit them with these buttons." data-placement="right">
         <a href="#redirect-paths" class="btn btn-default js-submit-form disabled" data-type="301" data-loading-text="Loading…" title="Redirect the paths you’ve selected to a new URL">Redirect</a>
         <a href="#archive-paths" class="btn btn-default js-submit-form disabled" data-type="410" data-loading-text="Loading…" title="Archive the paths you’ve selected">Archive</a>
         <a href="#tag-paths" class="btn btn-default js-submit-form disabled" data-type="tag" data-loading-text="Loading…" title="Tag the paths you’ve selected">Tag</a>

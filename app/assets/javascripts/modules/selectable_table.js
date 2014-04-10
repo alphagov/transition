@@ -142,10 +142,12 @@
 
       function resetSubmitButtons() {
         element.find('.js-submit-form').removeClass('disabled').button('reset');
+        element.find('.js-submit-container').addClass('buttons-enabled');
       }
 
       function disableSubmitButtons() {
         element.find('.js-submit-form').addClass('disabled');
+        element.find('.js-submit-container').removeClass('buttons-enabled');
       }
     }
   };

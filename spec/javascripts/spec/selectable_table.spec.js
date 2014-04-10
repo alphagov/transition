@@ -27,9 +27,11 @@ describe('A selectable table module', function() {
           <thead>\
             <tr>\
               <th>\
-                <input type="checkbox" class="js-toggle-all disabled" />\
-                <input type="radio" value="type" />\
-                <a href="#" class="js-submit-form" data-type="type">Submit form hook</a>\
+                <div class="js-submit-container">\
+                  <input type="checkbox" class="js-toggle-all disabled" />\
+                  <input type="radio" value="type" />\
+                  <a href="#" class="js-submit-form" data-type="type">Submit form hook</a>\
+                </div>\
               </th>\
             </tr>\
           </thead>\
@@ -80,7 +82,12 @@ describe('A selectable table module', function() {
       tableWithSelection = $('<table>\
         <thead>\
           <tr>\
-            <th><input type="checkbox" class="js-toggle-all disabled" /></th>\
+            <th>\
+              <div class="js-submit-container">\
+                <input type="checkbox" class="js-toggle-all disabled" />\
+                <a href="#" class="js-submit-form" data-type="type">Submit form hook</a>\
+              </div>\
+            </th>\
           </tr>\
         </thead>\
         <tbody>\
@@ -116,6 +123,7 @@ describe('A selectable table module', function() {
 
     it('enables the form submit buttons', function() {
       expect(tableWithSelection.find('.js-submit-form.disabled').length).toBe(0);
+      expect(tableWithSelection.find('.buttons-enabled').length).toBe(1);
     });
 
   });
@@ -288,6 +296,7 @@ describe('A selectable table module', function() {
       it('disables the submit form buttons to prevent multiple ajax requests', function() {
         table.find('.js-submit-form').click();
         expect(table.find('.js-submit-form.disabled').length).toBe(1);
+        expect(table.find('.buttons-enabled').length).toBe(0);
       });
 
     });

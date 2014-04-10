@@ -352,6 +352,12 @@ thead .table-header-secondary td {
   background-color: #fffbcc; /* yellow highlight */
 }
 
+/* Specific to mappings selectable table
+   Ensures the tooltip only displays whilst the buttons are disabled */
+.buttons-enabled + .tooltip {
+  display: none !important;
+}
+
 /* ==========================================================================
    Common content patterns
    ========================================================================== */
