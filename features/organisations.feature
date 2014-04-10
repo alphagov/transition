@@ -3,7 +3,7 @@ Feature: List organisations
   I would like to see a list of organisations
   so that I can get to the mappings for a site
 
-  Scenario: Visit the list page
+  Background:
     Given I have logged in as an admin
     And there are these organisations with sites:
       | whitehall_slug | title                                          |
@@ -14,6 +14,8 @@ Feature: List organisations
       | ukti            | UK Trade & Industry           |
       | go-science      | Government Office for Science |
     And go-science is an extra organisation of bis.gov.uk
+
+  Scenario: Visit the list page
     When I visit the home page
     Then I should see "Hello"
     And I should see the header "Organisations"
@@ -22,3 +24,11 @@ Feature: List organisations
     And I should see a link to the organisation fco
     And I should see a link to the organisation go-science
     But I should not see a link to the organisation ukti
+
+  @javascript
+  Scenario: Filter the list page
+    When I visit the home page
+    And I filter organisations by "foreign"
+    Then I should see an organisations table with 1 row
+    And I should see a link to the organisation fco
+    But I should not see a link to the organisation bis

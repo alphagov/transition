@@ -2,6 +2,12 @@
    Base
    ========================================================================== */
 
+/* Force vertical scrolling and prevent jumps when hiding/showing content
+   specifically with modals and when filtering */
+html {
+  overflow-y: scroll;
+}
+
 label {
   font-weight: bold;
   cursor: pointer;
