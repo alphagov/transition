@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require select2
+//= require mousetrap.min
 //= require govuk
 //= require_tree .
 

@@ -55,3 +55,9 @@ Feature: Edit a site's mapping
   Scenario: Visit the page of an non-existent mapping
     And I visit the path /sites/bis/mappings/123456789/edit
     Then I should see our custom 404 page
+
+  @javascript
+  Scenario: Jumping to a site mapping
+    When I visit the path /sites/bis
+    And I jump to the mapping "http://bis.gov.uk/about"
+    Then I should see "Edit mapping"

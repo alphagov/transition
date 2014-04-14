@@ -155,3 +155,9 @@ end
 When(/^I type "([^"]*)" in the tags box$/) do |letters|
   fill_in 'Tags', with: letters
 end
+
+When(/^I jump to the mapping "(.*?)"$/) do |url|
+  page.execute_script("Mousetrap.trigger('g m');")
+  fill_in 'Old URL', with: url
+  click_button 'Go to mapping'
+end
