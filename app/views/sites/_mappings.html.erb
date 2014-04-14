@@ -1,40 +1,66 @@
 <div class="mappings">
   <h3 class="remove-top-margin add-bottom-margin">Mappings</h3>
-  <div class="list-group add-big-bottom-margin">
-    <div class="list-group-item">
-      <h4 class="list-group-item-heading">
-        <%= link_to 'Mappings', site_mappings_path(@site), class: 'no-visit' %>
-      </h4>
-      <p class="list-group-item-text text-muted">
-        <strong><%= pluralize(number_with_delimiter(@site.mappings.count), 'path') %></strong> &mdash;
-        <%= site_redirects_link(@site) %> and <%= site_archives_link(@site) %>
-      </p>
+  <% if @site.global_redirect %>
+    <div class="panel panel-default">
+      <div class="panel-body">
+          <p class="bold">
+            All paths from <i><%= @site.default_host.hostname %></i><br />
+            <span class="text-muted">redirect to <a href="https://www.gov.uk">https://www.gov.uk</a></span>
+          </p>
+          <p class="text-muted remove-bottom-margin">
+            This is known as a global redirect, the entire old site redirects to a single page on GOV.UK. To make changes please contact your Transition Manager.
+          </p>
+      </div>
     </div>
-    <% if current_user.can_edit_site?(@site) %>
+  <% elsif @site.global_archive %>
+    <div class="panel panel-default">
+      <div class="panel-body">
+          <p class="bold">
+            All paths from <i><%= @site.default_host.hostname %></i><br />
+            <span class="text-muted">have been archived</span>
+          </p>
+          <p class="text-muted remove-bottom-margin">
+            This is known as a global archive, the entire old site has been archived because it doesn't meet a user need. To make changes please contact your Transition Manager.
+          </p>
+      </div>
+    </div>
+  <% else %>
+    <div class="list-group add-big-bottom-margin">
       <div class="list-group-item">
         <h4 class="list-group-item-heading">
-          <%= link_to 'Add mappings', new_multiple_site_mappings_path(@site), class: 'no-visit' %>
+          <%= link_to 'Mappings', site_mappings_path(@site), class: 'no-visit' %>
         </h4>
         <p class="list-group-item-text text-muted">
-          Create new mappings from a list of paths
+          <strong><%= pluralize(number_with_delimiter(@site.mappings.count), 'path') %></strong> &mdash;
+          <%= site_redirects_link(@site) %> and <%= site_archives_link(@site) %>
         </p>
       </div>
-    <% end %>
-    <% most_used_tags = most_used_tags_for_site(@site, limit: 10) %>
-    <% if most_used_tags.any? %>
-      <div class="list-group-item">
-        <h4 class="list-group-item-heading">Mappings by tag</h4>
-        <div class="list-group-item-text">
-          <p class="text-muted add-bottom-margin">Tags used for grouping <%= @site.default_host.hostname %> mappings</p>
-          <ul class="tag-list remove-bottom-margin">
-            <% most_used_tags.each do |tag| %>
-              <li>
-                <%= link_to tag, site_mappings_path(@site, tagged: tag), class: 'tag' %>
-              </li>
-            <% end %>
-          </ul>
+      <% if current_user.can_edit_site?(@site) %>
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">
+            <%= link_to 'Add mappings', new_multiple_site_mappings_path(@site), class: 'no-visit' %>
+          </h4>
+          <p class="list-group-item-text text-muted">
+            Create new mappings from a list of paths
+          </p>
         </div>
-      </div>
-    <% end %>
-  </div>
+      <% end %>
+      <% most_used_tags = most_used_tags_for_site(@site, limit: 10) %>
+      <% if most_used_tags.any? %>
+        <div class="list-group-item">
+          <h4 class="list-group-item-heading">Mappings by tag</h4>
+          <div class="list-group-item-text">
+            <p class="text-muted add-bottom-margin">Tags used for grouping <%= @site.default_host.hostname %> mappings</p>
+            <ul class="tag-list remove-bottom-margin">
+              <% most_used_tags.each do |tag| %>
+                <li>
+                  <%= link_to tag, site_mappings_path(@site, tagged: tag), class: 'tag' %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 </div>
