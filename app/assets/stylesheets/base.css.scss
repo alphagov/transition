@@ -315,6 +315,10 @@ thead .table-header-secondary td {
   overflow: hidden;
   width: 40px;
 
+  tbody & {
+    background-color: #ccc;
+  }
+
   label {
     height: 300px;
     width: 100%;
@@ -329,6 +333,11 @@ thead .table-header-secondary td {
   }
 }
 
+.selectable-row-helper {
+  border-bottom: 1px dotted #999;
+  cursor: help;
+}
+
 /* Slightly different spacing for table headers */
 .table-header-secondary .selectable-row {
   vertical-align: top;
@@ -341,6 +350,12 @@ thead .table-header-secondary td {
 .selected-row td,
 .table-hover .selected-row:hover td {
   background-color: #fffbcc; /* yellow highlight */
+}
+
+/* Specific to mappings selectable table
+   Ensures the tooltip only displays whilst the buttons are disabled */
+.buttons-enabled + .tooltip {
+  display: none !important;
 }
 
 /* ==========================================================================

@@ -59,6 +59,11 @@
 
   GOVUK.startAll = function() {
     GOVUK.start();
+    GOVUK.startBootstrapComponents();
+  }
+
+  GOVUK.startBootstrapComponents = function() {
+    $('[data-toggle="tooltip"]').tooltip();
   }
 
   // Google Analytics event tracking
