@@ -94,6 +94,18 @@ describe Mapping do
         end
       end
 
+      context 'URLs with an invalid host (without a ".")' do
+        subject(:mapping) do
+          build(:mapping, http_status: '301', new_url: 'newurl', suggested_url: 'suggestedurl')
+        end
+
+        describe 'the errors' do
+          subject { mapping.errors }
+          its([:new_url])       { should == ['is not a URL'] }
+          its([:suggested_url]) { should == ['is not a URL'] }
+        end
+      end
+
       context 'Archive URL is not webarchive.nationalarchives.gov.uk' do
         subject(:mapping) { build(:archived, archive_url: 'http://malicious.com/foo')}
 
