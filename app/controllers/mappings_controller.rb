@@ -58,6 +58,13 @@ class MappingsController < ApplicationController
       @path_contains = View::Mappings::canonical_filter(@site, params[:path_contains])
       if @path_contains.present?
         @filtered = true
+
+        # Canonicalisation removes trailing slashes, which in this case
+        # can be an important part of the search string. Put them back.
+        if params[:path_contains].end_with?('/')
+          @path_contains = @path_contains + '/'
+        end
+
         @mappings = @mappings.filtered_by_path(@path_contains)
       end
     end

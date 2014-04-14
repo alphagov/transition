@@ -46,6 +46,11 @@ describe MappingsController do
         assigns(:mappings).should == [mapping_a]
       end
 
+      it 'canonicalizes filter input but leaves trailing slashes alone' do
+        get :index, site_id: site.abbr, path_contains: '/A/'
+        assigns(:path_contains).should == '/a/'
+      end
+
       it 'filters mappings by new_url' do
         get :index, site_id: site.abbr, new_url_contains: 'f.co/1'
         assigns(:mappings).should == [mapping_a]
