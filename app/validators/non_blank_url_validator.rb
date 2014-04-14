@@ -3,7 +3,7 @@ class NonBlankURLValidator < ActiveModel::EachValidator
     return if value.blank?
     valid_url = begin
       uri = URI.parse(value)
-      !uri.scheme.blank? && !uri.host.blank?
+      !uri.scheme.blank? && !uri.host.blank? && uri.host.include?(".")
     rescue URI::InvalidURIError
       false
     end
