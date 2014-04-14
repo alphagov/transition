@@ -20,7 +20,7 @@ class Hit < ActiveRecord::Base
   validates :path_hash, presence: true
 
   scope :by_path_and_status, -> {
-    select('hits.path, sum(hits.count) as count, hits.http_status, hits.mapping_id').
+    select('hits.path, sum(hits.count) as count, hits.http_status, hits.mapping_id, hits.host_id').
       group(:path_hash, :http_status)
   }
   scope :without_mappings, -> { where(mapping_id: nil) }

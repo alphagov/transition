@@ -17,6 +17,11 @@ crumb :hits do |site|
   parent :site, site
 end
 
+crumb :global_hits do
+  link 'Hits', hits_path
+  parent :root
+end
+
 crumb :mappings do |site|
   link 'Mappings', site_mappings_path(site)
   parent :site, site

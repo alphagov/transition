@@ -3,6 +3,7 @@ class HitsController < ApplicationController
 
   before_filter :find_site, :set_period
   before_filter :set_background_bulk_add_status_message
+  skip_before_filter :find_site, :only => [:global]
 
   def index
     @category = View::Hits::Category['all'].tap do |c|
@@ -35,6 +36,14 @@ class HitsController < ApplicationController
     end
   end
 
+  def global
+    @sections = View::Hits::Category.all.reject { |c| c.name == 'all' }.map do |category|
+      category.tap do |c|
+        c.hits = hits_in_period.by_path_and_status.send(category.to_sym).top_ten
+      end
+    end
+  end
+
   protected
 
   def find_site
@@ -46,7 +55,11 @@ class HitsController < ApplicationController
   end
 
   def hits_in_period
-    @site.hits.in_range(@period.start_date, @period.end_date).includes(:mapping)
+    if @site
+      @site.hits.in_range(@period.start_date, @period.end_date).includes(:mapping)
+    else
+      Hit.in_range(@period.start_date, @period.end_date).includes(:mapping, :host)
+    end
   end
 
   def totals_in_period

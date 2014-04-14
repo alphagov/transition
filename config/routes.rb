@@ -14,6 +14,7 @@ Transition::Application.routes.draw do
   resources :organisations, only: [:show, :index]
 
   get 'mappings/find_global', to: 'mappings#find_global'
+  get 'hits', to: 'hits#global'
 
   resources :sites, only: [:show] do
 
