@@ -12,20 +12,30 @@
   </h1>
 </div>
 
-<table class="organisations table table-striped table-bordered">
+<table class="organisations table table-striped table-bordered" data-module="filterable-table">
   <thead>
-  <tr class="table-header">
-    <th class="abbr" scope="col">Abbreviation</th>
-    <th class="title" scope="col">Organisation</th>
-    <th scope="col">Sites</th>
-  </tr>
+    <tr class="table-header">
+      <th class="abbr" scope="col">Abbreviation</th>
+      <th class="title" scope="col">
+        Organisation
+      </th>
+      <th scope="col">Sites</th>
+    </tr>
+    <tr class="if-no-js-hide table-header-secondary">
+      <td colspan="3">
+        <form>
+          <label for="organisation-filter" class="rm">Filter organisations</label>
+          <input id="organisation-filter" type="text" class="form-control normal js-filter-table-input" placeholder="Filter list of organisations">
+        </form>
+      </td>
+    </tr>
   </thead>
 
   <tbody>
   <% @organisations.each do |org| %>
     <tr>
       <td class="abbr">
-        <% if org.abbreviation %>
+        <% if org.abbreviation.present? %>
           <%= link_to org.abbreviation, organisation_path(org) %>
         <% end %>
       </td>
