@@ -119,6 +119,10 @@ Given(/^these hits exist for the Attorney General's office site:$/) do |table|
   end
   require 'transition/import/daily_hit_totals'
   Transition::Import::DailyHitTotals.from_hits!
+
+  @expected_yesterdays_count = 9
+  @expected_last_30_days_count = 11
+  @expected_all_time_count = 12
 end
 
 Given(/^some hits exist for the Cabinet Office site$/) do
