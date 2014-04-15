@@ -22,7 +22,7 @@
   <%= render partial: 'hits_table_global', locals: { hits: hits } %>
 <% else %>
   <p class="no-content no-content-bordered">
-    <%= no_content_message %>
+    <%= "There are no #{@category.plural} for any site #{@period.no_content}." %>
   </p>
 <% end %>
 
