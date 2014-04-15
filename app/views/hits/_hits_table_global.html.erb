@@ -1,40 +1,34 @@
 <table class="hits table table-bordered">
   <thead>
   <tr class="table-header">
-    <th class="status" scope="col">HTTP<br/>Status</th>
     <th scope="col">Path</th>
     <th class="count" scope="col">Hits</th>
-    <th class="action" scope="col">Action</th>
   </tr>
   </thead>
   <tbody>
   <% max = hits.first.count %>
   <% hits.each do |hit| %>
     <tr>
-      <td class="status">
-        <abbr title="<%= "#{hit.http_status} — #{Rack::Utils::HTTP_STATUS_CODES[hit.http_status.to_i]}" %>">
-          <%= hit.http_status %>
-        </abbr>
-      </td>
       <td class="remove-padding">
         <div class="bar-chart-wrap">
           <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
           <strong class="breakable path">
             <%= link_to_global_hit(hit) %>
-            <% if hit.mapping %>
-              <% if [hit.http_status, hit.mapping.http_status] == ['410', '301']  %>
-                <br>
-                <span class="text-muted"><%= "was archived, now redirecting" %></span>
-              <% elsif [hit.http_status, hit.mapping.http_status] == ['301', '410'] %>
-                <br>
-                <span class="text-muted"><%= "was redirecting, now archived" %></span>
+            <div class="hit-organisation">
+              <%= link_to hit.host.site.organisation.title, site_path(hit.host.site), class: 'link-muted' %> &middot;
+              <%= link_to 'Analytics', summary_site_hits_path(hit.host.site), class: 'link-muted' %>
+              <% if hit.mapping %>
+                <% if [hit.http_status, hit.mapping.http_status] == ['410', '301']  %>
+                  <span class="text-muted"> &mdash; was archived, now redirecting</span>
+                <% elsif [hit.http_status, hit.mapping.http_status] == ['301', '410'] %>
+                  <span class="text-muted"> &mdash; was redirecting, now archived</span>
+                <% end %>
               <% end %>
-            <% end %>
+            </div>
           </strong>
         </div>
       </td>
       <td class="count"><%= number_with_delimiter hit.count %></td>
-      <td class="action"></td>
     </tr>
   <% end %>
   </tbody>
