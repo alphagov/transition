@@ -8,6 +8,7 @@
 </div>
 
 <%= render partial: 'hits_tabs_global', locals: { active: 'Summary' } %>
+<%= render partial: 'hits_time_period_dropdown' %>
 
 <% @sections.each do |category| %>
   <% if category.hits.any?  %>

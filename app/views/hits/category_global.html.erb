@@ -12,6 +12,7 @@
 </div>
 
 <%= render partial: 'hits_tabs_global', locals: { active: active } %>
+<%= render partial: 'hits_time_period_dropdown' %>
 
 <h2><%= pluralize(number_with_delimiter(hits.total_count, :delimiter => ','), 'path', 'paths') %></h2>
 <%= paginate hits %>
