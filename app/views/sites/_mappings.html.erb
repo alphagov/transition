@@ -1,6 +1,6 @@
 <div class="mappings">
   <h3 class="remove-top-margin add-bottom-margin">Mappings</h3>
-  <% if @site.global_redirect %>
+  <% if @site.global_http_status == '301' %>
     <div class="panel panel-default">
       <div class="panel-body">
           <p class="bold">
@@ -12,7 +12,7 @@
           </p>
       </div>
     </div>
-  <% elsif @site.global_archive %>
+  <% elsif @site.global_http_status == '410' %>
     <div class="panel panel-default">
       <div class="panel-body">
           <p class="bold">

@@ -4,7 +4,7 @@ class MappingsController < ApplicationController
   include PaperTrail::Controller
 
   before_filter :find_site, except: [:find_global]
-  before_filter :check_global_redirect_or_archive
+  before_filter :check_global_redirect_or_archive, except: [:find_global]
   before_filter :check_user_can_edit, except: [:index, :find, :find_global]
 
   def new_multiple
@@ -210,7 +210,7 @@ private
   end
 
   def check_global_redirect_or_archive
-    if @site.global_redirect || @site.global_archive
+    if @site.global_http_status.present?
       message = "This site has been entirely redirected or archived. You can't edit its mappings."
       redirect_to site_path(@site), alert: message
     end
