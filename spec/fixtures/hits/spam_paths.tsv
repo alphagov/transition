@@ -1,0 +1,12 @@
+date	count	status	host	path
+2012-10-14	11	200	www.businesslink.gov.uk	/legitimate
+2012-10-14	11	200	www.businesslink.gov.uk	/news/loadpage.cgi?user_id=1&file=..\..\..\..\..\..\..\..\boot.ini
+2012-10-14	11	200	www.businesslink.gov.uk	/PSUser/PSCOErrPage.htm?errPagePath=/etc/passwd
+2012-10-14	11	200	www.businesslink.gov.uk	/sitecontent/applicationforms/nationality/itemid=../../../../../../../../../../../../../../../../../../../../../../../../proc/self/environ%0000
+2012-10-14	11	200	www.businesslink.gov.uk	/phpMyAdmin/scripts/setup.php
+2012-10-14	11	200	www.businesslink.gov.uk	/admin/sqlpatch.php/password_forgotten.php?action=execute
+2012-10-14	11	200	www.businesslink.gov.uk	/_vti_inf.html
+2012-10-14	11	200	www.businesslink.gov.uk	/_vti_bin/shtml.exe/_vti_rpc
+2012-10-14	11	200	www.businesslink.gov.uk	/blog/wp-admin/
+2012-10-14	11	200	www.businesslink.gov.uk	/wp-cron
+2012-10-14	11	200	www.businesslink.gov.uk	/wp-login.php

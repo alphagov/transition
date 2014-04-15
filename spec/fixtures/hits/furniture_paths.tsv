@@ -1,4 +1,4 @@
-date	count status	host	path
+date	count	status	host	path
 2012-10-14	11	200	www.businesslink.gov.uk	/legitimate
 2012-10-14	11	200	www.businesslink.gov.uk	/static/css/theme3.css
 2012-10-14	11	200	www.businesslink.gov.uk	/syntegra/js/s_code_remote.js
@@ -6,3 +6,5 @@ date	count status	host	path
 2012-10-14	11	200	www.businesslink.gov.uk	/syntegra/images/cheese.jpg
 2012-10-14	11	200	www.businesslink.gov.uk	/syntegra/images/wine.jpeg
 2012-10-14	11	200	www.businesslink.gov.uk	/syntegra/images/grapes.png
+2012-10-14	11	200	www.businesslink.gov.uk	/2247708.image
+2012-10-14	11	200	www.businesslink.gov.uk	/421140.leadimage?w=960&h=400

@@ -54,7 +54,29 @@ describe Transition::Import::Hits do
       end
 
       it 'should ignore hits that are furniture so are uninteresting and unlikely to be mapped' do
-        Hit.count.should eql(1)
+        Hit.pluck(:path).sort.should eql(['/legitimate'])
+      end
+    end
+
+    context 'import from a file with spam paths', testing_before_all: true do
+      before :all do
+        create_test_hosts
+        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/spam_paths.tsv')
+      end
+
+      it 'should ignore hits that are spam and so unlikely to be mapped' do
+        Hit.pluck(:path).sort.should eql(['/legitimate'])
+      end
+    end
+
+    context 'import from a file with cruft paths', testing_before_all: true do
+      before :all do
+        create_test_hosts
+        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/cruft_paths.tsv')
+      end
+
+      it 'should ignore hits that are cruft and so unlikely to be mapped' do
+        Hit.pluck(:path).sort.should eql(['/legitimate'])
       end
     end
 
