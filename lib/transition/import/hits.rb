@@ -38,6 +38,12 @@ module Transition
         '.*\.jpg',
         '.*\.jpeg',
         '.*\.png',
+        '.*\.svg',
+
+        # Font files
+        '.*\.eot',
+        '.*\.ttf',
+        '.*\.woff',
 
         # Image URLs on www.ukti.gov.uk
         '^/[0-9]+\.image$',
