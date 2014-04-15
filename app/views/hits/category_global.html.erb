@@ -1,0 +1,27 @@
+<% title = @category.title %>
+<% hits  = @category.hits %>
+<% active  = @category.title %>
+
+<% content_for :page_title, "#{title} | Hits" %>
+<% breadcrumb(:global_hits) %>
+
+<div class="page-title">
+  <h1>
+    <%= title %>
+  </h1>
+</div>
+
+<%= render partial: 'hits_tabs_global', locals: { active: active } %>
+
+<h2><%= pluralize(number_with_delimiter(hits.total_count, :delimiter => ','), 'path', 'paths') %></h2>
+<%= paginate hits %>
+
+<% if hits.total_count > 0 %>
+  <%= render partial: 'hits_table_global', locals: { hits: hits } %>
+<% else %>
+  <p class="no-content no-content-bordered">
+    <%= no_content_message %>
+  </p>
+<% end %>
+
+<%= paginate hits %>

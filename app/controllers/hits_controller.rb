@@ -3,7 +3,7 @@ class HitsController < ApplicationController
 
   before_filter :find_site, :set_period
   before_filter :set_background_bulk_add_status_message
-  skip_before_filter :find_site, :only => [:global]
+  skip_before_filter :find_site, :only => [:summary_global, :category_global]
 
   def index
     @category = View::Hits::Category['all'].tap do |c|
@@ -36,11 +36,18 @@ class HitsController < ApplicationController
     end
   end
 
-  def global
+  def summary_global
     @sections = View::Hits::Category.all.reject { |c| c.name == 'all' }.map do |category|
       category.tap do |c|
         c.hits = hits_in_period.by_path_and_status.send(category.to_sym).top_ten
       end
+    end
+  end
+
+  def category_global
+    # Category - one of %w(archives redirect errors) (see routes.rb)
+    @category = View::Hits::Category[params[:category]].tap do |c|
+      c.hits   = hits_in_period.by_path_and_status.send(c.to_sym).page(params[:page]).order('count DESC')
     end
   end
 

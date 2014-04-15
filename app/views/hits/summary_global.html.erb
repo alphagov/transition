@@ -1,0 +1,21 @@
+<% content_for :page_title, "Hits" %>
+<% breadcrumb(:global_hits) %>
+
+<div class="page-title">
+  <h1>
+    Hits in the last 30 days
+  </h1>
+</div>
+
+<%= render partial: 'hits_tabs_global', locals: { active: 'Summary' } %>
+
+<% @sections.each do |category| %>
+  <% if category.hits.any?  %>
+    <section class="hits-summary-<%= category.name %> add-big-bottom-margin">
+      <%= render partial: 'category_title', locals: {category: category} %>
+      <% if category.hits.any? %>
+        <%= render partial: 'hits_table_global', locals: { hits: category.hits } %>
+      <% end %>
+    </section>
+  <% end  %>
+<% end %>
