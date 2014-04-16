@@ -594,4 +594,48 @@ describe MappingsController do
       end
     end
   end
+
+  describe 'a site with global redirect' do
+    before do
+      login_as stub_user
+    end
+
+    context 'does not allow users to edit its mappings' do
+      let(:new_site) { create :site, abbr: 'bis', global_http_status: '301' }
+
+      before(:each) do
+        get :index, site_id: new_site.abbr
+      end
+
+      it 'redirects to the site dashboard' do
+        expect(response).to redirect_to site_path(new_site.abbr)
+      end
+
+      it 'sets a flash message' do
+        flash[:alert].should include('entirely redirected')
+      end
+    end
+  end
+
+  describe 'a site with global archive' do
+    before do
+      login_as stub_user
+    end
+
+    context 'does not allow users to edit its mappings' do
+      let(:new_site) { create :site, abbr: 'bis', global_http_status: '301' }
+
+      before(:each) do
+        get :index, site_id: new_site.abbr
+      end
+
+      it 'redirects to the site dashboard' do
+        expect(response).to redirect_to site_path(new_site.abbr)
+      end
+
+      it 'sets a flash message' do
+        flash[:alert].should include('or archived')
+      end
+    end
+  end
 end
