@@ -99,6 +99,16 @@ Given(/^a site (.*) exists$/) do |site_abbr|
   @site = create(:site, abbr: site_abbr)
 end
 
+Given(/^the site is globally archived$/) do
+  @site.global_http_status = '410'
+  @site.save
+end
+
+Given(/^the site is globally redirected$/) do
+  @site.global_http_status = '301'
+  @site.save
+end
+
 Given(/^these hits exist for the Attorney General's office site:$/) do |table|
   @site = create :site, abbr: 'ago'
   # table is a | 410         | /    | 16/10/12 | 100   |

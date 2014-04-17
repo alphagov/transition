@@ -254,3 +254,9 @@ Then(/^I should see mappings tagged with "fum" and "fiddle"$/) do
     And I should not see "/another"
   }
 end
+
+Then(/^I should be redirected to the path "(.*?)"$/) do |path|
+  steps %{
+    And I should see "This site has been entirely redirected or archived"
+  }
+end

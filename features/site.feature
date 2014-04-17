@@ -61,6 +61,24 @@ Scenario: I belong to a different organisation
   Then I should be able to view the site's mappings
   But I should not be able to edit the site's mappings
 
+Scenario: Visit a globally redirected site's page
+  Given I have logged in as an admin
+  And a site moj_academy exists
+  And the site is globally redirected
+  When I visit this site page
+  Then I should see "All paths from moj_academy.gov.uk"
+  Then I should see "redirect to https://www.gov.uk"
+  And I should not see a link to view the site's mappings
+
+Scenario: Visit a globally archived site's page
+  Given I have logged in as an admin
+  And a site defra_etr exists
+  And the site is globally archived
+  When I visit this site page
+  Then I should see "All paths from defra_etr.gov.uk"
+  Then I should see "have been archived"
+  And I should not see a link to view the site's mappings
+
 @allow-rescue
 Scenario: Visit the page of an non-existent site
   Given I have logged in as an admin

@@ -9,6 +9,11 @@ Then(/^I should see a big number "(\d+) days (.*)"$/) do |days, message|
   end
 end
 
+Then(/^I should not see a link to view the site's mappings$/) do
+  expect(page).not_to have_selector('.list-group-item-heading', text: 'Mappings')
+  expect(page).not_to have_link('a', href: site_mappings_path(@site))
+end
+
 Then(/^I should be able to view the site's analytics$/) do
   within '.performance' do
     expect(page).to have_selector('.list-group-item-heading', text: 'Analytics')
