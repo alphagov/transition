@@ -4,31 +4,35 @@ class MappingsController < ApplicationController
   include PaperTrail::Controller
 
   before_filter :find_site, except: [:find_global]
-  before_filter :set_bulk_add, only: [:new_multiple, :new_multiple_confirmation, :create_multiple]
   before_filter :check_global_redirect_or_archive, except: [:find_global]
   before_filter :check_user_can_edit, except: [:index, :find, :find_global]
 
   def new_multiple
+    paths = params[:paths].present? ? params[:paths].split(',') : []
+    @batch = MappingsBatch.new(paths: paths)
   end
 
   def new_multiple_confirmation
-    if @bulk_add.params_invalid?
-      @errors = @bulk_add.params_errors
+    @batch = MappingsBatch.new(http_status: params[:http_status],
+                               new_url: params[:new_url],
+                               tag_list: params[:tag_list],
+                               paths: params[:paths].split(/\r?\n|\r/).map(&:strip)) # TODO remove blanks
+    @batch.user = current_user
+    @batch.site = @site
+
+    unless @batch.save
       render action: 'new_multiple'
     end
   end
 
   def create_multiple
-    if @bulk_add.params_invalid?
-      @errors = @bulk_add.params_errors
-      render action: 'new_multiple' and return
+    @batch = @site.mappings_batches.find(params[:mappings_batch_id])
+    @batch.update_attributes!(update_existing: params[:update_existing], tag_list: params[:tag_list])
+    if @batch.invalid?
+      render action: 'new_multiple_confirmation' and return
     end
 
-    @bulk_add.create_or_update!
-
-    flash[:success] = @bulk_add.success_message
-    flash[:saved_mapping_ids] = @bulk_add.modified_mappings.map {|m| m.id}
-    flash[:saved_operation] = @bulk_add.operation_description
+    MappingsBatchWorker.perform_async(@batch.id)
 
     if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
       redirect_to params[:return_path]
@@ -177,10 +181,6 @@ class MappingsController < ApplicationController
   end
 
 private
-  def set_bulk_add
-    @bulk_add ||= View::Mappings::BulkAdder.new(@site, params)
-  end
-
   def bulk_edit
     @bulk_edit ||= bulk_editor_class.new(@site, params, site_mappings_path(@site))
   end

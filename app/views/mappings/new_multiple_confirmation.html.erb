@@ -10,14 +10,15 @@
 </div>
 
 <%= form_tag create_multiple_site_mappings_path(@site) do %>
+  <%= hidden_field_tag 'mappings_batch_id', @batch.id %>
 
   <% if params[:return_path].present? %>
     <%= hidden_field_tag 'return_path', params[:return_path] %>
   <% end %>
 
-  <% if existing_mappings_count > 0 %>
+  <% if @batch.entries.with_existing_mappings.any? %>
     <div class="alert alert-warning">
-      <h4>We’ve found <%= pluralize(existing_mappings_count, "existing mapping") %> for the paths entered</h4>
+      <h4>We’ve found <%= pluralize(@batch.entries.with_existing_mappings.count, "existing mapping") %> for the paths entered</h4>
       <%= label_tag :update_existing_false, class: 'radio-inline' do %>
         <%= radio_button_tag 'update_existing', 'false', true %> Ignore existing mappings
       <% end %>
@@ -30,46 +31,48 @@
   <% end %>
 
   <h2 class="add-bottom-margin">
-    <%= "#{ http_status_name(@bulk_add.http_status) }" %> paths
-    <% if @bulk_add.http_status == '301' %>
+    <%= "#{ http_status_name(@batch.http_status) }" %> paths
+    <% if @batch.http_status == '301' %>
       <br />
       <span class="subtitle">
-        to <%= link_to @bulk_add.test_mapping.new_url, @bulk_add.test_mapping.new_url, class: 'breakable' %>
+        to <%= link_to @batch.new_url, @batch.new_url, class: 'breakable' %>
       </span>
     <% end %>
   </h2>
 
-  <%= hidden_field_tag "http_status", @bulk_add.http_status %>
-  <% if @bulk_add.http_status == '301' %>
-    <%= hidden_field_tag "new_url", @bulk_add.test_mapping.new_url %>
+  <%= hidden_field_tag "http_status", @batch.http_status %>
+  <% if @batch.http_status == '301' %>
+    <%= hidden_field_tag "new_url", @batch.new_url %>
   <% end %>
 
   <table class="table table-bordered table-striped">
     <thead>
       <tr class="table-header">
-        <th><%= pluralize(@bulk_add.all_mappings.size, "old path") %> from <%= @site.default_host.hostname %></th>
+        <th><%= pluralize(@batch.entries.size, "old path") %> from <%= @site.default_host.hostname %></th>
       </tr>
     </thead>
     <tbody>
-      <% @bulk_add.all_mappings.each do |m| %>
+      <% @batch.entries.each do |entry| %>
+        <% existing_mapping = entry.mapping %>
         <tr>
-          <td <% if m.redirect? || m.archive? %>class="warning"<% end %>>
-            <strong><%= link_to m.path, m.old_url, class: 'breakable' %></strong>
+          <td <% if existing_mapping %>class="warning"<% end %>>
+            <strong><%= link_to entry.path, entry.old_url, class: 'breakable' %></strong>
             <span class="text-muted">
-              <% if m.redirect? %>
-                currently redirects to <%= link_to m.new_url, m.new_url, class: 'link-muted breakable' %>
-              <% elsif m.archive? %>
-                currently archived
+              <% if existing_mapping %>
+                <% if existing_mapping.redirect? %>
+                  currently redirects to <%= link_to existing_mapping.new_url, existing_mapping.new_url, class: 'link-muted breakable' %>
+                <% elsif existing_mapping.archive? %>
+                  currently archived
+                <% end %>
               <% end %>
             </span>
-            <%= hidden_field_tag "paths[]", m.path %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
-  <%= render partial: 'tag_list_field', locals: { bulk_tagger: @bulk_add } %>
+  <%= render partial: 'tag_list_field', locals: { bulk_tagger: @batch } %>
 
   <%= button_tag 'Save', class: 'btn btn-success' %>
 <% end %>

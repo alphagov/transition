@@ -1,5 +1,6 @@
 class MappingsBatch < ActiveRecord::Base
   attr_accessor :paths # a virtual attribute to then use for creating entries
+  attr_accessible :paths, :http_status, :new_url, :tag_list, :update_existing
 
   belongs_to :user
   belongs_to :site
@@ -11,7 +12,7 @@ class MappingsBatch < ActiveRecord::Base
   validates :http_status, inclusion: { :in => Mapping::SUPPORTED_STATUSES }
   validates :new_url, presence: { if: :redirect?, message: 'required when mapping is a redirect' }
   validates :new_url, length: { maximum: (64.kilobytes - 1) }, non_blank_url: true
-  validates :paths, presence: true
+  validates :paths, presence: { :if => :new_record? } # we only care about paths at create-time
   validate :paths, :paths_cannot_include_hosts_for_another_site, :paths_cannot_be_empty_once_canonicalised
 
   before_validation :fill_in_scheme

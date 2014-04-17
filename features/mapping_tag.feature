@@ -21,10 +21,10 @@ Scenario: Adding tags when bulk adding mappings
   | /3    | fo, fum  |
   When I add multiple paths with tags "fee, fi, FO" and continue
   Then the page title should be "Confirm new mappings"
-  And I should see the tags "fee, fi, fo"
+  And I should see the tags "fee, fi, FO"
   When I choose "Overwrite existing mappings"
   And I save the mappings
-  Then I should see that all were tagged "fee, fi, fo"
+  Then I should see that all were tagged "fee, fi, FO"
   And the mappings should all have the tags "fee, fi, fo, fum"
 
 Scenario: Bulk adding tags to existing mappings
