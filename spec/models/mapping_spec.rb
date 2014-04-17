@@ -38,6 +38,7 @@ describe Mapping do
   describe 'validations' do
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:path) }
+    it { should ensure_inclusion_of(:http_status).in_array(['301', '410']) }
 
     describe 'home pages (which are handled by Site)' do
       subject(:homepage_mapping) { build(:mapping, path: '/') }

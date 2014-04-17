@@ -5,7 +5,7 @@ require 'transition/history'
 class Mapping < ActiveRecord::Base
   include ActiveRecord::Concerns::NilifyBlanks
 
-  SUPPORTED_STATUSES = [301, 410]
+  SUPPORTED_STATUSES = ['301', '410']
 
   TYPES = {
     '301' => 'redirect',
@@ -23,7 +23,7 @@ class Mapping < ActiveRecord::Base
             length: { maximum: 1024 },
             exclusion: { in: ['/'], message: I18n.t('mappings.not_possible_to_edit_homepage_mapping')},
             is_path: true
-  validates :http_status, presence: true, length: { maximum: 3 }
+  validates :http_status, presence: true, length: { maximum: 3 }, inclusion: { :in => SUPPORTED_STATUSES }
   validates :site_id, uniqueness: { scope: [:path_hash], message: 'Mapping already exists for this site and path!' }
 
   # set a hash of the path because we can't have a unique index on
