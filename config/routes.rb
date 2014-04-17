@@ -14,10 +14,10 @@ Transition::Application.routes.draw do
   resources :organisations, only: [:show, :index]
 
   get 'mappings/find_global', to: 'mappings#find_global'
-  get 'hits', to: 'hits#summary_global'
-  get 'hits/redirects', to: 'hits#category_global', defaults: { category: 'redirects' }
-  get 'hits/errors',    to: 'hits#category_global', defaults: { category: 'errors' }
-  get 'hits/archives',  to: 'hits#category_global', defaults: { category: 'archives' }
+  get 'hits', to: 'hits#universal_summary'
+  get 'hits/redirects', to: 'hits#universal_category', defaults: { category: 'redirects' }
+  get 'hits/errors',    to: 'hits#universal_category', defaults: { category: 'errors' }
+  get 'hits/archives',  to: 'hits#universal_category', defaults: { category: 'archives' }
 
   resources :sites, only: [:show] do
 

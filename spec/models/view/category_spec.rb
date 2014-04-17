@@ -17,7 +17,7 @@ describe View::Hits::Category do
       its(:color)              { should == '#333' }
       its(:plural)             { should == 'hits' }
       its(:path_method)        { should == :site_hits_path }
-      its(:path_method_global) { should == :hits_path }
+      its(:path_method_universal) { should == :hits_path }
     end
 
     describe 'indexing' do

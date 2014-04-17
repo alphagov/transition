@@ -1,0 +1,11 @@
+<%= render partial: 'hits',
+  locals: {
+     hits: @category.hits,
+     site: @site,
+     point_categories: [@category],
+     title: "#{@category.title}",
+     active: "#{@category.title}",
+     no_content_message: "There are no #{@category.plural} for any site #{@period.no_content}.",
+     universal: true
+   }
+%>

@@ -17,7 +17,7 @@ crumb :hits do |site|
   parent :site, site
 end
 
-crumb :global_hits do
+crumb :universal_hits do
   link 'Universal analytics', hits_path
   parent :root
 end

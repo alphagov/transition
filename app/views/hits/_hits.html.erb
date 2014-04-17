@@ -1,26 +1,33 @@
-<% content_for :page_title, "#{title} | Analytics | #{@site.default_host.hostname}" %>
-<% breadcrumb(:hits, @site) %>
+<% universal ||= false %>
+<% if universal %>
+  <% content_for :page_title, "#{title} | Universal analytics" %>
+  <% breadcrumb(:universal_hits) %>
+<% else %>
+  <% content_for :page_title, "#{title} | Analytics | #{@site.default_host.hostname}" %>
+  <% breadcrumb(:hits, @site) %>
+<% end %>
 
 <div class="page-title">
   <h1>
-    <span class="small"><%= @site.default_host.hostname %></span>
+    <span class="small"><%= universal ? 'Universal analytics' : @site.default_host.hostname %></span>
     <%= title %>
   </h1>
 </div>
 
-<%= render partial: 'hits_tabs', locals: { active: active } %>
-
+<%= render partial: universal ? 'universal_hits_tabs' : 'hits_tabs', locals: { active: active } %>
 <%= render partial: 'hits_time_period' %>
 
-<% if @category.points.length > 1 && first_page? %>
-  <%= render partial: 'hits_graph', locals: { point_categories: [@category] } %>
+<% unless universal %>
+  <% if @category.points.length > 1 && first_page? %>
+    <%= render partial: 'hits_graph', locals: { point_categories: [@category] } %>
+  <% end %>
 <% end %>
 
 <h2><%= pluralize(number_with_delimiter(hits.total_count, :delimiter => ','), 'path', 'paths') %></h2>
 <%= paginate hits %>
 
 <% if hits.total_count > 0 %>
-  <%= render partial: 'hits_table', locals: { hits: hits } %>
+  <%= render partial: universal ? 'universal_hits_table' : 'hits_table', locals: { hits: hits } %>
 <% else %>
   <p class="no-content no-content-bordered">
     <%= no_content_message %>
