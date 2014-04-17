@@ -4,31 +4,31 @@ class MappingsController < ApplicationController
   include PaperTrail::Controller
 
   before_filter :find_site, except: [:find_global]
+  before_filter :set_bulk_add, only: [:new_multiple, :new_multiple_confirmation, :create_multiple]
   before_filter :check_global_redirect_or_archive, except: [:find_global]
   before_filter :check_user_can_edit, except: [:index, :find, :find_global]
 
   def new_multiple
-    bulk_add
   end
 
   def new_multiple_confirmation
-    if bulk_add.params_invalid?
-      @errors = bulk_add.params_errors
+    if @bulk_add.params_invalid?
+      @errors = @bulk_add.params_errors
       render action: 'new_multiple'
     end
   end
 
   def create_multiple
-    if bulk_add.params_invalid?
-      @errors = bulk_add.params_errors
+    if @bulk_add.params_invalid?
+      @errors = @bulk_add.params_errors
       render action: 'new_multiple' and return
     end
 
-    bulk_add.create_or_update!
+    @bulk_add.create_or_update!
 
-    flash[:success] = bulk_add.success_message
-    flash[:saved_mapping_ids] = bulk_add.modified_mappings.map {|m| m.id}
-    flash[:saved_operation] = bulk_add.operation_description
+    flash[:success] = @bulk_add.success_message
+    flash[:saved_mapping_ids] = @bulk_add.modified_mappings.map {|m| m.id}
+    flash[:saved_operation] = @bulk_add.operation_description
 
     if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
       redirect_to params[:return_path]
@@ -177,7 +177,7 @@ class MappingsController < ApplicationController
   end
 
 private
-  def bulk_add
+  def set_bulk_add
     @bulk_add ||= View::Mappings::BulkAdder.new(@site, params)
   end
 
