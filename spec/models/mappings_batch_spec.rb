@@ -62,7 +62,7 @@ describe MappingsBatch do
     end
   end
 
-  describe 'creating mappings' do
+  describe 'creating entries' do
     let(:site) { create(:site, query_params: 'significant') }
     let!(:existing_mapping) { create(:mapping, site: site, path: '/a') }
 
@@ -79,6 +79,57 @@ describe MappingsBatch do
       entry = mappings_batch.entries.detect { |entry| entry.path == existing_mapping.path }
       entry.should_not be_nil
       entry.mapping.should == existing_mapping
+    end
+  end
+
+  describe '#process' do
+    let(:site) { create(:site) }
+
+    subject(:mappings_batch) do
+      create(:mappings_batch, site: site,
+              paths: ['/a', '/b'],
+              http_status: '301', new_url: 'http://gov.uk', tag_list: ['a tag'])
+    end
+
+    context 'rosy case' do
+      before { mappings_batch.process }
+
+      it 'should create mappings for each entry' do
+        site.mappings.count.should == 2
+      end
+
+      it 'should populate the fields on the new mapping' do
+        mapping = site.mappings.first
+        mapping.path.should == '/a'
+        mapping.http_status.should == '301'
+        mapping.new_url.should == 'http://gov.uk'
+        mapping.tag_list.should == ['a tag']
+      end
+    end
+
+    context 'existing mappings' do
+      let!(:existing_mapping) { create(:mapping, site: site, path: '/a', http_status: '410', tag_list: ['existing tag']) }
+
+      context 'default' do
+        it 'should ignore them' do
+          mappings_batch.process
+          existing_mapping.reload
+          existing_mapping.http_status.should == '410'
+          existing_mapping.new_url.should be_nil
+        end
+      end
+
+      context 'existing mappings, update_existing: true' do
+        it 'should update them' do
+          mappings_batch.update_column(:update_existing, true)
+          mappings_batch.process
+
+          existing_mapping.reload
+          existing_mapping.http_status.should == '301'
+          existing_mapping.new_url.should == 'http://gov.uk'
+          existing_mapping.tag_list.should == ['a tag', 'existing tag']
+        end
+      end
     end
   end
 end
