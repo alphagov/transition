@@ -61,4 +61,24 @@ describe MappingsBatch do
       mappings_batch.new_url.should == 'https://www.gov.uk'
     end
   end
+
+  describe 'creating mappings' do
+    let(:site) { create(:site, query_params: 'significant') }
+    let!(:existing_mapping) { create(:mapping, site: site, path: '/a') }
+
+    subject(:mappings_batch) { create(:mappings_batch, site: site,
+                                      paths: ['/a?insignificant', '/a', '/b?significant']) }
+
+    it 'should create an entry for each canonicalised path' do
+      mappings_batch.entries.count.should == 2
+      entry_paths = mappings_batch.entries.map(&:path)
+      entry_paths.sort.should == ['/a', '/b?significant'].sort
+    end
+
+    it 'should relate the entry to the existing mapping' do
+      entry = mappings_batch.entries.detect { |entry| entry.path == existing_mapping.path }
+      entry.should_not be_nil
+      entry.mapping.should == existing_mapping
+    end
+  end
 end
