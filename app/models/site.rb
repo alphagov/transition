@@ -6,6 +6,7 @@ class Site < ActiveRecord::Base
   has_many :hits, through: :hosts
   has_many :daily_hit_totals, through: :hosts
   has_many :host_paths, through: :hosts
+  has_many :mappings_batches
   has_and_belongs_to_many :extra_organisations,
                            join_table: 'organisations_sites',
                            class_name: 'Organisation'
