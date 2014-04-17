@@ -12,12 +12,13 @@ gem 'kaminari', '0.14.1'
 gem 'paper_trail', '2.7.2'  # Using stable, see https://github.com/airblade/paper_trail/tree/2.7-stable for docs
 gem 'google-api-client', '0.6.4'
 gem 'gds-api-adapters', '7.14.0'
-gem 'mlanett-redis-lock', '0.2.2'
+gem 'mlanett-redis-lock', '0.2.6'
 gem 'whenever', '0.8.4'
 gem 'gretel', '3.0.5'
 gem 'acts-as-taggable-on', '3.0.1'
 gem 'select2-rails', '3.5.2'
 gem 'activerecord-import', '0.5.0'
+gem 'sidekiq', '3.0.0'
 
 # We use Errbit for tracking exceptions, which needs the airbrake gem. Config
 # for Errbit is in alphagov-deployment.
