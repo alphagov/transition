@@ -60,6 +60,19 @@ class MappingsBatch < ActiveRecord::Base
     MappingsBatchEntry.import(records, validate: false)
   end
 
+  def process
+    entries.each do |entry|
+      mapping = site.mappings.where(path: entry.path).first_or_initialize
+
+      next if !update_existing && mapping.persisted?
+
+      mapping.http_status = http_status
+      mapping.new_url = new_url
+      mapping.tag_list = [mapping.tag_list, tag_list].join(',')
+      mapping.save
+    end
+  end
+
 private
   def canonical_paths
     @_canonical_paths = paths.map { |p| site.canonical_path(p) }.select(&:present?).uniq
