@@ -46,6 +46,10 @@ class Hit < ActiveRecord::Base
     path == '/' || path.starts_with?('/?')
   end
 
+  def default_url
+    "http://#{host.site.default_host.hostname}#{path}"
+  end
+
   protected
   def set_path_hash
     self.path_hash = Digest::SHA1.hexdigest(path) if path_changed?
