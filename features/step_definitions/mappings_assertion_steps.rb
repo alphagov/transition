@@ -257,6 +257,6 @@ end
 
 Then(/^I should be redirected to the path "(.*?)"$/) do |path|
   steps %{
-    And I should see "This site has been entirely redirected or archived"
+    And I should see "This site has been entirely"
   }
 end

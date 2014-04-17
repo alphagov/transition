@@ -623,7 +623,7 @@ describe MappingsController do
     end
 
     context 'does not allow users to edit its mappings' do
-      let(:new_site) { create :site, abbr: 'bis', global_http_status: '301' }
+      let(:new_site) { create :site, abbr: 'bis', global_http_status: '410' }
 
       before(:each) do
         get :index, site_id: new_site.abbr
@@ -634,7 +634,7 @@ describe MappingsController do
       end
 
       it 'sets a flash message' do
-        flash[:alert].should include('or archived')
+        flash[:alert].should include('entirely archived')
       end
     end
   end

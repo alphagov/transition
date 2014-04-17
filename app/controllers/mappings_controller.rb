@@ -211,8 +211,12 @@ private
 
   def check_global_redirect_or_archive
     if @site.global_http_status.present?
-      message = "This site has been entirely redirected or archived. You can't edit its mappings."
-      redirect_to site_path(@site), alert: message
+      if @site.global_http_status == '301'
+        message = "This site has been entirely redirected."
+      elsif @site.global_http_status == '410'
+        message = "This site has been entirely archived."
+      end
+      redirect_to site_path(@site), alert: "#{message} You can't edit its mappings."
     end
   end
 end

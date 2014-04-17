@@ -15,7 +15,7 @@ Feature: Mappings index
     And the site is globally redirected
     When I visit the path /sites/moj_academy/mappings/
     Then I should be redirected to the path "/sites/moj_academy"
-    And I should see "This site has been entirely redirected or archived."
+    And I should see "This site has been entirely redirected."
 
   Scenario: Visit the mappings index page for a globally archived site
     Given I have logged in as an admin
@@ -23,4 +23,4 @@ Feature: Mappings index
     And the site is globally archived
     When I visit the path /sites/defra_etr/mappings/
     Then I should be redirected to the path "/sites/defra_etr"
-    And I should see "This site has been entirely redirected or archived."
+    And I should see "This site has been entirely archived."
