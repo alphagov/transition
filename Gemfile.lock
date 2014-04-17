@@ -23,6 +23,8 @@ GEM
       activesupport (= 3.2.17)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
+    activerecord-import (0.5.0)
+      activerecord (>= 3.0)
     activeresource (3.2.17)
       activemodel (= 3.2.17)
       activesupport (= 3.2.17)
@@ -268,6 +270,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-import (= 0.5.0)
   acts-as-taggable-on (= 3.0.1)
   airbrake (= 3.1.15)
   bootstrap-sass (= 3.1.0)
