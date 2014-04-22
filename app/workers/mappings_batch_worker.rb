@@ -1,5 +1,6 @@
 class MappingsBatchWorker
   include Sidekiq::Worker
+  sidekiq_options :retry => false
 
   def perform(mappings_batch_id)
     batch = MappingsBatch.find_by_id(mappings_batch_id)
