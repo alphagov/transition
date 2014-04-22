@@ -20,9 +20,19 @@ class MappingsBatch < ActiveRecord::Base
   validate :paths, :paths_cannot_include_hosts_for_another_site, :paths_cannot_be_empty_once_canonicalised
   validate :state, inclusion: { :in => PROCESSING_STATES }
 
+  scope :unfinished, where(state: UNFINISHED_STATES)
+
   before_validation :fill_in_scheme
 
   after_create :create_entries
+
+  def entries_to_process
+    if update_existing
+      entries
+    else
+      entries.without_existing_mappings
+    end
+  end
 
   def redirect?
     http_status == '301'

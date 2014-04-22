@@ -5,6 +5,8 @@ class MappingsBatchEntry < ActiveRecord::Base
   attr_accessible :path
 
   scope :with_existing_mappings, where('mapping_id is not null')
+  scope :without_existing_mappings, where('mapping_id is null')
+  scope :processed, where(processed: true)
 
   def old_url
     "http://#{mappings_batch.site.default_host.hostname}#{self.path}"

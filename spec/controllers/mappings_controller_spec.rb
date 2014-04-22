@@ -308,10 +308,6 @@ describe MappingsController do
           expect(response).to redirect_to site_mappings_path(site)
         end
 
-        it 'sets a success message' do
-          flash[:success].should include('mappings created')
-        end
-
         it 'queues a job' do
           expect(MappingsBatchWorker.jobs.size).to eql(1)
         end
