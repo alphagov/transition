@@ -77,6 +77,8 @@ class MappingsBatch < ActiveRecord::Base
         mapping.new_url = new_url
         mapping.tag_list = [mapping.tag_list, tag_list].join(',')
         mapping.save
+
+        entry.update_column(:processed, true)
       end
     end
   end
