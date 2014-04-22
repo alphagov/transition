@@ -23,9 +23,7 @@ Feature: Create mappings
     And I should see "/a currently archived"
     And I should see "/r currently redirects to http://somewhere.good"
     When I save my changes
-    Then I should see "1 mapping created" in a modal window
-    And I should see a table with 1 saved mapping in the modal
-    And I should see "/needs/canonicalizing" in a modal window
+    Then I should see "0 of 1 mapping processed"
     And an analytics event with "bulk-add-redirect-ignore-existing" has fired
 
   Scenario: I don't have access

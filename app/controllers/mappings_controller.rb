@@ -2,10 +2,12 @@ require 'view/mappings/canonical_filter'
 
 class MappingsController < ApplicationController
   include PaperTrail::Controller
+  include BackgroundBulkAddMessageControllerMixin
 
   before_filter :find_site, except: [:find_global]
   before_filter :check_global_redirect_or_archive, except: [:find_global]
   before_filter :check_user_can_edit, except: [:index, :find, :find_global]
+  before_filter :set_background_bulk_add_status_message, except: [:find_global]
 
   def new_multiple
     paths = params[:paths].present? ? params[:paths].split(',') : []
