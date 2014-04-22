@@ -27,12 +27,14 @@ class MappingsController < ApplicationController
 
   def create_multiple
     @batch = @site.mappings_batches.find(params[:mappings_batch_id])
-    @batch.update_attributes!(update_existing: params[:update_existing], tag_list: params[:tag_list])
-    if @batch.invalid?
-      render action: 'new_multiple_confirmation' and return
-    end
+    if @batch.state == 'unqueued'
+      @batch.update_attributes!(update_existing: params[:update_existing], tag_list: params[:tag_list], state: 'queued')
+      if @batch.invalid?
+        render action: 'new_multiple_confirmation' and return
+      end
 
-    MappingsBatchWorker.perform_async(@batch.id)
+      MappingsBatchWorker.perform_async(@batch.id)
+    end
 
     if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
       redirect_to params[:return_path]

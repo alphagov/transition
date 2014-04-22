@@ -315,6 +315,26 @@ describe MappingsController do
         it 'queues a job' do
           expect(MappingsBatchWorker.jobs.size).to eql(1)
         end
+
+        it 'updates the batch state' do
+          batch.reload
+          batch.state.should == 'queued'
+        end
+      end
+
+      context 'when the batch has already been queued' do
+        before do
+          batch.update_column(:state, 'finished')
+          post :create_multiple, site_id: site.abbr, mappings_batch_id: batch.id
+        end
+
+        it 'doesn\'t queue it (again)' do
+          expect(MappingsBatchWorker.jobs.size).to eql(0)
+        end
+
+        it 'redirects to the site return URL' do
+          expect(response).to redirect_to site_mappings_path(site)
+        end
       end
     end
   end
