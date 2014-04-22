@@ -105,6 +105,11 @@ describe MappingsBatch do
         mapping.new_url.should == 'http://gov.uk'
         mapping.tag_list.should == ['a tag']
       end
+
+      it 'should mark each entry as processed' do
+        entry = mappings_batch.entries.first
+        entry.processed.should be_true
+      end
     end
 
     context 'existing mappings' do
@@ -116,6 +121,8 @@ describe MappingsBatch do
           existing_mapping.reload
           existing_mapping.http_status.should == '410'
           existing_mapping.new_url.should be_nil
+          entry = mappings_batch.entries.first
+          entry.processed.should be_false
         end
       end
 
