@@ -4,7 +4,7 @@ class MappingsBatch < ActiveRecord::Base
   PROCESSING_STATES = UNFINISHED_STATES + FINISHED_STATES
 
   attr_accessor :paths # a virtual attribute to then use for creating entries
-  attr_accessible :paths, :http_status, :new_url, :tag_list, :update_existing
+  attr_accessible :paths, :http_status, :new_url, :tag_list, :update_existing, :state
 
   belongs_to :user
   belongs_to :site
