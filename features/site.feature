@@ -67,7 +67,7 @@ Scenario: Visit a globally redirected site's page
   And the site is globally redirected
   When I visit this site page
   Then I should see "All paths from moj_academy.gov.uk"
-  Then I should see "redirect to https://www.gov.uk"
+  Then I should see "redirect to"
   And I should not see a link to view the site's mappings
 
 Scenario: Visit a globally archived site's page

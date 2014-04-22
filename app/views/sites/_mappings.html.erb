@@ -5,10 +5,10 @@
       <div class="panel-body">
           <p class="bold">
             All paths from <%= @site.default_host.hostname %><br />
-            <span class="text-muted">redirect to <a href="https://www.gov.uk">https://www.gov.uk</a></span>
+            <span class="text-muted">redirect to <%= @site.global_new_url %></span>
           </p>
           <p class="text-muted remove-bottom-margin">
-            This is known as a global redirect, the entire old site redirects to a single page on GOV.UK. To make changes please contact your Transition Manager.
+            This is known as a global redirect, the entire old site redirects to a single page. To make changes please contact your Transition Manager.
           </p>
       </div>
     </div>
