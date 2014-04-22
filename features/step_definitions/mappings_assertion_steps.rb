@@ -149,7 +149,7 @@ end
 Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|
   within '.alert-success', :match => :first do
     expect(page).to have_content(
-      %(0 mappings created and 3 mappings updated. All tagged with "#{tag_list}")
+      %(3 mappings updated and tagged with "#{tag_list}")
     )
   end
 end

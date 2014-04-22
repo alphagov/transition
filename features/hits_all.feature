@@ -49,7 +49,7 @@ Scenario: Add mapping for a hit
   When I make the mapping an archive
   And I continue
   And I save my changes
-  Then I should see "1 mapping created." in a modal window
+  Then I should see "1 mapping created" in a modal window
   And I should be on the site's hits summary page
 
 Scenario: Edit mapping from a hit
