@@ -14,7 +14,7 @@ Feature: Mappings index
     And a site moj_academy exists
     And the site is globally redirected
     When I visit the path /sites/moj_academy/mappings/
-    Then I should be redirected to the path "/sites/moj_academy"
+    Then I should be redirected to the site dashboard
     And I should see "This site has been entirely redirected."
 
   Scenario: Visit the mappings index page for a globally archived site
@@ -22,5 +22,5 @@ Feature: Mappings index
     And a site defra_etr exists
     And the site is globally archived
     When I visit the path /sites/defra_etr/mappings/
-    Then I should be redirected to the path "/sites/defra_etr"
+    Then I should be redirected to the site dashboard
     And I should see "This site has been entirely archived."
