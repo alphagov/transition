@@ -1,4 +1,8 @@
 class MappingsBatch < ActiveRecord::Base
+  UNFINISHED_STATES = ['unqueued', 'queued', 'processing']
+  FINISHED_STATES   = ['succeeded', 'failed']
+  PROCESSING_STATES = UNFINISHED_STATES + FINISHED_STATES
+
   attr_accessor :paths # a virtual attribute to then use for creating entries
   attr_accessible :paths, :http_status, :new_url, :tag_list, :update_existing
 
@@ -14,6 +18,7 @@ class MappingsBatch < ActiveRecord::Base
   validates :new_url, length: { maximum: (64.kilobytes - 1) }, non_blank_url: true
   validates :paths, presence: { :if => :new_record? } # we only care about paths at create-time
   validate :paths, :paths_cannot_include_hosts_for_another_site, :paths_cannot_be_empty_once_canonicalised
+  validate :state, inclusion: { :in => PROCESSING_STATES }
 
   before_validation :fill_in_scheme
 
@@ -62,16 +67,27 @@ class MappingsBatch < ActiveRecord::Base
   end
 
   def process
-    entries.each do |entry|
-      mapping = site.mappings.where(path: entry.path).first_or_initialize
+    with_state_tracking do
+      entries.each do |entry|
+        mapping = site.mappings.where(path: entry.path).first_or_initialize
 
-      next if !update_existing && mapping.persisted?
+        next if !update_existing && mapping.persisted?
 
-      mapping.http_status = http_status
-      mapping.new_url = new_url
-      mapping.tag_list = [mapping.tag_list, tag_list].join(',')
-      mapping.save
+        mapping.http_status = http_status
+        mapping.new_url = new_url
+        mapping.tag_list = [mapping.tag_list, tag_list].join(',')
+        mapping.save
+      end
     end
+  end
+
+  def with_state_tracking
+    update_column(:state, 'processing')
+    yield
+    update_column(:state, 'succeeded')
+  rescue => e
+    update_column(:state, 'failed')
+    raise
   end
 
 private

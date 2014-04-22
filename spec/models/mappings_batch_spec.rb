@@ -131,5 +131,20 @@ describe MappingsBatch do
         end
       end
     end
+
+    describe 'recording state' do
+      it 'should set it to succeeded' do
+        mappings_batch.process
+        mappings_batch.state.should == 'succeeded'
+      end
+
+      context 'error raised during processing' do
+        it 'should set the state to failed and reraise the error' do
+          ActiveRecord::Relation.any_instance.stub(:first_or_initialize) { raise_error }
+          expect { mappings_batch.process }.to raise_error
+          mappings_batch.state.should == 'failed'
+        end
+      end
+    end
   end
 end
