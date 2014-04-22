@@ -18,4 +18,5 @@ end
 
 every :day, at: '3am' do
   rake 'clear_expired_sessions'
+  rake 'clear_old_mappings_batches'
 end
