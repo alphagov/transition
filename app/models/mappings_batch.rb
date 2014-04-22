@@ -1,7 +1,6 @@
 class MappingsBatch < ActiveRecord::Base
-  UNFINISHED_STATES = ['unqueued', 'queued', 'processing']
-  FINISHED_STATES   = ['succeeded', 'failed']
-  PROCESSING_STATES = UNFINISHED_STATES + FINISHED_STATES
+  FINISHED_STATES = ['succeeded', 'failed']
+  PROCESSING_STATES = ['unqueued', 'queued', 'processing'] + FINISHED_STATES
 
   attr_accessor :paths # a virtual attribute to then use for creating entries
   attr_accessible :paths, :http_status, :new_url, :tag_list, :update_existing, :state
@@ -20,7 +19,7 @@ class MappingsBatch < ActiveRecord::Base
   validate :paths, :paths_cannot_include_hosts_for_another_site, :paths_cannot_be_empty_once_canonicalised
   validate :state, inclusion: { :in => PROCESSING_STATES }
 
-  scope :unfinished, where(state: UNFINISHED_STATES)
+  scope :reportable, where(seen_outcome: false).where("state != 'unqueued'")
 
   before_validation :fill_in_scheme
 
@@ -36,6 +35,18 @@ class MappingsBatch < ActiveRecord::Base
 
   def redirect?
     http_status == '301'
+  end
+
+  def finished?
+    FINISHED_STATES.include?(state)
+  end
+
+  def succeeded?
+    state == 'succeeded'
+  end
+
+  def failed?
+    state == 'failed'
   end
 
   def fill_in_scheme

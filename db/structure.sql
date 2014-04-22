@@ -102,6 +102,7 @@ CREATE TABLE `mappings_batches` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `state` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'unqueued',
+  `seen_outcome` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `index_mappings_batches_on_user_id_and_site_id` (`user_id`,`site_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -313,3 +314,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140404112839');
 INSERT INTO schema_migrations (version) VALUES ('20140417100412');
 
 INSERT INTO schema_migrations (version) VALUES ('20140422160500');
+
+INSERT INTO schema_migrations (version) VALUES ('20140422184036');

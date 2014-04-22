@@ -513,6 +513,37 @@ describe MappingsController do
     end
   end
 
+  describe 'displaying background bulk add status' do
+    context 'outcome hasn\'t been seen yet' do
+      let!(:mappings_batch) { create(:mappings_batch, site: site, user: admin_bob, state: 'succeeded') }
+      before do
+        login_as(admin_bob)
+        get :index, site_id: site
+      end
+
+      it 'should the progress message' do
+        flash.now[:success].should include('2 mappings processed')
+      end
+
+      it 'should record that the outcome of processing the batch has been seen' do
+        mappings_batch.reload
+        mappings_batch.seen_outcome.should == true
+      end
+    end
+
+    context 'outcome has been seen' do
+      let!(:mappings_batch) { create(:mappings_batch, site: site, user: admin_bob, state: 'succeeded', seen_outcome: true) }
+      before do
+        login_as(admin_bob)
+        get :index, site_id: site
+      end
+
+      it 'should not show an outcome message' do
+        flash.now[:success].should be_nil
+      end
+    end
+  end
+
   describe 'rejecting an invalid or missing authenticity (CSRF) token' do
     before do
       login_as admin_bob
