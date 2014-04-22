@@ -125,8 +125,8 @@ module View
         @modified_mappings
       end
 
-      def tagged_with(opts = {and: false})
-        %(#{opts[:and] ? ' and ' : ''}tagged with "#{tag_list.join(', ')}") if tag_list.any?
+      def tagged_with(opts = {all: false, and: false})
+        %(#{opts[:all] ? '. All ' : ''}#{opts[:and] ? ' and ' : ''}tagged with "#{tag_list.join(', ')}") if tag_list.any?
       end
 
       def mappings_created
@@ -142,11 +142,15 @@ module View
           I18n.t('mappings.bulk.add.success.all_created',
                  created: mappings_created,
                  tagged_with: tagged_with(and: true))
+        elsif created_count.zero?
+          I18n.t('mappings.bulk.add.success.all_updated',
+                 updated: mappings_updated,
+                 tagged_with: tagged_with(and: true))
         else
           I18n.t('mappings.bulk.add.success.some_updated',
                  created: mappings_created,
                  updated: mappings_updated,
-                 tagged_with: tagged_with)
+                 tagged_with: tagged_with(all: true))
         end
       end
     end

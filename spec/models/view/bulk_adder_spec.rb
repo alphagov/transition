@@ -374,17 +374,37 @@ describe View::Mappings::BulkAdder do
       it { should eql('3 mappings created and 1 mapping updated. All tagged with "fee, fi, fo".') }
     end
 
+    context 'when updating only existing mappings' do
+      let!(:existing_mappings) do
+        create(:mapping, site: site, path: '/might-exist', http_status: '410')
+        create(:mapping, site: site, path: '/a', http_status: '410')
+        create(:mapping, site: site, path: '/b', http_status: '410')
+        create(:mapping, site: site, path: '/c', http_status: '410')
+      end
+
+      before { bulk_adder.create_or_update! }
+
+      context 'when updating and tagging' do
+        it { should eql('4 mappings updated and tagged with "fee, fi, fo"') }
+      end
+
+      context 'when not tagging' do
+        before { params.delete(:tag_list) }
+        it { should eql('4 mappings updated') }
+      end
+    end
+
     context 'there are no pre-existing mappings' do
       before  { bulk_adder.create_or_update! }
 
       context 'when creating some mappings and updating none' do
-        it { should eql('4 mappings created and tagged with "fee, fi, fo".') }
+        it { should eql('4 mappings created and tagged with "fee, fi, fo"') }
       end
 
       context 'when creating some mappings, updating none and tagging none' do
         before { params.delete(:tag_list) }
 
-        it { should eql('4 mappings created.') }
+        it { should eql('4 mappings created') }
       end
     end
   end
