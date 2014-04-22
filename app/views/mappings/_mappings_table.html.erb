@@ -21,7 +21,11 @@
         Original path from <%= site.default_host.hostname %>
       </th>
       <% if current_user.can_edit_site?(site) %>
-        <th class="mapping-edit-column"></th>
+        <% if site.default_host.aka_host && site.default_host.aka_host.redirected_by_gds? %>
+          <th class="mapping-edit-and-preview-column"></th>
+        <% else %>
+          <th class="mapping-edit-column"></th>
+        <% end %>
       <% end %>
     </tr>
     <% if current_user.can_edit_site?(site) %>
@@ -53,8 +57,17 @@
       </td>
       <% if current_user.can_edit_site?(site) %>
         <td class="text-right">
-          <%= link_to edit_site_mapping_path(site, mapping, :return_path => request.fullpath), class: 'btn btn-default btn-xs' do %>
-            Edit&nbsp;mapping
+          <% if site.default_host.aka_host && site.default_host.aka_host.redirected_by_gds? %>
+            <div class="btn-group">
+              <a href="http://<%= site.default_host.hostname %>.side-by-side.alphagov.co.uk/__/#<%= mapping.path %>/" class="btn btn-default btn-sm" title="Preview in side by side browser">Preview</a>
+              <%= link_to edit_site_mapping_path(site, mapping, :return_path => request.fullpath), class: 'btn btn-default btn-sm' do %>
+                Edit
+              <% end %>
+            </div>
+          <% else %>
+            <%= link_to edit_site_mapping_path(site, mapping, :return_path => request.fullpath), class: 'btn btn-default btn-sm' do %>
+              Edit&nbsp;mapping
+            <% end %>
           <% end %>
         </td>
       <% end %>
