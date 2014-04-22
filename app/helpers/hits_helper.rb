@@ -27,13 +27,22 @@ module HitsHelper
   #          {label: 'Errors', type: 'number'},
   #          {label: 'Archive', type: 'number'}],
   #   rows: [
-  #          {c:[{v: 'Date(2012, 11, 10)'}, {v: 10000, f:'10,000'}, {v: 20000, f:'20,000'}]},
-  #          {c:[{v: 'Date(2012, 11, 11)'}, {v: 1000,  f:'1,000'}, {v: 2000, f:'2,000'}]},
+  #          {c:[{v: 'Date(2012, 11, 10)'}, {v: ''}, {v: 10000, f:'10,000'}, {v: 20000, f:'20,000'}]},
+  #          {c:[{v: 'Date(2012, 11, 11)'}, {v: ''}, {v: 1000,  f:'1,000'}, {v: 2000, f:'2,000'}]},
   #         ]
   # }
-  def google_data_table(categories)
+  #
+  # Example showing a vertical line on x-axis
+  # https://groups.google.com/forum/#!topic/google-visualization-api/cfG-iqZSfds
+  # http://savedbythegoog.appspot.com/?id=7e54024673afee6264407cc6c21f99f3a6b160ad
+  #
+  def google_data_table(categories, site = nil)
+    transition_date = site && site.transition_status == :live ? site.launch_date : nil
     dates = {}
-    cols  = [{ label: 'Date', type: 'date' }]
+    cols  = [
+        { label: 'Date', type: 'date' },
+        { label: 'Transition date line', type: 'string', p: {role: 'annotation'}}
+      ]
 
     categories.each do |category|
       cols << { label: category.title, type: 'number' }
@@ -49,6 +58,7 @@ module HitsHelper
       rows << {
         c: [
              { v: "Date(#{date.year}, #{date.month - 1}, #{date.day})" },
+             { v: date == transition_date ? 'Transition' : ''},
              *categories.map do |c|
                count_for_category = category_counts[c.name] || 0
                { v: count_for_category, f: number_with_delimiter(count_for_category) }

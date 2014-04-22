@@ -44,6 +44,7 @@
                 height: '80%'
               },
               colors: colors,
+              annotations: {style: 'line', stemColor: 'black'},
               focusTarget: 'category' // Highlights all trends in a single tooltip, hovering
                                       // anywhere in the space above or below a point
             };

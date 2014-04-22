@@ -51,13 +51,26 @@ describe HitsHelper do
       ]
     }
 
-    subject(:array) { helper.google_data_table(categories) }
+    let(:live_site_that_transitioned_on_2012_12_30) do
+       site = build(:site, launch_date: Date.new(2012,12,30))
+       site.hosts << build(:host, cname: 'redirector-cdn.production.govuk.service.gov.uk')
+       site.save
+       site
+    end
+
+    subject(:array) { helper.google_data_table(categories, live_site_that_transitioned_on_2012_12_30) }
 
     it { should be_a(String) }
     it { should include('{"label":"Date","type":"date"}') }
     it { should include('{"label":"Archives","type":"number"},{"label":"Errors","type":"number"},{"label":"Redirects","type":"number"}') }
-    it { should include('{"c":[{"v":"Date(2012, 11, 31)"},{"v":3,"f":"3"},{"v":3,"f":"3"},{"v":0,"f":"0"}]}') }
-    it { should include('{"c":[{"v":"Date(2012, 11, 30)"},{"v":1000,"f":"1,000"},{"v":4,"f":"4"},{"v":4,"f":"4"}]}') }
     it { should_not include('nil') }
+
+    describe 'it includes a normal data row' do
+      it { should include('{"c":[{"v":"Date(2012, 11, 31)"},{"v":""},{"v":3,"f":"3"},{"v":3,"f":"3"},{"v":0,"f":"0"}]}') }
+    end
+
+    describe 'it includes an annotation on the transition date' do
+      it { should include('{"c":[{"v":"Date(2012, 11, 30)"},{"v":"Transition"},{"v":1000,"f":"1,000"},{"v":4,"f":"4"},{"v":4,"f":"4"}]}') }
+    end
   end
 end
