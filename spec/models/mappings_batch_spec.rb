@@ -134,7 +134,7 @@ describe MappingsBatch do
           existing_mapping.reload
           existing_mapping.http_status.should == '301'
           existing_mapping.new_url.should == 'http://gov.uk'
-          existing_mapping.tag_list.should == ['a tag', 'existing tag']
+          existing_mapping.tag_list.sort.should == ['a tag', 'existing tag']
         end
       end
     end
