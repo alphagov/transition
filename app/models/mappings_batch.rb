@@ -63,6 +63,8 @@ class MappingsBatch < ActiveRecord::Base
         errors.add(:paths, "includes an invalid URL: #{url}")
       end
     end
+    hosts.uniq!
+
     if hosts.any? && (hosts.size != site.hosts.where(hostname: hosts).count)
       errors.add(:paths, I18n.t('mappings.bulk.add.hosts_invalid'))
     end
