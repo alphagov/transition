@@ -146,6 +146,14 @@ Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
   expect(page).to have_field('Tags', with: tag_list)
 end
 
+Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|
+  within '.alert-success', :match => :first do
+    expect(page).to have_content(
+      %(3 mappings updated and tagged with "#{tag_list}")
+    )
+  end
+end
+
 Then(/^the mapping should have the tags "([^"]*)"$/) do |tag_list|
   expected_tags = tag_list.split(',').map(&:strip)
   within ".mappings-index .mapping-#{@mapping.id}" do
