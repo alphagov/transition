@@ -34,7 +34,17 @@ class MappingsController < ApplicationController
         render action: 'new_multiple_confirmation' and return
       end
 
-      MappingsBatchWorker.perform_async(@batch.id)
+      if @batch.entries_to_process.count > 20
+        MappingsBatchWorker.perform_async(@batch.id)
+      else
+        @batch.process
+        @batch.update_column(:seen_outcome, true)
+
+        outcome = MappingsBatchOutcomePresenter.new(@batch)
+        flash[:saved_mapping_ids] = outcome.affected_mapping_ids
+        flash[:success] = outcome.success_message
+        flash[:saved_operation] = outcome.operation_description
+      end
     end
 
     if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])

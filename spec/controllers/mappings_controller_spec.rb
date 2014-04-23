@@ -298,7 +298,21 @@ describe MappingsController do
         login_as admin_bob
       end
 
-      context 'with valid data' do
+      context 'with a small batch' do
+        before do
+          post :create_multiple, site_id: site.abbr, update_existing: 'true',
+                mappings_batch_id: batch.id
+        end
+
+        it 'sets a success message' do
+          flash[:success].should include('mappings created')
+        end
+      end
+
+      context 'with a large batch' do
+        let(:batch) { create(:mappings_batch, site: site,
+                              paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21}) }
+
         before do
           post :create_multiple, site_id: site.abbr, update_existing: 'true',
                 mappings_batch_id: batch.id

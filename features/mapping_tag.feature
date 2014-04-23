@@ -24,6 +24,8 @@ Scenario: Adding tags when bulk adding mappings
   And I should see the tags "fee, fi, FO"
   When I choose "Overwrite existing mappings"
   And I save the mappings
+  Then I should see that all were tagged "fee, fi, FO"
+  And the mappings should all have the tags "fee, fi, fo, fum"
 
 Scenario: Bulk adding tags to existing mappings
   Given I have logged in as an admin
