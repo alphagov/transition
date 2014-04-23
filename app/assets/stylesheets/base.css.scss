@@ -403,7 +403,8 @@ a.list-group-item {
 /* No content
    ========================================================================== */
 
-%large-and-spaced {
+%large-and-spaced,
+.large-and-spaced {
   font-size: $font-size-base * 2;
   line-height: $default-vertical-margin * 2;
   text-align: center;

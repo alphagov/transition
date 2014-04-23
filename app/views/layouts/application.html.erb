@@ -81,6 +81,14 @@
           }
         %>
       <% end %>
+      <% if @site && @reportable_batch %>
+        <%= render partial: 'mappings/background_bulk_add_progress_modal',
+          locals: {
+            batch: @reportable_batch,
+            site: @site,
+          }
+        %>
+      <% end %>
 
       <% breadcrumbs do |links| %>
         <% if links.any? %>
