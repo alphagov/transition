@@ -16,6 +16,16 @@ describe MappingsBatch do
       end
     end
 
+    describe 'paths includes URLs for this site' do
+      let(:site) { create(:site_without_host, hosts: [create(:host, hostname: 'a.com')]) }
+
+      subject(:mappings_batch) do
+        build(:mappings_batch, site: site, paths: ['http://a.com/a', 'http://a.com/a'])
+      end
+
+      it { should be_valid }
+    end
+
     describe 'paths would be empty after canonicalisation' do
       subject(:mappings_batch) { build(:mappings_batch, paths: ['/']) }
 
