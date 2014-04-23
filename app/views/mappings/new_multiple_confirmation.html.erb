@@ -48,7 +48,7 @@
   <table class="table table-bordered table-striped">
     <thead>
       <tr class="table-header">
-        <th><%= pluralize(@batch.entries.size, "old path") %> from <%= @site.default_host.hostname %></th>
+        <th><%= pluralize(number_with_delimiter(@batch.entries.size), "old path") %> from <%= @site.default_host.hostname %></th>
       </tr>
     </thead>
     <tbody>
