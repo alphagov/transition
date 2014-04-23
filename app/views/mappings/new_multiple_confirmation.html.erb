@@ -40,11 +40,6 @@
     <% end %>
   </h2>
 
-  <%= hidden_field_tag "http_status", @batch.http_status %>
-  <% if @batch.http_status == '301' %>
-    <%= hidden_field_tag "new_url", @batch.new_url %>
-  <% end %>
-
   <table class="table table-bordered table-striped">
     <thead>
       <tr class="table-header">
