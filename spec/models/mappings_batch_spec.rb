@@ -12,7 +12,7 @@ describe MappingsBatch do
 
       before { mappings_batch.should_not be_valid }
       it 'should declare them invalid' do
-        mappings_batch.errors[:paths].should == ['One or more of the URLs entered are not part of this site']
+        mappings_batch.errors[:paths].should == ['includes one or more URLs which are not part of this site']
       end
     end
 

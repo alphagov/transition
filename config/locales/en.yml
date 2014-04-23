@@ -8,6 +8,10 @@ en:
   time:
     formats:
       govuk_date: "%-I:%M%P, %-e %B %Y" # 1:15pm, 1 January 2013
+  activerecord:
+    attributes:
+      mappings_batch:
+        paths: Old URLs
   mappings:
     not_possible_to_edit_homepage_mapping: 'It’s not currently possible to edit the mapping for a site’s homepage.'
     bulk:
@@ -15,7 +19,7 @@ en:
       new_url_invalid: 'Enter a valid URL to redirect to'
       add:
         paths_empty: 'Enter at least one valid path'
-        hosts_invalid: 'One or more of the URLs entered are not part of this site'
+        hosts_invalid: 'includes one or more URLs which are not part of this site'
         success:
           all_created: '%{created}%{tagged_with}'
           all_updated: '%{updated}%{tagged_with}'
