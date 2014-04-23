@@ -51,6 +51,15 @@ describe MappingsBatch do
         mappings_batch.errors[:new_url].should == ['is not a URL']
       end
     end
+
+    describe 'invalid paths with a scheme' do
+      subject(:mappings_batch) { build(:mappings_batch, http_status: '410', paths: ['http://newurl/foo[1]']) }
+
+      before { mappings_batch.should_not be_valid }
+      it 'should not raise an error' do
+        expect { mappings_batch.valid? }.not_to raise_error
+      end
+    end
   end
 
   describe 'filling in scheme of New URL' do

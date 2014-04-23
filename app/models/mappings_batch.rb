@@ -56,8 +56,12 @@ class MappingsBatch < ActiveRecord::Base
   def paths_cannot_include_hosts_for_another_site
     return true if paths.blank?
     hosts = paths.grep(/^http/).map do |url|
-      uri = URI.parse(url)
-      uri.host
+      begin
+        uri = URI.parse(url)
+        uri.host
+      rescue URI::InvalidURIError
+        errors.add(:paths, "includes an invalid URL: #{url}")
+      end
     end
     if hosts.any? && (hosts.size != site.hosts.where(hostname: hosts).count)
       errors.add(:paths, I18n.t('mappings.bulk.add.hosts_invalid'))
