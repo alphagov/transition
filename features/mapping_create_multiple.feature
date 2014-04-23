@@ -17,7 +17,6 @@ Feature: Create mappings
     And I continue
     Then the page title should be "Confirm new mappings"
     And I should see options to ignore or overwrite the existing mappings
-    And I should see that the mappings will redirect to "https://www.gov.uk/organisations/bis"
     And I should see the canonicalized paths "/needs/canonicalizing, /a, /r"
     But I should not see "noslash"
     And I should see "/a currently archived"

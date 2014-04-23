@@ -31,8 +31,8 @@
   <% end %>
 
   <h2 class="add-bottom-margin">
-    <%= "#{ http_status_name(@batch.http_status) }" %> paths
-    <% if @batch.http_status == '301' %>
+    <%= "#{ http_status_name(@batch.http_status) }" %> <%= number_with_delimiter(@batch.entries.size) %> paths
+    <% if @batch.redirect? %>
       <br />
       <span class="subtitle">
         to <%= link_to @batch.new_url, @batch.new_url, class: 'breakable' %>
@@ -40,14 +40,21 @@
     <% end %>
   </h2>
 
+  <% preview_mappings = @batch.entries.limit(20) %>
   <table class="table table-bordered table-striped">
     <thead>
       <tr class="table-header">
-        <th><%= pluralize(number_with_delimiter(@batch.entries.size), "old path") %> from <%= @site.default_host.hostname %></th>
+        <th>
+          <% if preview_mappings.size < @batch.entries.size %>
+            Preview first <%= pluralize(preview_mappings.size, "mappings") %> of <%= number_with_delimiter(@batch.entries.size) %> mappings
+          <% else %>
+            Preview mappings
+          <% end %>
+        </th>
       </tr>
     </thead>
     <tbody>
-      <% @batch.entries.each do |entry| %>
+      <% preview_mappings.each do |entry| %>
         <% existing_mapping = entry.mapping %>
         <tr>
           <td <% if existing_mapping %>class="warning"<% end %>>
@@ -65,6 +72,13 @@
         </tr>
       <% end %>
     </tbody>
+    <% if preview_mappings.size < @batch.entries.size %>
+      <tfoot>
+        <tr class="table-header">
+          <td colspan="2" class="text-center bold">…and <%= @batch.entries.size - preview_mappings.size %> more.</td>
+       </tr>
+      </tfoot>
+    <% end %>
   </table>
 
   <%= render partial: 'tag_list_field', locals: { bulk_tagger: @batch } %>

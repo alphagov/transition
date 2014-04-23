@@ -54,6 +54,10 @@ class Mapping < ActiveRecord::Base
   end
 
   def type
+    Mapping.type(http_status)
+  end
+
+  def self.type(http_status)
     TYPES[http_status] || 'unknown'
   end
 

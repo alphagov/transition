@@ -37,6 +37,10 @@ class MappingsBatch < ActiveRecord::Base
     http_status == '301'
   end
 
+  def type
+    Mapping.type(http_status)
+  end
+
   def finished?
     FINISHED_STATES.include?(state)
   end
