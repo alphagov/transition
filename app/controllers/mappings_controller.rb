@@ -5,6 +5,7 @@ class MappingsController < ApplicationController
   include BackgroundBulkAddMessageControllerMixin
 
   before_filter :find_site, except: [:find_global]
+  before_filter :set_reportable_batch, except: [:find_global]
   before_filter :set_background_bulk_add_status_message, except: [:find_global]
   before_filter :check_user_can_edit, except: [:index, :find, :find_global]
 
@@ -220,5 +221,9 @@ private
     else
       site_mappings_path(@site)
     end
+  end
+
+  def set_reportable_batch
+    @reportable_batch = current_user.mappings_batches.reportable.order(:updated_at).last
   end
 end
