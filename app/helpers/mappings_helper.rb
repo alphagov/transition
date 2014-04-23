@@ -71,4 +71,10 @@ module MappingsHelper
     Mapping.find(ids)
   end
 
+  def show_preview_links?
+    @site.default_host.aka_host &&
+      @site.default_host.aka_host.redirected_by_gds? &&
+      @site.hosts.any?(&:redirected_by_gds?)
+  end
+
 end
