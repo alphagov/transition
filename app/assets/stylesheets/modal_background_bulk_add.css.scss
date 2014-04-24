@@ -1,0 +1,20 @@
+.modal-background-bulk-add {
+  .progress-container {
+    @extend %large-and-spaced;
+    padding: $default-vertical-margin 0 $default-vertical-margin * 2;
+  }
+
+  .progress-spinner {
+    margin-top: -4px;
+  }
+
+  .progress {
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+
+  // Bar starts at 0 width until overwritten with inline values
+  .progress-bar {
+    width: 0;
+  }
+}
