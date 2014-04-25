@@ -1,0 +1,16 @@
+.modal-with-btn-in-title {
+  .modal-title {
+    padding-right: 75px;
+  }
+
+  .btn-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+}
+
+.modal-with-btn-in-title .alert + .btn-modal-close {
+  top: 30px;
+  right: 30px;
+}
