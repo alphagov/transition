@@ -9,9 +9,9 @@
     that.start = function(element) {
 
       var url = element.data('url'),
-          timeout,
           message = element.find('.js-progress-message'),
           percentDone = element.find('.js-progress-percent'),
+          progressContainer = element.find('.js-progress-container'),
           bar = element.find('.js-progress-bar');
 
       requestProgress();
@@ -25,12 +25,25 @@
 
       // {done: X, total: X}
       function updateProgress(progress) {
-        var percent = (progress.done/progress.total * 100).toFixed(0);
+        var percent;
         message.text(progress.done + " of " + progress.total + " mappings added");
+
+        if (progress.done === progress.total) {
+          showSuccess(progress);
+          return;
+        }
+
+        percent = (progress.done/progress.total * 100).toFixed(0);
         percentDone.text(percent);
         bar.css('width', percent + '%');
         timeout = setTimeout(requestProgress, 1000);
       }
+
+      function showSuccess(progress) {
+        progressContainer.addClass('alert alert-success');
+        that.stop();
+      }
+
     };
 
     that.stop = function() {

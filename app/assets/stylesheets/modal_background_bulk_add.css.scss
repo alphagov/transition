@@ -4,8 +4,22 @@
     padding: $default-vertical-margin 0 $default-vertical-margin * 2;
   }
 
+  .progress-container.alert {
+    padding-top: $default-vertical-margin * 2;
+  }
+
   .progress-spinner {
     margin-top: -4px;
+  }
+
+  .glyphicon-ok,
+  .alert-success .progress-spinner,
+  .alert-success .progress {
+    display: none;
+  }
+
+  .alert-success .glyphicon-ok {
+    display: inline;
   }
 
   .progress {

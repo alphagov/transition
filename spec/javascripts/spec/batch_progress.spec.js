@@ -11,9 +11,16 @@ describe('A batch progress module', function() {
         <span class="js-progress-message"></span>\
         <span class="js-progress-percent"></span>\
         <span class="js-progress-bar"></span>\
+        <span class="js-progress-container"></span>\
       </div>\
     ');
     batchProgress = new GOVUK.Modules.BatchProgress();
+    jasmine.clock().install();
+  });
+
+  afterEach(function() {
+    batchProgress.stop();
+    jasmine.clock().uninstall();
   });
 
   describe('when started', function() {
@@ -38,10 +45,6 @@ describe('A batch progress module', function() {
       batchProgress.start(element);
     });
 
-    afterEach(function() {
-      batchProgress.stop();
-    });
-
     it('updates the width of the progress bar', function() {
       expect(element.find('.js-progress-bar').attr('style')).toMatch('width: 10%;');
     });
@@ -57,9 +60,7 @@ describe('A batch progress module', function() {
     describe('and a second has passed', function() {
 
       beforeEach(function(done) {
-        setTimeout(function() {
-          done();
-        }, 1000);
+        elapseOneSecondAndTest(done);
       });
 
       it('keeps updating the display as the response changes', function() {
@@ -67,8 +68,39 @@ describe('A batch progress module', function() {
         expect(element.find('.js-progress-message').text()).toBe('2 of 10 mappings added');
         expect(element.find('.js-progress-percent').text()).toBe('20');
       });
-    })
-
+    });
   });
+
+  describe('when processing is done', function() {
+
+    beforeEach(function(done) {
+      var response = {done: 10, total: 10};
+      spyOn($, 'ajax').and.callFake(function(options) {
+        options.success(response);
+      });
+      batchProgress.start(element);
+      elapseOneSecondAndTest(done);
+    });
+
+    it('shows a success state', function() {
+      expect(element.find('.alert-success').length).toBe(1);
+      expect(element.find('.js-progress-message').text()).toBe('10 of 10 mappings added');
+    });
+
+    it('stops making requests', function() {
+      jasmine.clock().tick(1001);
+      expect($.ajax.calls.count()).toBe(1);
+
+      jasmine.clock().tick(10001);
+      expect($.ajax.calls.count()).toBe(1);
+    });
+  });
+
+  function elapseOneSecondAndTest(done) {
+    setTimeout(function() {
+      done();
+    }, 1000);
+    jasmine.clock().tick(1001);
+  }
 
 });
