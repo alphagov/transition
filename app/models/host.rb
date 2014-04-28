@@ -6,9 +6,9 @@ class Host < ActiveRecord::Base
   has_one :aka_host, class_name: 'Host', foreign_key: 'canonical_host_id'
   belongs_to :canonical_host, class_name: 'Host'
 
-  validate :hostname, presence: true
-  validate :site, presence: true
-  validate :canonical_host_id, presence: { :if => :aka? }
+  validates :hostname, presence: true
+  validates :site, presence: true
+  validates :canonical_host_id, presence: { :if => :aka? }
 
   scope :excluding_aka, where('hostname not like "aka%"')
 
