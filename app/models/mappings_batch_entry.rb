@@ -28,10 +28,6 @@ class MappingsBatchEntry < ActiveRecord::Base
     mappings_batch.tag_list.split(',')
   end
 
-  def tag_list
-    mappings_batch.tag_list.split(',')
-  end
-
   def redirect?
     mappings_batch.redirect?
   end
