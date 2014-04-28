@@ -5,15 +5,48 @@ describe Host do
     it { should belong_to(:site) }
   end
 
+  describe 'validations' do
+    describe 'validations which don\'t depend on aka?' do
+      # Validation calls aka? when checking canonical_host_id, and will raise
+      # an error on a nil hostname before validation finishes. This means that
+      # to test validations which aren't dependent on aka? (for hostname in
+      # particular) we need to stub aka? to see that validation actually working.
+      before do
+        subject.stub(:aka?).and_return(false)
+      end
+
+      it { should validate_presence_of(:hostname) }
+      it { should validate_presence_of(:site) }
+    end
+
+    describe 'canonical_host_id' do
+      context 'if not aka but has canonical_host_id' do
+        subject(:host) { build :host, hostname: 'foo.gov.uk', canonical_host_id: 1 }
+
+        its(:valid?) { should be_false }
+        it 'should have an error for canonical_host_id' do
+          host.errors_on(:canonical_host_id).should include('must be blank for a non-aka host')
+        end
+      end
+
+      context 'if aka but has no canonical_host_id' do
+        subject(:host) { build :host, hostname: 'aka-foo.gov.uk' }
+
+        its(:valid?) { should be_false }
+        it 'should have an error for canonical_host_id' do
+          host.errors_on(:canonical_host_id).should include('can\'t be blank for an aka host')
+        end
+      end
+    end
+  end
+
   describe 'scopes' do
     describe 'excluding_aka' do
       let(:site) { create(:site_without_host) }
 
       before do
-        create(:host, site: site, hostname: 'www.foo.com')
-        create(:host, site: site, hostname: 'foo.com')
-        create(:host, site: site, hostname: 'aka.foo.com')
-        create(:host, site: site, hostname: 'aka-foo.com')
+        create(:host, :with_its_aka_host, site: site, hostname: 'www.foo.com')
+        create(:host, :with_its_aka_host, site: site, hostname: 'foo.com')
       end
 
       subject { site.hosts.excluding_aka.pluck(:hostname) }

@@ -66,8 +66,9 @@ describe Site do
 
     context 'site is not redirected yet, but has aka set up (for testing)' do
       before do
-        create(:host, :with_third_party_cname, hostname: 'foo.com', site: site)
-        create(:host, :with_govuk_cname,       hostname: 'aka-foo.com', site: site)
+        host = create(:host, :with_third_party_cname, hostname: 'foo.com', site: site)
+        create(:host, :with_govuk_cname, hostname: 'aka-foo.com', site: site,
+                      canonical_host_id: host.id)
       end
 
       it { should eql(:pre_transition) }
@@ -83,8 +84,7 @@ describe Site do
     let(:site) { create :site_without_host }
 
     before do
-      create(:host, hostname: 'aka.f.com', site: site)
-      create(:host, hostname: 'www.f.com', site: site)
+      create(:host, :with_its_aka_host, hostname: 'www.f.com', site: site)
     end
 
     subject(:default_host) do
