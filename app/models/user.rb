@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
     admin? ||
       own_organisation == site_to_edit.organisation ||
       site_to_edit.organisation.parent_organisations.include?(own_organisation) ||
-      site_to_edit.extra_organisations.include?(own_organisation)
+      site_to_edit.extra_organisations.include?(own_organisation) &&
+      site_to_edit.global_http_status.blank?
   end
 
   def own_organisation
