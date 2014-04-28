@@ -14,7 +14,7 @@ class MappingsBatch < ActiveRecord::Base
   validates :site, presence: true
   validates :http_status, inclusion: { :in => Mapping::SUPPORTED_STATUSES }
   validates :new_url, presence: { if: :redirect?, message: 'required when mapping is a redirect' }
-  validates :new_url, length: { maximum: (64.kilobytes - 1) }, non_blank_url: true
+  validates :new_url, length: { if: :redirect?, maximum: (64.kilobytes - 1) }, non_blank_url: { if: :redirect? }
   validates :paths, presence: { :if => :new_record? } # we only care about paths at create-time
   validate :paths, :paths_cannot_include_hosts_for_another_site, :paths_cannot_be_empty_once_canonicalised
   validate :state, inclusion: { :in => PROCESSING_STATES }

@@ -45,7 +45,7 @@ describe MappingsBatch do
     end
 
     describe 'constrains the length of new URL' do
-      subject(:mappings_batch) { build(:mappings_batch, new_url: 'http://'.ljust(65536, 'x')) }
+      subject(:mappings_batch) { build(:mappings_batch, http_status: '301', new_url: 'http://'.ljust(65536, 'x')) }
 
       before { mappings_batch.should_not be_valid }
       it 'should declare it invalid' do
@@ -54,7 +54,7 @@ describe MappingsBatch do
     end
 
     describe 'invalid new URLs' do
-      subject(:mappings_batch) { build(:mappings_batch, new_url: 'newurl') }
+      subject(:mappings_batch) { build(:mappings_batch, http_status: '301', new_url: 'newurl') }
 
       before { mappings_batch.should_not be_valid }
       it 'should declare it invalid' do
