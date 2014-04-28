@@ -45,6 +45,6 @@ Feature: Create mappings
     Then I should see "Enter at least one valid path"
     And I should see a highlighted "Old URLs" label and field
     And the "Old URLs" value should be "noslash"
-    And I should see "New URL is not a URL"
+    And I should see "Enter a valid URL to redirect to"
     And I should see a highlighted "Redirect to" label and field
     And the "Redirect to" value should be "http://__INVALID_URL__"

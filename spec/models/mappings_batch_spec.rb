@@ -4,7 +4,7 @@ describe MappingsBatch do
   describe 'validations' do
     it { should validate_presence_of(:user) }
     it { should validate_presence_of(:site) }
-    it { should validate_presence_of(:paths) }
+    it { should validate_presence_of(:paths).with_message('Enter at least one valid path') }
     it { should ensure_inclusion_of(:http_status).in_array(['301', '410']) }
     it { should ensure_inclusion_of(:state).in_array(MappingsBatch::PROCESSING_STATES) }
 
@@ -13,7 +13,7 @@ describe MappingsBatch do
 
       before { mappings_batch.should_not be_valid }
       it 'should declare them invalid' do
-        mappings_batch.errors[:paths].should == ['includes one or more URLs which are not part of this site']
+        mappings_batch.errors[:paths].should == ['One or more of the URLs entered are not part of this site']
       end
     end
 
@@ -41,7 +41,7 @@ describe MappingsBatch do
 
       before { mappings_batch.should_not be_valid }
       it 'should declare it invalid' do
-        mappings_batch.errors[:new_url].should == ['required when mapping is a redirect']
+        mappings_batch.errors[:new_url].should == ['Enter a valid URL to redirect to']
       end
     end
 
@@ -59,7 +59,7 @@ describe MappingsBatch do
 
       before { mappings_batch.should_not be_valid }
       it 'should declare it invalid' do
-        mappings_batch.errors[:new_url].should == ['is not a URL']
+        mappings_batch.errors[:new_url].should == ['Enter a valid URL to redirect to']
       end
     end
 

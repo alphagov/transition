@@ -19,7 +19,7 @@ en:
       new_url_invalid: 'Enter a valid URL to redirect to'
       add:
         paths_empty: 'Enter at least one valid path'
-        hosts_invalid: 'includes one or more URLs which are not part of this site'
+        hosts_invalid: 'One or more of the URLs entered are not part of this site'
         success:
           all_created: '%{created}%{tagged_with}'
           all_updated: '%{updated}%{tagged_with}'
