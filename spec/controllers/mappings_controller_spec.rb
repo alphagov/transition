@@ -535,7 +535,7 @@ describe MappingsController do
         get :index, site_id: site
       end
 
-      it 'should the progress message' do
+      it 'should set the progress message' do
         flash.now[:success].should include('2 mappings processed')
       end
 
