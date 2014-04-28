@@ -100,13 +100,11 @@ Given(/^a site (.*) exists$/) do |site_abbr|
 end
 
 Given(/^the site is globally archived$/) do
-  @site.global_http_status = '410'
-  @site.save
+  @site.update_attribute(:global_http_status, '410')
 end
 
 Given(/^the site is globally redirected$/) do
-  @site.global_http_status = '301'
-  @site.save
+  @site.update_attribute(:global_http_status, '301')
 end
 
 Given(/^these hits exist for the Attorney General's office site:$/) do |table|
