@@ -19,7 +19,7 @@ class MappingsController < ApplicationController
     @batch = MappingsBatch.new(http_status: params[:http_status],
                                new_url: params[:new_url],
                                tag_list: params[:tag_list],
-                               paths: params[:paths].split(/\r?\n|\r/).map(&:strip)) # TODO remove blanks
+                               paths: params[:paths].split(/\r?\n|\r/).map(&:strip))
     @batch.user = current_user
     @batch.site = @site
 
