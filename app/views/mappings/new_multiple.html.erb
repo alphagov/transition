@@ -11,7 +11,7 @@
 <%= form_tag new_multiple_confirmation_site_mappings_path(@site), role: 'form', 'data-module' => 'toggle-mapping-form-fields' do %>
 
   <% if @batch.errors %>
-    <%= render 'shared/error_messages', error_messages: @batch.errors.full_messages %>
+    <%= render 'shared/error_messages', error_messages: @batch.errors.values.flatten(1) %>
   <% end %>
 
   <% if params[:return_path].present? %>
