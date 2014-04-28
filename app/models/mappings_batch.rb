@@ -16,8 +16,8 @@ class MappingsBatch < ActiveRecord::Base
   validates :new_url, presence: { if: :redirect?, message: 'required when mapping is a redirect' }
   validates :new_url, length: { if: :redirect?, maximum: (64.kilobytes - 1) }, non_blank_url: { if: :redirect? }
   validates :paths, presence: { :if => :new_record? } # we only care about paths at create-time
+  validates :state, inclusion: { :in => PROCESSING_STATES }
   validate :paths, :paths_cannot_include_hosts_for_another_site, :paths_cannot_be_empty_once_canonicalised
-  validate :state, inclusion: { :in => PROCESSING_STATES }
 
   scope :reportable, where(seen_outcome: false).where("state != 'unqueued'")
 

@@ -6,6 +6,7 @@ describe MappingsBatch do
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:paths) }
     it { should ensure_inclusion_of(:http_status).in_array(['301', '410']) }
+    it { should ensure_inclusion_of(:state).in_array(MappingsBatch::PROCESSING_STATES) }
 
     describe 'paths includes URLs for another site' do
       subject(:mappings_batch) { build(:mappings_batch, paths: ['http://another.com/foo']) }
