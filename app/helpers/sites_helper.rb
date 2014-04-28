@@ -42,4 +42,21 @@ module SitesHelper
       class: 'link-muted'
   end
 
+  def site_global_http_status_text(site)
+    if site.global_http_status == '301'
+      "All paths from #{site.default_host.hostname}<br />
+       <span class=\"text-muted\">redirect to #{site.global_new_url}</span>".html_safe
+    elsif site.global_http_status == '410'
+      "All paths from #{site.default_host.hostname}<br />
+       <span class=\"text-muted\">have been archived</span>".html_safe
+    end
+  end
+
+  def site_global_http_status_explanation(site)
+    if site.global_http_status == '301'
+      I18n.t('mappings.global_http_status.redirect')
+    elsif site.global_http_status == '410'
+      I18n.t('mappings.global_http_status.archive')
+    end
+  end
 end

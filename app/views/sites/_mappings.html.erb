@@ -1,26 +1,13 @@
 <div class="mappings">
   <h3 class="remove-top-margin add-bottom-margin">Mappings</h3>
-  <% if @site.global_http_status == '301' %>
+  <% if @site.global_http_status.present? %>
     <div class="panel panel-default">
       <div class="panel-body">
           <p class="bold">
-            All paths from <%= @site.default_host.hostname %><br />
-            <span class="text-muted">redirect to <%= @site.global_new_url %></span>
+            <%= site_global_http_status_text(@site) %>
           </p>
           <p class="text-muted remove-bottom-margin">
-            This is known as a global redirect, the entire old site redirects to a single page. To make changes please contact your Transition Manager.
-          </p>
-      </div>
-    </div>
-  <% elsif @site.global_http_status == '410' %>
-    <div class="panel panel-default">
-      <div class="panel-body">
-          <p class="bold">
-            All paths from <%= @site.default_host.hostname %><br />
-            <span class="text-muted">have been archived</span>
-          </p>
-          <p class="text-muted remove-bottom-margin">
-            This is known as a global archive, the entire old site has been archived because it doesn't meet a user need. To make changes please contact your Transition Manager.
+            <%= site_global_http_status_explanation(@site) %>
           </p>
       </div>
     </div>
