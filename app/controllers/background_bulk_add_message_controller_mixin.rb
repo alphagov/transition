@@ -6,14 +6,14 @@ module BackgroundBulkAddMessageControllerMixin
         batch.update_column(:seen_outcome, true)
       end
 
-      flash.now[message_type(batch)] = background_status_message(batch)
+      flash.now[:batch_progress] = { message: background_status_message(batch), type: message_type(batch) }
     end
   end
 
   def background_status_message(batch)
     done = batch.entries.processed.count
     total = batch.entries_to_process.count
-    "#{done} of #{total} #{'mapping'.pluralize(total)} processed".html_safe
+    "#{done} of #{total} #{'mapping'.pluralize(total)} added".html_safe
   end
 
   def message_type(batch)
