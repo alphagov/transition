@@ -74,7 +74,7 @@ module MappingsHelper
   def show_preview_links?
     @site.default_host.aka_host &&
       @site.default_host.aka_host.redirected_by_gds? &&
-      !@site.hosts.excluding_aka.any?(&:redirected_by_gds?)
+      @site.hosts.excluding_aka.none?(&:redirected_by_gds?)
   end
 
 end
