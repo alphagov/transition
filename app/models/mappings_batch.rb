@@ -103,10 +103,11 @@ class MappingsBatch < ActiveRecord::Base
   def process
     with_state_tracking do
       entries.each do |entry|
-        mapping = site.mappings.where(path: entry.path).first_or_initialize
+        path_hash = Digest::SHA1.hexdigest(entry.path)
+        mapping = site.mappings.where(path_hash: path_hash).first_or_initialize
 
         next if !update_existing && mapping.persisted?
-
+        mapping.path = entry.path
         mapping.http_status = http_status
         mapping.new_url = new_url
         mapping.tag_list = [mapping.tag_list, tag_list].join(',')
