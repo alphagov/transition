@@ -254,3 +254,7 @@ Then(/^I should see mappings tagged with "fum" and "fiddle"$/) do
     And I should not see "/another"
   }
 end
+
+Then(/^I should be redirected to the site dashboard$/) do
+  i_should_be_on_the_path site_path(@site)
+end

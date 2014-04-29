@@ -108,12 +108,15 @@ Then(/^I should see all hits with a[n]? (\w+) status, in descending count order$
   end
 end
 
-Then(/^each hit except homepages should have a link to check its mapping$/) do
+Then(/^each hit except homepages and global redirects or archives should have a link to check its mapping$/) do
   within '.hits tbody' do
     page.all('tr').each do |row|
       path = row.find(:css, '.path').text
-      mapping = row.find(:css, '.action')
-      expect(mapping).to have_link('', href: site_mapping_find_path(@site, path: path, return_path: site_hits_path(@site))) unless path == '/'
+      unless path == '/' || @site.global_http_status.present?
+        mapping = row.find(:css, '.action')
+        path = site_mapping_find_path(@site, path: path, return_path: site_hits_path(@site))
+        expect(mapping).to have_link('', href: path)
+      end
     end
   end
 end

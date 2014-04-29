@@ -24,7 +24,7 @@ Scenario: Hits exist and are ordered for a site
   And each path should be a link to the real URL
   And the top hit should be represented by a 100% bar
   And subsequent hits should have smaller bars
-  And each hit except homepages should have a link to check its mapping
+  And each hit except homepages and global redirects or archives should have a link to check its mapping
   But I should not see hits for the Cabinet Office site
 
 Scenario: No hits exist
