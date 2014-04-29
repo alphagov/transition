@@ -536,7 +536,7 @@ describe MappingsController do
       end
 
       it 'should set the progress message' do
-        flash.now[:success].should include('2 mappings processed')
+        flash.now[:success].should include('2 mappings added')
       end
 
       it 'should record that the outcome of processing the batch has been seen' do

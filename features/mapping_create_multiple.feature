@@ -44,7 +44,7 @@ Feature: Create mappings
     Then I should see "0 of 21 mappings added" in a modal window
     When I visit the path /sites/bis/mappings
     Then I should not see a modal window
-    And I should see a flash message "0 of 21 mappings processed"
+    And I should see a flash message "0 of 21 mappings added"
 
   Scenario: I don't have access
     Given I have logged in as a member of another organisation
