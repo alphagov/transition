@@ -77,4 +77,10 @@ module MappingsHelper
       @site.hosts.excluding_aka.none?(&:redirected_by_gds?)
   end
 
+  def side_by_side_url(site, mapping=nil)
+    url = "http://#{site.default_host.hostname}.side-by-side.alphagov.co.uk/__/#"
+    url << mapping.path if mapping
+    url
+  end
+
 end

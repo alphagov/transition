@@ -59,7 +59,7 @@
         <td class="text-right">
           <% if show_preview_links? %>
             <div class="btn-group">
-              <a href="http://<%= site.default_host.hostname %>.side-by-side.alphagov.co.uk/__/#<%= mapping.path %>/" class="btn btn-default btn-sm" title="Preview in side by side browser">Preview</a>
+              <a href="<%= side_by_side_url(site, mapping) %>" class="btn btn-default btn-sm" title="Preview in side by side browser">Preview</a>
               <%= link_to edit_site_mapping_path(site, mapping, :return_path => request.fullpath), class: 'btn btn-default btn-sm' do %>
                 Edit
               <% end %>
