@@ -43,9 +43,11 @@
               <%= link_to organisation_with_abbreviation(current_user.own_organisation), organisation_path(current_user.own_organisation), title: 'Your organisation' %>
             </li>
           <% end %>
-          <li <% if current_page?(hits_path) %> class="active" <% end %>>
-            <%= link_to 'Universal analytics', hits_path %>
-          </li>
+          <% if current_user.admin? %>
+            <li <% if current_page?(hits_path) %> class="active" <% end %>>
+              <%= link_to 'Universal analytics', hits_path %>
+            </li>
+          <% end %>
           <li <% if current_page?(glossary_index_path) %> class="active" <% end %>>
             <%= link_to 'Glossary', glossary_index_path %>
           </li>
