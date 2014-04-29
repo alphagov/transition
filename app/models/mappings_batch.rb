@@ -13,8 +13,11 @@ class MappingsBatch < ActiveRecord::Base
   validates :user, presence: true
   validates :site, presence: true
   validates :http_status, inclusion: { :in => Mapping::SUPPORTED_STATUSES }
-  validates :new_url, presence: { if: :redirect?, message: I18n.t('mappings.bulk.new_url_invalid') }
-  validates :new_url, length: { if: :redirect?, maximum: (64.kilobytes - 1) }, non_blank_url: { if: :redirect?, message: I18n.t('mappings.bulk.new_url_invalid') }
+  with_options :if => :redirect? do |redirect|
+    redirect.validates :new_url, presence: { message: I18n.t('mappings.bulk.new_url_invalid') }
+    redirect.validates :new_url, length: { maximum: (64.kilobytes - 1) }
+    redirect.validates :new_url, non_blank_url: { message: I18n.t('mappings.bulk.new_url_invalid') }
+  end
   validates :paths, presence: { :if => :new_record?, message: I18n.t('mappings.bulk.add.paths_empty') } # we only care about paths at create-time
   validates :state, inclusion: { :in => PROCESSING_STATES }
   validate :paths, :paths_cannot_include_hosts_for_another_site, :paths_cannot_be_empty_once_canonicalised
