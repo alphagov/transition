@@ -536,7 +536,7 @@ describe MappingsController do
       end
 
       it 'should set the progress message' do
-        flash.now[:success].should include('2 mappings added')
+        flash.now[:batch_progress].should eql(message: '0 of 2 mappings added', type: :success)
       end
 
       it 'should record that the outcome of processing the batch has been seen' do
@@ -553,7 +553,7 @@ describe MappingsController do
       end
 
       it 'should not show an outcome message' do
-        flash.now[:success].should be_nil
+        flash.now[:batch_progress].should be_nil
       end
     end
   end

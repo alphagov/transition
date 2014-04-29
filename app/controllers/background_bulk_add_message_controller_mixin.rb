@@ -6,7 +6,7 @@ module BackgroundBulkAddMessageControllerMixin
         batch.update_column(:seen_outcome, true)
       end
 
-      flash.now[message_type(batch)] = background_status_message(batch)
+      flash.now[:batch_progress] = { message: background_status_message(batch), type: message_type(batch) }
     end
   end
 

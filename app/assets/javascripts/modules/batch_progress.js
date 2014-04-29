@@ -40,6 +40,7 @@
       }
 
       function showSuccess(progress) {
+        progressContainer.removeClass('alert-info');
         progressContainer.addClass('alert alert-success');
         that.stop();
       }
