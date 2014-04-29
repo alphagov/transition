@@ -14,8 +14,9 @@
           <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
           <strong class="breakable path">
             <%= link_to hit.default_url, hit.default_url %>
-            <div class="hit-organisation">
-              <%= link_to hit.host.site.organisation.title, site_path(hit.host.site), class: 'link-muted' %> &middot;
+            <div class="hit-details">
+              <%= hit.host.site.organisation.title %> &middot;
+              <%= link_to 'Site', site_path(hit.host.site), class: 'link-muted', title: hit.host.hostname %> &middot;
               <%= link_to 'Analytics', summary_site_hits_path(hit.host.site), class: 'link-muted' %>
               <% if hit.mapping %>
                 <% if [hit.http_status, hit.mapping.http_status] == ['410', '301']  %>
