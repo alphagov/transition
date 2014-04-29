@@ -20,7 +20,7 @@ class MappingsBatch < ActiveRecord::Base
   end
   validates :paths, presence: { :if => :new_record?, message: I18n.t('mappings.bulk.add.paths_empty') } # we only care about paths at create-time
   validates :state, inclusion: { :in => PROCESSING_STATES }
-  validate :paths, :paths_cannot_include_hosts_for_another_site, :paths_cannot_be_empty_once_canonicalised
+  validate :paths_cannot_include_hosts_for_another_site, :paths_cannot_be_empty_once_canonicalised
 
   scope :reportable, where(seen_outcome: false).where("state != 'unqueued'")
 
