@@ -81,7 +81,7 @@
           }
         %>
       <% end %>
-      <% if @site && @reportable_batch %>
+      <% if flash[:show_background_bulk_add_progress_modal] && @site %>
         <%= render partial: 'mappings/background_bulk_add_progress_modal',
           locals: {
             batch: @reportable_batch,

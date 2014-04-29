@@ -99,6 +99,13 @@ When(/^I make the new mapping paths "(.*)" redirect to (.*)$/) do |paths, new_ur
   fill_in 'Redirect to', with: new_url
 end
 
+When(/^I make (\d+) new mapping paths redirect to (.*)$/) do |mappings_count, new_url|
+  paths = []
+  mappings_count.to_i.times { |i| paths << "/#{i}" }
+  fill_in 'Old URLs', with: paths.join("\n")
+  fill_in 'Redirect to', with: new_url
+end
+
 When(/^I enter an archive URL but then click "Cancel"$/) do
   fill_in 'Alternative National Archives URL', with: 'anything'
   click_link 'Cancel'
