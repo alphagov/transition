@@ -112,8 +112,11 @@ Then(/^each hit except homepages and global redirects or archives should have a 
   within '.hits tbody' do
     page.all('tr').each do |row|
       path = row.find(:css, '.path').text
-      mapping = row.find(:css, '.action') unless @site.global_http_status.present?
-      expect(mapping).to have_link('', href: site_mapping_find_path(@site, path: path, return_path: site_hits_path(@site))) unless path == '/' || @site.global_http_status.present?
+      unless path == '/' || @site.global_http_status.present?
+        mapping = row.find(:css, '.action')
+        path = site_mapping_find_path(@site, path: path, return_path: site_hits_path(@site))
+        expect(mapping).to have_link('', href: path)
+      end
     end
   end
 end
