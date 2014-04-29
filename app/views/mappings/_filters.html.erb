@@ -15,9 +15,7 @@
           <%= render partial: 'mappings/filter/by_new_url_menu' %>
           <%= render partial: 'mappings/filter/by_tag_menu' %>
           <%= render partial: 'mappings/filter/by_type_menu' %>
-          <li class="nav-pill-text text-muted">
-            Sorted by path
-          </li>
+          <%= render partial: 'mappings/sort' %>
           <li class="if-js-hide">
             <%= link_to 'Filter mappings', filter_site_mappings_path(@site) %>
           </li>

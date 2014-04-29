@@ -174,7 +174,12 @@ When(/^I jump to the mapping "(.*?)"$/) do |url|
 end
 
 When(/^I sort the mappings by traffic$/) do
-  click_link "Filter mappings"
-  choose('by traffic')
-  click_button 'Filter'
+  if @_javascript
+    # click_link "Sort by path" # this is the default, selected, option
+    click_link "Sort by traffic"
+  else
+    click_link "Filter mappings"
+    choose('by traffic')
+    click_button 'Filter'
+  end
 end
