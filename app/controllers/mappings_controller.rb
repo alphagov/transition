@@ -7,7 +7,6 @@ class MappingsController < ApplicationController
   before_filter :find_site, except: [:find_global]
   before_filter :check_global_redirect_or_archive, except: [:find_global]
   before_filter :check_user_can_edit, except: [:index, :find, :find_global]
-  before_filter :set_reportable_batch, except: [:find_global]
   before_filter :set_background_bulk_add_status_message, except: [:find_global]
 
   def new_multiple
@@ -234,9 +233,5 @@ private
       end
       redirect_to site_path(@site), alert: "#{message} You can't edit its mappings."
     end
-  end
-
-  def set_reportable_batch
-    @reportable_batch = current_user.mappings_batches.reportable.order(:updated_at).last
   end
 end
