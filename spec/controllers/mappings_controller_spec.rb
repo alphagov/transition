@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe MappingsController do
   let(:site)              { create :site, abbr: 'moj' }
+  let(:batch)             { create(:mappings_batch, site: site) }
   let(:unaffiliated_user) { create(:user, organisation_slug: nil) }
   let(:admin_bob)         { create(:admin, name: 'Bob Terwhilliger') }
   let(:mapping)           { create(:mapping, site: site, as_user: admin_bob) }
@@ -281,44 +282,12 @@ describe MappingsController do
 
       it_behaves_like 'disallows editing by unaffiliated user'
     end
-
-    context 'when no new_url is posted for redirects' do
-      before do
-        login_as admin_bob
-        post :new_multiple_confirmation, site_id: site.abbr, paths: "/a\n/b",
-             http_status: '301', new_url: ''
-      end
-
-      it 'renders the form again' do
-        expect(response).to render_template 'mappings/new_multiple'
-      end
-
-      it 'sets an error for new_url' do
-        expected_errors = { 'new_url' => I18n.t('mappings.bulk.new_url_invalid') }
-        expect(assigns(:errors)).to eq(expected_errors)
-      end
-    end
-
-    context 'when adding tags to multiple paths' do
-      before do
-        login_as admin_bob
-        post :new_multiple_confirmation, site_id: site.abbr, paths: "/a\n/b",
-             http_status: '301', new_url: 'http://gov.uk/somewhere',
-             tag_list: 'fee, fi, FO'
-      end
-
-      let(:bulk_adder) { assigns(:bulk_add) }
-
-      it 'has assigned the tag list to the bulk adder' do
-        bulk_adder.tag_list.map(&:to_s).should == %w(fee fi fo)
-      end
-    end
   end
 
   describe '#create_multiple' do
     context 'without permission to edit' do
       def make_request
-        post :create_multiple, site_id: site.abbr
+        post :create_multiple, site_id: site.abbr, mappings_batch_id: batch.id
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -329,30 +298,52 @@ describe MappingsController do
         login_as admin_bob
       end
 
-      context 'when no new_url is posted for redirects' do
-        it 'renders the form with errors' do
-          post :create_multiple, site_id: site.abbr, paths: "/a\n/b",
-               http_status: '301', new_url: '', update_existing: 'true'
-          expect(response).to render_template 'mappings/new_multiple'
+      context 'with a small batch' do
+        before do
+          post :create_multiple, site_id: site.abbr, update_existing: 'true',
+                mappings_batch_id: batch.id
+        end
+
+        it 'sets a success message' do
+          flash[:success].should include('mappings created')
         end
       end
 
-      context 'with valid data' do
+      context 'with a large batch' do
+        let(:batch) { create(:mappings_batch, site: site,
+                              paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21}) }
+
         before do
-          post :create_multiple, site_id: site.abbr, paths: "/a\n/b",
-               http_status: '301', new_url: 'www.gov.uk', update_existing: 'true'
+          post :create_multiple, site_id: site.abbr, update_existing: 'true',
+                mappings_batch_id: batch.id
         end
 
         it 'redirects to the site return URL' do
           expect(response).to redirect_to site_mappings_path(site)
         end
 
-        it 'sets a success message' do
-          flash[:success].should include('mappings created')
+        it 'queues a job' do
+          expect(MappingsBatchWorker.jobs.size).to eql(1)
         end
 
-        it 'creates new mappings' do
-          expect(site.mappings.count).to eql(2)
+        it 'updates the batch state' do
+          batch.reload
+          batch.state.should == 'queued'
+        end
+      end
+
+      context 'when the batch has already been queued' do
+        before do
+          batch.update_column(:state, 'finished')
+          post :create_multiple, site_id: site.abbr, mappings_batch_id: batch.id
+        end
+
+        it 'doesn\'t queue it (again)' do
+          expect(MappingsBatchWorker.jobs.size).to eql(0)
+        end
+
+        it 'redirects to the site return URL' do
+          expect(response).to redirect_to site_mappings_path(site)
         end
       end
     end
@@ -536,6 +527,37 @@ describe MappingsController do
     end
   end
 
+  describe 'displaying background bulk add status' do
+    context 'outcome hasn\'t been seen yet' do
+      let!(:mappings_batch) { create(:mappings_batch, site: site, user: admin_bob, state: 'succeeded') }
+      before do
+        login_as(admin_bob)
+        get :index, site_id: site
+      end
+
+      it 'should set the progress message' do
+        flash.now[:batch_progress].should eql(message: '0 of 2 mappings added', type: :success)
+      end
+
+      it 'should record that the outcome of processing the batch has been seen' do
+        mappings_batch.reload
+        mappings_batch.seen_outcome.should == true
+      end
+    end
+
+    context 'outcome has been seen' do
+      let!(:mappings_batch) { create(:mappings_batch, site: site, user: admin_bob, state: 'succeeded', seen_outcome: true) }
+      before do
+        login_as(admin_bob)
+        get :index, site_id: site
+      end
+
+      it 'should not show an outcome message' do
+        flash.now[:batch_progress].should be_nil
+      end
+    end
+  end
+
   describe 'rejecting an invalid or missing authenticity (CSRF) token' do
     before do
       login_as admin_bob
@@ -587,8 +609,7 @@ describe MappingsController do
 
     context '#create_multiple' do
       it 'should redirect to mappings index' do
-        post :create_multiple, site_id: site.abbr, paths: "/a\n/b",
-               http_status: '301', new_url: 'www.gov.uk', update_existing: 'true',
+        post :create_multiple, site_id: site.abbr, mappings_batch_id: batch.id,
                return_path: 'http://malicious.com'
         expect(response).to redirect_to site_mappings_path(site)
       end

@@ -2,33 +2,52 @@ require 'view/mappings/canonical_filter'
 
 class MappingsController < ApplicationController
   include PaperTrail::Controller
+  include BackgroundBulkAddMessageControllerMixin
 
   before_filter :find_site, except: [:find_global]
   before_filter :check_global_redirect_or_archive, except: [:find_global]
   before_filter :check_user_can_edit, except: [:index, :find, :find_global]
+  before_filter :set_background_bulk_add_status_message, except: [:find_global]
 
   def new_multiple
-    bulk_add
+    paths = params[:paths].present? ? params[:paths].split(',') : []
+    @batch = MappingsBatch.new(paths: paths)
   end
 
   def new_multiple_confirmation
-    if bulk_add.params_invalid?
-      @errors = bulk_add.params_errors
+    @batch = MappingsBatch.new(http_status: params[:http_status],
+                               new_url: params[:new_url],
+                               tag_list: params[:tag_list],
+                               paths: params[:paths].split(/\r?\n|\r/).map(&:strip))
+    @batch.user = current_user
+    @batch.site = @site
+
+    unless @batch.save
       render action: 'new_multiple'
     end
   end
 
   def create_multiple
-    if bulk_add.params_invalid?
-      @errors = bulk_add.params_errors
-      render action: 'new_multiple' and return
+    @batch = @site.mappings_batches.find(params[:mappings_batch_id])
+    if @batch.state == 'unqueued'
+      @batch.update_attributes!(update_existing: params[:update_existing], tag_list: params[:tag_list], state: 'queued')
+      if @batch.invalid?
+        render action: 'new_multiple_confirmation' and return
+      end
+
+      if @batch.entries_to_process.count > 20
+        MappingsBatchWorker.perform_async(@batch.id)
+        flash[:show_background_bulk_add_progress_modal] = true
+      else
+        @batch.process
+        @batch.update_column(:seen_outcome, true)
+
+        outcome = MappingsBatchOutcomePresenter.new(@batch)
+        flash[:saved_mapping_ids] = outcome.affected_mapping_ids
+        flash[:success] = outcome.success_message
+        flash[:saved_operation] = outcome.operation_description
+      end
     end
-
-    bulk_add.create_or_update!
-
-    flash[:success] = bulk_add.success_message
-    flash[:saved_mapping_ids] = bulk_add.modified_mappings.map {|m| m.id}
-    flash[:saved_operation] = bulk_add.operation_description
 
     if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
       redirect_to params[:return_path]
@@ -177,10 +196,6 @@ class MappingsController < ApplicationController
   end
 
 private
-  def bulk_add
-    @bulk_add ||= View::Mappings::BulkAdder.new(@site, params)
-  end
-
   def bulk_edit
     @bulk_edit ||= bulk_editor_class.new(@site, params, site_mappings_path(@site))
   end

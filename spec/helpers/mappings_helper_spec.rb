@@ -50,31 +50,4 @@ describe MappingsHelper do
       it { should eql('Tag') }
     end
   end
-
-  describe '#existing_mappings_count' do
-    let!(:exists_1) { create(:mapping, site: site, path: '/exists_1') }
-    let!(:exists_2) { create(:mapping, site: site, path: '/exists_2') }
-
-    context 'with no existing paths submitted' do
-      before do
-        paths_input = "/a"
-        @bulk_add = View::Mappings::BulkAdder.new(site, { paths: paths_input, http_status: '410' }, '')
-      end
-
-      subject { helper.existing_mappings_count }
-      it { should eql(0) }
-    end
-
-    context 'with two existing paths submitted' do
-      before do
-        paths_input = "/exists_1\n/exists_2\n/a\n/b"
-        @bulk_add = View::Mappings::BulkAdder.new(site, { paths: paths_input, http_status: '410' }, '')
-      end
-
-      describe '#existing_mappings_count' do
-        subject { helper.existing_mappings_count }
-        it { should eql(2) }
-      end
-    end
-  end
 end

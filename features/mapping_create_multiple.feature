@@ -17,7 +17,6 @@ Feature: Create mappings
     And I continue
     Then the page title should be "Confirm new mappings"
     And I should see options to ignore or overwrite the existing mappings
-    And I should see that the mappings will redirect to "https://www.gov.uk/organisations/bis"
     And I should see the canonicalized paths "/needs/canonicalizing, /a, /r"
     But I should not see "noslash"
     And I should see "/a currently archived"
@@ -27,6 +26,25 @@ Feature: Create mappings
     And I should see a table with 1 saved mapping in the modal
     And I should see "/needs/canonicalizing" in a modal window
     And an analytics event with "bulk-add-redirect-ignore-existing" has fired
+
+  @javascript
+  Scenario: Creating a large batch (that will be processed in the background)
+    Given I have logged in as an admin
+    And there is a site called bis belonging to an organisation bis with these mappings:
+      | http_status | path | new_url               |
+      | 301         | /r   | http://somewhere.good |
+      | 410         | /a   |                       |
+    And I visit the path /sites/bis/mappings
+    And I go to create some mappings
+    Then I should see "http://bis.gov.uk"
+    When I make 21 new mapping paths redirect to www.gov.uk/organisations/bis
+    And I continue
+    Then the page title should be "Confirm new mappings"
+    When I save my changes
+    Then I should see "0 of 21 mappings added" in a modal window
+    When I visit the path /sites/bis/mappings
+    Then I should not see a modal window
+    And I should see a flash message "0 of 21 mappings added"
 
   Scenario: I don't have access
     Given I have logged in as a member of another organisation
@@ -48,4 +66,4 @@ Feature: Create mappings
     And the "Old URLs" value should be "noslash"
     And I should see "Enter a valid URL to redirect to"
     And I should see a highlighted "Redirect to" label and field
-    And the "Redirect to" value should be "__INVALID_URL__"
+    And the "Redirect to" value should be "http://__INVALID_URL__"

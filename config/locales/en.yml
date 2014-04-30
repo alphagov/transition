@@ -8,6 +8,10 @@ en:
   time:
     formats:
       govuk_date: "%-I:%M%P, %-e %B %Y" # 1:15pm, 1 January 2013
+  activerecord:
+    attributes:
+      mappings_batch:
+        paths: Old URLs
   mappings:
     not_possible_to_edit_homepage_mapping: 'It’s not currently possible to edit the mapping for a site’s homepage.'
     bulk:

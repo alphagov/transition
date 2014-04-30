@@ -128,6 +128,7 @@ a.inherit:visited,
   margin-bottom: 0 !important;
 }
 
+%add-right-margin,
 .add-right-margin {
   margin-right: $grid-gutter-width / 3 !important;
 }
@@ -164,6 +165,12 @@ a.inherit:visited,
 %glyphicon-smaller-than-text,
 .glyphicon-smaller-than-text {
   font-size: 80%;
+}
+
+.glyphicon-alert-success {
+  @extend %glyphicon-smaller-than-text;
+  @extend .text-success;
+  @extend %add-right-margin;
 }
 
 /* ==========================================================================
@@ -403,7 +410,8 @@ a.list-group-item {
 /* No content
    ========================================================================== */
 
-%large-and-spaced {
+%large-and-spaced,
+.large-and-spaced {
   font-size: $font-size-base * 2;
   line-height: $default-vertical-margin * 2;
   text-align: center;

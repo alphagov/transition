@@ -33,6 +33,8 @@ Transition::Application.routes.draw do
       end
     end
 
+    resources :batches, only: [:show]
+
     resources :hits, only: [:index] do
       collection do
         get 'summary'

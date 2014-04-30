@@ -63,10 +63,6 @@ module MappingsHelper
     http_status_name(operation) || OTHER_OPERATIONS[operation].titleize
   end
 
-  def existing_mappings_count
-    @bulk_add.existing_mappings.size
-  end
-
   def mappings_from_ids(ids)
     Mapping.find(ids)
   end

@@ -1,0 +1,27 @@
+<div class="modal modal-background-bulk-add modal-with-btn-in-title" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-module="auto-show-modal">
+  <div class="modal-dialog" data-module="batch-progress" data-url="<%= site_batch_path(site, batch) %>">
+    <div class="modal-content">
+      <header class="modal-header">
+        <h3 class="modal-title">
+          Adding mappings
+        </h3>
+        <a href="#close" data-dismiss="modal" class="btn btn-success btn-modal-close">OK</a>
+      </header>
+      <div class="modal-body remove-bottom-padding">
+        <div class="progress-container js-progress-container">
+          <p>
+            <span class="glyphicon glyphicon-ok glyphicon-alert-success"></span>
+            <%= image_tag('ajax_loader_gray_350.gif', size: '24x24', class: 'progress-spinner add-right-margin')%>
+            <span class="js-progress-message">Waiting&hellip;</span>
+          </p>
+          <div class="progress">
+            <div class="js-progress-bar progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+              <span class="js-progress-percent">0</span>%
+            </div>
+          </div>
+        </div>
+        <p class="well">You may leave this page at any time and Transition will continue to add your mappings in the background.</p>
+      </div>
+    </div>
+  </div>
+</div>
