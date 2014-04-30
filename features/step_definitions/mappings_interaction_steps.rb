@@ -187,3 +187,7 @@ When(/^I sort the mappings by traffic$/) do
     click_button 'Filter'
   end
 end
+
+When(/^I remove all sorting and filtering$/) do
+  find(:css, ".remove-filters").click
+end

@@ -21,3 +21,5 @@ Feature: Mappings priority
     Then I should see a column with traffic information
     And the cells should have hit counts
     And the cells should have percentages
+    When I remove all sorting and filtering
+    Then I should not see a column with traffic information
