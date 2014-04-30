@@ -175,8 +175,10 @@ end
 
 When(/^I sort the mappings by traffic$/) do
   if @_javascript
-    # click_link "Sort by path" # this is the default, selected, option
-    click_link "Sort by traffic"
+    within '.sort-by' do
+      click_link "Path" # this is the default, selected, option
+      click_link "Traffic"
+    end
   else
     click_link "Filter mappings"
     choose('by traffic')
