@@ -10,7 +10,7 @@ Feature: Paginated mappings
     When I visit the path /sites/bis_lowpay
     And I click the link called "Mappings"
     Then I should see the header "0 mappings"
-    And the page title should be "Mappings | bis_lowpay.gov.uk | GOV.UK Transition"
+    And the page title should be "Mappings | bis-lowpay.gov.uk | GOV.UK Transition"
     And I should see "0 mappings"
 
   Scenario: There are mappings for a site and we visit page 1
@@ -24,7 +24,7 @@ Feature: Paginated mappings
     When I visit the path /sites/bis_lowpay
     And I click the link called "Mappings"
     Then I should see the header "3 mappings"
-    And  I should see "bis_lowpay"
+    And  I should see "bis-lowpay"
     And  I should see a mappings table with 2 rows
     And  I should see 1 as the current page
     And  I should see links top and bottom to page 2
