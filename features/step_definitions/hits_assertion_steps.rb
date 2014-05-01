@@ -39,7 +39,7 @@ Then(/^each path should be a link to the real URL$/) do
 end
 
 Then(/^I should see a section for the most common (\w+)$/) do |category|
-  expect(page).to have_selector('h2', text: category.titleize)
+  expect(page).to have_selector('h3', text: category.titleize)
 end
 
 Then(/^it should show(?: only the top) (\d+) (\w+) in descending count order$/) do |count, category|
