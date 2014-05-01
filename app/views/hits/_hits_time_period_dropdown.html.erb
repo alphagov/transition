@@ -1,16 +1,22 @@
-<h2>
-  Hits from
-  <div class="date-range btn-group">
-    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
-      <%= @period.title %>
-      <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-      <% View::Hits::TimePeriod.all.each do |period| %>
-        <li>
-          <%= link_to period.title, action: controller.action_name, period: period.query_slug %>
-        </li>
-      <% end %>
+<nav class="hits-time-period navbar navbar-default add-top-margin">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".hits-time-period .navbar-collapse">
+      <span class="sr-only">Toggle analytics navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <span class="navbar-brand">Time period</span>
+  </div>
+  <div class="collapse navbar-collapse">
+    <ul class="nav navbar-nav">
+    <% View::Hits::TimePeriod.all.each do |period| %>
+      <li <% if period == @period %>class="active"<% end %>>
+        <%= link_to period.title,
+          action: controller.action_name, period: period.query_slug
+        %>
+      </li>
+    <% end %>
     </ul>
   </div>
-</h2>
+</nav>
