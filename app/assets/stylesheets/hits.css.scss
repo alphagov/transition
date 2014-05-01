@@ -22,9 +22,9 @@
   top: 0;
   left: 0;
   bottom: 0;
-  
+
   background-color: $default-HTTP-status-color;
-  
+
   min-width: 3px;
   min-height: 40px;
 }
@@ -57,7 +57,7 @@
 .path {
   display: inline-block;
   margin: 8px;
-  
+
   position: relative;
   z-index: 1;
 }
