@@ -10,7 +10,7 @@
 
 <%= render partial: 'hits_tabs', locals: { active: active } %>
 
-<%= render partial: 'hits_time_period_dropdown' %>
+<%= render partial: 'hits_time_period' %>
 
 <% if @category.points.length > 1 && first_page? %>
   <%= render partial: 'hits_graph', locals: { point_categories: [@category] } %>

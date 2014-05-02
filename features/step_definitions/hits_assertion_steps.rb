@@ -39,7 +39,7 @@ Then(/^each path should be a link to the real URL$/) do
 end
 
 Then(/^I should see a section for the most common (\w+)$/) do |category|
-  expect(page).to have_selector('h2', text: category.titleize)
+  expect(page).to have_selector('h3', text: category.titleize)
 end
 
 Then(/^it should show(?: only the top) (\d+) (\w+) in descending count order$/) do |count, category|
@@ -165,7 +165,7 @@ Then(/^I should see only yesterday's errors in descending count order$/) do
 end
 
 Then(/^the period "([^"]*)" should be selected$/) do |period_title|
-  within '.date-range .dropdown-toggle' do
+  within '.hits-time-period .active' do
     expect(page).to have_text(period_title)
   end
 end

@@ -3,8 +3,7 @@ When(/^I click on the link to check the mapping for the top hit/) do
 end
 
 When(/^I filter by the date period "([^"]*)"$/) do |period_title|
-  within '.date-range' do
-    page.find('.btn.dropdown-toggle').click
+  within '.hits-time-period' do
     click_link(period_title)
   end
 end
