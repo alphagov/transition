@@ -16,3 +16,4 @@ extra_organisation_slugs:
 - bona-vacantia
 - treasury-solicitor-s-office
 global: =301 https://www.gov.uk/a-new-world
+global_redirect_append_path: true

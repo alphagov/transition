@@ -180,6 +180,7 @@ CREATE TABLE `sites` (
   `managed_by_transition` tinyint(1) NOT NULL DEFAULT '1',
   `launch_date` date DEFAULT NULL,
   `special_redirect_strategy` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `global_redirect_append_path` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_sites_on_site` (`abbr`),
   KEY `index_sites_on_organisation_id` (`organisation_id`)
@@ -319,3 +320,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140422160500');
 INSERT INTO schema_migrations (version) VALUES ('20140422184036');
 
 INSERT INTO schema_migrations (version) VALUES ('20140502114341');
+
+INSERT INTO schema_migrations (version) VALUES ('20140502160711');

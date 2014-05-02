@@ -62,6 +62,10 @@ module Transition
         yaml['global'].split(' ')[1] if has_global_status?
       end
 
+      def global_redirect_append_path
+        !! yaml['global_redirect_append_path']
+      end
+
       def managed_by_transition?
         # Always exactly true/false values, not just "falsey"
         # - this is also going to the DB, which won't allow nil
@@ -78,6 +82,7 @@ module Transition
           site.query_params          = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
           site.global_http_status    = global_http_status
           site.global_new_url        = global_new_url
+          site.global_redirect_append_path = global_redirect_append_path
           site.homepage              = yaml['homepage']
           site.managed_by_transition = managed_by_transition?
 

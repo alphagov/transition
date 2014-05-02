@@ -35,6 +35,7 @@ describe Transition::Import::SiteYamlFile do
       its(:extra_organisations)   { should eql([bv, tsol]) }
       its(:global_http_status)    { should eql('301') }
       its(:global_new_url)        { should eql('https://www.gov.uk/a-new-world') }
+      its(:global_redirect_append_path) { should eql(true) }
 
       it 'should get hosts including aka hosts' do
         hosts = %w{
