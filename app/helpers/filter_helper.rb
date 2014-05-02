@@ -24,8 +24,8 @@ module FilterHelper
     params.except(:page, :sort)
   end
 
-  def sort_by_traffic_path
-    params.except(:page).merge(sort: 'by_traffic')
+  def sort_by_hits_path
+    params.except(:page).merge(sort: 'by_hits')
   end
 
   def remove_filter_by_type_path

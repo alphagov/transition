@@ -267,13 +267,13 @@ Then(/^I should not see a link to preview a mapping in the side\-by\-side browse
   expect(page).to_not have_link('Preview')
 end
 
-Then(/^I should see a column with traffic information$/) do
+Then(/^I should see a column with hits information$/) do
   within 'table.mappings .table-header' do
     expect(page).to have_selector('th:nth-child(4)', text: 'Hits')
   end
 end
 
-Then(/^I should not see a column with traffic information$/) do
+Then(/^I should not see a column with hits information$/) do
   within 'table.mappings .table-header' do
     expect(page).not_to have_selector('th:nth-child(4)', text: 'Hits')
   end

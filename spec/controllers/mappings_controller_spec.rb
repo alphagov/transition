@@ -38,12 +38,12 @@ describe MappingsController do
         end
       end
 
-      context 'when sorting by traffic' do
+      context 'when sorting by hits' do
         it 'orders mappings by hit count' do
-          get :index, site_id: site.abbr, sort: 'by_traffic'
+          get :index, site_id: site.abbr, sort: 'by_hits'
 
           assigns(:mappings).to_a.should ==
-            site.mappings.with_traffic_summary.order('hit_count DESC').to_a
+            site.mappings.with_hits_summary.order('hit_count DESC').to_a
         end
       end
     end

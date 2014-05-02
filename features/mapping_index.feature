@@ -7,7 +7,7 @@ Feature: Mappings index
     Given I have logged in as an admin
     And a site has lots of mappings
     When I visit the site's mappings
-    Then I should not see a column with traffic information
+    Then I should not see a column with hits information
 
   @allow-rescue
   Scenario: Visit the mappings index page for an non-existent site

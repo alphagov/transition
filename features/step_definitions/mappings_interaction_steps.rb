@@ -175,15 +175,15 @@ When(/^I jump to the mapping "(.*?)"$/) do |url|
   click_button 'Go to mapping'
 end
 
-When(/^I sort the mappings by traffic$/) do
+When(/^I sort the mappings by hits$/) do
   if @_javascript
     within '.sort-by' do
       click_link "Path" # this is the default, selected, option
-      click_link "Traffic"
+      click_link "Hits"
     end
   else
     click_link "Filter mappings"
-    choose('by traffic')
+    choose('by hits')
     click_button 'Filter'
   end
 end

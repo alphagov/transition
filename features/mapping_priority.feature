@@ -10,16 +10,16 @@ Feature: Mappings priority
     When I visit the site's mappings
 
   Scenario: There are lots of hits for a site's hosts
-    When I sort the mappings by traffic
-    Then I should see a column with traffic information
+    When I sort the mappings by hits
+    Then I should see a column with hits information
     And the cells should have hit counts
     And the cells should have percentages
 
   @javascript
   Scenario: There are lots of hits for a site's hosts
-    When I sort the mappings by traffic
-    Then I should see a column with traffic information
+    When I sort the mappings by hits
+    Then I should see a column with hits information
     And the cells should have hit counts
     And the cells should have percentages
     When I remove all sorting and filtering
-    Then I should not see a column with traffic information
+    Then I should not see a column with hits information

@@ -221,11 +221,11 @@ describe Mapping do
       end
     end
 
-    describe '.with_traffic_summary', testing_before_all: true do
+    describe '.with_hits_summary', testing_before_all: true do
       before :all do
         @site = create :site, :with_mappings_and_hits
 
-        @mappings = @site.mappings.with_traffic_summary
+        @mappings = @site.mappings.with_hits_summary
       end
 
       it 'has the total of every type of status hit on each mapping' do

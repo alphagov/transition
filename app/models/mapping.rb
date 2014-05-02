@@ -39,7 +39,7 @@ class Mapping < ActiveRecord::Base
   validates :new_url, presence: { if: :redirect?, message: 'required when mapping is a redirect' }
   validates :archive_url, national_archives_url: true
 
-  scope :with_traffic_summary, -> {
+  scope :with_hits_summary, -> {
     select('mappings.*, SUM(hits.count) as hit_count').
       joins('LEFT JOIN hits ON hits.mapping_id = mappings.id').
       group('mappings.path_hash')
@@ -110,7 +110,7 @@ class Mapping < ActiveRecord::Base
   end
 
   def hit_percentage
-    raise NoMethodError, 'This only works in the context of :with_traffic_summary' unless respond_to?(:hit_count)
+    raise NoMethodError, 'This only works in the context of :with_hits_summary' unless respond_to?(:hit_count)
 
     site.hit_total_count.zero? ? 0 : (hit_count.to_f / site.hit_total_count) * 100
   end

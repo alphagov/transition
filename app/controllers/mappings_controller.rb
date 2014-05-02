@@ -100,10 +100,10 @@ class MappingsController < ApplicationController
       @mappings = @mappings.tagged_with(params[:tagged])
     end
 
-    if params[:sort] == 'by_traffic'
+    if params[:sort] == 'by_hits'
       @filtered = true
-      @sorted_by_traffic = true
-      @mappings = @mappings.with_traffic_summary.order('hit_count DESC')
+      @sorted_by_hits = true
+      @mappings = @mappings.with_hits_summary.order('hit_count DESC')
     end
   end
 
