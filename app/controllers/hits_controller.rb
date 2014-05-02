@@ -2,8 +2,8 @@ class HitsController < ApplicationController
   include BackgroundBulkAddMessageControllerMixin
 
   before_filter :find_site, :except => [:universal_summary, :universal_category]
+  before_filter :set_background_bulk_add_status_message, :except => [:universal_summary, :universal_category]
   before_filter :set_period
-  before_filter :set_background_bulk_add_status_message
 
   def index
     @category = View::Hits::Category['all'].tap do |c|
