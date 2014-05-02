@@ -14,6 +14,10 @@ Transition::Application.routes.draw do
   resources :organisations, only: [:show, :index]
 
   get 'mappings/find_global', to: 'mappings#find_global'
+  get 'hits', to: 'hits#universal_summary'
+  get 'hits/redirects', to: 'hits#universal_category', defaults: { category: 'redirects' }
+  get 'hits/errors',    to: 'hits#universal_category', defaults: { category: 'errors' }
+  get 'hits/archives',  to: 'hits#universal_category', defaults: { category: 'archives' }
 
   resources :sites, only: [:show] do
 
@@ -41,7 +45,6 @@ Transition::Application.routes.draw do
         get 'redirects', to: 'hits#category', defaults: { category: 'redirects' }
         get 'errors',    to: 'hits#category', defaults: { category: 'errors' }
         get 'archives',  to: 'hits#category', defaults: { category: 'archives' }
-        get 'other',     to: 'hits#category', defaults: { category: 'other' }
       end
     end
   end

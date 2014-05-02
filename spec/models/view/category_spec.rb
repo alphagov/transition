@@ -12,11 +12,12 @@ describe View::Hits::Category do
 
       it { should be_a(View::Hits::Category) }
 
-      its(:title)       { should == 'All hits' }
-      its(:to_sym)      { should == :all }
-      its(:color)       { should == '#333' }
-      its(:plural)      { should == 'hits' }
-      its(:path_method) { should == :site_hits_path }
+      its(:title)              { should == 'All hits' }
+      its(:to_sym)             { should == :all }
+      its(:color)              { should == '#333' }
+      its(:plural)             { should == 'hits' }
+      its(:path_method)        { should == :site_hits_path }
+      its(:path_method_universal) { should == :hits_path }
     end
 
     describe 'indexing' do

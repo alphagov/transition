@@ -1,8 +1,4 @@
 module HitsHelper
-  def link_to_hit(hit, host = hit.host)
-    scheme_and_host = 'http://'+ host.hostname
-    link_to hit.path, scheme_and_host + hit.path
-  end
 
   def any_totals_for?(points_categories)
     points_categories && points_categories.find { |c| c.points && !c.points.empty? }

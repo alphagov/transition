@@ -12,6 +12,12 @@ Then(/^I should not see hits for the Cabinet Office site$/) do
   end
 end
 
+Then(/^I should see hits for the Attorney General, Cabinet Office and FCO sites$/) do
+  expect(page).to have_content('http://cabinet-office.gov.uk/')
+  expect(page).to have_content('http://fco.gov.uk/')
+  expect(page).to have_content('http://ago.gov.uk/')
+end
+
 Then(/^the hits should be grouped by path and status$/) do
   within '.hits' do
     expect(page).to have_selector('tbody tr', count: 4)
@@ -88,7 +94,7 @@ Then(/^I should see hits from the last 30 days with a[n]? (\w+) status, in desce
   end
 
   within '.hits' do
-    expect(page).to have_sorted_bar_rows(11).for_status(status)
+    expect(page).to have_sorted_bar_rows(@expected_last_30_days_count).for_status(status)
   end
 end
 
@@ -104,7 +110,7 @@ Then(/^I should see all hits with a[n]? (\w+) status, in descending count order$
   end
 
   within '.hits' do
-    expect(page).to have_sorted_bar_rows(12).for_status(status)
+    expect(page).to have_sorted_bar_rows(@expected_all_time_count).for_status(status)
   end
 end
 
@@ -160,7 +166,7 @@ end
 
 Then(/^I should see only yesterday's errors in descending count order$/) do
   within '.hits' do
-    expect(page).to have_sorted_bar_rows(9).for_status(404)
+    expect(page).to have_sorted_bar_rows(@expected_yesterdays_count).for_status(404)
   end
 end
 
@@ -208,4 +214,12 @@ And(/^I should see that I can edit redirects and archives$/) do
   within '.hits-summary-redirects' do
     expect(page).to have_link('Edit mapping')
   end
+end
+
+Then(/^I should see sections for the most common errors, archives and redirects$/) do
+  steps %{
+    And I should see a section for the most common errors
+    And I should see a section for the most common archives
+    And I should see a section for the most common redirects
+  }
 end

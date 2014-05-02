@@ -1,0 +1,36 @@
+<table class="hits table table-bordered">
+  <thead>
+  <tr class="table-header">
+    <th scope="col">Path</th>
+    <th class="count" scope="col">Hits</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% max = hits.first.count %>
+  <% hits.each do |hit| %>
+    <tr>
+      <td class="remove-padding">
+        <div class="bar-chart-wrap">
+          <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
+          <strong class="breakable path">
+            <%= link_to hit.default_url, hit.default_url %>
+            <div class="hit-details">
+              <%= hit.host.site.organisation.title %> &middot;
+              <%= link_to 'Site', site_path(hit.host.site), class: 'link-muted', title: hit.host.hostname %> &middot;
+              <%= link_to 'Analytics', summary_site_hits_path(hit.host.site), class: 'link-muted' %>
+              <% if hit.mapping %>
+                <% if [hit.http_status, hit.mapping.http_status] == ['410', '301']  %>
+                  <span class="text-muted"> &mdash; was archived, now redirecting</span>
+                <% elsif [hit.http_status, hit.mapping.http_status] == ['301', '410'] %>
+                  <span class="text-muted"> &mdash; was redirecting, now archived</span>
+                <% end %>
+              <% end %>
+            </div>
+          </strong>
+        </div>
+      </td>
+      <td class="count"><%= number_with_delimiter hit.count %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

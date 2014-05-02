@@ -238,6 +238,11 @@ main a {
   text-decoration: underline;
 }
 
+.link-muted:hover,
+.link-muted:focus {
+  color: $gray;
+}
+
 // Force long URLs to break
 .breakable {
   word-break: break-all;

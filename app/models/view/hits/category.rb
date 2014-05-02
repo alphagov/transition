@@ -78,6 +78,10 @@ module View
       def path_method
         name == 'all' ? :site_hits_path : "#{name}_site_hits_path".to_sym
       end
+
+      def path_method_universal
+        name == 'all' ? :hits_path : "hits_#{name}_path".to_sym
+      end
     end
   end
 end

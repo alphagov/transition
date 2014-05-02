@@ -13,3 +13,7 @@ When(/^I click a point for the date 18\/10\/12$/) do
   # same place clicking a point would have gone. I hope that's alright for you.
   visit "#{current_path}?period=20121018"
 end
+
+When(/^I visit universal analytics$/) do
+  visit hits_path
+end

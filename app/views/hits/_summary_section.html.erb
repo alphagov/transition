@@ -1,13 +1,5 @@
 <section class="hits-summary-<%= category.name %> add-big-bottom-margin">
-  <h3 class="add-vertical-margins">
-  <% if category.hits.count == 1 %>
-    <%= category.hits.length %> <%= category.title.singularize %>
-  <% elsif category.hits.length >= 2 and category.hits.length < 10 %>
-    <%= category.hits.length %> <%= category.title %>
-  <% else %>
-    Top <%= category.hits.length %> <%= category.title %>
-  <% end %>
-  </h3>
+  <%= render partial: 'category_title', locals: {category: category} %>
   <% if category.hits.any? %>
     <%= render partial: 'hits_table', locals: { hits: category.hits} %>
     <%= link_to "See all #{category.name}", (send category.path_method, @site, period: @period.query_slug) %>

@@ -1,0 +1,24 @@
+<% content_for :page_title, "Universal analytics" %>
+<% breadcrumb(:universal_hits) %>
+
+<div class="page-title">
+  <h1>
+    <span class="small">Universal</span>
+    Analytics
+  </h1>
+</div>
+
+<%= render partial: 'universal_hits_tabs', locals: { active: 'Summary' } %>
+<%= render partial: 'hits_time_period' %>
+
+<% @sections.each do |category| %>
+  <% if category.hits.any?  %>
+    <section class="hits-summary-<%= category.name %> add-big-bottom-margin">
+      <%= render partial: 'category_title', locals: {category: category} %>
+      <% if category.hits.any? %>
+        <%= render partial: 'universal_hits_table', locals: { hits: category.hits } %>
+        <%= link_to "See all #{category.name}", (send category.path_method_universal, period: @period.query_slug) %>
+      <% end %>
+    </section>
+  <% end  %>
+<% end %>
