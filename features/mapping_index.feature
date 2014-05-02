@@ -24,16 +24,17 @@ Feature: Mappings index
     When I visit the path /sites/defra_etr/mappings/
     Then I should be redirected to the site dashboard
     And I should see "This site has been entirely archived."
-@wip
+
   Scenario: Visit the mappings index page for a site that I can edit the mappings for and which has an AKA domain configured and which is not already live
     Given I have logged in as an admin
     And a site bis exists
+    And a 410 mapping exists for the site with the path /about
     And there is a working AKA domain for "bis.gov.uk"
     When I visit the path /sites/bis/mappings
     Then I should see a link to preview a mapping in the side-by-side browser
-@wip
+
   Scenario: Visit the mappings index page for a site that I cannot edit the mappings for and which does not have an AKA domain configured
     Given I have logged in as a member of DCLG
-    And a site bis exists
+    And a 410 mapping exists for the bis site with the path /about
     When I visit the path /sites/bis/mappings
     Then I should not see a link to preview a mapping in the side-by-side browser
