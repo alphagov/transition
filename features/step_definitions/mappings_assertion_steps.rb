@@ -258,3 +258,11 @@ end
 Then(/^I should be redirected to the site dashboard$/) do
   i_should_be_on_the_path site_path(@site)
 end
+
+Then(/^I should see a link to preview a mapping in the side\-by\-side browser$/) do
+  expect(page).to have_link('Preview')
+end
+
+Then(/^I should not see a link to preview a mapping in the side\-by\-side browser$/) do
+  expect(page).to_not have_link('Preview')
+end

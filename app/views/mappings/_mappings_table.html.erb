@@ -21,7 +21,11 @@
         Original path from <%= site.default_host.hostname %>
       </th>
       <% if current_user.can_edit_site?(site) %>
-        <th class="mapping-edit-column"></th>
+        <% if show_preview_links? %>
+          <th class="mapping-edit-and-preview-column"></th>
+        <% else %>
+          <th class="mapping-edit-column"></th>
+        <% end %>
       <% end %>
     </tr>
     <% if current_user.can_edit_site?(site) %>
@@ -53,8 +57,17 @@
       </td>
       <% if current_user.can_edit_site?(site) %>
         <td class="text-right">
-          <%= link_to edit_site_mapping_path(site, mapping, :return_path => request.fullpath), class: 'btn btn-default btn-xs' do %>
-            Edit&nbsp;mapping
+          <% if show_preview_links? %>
+            <div class="btn-group">
+              <a href="<%= side_by_side_url(site, mapping) %>" class="btn btn-default btn-sm" title="Preview in side by side browser">Preview</a>
+              <%= link_to edit_site_mapping_path(site, mapping, :return_path => request.fullpath), class: 'btn btn-default btn-sm' do %>
+                Edit
+              <% end %>
+            </div>
+          <% else %>
+            <%= link_to edit_site_mapping_path(site, mapping, :return_path => request.fullpath), class: 'btn btn-default btn-sm' do %>
+              Edit&nbsp;mapping
+            <% end %>
           <% end %>
         </td>
       <% end %>
