@@ -38,6 +38,15 @@ describe Host do
         end
       end
     end
+
+    describe 'hostnames' do
+      subject(:host) { build :host, hostname: 'rarfoo.gov.uk/foo/' }
+
+      its(:valid?) { should be_false }
+      it 'should have an error for invalid hostname' do
+        host.errors_on(:valid_hostname).should include('is an invalid hostname')
+      end
+    end
   end
 
   describe 'scopes' do

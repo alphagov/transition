@@ -11,7 +11,7 @@ FactoryGirl.define do
 
     factory :site do # default site comes with a host {abbr}.gov.uk
       after(:build) do |site|
-        site.hosts << FactoryGirl.build(:host, hostname: "#{site.abbr}.gov.uk", site: site)
+        site.hosts << FactoryGirl.build(:host, hostname: "#{site.abbr.gsub('_','-')}.gov.uk", site: site)
       end
     end
   end
