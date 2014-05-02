@@ -201,6 +201,7 @@ CREATE TABLE `taggings` (
 CREATE TABLE `tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `taggings_count` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_tags_on_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -316,3 +317,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140417100412');
 INSERT INTO schema_migrations (version) VALUES ('20140422160500');
 
 INSERT INTO schema_migrations (version) VALUES ('20140422184036');
+
+INSERT INTO schema_migrations (version) VALUES ('20140502114341');

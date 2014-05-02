@@ -235,14 +235,6 @@ describe Mapping do
           ['/path-3', 40 * 3 + 30 * 3]
         ]
       end
-
-      it 'plays nicely with tagging' do
-        m = Mapping.first
-        m.tag_list = ['foo']
-        m.save!
-
-        expect { @mappings.tagged_with('foo').any? }.to_not raise_error
-      end
     end
   end
 
