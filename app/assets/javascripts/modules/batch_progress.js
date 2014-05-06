@@ -40,6 +40,7 @@
       }
 
       function showSuccess(progress) {
+        element.find('.js-remove-on-success').remove();
         progressContainer.removeClass('alert-info');
         progressContainer.addClass('alert alert-success');
         that.stop();

@@ -11,16 +11,16 @@
         <div class="progress-container js-progress-container">
           <p>
             <span class="glyphicon glyphicon-ok glyphicon-alert-success"></span>
-            <%= image_tag('ajax_loader_gray_350.gif', size: '24x24', class: 'progress-spinner add-right-margin')%>
+            <%= image_tag('ajax_loader_gray_350.gif', size: '24x24', class: 'js-remove-on-success progress-spinner add-right-margin')%>
             <span class="js-progress-message">Waiting&hellip;</span>
           </p>
-          <div class="progress">
+          <div class="js-remove-on-success progress">
             <div class="js-progress-bar progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
               <span class="js-progress-percent">0</span>%
             </div>
           </div>
         </div>
-        <p class="well">You may leave this page at any time and Transition will continue to add your mappings in the background.</p>
+        <p class="js-remove-on-success well">You may leave this page at any time and Transition will continue to add your mappings in the background.</p>
       </div>
     </div>
   </div>
