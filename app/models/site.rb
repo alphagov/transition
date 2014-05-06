@@ -52,6 +52,6 @@ class Site < ActiveRecord::Base
   end
 
   def hit_total_count
-    @hit_total_count ||= daily_hit_totals.pluck(:count).reduce(&:+)
+    @hit_total_count ||= daily_hit_totals.pluck(:count).reduce(&:+) || 0
   end
 end
