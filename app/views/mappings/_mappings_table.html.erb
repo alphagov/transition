@@ -61,8 +61,8 @@
       </td>
       <% if sorted_by_hits %>
         <td class="mapping-hits-column">
-          <span class="hit-count"><%= number_with_delimiter(mapping.hit_count) %></span>
-          <span class="hit-percentage text-muted"><%= mapping.hit_percentage.round(2) %>%</span>
+          <span class="hit-count"><%= friendly_hit_count(mapping.hit_count) %></span><br />
+          <span class="hit-percentage text-muted"><%= friendly_hit_percentage(mapping.hit_percentage) %></span>
         </td>
       <% end %>
       <% if current_user.can_edit_site?(site) %>

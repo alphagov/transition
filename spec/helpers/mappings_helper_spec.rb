@@ -50,4 +50,53 @@ describe MappingsHelper do
       it { should eql('Tag') }
     end
   end
+
+  describe '#friendly_hit_count' do
+    subject { helper.friendly_hit_count(hit_count) }
+
+    context 'number is small' do
+      let(:hit_count) { 999 }
+      it { should eql('999') }
+    end
+
+    context 'number is nil' do
+      let(:hit_count) { nil }
+      it { should eql('0') }
+    end
+
+    context 'number is bigger' do
+      let(:hit_count) { 1000 }
+      it { should eql('1,000') }
+    end
+  end
+
+  describe '#friendly_hit_percentage' do
+    subject { helper.friendly_hit_percentage(hit_percentage) }
+
+    context 'greater than 10%' do
+      let(:hit_percentage) { 10.26 }
+      it 'rounds to 1 decimal place' do
+        should eql('10.3%')
+      end
+    end
+
+    context 'between 0.01% and 10%' do
+      let(:hit_percentage) { 1.125 }
+      it 'rounds to 2 decimal places' do
+        should eql('1.13%')
+      end
+    end
+
+    context 'less than 0.01%' do
+      let(:hit_percentage) { 0.009 }
+      it 'shows a short version' do
+        should eql('< 0.01%')
+      end
+    end
+
+    context 'zero' do
+      let(:hit_percentage) { 0.0 }
+      it { should eql('') }
+    end
+  end
 end

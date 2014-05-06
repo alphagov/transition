@@ -1,5 +1,6 @@
 RSpec::Matchers.define :have_hit_counts do |counts|
   include ActionView::Helpers::NumberHelper
+  include MappingsHelper
 
   match do |page|
     raise ArgumentError,
@@ -10,7 +11,7 @@ RSpec::Matchers.define :have_hit_counts do |counts|
 
       counts.each_with_index do |count, index|
         if @_total
-          expected = ((count.to_f / @_total) * 100).round(2).to_s + '%'
+          expected = friendly_hit_percentage((count.to_f / @_total) * 100)
           span_class = 'hit-percentage'
         else
           expected = number_with_delimiter(count.to_s)
