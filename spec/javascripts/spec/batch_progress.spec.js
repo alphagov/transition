@@ -10,8 +10,9 @@ describe('A batch progress module', function() {
       <div data-url="some-JSON-endpoint">\
         <span class="js-progress-message"></span>\
         <span class="js-progress-percent"></span>\
-        <span class="js-progress-bar"></span>\
+        <span class="js-remove-on-success js-progress-bar"></span>\
         <span class="js-progress-container"></span>\
+        <span class="js-remove-on-success"></span>\
       </div>\
     ');
     batchProgress = new GOVUK.Modules.BatchProgress();
@@ -85,6 +86,10 @@ describe('A batch progress module', function() {
     it('shows a success state', function() {
       expect(element.find('.alert-success').length).toBe(1);
       expect(element.find('.js-progress-message').text()).toBe('10 of 10 mappings added');
+    });
+
+    it('removes elements no longer needed', function() {
+      expect(element.find('.js-remove-on-success').length).toBe(0);
     });
 
     it('stops making requests', function() {
