@@ -53,7 +53,14 @@ module SitesHelper
   end
 
   def site_global_http_status_explanation(site)
-    if site.global_http_status == '301'
+    if site.global_http_status == '301' && site.global_redirect_append_path
+      'The path the user visited is appended to the destination. <br /><br />' \
+      "For example: <br />" \
+      "http://#{site.default_host.hostname}<strong>/specific/path</strong> <br />" \
+      "gets redirected to: <br />" \
+      "#{site.global_new_url}<strong>/specific/path</strong> <br /><br />" \
+      "To make changes please contact your Transition Manager.".html_safe
+    elsif site.global_http_status == '301'
       I18n.t('mappings.global_http_status.redirect')
     elsif site.global_http_status == '410'
       I18n.t('mappings.global_http_status.archive')

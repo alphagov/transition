@@ -107,6 +107,11 @@ Given(/^the site is globally redirected$/) do
   @site.update_attribute(:global_http_status, '301')
 end
 
+Given(/^the site is globally redirected with the path appended$/) do
+  @site.update_attribute(:global_http_status, '301')
+  @site.update_attribute(:global_redirect_append_path, true)
+end
+
 Given(/^these hits exist for the Attorney General's office site:$/) do |table|
   @site = create :site, abbr: 'ago'
   # table is a | 410         | /    | 16/10/12 | 100   |
