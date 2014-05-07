@@ -7,8 +7,8 @@ class Host < ActiveRecord::Base
   belongs_to :canonical_host, class_name: 'Host'
 
   validates :hostname, presence: true
+  validates :hostname, hostname: true
   validates :site, presence: true
-  validate :valid_hostname
   validate :canonical_host_id_xor_aka_present
 
   scope :excluding_aka, where('hostname not like "aka%"')
@@ -46,14 +46,6 @@ class Host < ActiveRecord::Base
     end
     if aka? && canonical_host_id.blank?
       errors[:canonical_host_id] << 'can\'t be blank for an aka host'
-    end
-  end
-
-  def valid_hostname
-    if hostname
-      if URI.parse("http://#{hostname}").host != hostname
-        errors[:valid_hostname] << 'is an invalid hostname'
-      end
     end
   end
 end
