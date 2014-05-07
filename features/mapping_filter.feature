@@ -8,8 +8,8 @@ Feature: Filter mappings
     And there is a site called directgov belonging to an organisation directgov with these mappings:
       | http_status | path             | new_url                   | tags             |
       | 410         | /about/corporate |                           | fee, fum, fiddle |
-      | 301         | /about/branding  | http://gov.uk/branding    | fi, fum          |
-      | 301         | /another         | http://gov.uk/directgov   | fo, fiddle       |
+      | 301         | /about/branding  | http://a.gov.uk/branding  | fi, fum          |
+      | 301         | /another         | http://a.gov.uk/directgov | fo, fiddle       |
       | 410         | /notinfilter     |                           |                  |
     And I visit the path /sites/directgov/mappings
 

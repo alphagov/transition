@@ -17,6 +17,7 @@ en:
     bulk:
       http_status_invalid: 'Please select either redirect or archive'
       new_url_invalid: 'Enter a valid URL to redirect to'
+      new_url_must_be_on_whitelist: 'The URL to Redirect to must be on a whitelisted domain. Contact %{email} for more information.'
       add:
         paths_empty: 'Enter at least one valid path'
         hosts_invalid: 'One or more of the URLs entered are not part of this site'

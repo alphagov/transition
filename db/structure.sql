@@ -235,6 +235,15 @@ CREATE TABLE `versions` (
   KEY `index_versions_on_item_type_and_item_id` (`item_type`,`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `whitelisted_hosts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hostname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_whitelisted_hosts_on_hostname` (`hostname`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 INSERT INTO schema_migrations (version) VALUES ('20130910133049');
 
 INSERT INTO schema_migrations (version) VALUES ('20130910135517');
@@ -322,3 +331,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140422184036');
 INSERT INTO schema_migrations (version) VALUES ('20140502114341');
 
 INSERT INTO schema_migrations (version) VALUES ('20140502160711');
+
+INSERT INTO schema_migrations (version) VALUES ('20140507103006');

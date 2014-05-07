@@ -16,10 +16,10 @@ Feature: Paginated mappings
   Scenario: There are mappings for a site and we visit page 1
     Given I have logged in as an admin
     And there is a site called bis_lowpay belonging to an organisation bis with these mappings:
-      | http_status | path             | new_url           |
-      | 410         | /about/corporate |                   |
-      | 301         | /a               | http://gov.uk/bis |
-      | 410         | /something       |                   |
+      | http_status | path             | new_url             |
+      | 410         | /about/corporate |                     |
+      | 301         | /a               | http://a.gov.uk/bis |
+      | 410         | /something       |                     |
     And the mappings page size is 2
     When I visit the path /sites/bis_lowpay
     And I click the link called "Mappings"
@@ -32,10 +32,10 @@ Feature: Paginated mappings
   Scenario: There are mappings for a site and we visit page 2
     Given I have logged in as an admin
     And there is a site called bis_lowpay belonging to an organisation bis with these mappings:
-      | http_status | path             | new_url           |
-      | 410         | /about/corporate |                   |
-      | 301         | /a               | http://gov.uk/bis |
-      | 410         | /something       |                   |
+      | http_status | path             | new_url             |
+      | 410         | /about/corporate |                     |
+      | 301         | /a               | http://a.gov.uk/bis |
+      | 410         | /something       |                     |
     And the mappings page size is 2
     When I visit the path /sites/bis_lowpay
     And I click the link called "Mappings"

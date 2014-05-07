@@ -59,7 +59,16 @@ describe MappingsBatch do
 
       before { mappings_batch.should_not be_valid }
       it 'should declare it invalid' do
-        mappings_batch.errors[:new_url].should == ['Enter a valid URL to redirect to']
+        mappings_batch.errors[:new_url].should include('Enter a valid URL to redirect to')
+      end
+    end
+
+    describe 'non-whitelisted new URLs' do
+      subject(:mappings_batch) { build(:mappings_batch, http_status: '301', new_url: 'http://bad.com') }
+
+      before { mappings_batch.should_not be_valid }
+      it 'should declare it invalid' do
+        mappings_batch.errors[:new_url].should include('The URL to Redirect to must be on a whitelisted domain. Contact transition-dev@digital.cabinet-office.gov.uk for more information.')
       end
     end
 
@@ -108,7 +117,7 @@ describe MappingsBatch do
     subject(:mappings_batch) do
       create(:mappings_batch, site: site,
               paths: ['/a', '/b'],
-              http_status: '301', new_url: 'http://gov.uk', tag_list: ['a tag'])
+              http_status: '301', new_url: 'http://a.gov.uk', tag_list: ['a tag'])
     end
 
     context 'rosy case' do
@@ -122,7 +131,7 @@ describe MappingsBatch do
         mapping = site.mappings.first
         mapping.path.should == '/a'
         mapping.http_status.should == '301'
-        mapping.new_url.should == 'http://gov.uk'
+        mapping.new_url.should == 'http://a.gov.uk'
         mapping.tag_list.should == ['a tag']
       end
 
@@ -153,7 +162,7 @@ describe MappingsBatch do
 
           existing_mapping.reload
           existing_mapping.http_status.should == '301'
-          existing_mapping.new_url.should == 'http://gov.uk'
+          existing_mapping.new_url.should == 'http://a.gov.uk'
           existing_mapping.tag_list.sort.should == ['a tag', 'existing tag']
         end
       end

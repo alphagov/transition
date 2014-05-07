@@ -7,8 +7,8 @@ Feature: Editing multiple mappings for a site
     Given I have logged in as an admin
     And there is a site called directgov belonging to an organisation directgov with these mappings:
       | http_status | path             | new_url                                 |
-      | 301         | /a               | http://gov.uk/directgov                 |
-      | 301         | /about/branding  | http://gov.uk/branding                  |
+      | 301         | /a               | http://a.gov.uk/directgov               |
+      | 301         | /about/branding  | http://a.gov.uk/branding                |
       | 410         | /about/corporate |                                         |
       | 410         | /z1              |                                         |
       | 410         | /z2              |                                         |
