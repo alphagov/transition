@@ -103,7 +103,7 @@ class MappingsController < ApplicationController
     if params[:sort] == 'by_hits'
       @filtered = true
       @sorted_by_hits = true
-      @mappings = @mappings.with_hits_summary.order('hit_count DESC')
+      @mappings = @mappings.with_hit_count.order('hit_count DESC')
     end
   end
 

@@ -225,7 +225,7 @@ describe Mapping do
       before :all do
         @site = create :site, :with_mappings_and_hits
 
-        @mappings = @site.mappings.with_hits_summary
+        @mappings = @site.mappings.with_hit_count
       end
 
       it 'has the total of every type of status hit on each mapping' do
