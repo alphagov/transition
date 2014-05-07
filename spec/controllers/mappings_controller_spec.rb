@@ -561,6 +561,18 @@ describe MappingsController do
         flash.now[:batch_progress].should be_nil
       end
     end
+
+    context 'the batch is for another site' do
+      let!(:mappings_batch) { create(:mappings_batch, site: create(:site), user: admin_bob, state: 'succeeded') }
+      before do
+        login_as(admin_bob)
+        get :index, site_id: site
+      end
+
+      it 'should not show' do
+        flash.now[:batch_progress].should be_nil
+      end
+    end
   end
 
   describe 'rejecting an invalid or missing authenticity (CSRF) token' do

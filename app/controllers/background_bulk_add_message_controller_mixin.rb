@@ -1,6 +1,10 @@
 module BackgroundBulkAddMessageControllerMixin
   def set_background_bulk_add_status_message
-    @reportable_batch = current_user.mappings_batches.reportable.order(:updated_at).last
+    @reportable_batch = current_user.mappings_batches
+                                    .where(site_id: @site.id)
+                                    .reportable
+                                    .order(:updated_at)
+                                    .last
 
     # Assumes that the user only cares about the most recent in-progress batch
     if @reportable_batch
