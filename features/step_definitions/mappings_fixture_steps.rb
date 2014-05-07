@@ -15,7 +15,7 @@ Given(/^a site "([^"]*)" exists with these tagged mappings:$/) do |site_abbr, ta
   end
 end
 
-Given(/^a site has lots of mappings$/) do
+Given(/^a site has lots of mappings(?: and no hits)?$/) do
   @site = create :site
   3.times { create :mapping, site: @site }
 end

@@ -33,19 +33,21 @@
       <%= label_tag :tagged, tag_list_label %>
       <%= text_field_tag :tagged, params[:tagged], class: 'form-control' %>
     </div>
-    <fieldset>
-      <legend class="legend-reset add-label-margin bold">Sort</legend>
-      <div class="form-group">
-        <%= label_tag nil, class: 'radio-inline' do %>
-          <%= radio_button_tag :sort, 'by_path', true %>
-          by path
-        <% end %>
-        <%= label_tag nil, class: 'radio-inline' do %>
-          <%= radio_button_tag :sort, 'by_hits', false %>
-          by hits
-        <% end %>
-      </div>
-    </fieldset>
+    <% if @site.hit_total_count > 0 %>
+      <fieldset>
+        <legend class="legend-reset add-label-margin bold">Sort</legend>
+        <div class="form-group">
+          <%= label_tag nil, class: 'radio-inline' do %>
+            <%= radio_button_tag :sort, 'by_path', true %>
+            by path
+          <% end %>
+          <%= label_tag nil, class: 'radio-inline' do %>
+            <%= radio_button_tag :sort, 'by_hits', false %>
+            by hits
+          <% end %>
+        </div>
+      </fieldset>
+    <% end %>
 
     <%= button_tag 'Filter', name: nil, class: 'btn btn-default ' %>
   </div>
