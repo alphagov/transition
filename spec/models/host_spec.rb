@@ -44,7 +44,7 @@ describe Host do
 
       its(:valid?) { should be_false }
       it 'should have an error for invalid hostname' do
-        host.errors_on(:valid_hostname).should include('is an invalid hostname')
+        host.errors_on(:hostname).should include('is an invalid hostname')
       end
     end
   end
