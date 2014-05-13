@@ -51,5 +51,15 @@
       <li>Click the bookmarklet to add or edit the mapping</li>
     </ul>
     <a class="btn btn-default bookmarklet" title="Drag me to your bookmarks bar" href="javascript:location%3Dlocation.href.replace(/^/,'https://transition.production.alphagov.co.uk/mappings/find_global?url=')">Edit mapping</a>
-  </div>
+    <hr />
+    <h4 class="add-top-margin">Convert a page to Markdown</h4>
+    <p>
+      To convert a page to Markdown:
+    </p>
+    <ul>
+      <li>Drag this bookmarklet to your bookmarks bar</li>
+      <li>Visit a page on any transitioning site</li>
+      <li>Click the bookmarklet to convert the page to Markdown</li>
+    </ul>
+    <a class="btn btn-default bookmarklet" title="Drag me to your bookmarks bar" href="javascript:(function()%7Bvar%20location%3D%22http://psd.github.com/scrapedown/%22%3Bvar%20nocache%3D%22%22%3Bscrapedown_location%3Dlocation%3Bvar%20css%3Ddocument.createElement(%22link%22)%3Bcss.rel%3D%22stylesheet%22%3Bcss.href%3Dlocation%2B%22scrapedown.css%22%2Bnocache%3Bcss.media%3D%22all%22%3Bcss.type%3D%22text/css%22%3Bdocument.getElementsByTagName(%22head%22)%5B0%5D.appendChild(css)%3Bvar%20js%3Ddocument.createElement(%22script%22)%3Bjs.src%3Dlocation%2B%22scrapedown.js%22%2Bnocache%3Bdocument.body.appendChild(js)%7D)()%3B">Convert to Markdown</a>
 </div>
