@@ -5,12 +5,12 @@ require 'transition/history'
 class Mapping < ActiveRecord::Base
   include ActiveRecord::Concerns::NilifyBlanks
 
-  SUPPORTED_STATUSES = ['301', '410']
-
   TYPES = {
     '301' => 'redirect',
     '410' => 'archive'
   }
+
+  SUPPORTED_STATUSES = TYPES.keys
 
   attr_accessible :path, :site, :http_status, :new_url, :suggested_url, :archive_url, :tag_list
 
