@@ -10,6 +10,8 @@ en:
       govuk_date: "%-I:%M%P, %-e %B %Y" # 1:15pm, 1 January 2013
   activerecord:
     attributes:
+      whitelisted_host:
+        hostname: Domain
       mappings_batch:
         paths: Old URLs
   mappings:
