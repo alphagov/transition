@@ -104,6 +104,8 @@ class MappingsController < ApplicationController
       @filtered = true
       @sorted_by_hits = true
       @mappings = @mappings.with_hit_count.order('hit_count DESC')
+    else
+      @mappings = @mappings.order(:path)
     end
   end
 

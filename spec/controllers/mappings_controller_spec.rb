@@ -32,6 +32,8 @@ describe MappingsController do
 
       context 'in the absence of a sort parameter' do
         it 'orders mappings by path' do
+          # this would be last in insertion order, but first alphabetically
+          create(:mapping, site: site, path: '/..')
           get :index, site_id: site.abbr
 
           assigns(:mappings).to_a.should == site.mappings.order(:path).to_a
