@@ -9,6 +9,9 @@ describe Site do
 
   describe 'validations' do
     it { should validate_presence_of(:abbr) }
+    it { should validate_presence_of(:tna_timestamp) }
+    it { should validate_presence_of(:organisation) }
+    it { should ensure_inclusion_of(:special_redirect_strategy).in_array(['via_aka', 'supplier']) }
   end
 
   describe '.with_mapping_count scope' do
