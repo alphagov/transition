@@ -2,8 +2,8 @@ require 'spec_helper'
 require 'transition/import/hits_mappings_relations'
 
 describe Transition::Import::HitsMappingsRelations do
-  describe '.refresh!', testing_before_all: true do
-    before :all do
+  describe '.refresh!', truncate_everything: true do
+    before do
       @host = create :host, site: create(:site, query_params: 'significant')
       @site = @host.site
 
@@ -44,6 +44,26 @@ describe Transition::Import::HitsMappingsRelations do
 
       its(:path_hash)      { should eql(Digest::SHA1.hexdigest('/this/Exists?and=can&canonicalize=1&significant=1')) }
       its(:c14n_path_hash) { should eql(Digest::SHA1.hexdigest('/this/exists?significant=1')) }
+    end
+
+    context 'when canonicalization has changed since a previous refresh' do
+      before do
+        @site.query_params = 'canonicalize:significant'
+        @site.save!
+
+        @new_mapping = create :mapping, path: @c14n_hit_with_mapping.path, site: @site
+        Transition::Import::HitsMappingsRelations.refresh!
+        [@hit_with_mapping, @c14n_hit_with_mapping].each(&:reload)
+      end
+
+      it 'should have linked the new mapping to the existing c14n hit' do
+        @c14n_hit_with_mapping.mapping.should eql(@new_mapping)
+      end
+
+      it 'should have linked the new mapping to the existing host_path' do
+        host_path = HostPath.where(path: @c14n_hit_with_mapping.path).first
+        host_path.mapping.should eql(@new_mapping)
+      end
     end
   end
 end

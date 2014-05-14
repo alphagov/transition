@@ -32,6 +32,43 @@ describe Site do
     end
   end
 
+  describe 'changing query_params' do
+    context 'there are related mappings, host_paths and hits', truncate_everything: true do
+      let!(:host)          { create(:host, site: create(:site, query_params: 'initial')) }
+      let!(:site)          { host.site }
+      let!(:hit)           { create(:hit, path: '/this/Exists?added_later=2&initial=1', host: host) }
+      let!(:mapping)       { create(:mapping, path: hit.path, site: site) }
+
+      let!(:other_hit)     { create(:hit, path: '/something', host: host) }
+      let!(:other_mapping) { create(:mapping, path: other_hit.path, site: site) }
+
+      before do
+        # Connect everything with the old query_params
+        Transition::Import::HitsMappingsRelations.refresh!
+
+        site.update_attribute(:query_params, 'added_later:initial')
+      end
+
+      it 'clears relationships which no longer exist' do
+        # This host_path and hit shouldn't be related to this mapping any more
+        # because they contain what is now an extra significant query param
+        # ('added_later=2')
+
+        host_path = HostPath.find_by_path(hit.path)
+        host_path.mapping.should eql(nil)
+
+        hit.reload.mapping.should eql(nil)
+      end
+
+      it 'should keep relationships which still exist' do
+        other_host_path = HostPath.find_by_path(other_hit.path)
+        other_host_path.mapping.should eql(other_mapping)
+
+        other_hit.reload.mapping.should eql(other_mapping)
+      end
+    end
+  end
+
   describe '.with_mapping_count scope' do
     let!(:site_with_mappings)    { create :site }
     let!(:site_without_mappings) { create :site }

@@ -21,6 +21,8 @@ class Site < ActiveRecord::Base
                                        message: 'cannot contain a query when the path is appended',
                                        :if => :global_redirect_append_path }
 
+  after_update :update_hits_relations, :if => :query_params_changed?
+
   scope :managed_by_transition, where(managed_by_transition: true)
   scope :with_mapping_count,
         select('sites.*, COUNT(mappings.id) as mapping_count').
@@ -65,5 +67,11 @@ class Site < ActiveRecord::Base
 
   def hit_total_count
     @hit_total_count ||= daily_hit_totals.pluck(:count).reduce(&:+) || 0
+  end
+
+  def update_hits_relations
+    host_paths.update_all(mapping_id: nil, c14n_path_hash: nil)
+    hits.update_all(mapping_id: nil)
+    Transition::Import::HitsMappingsRelations.refresh!
   end
 end
