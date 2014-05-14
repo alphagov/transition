@@ -27,6 +27,14 @@ class Site < ActiveRecord::Base
     abbr
   end
 
+  def global_redirect?
+    global_http_status == '301'
+  end
+
+  def global_archive?
+    global_http_status == '410'
+  end
+
   def default_host
     hosts.excluding_aka.first
   end
