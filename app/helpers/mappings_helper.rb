@@ -63,6 +63,19 @@ module MappingsHelper
     http_status_name(operation) || OTHER_OPERATIONS[operation].titleize
   end
 
+  def friendly_hit_count(hit_count)
+    hit_count ? number_with_delimiter(hit_count) : '0'
+  end
+
+  def friendly_hit_percentage(hit_percentage)
+    case
+      when hit_percentage.zero?  then ''
+      when hit_percentage < 0.01 then '< 0.01%'
+      when hit_percentage < 10.0 then hit_percentage.round(2).to_s + '%'
+      else hit_percentage.round(1).to_s + '%'
+    end
+  end
+
   def mappings_from_ids(ids)
     Mapping.find(ids)
   end

@@ -15,9 +15,17 @@
           <%= render partial: 'mappings/filter/by_new_url_menu' %>
           <%= render partial: 'mappings/filter/by_tag_menu' %>
           <%= render partial: 'mappings/filter/by_type_menu' %>
-          <li class="nav-pill-text text-muted">
-            Sorted by path
-          </li>
+
+          <% if @site.hit_total_count > 0 %>
+            <li class="if-no-js-hide nav-pill-text add-left-margin">
+              <strong>Sort by</strong>
+            </li>
+            <%= render partial: 'mappings/sort' %>
+          <% else %>
+            <li class="if-no-js-hide nav-pill-text text-muted">
+              Sorted by path
+            </li>
+          <% end %>
           <li class="if-js-hide">
             <%= link_to 'Filter mappings', filter_site_mappings_path(@site) %>
           </li>

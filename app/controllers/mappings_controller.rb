@@ -58,7 +58,7 @@ class MappingsController < ApplicationController
 
   def index
 
-    @mappings = @site.mappings.order(:path).page(params[:page])
+    @mappings = @site.mappings.page(params[:page])
 
     if params[:type] == 'archive' && params[:new_url_contains].present?
       @incompatible_filter = true
@@ -98,6 +98,14 @@ class MappingsController < ApplicationController
     if params[:tagged].present?
       @filtered = true
       @mappings = @mappings.tagged_with(params[:tagged])
+    end
+
+    if params[:sort] == 'by_hits'
+      @filtered = true
+      @sorted_by_hits = true
+      @mappings = @mappings.with_hit_count.order('hit_count DESC')
+    else
+      @mappings = @mappings.order(:path)
     end
   end
 

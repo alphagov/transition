@@ -39,6 +39,11 @@ class Mapping < ActiveRecord::Base
   validates :new_url, presence: { if: :redirect?, message: 'required when mapping is a redirect' }
   validates :archive_url, national_archives_url: true
 
+  scope :with_hit_count, -> {
+    select('mappings.*, SUM(hits.count) as hit_count').
+      joins('LEFT JOIN hits ON hits.mapping_id = mappings.id').
+      group('mappings.path_hash')
+  }
   scope :with_status, -> status { where(http_status: Rack::Utils.status_code(status)) }
   scope :redirects, with_status(:moved_permanently)
   scope :archives,  with_status(:gone)
@@ -104,7 +109,13 @@ class Mapping < ActiveRecord::Base
     end
   end
 
-  protected
+  def hit_percentage
+    raise NoMethodError, 'This only works in the context of :with_hit_count' unless respond_to?(:hit_count)
+
+    site.hit_total_count.zero? ? 0 : (hit_count.to_f / site.hit_total_count) * 100
+  end
+
+protected
   def fill_in_scheme
     self.new_url       = Mapping.ensure_url(new_url)
     self.suggested_url = Mapping.ensure_url(suggested_url)

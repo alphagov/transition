@@ -2,6 +2,7 @@
 <% include_footer ||= false %>
 <% include_bulk_add ||= false %>
 <% fix_header ||= false %>
+<% sorted_by_hits ||= false %>
 
 <% if current_user.can_edit_site?(site) %>
   <div data-module="selectable-table">
@@ -20,6 +21,9 @@
       <th scope="col">
         Original path from <%= site.default_host.hostname %>
       </th>
+      <% if sorted_by_hits %>
+        <th class="mapping-hits-column" scope="col">Hits</th>
+      <% end %>
       <% if current_user.can_edit_site?(site) %>
         <% if show_preview_links? %>
           <th class="mapping-edit-and-preview-column"></th>
@@ -55,6 +59,12 @@
           <%= link_to mapping.new_url, mapping.new_url, class: 'link-muted breakable' if mapping.new_url.present? %>
         <% end %>
       </td>
+      <% if sorted_by_hits %>
+        <td class="mapping-hits-column">
+          <span class="hit-count"><%= friendly_hit_count(mapping.hit_count) %></span><br />
+          <span class="hit-percentage text-muted"><%= friendly_hit_percentage(mapping.hit_percentage) %></span>
+        </td>
+      <% end %>
       <% if current_user.can_edit_site?(site) %>
         <td class="text-right">
           <% if show_preview_links? %>

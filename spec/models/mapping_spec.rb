@@ -172,6 +172,72 @@ describe Mapping do
     end
   end
 
+  describe 'scopes' do
+    describe '.filtered_by_path' do
+      before do
+        site = create :site
+        ['/a', '/about', '/about/branding', '/other'].each do |path|
+          create :mapping, path: path, site: site
+        end
+      end
+
+      context 'a filter is supplied' do
+        subject { Mapping.filtered_by_path('about').map(&:path) }
+
+        it { should include('/about') }
+        it { should include('/about/branding') }
+        it { should_not include('/a') }
+        it { should_not include('/other') }
+      end
+
+      context 'no filter is supplied' do
+        subject { Mapping.filtered_by_path(nil) }
+
+        it { should have(4).mappings }
+      end
+    end
+
+    describe '.filtered_by_new_url' do
+      before do
+        site = create :site
+        ['/a', '/about', '/about/branding', '/other'].each do |new_path|
+          create :mapping, new_url: "http://f.co#{new_path}", site: site
+        end
+      end
+
+      context 'a filter is supplied' do
+        subject { Mapping.filtered_by_new_url('about').map(&:new_url) }
+
+        it { should include('http://f.co/about') }
+        it { should include('http://f.co/about/branding') }
+        it { should_not include('http://f.co/a') }
+        it { should_not include('http://f.co/other') }
+      end
+
+      context 'no filter is supplied' do
+        subject { Mapping.filtered_by_path(nil) }
+
+        it { should have(4).mappings }
+      end
+    end
+
+    describe '.with_hits_summary', testing_before_all: true do
+      before :all do
+        @site = create :site, :with_mappings_and_hits
+
+        @mappings = @site.mappings.with_hit_count
+      end
+
+      it 'has the total of every type of status hit on each mapping' do
+        @mappings.map {|m| [ m.path, m.hit_count ] }.should =~ [
+          ['/path-1', 40 * 1 + 30 * 1],
+          ['/path-2', 40 * 2 + 30 * 2],
+          ['/path-3', 40 * 3 + 30 * 3]
+        ]
+      end
+    end
+  end
+
   describe 'path canonicalization and relation to hits', truncate_everything: true do
     let(:uncanonicalized_path) { '/A/b/c?significant=1&really-significant=2&insignificant=2' }
     let(:canonicalized_path)   { '/a/b/c?really-significant=2&significant=1' }
@@ -229,54 +295,6 @@ describe Mapping do
     site = create(:site, query_params: 'q')
     mapping = create(:mapping, path: 'http://www.example.com/foobar?q=1', site: site)
     mapping.path.should == '/foobar?q=1'
-  end
-
-  describe '.filtered_by_path' do
-    before do
-      site = create :site
-      ['/a', '/about', '/about/branding', '/other'].each do |path|
-        create :mapping, path: path, site: site
-      end
-    end
-
-    context 'a filter is supplied' do
-      subject { Mapping.filtered_by_path('about').map(&:path) }
-
-      it { should include('/about') }
-      it { should include('/about/branding') }
-      it { should_not include('/a') }
-      it { should_not include('/other') }
-    end
-
-    context 'no filter is supplied' do
-      subject { Mapping.filtered_by_path(nil) }
-
-      it { should have(4).mappings }
-    end
-  end
-
-  describe '.filtered_by_new_url' do
-    before do
-      site = create :site
-      ['/a', '/about', '/about/branding', '/other'].each do |new_path|
-        create :mapping, new_url: "http://f.co#{new_path}", site: site
-      end
-    end
-
-    context 'a filter is supplied' do
-      subject { Mapping.filtered_by_new_url('about').map(&:new_url) }
-
-      it { should include('http://f.co/about') }
-      it { should include('http://f.co/about/branding') }
-      it { should_not include('http://f.co/a') }
-      it { should_not include('http://f.co/other') }
-    end
-
-    context 'no filter is supplied' do
-      subject { Mapping.filtered_by_path(nil) }
-
-      it { should have(4).mappings }
-    end
   end
 
   describe 'The paper trail', versioning: true do

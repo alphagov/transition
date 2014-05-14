@@ -4,6 +4,10 @@ When(/^I go to create some mappings$/) do
   }
 end
 
+When(/^I visit the site\'s mappings$/) do
+  visit site_mappings_path(@site)
+end
+
 When(/^I make the mapping a redirect to (.*)$/) do |new_url|
   select 'Redirect', from: 'Type'
   fill_in 'Redirects to', with: new_url
@@ -40,7 +44,7 @@ When(/^I select all the mappings$/) do
   find(:css, ".mappings thead input.js-toggle-all").set(true)
 end
 
-When (/^I go to edit the selected mappings$/) do
+When(/^I go to edit the selected mappings$/) do
   click_button "Edit selected"
 end
 
@@ -55,7 +59,7 @@ When(/^I open the "(.*)" filter$/) do |filter_type|
 end
 
 When(/^I open the "(.*)" filter and filter by "(.*)"$/) do |filter_type, value|
-  within '.filters' do
+  within ".filters#{ ' .filter-by-path' if filter_type == 'Path' }" do
     click_link filter_type
     fill_in filter_type, with: value
     click_button 'Filter'
@@ -80,7 +84,9 @@ When(/^I filter the path by ([^"]*)$/) do |path_contains|
 end
 
 When(/^I remove the filter "(.*?)"$/) do |filter_type|
-  click_link filter_type
+  within ".filters#{ ' .filter-by-path' if filter_type == 'Path' }" do
+    click_link filter_type
+  end
 end
 
 When(/^I click the tag filter "(.*?)"$/) do |tag_filter|
@@ -167,4 +173,21 @@ When(/^I jump to the mapping "(.*?)"$/) do |url|
   page.execute_script("Mousetrap.trigger('g m');")
   fill_in 'Old URL', with: url
   click_button 'Go to mapping'
+end
+
+When(/^I sort the mappings by hits$/) do
+  if @_javascript
+    within '.sort-by' do
+      click_link "Path" # this is the default, selected, option
+      click_link "Hits"
+    end
+  else
+    click_link "Filter mappings"
+    choose('by hits')
+    click_button 'Filter'
+  end
+end
+
+When(/^I remove all sorting and filtering$/) do
+  find(:css, ".remove-filters").click
 end

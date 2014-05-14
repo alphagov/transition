@@ -266,3 +266,32 @@ end
 Then(/^I should not see a link to preview a mapping in the side\-by\-side browser$/) do
   expect(page).to_not have_link('Preview')
 end
+
+Then(/^I should see a column with hits information$/) do
+  within 'table.mappings .table-header' do
+    expect(page).to have_selector('th:nth-child(4)', text: 'Hits')
+  end
+end
+
+Then(/^I should not see a column with hits information$/) do
+  within 'table.mappings .table-header' do
+    expect(page).not_to have_selector('th:nth-child(4)', text: 'Hits')
+  end
+end
+
+Then(/^the cells should have hit counts$/) do
+  expect(page).to have_hit_counts([210, 140, 70])
+end
+
+Then(/^the cells should have percentages$/) do
+  expect(page).to have_hit_counts([210, 140, 70]).as_percentages_of(210 + 140 + 70 + 17)
+end
+
+Then(/^I should not be able to sort the mappings by hits$/) do
+  if @_javascript
+    expect(page).not_to have_selector('.sort-by')
+  else
+    click_link "Filter mappings"
+    expect(page).not_to have_selector('input[name=sort]')
+  end
+end

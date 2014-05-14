@@ -14,5 +14,23 @@ FactoryGirl.define do
         site.hosts << FactoryGirl.build(:host, hostname: "#{site.abbr.gsub('_','-')}.gov.uk", site: site)
       end
     end
+
+    trait :with_mappings_and_hits do
+      after(:build) do |site|
+        if site.hosts.none?
+          site.hosts << FactoryGirl.build(:host, hostname: "#{site.abbr}.gov.uk", site: site)
+        end
+
+        3.times do |n|
+          n += 1
+          mapping = create :mapping, site: site, path: "/path-#{n}"
+          create :hit, :error, host: site.default_host, path: mapping.path, count: 40 * n
+          create :hit, :redirect, host: site.default_host, path: mapping.path, count: 30 * n
+        end
+        create :hit, :redirect, host: site.default_host, path: '/no-mapping', count: 17
+
+        Transition::Import::HitsMappingsRelations.refresh!
+      end
+    end
   end
 end

@@ -14,3 +14,13 @@ Given(/^a site "([^"]*)" exists with these tagged mappings:$/) do |site_abbr, ta
     end
   end
 end
+
+Given(/^a site has lots of mappings(?: and no hits)?$/) do
+  @site = create :site
+  3.times { create :mapping, site: @site }
+end
+
+Given(/^a site has lots of mappings and lots of hits$/) do
+  @site = create :site, :with_mappings_and_hits
+  Transition::Import::DailyHitTotals.from_hits!
+end

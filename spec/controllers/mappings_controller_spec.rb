@@ -23,20 +23,38 @@ describe MappingsController do
   end
 
   describe '#index' do
-    let!(:mapping_a) { create :redirect, path: '/a', new_url: 'http://f.co/1', site: site }
-    let!(:mapping_b) { create :redirect, path: '/b', new_url: 'http://f.co/2', site: site }
-    let!(:mapping_c) { create :redirect, path: '/c', new_url: 'http://f.co/3', site: site }
-
     before do
       login_as_stub_user
     end
 
-    it 'orders mappings by path' do
-      get :index, site_id: site.abbr
-      assigns(:mappings).should == [mapping_a, mapping_b, mapping_c]
+    describe 'sorting', truncate_everything: true do
+      let(:site)     { create :site, :with_mappings_and_hits }
+
+      context 'in the absence of a sort parameter' do
+        it 'orders mappings by path' do
+          # this would be last in insertion order, but first alphabetically
+          create(:mapping, site: site, path: '/..')
+          get :index, site_id: site.abbr
+
+          assigns(:mappings).to_a.should == site.mappings.order(:path).to_a
+        end
+      end
+
+      context 'when sorting by hits' do
+        it 'orders mappings by hit count' do
+          get :index, site_id: site.abbr, sort: 'by_hits'
+
+          assigns(:mappings).to_a.should ==
+            site.mappings.with_hit_count.order('hit_count DESC').to_a
+        end
+      end
     end
 
     describe 'filtering' do
+      let!(:mapping_a) { create :redirect, path: '/a', new_url: 'http://f.co/1', site: site }
+      let!(:mapping_b) { create :redirect, path: '/b', new_url: 'http://f.co/2', site: site }
+      let!(:mapping_c) { create :redirect, path: '/c', new_url: 'http://f.co/3', site: site }
+
       it 'filters mappings by path' do
         get :index, site_id: site.abbr, path_contains: 'a'
         assigns(:mappings).should == [mapping_a]

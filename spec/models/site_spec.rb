@@ -120,4 +120,27 @@ describe Site do
       subject.should eql('')
     end
   end
+
+  describe '#hit_total_count', truncate_everything: true do
+    let(:site) { create :site }
+
+    subject    { site.hit_total_count }
+
+    context 'the site has no hits at all' do
+      it { should be_zero }
+    end
+
+    context 'the site has hits' do
+      before do
+        site.default_host.hits.concat [
+          create(:hit, path: '/1', count: 10),
+          create(:hit, path: '/2', count: 20)
+        ]
+
+        Transition::Import::DailyHitTotals.from_hits!
+      end
+
+      it { should == 30 }
+    end
+  end
 end
