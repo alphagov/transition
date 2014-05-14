@@ -29,7 +29,6 @@ gem 'logstasher', '0.4.8'
 group :assets do
   gem 'sass', '3.2.12'
   gem 'sass-rails', '3.2.6'
-  gem 'bootstrap-sass', '3.1.0'
   gem 'uglifier', '2.0.1'
 end
 

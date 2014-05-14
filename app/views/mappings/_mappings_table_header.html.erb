@@ -12,13 +12,13 @@
       <% unless footer %>
         <%= hidden_field_tag "return_path", request.fullpath %>
         <div class="if-js-hide">
-          <%= label_tag :operation_redirect, class: 'radio-inline table-header-radio' do %>
+          <%= label_tag :operation_redirect, class: 'radio-inline remove-top-padding' do %>
             <%= radio_button_tag(:operation, 'redirect', selected = true) %> Redirect
           <% end %>
-          <%= label_tag :operation_archive, class: 'radio-inline table-header-radio add-right-margin' do %>
+          <%= label_tag :operation_archive, class: 'radio-inline remove-top-padding add-right-margin' do %>
             <%= radio_button_tag(:operation, 'archive') %> Archive
           <% end %>
-          <%= label_tag :operation_tag, class: 'radio-inline table-header-radio add-right-margin' do %>
+          <%= label_tag :operation_tag, class: 'radio-inline remove-top-padding add-right-margin' do %>
             <%= radio_button_tag(:operation, 'tag') %> Tag
           <% end %>
           <%= submit_tag "Edit selected", class: 'btn btn-default bold' %>
