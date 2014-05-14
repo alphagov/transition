@@ -47,6 +47,9 @@
             <li <% if current_page?(hits_path) %> class="active" <% end %>>
               <%= link_to 'Universal analytics', hits_path %>
             </li>
+            <li <% if current_page?(admin_whitelisted_hosts_path) %> class="active" <% end %>>
+              <%= link_to 'Redirection whitelist', admin_whitelisted_hosts_path %>
+            </li>
           <% end %>
           <li <% if current_page?(glossary_index_path) %> class="active" <% end %>>
             <%= link_to 'Glossary', glossary_index_path %>
