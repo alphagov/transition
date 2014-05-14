@@ -669,7 +669,7 @@ describe MappingsController do
     end
 
     context 'when a site has a global redirect' do
-      let(:site)           { create :site, abbr: 'bis', global_http_status: '301' }
+      let(:site)           { create :site, abbr: 'bis', global_http_status: '301', global_new_url: 'http://a.co' }
       let(:expected_alert) { 'entirely redirected' }
 
       it_behaves_like 'it disallows the editing of mappings'

@@ -12,6 +12,24 @@ describe Site do
     it { should validate_presence_of(:tna_timestamp) }
     it { should validate_presence_of(:organisation) }
     it { should ensure_inclusion_of(:special_redirect_strategy).in_array(['via_aka', 'supplier']) }
+
+    context 'global redirect' do
+      subject(:site) { build(:site, global_http_status: '301') }
+
+      before { site.should_not be_valid }
+      it 'should validate presence of global_new_url' do
+        site.errors[:global_new_url].should == ['can\'t be blank']
+      end
+    end
+
+    context 'global redirect with path appended' do
+      subject(:site) { build(:site, global_http_status: '301', global_redirect_append_path: true, global_new_url: 'http://a.com/?') }
+
+      before { site.should_not be_valid }
+      it 'should disallow a global_new_url with a querystring' do
+        site.errors[:global_new_url].should == ['cannot contain a query when the path is appended']
+      end
+    end
   end
 
   describe '.with_mapping_count scope' do
