@@ -16,6 +16,10 @@ class Site < ActiveRecord::Base
   validates_presence_of :organisation
   validates_uniqueness_of :abbr
   validates_inclusion_of :special_redirect_strategy, in: %w{ via_aka supplier }, allow_nil: true
+  validates :global_new_url, presence: { :if => :global_redirect? }
+  validates :global_new_url, format: { without: /\?/,
+                                       message: 'cannot contain a query when the path is appended',
+                                       :if => :global_redirect_append_path }
 
   scope :managed_by_transition, where(managed_by_transition: true)
   scope :with_mapping_count,
@@ -25,6 +29,14 @@ class Site < ActiveRecord::Base
 
   def to_param
     abbr
+  end
+
+  def global_redirect?
+    global_http_status == '301'
+  end
+
+  def global_archive?
+    global_http_status == '410'
   end
 
   def default_host
