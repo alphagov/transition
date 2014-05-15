@@ -174,4 +174,26 @@ describe MappingsBatch do
       end
     end
   end
+
+  describe 'recording history', versioning: true do
+    let(:site) { create(:site) }
+    let(:mappings_batch) do
+      create(:mappings_batch, site: site,
+              paths: ['/a'],
+              http_status: '301', new_url: 'http://gov.uk', tag_list: '')
+    end
+
+    it 'should not record any change to the tag_list' do
+      Transition::History.as_a_user(create(:user)) do
+        mappings_batch.process
+      end
+
+      site.mappings.count.should == 1
+
+      mapping = site.mappings.first
+
+      version = mapping.versions.first
+      version.changeset.should_not include('tag_list')
+    end
+  end
 end

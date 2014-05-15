@@ -15,7 +15,13 @@ class Mapping < ActiveRecord::Base
   attr_accessible :path, :site, :http_status, :new_url, :suggested_url, :archive_url, :tag_list
 
   acts_as_taggable
-  has_paper_trail
+  has_paper_trail :ignore => [:tag_list => Proc.new { |mapping|
+    # tag_list appears to ActiveModel::Dirty/paper_trail to be an
+    # ActsAsTaggableOn::TagList but the original value from the database is a
+    # string. This means that it is "different" even though it isn't.
+    # Comparing the stringified version avoids that problem.
+    mapping.tag_list_was == mapping.tag_list.to_s
+  } ]
 
   belongs_to :site
   validates :site, presence: true
