@@ -69,7 +69,7 @@ Feature: Editing multiple mappings for a site
   @javascript
   Scenario: Selecting multiple mappings to redirect with javascript
     When I select the first two mappings
-    And I click the first link called "Redirect"
+    And I click the first link called "Redirect" within "main"
     Then I should see an open modal window
     And I should see a form that contains my selection within the modal
     And I should see "Redirect mappings" in the modal window
@@ -102,7 +102,7 @@ Feature: Editing multiple mappings for a site
   @javascript
   Scenario: Truncating a table of mappings in a modal
     When I select all the mappings
-    And I click the first link called "Redirect"
+    And I click the first link called "Redirect" within "main"
     Then I should see an open modal window
     And I should see a table with 9 mappings in the modal
     When I click the link "and 2 more"
@@ -112,6 +112,6 @@ Feature: Editing multiple mappings for a site
   @javascript
   Scenario: Don't truncate a table of exactly 10 mappings
     When I select the first 10 mappings
-    And I click the first link called "Redirect"
+    And I click the first link called "Redirect" within "main"
     Then I should see an open modal window
     And I should see a table with 10 mappings in the modal
