@@ -1,4 +1,11 @@
 class MappingsBatch < ActiveRecord::Base
+
+  # ActiveRecord uses a column named 'type' for Single Table Inheritance, and
+  # by default activates STI if a 'type' column is present. Setting the column
+  # name for STI to something else allows us to use a 'type' column for
+  # something else instead, without activating STI.
+  self.inheritance_column = nil
+
   FINISHED_STATES = ['succeeded', 'failed']
   PROCESSING_STATES = ['unqueued', 'queued', 'processing'] + FINISHED_STATES
 
@@ -13,6 +20,7 @@ class MappingsBatch < ActiveRecord::Base
   validates :user, presence: true
   validates :site, presence: true
   validates :http_status, inclusion: { :in => Mapping::SUPPORTED_HTTP_STATUSES }
+  validates :type, presence: true, inclusion: { :in => Mapping::SUPPORTED_TYPES }
   with_options :if => :redirect? do |redirect|
     redirect.validates :new_url, presence: { message: I18n.t('mappings.bulk.new_url_invalid') }
     redirect.validates :new_url, length: { maximum: (64.kilobytes - 1) }
@@ -24,7 +32,7 @@ class MappingsBatch < ActiveRecord::Base
 
   scope :reportable, where(seen_outcome: false).where("state != 'unqueued'")
 
-  before_validation :fill_in_scheme
+  before_validation :fill_in_scheme, :set_type_from_http_status
 
   after_create :create_entries
 
@@ -41,7 +49,7 @@ class MappingsBatch < ActiveRecord::Base
   end
 
   def type
-    Mapping.type(http_status)
+    Mapping::TYPES[http_status]
   end
 
   def finished?
@@ -58,6 +66,10 @@ class MappingsBatch < ActiveRecord::Base
 
   def fill_in_scheme
     self.new_url = Mapping.ensure_url(new_url)
+  end
+
+  def set_type_from_http_status
+    self.type = Mapping::TYPES[http_status] || self.type
   end
 
   def paths_cannot_include_hosts_for_another_site

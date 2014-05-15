@@ -39,6 +39,16 @@ describe Mapping do
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:path) }
     it { should ensure_inclusion_of(:http_status).in_array(['301', '410']) }
+    it { should validate_presence_of(:type) }
+
+    # FIXME: it's difficult to test at the moment because we're using a
+    # before_validation callback to set the type from http_status, so we can't
+    # build and validate a prohibited type without setting it to a valid one
+    # in the process. This callback is a temporary measure which will be removed
+    # when we remove the http_status column, so for now it's probably ok to not
+    # test this validation here.
+
+    # it { should ensure_inclusion_of(:type).in_array(['redirect', 'archive']) }
 
     describe 'home pages (which are handled by Site)' do
       subject(:homepage_mapping) { build(:mapping, path: '/') }
