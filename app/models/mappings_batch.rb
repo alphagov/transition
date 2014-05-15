@@ -12,7 +12,7 @@ class MappingsBatch < ActiveRecord::Base
 
   validates :user, presence: true
   validates :site, presence: true
-  validates :http_status, inclusion: { :in => Mapping::SUPPORTED_STATUSES }
+  validates :http_status, inclusion: { :in => Mapping::SUPPORTED_HTTP_STATUSES }
   with_options :if => :redirect? do |redirect|
     redirect.validates :new_url, presence: { message: I18n.t('mappings.bulk.new_url_invalid') }
     redirect.validates :new_url, length: { maximum: (64.kilobytes - 1) }
