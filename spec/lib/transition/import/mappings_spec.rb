@@ -25,6 +25,8 @@ describe Transition::Import::Mappings do
       describe 'the first mapping' do
         subject(:mapping) { Mapping.first }
 
+        its(:http_status) { should eql('301') }
+        its(:type)      { should eql('redirect') }
         its(:new_url)   { should eql('https://www.gov.uk/government/organisations/attorney-generals-office') }
         its(:path)      { should eql('/_layouts/feed.aspx') }
         its(:path_hash) { should eql('160d40c3b5400e446d0c5f2f62fd7a419b62f7f6') }
@@ -46,6 +48,8 @@ describe Transition::Import::Mappings do
       describe 'the update of the old mapping' do
         subject(:updated_mapping) { @directgov_site.mappings.where(path: '/barrierbusting').first }
 
+        its(:http_status) { should eql('410') }
+        its(:type)      { should eql('archive') }
         its(:new_url)       { should eql('http://new.url') }
         its(:suggested_url) { should include('barrierbusting.updated') }
         its(:archive_url)   { should include('webarchive.updated') }

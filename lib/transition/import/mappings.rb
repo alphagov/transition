@@ -17,12 +17,13 @@ module Transition
           host = TRIM(LEADING 'http://' FROM SUBSTRING_INDEX(@old_url, '/', 3)), /* Everything up to the 3rd slash or end of string */
           path = replace(@old_url, SUBSTRING_INDEX(@old_url, '/', 3), ''),       /* wow, this is ugly */
           path_hash = SHA1(path),
-          old_url = @old_url
+          old_url = @old_url,
+          type = (CASE http_status WHEN '301' THEN 'redirect' WHEN '410' THEN 'archive' END)
       mySQL
 
       INSERT_FROM_STAGING = <<-mySQL
-        INSERT INTO mappings (site_id, path, path_hash, http_status, new_url, suggested_url, archive_url, from_redirector)
-        SELECT h.site_id, st.path, st.path_hash, st.http_status, st.new_url, st.suggested_url, st.archive_url, true
+        INSERT INTO mappings (site_id, path, path_hash, http_status, type, new_url, suggested_url, archive_url, from_redirector)
+        SELECT h.site_id, st.path, st.path_hash, st.http_status, st.type, st.new_url, st.suggested_url, st.archive_url, true
         FROM
           mappings_staging st
         INNER JOIN hosts h on h.hostname = st.host
