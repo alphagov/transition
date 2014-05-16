@@ -66,7 +66,7 @@
         <div class="
           alert
           alert-<%= k == :notice || k == :alert ? 'warning' : k %>
-          <% if k == :success && flash[:saved_mapping_ids] && @site %>if-js-hide<% end %>
+          <% if k == :success && @saved_mappings %>if-js-hide<% end %>
         ">
           <%= flash[k] %>
         </div>
@@ -83,14 +83,13 @@
         </div>
       <% end %>
 
-      <% if flash[:saved_mapping_ids] && @site %>
-        <% mappings_from_ids = mappings_from_ids(flash[:saved_mapping_ids]) %>
+      <% if @saved_mappings %>
         <%= render partial: 'mappings/saved_mappings_modal',
           locals: {
             site: @site,
             operation: flash[:saved_operation],
             message: flash[:success],
-            mappings: mappings_from_ids,
+            mappings: @saved_mappings,
           }
         %>
       <% end %>

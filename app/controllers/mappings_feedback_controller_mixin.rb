@@ -1,4 +1,12 @@
-module BackgroundBulkAddMessageControllerMixin
+module MappingsFeedbackControllerMixin
+
+protected
+  def set_saved_mappings
+    if flash[:saved_mapping_ids]
+      @saved_mappings = Mapping.find(flash[:saved_mapping_ids])
+    end
+  end
+
   def set_background_bulk_add_status_message
     @reportable_batch = current_user.mappings_batches
                                     .where(site_id: @site.id)

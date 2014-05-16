@@ -1,8 +1,9 @@
 class HitsController < ApplicationController
-  include BackgroundBulkAddMessageControllerMixin
+  include MappingsFeedbackControllerMixin
 
   before_filter :find_site, :except => [:universal_summary, :universal_category]
   before_filter :set_background_bulk_add_status_message, :except => [:universal_summary, :universal_category]
+  before_filter :set_saved_mappings, :except => [:universal_summary, :universal_category]
   before_filter :set_period
 
   def index

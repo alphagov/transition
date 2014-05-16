@@ -1,8 +1,9 @@
 class VersionsController < ApplicationController
-  include BackgroundBulkAddMessageControllerMixin
+  include MappingsFeedbackControllerMixin
 
   before_filter :find_site
   before_filter :set_background_bulk_add_status_message
+  before_filter :set_saved_mappings
 
   def index
     @mapping = Mapping.find(params[:mapping_id])
