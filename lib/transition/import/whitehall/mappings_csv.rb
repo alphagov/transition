@@ -22,8 +22,8 @@ module Transition
               next unless row['State'] == 'published'
 
               begin
-                old_uri = URI.parse(row['Old URL'])
-              rescue URI::InvalidURIError => e
+                old_uri = Addressable::URI.parse(row['Old URL'])
+              rescue Addressable::URI::InvalidURIError => e
                 Rails.logger.warn("Skipping mapping for unparseable Old URL in Whitehall URL CSV: #{row['Old URL']}")
                 next
               end

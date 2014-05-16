@@ -24,7 +24,7 @@ module Transition
           target.title          = whitehall_org.title
           target.abbreviation   = whitehall_org.details.abbreviation
           target.homepage       =
-            "https://www.gov.uk#{URI.parse(whitehall_org.web_url).path}" if whitehall_org.web_url.present?
+            "https://www.gov.uk#{Addressable::URI.parse(whitehall_org.web_url).path}" if whitehall_org.web_url.present?
 
           if fudge_for_org = css_furl_fudge[whitehall_org.details.slug]
             target.css  = fudge_for_org[:css]

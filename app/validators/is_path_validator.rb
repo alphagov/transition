@@ -6,8 +6,8 @@ class IsPathValidator < ActiveModel::EachValidator
       'must start with a forward slash "/"' and return if value =~ /^[^\/]/
 
     valid_path = begin
-      URI.parse(value).is_a?(URI::Generic)
-    rescue URI::InvalidURIError
+      Addressable::URI.parse(value).is_a?(Addressable::URI)
+    rescue Addressable::URI::InvalidURIError
       false
     end
 

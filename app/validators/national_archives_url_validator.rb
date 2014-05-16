@@ -4,9 +4,9 @@ class NationalArchivesURLValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return if value.blank?
     valid_url = begin
-      uri = URI.parse(value)
+      uri = Addressable::URI.parse(value)
       uri.host == NATIONAL_ARCHIVES_HOST
-    rescue URI::InvalidURIError
+    rescue Addressable::URI::InvalidURIError
       false
     end
     record.errors.add attribute, (options[:message] || \

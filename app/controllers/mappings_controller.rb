@@ -126,10 +126,10 @@ class MappingsController < ApplicationController
     render_error(400) and return unless params[:url].present?
 
     begin
-      url = URI.parse(params[:url])
+      url = Addressable::URI.parse(params[:url])
       render_error(400) and
-        return unless url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS)
-    rescue URI::InvalidURIError
+        return unless url.scheme == "http" || url.scheme == "https"
+    rescue Addressable::URI::InvalidURIError
       render_error(400) and return
     end
 
@@ -179,7 +179,7 @@ private
 
   def back_or_mappings_index
     referer = request.env['HTTP_REFERER']
-    if referer && URI.parse(referer).host == request.host
+    if referer && Addressable::URI.parse(referer).host == request.host
       referer
     else
       site_mappings_path(@site)

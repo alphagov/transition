@@ -66,7 +66,7 @@ Transition::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   config.action_mailer.default_url_options = {
-    :host => URI.parse(Plek.current.find('transition')).host,
+    :host => Addressable::URI.parse(Plek.current.find('transition')).host,
     :protocol => 'https'
   }
   config.action_mailer.delivery_method = :ses
