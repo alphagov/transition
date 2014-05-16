@@ -1,19 +1,21 @@
 <ol class="mapping-versions" reversed>
   <% @mapping.versions.reverse.each do |version| %>
-    <li id="<%= version.id %>" class="add-big-bottom-margin">
-      <h3>
-        <%= friendly_changeset_title(version.changeset) %>
-      </h3>
-      <p class="text-muted add-bottom-margin">
-        <strong><%= version.whodunnit %></strong> — <%= I18n.l version.created_at, :format => :govuk_date %>
-      </p>
-      <h4 class="rm">Changes</h4>
-      <dl class="well">
-        <% version.changeset.each_pair do |field, change| %>
-          <dt><%= friendly_field_name(field) %></dt>
-          <dd><%= friendly_changeset_old_to_new(field, change) %></dd>
-        <% end %>
-      </dl>
-    </li>
+    <% version.changeset.each_pair do |field, change| %>
+      <% unless change[0] == change[1].to_s %>
+        <li id="<%= version.id %>" class="add-big-bottom-margin">
+          <h3>
+            <%= friendly_changeset_title(version.changeset) %>
+          </h3>
+          <p class="text-muted add-bottom-margin">
+            <strong><%= version.whodunnit %></strong> — <%= I18n.l version.created_at, :format => :govuk_date %>
+          </p>
+          <h4 class="rm">Changes</h4>
+          <dl class="well">
+            <dt><%= friendly_field_name(field) %></dt>
+            <dd><%= friendly_changeset_old_to_new(field, change) %></dd>
+          </dl>
+        </li>
+      <% end %>
+    <% end %>
   <% end %>
 </ol>
