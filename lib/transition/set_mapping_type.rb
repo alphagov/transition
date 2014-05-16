@@ -6,7 +6,11 @@ module Transition
 
     SET_TYPE_FROM_HTTP_STATUS = <<-mySQL
       UPDATE mappings USE INDEX (index_mappings_on_site_id_and_type)
-      SET    type = (CASE http_status WHEN '301' THEN 'redirect' WHEN '410' THEN 'archive' END)
+      SET    type = (CASE http_status
+                      WHEN '301' THEN 'redirect'
+                      WHEN '410' THEN 'archive'
+                      WHEN '418' THEN 'pending_content'
+                      END)
     mySQL
 
     def self.set_type!

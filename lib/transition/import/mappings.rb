@@ -18,7 +18,11 @@ module Transition
           path = replace(@old_url, SUBSTRING_INDEX(@old_url, '/', 3), ''),       /* wow, this is ugly */
           path_hash = SHA1(path),
           old_url = @old_url,
-          type = (CASE http_status WHEN '301' THEN 'redirect' WHEN '410' THEN 'archive' END)
+          type = (CASE http_status
+                      WHEN '301' THEN 'redirect'
+                      WHEN '410' THEN 'archive'
+                      WHEN '418' THEN 'pending_content'
+                      END)
       mySQL
 
       INSERT_FROM_STAGING = <<-mySQL

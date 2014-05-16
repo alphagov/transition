@@ -24,8 +24,11 @@ describe Transition::SetMappingType do
       Mapping.where(http_status: '301').first.type.should == 'redirect'
     end
 
-    it "should leave a pending content mapping's type as empty string" do
-      Mapping.where(http_status: '418').first.type.should == ''
+    # We don't support pending content mappings at the moment, but should
+    # preserve the fact that some mappings already have this http_status as they
+    # were imported from Redirector:
+    it "should set a pending content mapping's type to 'pending_content'" do
+      Mapping.where(http_status: '418').first.type.should == 'pending_content'
     end
   end
 end

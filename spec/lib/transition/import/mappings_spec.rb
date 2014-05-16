@@ -36,7 +36,7 @@ describe Transition::Import::Mappings do
       describe 'a pending content (418) mapping' do
         subject(:mapping) { Mapping.find_by_http_status('418') }
 
-        its(:type)  { should eql('') }
+        its(:type)  { should eql('pending_content') }
         its(:new_url) { should eql('https://www.gov.uk/government/publications/staff-expenses-claims') }
         its(:path)    { should eql('/13342.html') }
       end
