@@ -19,7 +19,7 @@ describe Transition::Import::Mappings do
       end
 
       it 'has imported mappings' do
-        Mapping.count.should == 3
+        Mapping.count.should == 4
       end
 
       describe 'the first mapping' do
@@ -31,6 +31,14 @@ describe Transition::Import::Mappings do
         its(:path)      { should eql('/_layouts/feed.aspx') }
         its(:path_hash) { should eql('160d40c3b5400e446d0c5f2f62fd7a419b62f7f6') }
         its(:from_redirector) { should be_true }
+      end
+
+      describe 'a pending content (418) mapping' do
+        subject(:mapping) { Mapping.find_by_http_status('418') }
+
+        its(:type)  { should eql('') }
+        its(:new_url) { should eql('https://www.gov.uk/government/publications/staff-expenses-claims') }
+        its(:path)    { should eql('/13342.html') }
       end
     end
 
@@ -91,7 +99,7 @@ describe Transition::Import::Mappings do
     end
 
     it 'imported mappings from both files' do
-      Mapping.count.should == 6
+      Mapping.count.should == 7
     end
 
     describe 'the directgov mapping with suggested and archive urls' do
