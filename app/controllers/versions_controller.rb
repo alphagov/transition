@@ -1,5 +1,5 @@
 class VersionsController < ApplicationController
-  track_mappings_progress
+  tracks_mappings_progress
 
   def index
     @mapping = Mapping.find(params[:mapping_id])

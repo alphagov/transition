@@ -1,7 +1,7 @@
 class HitsController < ApplicationController
   before_filter :set_period
 
-  track_mappings_progress except: [:universal_summary, :universal_category]
+  tracks_mappings_progress except: [:universal_summary, :universal_category]
 
   def index
     @category = View::Hits::Category['all'].tap do |c|

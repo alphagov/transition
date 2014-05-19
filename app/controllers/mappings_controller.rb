@@ -3,7 +3,7 @@ require 'view/mappings/canonical_filter'
 class MappingsController < ApplicationController
   include PaperTrail::Rails::Controller
 
-  track_mappings_progress except: [:find_global]
+  tracks_mappings_progress except: [:find_global]
 
   before_filter :check_global_redirect_or_archive, except: [:find_global]
   before_filter :check_user_can_edit, except: [:index, :find, :find_global]

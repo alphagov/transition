@@ -2,7 +2,7 @@ module Transition
 
   module Controller
     module MappingsProgress
-      def track_mappings_progress(options = {})
+      def tracks_mappings_progress(options = {})
         class_eval do
           include MappingsProgress
 
