@@ -10,7 +10,7 @@ class MappingsBatch < ActiveRecord::Base
   PROCESSING_STATES = ['unqueued', 'queued', 'processing'] + FINISHED_STATES
 
   attr_accessor :paths # a virtual attribute to then use for creating entries
-  attr_accessible :paths, :http_status, :new_url, :tag_list, :update_existing, :state
+  attr_accessible :paths, :type, :new_url, :tag_list, :update_existing, :state
 
   belongs_to :user
   belongs_to :site
@@ -20,7 +20,7 @@ class MappingsBatch < ActiveRecord::Base
   validates :user, presence: true
   validates :site, presence: true
   validates :http_status, inclusion: { :in => Mapping::SUPPORTED_HTTP_STATUSES }
-  validates :type, presence: true, inclusion: { :in => Mapping::SUPPORTED_TYPES }
+  validates :type, inclusion: { :in => Mapping::SUPPORTED_TYPES }
   with_options :if => :redirect? do |redirect|
     redirect.validates :new_url, presence: { message: I18n.t('mappings.bulk.new_url_invalid') }
     redirect.validates :new_url, length: { maximum: (64.kilobytes - 1) }
@@ -32,7 +32,7 @@ class MappingsBatch < ActiveRecord::Base
 
   scope :reportable, where(seen_outcome: false).where("state != 'unqueued'")
 
-  before_validation :fill_in_scheme, :set_type_from_http_status
+  before_validation :fill_in_scheme, :set_http_status_from_type
 
   after_create :create_entries
 
@@ -45,11 +45,7 @@ class MappingsBatch < ActiveRecord::Base
   end
 
   def redirect?
-    http_status == '301'
-  end
-
-  def type
-    Mapping::TYPES[http_status]
+    type == 'redirect'
   end
 
   def finished?
@@ -68,8 +64,8 @@ class MappingsBatch < ActiveRecord::Base
     self.new_url = Mapping.ensure_url(new_url)
   end
 
-  def set_type_from_http_status
-    self.type = Mapping::TYPES[http_status] || self.type
+  def set_http_status_from_type
+    self.http_status = Mapping::SUPPORTED_TYPES_TO_HTTP_STATUSES[type] || self.http_status
   end
 
   def paths_cannot_include_hosts_for_another_site
@@ -120,7 +116,7 @@ class MappingsBatch < ActiveRecord::Base
 
         next if !update_existing && mapping.persisted?
         mapping.path = entry.path
-        mapping.http_status = http_status
+        mapping.type = type
         mapping.new_url = new_url
         mapping.tag_list = [mapping.tag_list, tag_list].join(',')
         mapping.save

@@ -6,6 +6,7 @@ describe MappingsBatch do
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:paths).with_message('Enter at least one valid path') }
     it { should ensure_inclusion_of(:http_status).in_array(['301', '410']) }
+    it { should ensure_inclusion_of(:type).in_array(['redirect', 'archive']) }
     it { should ensure_inclusion_of(:state).in_array(MappingsBatch::PROCESSING_STATES) }
 
     describe 'paths includes URLs for another site' do
@@ -37,7 +38,7 @@ describe MappingsBatch do
     end
 
     describe 'new_url must be present if it is a redirect' do
-      subject(:mappings_batch) { build(:mappings_batch, http_status: '301') }
+      subject(:mappings_batch) { build(:mappings_batch, type: 'redirect') }
 
       before { mappings_batch.should_not be_valid }
       it 'should declare it invalid' do
@@ -46,7 +47,7 @@ describe MappingsBatch do
     end
 
     describe 'constrains the length of new URL' do
-      subject(:mappings_batch) { build(:mappings_batch, http_status: '301', new_url: 'http://'.ljust(65536, 'x')) }
+      subject(:mappings_batch) { build(:mappings_batch, type: 'redirect', new_url: 'http://'.ljust(65536, 'x')) }
 
       before { mappings_batch.should_not be_valid }
       it 'should declare it invalid' do
@@ -55,7 +56,7 @@ describe MappingsBatch do
     end
 
     describe 'invalid new URLs' do
-      subject(:mappings_batch) { build(:mappings_batch, http_status: '301', new_url: 'newurl') }
+      subject(:mappings_batch) { build(:mappings_batch, type: 'redirect', new_url: 'newurl') }
 
       before { mappings_batch.should_not be_valid }
       it 'should declare it invalid' do
@@ -64,7 +65,7 @@ describe MappingsBatch do
     end
 
     describe 'invalid paths with a scheme' do
-      subject(:mappings_batch) { build(:mappings_batch, http_status: '410', paths: ['http://newurl/foo[1]']) }
+      subject(:mappings_batch) { build(:mappings_batch, type: 'archive', paths: ['http://newurl/foo[1]']) }
 
       before { mappings_batch.should_not be_valid }
       it 'should not raise an error' do
@@ -108,7 +109,7 @@ describe MappingsBatch do
     subject(:mappings_batch) do
       create(:mappings_batch, site: site,
               paths: ['/a', '/b'],
-              http_status: '301', new_url: 'http://gov.uk', tag_list: ['a tag'])
+              type: 'redirect', new_url: 'http://gov.uk', tag_list: ['a tag'])
     end
 
     context 'rosy case' do
@@ -121,6 +122,7 @@ describe MappingsBatch do
       it 'should populate the fields on the new mapping' do
         mapping = site.mappings.first
         mapping.path.should == '/a'
+        mapping.type.should == 'redirect'
         mapping.http_status.should == '301'
         mapping.new_url.should == 'http://gov.uk'
         mapping.tag_list.should == ['a tag']
@@ -133,13 +135,13 @@ describe MappingsBatch do
     end
 
     context 'existing mappings' do
-      let!(:existing_mapping) { create(:mapping, site: site, path: '/a', http_status: '410', tag_list: ['existing tag']) }
+      let!(:existing_mapping) { create(:mapping, site: site, path: '/a', type: 'archive', tag_list: ['existing tag']) }
 
       context 'default' do
         it 'should ignore them' do
           mappings_batch.process
           existing_mapping.reload
-          existing_mapping.http_status.should == '410'
+          existing_mapping.type.should == 'archive'
           existing_mapping.new_url.should be_nil
           entry = mappings_batch.entries.first
           entry.processed.should be_false
@@ -152,7 +154,7 @@ describe MappingsBatch do
           mappings_batch.process
 
           existing_mapping.reload
-          existing_mapping.http_status.should == '301'
+          existing_mapping.type.should == 'redirect'
           existing_mapping.new_url.should == 'http://gov.uk'
           existing_mapping.tag_list.sort.should == ['a tag', 'existing tag']
         end
