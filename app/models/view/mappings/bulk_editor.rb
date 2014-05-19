@@ -15,7 +15,7 @@ module View
       end
 
       def operation_description
-        "bulk-edit-#{Mapping::TYPES[operation]}"
+        "bulk-edit-#{type}"
       end
 
       def return_path
@@ -33,8 +33,8 @@ module View
 
       def params_errors
         case
-        when mappings.empty?    then I18n.t('mappings.bulk.edit.mappings_empty')
-        when http_status.blank? then I18n.t('mappings.bulk.http_status_invalid')
+        when mappings.empty? then I18n.t('mappings.bulk.edit.mappings_empty')
+        when type.blank?     then I18n.t('mappings.bulk.type_invalid')
         end
       end
 
