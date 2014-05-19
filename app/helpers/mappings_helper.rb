@@ -43,24 +43,28 @@ module MappingsHelper
   end
 
   ##
-  # Return a FormBuilder-compatible list of HTTP Status codes with descriptions
-  # e.g. [['Redirect', '301'], ['Archive', '410']]
-  def options_for_supported_http_statuses
-    Mapping::TYPES.map do |status, type|
-      ["#{type.titleize}", status]
+  # Return a FormBuilder-compatible list of mapping types
+  # e.g. [['Redirect', 'redirect'], ['Archive', 'archive']]
+  def options_for_supported_types
+    Mapping::SUPPORTED_TYPES.map do |type|
+      ["#{type.titleize}", type]
     end
   end
 
   OTHER_OPERATIONS = { 'tag' => 'tag' }
   def http_status_name(http_status)
-    Mapping::TYPES[http_status].try(:titleize)
+    if http_status == '301'
+      'Redirect'
+    elsif http_status == '410'
+      'Archive'
+    end
   end
 
   ##
-  # Convert '301'/'410'/tag into 'Redirect'/'Archive'/'Tag' to use in title and heading
+  # Convert 'redirect'/'archive'/'tag' into 'Redirect'/'Archive'/'Tag' to use in title and heading
   # for edit_multiple
   def operation_name(operation)
-    http_status_name(operation) || OTHER_OPERATIONS[operation].titleize
+    (operation.titleize if Mapping::SUPPORTED_TYPES.include?(operation)) || OTHER_OPERATIONS[operation].titleize
   end
 
   def friendly_hit_count(hit_count)
