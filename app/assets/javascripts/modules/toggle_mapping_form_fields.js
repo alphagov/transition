@@ -8,25 +8,25 @@
     that.start = function(element) {
 
       var form = element,
-          httpStatus = form.find('.js-http-status'),
+          mappingType = form.find('.js-type'),
           archiveFields = form.find('.js-for-archive'),
           redirectFields = form.find('.js-for-redirect');
 
-      httpStatus.on('change', toggleFormFieldsets);
+      mappingType.on('change', toggleFormFieldsets);
       toggleFormFieldsets();
 
       function toggleFormFieldsets() {
 
-        var selectedHTTPStatus = httpStatus.val();
+        var selectedMappingType = mappingType.val();
 
-        switch (selectedHTTPStatus) {
+        switch (selectedMappingType) {
 
-          case '301':
+          case 'redirect':
             redirectFields.show();
             archiveFields.hide();
             break;
 
-          case '410':
+          case 'archive':
             redirectFields.hide();
             archiveFields.show();
             break;
