@@ -91,8 +91,8 @@ describe MappingsController do
       end
 
       it 'gracefully degrades if the filtering value looks like a URL but is unparseable' do
-        get :index, site_id: site.abbr, path_contains: 'https://____'
-        assigns(:filter).path_contains.should eql('https://____')
+        get :index, site_id: site.abbr, path_contains: 'https://}'
+        assigns(:path_contains).should eql('https://}')
       end
     end
   end
@@ -112,7 +112,7 @@ describe MappingsController do
 
     context 'when the URL isn\'t a URL' do
       it 'returns a 400 error' do
-        get :find_global, url: 'http://this_looks_bad.com/bang'
+        get :find_global, url: 'http://this{looks_bad.com/bang'
         expect(response.status).to eq(400)
       end
     end

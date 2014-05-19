@@ -6,7 +6,8 @@ class IsPathValidator < ActiveModel::EachValidator
       'must start with a forward slash "/"' and return if value =~ /^[^\/]/
 
     valid_path = begin
-      Addressable::URI.parse(value).is_a?(Addressable::URI)
+      Addressable::URI.parse(value).is_a?(Addressable::URI) &&
+      value.exclude?('<script>')
     rescue Addressable::URI::InvalidURIError
       false
     end

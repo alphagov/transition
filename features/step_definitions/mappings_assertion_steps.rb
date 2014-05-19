@@ -5,7 +5,7 @@ Then(/^I should still be editing a mapping$/) do
 end
 
 Then(/^I should be returned to the mappings list I was on$/) do
-  uri = URI.parse(current_url)
+  uri = Addressable::URI.parse(current_url)
   expect("#{uri.path}?#{uri.query}").to eql(site_mappings_path('bis', fake_param: 1))
 end
 
