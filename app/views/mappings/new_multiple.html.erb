@@ -18,10 +18,10 @@
     <%= hidden_field_tag 'return_path', params[:return_path] %>
   <% end %>
 
-  <div class="row <% if @batch.errors[:http_status].any? %>field_with_errors<% end %>">
+  <div class="row <% if @batch.errors[:type].any? %>field_with_errors<% end %>">
     <div class="col-md-2">
-      <%= label_tag(:http_status, 'Type') %>
-      <%= select_tag :http_status, options_for_select(options_for_supported_http_statuses, @batch.http_status), { class: 'form-control remove-bottom-margin js-type' } %>
+      <%= label_tag(:type, 'Type') %>
+      <%= select_tag :type, options_for_select(options_for_supported_types, @batch.type), { class: 'form-control remove-bottom-margin js-type' } %>
     </div>
   </div>
 
