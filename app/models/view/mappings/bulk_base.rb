@@ -8,8 +8,8 @@ module View
       end
 
       def common_data
-        @common_data ||= { http_status: http_status }.tap do |common_data|
-          common_data[:new_url] = new_url if http_status == '301'
+        @common_data ||= { type: type }.tap do |common_data|
+          common_data[:new_url] = new_url if type == 'redirect'
         end
       end
 

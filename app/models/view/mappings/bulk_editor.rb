@@ -6,8 +6,8 @@ module View
     # Load and process params specific to bulk editing, to avoid stuffing
     # controllers full of fields.
     class BulkEditor < BulkBase
-      def http_status
-        operation if Mapping::TYPES.keys.include?(operation)
+      def type
+        operation if Mapping::SUPPORTED_TYPES.include?(operation)
       end
 
       def operation
