@@ -1,10 +1,7 @@
 class HitsController < ApplicationController
-  include MappingsFeedbackControllerMixin
-
-  before_filter :find_site, :except => [:universal_summary, :universal_category]
-  before_filter :set_background_bulk_add_status_message, :except => [:universal_summary, :universal_category]
-  before_filter :set_saved_mappings, :except => [:universal_summary, :universal_category]
   before_filter :set_period
+
+  track_mappings_progress except: [:universal_summary, :universal_category]
 
   def index
     @category = View::Hits::Category['all'].tap do |c|
@@ -53,10 +50,6 @@ class HitsController < ApplicationController
   end
 
   protected
-
-  def find_site
-    @site = Site.find_by_abbr!(params[:site_id])
-  end
 
   def set_period
     @period = (View::Hits::TimePeriod[params[:period]] || View::Hits::TimePeriod.default)
