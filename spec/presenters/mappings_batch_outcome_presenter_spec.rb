@@ -5,13 +5,13 @@ describe MappingsBatchOutcomePresenter do
 
   describe '#success_message' do
     let(:batch) { create(:mappings_batch, site: site, tag_list: 'fee, fi, fo',
-                          http_status: '410', update_existing: true,
+                          type: 'archive', update_existing: true,
                           paths: ['/a', '/B', '/c?canonical=no', '/might-exist']) }
 
     subject { MappingsBatchOutcomePresenter.new(batch).success_message }
 
     context 'when updating at least one existing mapping' do
-      let!(:existing_mapping) { create(:mapping, site: site, path: '/might-exist', http_status: '410') }
+      let!(:existing_mapping) { create(:mapping, site: site, path: '/might-exist', type: 'archive') }
 
       before { batch.process }
 
@@ -20,10 +20,10 @@ describe MappingsBatchOutcomePresenter do
 
     context 'when updating only existing mappings' do
       let!(:existing_mappings) do
-        create(:mapping, site: site, path: '/might-exist', http_status: '410')
-        create(:mapping, site: site, path: '/a', http_status: '410')
-        create(:mapping, site: site, path: '/b', http_status: '410')
-        create(:mapping, site: site, path: '/c', http_status: '410')
+        create(:mapping, site: site, path: '/might-exist', type: 'archive')
+        create(:mapping, site: site, path: '/a', type: 'archive')
+        create(:mapping, site: site, path: '/b', type: 'archive')
+        create(:mapping, site: site, path: '/c', type: 'archive')
       end
 
       before { batch.process }
@@ -57,22 +57,22 @@ describe MappingsBatchOutcomePresenter do
     subject { MappingsBatchOutcomePresenter.new(batch).operation_description }
 
     context 'bulk adding archives' do
-      let(:batch) { build(:mappings_batch, http_status: '410') }
+      let(:batch) { build(:mappings_batch, type: 'archive') }
       it { should eql('bulk-add-archive-ignore-existing') }
     end
 
     context 'bulk adding redirects' do
-      let(:batch) { build(:mappings_batch, http_status: '301') }
+      let(:batch) { build(:mappings_batch, type: 'redirect') }
       it { should eql('bulk-add-redirect-ignore-existing') }
     end
 
     context 'bulk adding archives with overwrite' do
-      let(:batch) { build(:mappings_batch, http_status: '410', update_existing: true) }
+      let(:batch) { build(:mappings_batch, type: 'archive', update_existing: true) }
       it { should eql('bulk-add-archive-overwrite-existing') }
     end
 
     context 'bulk adding redirects with overwrite' do
-      let(:batch) { build(:mappings_batch, http_status: '301', update_existing: true) }
+      let(:batch) { build(:mappings_batch, type: 'redirect', update_existing: true) }
       it { should eql('bulk-add-redirect-overwrite-existing') }
     end
   end
