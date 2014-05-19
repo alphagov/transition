@@ -11,7 +11,7 @@
         <%= link_to 'All types', remove_filter_by_type_path, class: 'inherit' %>
       </li>
     <% end %>
-    <% Mapping::TYPES.each do |key, type| %>
+    <% Mapping::SUPPORTED_TYPES.each do |type| %>
       <li>
         <%= link_to type.titleize, filter_by_type_path(type), class: 'inherit' %>
       </li>

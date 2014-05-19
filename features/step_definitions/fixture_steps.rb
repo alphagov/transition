@@ -62,13 +62,13 @@ Given(/^there is a site called (.*) belonging to an organisation (.*) with these
   end
 end
 
-Given (/^a (\d+) mapping exists for the (.+) site with the path (.*)$/) do |status, site_abbr, path|
+Given (/^a(?:n) (\w+) mapping exists for the (.+) site with the path (.*)$/) do |type, site_abbr, path|
   site = create :site, abbr: site_abbr
-  site.mappings << create(:mapping, http_status: status, path: path)
+  site.mappings << create(:mapping, type: type, path: path)
 end
 
-Given (/^a (\d+) mapping exists for the site with the path (.*)$/) do |status, path|
-  @site.mappings << create(:mapping, http_status: status, path: path)
+Given (/^a(?:n) (\w+) mapping exists for the site with the path (.*)$/) do |type, path|
+  @site.mappings << create(:mapping, type: type, path: path)
 end
 
 Given(/^there is an organisation with the whitehall_slug "(.*?)"$/) do |abbr|
