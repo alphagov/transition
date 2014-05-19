@@ -1,7 +1,7 @@
 require 'view/mappings/canonical_filter'
 
 class MappingsController < ApplicationController
-  include PaperTrail::Controller
+  include PaperTrail::Rails::Controller
   include BackgroundBulkAddMessageControllerMixin
 
   before_filter :find_site, except: [:find_global]
