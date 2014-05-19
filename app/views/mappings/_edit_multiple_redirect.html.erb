@@ -1,5 +1,5 @@
 <%= hidden_field_tag "operation", operation %>
-<% if operation == '301' %>
+<% if operation == 'redirect' %>
   <%= field_set_tag nil, class: 'form-group add-bottom-margin' do %>
     <% if new_url_error %>
       <p class="alert alert-danger">
