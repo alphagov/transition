@@ -6,13 +6,13 @@ FactoryGirl.define do
       as_user { build(:user, id: 1, name: 'test user') }
     end
 
-    http_status '410'
+    type 'archive'
     sequence(:path) { |n| "/foo-#{n}" }
     association :site, strategy: :build
 
     factory :archived
     factory :redirect do
-      http_status '301'
+      type 'redirect'
       new_url 'https://www.gov.uk/somewhere'
     end
 

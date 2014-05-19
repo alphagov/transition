@@ -13,16 +13,16 @@ describe Mapping do
 
   describe '#redirect?' do
     its(:redirect?) { should be_false }
-    it 'is true when http_status is 301' do
-      subject.http_status = '301'
+    it 'is true when its type is redirect' do
+      subject.type = 'redirect'
       subject.redirect?.should be_true
     end
   end
 
   describe '#archive?' do
     its(:archive?) { should be_false }
-    it 'is true when http_status is 410' do
-      subject.http_status = '410'
+    it 'is true when its type is archive' do
+      subject.type = 'archive'
       subject.archive?.should be_true
     end
   end
@@ -76,7 +76,7 @@ describe Mapping do
 
       context 'oh golly, everything is wrong' do
         subject(:mapping) do
-          build(:mapping, http_status: '301', new_url: 'https://', suggested_url: 'http://', archive_url: '')
+          build(:mapping, type: 'redirect', new_url: 'https://', suggested_url: 'http://', archive_url: '')
         end
 
         describe 'the errors' do
@@ -86,7 +86,7 @@ describe Mapping do
           its([:suggested_url]) { should == ['is not a URL'] }
           its([:archive_url])   { should be_empty }
 
-          context 'failure to supply a new URL for a 301' do
+          context 'failure to supply a new URL for a redirect' do
             before do
               mapping.new_url = ''
               mapping.should_not be_valid
@@ -99,7 +99,7 @@ describe Mapping do
 
       context 'URLs with an invalid host (without a ".")' do
         subject(:mapping) do
-          build(:mapping, http_status: '301', new_url: 'newurl', suggested_url: 'suggestedurl')
+          build(:mapping, type: 'redirect', new_url: 'newurl', suggested_url: 'suggestedurl')
         end
 
         describe 'the errors' do
@@ -385,8 +385,8 @@ describe Mapping do
         let(:other_user) { create :user }
         before do
           Transition::History.as_a_user(other_user) do
-            mapping.update_attributes(http_status: '301', new_url: 'http://updated.com')
-            mapping.update_attributes(http_status: '301', new_url: 'http://new.com')
+            mapping.update_attributes(type: 'redirect', new_url: 'http://updated.com')
+            mapping.update_attributes(type: 'redirect', new_url: 'http://new.com')
           end
         end
 

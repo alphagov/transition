@@ -11,15 +11,15 @@ class Mapping < ActiveRecord::Base
   # something else instead, without activating STI.
   self.inheritance_column = nil
 
-  TYPES = {
-    '301' => 'redirect',
-    '410' => 'archive'
+  SUPPORTED_TYPES_TO_HTTP_STATUSES = {
+    'redirect' => '301',
+    'archive'  => '410'
   }
 
-  SUPPORTED_HTTP_STATUSES = TYPES.keys
-  SUPPORTED_TYPES         = TYPES.values
+  SUPPORTED_TYPES         = SUPPORTED_TYPES_TO_HTTP_STATUSES.keys
+  SUPPORTED_HTTP_STATUSES = SUPPORTED_TYPES_TO_HTTP_STATUSES.values
 
-  attr_accessible :path, :site, :http_status, :new_url, :suggested_url, :archive_url, :tag_list
+  attr_accessible :path, :site, :type, :new_url, :suggested_url, :archive_url, :tag_list
 
   acts_as_taggable
   has_paper_trail :ignore => [:tag_list => Proc.new { |mapping|
@@ -42,7 +42,7 @@ class Mapping < ActiveRecord::Base
 
   # set a hash of the path because we can't have a unique index on
   # the path (it's too long)
-  before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path, :set_path_hash, :set_type_from_http_status
+  before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path, :set_path_hash, :set_http_status_from_type
   validates :path_hash, presence: true
 
   before_save :ensure_papertrail_user_config
@@ -58,18 +58,18 @@ class Mapping < ActiveRecord::Base
       joins('LEFT JOIN hits ON hits.mapping_id = mappings.id').
       group('mappings.path_hash')
   }
-  scope :with_status, -> status { where(http_status: Rack::Utils.status_code(status)) }
-  scope :redirects, with_status(:moved_permanently)
-  scope :archives,  with_status(:gone)
+  scope :with_type, -> type { where(type: type) }
+  scope :redirects, with_type('redirect')
+  scope :archives,  with_type('archive')
   scope :filtered_by_path,    -> term { where(term.blank? ? true : Mapping.arel_table[:path].matches("%#{term}%")) }
   scope :filtered_by_new_url, -> term { where(term.blank? ? true : Mapping.arel_table[:new_url].matches("%#{term}%")) }
 
   def redirect?
-    http_status == '301'
+    type == 'redirect'
   end
 
   def archive?
-    http_status == '410'
+    type == 'archive'
   end
 
   ##
@@ -159,8 +159,8 @@ protected
     self.path = site.canonical_path(path) unless (site.nil? || path == '/' || path =~ /^[^\/]/)
   end
 
-  def set_type_from_http_status
-    self.type = TYPES[http_status] || self.type
+  def set_http_status_from_type
+    self.http_status = SUPPORTED_TYPES_TO_HTTP_STATUSES[type] || self.http_status
   end
 
   def tna_timestamp
