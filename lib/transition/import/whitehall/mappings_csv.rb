@@ -39,12 +39,12 @@ module Transition
                 existing_mapping = host.site.mappings.where(path_hash: path_hash(canonical_path)).first
 
                 if existing_mapping
-                    if existing_mapping.http_status == '410' ||
+                    if existing_mapping.type == 'archive' ||
                         ! existing_mapping.edited_by_human?
-                      existing_mapping.update_attributes(new_url: row['New URL'], http_status: '301')
+                      existing_mapping.update_attributes(new_url: row['New URL'], type: 'redirect')
                     end
                 else
-                  host.site.mappings.create(path: canonical_path, new_url: row['New URL'], http_status: '301')
+                  host.site.mappings.create(path: canonical_path, new_url: row['New URL'], type: 'redirect')
                 end
               end
             end

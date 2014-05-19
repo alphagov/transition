@@ -29,6 +29,7 @@ describe Transition::Import::Whitehall::MappingsCSV do
         its(:site)        { should == site }
         its(:path)        { should == '/oldurl' }
         its(:new_url)     { should == 'https://www.gov.uk/new' }
+        its(:type)        { should == 'redirect' }
         its(:http_status) { should == '301' }
       end
 
@@ -39,10 +40,10 @@ describe Transition::Import::Whitehall::MappingsCSV do
 
         specify { Mapping.count.should == 1 }
 
-        its(:site)        { should == site }
-        its(:path)        { should == '/oldurl?significant=aha' }
-        its(:new_url)     { should == 'https://www.gov.uk/new' }
-        its(:http_status) { should == '301' }
+        its(:site)    { should == site }
+        its(:path)    { should == '/oldurl?significant=aha' }
+        its(:new_url) { should == 'https://www.gov.uk/new' }
+        its(:type)    { should == 'redirect' }
       end
 
       context 'existing mapping and the Old URL is not canonical' do
@@ -53,15 +54,15 @@ describe Transition::Import::Whitehall::MappingsCSV do
 
         specify { Mapping.count.should == 1 }
 
-        its(:site)        { should == site }
-        its(:path)        { should == '/oldurl?significant=aha' }
-        its(:new_url)     { should == 'https://www.gov.uk/amazing' }
-        its(:http_status) { should == '301' }
+        its(:site)    { should == site }
+        its(:path)    { should == '/oldurl?significant=aha' }
+        its(:new_url) { should == 'https://www.gov.uk/amazing' }
+        its(:type)    { should == 'redirect' }
       end
 
       context 'existing redirect mapping edited by a human' do
         let(:csv) {
-          create(:mapping, from_redirector: true, site: site, path: '/oldurl', http_status: '301', new_url: 'https://www.gov.uk/curated')
+          create(:redirect, from_redirector: true, site: site, path: '/oldurl', new_url: 'https://www.gov.uk/curated')
           csv_for('/oldurl', '/automated')
         }
 
@@ -74,7 +75,7 @@ describe Transition::Import::Whitehall::MappingsCSV do
 
       context 'existing archive mapping edited by a human' do
         let(:csv) {
-          create(:mapping, from_redirector: true, site: site, path: '/oldurl', http_status: '410')
+          create(:archived, from_redirector: true, site: site, path: '/oldurl')
           csv_for('/oldurl', '/automated')
         }
 
@@ -82,8 +83,8 @@ describe Transition::Import::Whitehall::MappingsCSV do
 
         specify { Mapping.count.should == 1 }
 
-        its(:http_status) { should == '301' }
-        its(:new_url)     { should == 'https://www.gov.uk/automated' }
+        its(:type)    { should == 'redirect' }
+        its(:new_url) { should == 'https://www.gov.uk/automated' }
       end
 
       context 'CSV row without an Old URL' do
