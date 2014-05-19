@@ -37,6 +37,7 @@ describe Transition::Import::MappingsFromHostPaths do
 
       its(:path)        { should eql('/foo') }
       its(:path_hash)   { should eql(@host_path.c14n_path_hash) }
+      its(:type)        { should eql('archive') }
       its(:http_status) { should eql('410') }
     end
 
@@ -83,7 +84,7 @@ describe Transition::Import::MappingsFromHostPaths do
     describe 'the (unchanged) existing mapping' do
       subject { @mapping }
 
-      its(:http_status) { should eql('301') }
+      its(:type) { should eql('redirect') }
     end
   end
 
