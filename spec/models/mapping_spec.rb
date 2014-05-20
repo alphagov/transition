@@ -38,7 +38,11 @@ describe Mapping do
   describe 'validations' do
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:path) }
+
+    it { should validate_presence_of(:http_status) }
+    it { should ensure_length_of(:http_status).is_at_most(3) }
     it { should ensure_inclusion_of(:http_status).in_array(['301', '410']) }
+
     it { should validate_presence_of(:type) }
     it { should ensure_inclusion_of(:type).in_array(['redirect', 'archive']) }
 
@@ -53,8 +57,6 @@ describe Mapping do
     end
 
     it { should ensure_length_of(:path).is_at_most(1024) }
-    it { should validate_presence_of(:http_status) }
-    it { should ensure_length_of(:http_status).is_at_most(3) }
     it 'ensures paths are unique to a site' do
       site = create(:site)
       create(:archived, path: '/foo', site: site)
@@ -246,7 +248,7 @@ describe Mapping do
     let(:site)                 { create(:site, query_params: 'significant:really-significant')}
 
     subject(:mapping) do
-      create(:mapping, path: uncanonicalized_path, site: site, http_status: '410')
+      create(:archived, path: uncanonicalized_path, site: site)
     end
 
     its(:path)        { should eql(canonicalized_path) }
@@ -275,14 +277,14 @@ describe Mapping do
 
   describe 'nillifying blanks before validation' do
     subject(:mapping) do
-      create :mapping, http_status: '410', archive_url: ''
+      create :archived, archive_url: ''
     end
 
     its(:archive_url) { should be_nil }
   end
 
   it 'should rewrite the URLs to ensure they have a scheme before validation' do
-    mapping = build(:mapping, http_status: '410', suggested_url: 'www.example.com',
+    mapping = build(:archived, suggested_url: 'www.example.com',
                                                   archive_url: 'webarchive.nationalarchives.gov.uk',
                                                   new_url: 'www.gov.uk')
 
