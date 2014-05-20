@@ -160,6 +160,10 @@ protected
   end
 
   def set_http_status_from_type
+    # If the http_status isn't supported, leave it as it is. This means that we
+    # don't lose the status of the few 418 mappings which were imported from
+    # redirector. It also allows the ensure_inclusion_of matcher to work in the
+    # validation tests.
     self.http_status = SUPPORTED_TYPES_TO_HTTP_STATUSES[type] || self.http_status
   end
 

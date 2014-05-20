@@ -65,6 +65,8 @@ class MappingsBatch < ActiveRecord::Base
   end
 
   def set_http_status_from_type
+    # If the http_status isn't supported, leave it as it is. This allows the
+    # ensure_inclusion_of matcher to work in the validation tests.
     self.http_status = Mapping::SUPPORTED_TYPES_TO_HTTP_STATUSES[type] || self.http_status
   end
 

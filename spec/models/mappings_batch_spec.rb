@@ -74,12 +74,26 @@ describe MappingsBatch do
     end
   end
 
-  describe 'filling in scheme of New URL' do
-    subject(:mappings_batch) { build(:mappings_batch, new_url: 'www.gov.uk') }
+  describe 'callbacks' do
+    # In both of these tests, we need to implicitly call #valid? using
+    # { be_valid } so that the before_validation callbacks are called so that
+    # we can test that they do the right thing.
+    describe 'setting http_status from type' do
+      subject(:mappings_batch) { build(:mappings_batch) }
 
-    before { mappings_batch.should be_valid }
-    it 'should add a scheme if none included' do
-      mappings_batch.new_url.should == 'https://www.gov.uk'
+      before { mappings_batch.should be_valid }
+      it 'should set the http_status' do
+        mappings_batch.http_status.should == '410'
+      end
+    end
+
+    describe 'filling in scheme of New URL' do
+      subject(:mappings_batch) { build(:mappings_batch, new_url: 'www.gov.uk') }
+
+      before { mappings_batch.should be_valid }
+      it 'should add a scheme if none included' do
+        mappings_batch.new_url.should == 'https://www.gov.uk'
+      end
     end
   end
 
