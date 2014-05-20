@@ -23,7 +23,13 @@ describe('A mappings module', function() {
         </div>\
       </form>');
 
+      $('body').append(form);
+
       toggle = new GOVUK.Modules.ToggleMappingFormFields();
+    });
+
+    afterEach(function() {
+      form.remove();
     });
 
     it('shows only the archive fields when the mapping is an archive' , function() {
