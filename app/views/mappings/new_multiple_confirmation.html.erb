@@ -31,7 +31,7 @@
   <% end %>
 
   <h2 class="add-bottom-margin">
-    <%= "#{ http_status_name(@batch.http_status) }" %> <%= pluralize(number_with_delimiter(@batch.entries.size), "path") %>
+    <%= "#{ @batch.type.titleize }" %> <%= pluralize(number_with_delimiter(@batch.entries.size), "path") %>
     <% if @batch.redirect? %>
       <br />
       <span class="subtitle">
