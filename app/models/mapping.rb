@@ -28,7 +28,7 @@ class Mapping < ActiveRecord::Base
     # string. This means that it is "different" even though it isn't.
     # Comparing the stringified version avoids that problem.
     mapping.tag_list_was == mapping.tag_list.to_s
-  } ]
+  } ], :skip => [:http_status]
 
   belongs_to :site
   validates :site, presence: true
