@@ -2,13 +2,11 @@ require 'view/mappings/canonical_filter'
 
 class MappingsController < ApplicationController
   include PaperTrail::Rails::Controller
-  include MappingsFeedbackControllerMixin
 
-  before_filter :find_site, except: [:find_global]
+  tracks_mappings_progress except: [:find_global]
+
   before_filter :check_global_redirect_or_archive, except: [:find_global]
   before_filter :check_user_can_edit, except: [:index, :find, :find_global]
-  before_filter :set_background_bulk_add_status_message, except: [:find_global]
-  before_filter :set_saved_mappings, except: [:find_global]
 
   def new_multiple
     paths = params[:paths].present? ? params[:paths].split(',') : []
@@ -218,10 +216,6 @@ private
 
   def bulk_editor_class
     params[:operation] == 'tag' ? View::Mappings::BulkTagger : View::Mappings::BulkEditor
-  end
-
-  def find_site
-    @site = Site.find_by_abbr!(params[:site_id])
   end
 
   def check_user_can_edit
