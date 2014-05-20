@@ -5,12 +5,12 @@ Scenario: Some hits have mappings and some don't
   Given some hits for the Attorney General's site have mappings and some don't:
     | path                      | status_when_hit | mapping_is_now |
     | /error                    | 404             |                |
-    | /was_error_now_redirect   | 404             | 301            |
-    | /was_error_now_archive    | 404             | 410            |
-    | /always_an_archive        | 410             | 410            |
-    | /was_archive_now_redirect | 410             | 301            |
-    | /always_a_redirect        | 301             | 301            |
-    | /was_redirect_now_archive | 301             | 410            |
+    | /was_error_now_redirect   | 404             | redirect       |
+    | /was_error_now_archive    | 404             | archive        |
+    | /always_an_archive        | 410             | archive        |
+    | /was_archive_now_redirect | 410             | redirect       |
+    | /always_a_redirect        | 301             | redirect       |
+    | /was_redirect_now_archive | 301             | archive        |
 
   When I visit the associated site's hits summary
   Then I should not see any errors that were fixed
