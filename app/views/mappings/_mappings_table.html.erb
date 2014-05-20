@@ -38,7 +38,7 @@
   </thead>
   <tbody>
   <% mappings.each do |mapping| %>
-    <tr class="mapping-<%= mapping.id %>" data-status-code="<%= mapping.http_status %>">
+    <tr class="mapping-<%= mapping.id %>">
       <% if current_user.can_edit_site?(site) %>
         <td class="selectable-row">
           <div class="relative">
