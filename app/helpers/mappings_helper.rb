@@ -51,7 +51,6 @@ module MappingsHelper
     end
   end
 
-  OTHER_OPERATIONS = { 'tag' => 'tag' }
   def http_status_name(http_status)
     if http_status == '301'
       'Redirect'
@@ -60,11 +59,12 @@ module MappingsHelper
     end
   end
 
+  SUPPORTED_OPERATIONS = ['tag'] + Mapping::SUPPORTED_TYPES
   ##
-  # Convert 'redirect'/'archive'/'tag' into 'Redirect'/'Archive'/'Tag' to use in title and heading
-  # for edit_multiple
+  # Convert 'redirect'/'archive'/'tag' into 'Redirect'/'Archive'/'Tag'
+  # to use in title and heading for edit_multiple
   def operation_name(operation)
-    (operation.titleize if Mapping::SUPPORTED_TYPES.include?(operation)) || OTHER_OPERATIONS[operation].titleize
+    operation.titleize if SUPPORTED_OPERATIONS.include?(operation)
   end
 
   def friendly_hit_count(hit_count)
