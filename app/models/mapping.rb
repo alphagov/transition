@@ -168,9 +168,10 @@ protected
   end
 
   def update_hit_relations
-    new_hits_hashes = site.host_paths.where(c14n_path_hash: path_hash)
-                                     .pluck(:path_hash)
+    host_paths = site.host_paths.where(c14n_path_hash: path_hash)
+    new_hits_hashes = host_paths.pluck(:path_hash)
 
     site.hits.where(path_hash: new_hits_hashes).update_all(mapping_id: self.id)
+    host_paths.update_all(mapping_id: self.id)
   end
 end

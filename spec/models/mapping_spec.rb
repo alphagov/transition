@@ -252,7 +252,13 @@ describe Mapping do
 
     describe 'the linkage to hits' do
       let!(:hit_on_uncanonicalized) { create :hit, path: uncanonicalized_path, host: site.default_host }
+      let!(:host_path_on_uncanonicalized) { create :host_path, path: uncanonicalized_path, host: site.default_host }
+
       let!(:hit_on_canonicalized)   { create :hit, path: canonicalized_path, host: site.default_host }
+      let!(:host_path_on_canonicalized) { create :host_path, path: canonicalized_path, host: site.default_host }
+
+      let!(:unrelated_hit) { create :hit, path: '/just-zis-guy', host: site.default_host }
+      let!(:unrelated_host_path) { create :host_path, path: '/just-zis-guy', host: site.default_host }
 
       context 'when creating a new mapping', need_mapping_callbacks: true do
         before do
@@ -266,6 +272,23 @@ describe Mapping do
 
         it 'links the canonicalized hit to the mapping' do
           hit_on_canonicalized.reload.mapping.should == mapping
+        end
+
+        it 'links the uncanonicalized host_path to the mapping' do
+          host_path_on_uncanonicalized.reload.mapping.should == mapping
+
+        end
+
+        it 'link the canonicalized host_path to the mapping' do
+          host_path_on_canonicalized.reload.mapping.should == mapping
+        end
+
+        it 'should leave an unrelated hit alone' do
+          unrelated_hit.reload.mapping.should be_nil
+        end
+
+        it 'should leave an unrelated host_path alone' do
+          unrelated_host_path.reload.mapping.should be_nil
         end
       end
     end
