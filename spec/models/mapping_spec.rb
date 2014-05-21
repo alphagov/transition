@@ -78,7 +78,7 @@ describe Mapping do
 
       context 'oh golly, everything is wrong' do
         subject(:mapping) do
-          build(:mapping, type: 'redirect', new_url: 'https://', suggested_url: 'http://', archive_url: '')
+          build(:redirect, new_url: 'https://', suggested_url: 'http://', archive_url: '')
         end
 
         describe 'the errors' do
@@ -101,7 +101,7 @@ describe Mapping do
 
       context 'URLs with an invalid host (without a ".")' do
         subject(:mapping) do
-          build(:mapping, type: 'redirect', new_url: 'newurl', suggested_url: 'suggestedurl')
+          build(:redirect, new_url: 'newurl', suggested_url: 'suggestedurl')
         end
 
         describe 'the errors' do

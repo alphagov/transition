@@ -149,7 +149,7 @@ describe MappingsBatch do
     end
 
     context 'existing mappings' do
-      let!(:existing_mapping) { create(:mapping, site: site, path: '/a', type: 'archive', tag_list: ['existing tag']) }
+      let!(:existing_mapping) { create(:archived, site: site, path: '/a', tag_list: ['existing tag']) }
 
       context 'default' do
         it 'should ignore them' do

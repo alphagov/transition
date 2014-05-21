@@ -11,7 +11,7 @@ describe MappingsBatchOutcomePresenter do
     subject { MappingsBatchOutcomePresenter.new(batch).success_message }
 
     context 'when updating at least one existing mapping' do
-      let!(:existing_mapping) { create(:mapping, site: site, path: '/might-exist', type: 'archive') }
+      let!(:existing_mapping) { create(:archived, site: site, path: '/might-exist') }
 
       before { batch.process }
 
@@ -20,10 +20,10 @@ describe MappingsBatchOutcomePresenter do
 
     context 'when updating only existing mappings' do
       let!(:existing_mappings) do
-        create(:mapping, site: site, path: '/might-exist', type: 'archive')
-        create(:mapping, site: site, path: '/a', type: 'archive')
-        create(:mapping, site: site, path: '/b', type: 'archive')
-        create(:mapping, site: site, path: '/c', type: 'archive')
+        create(:archived, site: site, path: '/might-exist')
+        create(:archived, site: site, path: '/a')
+        create(:archived, site: site, path: '/b')
+        create(:archived, site: site, path: '/c')
       end
 
       before { batch.process }
