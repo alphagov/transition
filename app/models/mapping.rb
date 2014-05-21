@@ -170,11 +170,7 @@ protected
   def update_hit_relations
     new_hits_hashes = site.host_paths.where(c14n_path_hash: path_hash)
                                      .pluck(:path_hash)
-    Hit.joins(:host => :site)
-      .where(path_hash: new_hits_hashes)
-      .where('`sites`.`id` = ?', site_id).find_each \
-    do |hit|
-      hit.update_column(:mapping_id, self.id)
-    end
+
+    site.hits.where(path_hash: new_hits_hashes).update_all(mapping_id: self.id)
   end
 end
