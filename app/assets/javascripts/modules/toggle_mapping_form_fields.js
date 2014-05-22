@@ -40,4 +40,4 @@
     };
   };
 
-})(GOVUK.Modules);
+})(GOVUKAdmin.Modules);

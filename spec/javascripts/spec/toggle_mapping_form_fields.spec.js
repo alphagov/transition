@@ -25,7 +25,7 @@ describe('A mappings module', function() {
 
       $('body').append(form);
 
-      toggle = new GOVUK.Modules.ToggleMappingFormFields();
+      toggle = new GOVUKAdmin.Modules.ToggleMappingFormFields();
     });
 
     afterEach(function() {
