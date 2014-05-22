@@ -2,10 +2,10 @@
 <% if tags.any? %>
 <li class="if-no-js-hide <% if @filter.tags.any? %>selected-and-available<% end %>">
   <% if @filter.tags.any? %>
-    <%= filter_remove_option_link(@site, nil, :tagged) %>
-    <%= filter_option_link(@site, 'Tag', {selected: true}) %>
+    <%= mappings_filter_remove_option_link(@site, nil, :tagged) %>
+    <%= filter_option_link(filter_site_mappings_path(@site), 'Tag', {selected: true}) %>
   <% else %>
-    <%= filter_option_link(@site, 'Tag') %>
+    <%= filter_option_link(filter_site_mappings_path(@site), 'Tag') %>
   <% end %>
   <ul class="dropdown-menu" role="menu">
     <% tags.each do |tag| %>

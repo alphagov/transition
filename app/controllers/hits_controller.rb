@@ -4,8 +4,19 @@ class HitsController < ApplicationController
   tracks_mappings_progress except: [:universal_summary, :universal_category]
 
   def index
+    hits = hits_in_period
+              .by_path_and_status
+              .page(params[:page])
+              .order('count DESC')
+
+    @path_contains = params[:path_contains]
+    if @path_contains
+      @filtered = true
+      hits = hits.filtered_by_path(@path_contains)
+    end
+
     @category = View::Hits::Category['all'].tap do |c|
-      c.hits   = hits_in_period.by_path_and_status.page(params[:page]).order('count DESC')
+      c.hits = hits
       c.points = totals_in_period
     end
   end
@@ -32,6 +43,9 @@ class HitsController < ApplicationController
       c.hits   = hits_in_period.by_path_and_status.send(c.to_sym).page(params[:page]).order('count DESC')
       c.points = totals_in_period.by_date_and_status.send(c.to_sym)
     end
+  end
+
+  def filter
   end
 
   def universal_summary

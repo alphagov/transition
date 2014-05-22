@@ -25,6 +25,9 @@ class Mapping < ActiveRecord::Base
   } ]
 
   belongs_to :site
+  has_many :hits
+  has_many :host_paths
+
   validates :site, presence: true
   validates :path,
             length: { maximum: 1024 },

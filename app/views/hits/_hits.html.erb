@@ -3,8 +3,13 @@
   <% content_for :page_title, "#{title} | Universal analytics" %>
   <% breadcrumb(:universal_hits) %>
 <% else %>
-  <% content_for :page_title, "#{title} | Analytics | #{@site.default_host.hostname}" %>
-  <% breadcrumb(:hits, @site) %>
+  <% if @filtered %>
+    <% content_for :page_title, "#{title} | Filtered analytics | #{@site.default_host.hostname}" %>
+    <% breadcrumb(:filtered_hits, @site) %>
+  <% else %>
+    <% content_for :page_title, "#{title} | Filtered analytics | #{@site.default_host.hostname}" %>
+    <% breadcrumb(:hits, @site) %>
+  <% end %>
 <% end %>
 
 <div class="page-title">
@@ -24,6 +29,11 @@
 <% end %>
 
 <h2><%= pluralize(number_with_delimiter(hits.total_count, :delimiter => ','), 'path', 'paths') %></h2>
+
+<% unless universal %>
+  <%= render partial: 'filters' %>
+<% end %>
+
 <%= paginate hits %>
 
 <% if hits.total_count > 0 %>

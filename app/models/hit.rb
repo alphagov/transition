@@ -36,6 +36,7 @@ class Hit < ActiveRecord::Base
       group(:hit_on, :http_status)
   }
   scope :in_range, ->(start_date, end_date) { where('(hit_on >= ?) AND (hit_on <= ?)', start_date, end_date) }
+  scope :filtered_by_path, -> term { where(term.blank? ? true : Hit.arel_table[:path].matches("%#{term}%")) }
 
   scope :errors,     -> { where(http_status: '404') }
   scope :archives,   -> { where(http_status: '410') }

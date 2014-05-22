@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 module HitsHelper
 
   def any_totals_for?(points_categories)
@@ -68,5 +70,24 @@ module HitsHelper
 
   def colors(point_categories)
     point_categories.map(&:color).to_s.html_safe
+  end
+
+  # options:
+  #  :site      Site
+  #  :category  View::Hits::Category
+  #  :filtered  boolean
+  def no_content_message_for(period, options = {})
+    if options[:site]
+      if options[:filtered]
+        "No hits found"
+      elsif options[:category]
+        "There are no #{options[:category].plural} for #{options[:site].abbr} #{period.no_content}."
+      else
+        "We don’t have any traffic data for #{options[:site].abbr} #{period.no_content}."
+      end
+    else
+      # assume it is the universal view
+      "There are no #{options[:category].plural} for any site #{period.no_content}."
+    end
   end
 end

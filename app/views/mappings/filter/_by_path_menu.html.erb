@@ -1,8 +1,8 @@
 <li class="if-no-js-hide filter-by-path">
   <% if @filter.path_contains.present? %>
-    <%= filter_remove_option_link(@site, 'Path', :path_contains) %>
+    <%= mappings_filter_remove_option_link(@site, 'Path', :path_contains) %>
   <% else %>
-    <%= filter_option_link(@site, 'Path') %>
+    <%= filter_option_link(filter_site_mappings_path(@site), 'Path') %>
     <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-path">
       <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
         <%= render partial: 'mappings/filter/by_path_field', locals: {single_filter_form: true, button_text: 'Filter'} %>

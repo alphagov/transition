@@ -5,7 +5,7 @@
      point_categories: [@category],
      title: "#{@category.title}",
      active: "#{@category.title}",
-     no_content_message: "There are no #{@category.plural} for any site #{@period.no_content}.",
+     no_content_message: no_content_message_for(@period, category: @category),
      universal: true
    }
 %>
