@@ -51,14 +51,6 @@ module MappingsHelper
     end
   end
 
-  def http_status_name(http_status)
-    if http_status == '301'
-      'Redirect'
-    elsif http_status == '410'
-      'Archive'
-    end
-  end
-
   SUPPORTED_OPERATIONS = ['tag'] + Mapping::SUPPORTED_TYPES
   ##
   # Convert 'redirect'/'archive'/'tag' into 'Redirect'/'Archive'/'Tag'
