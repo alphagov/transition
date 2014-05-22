@@ -20,10 +20,6 @@ class MappingsBatchEntry < ActiveRecord::Base
     mappings_batch.type
   end
 
-  def http_status
-    mappings_batch.http_status
-  end
-
   def tags
     mappings_batch.tag_list.split(',')
   end

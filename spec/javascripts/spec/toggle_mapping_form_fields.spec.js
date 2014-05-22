@@ -9,10 +9,10 @@ describe('A mappings module', function() {
     beforeEach(function() {
 
       form = $('<form>\
-        <select class="js-http-status">\
+        <select class="js-type">\
           <option value="0"></option>\
-          <option value="301">301 Moved Permanently</option>\
-          <option value="410">410 Gone</option>\
+          <option value="redirect">Redirect</option>\
+          <option value="archive">Archive</option>\
         </select>\
         <div class="js-for-redirect"></div>\
         <div class="js-for-archive"></div>\
@@ -23,28 +23,34 @@ describe('A mappings module', function() {
         </div>\
       </form>');
 
+      $('body').append(form);
+
       toggle = new GOVUK.Modules.ToggleMappingFormFields();
     });
 
-    it('shows only the archive fields when the mapping is a 410' , function() {
+    afterEach(function() {
+      form.remove();
+    });
 
-      form.find('.js-http-status').val(410);
+    it('shows only the archive fields when the mapping is an archive' , function() {
+
+      form.find('.js-type').val('archive');
       toggle.start(form);
 
       expect(form.find('.js-for-redirect:visible').length).toBe(0);
       expect(form.find('.js-for-archive:visible').length).toBe(1);
     });
 
-    it('shows only the redirect fields when the mapping is a 301' , function() {
+    it('shows only the redirect fields when the mapping is a redirect' , function() {
 
-      form.find('.js-http-status').val(301);
+      form.find('.js-type').val('redirect');
       toggle.start(form);
 
       expect(form.find('.js-for-redirect:visible').length).toBe(1);
       expect(form.find('.js-for-archive:visible').length).toBe(0);
     });
 
-    describe('when the http status changes', function() {
+    describe('when the mapping type changes', function() {
 
       it('toggles the appropriate form fields' , function() {
 
@@ -52,19 +58,19 @@ describe('A mappings module', function() {
         expect(form.find('.js-for-redirect:visible').length).toBe(1);
         expect(form.find('.js-for-archive:visible').length).toBe(1);
 
-        form.find('.js-http-status').val(301).trigger('change');
+        form.find('.js-type').val('redirect').trigger('change');
         expect(form.find('.js-for-redirect:visible').length).toBe(1);
         expect(form.find('.js-for-archive:visible').length).toBe(0);
 
-        form.find('.js-http-status').val(410).trigger('change');
+        form.find('.js-type').val('archive').trigger('change');
         expect(form.find('.js-for-redirect:visible').length).toBe(0);
         expect(form.find('.js-for-archive:visible').length).toBe(1);
       });
 
-      it('shows all fields if the new http status is not 301 or 410' , function() {
+      it('shows all fields if the new mapping type is not redirect or archive' , function() {
 
         toggle.start(form);
-        form.find('.js-http-status').val(0).trigger('change');
+        form.find('.js-type').val(0).trigger('change');
 
         expect(form.find('.js-for-redirect:visible').length).toBe(1);
         expect(form.find('.js-for-archive:visible').length).toBe(1);

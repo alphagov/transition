@@ -5,14 +5,21 @@ require 'transition/history'
 class Mapping < ActiveRecord::Base
   include ActiveRecord::Concerns::NilifyBlanks
 
-  SUPPORTED_STATUSES = ['301', '410']
+  # ActiveRecord uses a column named 'type' for Single Table Inheritance, and
+  # by default activates STI if a 'type' column is present. Setting the column
+  # name for STI to something else allows us to use a 'type' column for
+  # something else instead, without activating STI.
+  self.inheritance_column = nil
 
-  TYPES = {
-    '301' => 'redirect',
-    '410' => 'archive'
+  SUPPORTED_TYPES_TO_HTTP_STATUSES = {
+    'redirect' => '301',
+    'archive'  => '410'
   }
 
-  attr_accessible :path, :site, :http_status, :new_url, :suggested_url, :archive_url, :tag_list
+  SUPPORTED_TYPES         = SUPPORTED_TYPES_TO_HTTP_STATUSES.keys
+  SUPPORTED_HTTP_STATUSES = SUPPORTED_TYPES_TO_HTTP_STATUSES.values
+
+  attr_accessible :path, :site, :type, :new_url, :suggested_url, :archive_url, :tag_list
 
   acts_as_taggable
   has_paper_trail :ignore => [:tag_list => Proc.new { |mapping|
@@ -21,7 +28,7 @@ class Mapping < ActiveRecord::Base
     # string. This means that it is "different" even though it isn't.
     # Comparing the stringified version avoids that problem.
     mapping.tag_list_was == mapping.tag_list.to_s
-  } ]
+  } ], :skip => [:http_status]
 
   belongs_to :site
   validates :site, presence: true
@@ -29,12 +36,13 @@ class Mapping < ActiveRecord::Base
             length: { maximum: 1024 },
             exclusion: { in: ['/'], message: I18n.t('mappings.not_possible_to_edit_homepage_mapping')},
             is_path: true
-  validates :http_status, presence: true, length: { maximum: 3 }, inclusion: { :in => SUPPORTED_STATUSES }
+  validates :http_status, presence: true, length: { maximum: 3 }, inclusion: { :in => SUPPORTED_HTTP_STATUSES }
+  validates :type, presence: true, inclusion: { :in => SUPPORTED_TYPES }
   validates :site_id, uniqueness: { scope: [:path_hash], message: 'Mapping already exists for this site and path!' }
 
   # set a hash of the path because we can't have a unique index on
   # the path (it's too long)
-  before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path, :set_path_hash
+  before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path, :set_path_hash, :set_http_status_from_type
   validates :path_hash, presence: true
 
   before_save :ensure_papertrail_user_config
@@ -50,26 +58,18 @@ class Mapping < ActiveRecord::Base
       joins('LEFT JOIN hits ON hits.mapping_id = mappings.id').
       group('mappings.path_hash')
   }
-  scope :with_status, -> status { where(http_status: Rack::Utils.status_code(status)) }
-  scope :redirects, with_status(:moved_permanently)
-  scope :archives,  with_status(:gone)
+  scope :with_type, -> type { where(type: type) }
+  scope :redirects, with_type('redirect')
+  scope :archives,  with_type('archive')
   scope :filtered_by_path,    -> term { where(term.blank? ? true : Mapping.arel_table[:path].matches("%#{term}%")) }
   scope :filtered_by_new_url, -> term { where(term.blank? ? true : Mapping.arel_table[:new_url].matches("%#{term}%")) }
 
   def redirect?
-    http_status == '301'
+    type == 'redirect'
   end
 
   def archive?
-    http_status == '410'
-  end
-
-  def type
-    Mapping.type(http_status)
-  end
-
-  def self.type(http_status)
-    TYPES[http_status] || 'unknown'
+    type == 'archive'
   end
 
   ##
@@ -157,6 +157,14 @@ protected
 
   def canonicalize_path
     self.path = site.canonical_path(path) unless (site.nil? || path == '/' || path =~ /^[^\/]/)
+  end
+
+  def set_http_status_from_type
+    # If the http_status isn't supported, leave it as it is. This means that we
+    # don't lose the status of the few 418 mappings which were imported from
+    # redirector. It also allows the ensure_inclusion_of matcher to work in the
+    # validation tests.
+    self.http_status = SUPPORTED_TYPES_TO_HTTP_STATUSES[type] || self.http_status
   end
 
   def tna_timestamp

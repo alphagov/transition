@@ -12,11 +12,11 @@
       <% unless footer %>
         <%= hidden_field_tag "return_path", request.fullpath %>
         <div class="if-js-hide">
-          <%= label_tag :operation_301, class: 'radio-inline table-header-radio' do %>
-            <%= radio_button_tag(:operation, '301', selected = true) %> Redirect
+          <%= label_tag :operation_redirect, class: 'radio-inline table-header-radio' do %>
+            <%= radio_button_tag(:operation, 'redirect', selected = true) %> Redirect
           <% end %>
-          <%= label_tag :operation_410, class: 'radio-inline table-header-radio add-right-margin' do %>
-            <%= radio_button_tag(:operation, '410') %> Archive
+          <%= label_tag :operation_archive, class: 'radio-inline table-header-radio add-right-margin' do %>
+            <%= radio_button_tag(:operation, 'archive') %> Archive
           <% end %>
           <%= label_tag :operation_tag, class: 'radio-inline table-header-radio add-right-margin' do %>
             <%= radio_button_tag(:operation, 'tag') %> Tag
@@ -25,8 +25,8 @@
         </div>
       <% end %>
       <div class="if-no-js-hide js-submit-container btn-group" data-toggle="tooltip" title="Select mappings using checkboxes then edit them with these buttons." data-placement="right">
-        <a href="#redirect-paths" class="btn btn-default js-submit-form disabled" data-type="301" data-loading-text="Loading…" title="Redirect the paths you’ve selected to a new URL">Redirect</a>
-        <a href="#archive-paths" class="btn btn-default js-submit-form disabled" data-type="410" data-loading-text="Loading…" title="Archive the paths you’ve selected">Archive</a>
+        <a href="#redirect-paths" class="btn btn-default js-submit-form disabled" data-type="redirect" data-loading-text="Loading…" title="Redirect the paths you’ve selected to a new URL">Redirect</a>
+        <a href="#archive-paths" class="btn btn-default js-submit-form disabled" data-type="archive" data-loading-text="Loading…" title="Archive the paths you’ve selected">Archive</a>
         <a href="#tag-paths" class="btn btn-default js-submit-form disabled" data-type="tag" data-loading-text="Loading…" title="Tag the paths you’ve selected">Tag</a>
       </div>
     </div>

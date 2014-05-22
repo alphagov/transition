@@ -6,11 +6,11 @@ Feature: Filter mappings
   Background:
     Given I have logged in as an admin
     And there is a site called directgov belonging to an organisation directgov with these mappings:
-      | http_status | path             | new_url                   | tags             |
-      | 410         | /about/corporate |                           | fee, fum, fiddle |
-      | 301         | /about/branding  | http://gov.uk/branding    | fi, fum          |
-      | 301         | /another         | http://gov.uk/directgov   | fo, fiddle       |
-      | 410         | /notinfilter     |                           |                  |
+      | type     | path             | new_url                 | tags             |
+      | archive  | /about/corporate |                         | fee, fum, fiddle |
+      | redirect | /about/branding  | http://gov.uk/branding  | fi, fum          |
+      | redirect | /another         | http://gov.uk/directgov | fo, fiddle       |
+      | archive  | /notinfilter     |                         |                  |
     And I visit the path /sites/directgov/mappings
 
   Scenario: Filtering by path without JavaScript

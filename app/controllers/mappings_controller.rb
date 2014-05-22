@@ -14,7 +14,7 @@ class MappingsController < ApplicationController
   end
 
   def new_multiple_confirmation
-    @batch = MappingsBatch.new(http_status: params[:http_status],
+    @batch = MappingsBatch.new(type: params[:type],
                                new_url: params[:new_url],
                                tag_list: params[:tag_list],
                                paths: params[:paths].split(/\r?\n|\r/).map(&:strip))

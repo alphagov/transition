@@ -1,9 +1,16 @@
 class MappingsBatch < ActiveRecord::Base
+
+  # ActiveRecord uses a column named 'type' for Single Table Inheritance, and
+  # by default activates STI if a 'type' column is present. Setting the column
+  # name for STI to something else allows us to use a 'type' column for
+  # something else instead, without activating STI.
+  self.inheritance_column = nil
+
   FINISHED_STATES = ['succeeded', 'failed']
   PROCESSING_STATES = ['unqueued', 'queued', 'processing'] + FINISHED_STATES
 
   attr_accessor :paths # a virtual attribute to then use for creating entries
-  attr_accessible :paths, :http_status, :new_url, :tag_list, :update_existing, :state
+  attr_accessible :paths, :type, :new_url, :tag_list, :update_existing, :state
 
   belongs_to :user
   belongs_to :site
@@ -12,7 +19,8 @@ class MappingsBatch < ActiveRecord::Base
 
   validates :user, presence: true
   validates :site, presence: true
-  validates :http_status, inclusion: { :in => Mapping::SUPPORTED_STATUSES }
+  validates :http_status, inclusion: { :in => Mapping::SUPPORTED_HTTP_STATUSES }
+  validates :type, inclusion: { :in => Mapping::SUPPORTED_TYPES }
   with_options :if => :redirect? do |redirect|
     redirect.validates :new_url, presence: { message: I18n.t('mappings.bulk.new_url_invalid') }
     redirect.validates :new_url, length: { maximum: (64.kilobytes - 1) }
@@ -24,7 +32,7 @@ class MappingsBatch < ActiveRecord::Base
 
   scope :reportable, where(seen_outcome: false).where("state != 'unqueued'")
 
-  before_validation :fill_in_scheme
+  before_validation :fill_in_scheme, :set_http_status_from_type
 
   after_create :create_entries
 
@@ -37,11 +45,7 @@ class MappingsBatch < ActiveRecord::Base
   end
 
   def redirect?
-    http_status == '301'
-  end
-
-  def type
-    Mapping.type(http_status)
+    type == 'redirect'
   end
 
   def finished?
@@ -58,6 +62,12 @@ class MappingsBatch < ActiveRecord::Base
 
   def fill_in_scheme
     self.new_url = Mapping.ensure_url(new_url)
+  end
+
+  def set_http_status_from_type
+    # If the http_status isn't supported, leave it as it is. This allows the
+    # ensure_inclusion_of matcher to work in the validation tests.
+    self.http_status = Mapping::SUPPORTED_TYPES_TO_HTTP_STATUSES[type] || self.http_status
   end
 
   def paths_cannot_include_hosts_for_another_site
@@ -108,7 +118,7 @@ class MappingsBatch < ActiveRecord::Base
 
         next if !update_existing && mapping.persisted?
         mapping.path = entry.path
-        mapping.http_status = http_status
+        mapping.type = type
         mapping.new_url = new_url
         mapping.tag_list = [mapping.tag_list, tag_list].join(',')
         mapping.save

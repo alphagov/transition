@@ -6,8 +6,8 @@ Feature: History of edits to a mapping
   Background: Bob has made a good mapping bad. Oh, Bob.
     Given I have logged in as an admin called "Bob"
     And there is a site called directgov belonging to an organisation directgov with these mappings:
-      | http_status | path             | new_url                                 |
-      | 301         | /about/corporate | http://somewhere.good                   |
+      | type     | path             | new_url                                 |
+      | redirect | /about/corporate | http://somewhere.good                   |
     And I visit the path /sites/directgov/mappings
     And I click the link "Edit"
     And I change the mapping's redirect to http://somewhere.bad

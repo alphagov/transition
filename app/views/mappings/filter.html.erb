@@ -15,7 +15,7 @@
           <%= radio_button_tag :type, '', true %>
           All types
         <% end %>
-        <% Mapping::TYPES.each do |key, type| %>
+        <% Mapping::SUPPORTED_TYPES.each do |type| %>
           <%= label_tag nil, class: 'radio-inline' do %>
             <%= radio_button_tag :type, type %>
             <%= type.titleize %>

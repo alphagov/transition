@@ -5,7 +5,7 @@ Feature: Edit a site's mapping
 
   Background:
     Given I have logged in as an admin
-    And a 410 mapping exists for the bis site with the path /about
+    And an archive mapping exists for the bis site with the path /about
     And I visit the path /sites/bis/mappings?fake_param=1
     And I go to edit the first mapping
 

@@ -47,14 +47,14 @@ Given(/^that the first host's site does not exist$/) do
 end
 
 Given(/^there is a site called (.*) belonging to an organisation (.*) with these mappings:$/) do |site_abbr, org_abbr, mappings_table|
-  # table is a | 410         | /about/corporate |                   |
+  # table is | type | path | new_url | tags |
   org  = create(:organisation, title: org_abbr, whitehall_slug: org_abbr)
   site = create(:site, organisation: org, abbr: site_abbr)
 
-  site.mappings = mappings_table.rows.map do |http_status, path, new_url, tags|
+  site.mappings = mappings_table.rows.map do |type, path, new_url, tags|
     create(:mapping,
       site: site,
-      http_status: http_status,
+      type: type,
       path: path,
       new_url: new_url == '' ? nil : new_url,
       tag_list: tags
@@ -62,13 +62,13 @@ Given(/^there is a site called (.*) belonging to an organisation (.*) with these
   end
 end
 
-Given (/^a (\d+) mapping exists for the (.+) site with the path (.*)$/) do |status, site_abbr, path|
+Given (/^a(?:n) (\w+) mapping exists for the (.+) site with the path (.*)$/) do |type, site_abbr, path|
   site = create :site, abbr: site_abbr
-  site.mappings << create(:mapping, http_status: status, path: path)
+  site.mappings << create(:mapping, type: type, path: path)
 end
 
-Given (/^a (\d+) mapping exists for the site with the path (.*)$/) do |status, path|
-  @site.mappings << create(:mapping, http_status: status, path: path)
+Given (/^a(?:n) (\w+) mapping exists for the site with the path (.*)$/) do |type, path|
+  @site.mappings << create(:mapping, type: type, path: path)
 end
 
 Given(/^there is an organisation with the whitehall_slug "(.*?)"$/) do |abbr|

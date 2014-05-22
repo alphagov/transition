@@ -2,7 +2,7 @@ require 'transition/history'
 
 FactoryGirl.define do
   factory :mappings_batch do
-    http_status '410'
+    type 'archive'
     paths ['/a', '/b']
     state 'unqueued'
 

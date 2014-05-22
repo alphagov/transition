@@ -16,32 +16,20 @@ describe MappingsHelper do
     it { should include(%(<li><a href="#{site_mapping_versions_path(@mapping.site, @mapping)}")) }
   end
 
-  describe '#options_for_supported_statuses' do
-    it 'provides an array of supported statuses in a form compatible with FormBuilder#select' do
-      helper.options_for_supported_statuses.should == [['Redirect', '301'], ['Archive', '410']]
-    end
-  end
-
-  describe '#http_status_name' do
-    context 'status is \'301\'' do
-      subject { helper.http_status_name('301') }
-      it { should eql('Redirect') }
-    end
-
-    context 'status is \'410\'' do
-      subject { helper.http_status_name('410') }
-      it { should eql('Archive') }
+  describe '#options_for_supported_types' do
+    it 'provides an array of supported types in a form compatible with FormBuilder#select' do
+      helper.options_for_supported_types.should == [['Redirect', 'redirect'], ['Archive', 'archive']]
     end
   end
 
   describe '#operation_name' do
-    context 'operation is \'301\'' do
-      subject { helper.operation_name('301') }
+    context 'operation is \'redirect\'' do
+      subject { helper.operation_name('redirect') }
       it { should eql('Redirect') }
     end
 
-    context 'operation is \'410\'' do
-      subject { helper.operation_name('410') }
+    context 'operation is \'archive\'' do
+      subject { helper.operation_name('archive') }
       it { should eql('Archive') }
     end
 

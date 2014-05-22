@@ -58,7 +58,7 @@ Scenario: Edit mapping from a hit
   And these hits exist for the Attorney General's office site:
     | http_status | path | hit_on   | count |
     | 410         | /A   | 16/10/12 | 100   |
-  And a 410 mapping exists for the site with the path /A
+  And an archive mapping exists for the site with the path /A
   And I am on the Attorney General's office site's hits page
   When I click on the link to check the mapping for the top hit
   Then I should be on the edit mapping page

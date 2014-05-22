@@ -25,10 +25,10 @@
           <strong class="breakable path">
             <%= link_to hit.path, hit.default_url %>
             <% if hit.mapping %>
-              <% if [hit.http_status, hit.mapping.http_status] == ['410', '301']  %>
+              <% if [hit.http_status, hit.mapping.type] == ['410', 'redirect']  %>
                 <br>
                 <span class="text-muted"><%= "was archived, now redirecting" %></span>
-              <% elsif [hit.http_status, hit.mapping.http_status] == ['301', '410'] %>
+              <% elsif [hit.http_status, hit.mapping.type] == ['301', 'archive'] %>
                 <br>
                 <span class="text-muted"><%= "was redirecting, now archived" %></span>
               <% end %>

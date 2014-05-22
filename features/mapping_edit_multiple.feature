@@ -6,18 +6,18 @@ Feature: Editing multiple mappings for a site
   Background:
     Given I have logged in as an admin
     And there is a site called directgov belonging to an organisation directgov with these mappings:
-      | http_status | path             | new_url                                 |
-      | 301         | /a               | http://gov.uk/directgov                 |
-      | 301         | /about/branding  | http://gov.uk/branding                  |
-      | 410         | /about/corporate |                                         |
-      | 410         | /z1              |                                         |
-      | 410         | /z2              |                                         |
-      | 410         | /z3              |                                         |
-      | 410         | /z4              |                                         |
-      | 410         | /z5              |                                         |
-      | 410         | /z6              |                                         |
-      | 410         | /z7              |                                         |
-      | 410         | /z8              |                                         |
+      | type     | path             | new_url                                 |
+      | redirect | /a               | http://gov.uk/directgov                 |
+      | redirect | /about/branding  | http://gov.uk/branding                  |
+      | archive  | /about/corporate |                                         |
+      | archive  | /z1              |                                         |
+      | archive  | /z2              |                                         |
+      | archive  | /z3              |                                         |
+      | archive  | /z4              |                                         |
+      | archive  | /z5              |                                         |
+      | archive  | /z6              |                                         |
+      | archive  | /z7              |                                         |
+      | archive  | /z8              |                                         |
     And I visit the path /sites/directgov/mappings
 
   Scenario: Selecting multiple mappings to redirect without javascript

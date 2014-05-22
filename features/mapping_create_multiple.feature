@@ -7,9 +7,9 @@ Feature: Create mappings
   Scenario:
     Given I have logged in as an admin
     And there is a site called bis belonging to an organisation bis with these mappings:
-      | http_status | path | new_url               |
-      | 301         | /r   | http://somewhere.good |
-      | 410         | /a   |                       |
+      | type     | path | new_url               |
+      | redirect | /r   | http://somewhere.good |
+      | archive  | /a   |                       |
     And I visit the path /sites/bis/mappings
     And I go to create some mappings
     Then I should see "http://bis.gov.uk"
@@ -31,9 +31,9 @@ Feature: Create mappings
   Scenario: Creating a large batch (that will be processed in the background)
     Given I have logged in as an admin
     And there is a site called bis belonging to an organisation bis with these mappings:
-      | http_status | path | new_url               |
-      | 301         | /r   | http://somewhere.good |
-      | 410         | /a   |                       |
+      | type     | path | new_url               |
+      | redirect | /r   | http://somewhere.good |
+      | archive  | /a   |                       |
     And I visit the path /sites/bis/mappings
     And I go to create some mappings
     Then I should see "http://bis.gov.uk"
