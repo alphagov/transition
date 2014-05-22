@@ -66,4 +66,46 @@ describe Transition::Import::HitsMappingsRelations do
       end
     end
   end
+
+  describe '.refresh! for a specific site', testing_before_all: true do
+    before :all do
+      @host = create :host, site: create(:site)
+      @site = @host.site
+
+      @other_host = create :host
+      @other_site = @other_host.site
+
+      @hit            = create :hit, path: '/a', host: @host
+      @other_site_hit = create :hit, path: '/b', host: @other_host
+
+      @mapping        = create :mapping, path: '/a', site: @site
+      @other_mapping  = create :mapping, path: '/b', site: @other_site
+
+      @other_mapping_with_host_path = create :mapping, path: '/b2', site: @other_site
+      create :host_path, path: '/b2', host: @other_host
+
+      Transition::Import::HitsMappingsRelations.refresh!(@site)
+    end
+
+    it 'should create host_paths for this site' do
+      @site.host_paths.find_by_path(@hit.path).should_not be_nil
+    end
+
+    it 'should connect mappings to hits for this site' do
+      @hit.reload.mapping.should_not be_nil
+    end
+
+    it 'should not create host_paths for another site' do
+      @other_site.host_paths.find_by_path(@other_site_hit.path).should be_nil
+    end
+
+    it 'should not connect mappings and pre-existing host_paths for another site' do
+      path = @other_mapping_with_host_path.path
+      @other_site.host_paths.find_by_path(path).mapping.should be_nil
+    end
+
+    it 'should not connect mappings and hits for another site' do
+      @other_site_hit.reload.mapping.should be_nil
+    end
+  end
 end
