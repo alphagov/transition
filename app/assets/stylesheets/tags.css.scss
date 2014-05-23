@@ -52,11 +52,12 @@ a.tag:hover {
   @extend %tag-foundation;
 }
 
-.select2-search-choice-close {
+.select2-container .select2-choices .select2-search-choice-close {
   @extend .glyphicon;
   @extend .glyphicon-remove;
   @extend %glyphicon-smaller-than-text;
   background-image: none;
+  position: absolute;
   top: 11px;
 
   &:hover,
