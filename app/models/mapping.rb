@@ -11,13 +11,7 @@ class Mapping < ActiveRecord::Base
   # something else instead, without activating STI.
   self.inheritance_column = nil
 
-  SUPPORTED_TYPES_TO_HTTP_STATUSES = {
-    'redirect' => '301',
-    'archive'  => '410'
-  }
-
-  SUPPORTED_TYPES         = SUPPORTED_TYPES_TO_HTTP_STATUSES.keys
-  SUPPORTED_HTTP_STATUSES = SUPPORTED_TYPES_TO_HTTP_STATUSES.values
+  SUPPORTED_TYPES = %w(redirect archive)
 
   attr_accessible :path, :site, :type, :new_url, :suggested_url, :archive_url, :tag_list
 
@@ -28,7 +22,7 @@ class Mapping < ActiveRecord::Base
     # string. This means that it is "different" even though it isn't.
     # Comparing the stringified version avoids that problem.
     mapping.tag_list_was == mapping.tag_list.to_s
-  } ], :skip => [:http_status]
+  } ]
 
   belongs_to :site
   validates :site, presence: true
@@ -36,13 +30,12 @@ class Mapping < ActiveRecord::Base
             length: { maximum: 1024 },
             exclusion: { in: ['/'], message: I18n.t('mappings.not_possible_to_edit_homepage_mapping')},
             is_path: true
-  validates :http_status, presence: true, length: { maximum: 3 }, inclusion: { :in => SUPPORTED_HTTP_STATUSES }
   validates :type, presence: true, inclusion: { :in => SUPPORTED_TYPES }
   validates :site_id, uniqueness: { scope: [:path_hash], message: 'Mapping already exists for this site and path!' }
 
   # set a hash of the path because we can't have a unique index on
   # the path (it's too long)
-  before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path, :set_path_hash, :set_http_status_from_type
+  before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path, :set_path_hash
   validates :path_hash, presence: true
 
   before_save :ensure_papertrail_user_config
@@ -157,14 +150,6 @@ protected
 
   def canonicalize_path
     self.path = site.canonical_path(path) unless (site.nil? || path == '/' || path =~ /^[^\/]/)
-  end
-
-  def set_http_status_from_type
-    # If the http_status isn't supported, leave it as it is. This means that we
-    # don't lose the status of the few 418 mappings which were imported from
-    # redirector. It also allows the ensure_inclusion_of matcher to work in the
-    # validation tests.
-    self.http_status = SUPPORTED_TYPES_TO_HTTP_STATUSES[type] || self.http_status
   end
 
   def tna_timestamp

@@ -5,7 +5,6 @@ describe MappingsBatch do
     it { should validate_presence_of(:user) }
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:paths).with_message('Enter at least one valid path') }
-    it { should ensure_inclusion_of(:http_status).in_array(['301', '410']) }
     it { should ensure_inclusion_of(:type).in_array(['redirect', 'archive']) }
     it { should ensure_inclusion_of(:state).in_array(MappingsBatch::PROCESSING_STATES) }
 
@@ -75,18 +74,9 @@ describe MappingsBatch do
   end
 
   describe 'callbacks' do
-    # In both of these tests, we need to implicitly call #valid? using
-    # { be_valid } so that the before_validation callbacks are called so that
-    # we can test that they do the right thing.
-    describe 'setting http_status from type' do
-      subject(:mappings_batch) { build(:mappings_batch) }
-
-      before { mappings_batch.should be_valid }
-      it 'should set the http_status' do
-        mappings_batch.http_status.should == '410'
-      end
-    end
-
+    # In this test, we need to implicitly call #valid? using { be_valid } so
+    # that the before_validation callbacks are called so that we can test that
+    # they do the right thing.
     describe 'filling in scheme of New URL' do
       subject(:mappings_batch) { build(:mappings_batch, new_url: 'www.gov.uk') }
 
@@ -137,7 +127,6 @@ describe MappingsBatch do
         mapping = site.mappings.first
         mapping.path.should == '/a'
         mapping.type.should == 'redirect'
-        mapping.http_status.should == '301'
         mapping.new_url.should == 'http://gov.uk'
         mapping.tag_list.should == ['a tag']
       end
@@ -196,7 +185,7 @@ describe MappingsBatch do
     let(:mappings_batch) do
       create(:mappings_batch, site: site,
               paths: ['/a'],
-              http_status: '301', new_url: 'http://gov.uk', tag_list: '')
+              type: 'redirect', new_url: 'http://gov.uk', tag_list: '')
     end
 
     it 'should not record any change to the tag_list' do

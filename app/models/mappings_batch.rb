@@ -19,7 +19,6 @@ class MappingsBatch < ActiveRecord::Base
 
   validates :user, presence: true
   validates :site, presence: true
-  validates :http_status, inclusion: { :in => Mapping::SUPPORTED_HTTP_STATUSES }
   validates :type, inclusion: { :in => Mapping::SUPPORTED_TYPES }
   with_options :if => :redirect? do |redirect|
     redirect.validates :new_url, presence: { message: I18n.t('mappings.bulk.new_url_invalid') }
@@ -32,7 +31,7 @@ class MappingsBatch < ActiveRecord::Base
 
   scope :reportable, where(seen_outcome: false).where("state != 'unqueued'")
 
-  before_validation :fill_in_scheme, :set_http_status_from_type
+  before_validation :fill_in_scheme
 
   after_create :create_entries
 
@@ -62,12 +61,6 @@ class MappingsBatch < ActiveRecord::Base
 
   def fill_in_scheme
     self.new_url = Mapping.ensure_url(new_url)
-  end
-
-  def set_http_status_from_type
-    # If the http_status isn't supported, leave it as it is. This allows the
-    # ensure_inclusion_of matcher to work in the validation tests.
-    self.http_status = Mapping::SUPPORTED_TYPES_TO_HTTP_STATUSES[type] || self.http_status
   end
 
   def paths_cannot_include_hosts_for_another_site

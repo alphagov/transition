@@ -30,7 +30,6 @@ describe Transition::Import::Whitehall::MappingsCSV do
         its(:path)        { should == '/oldurl' }
         its(:new_url)     { should == 'https://www.gov.uk/new' }
         its(:type)        { should == 'redirect' }
-        its(:http_status) { should == '301' }
       end
 
       context 'Old URL is not canonical, no mapping' do
