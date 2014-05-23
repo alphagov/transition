@@ -16,6 +16,13 @@ module View
 
       def path_contains
         @path_contains ||= View::Mappings::canonical_filter(site, params[:path_contains])
+
+        # # TODO: move this into canonical_filter
+        # # Canonicalisation removes trailing slashes, which in this case
+        # # can be an important part of the search string. Put them back.
+        # if params[:path_contains].end_with?('/')
+        #   @path_contains = @path_contains + '/'
+        # end
       end
 
       def tagged
@@ -39,7 +46,7 @@ module View
         @mappings = @mappings.redirects.filtered_by_new_url(new_url_contains) if new_url_contains.present?
         @mappings = @mappings.tagged_with(tagged) if tagged.present?
 
-        sort_by_hits? ? @mappings.with_hit_count : @mappings
+        sort_by_hits? ? @mappings.with_hit_count.order('hit_count DESC') : @mappings
       end
     end
   end

@@ -2,7 +2,7 @@
   <div class="col-md-8">
     <div class="panel panel-default">
       <header class="panel-heading">
-        <% if @filtered %>
+        <% if @filter.active? %>
           <%= link_to site_mappings_path(@site), class: 'remove-filters', title: 'Remove all filters' do %>
             <span class="glyphicon glyphicon-remove"></span>
           <% end %>
@@ -31,19 +31,19 @@
           </li>
         </ul>
       </header>
-      <% if @incompatible_filter %>
+      <% if @filter.incompatible? %>
         <div class="alert alert-warning">
           Your archive filter has been removed. Filtering by new URL is only possible with redirects.
         </div>
       <% end %>
-      <% if @path_contains || @new_url_contains || filtered_by_tags? %>
+      <% if @filter.path_contains || @filter.new_url_contains || filtered_by_tags? %>
         <div class="panel-body">
-          <% if @path_contains %>
+          <% if @filter.path_contains %>
             <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
               <%= render partial: 'mappings/filter/by_path_field', locals: {single_filter_form: true, button_text: 'Update path'} %>
             <% end %>
           <% end %>
-          <% if @new_url_contains %>
+          <% if @filter.new_url_contains %>
             <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
               <%= render partial: 'mappings/filter/by_new_url_field', locals: {single_filter_form: true, button_text: 'Update URL'} %>
             <% end %>

@@ -56,6 +56,8 @@ class MappingsController < ApplicationController
   end
 
   def index
+    @filter = View::Mappings::Filter.new(@site, params)
+    @mappings = @filter.mappings
 
     @mappings = @site.mappings.page(params[:page])
 

@@ -1,12 +1,12 @@
-<li class="if-no-js-hide <% if @type %>selected-and-available<% end %>">
-  <% if @type %>
+<li class="if-no-js-hide <% if @filter.type %>selected-and-available<% end %>">
+  <% if @filter.type %>
     <%= filter_remove_option_link(@site, nil, :type) %>
-    <%= filter_option_link(@site, @type.pluralize.titleize, {selected: true}) %>
+    <%= filter_option_link(@site, @filter.type.pluralize.titleize, {selected: true}) %>
   <% else %>
     <%= filter_option_link(@site, 'Type') %>
   <% end %>
   <ul class="dropdown-menu" role="menu">
-    <% if @type %>
+    <% if @filter.type %>
       <li>
         <%= link_to 'All types', remove_filter_by_type_path, class: 'inherit' %>
       </li>

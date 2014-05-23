@@ -1,5 +1,5 @@
 <li class="if-no-js-hide">
-  <% if @new_url_contains.present? %>
+  <% if @filter.new_url_contains.present? %>
     <%= filter_remove_option_link(@site, 'New URL', :new_url_contains) %>
   <% else %>
     <%= filter_option_link(@site, 'New URL') %>
