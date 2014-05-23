@@ -112,7 +112,7 @@ GEM
     hike (1.2.3)
     htmlentities (4.3.1)
     i18n (0.6.9)
-    jasmine (2.0.0)
+    jasmine (2.0.2)
       jasmine-core (~> 2.0.0)
       phantomjs
       rack (>= 1.2.1)
@@ -172,7 +172,7 @@ GEM
     paper_trail (3.0.2)
       activerecord (>= 3.0, < 5.0)
       activesupport (>= 3.0, < 5.0)
-    phantomjs (1.9.2.1)
+    phantomjs (1.9.7.0)
     plek (1.2.0)
       builder
     poltergeist (1.4.1)
@@ -298,7 +298,7 @@ DEPENDENCIES
   google-api-client (= 0.6.4)
   gretel (= 3.0.5)
   htmlentities (= 4.3.1)
-  jasmine (= 2.0.0)
+  jasmine (= 2.0.2)
   jquery-rails (= 3.0.4)
   kaminari (= 0.14.1)
   launchy (= 2.3.0)
