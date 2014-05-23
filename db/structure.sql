@@ -70,7 +70,6 @@ CREATE TABLE `mappings` (
   `site_id` int(11) NOT NULL,
   `path` varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
   `path_hash` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
-  `http_status` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
   `new_url` text COLLATE utf8_unicode_ci,
   `suggested_url` text COLLATE utf8_unicode_ci,
   `archive_url` text COLLATE utf8_unicode_ci,
@@ -78,7 +77,6 @@ CREATE TABLE `mappings` (
   `type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_mappings_on_site_id_and_path_hash` (`site_id`,`path_hash`),
-  KEY `index_mappings_on_site_id_and_http_status` (`site_id`,`http_status`),
   KEY `index_mappings_on_site_id` (`site_id`),
   KEY `index_mappings_on_site_id_and_type` (`site_id`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -96,7 +94,6 @@ CREATE TABLE `mappings_batch_entries` (
 CREATE TABLE `mappings_batches` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tag_list` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `http_status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `new_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `update_existing` tinyint(1) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
@@ -113,7 +110,6 @@ CREATE TABLE `mappings_batches` (
 CREATE TABLE `mappings_staging` (
   `old_url` mediumtext COLLATE utf8_unicode_ci,
   `new_url` mediumtext COLLATE utf8_unicode_ci,
-  `http_status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `host` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `path_hash` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -330,3 +326,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140502160711');
 INSERT INTO schema_migrations (version) VALUES ('20140515135431');
 
 INSERT INTO schema_migrations (version) VALUES ('20140520154514');
+
+INSERT INTO schema_migrations (version) VALUES ('20140523100338');
