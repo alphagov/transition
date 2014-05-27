@@ -26,14 +26,6 @@ module View
         tagged.present? ? tagged.split(ActsAsTaggableOn.delimiter) : []
       end
 
-      def by_tag?(tag)
-        tags.include?(tag)
-      end
-
-      def by_tags?
-        tags.any?
-      end
-
       def by_tag_query(tag)
         tags = self.tags
         if tags.include?(tag)

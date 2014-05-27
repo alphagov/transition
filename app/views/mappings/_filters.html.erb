@@ -36,7 +36,7 @@
           Your archive filter has been removed. Filtering by new URL is only possible with redirects.
         </div>
       <% end %>
-      <% if @filter.path_contains || @filter.new_url_contains || @filter.by_tags? %>
+      <% if @filter.path_contains || @filter.new_url_contains || @filter.tags.any? %>
         <div class="panel-body">
           <% if @filter.path_contains %>
             <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
@@ -48,7 +48,7 @@
               <%= render partial: 'mappings/filter/by_new_url_field', locals: {single_filter_form: true, button_text: 'Update URL'} %>
             <% end %>
           <% end %>
-          <% if @filter.by_tags? %>
+          <% if @filter.tags.any? %>
             <dl class="remove-bottom-margin filtered-tags">
               <dt class="add-label-margin">Tagged</dt>
               <dd>

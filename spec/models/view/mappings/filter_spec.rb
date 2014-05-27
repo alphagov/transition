@@ -37,22 +37,12 @@ module View
       describe 'filtering by tags' do
         context 'when there are no tags' do
           let(:params) { { tagged_with: '' } }
-          it           { should_not be_by_tags}
           its(:tags)   { should     be_empty}
         end
 
         context 'when there are tags present' do
           let(:params)  { {tagged: 'one,two'}}
-          it            { should be_by_tags }
           its(:tags)    { should == %w(one two) }
-          describe '#by_tag?' do
-            it 'is filtered by "one"' do
-              filter.by_tag?('one').should be_true
-            end
-            it 'is not filtered by "three"' do
-              filter.by_tag?('three').should be_false
-            end
-          end
         end
 
         describe 'adding and removing tags from the query string' do

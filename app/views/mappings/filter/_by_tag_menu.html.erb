@@ -1,7 +1,7 @@
 <% tags = most_used_tags_for_site(@site, limit: 10) %>
 <% if tags.any? %>
-<li class="if-no-js-hide <% if @filter.by_tags? %>selected-and-available<% end %>">
-  <% if @filter.by_tags? %>
+<li class="if-no-js-hide <% if @filter.tags.any? %>selected-and-available<% end %>">
+  <% if @filter.tags.any? %>
     <%= filter_remove_option_link(@site, nil, :tagged) %>
     <%= filter_option_link(@site, 'Tag', {selected: true}) %>
   <% else %>
