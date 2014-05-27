@@ -42,6 +42,13 @@ module View
         end
       end
 
+      context 'when a trailing slash is given' do
+        let(:user_input) { '/A/' }
+        it 'canonicalizes, but leaves them alone' do
+          filter.should == '/a/'
+        end
+      end
+
       context 'a blank string is given' do
         let(:user_input) { '' }
         it { should be_nil }
