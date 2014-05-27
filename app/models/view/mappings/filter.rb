@@ -22,6 +22,39 @@ module View
         params[:tagged]
       end
 
+      def tags
+        tagged.present? ? tagged.split(ActsAsTaggableOn.delimiter) : []
+      end
+
+      def by_tag?(tag)
+        tags.include?(tag)
+      end
+
+      def by_tags?
+        tags.any?
+      end
+
+      def by_tag_query(tag)
+        tags = self.tags
+        if tags.include?(tag)
+          params.except(:page)
+        else
+          tags << tag
+          params.except(:page).merge(:tagged => tags.join(ActsAsTaggableOn.delimiter))
+        end
+      end
+
+      def remove_tag_query(tag)
+        tagged = tags
+        tagged.delete(tag)
+
+        if tagged.empty?
+          params.except(:page, :tagged)
+        else
+          params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
+        end
+      end
+
       def active?
         type || new_url_contains || path_contains || tagged || sort_by_hits?
       end

@@ -1,7 +1,7 @@
 <% tags = most_used_tags_for_site(@site, limit: 10) %>
 <% if tags.any? %>
-<li class="if-no-js-hide <% if filtered_by_tags? %>selected-and-available<% end %>">
-  <% if filtered_by_tags? %>
+<li class="if-no-js-hide <% if @filter.by_tags? %>selected-and-available<% end %>">
+  <% if @filter.by_tags? %>
     <%= filter_remove_option_link(@site, nil, :tagged) %>
     <%= filter_option_link(@site, 'Tag', {selected: true}) %>
   <% else %>
@@ -10,7 +10,7 @@
   <ul class="dropdown-menu" role="menu">
     <% tags.each do |tag| %>
       <li>
-        <%= link_to tag, filter_by_tag_path(tag), class: 'inherit' %>
+        <%= link_to tag, @filter.by_tag_query(tag), class: 'inherit' %>
       </li>
     <% end %>
   </ul>
