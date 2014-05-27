@@ -7,7 +7,7 @@ module View
       end
 
       def type
-        params[:type]
+        params[:type] if Mapping::SUPPORTED_TYPES.include?(params[:type])
       end
 
       def new_url_contains
@@ -30,7 +30,7 @@ module View
       end
 
       def active?
-        type || new_url_contains || path_contains || tagged
+        type || new_url_contains || path_contains || tagged || sort_by_hits?
       end
 
       def sort_by_hits?
@@ -46,7 +46,7 @@ module View
         @mappings = @mappings.redirects.filtered_by_new_url(new_url_contains) if new_url_contains.present?
         @mappings = @mappings.tagged_with(tagged) if tagged.present?
 
-        sort_by_hits? ? @mappings.with_hit_count.order('hit_count DESC') : @mappings
+        sort_by_hits? ? @mappings.with_hit_count.order('hit_count DESC') : @mappings.order(:path)
       end
     end
   end

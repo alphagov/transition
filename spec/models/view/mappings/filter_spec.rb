@@ -23,6 +23,17 @@ module View
         it         { should be_active }
       end
 
+      context 'unrecognised types don\'t count' do
+        let(:params) { { type: 'banana-cake' } }
+        its(:type)   { should be_nil }
+        it           { should_not be_active}
+      end
+
+      context 'when just sorting' do
+        let(:params) { { sort: 'by_hits' } }
+        it           { should be_active }
+      end
+
       context 'params are fine and we\'d like to filter and sort by everything' do
         let(:site) { create :site }
         let!(:mapping_where_everything_matches) do
