@@ -27,12 +27,12 @@ module View
       end
 
       def by_tag_query(tag)
-        tags = self.tags
-        if tags.include?(tag)
+        tagged = tags
+        if tagged.include?(tag)
           params.except(:page)
         else
-          tags << tag
-          params.except(:page).merge(:tagged => tags.join(ActsAsTaggableOn.delimiter))
+          tagged << tag
+          params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
         end
       end
 
@@ -56,15 +56,15 @@ module View
       end
 
       def mappings
-        @mappings = site.mappings.page(params[:page])
+        mappings = site.mappings.page(params[:page])
 
-        @mappings = @mappings.redirects if type == 'redirect'
-        @mappings = @mappings.archives  if type == 'archive'
-        @mappings = @mappings.filtered_by_path(path_contains) if path_contains.present?
-        @mappings = @mappings.redirects.filtered_by_new_url(new_url_contains) if new_url_contains.present?
-        @mappings = @mappings.tagged_with(tagged) if tagged.present?
+        mappings = mappings.redirects if type == 'redirect'
+        mappings = mappings.archives  if type == 'archive'
+        mappings = mappings.filtered_by_path(path_contains) if path_contains.present?
+        mappings = mappings.redirects.filtered_by_new_url(new_url_contains) if new_url_contains.present?
+        mappings = mappings.tagged_with(tagged) if tagged.present?
 
-        sort_by_hits? ? @mappings.with_hit_count.order('hit_count DESC') : @mappings.order(:path)
+        sort_by_hits? ? mappings.with_hit_count.order('hit_count DESC') : mappings.order(:path)
       end
     end
   end
