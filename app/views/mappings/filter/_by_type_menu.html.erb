@@ -13,7 +13,7 @@
     <% end %>
     <% Mapping::SUPPORTED_TYPES.each do |type| %>
       <li>
-        <%= link_to type.titleize, filter_by_type_path(type), class: 'inherit' %>
+        <%= link_to type.titleize, @filter.query.by_type(type), class: 'inherit' %>
       </li>
     <% end %>
   </ul>

@@ -60,13 +60,17 @@ module View
           @filter = filter
         end
 
+        def params
+          @filter.params
+        end
+
         def add_tag(tag)
           tagged = @filter.tags
           if tagged.include?(tag)
-            @filter.params.except(:page)
+            params.except(:page)
           else
             tagged << tag
-            @filter.params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
+            params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
           end
         end
 
@@ -75,10 +79,14 @@ module View
           tagged.delete(tag)
 
           if tagged.empty?
-            @filter.params.except(:page, :tagged)
+            params.except(:page, :tagged)
           else
-            @filter.params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
+            params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
           end
+        end
+
+        def by_type(type)
+          params.except(:page).merge(type: type)
         end
       end
     end

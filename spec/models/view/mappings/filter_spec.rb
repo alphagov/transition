@@ -34,66 +34,92 @@ module View
         it           { should be_active }
       end
 
-      describe 'filtering by tags' do
-        context 'when there are no tags' do
-          let(:params) { { tagged_with: '' } }
-          its(:tags)   { should     be_empty}
-        end
+      describe '#query' do
+        before { filter.stub(:params).and_return(params) }
 
-        context 'when there are tags present' do
-          let(:params)  { {tagged: 'one,two'}}
-          its(:tags)    { should == %w(one two) }
-        end
-
-        describe 'adding and removing parts of the query string' do
-          before { filter.stub(:params).and_return(params) }
-
-          describe '#add_tag' do
-            subject { filter.query.add_tag('tag') }
-
-            context 'no existing parameters' do
-              let(:params) { {} }
-              it { should eql({ tagged: 'tag' }) }
-            end
-
-            context 'with a page parameter' do
-              let(:params) { { page: '2' } }
-              it { should eql({ tagged: 'tag' }) }
-            end
-
-            context 'with existing tags' do
-              let(:params) { { tagged: 'a,b' } }
-              it { should eql({ tagged: 'a,b,tag' }) }
-            end
-
-            context 'with tag already present' do
-              let(:params) { { tagged: 'a,tag' } }
-              it { should eql({ tagged: 'a,tag' }) }
-            end
+        describe 'altering tags' do
+          context 'when there are no tags' do
+            let(:params) { { tagged_with: '' } }
+            its(:tags)   { should     be_empty}
           end
 
-          describe '#remove_tag' do
-            subject { filter.query.remove_tag('tag') }
+          context 'when there are tags present' do
+            let(:params)  { {tagged: 'one,two'}}
+            its(:tags)    { should == %w(one two) }
+          end
 
-            context 'without any parameters' do
-              let(:params) {{}}
-              it { should eql({}) }
+          describe 'adding and removing parts of the query string' do
+            describe '#add_tag' do
+              subject { filter.query.add_tag('tag') }
+
+              context 'no existing parameters' do
+                let(:params) { {} }
+                it { should eql({ tagged: 'tag' }) }
+              end
+
+              context 'with a page parameter' do
+                let(:params) { { page: '2' } }
+                it { should eql({ tagged: 'tag' }) }
+              end
+
+              context 'with existing tags' do
+                let(:params) { { tagged: 'a,b' } }
+                it { should eql({ tagged: 'a,b,tag' }) }
+              end
+
+              context 'with tag already present' do
+                let(:params) { { tagged: 'a,tag' } }
+                it { should eql({ tagged: 'a,tag' }) }
+              end
             end
 
-            context 'with a page parameter' do
-              let(:params) { {page: '2'} }
-              it { should eql({}) }
-            end
+            describe '#remove_tag' do
+              subject { filter.query.remove_tag('tag') }
 
-            context 'with tag present' do
-              let(:params) { { tagged: 'a,tag' } }
-              it { should eql({ tagged: 'a' }) }
-            end
+              context 'without any parameters' do
+                let(:params) {{}}
+                it { should eql({}) }
+              end
 
-            context 'with only tag' do
-              let(:params) { {tagged: 'tag'} }
-              it { should eql({}) }
+              context 'with a page parameter' do
+                let(:params) { {page: '2'} }
+                it { should eql({}) }
+              end
+
+              context 'with tag present' do
+                let(:params) { { tagged: 'a,tag' } }
+                it { should eql({ tagged: 'a' }) }
+              end
+
+              context 'with only tag' do
+                let(:params) { {tagged: 'tag'} }
+                it { should eql({}) }
+              end
             end
+          end
+        end
+
+        describe '#by_type' do
+          subject { filter.query.by_type('redirect') }
+
+          context 'without any parameters' do
+            let(:params) { {} }
+            it           { should eql({ type: 'redirect' }) }
+          end
+
+          context 'with a page parameter' do
+            let(:params) { { page: '2' } }
+            it           { should eql({type: 'redirect'}) }
+          end
+
+          context 'with existing other parameters' do
+            let(:params) { { tagged: 'a,b' } }
+            it           { should eql({ tagged: 'a,b', type: 'redirect' }) }
+          end
+
+          context 'with type already present' do
+            let(:params) { { type: 'archive' } }
+            it           { should eql({ type: 'redirect' }) }
           end
         end
       end

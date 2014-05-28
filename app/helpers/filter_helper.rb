@@ -16,10 +16,6 @@ module FilterHelper
     end
   end
 
-  def filter_by_type_path(type)
-    params.except(:page).merge(type: type)
-  end
-
   def sort_by_path_path
     params.except(:page, :sort)
   end
