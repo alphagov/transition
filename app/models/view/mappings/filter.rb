@@ -29,25 +29,8 @@ module View
         tagged.present? ? tagged.split(ActsAsTaggableOn.delimiter) : []
       end
 
-      def by_tag_query(tag)
-        tagged = tags
-        if tagged.include?(tag)
-          params.except(:page)
-        else
-          tagged << tag
-          params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
-        end
-      end
-
-      def remove_tag_query(tag)
-        tagged = tags
-        tagged.delete(tag)
-
-        if tagged.empty?
-          params.except(:page, :tagged)
-        else
-          params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
-        end
+      def query
+        @query ||= Query.new(self)
       end
 
       def active?
@@ -68,6 +51,35 @@ module View
         mappings = mappings.tagged_with(tagged) if tagged.present?
 
         sort_by_hits? ? mappings.with_hit_count.order('hit_count DESC') : mappings.order(:path)
+      end
+
+      ##
+      # Handle the view bits that generate new query hashes for link_to
+      class Query
+        def initialize(filter)
+          @filter = filter
+        end
+
+        def add_tag(tag)
+          tagged = @filter.tags
+          if tagged.include?(tag)
+            @filter.params.except(:page)
+          else
+            tagged << tag
+            @filter.params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
+          end
+        end
+
+        def remove_tag(tag)
+          tagged = @filter.tags
+          tagged.delete(tag)
+
+          if tagged.empty?
+            @filter.params.except(:page, :tagged)
+          else
+            @filter.params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
+          end
+        end
       end
     end
   end

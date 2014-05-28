@@ -45,11 +45,11 @@ module View
           its(:tags)    { should == %w(one two) }
         end
 
-        describe 'adding and removing tags from the query string' do
+        describe 'adding and removing parts of the query string' do
           before { filter.stub(:params).and_return(params) }
 
-          describe '#by_tag_query' do
-            subject { filter.by_tag_query('tag') }
+          describe '#add_tag' do
+            subject { filter.query.add_tag('tag') }
 
             context 'no existing parameters' do
               let(:params) { {} }
@@ -72,8 +72,8 @@ module View
             end
           end
 
-          describe '#remove_tag_query' do
-            subject { filter.remove_tag_query('tag') }
+          describe '#remove_tag' do
+            subject { filter.query.remove_tag('tag') }
 
             context 'without any parameters' do
               let(:params) {{}}
