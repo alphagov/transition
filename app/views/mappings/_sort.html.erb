@@ -3,10 +3,10 @@
   <%= filter_option_link(@site, sort_by) %>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <%= link_to 'Path', sort_by_path_path, class: 'inherit' %>
+      <%= link_to 'Path', @filter.query.sort_by_path, class: 'inherit' %>
     </li>
     <li>
-      <%= link_to 'Hits', sort_by_hits_path, class: 'inherit' %>
+      <%= link_to 'Hits', @filter.query.sort_by_hits, class: 'inherit' %>
     </li>
   </ul>
 </li>

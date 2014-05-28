@@ -15,12 +15,4 @@ module FilterHelper
       "<span class=\"glyphicon glyphicon-remove\"></span><span class=\"rm\">Remove</span> #{type}".html_safe
     end
   end
-
-  def sort_by_path_path
-    params.except(:page, :sort)
-  end
-
-  def sort_by_hits_path
-    params.except(:page).merge(sort: 'by_hits')
-  end
 end

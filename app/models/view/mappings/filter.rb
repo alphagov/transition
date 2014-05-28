@@ -92,6 +92,14 @@ module View
         def remove_by_type
           params.except(:page, :type)
         end
+
+        def sort_by_path
+          params.except(:page, :sort)
+        end
+
+        def sort_by_hits
+          params.except(:page).merge(sort: 'by_hits')
+        end
       end
     end
   end
