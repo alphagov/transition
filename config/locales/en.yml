@@ -27,6 +27,6 @@ en:
       edit:
         mappings_empty: 'No mappings were selected'
         tag_list_empty: "No tags were given"
-    global_http_status:
+    global_type:
       redirect: 'This is known as a global redirect, the entire old site redirects to a single page. To make changes please contact your Transition Manager.'
       archive: "This is known as a global archive, the entire old site has been archived because it doesn't meet a user need. To make changes please contact your Transition Manager."

@@ -187,7 +187,7 @@ private
   end
 
   def check_global_redirect_or_archive
-    if @site.global_http_status.present?
+    if @site.global_type.present?
       if @site.global_redirect?
         message = "This site has been entirely redirected."
       elsif @site.global_archive?

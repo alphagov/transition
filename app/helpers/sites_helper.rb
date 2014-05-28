@@ -42,7 +42,7 @@ module SitesHelper
       class: 'link-muted'
   end
 
-  def site_global_http_status_text(site)
+  def site_global_type_text(site)
     if site.global_redirect?
       "All paths from #{site.default_host.hostname}<br />
        <span class=\"text-muted\">redirect to #{site.global_new_url}</span>".html_safe
@@ -52,7 +52,7 @@ module SitesHelper
     end
   end
 
-  def site_global_http_status_explanation(site)
+  def site_global_type_explanation(site)
     if site.global_redirect? && site.global_redirect_append_path
       'The path the user visited is appended to the destination. <br /><br />' \
       "For example: <br />" \
@@ -61,9 +61,9 @@ module SitesHelper
       "#{site.global_new_url}<strong>/specific/path</strong> <br /><br />" \
       "To make changes please contact your Transition Manager.".html_safe
     elsif site.global_redirect?
-      I18n.t('mappings.global_http_status.redirect')
+      I18n.t('mappings.global_type.redirect')
     elsif site.global_archive?
-      I18n.t('mappings.global_http_status.archive')
+      I18n.t('mappings.global_type.archive')
     end
   end
 end

@@ -100,15 +100,15 @@ Given(/^a site (.*) exists$/) do |site_abbr|
 end
 
 Given(/^the site is globally archived$/) do
-  @site.update_attribute(:global_http_status, '410')
+  @site.update_attribute(:global_type, 'archive')
 end
 
 Given(/^the site is globally redirected$/) do
-  @site.update_attribute(:global_http_status, '301')
+  @site.update_attribute(:global_type, 'redirect')
 end
 
 Given(/^the site is globally redirected with the path appended$/) do
-  @site.update_attribute(:global_http_status, '301')
+  @site.update_attribute(:global_type, 'redirect')
   @site.update_attribute(:global_redirect_append_path, true)
 end
 

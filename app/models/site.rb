@@ -1,4 +1,10 @@
 class Site < ActiveRecord::Base
+
+  SUPPORTED_GLOBAL_TYPES_TO_GLOBAL_HTTP_STATUSES = {
+    'redirect' => '301',
+    'archive'  => '410'
+  }
+
   belongs_to :organisation
 
   has_many :hosts
@@ -11,6 +17,7 @@ class Site < ActiveRecord::Base
                            join_table: 'organisations_sites',
                            class_name: 'Organisation'
 
+  before_validation :set_global_http_status_from_global_type
   validates_presence_of :abbr
   validates_presence_of :tna_timestamp
   validates_presence_of :organisation
@@ -33,12 +40,17 @@ class Site < ActiveRecord::Base
     abbr
   end
 
+  def set_global_http_status_from_global_type
+    # If the global_http_status isn't supported, leave it as it is.
+    self.global_http_status ||= SUPPORTED_GLOBAL_TYPES_TO_GLOBAL_HTTP_STATUSES[global_type]
+  end
+
   def global_redirect?
-    global_http_status == '301'
+    global_type == 'redirect'
   end
 
   def global_archive?
-    global_http_status == '410'
+    global_type == 'archive'
   end
 
   def default_host
