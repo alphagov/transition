@@ -88,6 +88,10 @@ module View
         def by_type(type)
           params.except(:page).merge(type: type)
         end
+
+        def remove_by_type
+          params.except(:page, :type)
+        end
       end
     end
   end

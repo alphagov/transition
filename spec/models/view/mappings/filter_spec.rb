@@ -122,6 +122,26 @@ module View
             it           { should eql({ type: 'redirect' }) }
           end
         end
+
+        describe '#remove_by_type' do
+          subject { filter.query.remove_by_type }
+
+          context 'without any parameters' do
+            let(:params) {{}}
+            it { should eql({}) }
+          end
+
+          context 'with a page and type parameter' do
+            let(:params) { { page: '2', type: 'redirect' } }
+            it { should eql({}) }
+          end
+
+          context 'with existing other parameters' do
+            let(:params) { {tagged: 'a,b', type: 'redirect'} }
+            it           { should eql({ tagged: 'a,b' }) }
+          end
+        end
+
       end
 
       context 'params are fine and we\'d like to filter and sort by everything' do
