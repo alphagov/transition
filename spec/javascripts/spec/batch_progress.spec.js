@@ -15,7 +15,7 @@ describe('A batch progress module', function() {
         <span class="js-remove-on-success"></span>\
       </div>\
     ');
-    batchProgress = new GOVUK.Modules.BatchProgress();
+    batchProgress = new GOVUKAdmin.Modules.BatchProgress();
     jasmine.clock().install();
   });
 

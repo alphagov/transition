@@ -3,9 +3,9 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.17'
 gem 'unicorn', '4.6.2'
 gem 'mysql2', '0.3.13'
-gem 'jquery-rails', '3.0.4'
 gem 'optic14n', '2.0.0'     # Ideally version should be synced with bouncer
 gem 'gds-sso', '9.2.0'
+gem 'govuk_admin_template', '0.0.5'
 gem 'plek', '1.2.0'
 gem 'htmlentities', '4.3.1'
 gem 'kaminari', '0.14.1'
@@ -29,7 +29,6 @@ gem 'logstasher', '0.4.8'
 group :assets do
   gem 'sass', '3.2.12'
   gem 'sass-rails', '3.2.6'
-  gem 'bootstrap-sass', '3.1.0'
   gem 'uglifier', '2.0.1'
 end
 

@@ -10,17 +10,6 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require jquery
-//= require jquery_ujs
-//= require bootstrap
 //= require select2
 //= require mousetrap.min
-//= require govuk
 //= require_tree .
-
-// Find and auto-start modules specified using the data-module="" pattern in markup
-(function($, GOVUK) {
-  $(function(){
-    GOVUK.startAll();
-  });
-})(jQuery, window.GOVUK);
