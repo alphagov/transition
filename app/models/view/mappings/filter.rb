@@ -1,6 +1,9 @@
 module View
   module Mappings
-    # Represent the ways a user can filter some mappings
+    ##
+    # Take a site and params and apply the scopes required to
+    # return a matching set of mappings.
+    #
     class Filter < Struct.new(:site, :params)
       def incompatible?
         type == 'archive' && new_url_contains.present?
