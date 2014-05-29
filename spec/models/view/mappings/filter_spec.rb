@@ -18,7 +18,7 @@ module View
           new_url_contains: 'something'
         } }
 
-        its(:type) { should == 'archive'}
+        its(:type) { should be_nil }
         it         { should be_incompatible }
         it         { should be_active }
       end

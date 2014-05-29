@@ -26,7 +26,7 @@ module View
       end
 
       def type
-        params[:type] if Mapping::SUPPORTED_TYPES.include?(params[:type])
+        params[:type] if Mapping::SUPPORTED_TYPES.include?(params[:type]) && !incompatible?
       end
 
       def sort
@@ -42,7 +42,7 @@ module View
       end
 
       def incompatible?
-        type == 'archive' && new_url_contains.present?
+        params[:type] == 'archive' && new_url_contains.present?
       end
 
       def query
