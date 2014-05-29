@@ -49,8 +49,8 @@ module View
           end
 
           describe 'adding and removing parts of the query string' do
-            describe '#add_tag' do
-              subject { filter.query.add_tag('tag') }
+            describe '#with_tag' do
+              subject { filter.query.with_tag('tag') }
 
               context 'no existing parameters' do
                 let(:params) { {} }
@@ -73,8 +73,8 @@ module View
               end
             end
 
-            describe '#remove_tag' do
-              subject { filter.query.remove_tag('tag') }
+            describe '#without_tag' do
+              subject { filter.query.without_tag('tag') }
 
               context 'without any parameters' do
                 let(:params) {{}}
@@ -99,8 +99,8 @@ module View
           end
         end
 
-        describe '#by_type' do
-          subject { filter.query.by_type('redirect') }
+        describe '#with_type' do
+          subject { filter.query.with_type('redirect') }
 
           context 'without any parameters' do
             let(:params) { {} }
@@ -123,8 +123,8 @@ module View
           end
         end
 
-        describe '#remove_by_type' do
-          subject { filter.query.remove_by_type }
+        describe '#without_type' do
+          subject { filter.query.without_type }
 
           context 'without any parameters' do
             let(:params) {{}}

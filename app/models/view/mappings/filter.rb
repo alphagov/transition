@@ -46,7 +46,7 @@ module View
       end
 
       def query
-        @query ||= Query.new(self)
+        @query ||= QueryParams.new(self)
       end
 
       def sort_by_hits?
@@ -71,7 +71,7 @@ module View
 
       ##
       # Handle the view bits that generate new query hashes for link_to
-      class Query
+      class QueryParams
         def initialize(filter)
           @filter = filter
         end
@@ -80,7 +80,7 @@ module View
           @filter.params
         end
 
-        def add_tag(tag)
+        def with_tag(tag)
           tagged = @filter.tags
           if tagged.include?(tag)
             params.except(:page)
@@ -90,7 +90,7 @@ module View
           end
         end
 
-        def remove_tag(tag)
+        def without_tag(tag)
           tagged = @filter.tags
           tagged.delete(tag)
 
@@ -101,11 +101,11 @@ module View
           end
         end
 
-        def by_type(type)
+        def with_type(type)
           params.except(:page).merge(type: type)
         end
 
-        def remove_by_type
+        def without_type
           params.except(:page, :type)
         end
 

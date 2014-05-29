@@ -10,7 +10,7 @@
   <ul class="dropdown-menu" role="menu">
     <% tags.each do |tag| %>
       <li>
-        <%= link_to tag, @filter.query.add_tag(tag), class: 'inherit' %>
+        <%= link_to tag, @filter.query.with_tag(tag), class: 'inherit' %>
       </li>
     <% end %>
   </ul>

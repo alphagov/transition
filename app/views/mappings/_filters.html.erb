@@ -55,7 +55,7 @@
                 <ul class="remove-bottom-margin tag-list">
                 <% @filter.tags.each do |tag| %>
                   <li>
-                    <%= link_to @filter.query.remove_tag(tag), class: 'tag', title: "Remove “#{tag}” tag filter" do %>
+                    <%= link_to @filter.query.without_tag(tag), class: 'tag', title: "Remove “#{tag}” tag filter" do %>
                       <span class="glyphicon glyphicon-remove"></span> <%= tag %>
                     <% end %>
                   </li>

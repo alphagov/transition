@@ -8,12 +8,12 @@
   <ul class="dropdown-menu" role="menu">
     <% if @filter.type %>
       <li>
-        <%= link_to 'All types', @filter.query.remove_by_type, class: 'inherit' %>
+        <%= link_to 'All types', @filter.query.without_type, class: 'inherit' %>
       </li>
     <% end %>
     <% Mapping::SUPPORTED_TYPES.each do |type| %>
       <li>
-        <%= link_to type.titleize, @filter.query.by_type(type), class: 'inherit' %>
+        <%= link_to type.titleize, @filter.query.with_type(type), class: 'inherit' %>
       </li>
     <% end %>
   </ul>

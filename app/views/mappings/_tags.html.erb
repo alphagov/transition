@@ -6,7 +6,7 @@
         <% if @filter.tags.include?(tag) %>
           <span class="tag tag-active"><%= tag %></span>
         <% else %>
-          <%= link_to tag, @filter.query.add_tag(tag), class: 'tag' %>
+          <%= link_to tag, @filter.query.with_tag(tag), class: 'tag' %>
         <% end %>
       </li>
     <% end %>
