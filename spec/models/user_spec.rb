@@ -22,17 +22,17 @@ describe User do
     end
   end
 
-  describe 'admin?' do
+  describe 'gds_editor?' do
     context 'doesn\'t have permission' do
       subject(:user) { create(:user, permissions: ["signin"])}
 
-      its(:admin?) { should be_false }
+      its(:gds_editor?) { should be_false }
     end
 
     context 'has relevant permission' do
-      subject(:user) { create(:admin) }
+      subject(:user) { create(:gds_editor) }
 
-      its(:admin?) { should be_true }
+      its(:gds_editor?) { should be_true }
     end
   end
 
@@ -40,9 +40,9 @@ describe User do
     let(:ministry_of_funk) { create(:organisation, whitehall_slug: "ministry-of-funk") }
     let(:agency_of_soul)   { create(:organisation, whitehall_slug: "agency-of-soul", parent_organisations: [ministry_of_funk]) }
 
-    context 'user is an admin' do
+    context 'user is an gds_editor' do
       let(:generic_site) { create(:site) }
-      subject(:user)     { create(:admin) }
+      subject(:user)     { create(:gds_editor) }
 
       it 'lets them edit anything' do
         user.can_edit_site?(generic_site).should be_true

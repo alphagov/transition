@@ -7,12 +7,12 @@ class User < ActiveRecord::Base
 
   attr_accessible :uid, :email, :name, :permissions, :organisation_slug, as: :oauth
 
-  def admin?
-    permissions.include?('admin')
+  def gds_editor?
+    permissions.include?('GDS Editor')
   end
 
   def can_edit_site?(site_to_edit)
-    admin? ||
+    gds_editor? ||
       own_organisation == site_to_edit.organisation ||
       site_to_edit.organisation.parent_organisations.include?(own_organisation) ||
       site_to_edit.extra_organisations.include?(own_organisation) &&

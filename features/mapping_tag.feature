@@ -4,7 +4,7 @@ Feature: The tagging of mappings
   so that I can identify groups of mappings for specific needs or workflows
 
 Scenario: Adding tags to a mapping
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   And a mapping exists for the site ukba
   When I edit that mapping
   And I associate the tags "fee, fi, FO" with the mapping
@@ -13,7 +13,7 @@ Scenario: Adding tags to a mapping
   And the mapping should have the tags "fee, fi, fo"
 
 Scenario: Adding tags when bulk adding mappings
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   And a site "ukba" exists with these tagged mappings:
   | path  | tags     |
   | /1    | fee, fum |
@@ -28,7 +28,7 @@ Scenario: Adding tags when bulk adding mappings
   And the mappings should all have the tags "fee, fi, fo, fum"
 
 Scenario: Bulk adding tags to existing mappings
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   And a site "ukba" exists with these tagged mappings:
   | path  | tags             |
   | /1    | fee, fum, fiddle |
@@ -45,7 +45,7 @@ Scenario: Bulk adding tags to existing mappings
 
 @javascript
 Scenario: Bulk adding tags to existing mappings (JS)
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   And a site "ukba" exists with these tagged mappings:
   | path  | tags             |
   | /1    | fee, fum, fiddle |
@@ -65,7 +65,7 @@ Scenario: Bulk adding tags to existing mappings (JS)
 
 @javascript
 Scenario: Autocompleting popular tags
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   And a site "foo" exists with these tagged mappings:
   | path  | tags              |
   | /1    | from another site |

@@ -4,7 +4,7 @@ Feature: Analytics for all sites
   So that I can see what the worst errors and most popular archives are
 
 Background: There are hits from many sites
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   And some hits exist for the Attorney General, Cabinet Office and FCO sites:
   | http_status | path | hit_on   | count |
   | 301         | /    | 17/10/12 | 100   |

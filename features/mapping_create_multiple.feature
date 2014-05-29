@@ -5,7 +5,7 @@ Feature: Create mappings
 
   @javascript
   Scenario:
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     And there is a site called bis belonging to an organisation bis with these mappings:
       | type     | path | new_url               |
       | redirect | /r   | http://somewhere.good |
@@ -29,7 +29,7 @@ Feature: Create mappings
 
   @javascript
   Scenario: Creating a large batch (that will be processed in the background)
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     And there is a site called bis belonging to an organisation bis with these mappings:
       | type     | path | new_url               |
       | redirect | /r   | http://somewhere.good |
@@ -55,7 +55,7 @@ Feature: Create mappings
     Then I should see "You don't have permission to edit mappings for"
 
   Scenario: Errors shown for invalid inputs
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     And a site bis exists
     And I visit the path /sites/bis/mappings
     And I go to create some mappings

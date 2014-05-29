@@ -4,7 +4,7 @@ Feature: Filter mappings
   so that I can get to the things I need to change faster
 
   Background:
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     And there is a site called directgov belonging to an organisation directgov with these mappings:
       | type     | path             | new_url                 | tags             |
       | archive  | /about/corporate |                         | fee, fum, fiddle |
@@ -77,7 +77,7 @@ Feature: Filter mappings
     And I should see "0 mappings"
 
   Scenario: Filtering by clicking tags
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     And I click the first tag "fum"
     Then I should see mappings tagged with "fum"
     And I should see the highlighted tag "fum"

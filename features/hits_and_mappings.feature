@@ -1,7 +1,7 @@
 Feature: Hits relate to mappings
 
 Scenario: Some hits have mappings and some don't
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   Given some hits for the Attorney General's site have mappings and some don't:
     | path                      | status_when_hit | mapping_is_now |
     | /error                    | 404             |                |

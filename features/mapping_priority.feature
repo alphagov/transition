@@ -5,7 +5,7 @@ Feature: Mappings priority
   And so that I'm not confused by the seemingly inconsistent nature of hits
 
   Background:
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
 
   Scenario: There are lots of hits for a site's hosts
     Given a site has lots of mappings and lots of hits

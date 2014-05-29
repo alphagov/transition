@@ -4,7 +4,7 @@ Feature: List organisations
   so that I can get to the mappings for a site
 
   Background:
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     And there are these organisations with sites:
       | whitehall_slug | title                                          |
       | bis            | Department for Business, Innovation and Skills |
