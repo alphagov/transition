@@ -5,40 +5,52 @@ module View
     # return a matching set of mappings.
     #
     class Filter < Struct.new(:site, :params)
-      def incompatible?
-        type == 'archive' && new_url_contains.present?
-      end
+      ##
+      # Fields
+      #
 
-      def type
-        params[:type] if Mapping::SUPPORTED_TYPES.include?(params[:type])
+      def path_contains
+        @path_contains ||= View::Mappings::canonical_filter(site, params[:path_contains])
       end
 
       def new_url_contains
         params[:new_url_contains]
       end
 
-      def path_contains
-        @path_contains ||= View::Mappings::canonical_filter(site, params[:path_contains])
-      end
-
       def tagged
         params[:tagged]
       end
 
-      def tags
-        tagged.present? ? tagged.split(ActsAsTaggableOn.delimiter) : []
+      def type
+        params[:type] if Mapping::SUPPORTED_TYPES.include?(params[:type])
+      end
+
+      def sort
+        params[:sort]
+      end
+
+      ##
+      # Non-field helpers
+      #
+
+      def active?
+        type || new_url_contains || path_contains || tagged || sort_by_hits?
+      end
+
+      def incompatible?
+        type == 'archive' && new_url_contains.present?
       end
 
       def query
         @query ||= Query.new(self)
       end
 
-      def active?
-        type || new_url_contains || path_contains || tagged || sort_by_hits?
-      end
-
       def sort_by_hits?
         params[:sort] == 'by_hits'
+      end
+
+      def tags
+        tagged.present? ? tagged.split(ActsAsTaggableOn.delimiter) : []
       end
 
       def mappings
