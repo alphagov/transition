@@ -18,5 +18,10 @@ describe FilterHelper do
       subject.should     include('<input id="type" name="type" type="hidden"')
       subject.should_not include('<input id="path_contains" name="path_contains" type="hidden"')
     end
+
+    it 'excludes fields that are blank' do
+      filter.stub(:new_url_contains).and_return('')
+      subject.should_not include('<input id="new_url_contains" name="new_url_contains" type="hidden"')
+    end
   end
 end

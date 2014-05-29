@@ -21,7 +21,8 @@ module FilterHelper
   # all the other existing filter field values
   def hidden_filter_fields_except(filter, field)
     hidden_fields = (View::Mappings::Filter.fields - [field]).map do |name|
-      hidden_field_tag(name, filter.try(name))
+      value = filter.try(name)
+      hidden_field_tag(name, value) unless value.blank?
     end
     hidden_fields.join("\n").html_safe
   end
