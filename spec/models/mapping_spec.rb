@@ -39,10 +39,6 @@ describe Mapping do
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:path) }
 
-    it { should validate_presence_of(:http_status) }
-    it { should ensure_length_of(:http_status).is_at_most(3) }
-    it { should ensure_inclusion_of(:http_status).in_array(['301', '410']) }
-
     it { should validate_presence_of(:type) }
     it { should ensure_inclusion_of(:type).in_array(['redirect', 'archive']) }
 
