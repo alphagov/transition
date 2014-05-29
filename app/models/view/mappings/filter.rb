@@ -9,6 +9,10 @@ module View
       # Fields
       #
 
+      def self.fields
+        [:path_contains, :new_url_contains, :tagged, :type, :sort]
+      end
+
       def path_contains
         @path_contains ||= View::Mappings::canonical_filter(site, params[:path_contains])
       end

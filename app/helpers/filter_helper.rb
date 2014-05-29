@@ -15,4 +15,14 @@ module FilterHelper
       "<span class=\"glyphicon glyphicon-remove\"></span><span class=\"rm\">Remove</span> #{type}".html_safe
     end
   end
+
+  ##
+  # When rendering a single filter form for a dropdown we need to pass through
+  # all the other existing filter field values
+  def hidden_filter_fields_except(filter, field)
+    hidden_fields = (View::Mappings::Filter.fields - [field]).map do |name|
+      hidden_field_tag(name, filter.try(name))
+    end
+    hidden_fields.join("\n").html_safe
+  end
 end
