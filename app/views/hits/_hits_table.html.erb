@@ -10,7 +10,6 @@
   </tr>
   </thead>
   <tbody>
-  <% max = hits.first.count %>
 
   <% hits.each do |hit| %>
     <tr>
@@ -21,7 +20,7 @@
       </td>
       <td class="remove-padding">
         <div class="bar-chart-wrap">
-          <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: max, status: hit.http_status } %>
+          <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: hits.first.count, status: hit.http_status } %>
           <strong class="breakable path">
             <%= link_to hit.path, hit.default_url %>
             <% if hit.mapping %>
