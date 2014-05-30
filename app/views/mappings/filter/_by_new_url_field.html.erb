@@ -2,13 +2,10 @@
 <div class="form-group">
   <%= label_tag :new_url_contains, 'New URL' %>
   <% if single_filter_form %>
-    <%= hidden_field_tag 'path_contains', @path_contains %>
-    <%= hidden_field_tag 'tagged', params[:tagged] %>
-    <%= hidden_field_tag 'type', params[:type] %>
-    <%= hidden_field_tag 'sort', params[:sort] %>
+    <%= hidden_filter_fields_except(@filter, :new_url_contains) %>
     <div class="input-group">
   <% end %>
-  <%= text_field_tag :new_url_contains, @new_url_contains, class: 'form-control', placeholder: 'eg https://www.gov.uk' %>
+  <%= text_field_tag :new_url_contains, @filter.try(:new_url_contains), class: 'form-control', placeholder: 'eg https://www.gov.uk' %>
   <% if single_filter_form %>
     <span class="input-group-btn">
       <%= button_tag button_text, name: nil, class: 'btn btn-default ' %>

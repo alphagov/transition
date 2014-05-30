@@ -65,11 +65,6 @@ describe MappingsController do
         assigns(:mappings).should == [mapping_a]
       end
 
-      it 'canonicalizes filter input but leaves trailing slashes alone' do
-        get :index, site_id: site.abbr, path_contains: '/A/'
-        assigns(:path_contains).should == '/a/'
-      end
-
       it 'filters mappings by new_url' do
         get :index, site_id: site.abbr, new_url_contains: 'f.co/1'
         assigns(:mappings).should == [mapping_a]
@@ -87,17 +82,17 @@ describe MappingsController do
 
       it 'does not canonicalize the filter for new_url' do
         get :index, site_id: site.abbr, new_url_contains: '/A/B/C/1?q=1'
-        assigns(:new_url_contains).should == '/A/B/C/1?q=1'
+        assigns(:filter).new_url_contains.should == '/A/B/C/1?q=1'
       end
 
       it 'extracts paths from full URLs supplied for filtering' do
         get :index, site_id: site.abbr, path_contains: 'https://www.example.com/foobar'
-        assigns(:path_contains).should eql('/foobar')
+        assigns(:filter).path_contains.should eql('/foobar')
       end
 
       it 'gracefully degrades if the filtering value looks like a URL but is unparseable' do
         get :index, site_id: site.abbr, path_contains: 'https://____'
-        assigns(:path_contains).should eql('https://____')
+        assigns(:filter).path_contains.should eql('https://____')
       end
     end
   end

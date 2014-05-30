@@ -1,6 +1,6 @@
-<% title = @filtered ? 'Filtered mappings' : 'Mappings' %>
+<% title = @filter.active? ? 'Filtered mappings' : 'Mappings' %>
 <% content_for(:page_title, "#{title} | #{@site.default_host.hostname}") %>
-<% breadcrumb(@filtered ? :filtered_mappings : :mappings, @site) %>
+<% breadcrumb(@filter.active? ? :filtered_mappings : :mappings, @site) %>
 
 <div class="page-title-with-border">
   <h1>
@@ -26,7 +26,7 @@
       include_footer: true,
       include_bulk_add: true,
       fix_header: true,
-      sorted_by_hits: @sorted_by_hits
+      sort_by_hits: @filter.sort_by_hits?
     }
   %>
 

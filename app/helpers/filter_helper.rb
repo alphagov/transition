@@ -16,52 +16,14 @@ module FilterHelper
     end
   end
 
-  def filter_by_type_path(type)
-    params.except(:page).merge(type: type)
-  end
-
-  def sort_by_path_path
-    params.except(:page, :sort)
-  end
-
-  def sort_by_hits_path
-    params.except(:page).merge(sort: 'by_hits')
-  end
-
-  def remove_filter_by_type_path
-    params.except(:page, :type)
-  end
-
-  def filtered_by_tag?(tag)
-    filtered_by_tags.include?(tag)
-  end
-
-  def filtered_by_tags
-    params[:tagged].present? ? params[:tagged].split(ActsAsTaggableOn.delimiter) : []
-  end
-
-  def filtered_by_tags?
-    filtered_by_tags.present?
-  end
-
-  def filter_by_tag_path(tag)
-    tagged = filtered_by_tags
-    if tagged.include?(tag)
-      params.except(:page)
-    else
-      tagged << tag
-      params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
+  ##
+  # When rendering a single filter form for a dropdown we need to pass through
+  # all the other existing filter field values
+  def hidden_filter_fields_except(filter, field)
+    hidden_fields = (View::Mappings::Filter.fields - [field]).map do |name|
+      value = filter.try(name)
+      hidden_field_tag(name, value) unless value.blank?
     end
-  end
-
-  def remove_tag_from_filter_path(tag)
-    tagged = filtered_by_tags
-    tagged.delete(tag)
-
-    if tagged.empty?
-      params.except(:page, :tagged)
-    else
-      params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
-    end
+    hidden_fields.join("\n").html_safe
   end
 end

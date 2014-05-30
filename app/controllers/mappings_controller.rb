@@ -56,56 +56,8 @@ class MappingsController < ApplicationController
   end
 
   def index
-
-    @mappings = @site.mappings.page(params[:page])
-
-    if params[:type] == 'archive' && params[:new_url_contains].present?
-      @incompatible_filter = true
-    end
-
-    if params[:type] == 'redirect'
-      @filtered = true
-      @type = params[:type]
-      @mappings = @mappings.redirects
-    elsif params[:type] == 'archive' && !@incompatible_filter
-      @filtered = true
-      @type = params[:type]
-      @mappings = @mappings.archives
-    end
-
-    if params[:path_contains].present?
-      @path_contains = View::Mappings::canonical_filter(@site, params[:path_contains])
-      if @path_contains.present?
-        @filtered = true
-
-        # Canonicalisation removes trailing slashes, which in this case
-        # can be an important part of the search string. Put them back.
-        if params[:path_contains].end_with?('/')
-          @path_contains = @path_contains + '/'
-        end
-
-        @mappings = @mappings.filtered_by_path(@path_contains)
-      end
-    end
-
-    if params[:new_url_contains].present?
-      @filtered = true
-      @new_url_contains = params[:new_url_contains]
-      @mappings = @mappings.redirects.filtered_by_new_url(@new_url_contains)
-    end
-
-    if params[:tagged].present?
-      @filtered = true
-      @mappings = @mappings.tagged_with(params[:tagged])
-    end
-
-    if params[:sort] == 'by_hits'
-      @filtered = true
-      @sorted_by_hits = true
-      @mappings = @mappings.with_hit_count.order('hit_count DESC')
-    else
-      @mappings = @mappings.order(:path)
-    end
+    @filter = View::Mappings::Filter.new(@site, params)
+    @mappings = @filter.mappings
   end
 
   def edit

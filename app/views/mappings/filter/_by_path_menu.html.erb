@@ -1,5 +1,5 @@
 <li class="if-no-js-hide filter-by-path">
-  <% if @path_contains.present? %>
+  <% if @filter.path_contains.present? %>
     <%= filter_remove_option_link(@site, 'Path', :path_contains) %>
   <% else %>
     <%= filter_option_link(@site, 'Path') %>
