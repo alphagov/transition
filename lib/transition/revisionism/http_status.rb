@@ -12,7 +12,7 @@ module Transition
       end
 
       def self.replace_with_type!
-        PaperTrail::Version.find_each do |version|
+        PaperTrail::Version.where("object_changes LIKE '%http_status%'").find_each do |version|
           changes = YAML.load(version.object_changes)
           if changes[:http_status]
             changes[:type] = map_to_new(changes.delete(:http_status))
