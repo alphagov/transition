@@ -59,7 +59,7 @@ module Transition
           false
         else
           first_old_url = first_row.split(',').first
-          hostname = URI.parse(first_old_url).host
+          hostname = Addressable::URI.parse(first_old_url).host
           host = Host.find_by_hostname(hostname)
           if host
             host.site.managed_by_transition?

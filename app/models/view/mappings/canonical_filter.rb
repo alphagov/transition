@@ -48,8 +48,8 @@ module View
 
       def parseable_url?
         begin
-          url? && URI.parse(@filter)
-        rescue URI::InvalidURIError
+          url? && Addressable::URI.parse(@filter)
+        rescue Addressable::URI::InvalidURIError
           false
         end
       end

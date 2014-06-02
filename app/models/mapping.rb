@@ -138,10 +138,10 @@ protected
 
   def trim_scheme_host_and_port_from_path
     if path =~ %r{^https?:}
-      url = URI.parse(path)
+      url = Addressable::URI.parse(path)
       self.path = url.request_uri
     end
-  rescue URI::InvalidURIError
+  rescue Addressable::URI::InvalidURIError
     # The path isn't parseable, so leave it intact for validations to report
   end
 

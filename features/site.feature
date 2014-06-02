@@ -66,7 +66,7 @@ Scenario: Visit a globally redirected site's page
   And a site moj_academy exists
   And the site is globally redirected
   When I visit this site page
-  Then I should see "All paths from moj-academy.gov.uk"
+  Then I should see "All paths from moj_academy.gov.uk"
   Then I should see "redirect to"
   And I should not see a link to view the site's mappings
 
@@ -75,7 +75,7 @@ Scenario: Visit the page for a site globally redirected, where the path is appen
   And a site moj_academy exists
   And the site is globally redirected with the path appended
   When I visit this site page
-  Then I should see "All paths from moj-academy.gov.uk"
+  Then I should see "All paths from moj_academy.gov.uk"
   Then I should see "redirect to"
   And I should see "The path the user visited is appended to the destination"
   And I should not see a link to view the site's mappings
@@ -85,7 +85,7 @@ Scenario: Visit a globally archived site's page
   And a site defra_etr exists
   And the site is globally archived
   When I visit this site page
-  Then I should see "All paths from defra-etr.gov.uk"
+  Then I should see "All paths from defra_etr.gov.uk"
   Then I should see "have been archived"
   And I should not see a link to view the site's mappings
 

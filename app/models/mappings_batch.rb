@@ -68,9 +68,9 @@ class MappingsBatch < ActiveRecord::Base
     return true if paths.blank?
     hosts = paths.grep(/^http/).map do |url|
       begin
-        uri = URI.parse(url)
+        uri = Addressable::URI.parse(url)
         uri.host
-      rescue URI::InvalidURIError
+      rescue Addressable::URI::InvalidURIError
         errors.add(:paths, "Old URLs includes an invalid URL: #{url}")
       end
     end

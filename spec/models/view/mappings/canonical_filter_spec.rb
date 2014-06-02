@@ -36,9 +36,9 @@ module View
       end
 
       context 'when an unparseable URL string is given' do
-        let(:user_input) { 'https://_______?q=1' }
+        let(:user_input) { 'https://}}}?q=1' }
         it 'returns the string unadulterated' do
-          filter.should == 'https://_______?q=1'
+          filter.should == 'https://}}}?q=1'
         end
       end
 

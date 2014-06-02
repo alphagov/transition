@@ -30,9 +30,9 @@ describe Mapping do
   describe 'url generation (based on mapping path and site host)' do
     subject(:mapping) { create :mapping, site: create(:site, abbr: 'cic_regulator'), path: '/some-path' }
 
-    its(:old_url)                    { should == 'http://cic-regulator.gov.uk/some-path' }
-    its(:national_archive_url)       { should == 'http://webarchive.nationalarchives.gov.uk/20120816224015/http://cic-regulator.gov.uk/some-path' }
-    its(:national_archive_index_url) { should == 'http://webarchive.nationalarchives.gov.uk/*/http://cic-regulator.gov.uk/some-path' }
+    its(:old_url)                    { should == 'http://cic_regulator.gov.uk/some-path' }
+    its(:national_archive_url)       { should == 'http://webarchive.nationalarchives.gov.uk/20120816224015/http://cic_regulator.gov.uk/some-path' }
+    its(:national_archive_index_url) { should == 'http://webarchive.nationalarchives.gov.uk/*/http://cic_regulator.gov.uk/some-path' }
   end
 
   describe 'validations' do
@@ -157,14 +157,6 @@ describe Mapping do
 
         it 'fails' do
           mapping.errors[:path].should == ['must start with a forward slash "/"']
-        end
-      end
-
-      context 'paths are abusive' do
-        subject(:mapping) { build(:archived, path: '/<script>alert("eating your first-born")</script>') }
-
-        it 'fails' do
-          mapping.errors[:path].should == ['contains invalid or unsafe characters (e.g. "<")']
         end
       end
     end
