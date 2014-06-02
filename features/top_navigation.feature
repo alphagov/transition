@@ -7,6 +7,6 @@ Feature: Top Navigation
 
   @allow-rescue
   Scenario: Visit a non-existent page, matching no routes
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     When I visit the path /totes/no/routes/here
     Then I should see our custom 404 page

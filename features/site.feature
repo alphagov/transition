@@ -5,7 +5,7 @@ Feature: The site dashboard
   so that I can manage mappings without creating errors
 
 Scenario: Visit a pre-transition site's page
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   Given the date is 29/11/12
   And www.attorney-general.gov.uk site with abbr ago launches on 13/12/12 with the following aliases:
     | alias                     |
@@ -22,7 +22,7 @@ Scenario: Visit a pre-transition site's page
   And I should see "This tool requires AKA Domains to be set up"
 
 Scenario: Visit a pre-transition site's page
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   Given the date is 29/11/12
   And www.attorney-general.gov.uk site with abbr ago launches on 13/12/12 with the following aliases:
     | alias                     |
@@ -32,7 +32,7 @@ Scenario: Visit a pre-transition site's page
   And I should see a link to the side by side browser
 
 Scenario: Visit a post-transition site's page
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   Given the date is 15/12/12
   And www.attorney-general.gov.uk site with abbr ago launched on 13/12/12 with the following aliases:
     | alias                     |
@@ -43,7 +43,7 @@ Scenario: Visit a post-transition site's page
   And I should not see a link to the side by side browser
 
 Scenario: Mappings by tag
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   And a site "ukba" exists with these tagged mappings:
   | path  | tags                          |
   | /1    | 1, 2, 3, 4, 5, 6, 7, 8 ,9, 10 |
@@ -62,7 +62,7 @@ Scenario: I belong to a different organisation
   But I should not be able to edit the site's mappings
 
 Scenario: Visit a globally redirected site's page
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   And a site moj_academy exists
   And the site is globally redirected
   When I visit this site page
@@ -71,7 +71,7 @@ Scenario: Visit a globally redirected site's page
   And I should not see a link to view the site's mappings
 
 Scenario: Visit the page for a site globally redirected, where the path is appended
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   And a site moj_academy exists
   And the site is globally redirected with the path appended
   When I visit this site page
@@ -81,7 +81,7 @@ Scenario: Visit the page for a site globally redirected, where the path is appen
   And I should not see a link to view the site's mappings
 
 Scenario: Visit a globally archived site's page
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   And a site defra_etr exists
   And the site is globally archived
   When I visit this site page
@@ -91,6 +91,6 @@ Scenario: Visit a globally archived site's page
 
 @allow-rescue
 Scenario: Visit the page of an non-existent site
-  Given I have logged in as an admin
+  Given I have logged in as a GDS Editor
   When I visit the path /sites/not_a_site
   Then I should see our custom 404 page

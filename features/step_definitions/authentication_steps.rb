@@ -1,5 +1,5 @@
-Given(/^I have logged in as an admin$/) do
-  GDS::SSO.test_user = create(:admin)
+Given(/^I have logged in as a GDS Editor$/) do
+  GDS::SSO.test_user = create(:gds_editor)
 end
 
 Given(/^I have logged in as a member of DCLG$/) do
@@ -12,11 +12,11 @@ Given(/^I have logged in as a member of DCLG$/) do
 end
 
 Given(/^I log in as a SIRO$/) do
-  GDS::SSO.test_user = create(:admin)
+  GDS::SSO.test_user = create(:gds_editor)
 end
 
-Given(/^I have logged in as an admin called "([^"]*)"$/) do |name|
-  GDS::SSO.test_user = create(:admin, name: name)
+Given(/^I have logged in as a GDS Editor called "([^"]*)"$/) do |name|
+  GDS::SSO.test_user = create(:gds_editor, name: name)
 end
 
 Given(/^I have logged in as a member of another organisation$/) do

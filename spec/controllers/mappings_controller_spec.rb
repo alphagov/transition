@@ -4,8 +4,8 @@ describe MappingsController do
   let(:site)              { create :site, abbr: 'moj' }
   let(:batch)             { create(:mappings_batch, site: site) }
   let(:unaffiliated_user) { create(:user, organisation_slug: nil) }
-  let(:admin_bob)         { create(:admin, name: 'Bob Terwhilliger') }
-  let(:mapping)           { create(:mapping, site: site, as_user: admin_bob) }
+  let(:gds_bob)           { create(:gds_editor, name: 'Bob Terwhilliger') }
+  let(:mapping)           { create(:mapping, site: site, as_user: gds_bob) }
 
   shared_examples 'disallows editing by unaffiliated user' do
     before do
@@ -231,7 +231,7 @@ describe MappingsController do
     context 'when Bob has permission to update a mapping, but is acting Evilly' do
       describe 'updating with versioning', versioning: true do
         before do
-          login_as admin_bob
+          login_as gds_bob
           post :update, site_id: mapping.site, id: mapping.id,
                mapping: {
                   path: '/Needs/Canonicalization?has=some&query=parts',
@@ -247,14 +247,14 @@ describe MappingsController do
           subject { Mapping.first.versions.last }
 
           its(:whodunnit) { should eql('Bob Terwhilliger') }
-          its(:user_id)   { should eql(admin_bob.id) }
+          its(:user_id)   { should eql(gds_bob.id) }
         end
       end
     end
 
     context 'when an admin is trying to tag a mapping' do
       before do
-        login_as admin_bob
+        login_as gds_bob
         post :update, site_id: mapping.site, id: mapping.id,
              mapping: {
                 path: '/Needs/Canonicalization?has=some&query=parts',
@@ -282,7 +282,7 @@ describe MappingsController do
 
     context 'when the user does have permission' do
       before do
-        login_as admin_bob
+        login_as gds_bob
       end
 
       it 'displays the form' do
@@ -313,7 +313,7 @@ describe MappingsController do
 
     context 'when user can edit the site' do
       before do
-        login_as admin_bob
+        login_as gds_bob
       end
 
       context 'with a small batch' do
@@ -390,7 +390,7 @@ describe MappingsController do
       let!(:other_site)    { create :site }
       let!(:other_mapping) { create :mapping, path: '/z', site: other_site }
       before do
-        login_as admin_bob
+        login_as gds_bob
       end
 
       context 'when the mappings index has not been visited' do
@@ -413,7 +413,7 @@ describe MappingsController do
 
     context 'when an invalid new status is posted' do
       before do
-        login_as admin_bob
+        login_as gds_bob
       end
 
       context 'when coming from the mappings index with a path filter' do
@@ -430,7 +430,7 @@ describe MappingsController do
       let(:mapping_ids) { [mapping_a.id, mapping_b.id] }
 
       before do
-        login_as admin_bob
+        login_as gds_bob
         post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
              operation: 'tag', return_path: 'should_not_return'
       end
@@ -442,9 +442,9 @@ describe MappingsController do
   end
 
   describe '#update_multiple' do
-    let!(:mapping_a) { create :mapping, path: '/a', site: site, tag_list: 'fum', as_user: admin_bob }
-    let!(:mapping_b) { create :mapping, path: '/b', site: site, tag_list: 'fum', as_user: admin_bob }
-    let!(:mapping_c) { create :mapping, path: '/c', site: site, tag_list: 'fum', as_user: admin_bob }
+    let!(:mapping_a) { create :mapping, path: '/a', site: site, tag_list: 'fum', as_user: gds_bob }
+    let!(:mapping_b) { create :mapping, path: '/b', site: site, tag_list: 'fum', as_user: gds_bob }
+    let!(:mapping_c) { create :mapping, path: '/c', site: site, tag_list: 'fum', as_user: gds_bob }
 
     before do
       @mappings_index_with_filter = site_mappings_path(site) + '?contains=%2Fa'
@@ -469,7 +469,7 @@ describe MappingsController do
 
     context 'when valid data is posted', versioning: true do
       before do
-        login_as admin_bob
+        login_as gds_bob
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         @new_url = 'http://www.example.com'
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
@@ -508,7 +508,7 @@ describe MappingsController do
       let!(:other_site)    { create :site }
       let!(:other_mapping) { create :mapping, path: '/z', site: other_site }
       before do
-        login_as admin_bob
+        login_as gds_bob
       end
 
       context 'when the mappings index has not been visited' do
@@ -533,7 +533,7 @@ describe MappingsController do
 
     context 'when the posted new_url is not a valid URL' do
       before do
-        login_as admin_bob
+        login_as gds_bob
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
              type: 'redirect', new_url: '___'
@@ -547,9 +547,9 @@ describe MappingsController do
 
   describe 'displaying background bulk add status' do
     context 'outcome hasn\'t been seen yet' do
-      let!(:mappings_batch) { create(:mappings_batch, site: site, user: admin_bob, state: 'succeeded') }
+      let!(:mappings_batch) { create(:mappings_batch, site: site, user: gds_bob, state: 'succeeded') }
       before do
-        login_as(admin_bob)
+        login_as(gds_bob)
         get :index, site_id: site
       end
 
@@ -564,9 +564,9 @@ describe MappingsController do
     end
 
     context 'outcome has been seen' do
-      let!(:mappings_batch) { create(:mappings_batch, site: site, user: admin_bob, state: 'succeeded', seen_outcome: true) }
+      let!(:mappings_batch) { create(:mappings_batch, site: site, user: gds_bob, state: 'succeeded', seen_outcome: true) }
       before do
-        login_as(admin_bob)
+        login_as(gds_bob)
         get :index, site_id: site
       end
 
@@ -576,9 +576,9 @@ describe MappingsController do
     end
 
     context 'the batch is for another site' do
-      let!(:mappings_batch) { create(:mappings_batch, site: create(:site), user: admin_bob, state: 'succeeded') }
+      let!(:mappings_batch) { create(:mappings_batch, site: create(:site), user: gds_bob, state: 'succeeded') }
       before do
-        login_as(admin_bob)
+        login_as(gds_bob)
         get :index, site_id: site
       end
 
@@ -590,7 +590,7 @@ describe MappingsController do
 
   describe 'rejecting an invalid or missing authenticity (CSRF) token' do
     before do
-      login_as admin_bob
+      login_as gds_bob
     end
 
     it 'should return a 403 response' do
@@ -608,7 +608,7 @@ describe MappingsController do
 
   describe 'rejecting an off-site return_path' do
     before do
-      login_as admin_bob
+      login_as gds_bob
     end
 
     context 'update' do

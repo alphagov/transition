@@ -4,7 +4,7 @@ Feature: Editing multiple mappings for a site
   so that I can efficiently improve the quality of mappings
 
   Background:
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     And there is a site called directgov belonging to an organisation directgov with these mappings:
       | type     | path             | new_url                                 |
       | redirect | /a               | http://gov.uk/directgov                 |

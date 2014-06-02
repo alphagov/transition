@@ -4,7 +4,7 @@ Feature: View organisation
   so that I can work on their mappings
 
   Scenario: Visit an organisation page
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     And there is a bis organisation named UK Atomic Energy Authority abbreviated ukaea with these sites:
       | abbr       | homepage                                                               |
       | bis_ukaea  | https://www.gov.uk/government/organisations/uk-atomic-energy-authority |
@@ -15,7 +15,7 @@ Feature: View organisation
     And I should see all the old homepages for the sites of the given organisation
 
   Scenario: Organisation page with sites in each transition state
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     And there is an organisation with the whitehall_slug "ukaea"
     And the organisation has a site with a host with a GOV.UK cname
     And the organisation has a site with a host with a third-party cname
@@ -29,7 +29,7 @@ Feature: View organisation
     And there should be a tooltip which includes "partially redirected"
 
   Scenario: An organisation being trusted by another to edit its mappings
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     And an organisation is trusted to edit the mappings of another organisation's site
     And that organisation also has its own site
     When I visit the organisation's page
@@ -38,6 +38,6 @@ Feature: View organisation
 
   @allow-rescue
   Scenario: Visit the page of an non-existent organisation
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     When I visit the path /organisations/not-an-org
     Then I should see our custom 404 page

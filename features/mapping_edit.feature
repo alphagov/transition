@@ -4,7 +4,7 @@ Feature: Edit a site's mapping
   so that the mapping begins to send people to the right place
 
   Background:
-    Given I have logged in as an admin
+    Given I have logged in as a GDS Editor
     And an archive mapping exists for the bis site with the path /about
     And I visit the path /sites/bis/mappings?fake_param=1
     And I go to edit the first mapping

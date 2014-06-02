@@ -4,8 +4,8 @@ FactoryGirl.define do
     sequence(:email) {|n| "person-#{n}@example.com" }
     permissions { ["signin"] }
 
-    factory :admin do
-      permissions { ["signin", "admin"] }
+    factory :gds_editor do
+      permissions { ["signin", "GDS Editor"] }
     end
   end
 end
