@@ -16,11 +16,13 @@ class User < ActiveRecord::Base
   end
 
   def can_edit_site?(site_to_edit)
-    gds_editor? ||
-      own_organisation == site_to_edit.organisation ||
-      site_to_edit.organisation.parent_organisations.include?(own_organisation) ||
-      site_to_edit.extra_organisations.include?(own_organisation) &&
-      site_to_edit.global_http_status.blank?
+    @can_edit_site ||= begin
+      gds_editor? ||
+        own_organisation == site_to_edit.organisation ||
+        site_to_edit.organisation.parent_organisations.include?(own_organisation) ||
+        site_to_edit.extra_organisations.include?(own_organisation) &&
+        site_to_edit.global_http_status.blank?
+    end
   end
 
   def own_organisation
