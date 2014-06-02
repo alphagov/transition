@@ -1,13 +1,13 @@
 <div class="mappings">
   <h3 class="remove-top-margin add-bottom-margin">Mappings</h3>
-  <% if @site.global_http_status.present? %>
+  <% if @site.global_type.present? %>
     <div class="panel panel-default">
       <div class="panel-body">
           <p class="bold">
-            <%= site_global_http_status_text(@site) %>
+            <%= site_global_type_text(@site) %>
           </p>
           <p class="text-muted remove-bottom-margin">
-            <%= site_global_http_status_explanation(@site) %>
+            <%= site_global_type_explanation(@site) %>
           </p>
       </div>
     </div>

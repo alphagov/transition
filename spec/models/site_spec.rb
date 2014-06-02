@@ -14,11 +14,15 @@ describe Site do
     it { should ensure_inclusion_of(:special_redirect_strategy).in_array(['via_aka', 'supplier']) }
 
     context 'global redirect' do
-      subject(:site) { build(:site, global_http_status: '301') }
+      subject(:site) { build(:site, global_type: 'redirect') }
 
       before { site.should_not be_valid }
       it 'should validate presence of global_new_url' do
         site.errors[:global_new_url].should == ['can\'t be blank']
+      end
+
+      it 'should set the global_http_status column from global_type' do
+        site.global_http_status.should == '301'
       end
     end
 
