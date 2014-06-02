@@ -18,7 +18,7 @@ describe MappingsHelper do
 
   describe '#options_for_supported_types' do
     it 'provides an array of supported types in a form compatible with FormBuilder#select' do
-      helper.options_for_supported_types.should == [['Redirect', 'redirect'], ['Archive', 'archive']]
+      helper.options_for_supported_types.should == [['Redirect', 'redirect'], ['Archive', 'archive'], ['Unresolved', 'unresolved']]
     end
   end
 

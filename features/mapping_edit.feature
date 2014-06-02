@@ -45,6 +45,13 @@ Feature: Edit a site's mapping
     When I click the link "Suggest a private sector URL"
     Then I should see the link replaced with a suggested URL field
 
+  @javascript
+  Scenario: Editing a site mapping that is unresolved
+    When I make the mapping unresolved
+    Then I should not see redirect fields
+    And I should not see archive fields
+    But I should see unresolved fields
+
   Scenario: Editing a mapping with invalid values
     When I make the mapping a redirect to http:////not-a-url
     And I save the mapping

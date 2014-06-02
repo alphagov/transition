@@ -46,6 +46,22 @@ Feature: Create mappings
     Then I should not see a modal window
     And I should see a flash message "0 of 21 mappings added"
 
+  @javascript
+  Scenario: Creating unresolved mappings
+    Given I have logged in as a GDS Editor
+    Given there is a site called bis belonging to an organisation bis with these mappings:
+      | type       | path |
+      | unresolved | /ur0 |
+      | unresolved | /ur1 |
+    And I visit the path /sites/bis/mappings
+    And I go to create some mappings
+    Then I should see "http://bis.gov.uk"
+    When I make the new mapping paths "/ur2, /ur3" unresolved
+    And I continue
+    Then the page title should be "Confirm new mappings"
+    When I save my changes
+    Then I should see a table with 2 saved mappings in the modal
+
   Scenario: I don't have access
     Given I have logged in as a member of another organisation
     And a site bis exists
