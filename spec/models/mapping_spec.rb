@@ -159,14 +159,6 @@ describe Mapping do
           mapping.errors[:path].should == ['must start with a forward slash "/"']
         end
       end
-
-      context 'paths are abusive' do
-        subject(:mapping) { build(:archived, path: '/<script>alert("eating your first-born")</script>') }
-
-        it 'fails' do
-          mapping.errors[:path].should == ['contains invalid or unsafe characters (e.g. "<")']
-        end
-      end
     end
 
     describe 'tagging behaviour for quoting and special characters' do

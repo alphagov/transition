@@ -92,7 +92,7 @@ describe MappingsController do
 
       it 'gracefully degrades if the filtering value looks like a URL but is unparseable' do
         get :index, site_id: site.abbr, path_contains: 'https://}'
-        assigns(:path_contains).should eql('https://}')
+        assigns(:filter).path_contains.should eql('https://}')
       end
     end
   end
