@@ -27,5 +27,18 @@ FactoryGirl.define do
       after(:create) { |mapping| mapping.update_attributes(new_url: 'http://somewhere.new') }
       after(:create) { |mapping| create(:host, site: mapping.site) }
     end
+
+    trait :archive_created_with_http_status do
+      after(:create) do |old_style_mapping|
+        last_version = old_style_mapping.versions.last
+
+        YAML.load(last_version.object_changes).tap do |changes|
+          changes[:http_status] = [nil, '410']
+          changes.delete(:type)
+          last_version.update_attribute(:object_changes, changes)
+        end
+      end
+    end
+
   end
 end
