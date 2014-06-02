@@ -11,7 +11,7 @@ class Mapping < ActiveRecord::Base
   # something else instead, without activating STI.
   self.inheritance_column = nil
 
-  SUPPORTED_TYPES = %w(redirect archive)
+  SUPPORTED_TYPES = %w(redirect archive unresolved)
 
   attr_accessible :path, :site, :type, :new_url, :suggested_url, :archive_url, :tag_list
 

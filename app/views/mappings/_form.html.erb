@@ -11,6 +11,10 @@
       <%= f.select :type, options_for_supported_types, {}, { class: 'form-control remove-bottom-margin js-type' } %>
     </div>
   </div>
+  <p class="js-for-unresolved text-muted">
+    Choose “unresolved” when mappings are pending a decision.<br />
+    (They will be archived by default.)
+  </p>
 
   <div class="form-group">
     <dl class="read-only-fields add-vertical-margins">
@@ -88,6 +92,7 @@
     </div>
     <hr>
   <% end %>
+  <hr>
 
   <%= render partial: 'tag_list_field', locals: { form: f } %>
 

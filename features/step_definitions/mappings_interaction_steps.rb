@@ -17,6 +17,10 @@ When(/^I make the mapping an archive$/) do
   select 'Archive', from: 'Type'
 end
 
+When(/^I make the mapping unresolved$/) do
+  select 'Unresolved', from: 'Type'
+end
+
 When(/^I continue?$/) do
   click_button 'Continue'
 end
@@ -110,6 +114,11 @@ When(/^I make (\d+) new mapping paths redirect to (.*)$/) do |mappings_count, ne
   mappings_count.to_i.times { |i| paths << "/#{i}" }
   fill_in 'Old URLs', with: paths.join("\n")
   fill_in 'Redirect to', with: new_url
+end
+
+When(/^I make the new mapping paths "(.*?)" unresolved$/) do |paths|
+  fill_in 'Old URLs', with: paths.gsub(/, /, "\n")
+  select 'Unresolved', from: 'Type'
 end
 
 When(/^I enter an archive URL but then click "Cancel"$/) do
