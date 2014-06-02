@@ -50,7 +50,7 @@ describe Host do
       end
 
       context 'unparseable' do
-        subject(:host) { build :host, hostname: 'a_b.com' }
+        subject(:host) { build :host, hostname: 'a}b.com' }
 
         its(:valid?) { should be_false }
         it 'should have an error for invalid hostname' do

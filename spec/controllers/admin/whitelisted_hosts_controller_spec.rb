@@ -75,7 +75,7 @@ describe Admin::WhitelistedHostsController do
 
       context 'with an invalid hostname' do
         def make_request
-          post :create, whitelisted_host: { hostname: 'a_b.com' }
+          post :create, whitelisted_host: { hostname: 'a}b.com' }
         end
 
         it 'should rerender the form' do
