@@ -49,4 +49,8 @@ Transition::Application.routes.draw do
       end
     end
   end
+
+  namespace :admin do
+    resources :whitelisted_hosts, except: [:edit, :update, :delete]
+  end
 end

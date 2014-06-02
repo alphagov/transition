@@ -7,8 +7,8 @@ Feature: Editing multiple mappings for a site
     Given I have logged in as a GDS Editor
     And there is a site called directgov belonging to an organisation directgov with these mappings:
       | type     | path             | new_url                                 |
-      | redirect | /a               | http://gov.uk/directgov                 |
-      | redirect | /about/branding  | http://gov.uk/branding                  |
+      | redirect | /a               | http://a.gov.uk/directgov               |
+      | redirect | /about/branding  | http://a.gov.uk/branding                |
       | archive  | /about/corporate |                                         |
       | archive  | /z1              |                                         |
       | archive  | /z2              |                                         |

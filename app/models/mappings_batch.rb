@@ -24,6 +24,7 @@ class MappingsBatch < ActiveRecord::Base
     redirect.validates :new_url, presence: { message: I18n.t('mappings.bulk.new_url_invalid') }
     redirect.validates :new_url, length: { maximum: (64.kilobytes - 1) }
     redirect.validates :new_url, non_blank_url: { message: I18n.t('mappings.bulk.new_url_invalid') }
+    redirect.validates :new_url, host_in_whitelist: { message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist', email: Rails.configuration.support_email) }
   end
   validates :paths, presence: { :if => :new_record?, message: I18n.t('mappings.bulk.add.paths_empty') } # we only care about paths at create-time
   validates :state, inclusion: { :in => PROCESSING_STATES }

@@ -10,6 +10,8 @@ en:
       govuk_date: "%-I:%M%P, %-e %B %Y" # 1:15pm, 1 January 2013
   activerecord:
     attributes:
+      whitelisted_host:
+        hostname: Domain
       mappings_batch:
         paths: Old URLs
   mappings:
@@ -17,6 +19,7 @@ en:
     bulk:
       type_invalid: 'Please select either redirect or archive'
       new_url_invalid: 'Enter a valid URL to redirect to'
+      new_url_must_be_on_whitelist: 'The URL to Redirect to must be on a whitelisted domain. Contact %{email} for more information.'
       add:
         paths_empty: 'Enter at least one valid path'
         hosts_invalid: 'One or more of the URLs entered are not part of this site'

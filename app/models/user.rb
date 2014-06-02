@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
 
   attr_accessible :uid, :email, :name, :permissions, :organisation_slug, as: :oauth
 
+  def admin?
+    permissions.include?('admin')
+  end
+
   def gds_editor?
     permissions.include?('GDS Editor')
   end

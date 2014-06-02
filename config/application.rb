@@ -73,5 +73,7 @@ module Transition
     config.assets.version = '1.0'
     config.assets.precompile += %w(html5.js)
     config.assets.precompile += %w(respond.min.js)
+
+    config.support_email = 'transition-dev@digital.cabinet-office.gov.uk'
   end
 end

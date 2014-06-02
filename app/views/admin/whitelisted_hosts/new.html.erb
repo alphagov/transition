@@ -1,0 +1,17 @@
+<%= content_for :page_title, 'New whitelisted host' %>
+<h1 class="page-title-with-border">
+  New whitelisted domain
+</h1>
+
+<%= form_for [:admin, @whitelisted_host], html: { role: 'form' } do |f| %>
+
+  <%= render 'shared/error_messages', error_messages: f.object.errors.full_messages %>
+
+  <fieldset class="form-group row">
+    <div class="col-md-6">
+      <%= f.label :hostname %>
+      <%= f.text_field :hostname, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <%= f.button 'Save', type: 'submit', class: 'add-top-margin btn btn-success' %>
+<% end %>

@@ -40,11 +40,22 @@ describe Host do
     end
 
     describe 'hostnames' do
-      subject(:host) { build :host, hostname: 'rarfoo.gov.uk/foo/' }
+      context 'includes a path' do
+        subject(:host) { build :host, hostname: 'rarfoo.gov.uk/foo/' }
 
-      its(:valid?) { should be_false }
-      it 'should have an error for invalid hostname' do
-        host.errors_on(:valid_hostname).should include('is an invalid hostname')
+        its(:valid?) { should be_false }
+        it 'should have an error for invalid hostname' do
+          host.errors_on(:hostname).should include('is an invalid hostname')
+        end
+      end
+
+      context 'unparseable' do
+        subject(:host) { build :host, hostname: 'a_b.com' }
+
+        its(:valid?) { should be_false }
+        it 'should have an error for invalid hostname' do
+          host.errors_on(:hostname).should include('is an invalid hostname')
+        end
       end
     end
   end
