@@ -18,7 +18,7 @@ Feature: Paginated mappings
     And there is a site called bis_lowpay belonging to an organisation bis with these mappings:
       | type     | path             | new_url           |
       | archive  | /about/corporate |                   |
-      | redirect | /a               | http://gov.uk/bis |
+      | redirect | /a               | http://a.gov.uk/bis |
       | archive  | /something       |                   |
     And the mappings page size is 2
     When I visit the path /sites/bis_lowpay
@@ -32,10 +32,10 @@ Feature: Paginated mappings
   Scenario: There are mappings for a site and we visit page 2
     Given I have logged in as a GDS Editor
     And there is a site called bis_lowpay belonging to an organisation bis with these mappings:
-      | type     | path             | new_url           |
-      | archive  | /about/corporate |                   |
-      | redirect | /a               | http://gov.uk/bis |
-      | archive  | /something       |                   |
+      | type     | path             | new_url             |
+      | archive  | /about/corporate |                     |
+      | redirect | /a               | http://a.gov.uk/bis |
+      | archive  | /something       |                     |
     And the mappings page size is 2
     When I visit the path /sites/bis_lowpay
     And I click the link called "Mappings"

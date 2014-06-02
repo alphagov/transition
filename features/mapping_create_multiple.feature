@@ -7,9 +7,9 @@ Feature: Create mappings
   Scenario:
     Given I have logged in as a GDS Editor
     And there is a site called bis belonging to an organisation bis with these mappings:
-      | type     | path | new_url               |
-      | redirect | /r   | http://somewhere.good |
-      | archive  | /a   |                       |
+      | type     | path | new_url                 |
+      | redirect | /r   | http://somewhere.gov.uk |
+      | archive  | /a   |                         |
     And I visit the path /sites/bis/mappings
     And I go to create some mappings
     Then I should see "http://bis.gov.uk"
@@ -20,7 +20,7 @@ Feature: Create mappings
     And I should see the canonicalized paths "/needs/canonicalizing, /a, /r"
     But I should not see "noslash"
     And I should see "/a currently archived"
-    And I should see "/r currently redirects to http://somewhere.good"
+    And I should see "/r currently redirects to http://somewhere.gov.uk"
     When I save my changes
     Then I should see "1 mapping created" in a modal window
     And I should see a table with 1 saved mapping in the modal
@@ -31,9 +31,9 @@ Feature: Create mappings
   Scenario: Creating a large batch (that will be processed in the background)
     Given I have logged in as a GDS Editor
     And there is a site called bis belonging to an organisation bis with these mappings:
-      | type     | path | new_url               |
-      | redirect | /r   | http://somewhere.good |
-      | archive  | /a   |                       |
+      | type     | path | new_url                 |
+      | redirect | /r   | http://somewhere.gov.uk |
+      | archive  | /a   |                         |
     And I visit the path /sites/bis/mappings
     And I go to create some mappings
     Then I should see "http://bis.gov.uk"

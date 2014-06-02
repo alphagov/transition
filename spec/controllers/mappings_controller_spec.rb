@@ -51,9 +51,9 @@ describe MappingsController do
     end
 
     describe 'filtering' do
-      let!(:mapping_a) { create :redirect, path: '/a', new_url: 'http://f.co/1', site: site }
-      let!(:mapping_b) { create :redirect, path: '/b', new_url: 'http://f.co/2', site: site }
-      let!(:mapping_c) { create :redirect, path: '/c', new_url: 'http://f.co/3', site: site }
+      let!(:mapping_a) { create :redirect, path: '/a', new_url: 'http://f.gov.uk/1', site: site }
+      let!(:mapping_b) { create :redirect, path: '/b', new_url: 'http://f.gov.uk/2', site: site }
+      let!(:mapping_c) { create :redirect, path: '/c', new_url: 'http://f.gov.uk/3', site: site }
 
       it 'filters mappings by path' do
         get :index, site_id: site.abbr, path_contains: 'a'
@@ -66,7 +66,7 @@ describe MappingsController do
       end
 
       it 'filters mappings by new_url' do
-        get :index, site_id: site.abbr, new_url_contains: 'f.co/1'
+        get :index, site_id: site.abbr, new_url_contains: 'f.gov.uk/1'
         assigns(:mappings).should == [mapping_a]
       end
 
@@ -74,9 +74,9 @@ describe MappingsController do
         # We don't blank new_url if a redirect is changed to an archive. It would
         # be confusing to return archive mappings when filtering by new_url.
 
-        create :archived, new_url: 'http://f.co/1', site: site
+        create :archived, new_url: 'http://f.gov.uk/1', site: site
 
-        get :index, site_id: site.abbr, new_url_contains: 'f.co/1'
+        get :index, site_id: site.abbr, new_url_contains: 'f.gov.uk/1'
         assigns(:mappings).should == [mapping_a]
       end
 
@@ -235,7 +235,7 @@ describe MappingsController do
           post :update, site_id: mapping.site, id: mapping.id,
                mapping: {
                   path: '/Needs/Canonicalization?has=some&query=parts',
-                  new_url: 'http://somewhere.bad'
+                  new_url: 'http://a.gov.uk'
                }
         end
 
@@ -258,7 +258,7 @@ describe MappingsController do
         post :update, site_id: mapping.site, id: mapping.id,
              mapping: {
                 path: '/Needs/Canonicalization?has=some&query=parts',
-                new_url: 'http://somewhere.good',
+                new_url: 'http://somewhere.gov.uk',
                 tag_list: 'fEE, fI, fO'
              }
       end
@@ -454,7 +454,7 @@ describe MappingsController do
       def make_request
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
-             operation: 'redirect', new_url: 'http://www.example.com'
+             operation: 'redirect', new_url: 'http://a.gov.uk'
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -471,7 +471,7 @@ describe MappingsController do
       before do
         login_as gds_bob
         mapping_ids = [ mapping_a.id, mapping_b.id ]
-        @new_url = 'http://www.example.com'
+        @new_url = 'http://a.gov.uk'
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
              operation: 'redirect', new_url: @new_url,
              return_path: @mappings_index_with_filter
@@ -481,7 +481,7 @@ describe MappingsController do
         [mapping_a, mapping_b].each do |mapping|
           mapping.reload
           expect(mapping.type).to eql('redirect')
-          expect(mapping.new_url).to eql('http://www.example.com')
+          expect(mapping.new_url).to eql('http://a.gov.uk')
         end
       end
 
@@ -515,7 +515,7 @@ describe MappingsController do
         it 'redirects to the mappings index page' do
           post :update_multiple, site_id: site.abbr,
                mapping_ids: [other_mapping.id], type: 'redirect',
-               new_url: 'http://www.example.com'
+               new_url: 'http://a.gov.uk'
           expect(response).to redirect_to site_mappings_path(site)
         end
       end
@@ -524,7 +524,7 @@ describe MappingsController do
         it 'redirects back to the last-visited mappings index page' do
           post :update_multiple, site_id: site.abbr,
                mapping_ids: [other_mapping.id], type: 'redirect',
-               new_url: 'http://www.example.com',
+               new_url: 'http://a.gov.uk',
                return_path: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
         end
@@ -616,7 +616,7 @@ describe MappingsController do
         post :update, site_id: mapping.site, id: mapping.id,
                mapping: {
                   path: '/Needs/Canonicalization?has=some&query=parts',
-                  new_url: 'http://somewhere.bad'
+                  new_url: 'http://a.gov.uk'
                },
                return_path: 'http://malicious.com'
 
@@ -630,7 +630,7 @@ describe MappingsController do
 
       it 'should redirect to mappings index' do
         post :update_multiple, site_id: site.abbr, mapping_ids: [mapping.id],
-             operation: 'redirect', new_url: 'http://www.example.com',
+             operation: 'redirect', new_url: 'http://a.gov.uk',
              return_path: 'http://malicious.com'
 
         expect(response).to redirect_to site_mappings_path(site)

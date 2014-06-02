@@ -70,7 +70,7 @@ describe Mapping do
     end
 
     describe 'URL validations' do
-      before { mapping.should_not be_valid }
+      before { mapping.valid? }
 
       context 'oh golly, everything is wrong' do
         subject(:mapping) do
@@ -80,7 +80,7 @@ describe Mapping do
         describe 'the errors' do
           subject { mapping.errors }
 
-          its([:new_url])       { should == ['is not a URL'] }
+          its([:new_url])       { should include('is not a URL') }
           its([:suggested_url]) { should == ['is not a URL'] }
           its([:archive_url])   { should be_empty }
 
@@ -102,7 +102,7 @@ describe Mapping do
 
         describe 'the errors' do
           subject { mapping.errors }
-          its([:new_url])       { should == ['is not a URL'] }
+          its([:new_url])       { should include('is not a URL') }
           its([:suggested_url]) { should == ['is not a URL'] }
         end
       end
@@ -112,6 +112,35 @@ describe Mapping do
 
         it 'fails' do
           mapping.errors[:archive_url].should == ['must be on the National Archives domain, webarchive.nationalarchives.gov.uk']
+        end
+      end
+
+      describe 'New URL whitelist checks' do
+        context 'not in the whitelist' do
+          subject(:mapping) { build(:redirect, new_url: 'http://m.com/foo') }
+
+          it 'fails' do
+            mapping.errors[:new_url].should == ['must be on a whitelisted domain. Contact transition-dev@digital.cabinet-office.gov.uk for more information.']
+          end
+        end
+
+        context 'is in the whitelist' do
+          before { create(:whitelisted_host, hostname: 'whitelisted.com') }
+          subject(:mapping) { build(:redirect, new_url: 'http://whitelisted.com/a') }
+
+          it { should be_valid }
+        end
+
+        context 'is on *.gov.uk' do
+          subject(:mapping) { build(:redirect, new_url: 'http://m.gov.uk/foo') }
+
+          it { should be_valid }
+        end
+
+        context 'is on *.mod.uk' do
+          subject(:mapping) { build(:redirect, new_url: 'http://m.mod.uk/foo') }
+
+          it { should be_valid }
         end
       end
 
@@ -201,17 +230,17 @@ describe Mapping do
       before do
         site = create :site
         ['/a', '/about', '/about/branding', '/other'].each do |new_path|
-          create :mapping, new_url: "http://f.co#{new_path}", site: site
+          create :mapping, new_url: "http://f.gov.uk#{new_path}", site: site
         end
       end
 
       context 'a filter is supplied' do
         subject { Mapping.filtered_by_new_url('about').map(&:new_url) }
 
-        it { should include('http://f.co/about') }
-        it { should include('http://f.co/about/branding') }
-        it { should_not include('http://f.co/a') }
-        it { should_not include('http://f.co/other') }
+        it { should include('http://f.gov.uk/about') }
+        it { should include('http://f.gov.uk/about/branding') }
+        it { should_not include('http://f.gov.uk/a') }
+        it { should_not include('http://f.gov.uk/other') }
       end
 
       context 'no filter is supplied' do
@@ -340,7 +369,7 @@ describe Mapping do
       describe 'an update from Bob' do
         before do
           Transition::History.as_a_user(bob) do
-            mapping.update_attributes(new_url: 'http://updated.com')
+            mapping.update_attributes(new_url: 'http://updated.gov.uk')
           end
         end
 
@@ -406,8 +435,8 @@ describe Mapping do
         let(:other_user) { create :user }
         before do
           Transition::History.as_a_user(other_user) do
-            mapping.update_attributes(type: 'redirect', new_url: 'http://updated.com')
-            mapping.update_attributes(type: 'redirect', new_url: 'http://new.com')
+            mapping.update_attributes(type: 'redirect', new_url: 'http://updated.gov.uk')
+            mapping.update_attributes(type: 'redirect', new_url: 'http://new.gov.uk')
           end
         end
 

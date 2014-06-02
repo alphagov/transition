@@ -149,7 +149,7 @@ module View
         let!(:mapping_where_everything_matches) do
           create :mapping,
                  type:     'redirect',
-                 new_url:  'http://something.in.the.air/',
+                 new_url:  'http://something.gov.uk/',
                  path:     '/CanonicalIZED?q=1',
                  tag_list:  %w(fee fi fo),
                  site:     site
