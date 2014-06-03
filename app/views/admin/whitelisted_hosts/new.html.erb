@@ -1,6 +1,6 @@
-<%= content_for :page_title, 'New whitelisted host' %>
+<%= content_for :page_title, 'Add domain to whitelist' %>
 <h1 class="page-title-with-border">
-  New whitelisted domain
+  Add domain to whitelist
 </h1>
 
 <%= form_for [:admin, @whitelisted_host], html: { role: 'form' } do |f| %>
@@ -13,5 +13,5 @@
       <%= f.text_field :hostname, :class => 'form-control' %>
     </div>
   </fieldset>
-  <%= f.button 'Save', type: 'submit', class: 'add-top-margin btn btn-success' %>
+  <%= f.button 'Add to whitelist', type: 'submit', class: 'add-top-margin btn btn-success' %>
 <% end %>
