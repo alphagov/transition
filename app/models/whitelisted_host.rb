@@ -7,7 +7,7 @@ class WhitelistedHost < ActiveRecord::Base
 
   validates :hostname, presence: true
   validates :hostname, hostname: true
-  validates :hostname, uniqueness: true
+  validates :hostname, uniqueness: { message: 'is already in the list' }
 
   def ensure_papertrail_user_config
     Transition::History.ensure_user!
