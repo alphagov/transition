@@ -15,8 +15,12 @@ class User < ActiveRecord::Base
     permissions.include?('GDS Editor')
   end
 
+  def can_edit_sites
+    @can_edit_sites ||= {}
+  end
+
   def can_edit_site?(site_to_edit)
-    @can_edit_site ||= begin
+    can_edit_sites[site_to_edit.abbr] ||= begin
       gds_editor? ||
         own_organisation == site_to_edit.organisation ||
         site_to_edit.organisation.parent_organisations.include?(own_organisation) ||
