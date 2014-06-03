@@ -24,6 +24,7 @@
       <%= select_tag :type, options_for_select(options_for_supported_types, @batch.type), { class: 'form-control remove-bottom-margin js-type' } %>
     </div>
   </div>
+  <%= render partial: 'unresolved_mappings_description' %>
 
   <div class="form-group <% if @batch.errors[:paths].any? %>field_with_errors<% end %>">
     <%#
