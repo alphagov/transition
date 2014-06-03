@@ -69,4 +69,18 @@ module HitsHelper
   def colors(point_categories)
     point_categories.map(&:color).to_s.html_safe
   end
+
+  def show_hit_has_become?(hit)
+    (hit.archive? || hit.error? || hit.redirect?) &&
+        hit.mapping &&
+        (hit.http_status != hit.mapping.http_status)
+  end
+
+  def hit_is_now(hit)
+    if hit.archive? && hit.mapping.redirect?
+      'was archived, now redirecting'
+    elsif hit.redirect? && hit.mapping.archive?
+      'was redirecting, now archived'
+    end
+  end
 end

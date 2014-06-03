@@ -66,6 +66,14 @@ class Mapping < ActiveRecord::Base
     type == 'archive'
   end
 
+  def http_status
+    if redirect?
+      '301'
+    elsif archive?
+      '410'
+    end
+  end
+
   ##
   # Reconstruct old URL based on path and default site hostname
   def old_url
