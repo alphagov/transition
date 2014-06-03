@@ -68,7 +68,7 @@ describe MappingsBatch do
 
       before { mappings_batch.should_not be_valid }
       it 'should declare it invalid' do
-        mappings_batch.errors[:new_url].should include('The URL to Redirect to must be on a whitelisted domain. Contact transition-dev@digital.cabinet-office.gov.uk for more information.')
+        mappings_batch.errors[:new_url].should include('The URL to redirect to must be on a whitelisted domain. Contact transition-dev@digital.cabinet-office.gov.uk for more information.')
       end
     end
 
