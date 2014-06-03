@@ -1,4 +1,4 @@
-<% tags = most_used_tags_for_site(@site, limit: 10) %>
+<% tags = @site.most_used_tags(10) %>
 <% if tags.any? %>
 <li class="if-no-js-hide <% if @filter.tags.any? %>selected-and-available<% end %>">
   <% if @filter.tags.any? %>
