@@ -13,7 +13,6 @@ Scenario: Some hits have mappings and some don't
     | /was_redirect_now_archive | 301             | archive        |
 
   When I visit the associated site's hits summary
-  Then I should not see any errors that were fixed
   And I should see that I can add mappings where they are missing
   But I should see all redirects and archives, even those that have since changed type
   And I should see an indication that they have since changed

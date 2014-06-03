@@ -27,7 +27,6 @@ class Hit < ActiveRecord::Base
     select('hits.path, sum(hits.count) as count, hits.http_status, hits.mapping_id, hits.host_id').
       group(:path_hash, :http_status)
   }
-  scope :without_mappings, -> { where(mapping_id: nil) }
   scope :points_by_date, -> {
     select('hits.hit_on, sum(hits.count) as count').group(:hit_on)
   }
