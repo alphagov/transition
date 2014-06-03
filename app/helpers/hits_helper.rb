@@ -81,6 +81,10 @@ module HitsHelper
       'was archived, now redirecting'
     elsif hit.redirect? && hit.mapping.archive?
       'was redirecting, now archived'
+    elsif hit.error? && hit.mapping.redirect?
+      '<span class="middle-grey">Error fixed</span> &mdash; now redirecting'.html_safe
+    elsif hit.error? && hit.mapping.archive?
+      '<span class="middle-grey">Error fixed</span> &mdash; now archived'.html_safe
     end
   end
 end

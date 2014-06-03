@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 Then(/^I should see all hits for the Attorney General's office in descending count order$/) do
   within '.hits' do
     counts = page.all(:css, 'td.count').map { |node| node.text.to_i }
@@ -204,6 +206,8 @@ And(/^I should see an indication that they have since changed$/) do
   steps %{
     Then I should see "was archived, now redirecting"
     And I should see "was redirecting, now archived"
+    And I should see "Error fixed — now redirecting"
+    And I should see "Error fixed — now archived"
   }
 end
 
