@@ -41,6 +41,18 @@ class Hit < ActiveRecord::Base
   scope :redirects,  -> { where(http_status: '301') }
   scope :top_ten,    -> { order('count DESC').limit(10) }
 
+  def error?
+    http_status == '404'
+  end
+
+  def archive?
+    http_status == '410'
+  end
+
+  def redirect?
+    http_status == '301'
+  end
+
   def homepage?
     path == '/' || path.starts_with?('/?')
   end
