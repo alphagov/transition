@@ -7,12 +7,12 @@ namespace :import do
     raise "No site found for #{args[:site_abbr]}" unless site
     raise 'ABORT: This site is not managed by transition' unless site.managed_by_transition?
 
-    if site.global_http_status
+    if site.global_type
       STDOUT.flush
-      STDOUT.puts "WARNING: This site has a global_http_status, so Bouncer will not use any mappings you create.\nDo you want to continue? (y/N)"
+      STDOUT.puts "WARNING: This site has a global_type, so Bouncer will not use any mappings you create.\nDo you want to continue? (y/N)"
       input = STDIN.gets.chomp
       unless %w(y yes).include?(input)
-        abort("Not creating mappings for site #{args[:site_abbr]} with global_http_status.")
+        abort("Not creating mappings for site #{args[:site_abbr]} with global_type.")
       end
     end
 

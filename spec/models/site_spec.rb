@@ -27,7 +27,7 @@ describe Site do
     end
 
     context 'global redirect with path appended' do
-      subject(:site) { build(:site, global_http_status: '301', global_redirect_append_path: true, global_new_url: 'http://a.com/?') }
+      subject(:site) { build(:site, global_type: 'redirect', global_redirect_append_path: true, global_new_url: 'http://a.com/?') }
 
       before { site.should_not be_valid }
       it 'should disallow a global_new_url with a querystring' do
