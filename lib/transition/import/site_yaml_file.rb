@@ -43,23 +43,28 @@ module Transition
         end
       end
 
-      def has_global_status?
+      def has_global_type?
         # cdn.hm-treasury.gov.uk has a regex in the global value, which Bouncer
         # implements as a "rule", so we can ignore it.
         yaml['global'] && (yaml['host'] != 'cdn.hm-treasury.gov.uk')
       end
 
-      def global_http_status
+      def global_type
         # There are two expected formats of the 'global' value:
         # global: =301 https://secure.fera.defra.gov.uk/nonnativespecies/beplantwise/
         #
         # or:
         # global: =410
-        yaml['global'].split(' ')[0].gsub("=", "") if has_global_status?
+        if has_global_type?
+          case yaml['global'].split(' ')[0].gsub("=", "")
+            when '301' then 'redirect'
+            when '410' then 'archive'
+          end
+        end
       end
 
       def global_new_url
-        yaml['global'].split(' ')[1] if has_global_status?
+        yaml['global'].split(' ')[1] if has_global_type?
       end
 
       def global_redirect_append_path
@@ -80,7 +85,7 @@ module Transition
           site.launch_date           = yaml['redirection_date']
           site.tna_timestamp         = yaml['tna_timestamp']
           site.query_params          = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
-          site.global_http_status    = global_http_status
+          site.global_type           = global_type
           site.global_new_url        = global_new_url
           site.global_redirect_append_path = global_redirect_append_path
           site.homepage              = yaml['homepage']
