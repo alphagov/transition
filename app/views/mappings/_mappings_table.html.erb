@@ -3,6 +3,7 @@
 <% include_bulk_add ||= false %>
 <% fix_header ||= false %>
 <% sort_by_hits ||= false %>
+<% show_preview_links = show_preview_links? %>
 
 <% if current_user.can_edit_site?(site) %>
   <div data-module="selectable-table">
@@ -67,17 +68,17 @@
       <% end %>
       <% if current_user.can_edit_site?(site) %>
         <td class="text-right">
-          <% if show_preview_links? %>
+          <% if show_preview_links %>
             <div class="btn-group">
               <a href="<%= side_by_side_url(site, mapping) %>" class="btn btn-default btn-sm" title="Preview in side by side browser">Preview</a>
-              <%= link_to edit_site_mapping_path(site, mapping, :return_path => request.fullpath), class: 'btn btn-default btn-sm' do %>
-                Edit
-              <% end %>
+              <%= link_to 'Edit',
+                          edit_site_mapping_path(site, mapping, :return_path => request.fullpath),
+                          class: 'btn btn-default btn-sm' %>
             </div>
           <% else %>
-            <%= link_to edit_site_mapping_path(site, mapping, :return_path => request.fullpath), class: 'btn btn-default btn-sm' do %>
-              Edit&nbsp;mapping
-            <% end %>
+            <%= link_to 'Edit mapping',
+                        edit_site_mapping_path(site, mapping, :return_path => request.fullpath),
+                        class: 'btn btn-default btn-sm' %>
           <% end %>
         </td>
       <% end %>

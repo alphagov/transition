@@ -73,22 +73,46 @@ describe Site do
     end
   end
 
-  describe '.with_mapping_count scope' do
+  describe 'scopes' do
     let!(:site_with_mappings)    { create :site }
     let!(:site_without_mappings) { create :site }
     let!(:mappings) { [create(:mapping, site: site_with_mappings),
-                      create(:mapping, site: site_with_mappings)] }
+                       create(:mapping, site: site_with_mappings)] }
 
-    subject(:site_list) { Site.with_mapping_count }
 
-    it 'has counts available on #mapping_count' do
-      site = site_list.find { |s| s.id == site_with_mappings.id }
-      site.mapping_count.should == 2
+    describe '.with_mapping_count' do
+      subject(:site_list) { Site.with_mapping_count }
+
+      it 'has counts available on #mapping_count' do
+        site = site_list.find { |s| s.id == site_with_mappings.id }
+        site.mapping_count.should == 2
+      end
+
+      it 'correctly counts 0 for sites without mappings' do
+        site = site_list.find { |s| s.id == site_without_mappings.id }
+        site.mapping_count.should == 0
+      end
     end
 
-    it 'correctly counts 0 for sites without mappings' do
-      site = site_list.find { |s| s.id == site_without_mappings.id }
-      site.mapping_count.should == 0
+    describe '.most_used_tags' do
+      before do
+        # add some tags to the mappings
+        mappings.first.tag_list = 'popular1,popular2,not-popular'
+        mappings.last.tag_list  = 'popular1,popular2,still-not-popular'
+        mappings.each             { |m| m.save! }
+
+        # add popular tagged mappings with a bigger count to the other site
+        # to check we don't include tags from other sites
+        3.times do
+          create(:mapping, site: site_without_mappings, tag_list: 'popular3')
+        end
+      end
+
+      subject(:tag_strings) { site_with_mappings.most_used_tags(2) }
+
+      it 'includes the top two tags, but not the less popular tags' do
+        tag_strings.should =~ %w(popular1 popular2)
+      end
     end
   end
 

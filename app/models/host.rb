@@ -11,7 +11,7 @@ class Host < ActiveRecord::Base
   validates :site, presence: true
   validate :canonical_host_id_xor_aka_present
 
-  scope :excluding_aka, where('hostname not like "aka%"')
+  scope :excluding_aka, where(canonical_host_id: nil)
 
   def aka?
     hostname.start_with?('aka')

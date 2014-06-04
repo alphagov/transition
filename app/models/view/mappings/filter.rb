@@ -58,7 +58,10 @@ module View
       end
 
       def mappings
-        mappings = site.mappings.page(params[:page])
+        mappings = site.mappings
+          .includes(:site)
+          .includes(:taggings => :tag)
+          .page(params[:page])
 
         mappings = mappings.redirects if type == 'redirect'
         mappings = mappings.archives  if type == 'archive'

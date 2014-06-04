@@ -54,7 +54,7 @@ class Site < ActiveRecord::Base
   end
 
   def default_host
-    hosts.excluding_aka.first
+    @default_host ||= hosts.excluding_aka.first
   end
 
   def transition_status
@@ -85,5 +85,24 @@ class Site < ActiveRecord::Base
     host_paths.update_all(mapping_id: nil, c14n_path_hash: nil)
     hits.update_all(mapping_id: nil)
     Transition::Import::HitsMappingsRelations.refresh!(self)
+  end
+
+  ##
+  # Get the most-used tags for mappings for this site.
+  # Returns an array of strings.
+  def most_used_tags(limit = 10)
+    # Assumes that only Mappings are taggable for a 25-30% speed boost.
+    # Remove this assumption by qualifying the mappings join should
+    # we need to tag anything else. This replaces ActsAsTaggableOn's
+    # generic (but slow) Model.tag_counts_on for our limited use case.
+    ActsAsTaggableOn::Tag
+      .select('tags.name, COUNT(*) AS count')
+      .joins(:taggings)
+      .joins('INNER JOIN mappings ON mappings.id = taggings.taggable_id')
+      .where('mappings.site_id = ?', id)
+      .group('tags.name')
+      .order('count DESC')
+      .limit(limit)
+      .map(&:name)
   end
 end
