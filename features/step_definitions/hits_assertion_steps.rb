@@ -178,14 +178,6 @@ Then(/^the period "([^"]*)" should be selected$/) do |period_title|
   end
 end
 
-Then(/^I should not see any errors that were fixed$/) do
-  steps %{
-    Then I should see "/error"
-    But I should not see "/was_error_now_redirect"
-    And I should not see "/was_error_now_archive"
-  }
-end
-
 And(/^I should see that I can add mappings where they are missing$/) do
   # There should be an "Add mapping button" for all the missing mappings
   within '.hits-summary-errors' do
