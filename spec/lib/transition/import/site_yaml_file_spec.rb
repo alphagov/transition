@@ -33,6 +33,7 @@ describe Transition::Import::SiteYamlFile do
       its(:managed_by_transition) { should eql(false) }
       its(:organisation)          { should eql(ago) }
       its(:extra_organisations)   { should eql([bv, tsol]) }
+      its(:global_type)           { should eql('redirect') }
       its(:global_http_status)    { should eql('301') }
       its(:global_new_url)        { should eql('https://www.gov.uk/a-new-world') }
       its(:global_redirect_append_path) { should eql(true) }
