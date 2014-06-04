@@ -1,0 +1,35 @@
+<nav class="filters row" data-module="filters">
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <header class="panel-heading">
+        <% if @filtered %>
+          <%= link_to site_hits_path(@site), class: 'remove-filters', title: 'Remove all filters' do %>
+            <span class="glyphicon glyphicon-remove"></span>
+          <% end %>
+        <% end %>
+        <ul class="nav nav-compact nav-pills">
+          <li class="if-no-js-hide nav-pill-text">
+            <strong>Filter by</strong>
+          </li>
+          <%= render partial: 'hits/filter/by_path_menu' %>
+
+          <li class="if-no-js-hide nav-pill-text text-muted">
+            Sorted by hits
+          </li>
+          <li class="if-js-hide">
+            <%= link_to 'Filter hits', filter_site_hits_path(@site) %>
+          </li>
+        </ul>
+      </header>
+      <% if @path_contains %>
+        <div class="panel-body">
+          <% if @path_contains %>
+            <%= form_tag(site_hits_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
+              <%= render partial: 'hits/filter/by_path_field', locals: { single_filter_form: true, button_text: 'Update path' } %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</nav>

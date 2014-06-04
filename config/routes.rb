@@ -46,6 +46,8 @@ Transition::Application.routes.draw do
         get 'redirects', to: 'hits#category', defaults: { category: 'redirects' }
         get 'errors',    to: 'hits#category', defaults: { category: 'errors' }
         get 'archives',  to: 'hits#category', defaults: { category: 'archives' }
+
+        get 'filter'
       end
     end
   end

@@ -1,9 +1,9 @@
 <li class="if-no-js-hide <% if @filter.type %>selected-and-available<% end %>">
   <% if @filter.type %>
-    <%= filter_remove_option_link(@site, nil, :type) %>
-    <%= filter_option_link(@site, @filter.type.pluralize.titleize, {selected: true}) %>
+    <%= mappings_filter_remove_option_link(@site, nil, :type) %>
+    <%= filter_option_link(filter_site_mappings_path(@site), @filter.type.pluralize.titleize, {selected: true}) %>
   <% else %>
-    <%= filter_option_link(@site, 'Type') %>
+    <%= filter_option_link(filter_site_mappings_path(@site), 'Type') %>
   <% end %>
   <ul class="dropdown-menu" role="menu">
     <% if @filter.type %>

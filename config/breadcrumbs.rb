@@ -17,6 +17,16 @@ crumb :hits do |site|
   parent :site, site
 end
 
+crumb :filter_hits do |site|
+  link 'Filter analytics', site_hits_path(site)
+  parent :hits, site
+end
+
+crumb :filtered_hits do |site|
+  link 'Filtered analytics', site_hits_path(site)
+  parent :hits, site
+end
+
 crumb :universal_hits do
   link 'Universal analytics', hits_path
   parent :root
