@@ -57,7 +57,8 @@ class HitsController < ApplicationController
 
   def hits_in_period
     if @site
-      @site.hits.in_range(@period.start_date, @period.end_date).includes(:mapping)
+      @site.hits.in_range(@period.start_date, @period.end_date)
+        .includes(:mapping, {:host => :site})
     else
       Hit.in_range(@period.start_date, @period.end_date).includes(:mapping, :host)
     end
