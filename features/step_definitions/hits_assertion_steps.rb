@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 Then(/^I should see all hits for the Attorney General's office in descending count order$/) do
   within '.hits' do
     counts = page.all(:css, 'td.count').map { |node| node.text.to_i }
@@ -176,14 +178,6 @@ Then(/^the period "([^"]*)" should be selected$/) do |period_title|
   end
 end
 
-Then(/^I should not see any errors that were fixed$/) do
-  steps %{
-    Then I should see "/error"
-    But I should not see "/was_error_now_redirect"
-    And I should not see "/was_error_now_archive"
-  }
-end
-
 And(/^I should see that I can add mappings where they are missing$/) do
   # There should be an "Add mapping button" for all the missing mappings
   within '.hits-summary-errors' do
@@ -204,6 +198,8 @@ And(/^I should see an indication that they have since changed$/) do
   steps %{
     Then I should see "was archived, now redirecting"
     And I should see "was redirecting, now archived"
+    And I should see "Error fixed — now redirecting"
+    And I should see "Error fixed — now archived"
   }
 end
 

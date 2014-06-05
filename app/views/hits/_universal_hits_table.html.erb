@@ -18,12 +18,8 @@
               <%= hit.host.site.organisation.title %> &middot;
               <%= link_to 'Site', site_path(hit.host.site), class: 'link-muted', title: hit.host.hostname %> &middot;
               <%= link_to 'Analytics', summary_site_hits_path(hit.host.site), class: 'link-muted' %>
-              <% if hit.mapping %>
-                <% if [hit.http_status, hit.mapping.type] == ['410', 'redirect']  %>
-                  <span class="text-muted"> &mdash; was archived, now redirecting</span>
-                <% elsif [hit.http_status, hit.mapping.type] == ['301', 'archive'] %>
-                  <span class="text-muted"> &mdash; was redirecting, now archived</span>
-                <% end %>
+              <% if show_hit_has_become?(hit) %>
+                <span class="text-muted"> &mdash; <%= hit_is_now(hit) %></span>
               <% end %>
             </div>
           </strong>

@@ -23,14 +23,9 @@
           <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: hits.first.count, status: hit.http_status } %>
           <strong class="breakable path">
             <%= link_to hit.path, hit.default_url %>
-            <% if hit.mapping %>
-              <% if [hit.http_status, hit.mapping.type] == ['410', 'redirect']  %>
-                <br>
-                <span class="text-muted"><%= "was archived, now redirecting" %></span>
-              <% elsif [hit.http_status, hit.mapping.type] == ['301', 'archive'] %>
-                <br>
-                <span class="text-muted"><%= "was redirecting, now archived" %></span>
-              <% end %>
+            <% if show_hit_has_become?(hit) %>
+              <br>
+              <span class="text-muted"><%= hit_is_now(hit) %></span>
             <% end %>
           </strong>
         </div>

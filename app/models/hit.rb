@@ -27,7 +27,6 @@ class Hit < ActiveRecord::Base
     select('hits.path, sum(hits.count) as count, hits.http_status, hits.mapping_id, hits.host_id').
       group(:path_hash, :http_status)
   }
-  scope :without_mappings, -> { where(mapping_id: nil) }
   scope :points_by_date, -> {
     select('hits.hit_on, sum(hits.count) as count').group(:hit_on)
   }
@@ -41,6 +40,18 @@ class Hit < ActiveRecord::Base
   scope :archives,   -> { where(http_status: '410') }
   scope :redirects,  -> { where(http_status: '301') }
   scope :top_ten,    -> { order('count DESC').limit(10) }
+
+  def error?
+    http_status == '404'
+  end
+
+  def archive?
+    http_status == '410'
+  end
+
+  def redirect?
+    http_status == '301'
+  end
 
   def homepage?
     path == '/' || path.starts_with?('/?')
