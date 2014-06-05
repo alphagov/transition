@@ -44,14 +44,10 @@ Scenario: Visit a post-transition site's page
 
 Scenario: Mappings by tag
   Given I have logged in as a GDS Editor
-  And a site "ukba" exists with these tagged mappings:
-  | path  | tags                          |
-  | /1    | 1, 2, 3, 4, 5, 6, 7, 8 ,9, 10 |
-  | /2    | 1, 2, 3, 4, 5, 6, 7, 8 ,9, 10 |
-  | /3    | 12, 13, 14                    |
+  And a site "ukba" exists with mappings with lots of tags
   When I visit this site page
   Then I should see "Mappings by tag"
-  And I should see the top 10 most used tags "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"
+  And I should see the top 50 most used tags
 
 Scenario: I belong to a different organisation
   Given I have logged in as a member of DCLG

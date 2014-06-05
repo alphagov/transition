@@ -90,7 +90,7 @@ class Site < ActiveRecord::Base
   ##
   # Get the most-used tags for mappings for this site.
   # Returns an array of strings.
-  def most_used_tags(limit = 10)
+  def most_used_tags(limit = 50)
     # Assumes that only Mappings are taggable for a 25-30% speed boost.
     # Remove this assumption by qualifying the mappings join should
     # we need to tag anything else. This replaces ActsAsTaggableOn's

@@ -23,7 +23,7 @@
           </p>
         </div>
       <% end %>
-      <% most_used_tags = @site.most_used_tags(10).to_a %>
+      <% most_used_tags = @site.most_used_tags %>
       <% if most_used_tags.any? %>
         <div class="list-group-item">
           <h4 class="list-group-item-heading">Mappings by tag</h4>
