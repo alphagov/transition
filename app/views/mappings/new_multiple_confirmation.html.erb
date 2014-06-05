@@ -65,6 +65,8 @@
                   currently redirects to <%= link_to existing_mapping.new_url, existing_mapping.new_url, class: 'link-muted breakable' %>
                 <% elsif existing_mapping.archive? %>
                   currently archived
+                <% elsif existing_mapping.unresolved? %>
+                  currently unresolved, will archive by default
                 <% end %>
               <% end %>
             </span>

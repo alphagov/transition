@@ -23,8 +23,10 @@
             <span class="text-muted">
               <% if m.redirect? %>
                 currently redirects to <%= link_to m.new_url, m.new_url, class: 'link-muted breakable' %>
-              <% else %>
+              <% elsif m.archive? %>
                 currently archived
+              <% elsif m.unresolved? %>
+                currently unresolved, will archive by default
               <% end %>
             </span>
           <% end %>
