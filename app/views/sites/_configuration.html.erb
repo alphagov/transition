@@ -12,15 +12,15 @@
             <th>Hostname</th>
             <th>
               <abbr title="Time To Live">
-                <%= link_to 'TTL', glossary_index_path(anchor: 'ttl'), class: 'glossary-link' %>
+                <%= link_to 'TTL', glossary_index_path(anchor: 'ttl'), class: 'link-inherit' %>
               </abbr>
             </th>
             <th>
-              <%= link_to 'CNAME', glossary_index_path(anchor: 'cname'), class: 'glossary-link' %>
+              <%= link_to 'CNAME', glossary_index_path(anchor: 'cname'), class: 'link-inherit' %>
               or
-              <%= link_to 'IP Address', glossary_index_path(anchor: 'a-record'), class: 'glossary-link' %>
+              <%= link_to 'IP Address', glossary_index_path(anchor: 'a-record'), class: 'link-inherit' %>
             </th>
-            <th>Has <%= link_to 'AKA', glossary_index_path(anchor: 'aka'), class: 'glossary-link' %>?</th>
+            <th>Has <%= link_to 'AKA', glossary_index_path(anchor: 'aka'), class: 'link-inherit' %>?</th>
           </tr>
         </thead>
         <tbody>
