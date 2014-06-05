@@ -66,6 +66,10 @@ class Mapping < ActiveRecord::Base
     type == 'archive'
   end
 
+  def unresolved?
+    type == 'unresolved'
+  end
+
   ##
   # Reconstruct old URL based on path and default site hostname
   def old_url
