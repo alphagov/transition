@@ -41,8 +41,7 @@ class Site < ActiveRecord::Base
   end
 
   def set_global_http_status_from_global_type
-    # If the global_http_status isn't supported, leave it as it is.
-    self.global_http_status ||= SUPPORTED_GLOBAL_TYPES_TO_GLOBAL_HTTP_STATUSES[global_type]
+    self.global_http_status = SUPPORTED_GLOBAL_TYPES_TO_GLOBAL_HTTP_STATUSES[global_type]
   end
 
   def global_redirect?
