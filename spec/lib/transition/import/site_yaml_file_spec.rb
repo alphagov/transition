@@ -63,6 +63,10 @@ describe Transition::Import::SiteYamlFile do
         its(:tna_timestamp)         { should be_a(Time) }
         its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-update-office') }
         its(:extra_organisations)   { should eql([tsol]) }
+        its(:global_type)           { should be_nil }
+        its(:global_http_status)    { should be_nil }
+        its(:global_new_url)        { should be_nil }
+        its(:global_redirect_append_path) { should eql(false) }
       end
     end
   end
