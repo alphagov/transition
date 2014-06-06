@@ -63,8 +63,9 @@ module View
           .includes(:taggings => :tag)
           .page(params[:page])
 
-        mappings = mappings.redirects if type == 'redirect'
-        mappings = mappings.archives  if type == 'archive'
+        mappings = mappings.redirects   if type == 'redirect'
+        mappings = mappings.archives    if type == 'archive'
+        mappings = mappings.unresolved  if type == 'unresolved'
         mappings = mappings.filtered_by_path(path_contains) if path_contains.present?
         mappings = mappings.redirects.filtered_by_new_url(new_url_contains) if new_url_contains.present?
         mappings = mappings.tagged_with(tagged) if tagged.present?

@@ -53,8 +53,9 @@ class Mapping < ActiveRecord::Base
       group('mappings.path_hash')
   }
   scope :with_type, -> type { where(type: type) }
-  scope :redirects, with_type('redirect')
-  scope :archives,  with_type('archive')
+  scope :redirects,   with_type('redirect')
+  scope :archives,    with_type('archive')
+  scope :unresolved,  with_type('unresolved')
   scope :filtered_by_path,    -> term { where(term.blank? ? true : Mapping.arel_table[:path].matches("%#{term}%")) }
   scope :filtered_by_new_url, -> term { where(term.blank? ? true : Mapping.arel_table[:new_url].matches("%#{term}%")) }
 
