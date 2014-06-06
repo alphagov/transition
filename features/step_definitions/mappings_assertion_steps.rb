@@ -83,7 +83,7 @@ Then(/^the archive URL field should be empty$/) do
   field_labeled('Alternative National Archives URL').value.should be_empty
 end
 
-But(/^I should see unresolved fields$/) do
+But(/^I should see help for the unresolved status$/) do
   within '[data-module="toggle-mapping-form-fields"]' do
     expect(page).to have_selector('.js-for-unresolved')
   end

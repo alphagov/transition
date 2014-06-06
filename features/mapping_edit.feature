@@ -26,10 +26,14 @@ Feature: Edit a site's mapping
     And I should see "/about" in the modal window
 
   @javascript
-  Scenario: Editing a site mapping that is an archive
+  Scenario: Changing the type of mapping
     When I make the mapping an archive
     Then I should not see redirect fields
     But I should see archive fields
+    When I make the mapping unresolved
+    Then I should not see redirect fields
+    And I should not see archive fields
+    But I should see help for the unresolved status
 
   @javascript
   Scenario: Adding an alternative archive URL
@@ -44,13 +48,6 @@ Feature: Edit a site's mapping
   Scenario: Adding a suggested URL
     When I click the link "Suggest a private sector URL"
     Then I should see the link replaced with a suggested URL field
-
-  @javascript
-  Scenario: Editing a site mapping that is unresolved
-    When I make the mapping unresolved
-    Then I should not see redirect fields
-    And I should not see archive fields
-    But I should see unresolved fields
 
   Scenario: Editing a mapping with invalid values
     When I make the mapping a redirect to http:////not-a-url
