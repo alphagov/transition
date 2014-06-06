@@ -13,6 +13,15 @@
           <%= site_redirects_link(@site) %>, <%= site_archives_link(@site) %> and <%= site_unresolved_link(@site) %>
         </p>
       </div>
+      <div class="list-group-item">
+        <h4 class="list-group-item-heading">
+          <%= link_to 'Paths needing a decision', site_mappings_path(@site, type: 'unresolved'), class: 'no-visit' %>
+        </h4>
+        <p class="list-group-item-text text-muted">
+          <strong><%= @site.mappings.unresolved.count %> paths</strong> are unresolved – that’s <strong><%= site_unresolved_mappings_percentage(@site) %> of mappings</strong>.<br />
+          (After transition, mappings without a type will be archived by default.)
+        </p>
+      </div>
       <% if current_user.can_edit_site?(@site) %>
         <div class="list-group-item">
           <h4 class="list-group-item-heading">

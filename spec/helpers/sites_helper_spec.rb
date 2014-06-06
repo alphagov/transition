@@ -85,4 +85,29 @@ describe SitesHelper do
       end
     end
   end
+
+  describe 'calculating unresolved percentages' do
+    let(:site) do
+      double('site').tap do |site|
+        site.stub_chain(:mappings, :unresolved, :count).and_return(unresolved_count)
+        site.stub_chain(:mappings, :count).and_return(total_mappings)
+      end
+    end
+
+    subject(:percentage) { helper.site_unresolved_mappings_percentage(site) }
+
+    context 'when there are no mappings' do
+      let(:unresolved_count) { 0 }
+      let(:total_mappings)   { 0 }
+
+      it { should eq('0%') }
+    end
+
+    context 'when there are some mappings' do
+      let(:unresolved_count) { 1 }
+      let(:total_mappings)   { 2 }
+
+      it { should eq('50.0%') }
+    end
+  end
 end

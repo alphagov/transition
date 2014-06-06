@@ -47,4 +47,12 @@ module SitesHelper
       site_mappings_path(site, type: 'unresolved'),
       class: 'link-muted'
   end
+
+  def site_unresolved_mappings_percentage(site)
+    if site.mappings.unresolved.count > 0 && site.mappings.count > 0
+      friendly_hit_percentage((site.mappings.unresolved.count.to_f / site.mappings.count) * 100)
+    else
+      '0%'
+    end
+  end
 end
