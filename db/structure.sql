@@ -197,7 +197,8 @@ CREATE TABLE `taggings` (
   `context` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `taggings_idx` (`tag_id`,`taggable_id`,`taggable_type`,`context`,`tagger_id`,`tagger_type`)
+  UNIQUE KEY `taggings_idx` (`tag_id`,`taggable_id`,`taggable_type`,`context`,`tagger_id`,`tagger_type`),
+  KEY `index_taggings_on_taggable_type_and_taggable_id` (`taggable_type`,`taggable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `tags` (
@@ -346,3 +347,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140528161617');
 INSERT INTO schema_migrations (version) VALUES ('20140529130515');
 
 INSERT INTO schema_migrations (version) VALUES ('20140529164329');
+
+INSERT INTO schema_migrations (version) VALUES ('20140606155408');
