@@ -37,7 +37,7 @@ describe Transition::Import::MappingsFromHostPaths do
 
       its(:path)        { should eql('/foo') }
       its(:path_hash)   { should eql(@host_path.c14n_path_hash) }
-      its(:type)        { should eql('archive') }
+      its(:type)        { should eql('unresolved') }
     end
 
     # We're not refreshing the mappings-hits link in this task;
