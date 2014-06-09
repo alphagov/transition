@@ -20,15 +20,7 @@
         <td>
           <strong><%= link_to m.path, m.old_url, class: 'breakable' %></strong>
           <% unless modal %>
-            <span class="text-muted">
-              <% if m.redirect? %>
-                currently redirects to <%= link_to m.new_url, m.new_url, class: 'link-muted breakable' %>
-              <% elsif m.archive? %>
-                currently archived
-              <% elsif m.unresolved? %>
-                currently unresolved, will archive by default
-              <% end %>
-            </span>
+            <%= render partial: 'new_multiple_mapping_status_table', locals: { existing_mapping: m } %>
           <% end %>
           <%= hidden_field_tag "mapping_ids[]", m.id %>
         </td>
