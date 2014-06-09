@@ -11,6 +11,8 @@ module VersionsHelper
       'Switched mapping to a Redirect'
     when 'archive'
       'Switched mapping to an Archive'
+    when 'unresolved'
+      'Switched mapping to Unresolved'
     else
       'Switched mapping type'
     end
