@@ -13,7 +13,7 @@ class HitsController < ApplicationController
   def summary
     @sections = View::Hits::Category.all.reject { |c| c.name == 'all' }.map do |category|
       category.tap do |c|
-        c.hits = hits_in_period.by_path_and_status.send(category.to_sym).top_ten
+        c.hits = hits_in_period.by_path_and_status.send(category.to_sym).top_ten.to_a
       end
     end
 
@@ -57,7 +57,8 @@ class HitsController < ApplicationController
 
   def hits_in_period
     if @site
-      @site.hits.in_range(@period.start_date, @period.end_date).includes(:mapping)
+      @site.hits.in_range(@period.start_date, @period.end_date)
+        .includes(:mapping, {:host => :site})
     else
       Hit.in_range(@period.start_date, @period.end_date).includes(:mapping, :host)
     end
