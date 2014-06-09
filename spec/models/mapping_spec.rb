@@ -27,6 +27,14 @@ describe Mapping do
     end
   end
 
+  describe '#unresolved?' do
+    its(:unresolved?) { should be_false }
+    it 'is true when its type is unresolved' do
+      subject.type = 'unresolved'
+      subject.unresolved?.should be_true
+    end
+  end
+
   describe 'url generation (based on mapping path and site host)' do
     subject(:mapping) { create :mapping, site: create(:site, abbr: 'cic_regulator'), path: '/some-path' }
 
