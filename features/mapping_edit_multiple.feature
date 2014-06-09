@@ -69,8 +69,7 @@ Feature: Editing multiple mappings for a site
     And the filter box should contain "/about"
 
   Scenario: Text about the previous status should display by the side of a mapping on the new redirect page without javascript
-    When I click the link "Filter mappings"
-    And I filter the tags by unresolved
+    When I click the tag filter "Unresolved"
     And I select the first two mappings
     And I select "Archive"
     And I go to edit the selected mappings

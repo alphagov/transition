@@ -200,8 +200,3 @@ end
 When(/^I remove all sorting and filtering$/) do
   find(:css, ".remove-filters").click
 end
-
-And(/^I filter the tags by unresolved$/) do
-  fill_in 'Tags', with: 'unresolved'
-  click_button 'Filter'
-end
