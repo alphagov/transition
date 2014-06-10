@@ -42,7 +42,7 @@ module View
       end
 
       def incompatible?
-        params[:type] == 'archive' && new_url_contains.present?
+        ['archive', 'unresolved'].include?(params[:type]) && new_url_contains.present?
       end
 
       def query

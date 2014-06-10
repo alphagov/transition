@@ -33,7 +33,7 @@
       </header>
       <% if @filter.incompatible? %>
         <div class="alert alert-warning">
-          Your archive filter has been removed. Filtering by new URL is only possible with redirects.
+          Your <%= params[:type] %> filter has been removed. Filtering by new URL is only possible with redirects.
         </div>
       <% end %>
       <% if @filter.path_contains.present? || @filter.new_url_contains.present? || @filter.tags.any? %>
