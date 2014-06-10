@@ -26,6 +26,9 @@
             <% if show_hit_has_become?(hit) %>
               <br>
               <span class="text-muted"><%= hit_is_now(hit) %></span>
+            <% elsif hit.mapping && hit.mapping.unresolved? %>
+              <br>
+              <span class="middle-grey">Unresolved</span> &mdash; needs a decision
             <% end %>
           </strong>
         </div>

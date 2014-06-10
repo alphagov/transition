@@ -73,7 +73,7 @@ module HitsHelper
   def http_status_for(mapping)
     if mapping.redirect?
       '301'
-    elsif mapping.archive?
+    elsif mapping.archive? || mapping.unresolved?
       '410'
     end
   end
