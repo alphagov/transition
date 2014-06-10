@@ -557,6 +557,12 @@ describe MappingsController do
         flash.now[:batch_progress].should eql(message: '0 of 2 mappings added', type: :success)
       end
 
+      it 'should prevent caching of the page' do
+        response.headers['Cache-Control'].should == 'no-cache, no-store, max-age=0, must-revalidate'
+        response.headers['Pragma'].should == 'no-cache'
+        response.headers['Expires'].should == 'Fri, 01 Jan 1990 00:00:00 GMT'
+      end
+
       it 'should record that the outcome of processing the batch has been seen' do
         mappings_batch.reload
         mappings_batch.seen_outcome.should == true
@@ -572,6 +578,12 @@ describe MappingsController do
 
       it 'should not show an outcome message' do
         flash.now[:batch_progress].should be_nil
+      end
+
+      it 'should not prevent caching of the page' do
+        response.headers['Cache-Control'].should be_nil
+        response.headers['Pragma'].should be_nil
+        response.headers['Expires'].should be_nil
       end
     end
 
