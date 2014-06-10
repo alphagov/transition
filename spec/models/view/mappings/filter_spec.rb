@@ -23,6 +23,17 @@ module View
         it         { should be_active }
       end
 
+      context 'an incompatible params unresolved filter' do
+        let(:params) { {
+          type:             'unresolved',
+          new_url_contains: 'something'
+        } }
+
+        its(:type) { should be_nil }
+        it         { should be_incompatible }
+        it         { should be_active }
+      end
+
       context 'unrecognised types don\'t count' do
         let(:params) { { type: 'banana-cake' } }
         its(:type)   { should be_nil }
