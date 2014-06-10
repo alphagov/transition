@@ -142,6 +142,16 @@ describe Mapping do
 
           it { should be_valid }
         end
+
+        context 'mapping is not a redirect' do
+          subject(:mapping) { build(:archived, new_url: 'http://evil.com') }
+
+          it { should be_valid }
+          it 'still saves the value that would be invalid if it was a redirect' do
+            mapping.save
+            mapping.reload.new_url.should == 'http://evil.com'
+          end
+        end
       end
 
       context 'path is blank' do
