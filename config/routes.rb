@@ -23,7 +23,7 @@ Transition::Application.routes.draw do
   resources :sites, only: [:show] do
 
     get 'mappings/find', as: 'mapping_find'
-    resources :mappings, except: [:new, :create, :destroy] do
+    resources :mappings, only: [:index, :edit, :update] do
       resources :versions, only: [:index]
 
       collection do
@@ -51,6 +51,6 @@ Transition::Application.routes.draw do
   end
 
   namespace :admin do
-    resources :whitelisted_hosts, except: [:edit, :update, :delete]
+    resources :whitelisted_hosts, only: [:index, :new, :create]
   end
 end
