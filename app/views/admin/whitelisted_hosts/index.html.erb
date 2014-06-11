@@ -9,7 +9,8 @@
   </h1>
 </div>
 
-<div class="pull-right add-bottom-margin">
+<div class="pull-left add-bottom-margin">
+  <h2><%= @whitelisted_hosts.count %> whitelisted domains</h2>
   <%= link_to new_admin_whitelisted_host_path, class: 'btn btn-default' do %>
     <i class="glyphicon glyphicon-plus"></i> Add domain
   <% end %>
