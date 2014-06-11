@@ -13,6 +13,7 @@ module Transition
           end
           before_filter :set_saved_mappings, options
           before_filter :set_background_bulk_add_status_message, options
+          before_filter :prevent_caching, options
         end
       end
 
@@ -57,6 +58,21 @@ module Transition
           :alert
         else
           :info
+        end
+      end
+
+      def anything_to_display?
+        flash[:saved_mapping_ids].present? || @reportable_batch
+      end
+
+      def prevent_caching
+        # Disable caching on responses which include feedback on progress to
+        # avoid confusing users who hit the back button.
+        if anything_to_display?
+          # http://stackoverflow.com/questions/711418/how-to-prevent-browser-page-caching-in-rails
+          response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+          response.headers["Pragma"] = "no-cache"
+          response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
         end
       end
     end
