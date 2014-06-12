@@ -31,7 +31,7 @@
   <% end %>
 
   <h2 class="add-bottom-margin">
-    <%= "#{ @batch.type.titleize }" %> <%= pluralize(number_with_delimiter(@batch.entries.size), "path") %>
+    <%= new_confirmation_heading(@batch.type, @batch.entries.size) %>
     <% if @batch.redirect? %>
       <br />
       <span class="subtitle">
