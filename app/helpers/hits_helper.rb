@@ -93,6 +93,8 @@ module HitsHelper
       '<span class="middle-grey">Error fixed</span> &mdash; now redirecting'.html_safe
     elsif hit.error? && hit.mapping.archive?
       '<span class="middle-grey">Error fixed</span> &mdash; now archived'.html_safe
+    elsif hit.mapping.unresolved?
+      '<span class="middle-grey">Unresolved</span> &mdash; needs a decision'.html_safe
     end
   end
 end
