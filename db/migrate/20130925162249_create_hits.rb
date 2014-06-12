@@ -1,6 +1,6 @@
 class CreateHits < ActiveRecord::Migration
   def change
-    create_table :hits, options: 'DEFAULT CHARSET=utf8 COLLATE=utf8_bin ENGINE=MyISAM' do |t|
+    create_table :hits do |t|
       t.references :host, null: false
       t.string :path, null: false, limit: 1024
       t.string :path_hash, null: false, limit: 40
