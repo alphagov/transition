@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe MappingsController do
   let(:site)              { create :site, abbr: 'moj' }
-  let(:batch)             { create(:mappings_batch, site: site) }
+  let(:batch)             { create(:bulk_add_batch, site: site) }
   let(:unaffiliated_user) { create(:user, organisation_slug: nil) }
   let(:gds_bob)           { create(:gds_editor, name: 'Bob Terwhilliger') }
   let(:mapping)           { create(:mapping, site: site, as_user: gds_bob) }
@@ -328,7 +328,7 @@ describe MappingsController do
       end
 
       context 'with a large batch' do
-        let(:batch) { create(:mappings_batch, site: site,
+        let(:batch) { create(:bulk_add_batch, site: site,
                               paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21}) }
 
         before do
@@ -547,7 +547,7 @@ describe MappingsController do
 
   describe 'displaying background bulk add status' do
     context 'outcome hasn\'t been seen yet' do
-      let!(:mappings_batch) { create(:mappings_batch, site: site, user: gds_bob, state: 'succeeded') }
+      let!(:mappings_batch) { create(:bulk_add_batch, site: site, user: gds_bob, state: 'succeeded') }
       before do
         login_as(gds_bob)
         get :index, site_id: site
@@ -570,7 +570,7 @@ describe MappingsController do
     end
 
     context 'outcome has been seen' do
-      let!(:mappings_batch) { create(:mappings_batch, site: site, user: gds_bob, state: 'succeeded', seen_outcome: true) }
+      let!(:mappings_batch) { create(:bulk_add_batch, site: site, user: gds_bob, state: 'succeeded', seen_outcome: true) }
       before do
         login_as(gds_bob)
         get :index, site_id: site
@@ -588,7 +588,7 @@ describe MappingsController do
     end
 
     context 'the batch is for another site' do
-      let!(:mappings_batch) { create(:mappings_batch, site: create(:site), user: gds_bob, state: 'succeeded') }
+      let!(:mappings_batch) { create(:bulk_add_batch, site: create(:site), user: gds_bob, state: 'succeeded') }
       before do
         login_as(gds_bob)
         get :index, site_id: site

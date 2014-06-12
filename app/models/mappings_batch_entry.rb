@@ -1,4 +1,6 @@
 class MappingsBatchEntry < ActiveRecord::Base
+  self.inheritance_column = :klass
+
   belongs_to :mappings_batch
   belongs_to :mapping
 

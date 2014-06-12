@@ -10,11 +10,11 @@ class MappingsController < ApplicationController
 
   def new_multiple
     paths = params[:paths].present? ? params[:paths].split(',') : []
-    @batch = MappingsBatch.new(paths: paths)
+    @batch = BulkAddBatch.new(paths: paths)
   end
 
   def new_multiple_confirmation
-    @batch = MappingsBatch.new(type: params[:type],
+    @batch = BulkAddBatch.new(type: params[:type],
                                new_url: params[:new_url],
                                tag_list: params[:tag_list],
                                paths: params[:paths].split(/\r?\n|\r/).map(&:strip))
@@ -41,7 +41,7 @@ class MappingsController < ApplicationController
         @batch.process
         @batch.update_column(:seen_outcome, true)
 
-        outcome = MappingsBatchOutcomePresenter.new(@batch)
+        outcome = BulkAddBatchOutcomePresenter.new(@batch)
         flash[:saved_mapping_ids] = outcome.affected_mapping_ids
         flash[:success] = outcome.success_message
         flash[:saved_operation] = outcome.operation_description

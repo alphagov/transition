@@ -1,4 +1,4 @@
-class MappingsBatchOutcomePresenter
+class BulkAddBatchOutcomePresenter
   def initialize(batch)
     @batch = batch
   end

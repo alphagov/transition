@@ -1,0 +1,3 @@
+class BulkAddBatchEntry < MappingsBatchEntry
+
+end

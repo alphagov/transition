@@ -4,7 +4,7 @@ describe BatchesController do
   describe 'GET #show' do
     let(:user) { create(:user) }
     let(:site) { create(:site) }
-    let(:mappings_batch) { create(:mappings_batch, site: site, user: user) }
+    let(:mappings_batch) { create(:bulk_add_batch, site: site, user: user) }
 
     before do
       login_as(user)

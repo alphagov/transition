@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe MappingsBatchOutcomePresenter do
+describe BulkAddBatchOutcomePresenter do
   let!(:site) { create(:site) }
 
   describe '#success_message' do
-    let(:batch) { create(:mappings_batch, site: site, tag_list: 'fee, fi, fo',
+    let(:batch) { create(:bulk_add_batch, site: site, tag_list: 'fee, fi, fo',
                           type: 'archive', update_existing: true,
                           paths: ['/a', '/B', '/c?canonical=no', '/might-exist']) }
 
-    subject { MappingsBatchOutcomePresenter.new(batch).success_message }
+    subject { BulkAddBatchOutcomePresenter.new(batch).success_message }
 
     context 'when updating at least one existing mapping' do
       let!(:existing_mapping) { create(:archived, site: site, path: '/might-exist') }
@@ -54,25 +54,25 @@ describe MappingsBatchOutcomePresenter do
   end
 
   describe '#operation_description' do
-    subject { MappingsBatchOutcomePresenter.new(batch).operation_description }
+    subject { BulkAddBatchOutcomePresenter.new(batch).operation_description }
 
     context 'bulk adding archives' do
-      let(:batch) { build(:mappings_batch, type: 'archive') }
+      let(:batch) { build(:bulk_add_batch, type: 'archive') }
       it { should eql('bulk-add-archive-ignore-existing') }
     end
 
     context 'bulk adding redirects' do
-      let(:batch) { build(:mappings_batch, type: 'redirect') }
+      let(:batch) { build(:bulk_add_batch, type: 'redirect') }
       it { should eql('bulk-add-redirect-ignore-existing') }
     end
 
     context 'bulk adding archives with overwrite' do
-      let(:batch) { build(:mappings_batch, type: 'archive', update_existing: true) }
+      let(:batch) { build(:bulk_add_batch, type: 'archive', update_existing: true) }
       it { should eql('bulk-add-archive-overwrite-existing') }
     end
 
     context 'bulk adding redirects with overwrite' do
-      let(:batch) { build(:mappings_batch, type: 'redirect', update_existing: true) }
+      let(:batch) { build(:bulk_add_batch, type: 'redirect', update_existing: true) }
       it { should eql('bulk-add-redirect-overwrite-existing') }
     end
   end

@@ -1,0 +1,3 @@
+class ImportBatchEntry < MappingsBatchEntry
+
+end
