@@ -55,10 +55,6 @@ module Transition
     # like if you have constraints or database-specific column types
     # config.active_record.schema_format = :sql
 
-    # Use db/structure.sql over db/schema.rb because schema.rb is
-    # DB-agnostic and we're relying on myISAM for speed of hits import
-    config.active_record.schema_format = :sql
-
     # Enable the asset pipeline
     config.assets.enabled = true
 
