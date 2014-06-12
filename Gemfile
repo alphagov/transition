@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.8'
 gem 'activerecord-session_store', '0.1.0'
 gem 'unicorn', '4.6.2'
-gem 'mysql2', '0.3.16'
+gem 'pg', '0.17.1'
 gem 'optic14n', '2.0.0'     # Ideally version should be synced with bouncer
 gem 'gds-sso', '9.3.0'
 gem 'govuk_admin_template', '1.1.1'
