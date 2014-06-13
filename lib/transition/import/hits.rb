@@ -113,6 +113,8 @@ module Transition
         start "Importing #{filename}" do |job|
           absolute_filename = File.expand_path(filename, Rails.root)
           relative_filename = Pathname.new(absolute_filename).relative_path_from(Rails.root).to_s
+          raise RuntimeError, "Postgres TODO 5: #{self}.#{__method__} - \n\t" \
+            "LOAD DATA LOCAL, ON DUPLICATE KEY UPDATE"
 
           import_record = ImportedHitsFile.where(
             filename: relative_filename).first_or_initialize
@@ -133,6 +135,8 @@ module Transition
       def self.from_redirector_mask!(filemask)
         done, unchanged = 0, 0
 
+        raise RuntimeError, "Postgres TODO 8: #{self}.#{__method__} - \n\t" \
+          'Transactional behaviour - needs replicating in Postgres or not?'
         ActiveRecord::Base.connection.execute('SET autocommit=0')
         begin
           Dir[File.expand_path(filemask)].each do |filename|
