@@ -30,7 +30,7 @@ describe Transition::Import::Hits do
       end
 
       it "has not imported hits for hosts we don't know about" do
-        Hit.where(path: '/unknown-host').any?.should be_false
+        Hit.where(path: '/unknown-host').should_not be_any
       end
 
       it 'imports hits with any count, ' \
@@ -38,8 +38,8 @@ describe Transition::Import::Hits do
         Hit.where(path: '/previously-too-few-count').any?.should be_true
       end
 
-      describe 'the first hit' do
-        subject(:hit) { Hit.first }
+      describe 'the homepage hit' do
+        subject(:hit) { Hit.where(path: '/').first }
 
         its(:host)      { should eql(@businesslink_host) }
         its(:hit_on)    { should eql(Date.new(2012, 10, 14)) }
