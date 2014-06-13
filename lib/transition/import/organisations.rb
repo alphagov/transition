@@ -49,7 +49,11 @@ module Transition
 
       def self.from_whitehall!(whitehall_orgs = WhitehallOrgs.new)
         Organisation.transaction do
-          Organisations.new(whitehall_orgs).import!
+          begin
+            Organisations.new(whitehall_orgs).import!
+          rescue PG::InFailedSqlTransaction => e
+            e.transaction.rollback
+          end
         end
       end
 

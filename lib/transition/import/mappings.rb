@@ -36,6 +36,8 @@ module Transition
       mySQL
 
       def self.from_redirector_csv_file!(filename)
+        raise RuntimeError, "Postgres TODO 7: #{self}.#{__method__} - \n\t" \
+          'LOAD DATA LOCAL INFILE, ON DUPLICATE KEY UPDATE, SHA1 -> pgcrypto'
         if managed_by_transition?(filename)
           $stderr.puts "skipped #{filename} because this site is managed by Transition"
         else

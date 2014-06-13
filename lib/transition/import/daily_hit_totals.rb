@@ -13,6 +13,7 @@ module Transition
 
       def self.from_hits!
         $stderr.print 'Refreshing daily hit totals from hits ... '
+        raise RuntimeError, "Postgres TODO 4: #{self}.#{__method__} INSERT INTO"
         [ PRECOMPUTE_TOTALS_FROM_HITS ].each do |statement|
           ActiveRecord::Base.connection.execute(statement)
         end

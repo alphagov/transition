@@ -47,6 +47,16 @@ class Mapping < ActiveRecord::Base
   validates :new_url, host_in_whitelist: { if: :redirect? }
   validates :archive_url, national_archives_url: true
 
+  def self.with_hit_count
+    raise RuntimeError, "Postgres TODO 9: #{self}.#{__method__} - sloppy GROUP BY"
+    # See commented-out scope below
+  end
+  # scope :with_hit_count, -> {
+  #   select('mappings.*, SUM(hits.count) as hit_count').
+  #     joins('LEFT JOIN hits ON hits.mapping_id = mappings.id').
+  #     group('mappings.path_hash')
+  # }
+
   scope :with_type, -> type { where(type: type) }
   scope :redirects, -> { with_type('redirect') }
   scope :archives,  -> { with_type('archive') }

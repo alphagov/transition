@@ -32,18 +32,23 @@ class Organisation < ActiveRecord::Base
   #
   # UNION these two ways in an INNER JOIN to pretend that the FK relationship
   # is in fact a row in organisations_sites.
-  scope :with_sites_managed_by_transition, -> {
-        select('organisations.*, count(sites.id) AS site_count').
-        joins(
-           'INNER JOIN (
-        	    SELECT organisation_id, site_id FROM organisations_sites
-        		  UNION
-        		  SELECT s.organisation_id, s.id FROM sites s
-        	) AS organisations_sites ON organisations_sites.organisation_id = organisations.id').
-        joins('INNER JOIN sites ON sites.id = organisations_sites.site_id').
-        where('sites.managed_by_transition = 1').
-        group('organisations.id').  # Using a sloppy mySQL GROUP. Note well, Postgres upgraders
-        having('site_count > 0') }
+  def self.with_sites_managed_by_transition
+    raise RuntimeError, "Postgres TODO 6: #{self}.#{__method__} - \n\t" \
+      'Digit boolean and sloppy GROUP BY'
+    # See commented-out scope below
+  end
+  # scope :with_sites_managed_by_transition,
+  #       select('organisations.*, count(sites.id) AS site_count').
+  #       joins(
+  #          'INNER JOIN (
+  #       	    SELECT organisation_id, site_id FROM organisations_sites
+  #       		  UNION
+  #       		  SELECT s.organisation_id, s.id FROM sites s
+  #       	) AS organisations_sites ON organisations_sites.organisation_id = organisations.id').
+  #       joins('INNER JOIN sites ON sites.id = organisations_sites.site_id').
+  #       where('sites.managed_by_transition = 1').
+  #       group('organisations.id').  # Using a sloppy mySQL GROUP. Note well, Postgres upgraders
+  #       having('site_count > 0')
 
   def to_param
     whitehall_slug
