@@ -44,7 +44,7 @@ class Site < ActiveRecord::Base
   end
 
   def default_host
-    @default_host ||= hosts.excluding_aka.first
+    @default_host ||= hosts.excluding_aka.order(:id).first
   end
 
   def transition_status
