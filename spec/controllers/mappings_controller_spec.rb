@@ -295,7 +295,7 @@ describe MappingsController do
       subject(:tags_as_strings) { mapping.reload.tags.map(&:to_s) }
 
       it 'has saved all tags as lowercase' do
-        tags_as_strings.should == ['fee', 'fi', 'fo']
+        tags_as_strings.should =~ ['fee', 'fi', 'fo']
       end
     end
   end
