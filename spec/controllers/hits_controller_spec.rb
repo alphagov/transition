@@ -14,15 +14,15 @@ describe HitsController do
 
     let!(:errors) do
       [
-        create(:hit, host: host, hit_on: '2012-12-28', count: 1, http_status: 404),
-        create(:hit, host: host, hit_on: '2012-12-31', count: 1, http_status: 404)
+        create(:hit, host: host, hit_on: '2012-12-28', count: 1, http_status: '404'),
+        create(:hit, host: host, hit_on: '2012-12-31', count: 1, http_status: '404')
       ]
     end
     let!(:archives) do
       [
-       create(:hit, host: host, hit_on: '2012-12-28', count: 2, http_status: 410),
-       create(:hit, host: host, hit_on: '2012-12-31', count: 2, http_status: 410),
-       create(:hit, host: host_alias, hit_on: '2012-12-31', count: 2, http_status: 410)
+       create(:hit, host: host, hit_on: '2012-12-28', count: 2, http_status: '410'),
+       create(:hit, host: host, hit_on: '2012-12-31', count: 2, http_status: '410'),
+       create(:hit, host: host_alias, hit_on: '2012-12-31', count: 2, http_status: '410')
       ]
     end
 
