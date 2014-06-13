@@ -9,14 +9,14 @@ describe Transition::Import::DailyHitTotals do
         @halloween = Date.new(2013, 10, 31)
         @host = create(:host)
         @hits = [
-                  create(:hit, host: @host, path: '/1', count: 10, http_status: 404, hit_on: @halloween),
-                  create(:hit, host: @host, path: '/2', count: 10, http_status: 404, hit_on: @halloween),
-                  create(:hit, host: @host, path: '/3', count: 10, http_status: 404, hit_on: @halloween),
-                  create(:hit, host: @host, path: '/1', count: 10, http_status: 301, hit_on: Date.new(2013, 11, 1)),
-                  create(:hit, host: @host, path: '/1', count: 10, http_status: 404, hit_on: Date.new(2013, 11, 1))
+                  create(:hit, host: @host, path: '/1', count: 10, http_status: '404', hit_on: @halloween),
+                  create(:hit, host: @host, path: '/2', count: 10, http_status: '404', hit_on: @halloween),
+                  create(:hit, host: @host, path: '/3', count: 10, http_status: '404', hit_on: @halloween),
+                  create(:hit, host: @host, path: '/1', count: 10, http_status: '301', hit_on: Date.new(2013, 11, 1)),
+                  create(:hit, host: @host, path: '/1', count: 10, http_status: '404', hit_on: Date.new(2013, 11, 1))
                 ]
         @previous_total = create(:daily_hit_total, host: @host,
-                            http_status: 404, total_on: @halloween,
+                            http_status: '404', total_on: @halloween,
                             count: 13)
         2.times { Transition::Import::DailyHitTotals.from_hits! }
       end
@@ -27,7 +27,7 @@ describe Transition::Import::DailyHitTotals do
 
       describe 'Halloween 404s' do
         subject(:total) do
-          DailyHitTotal.where(total_on: @halloween, http_status: 404).first
+          DailyHitTotal.where(total_on: @halloween, http_status: '404').first
         end
 
         its(:http_status) { should eql('404') }
