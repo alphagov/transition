@@ -70,7 +70,7 @@ describe Host do
       end
 
       subject { site.hosts.excluding_aka.pluck(:hostname) }
-      it { should eql(['www.foo.com', 'foo.com']) }
+      it { should =~ ['www.foo.com', 'foo.com'] }
     end
   end
 
