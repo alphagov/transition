@@ -110,6 +110,8 @@ module Transition
 
       def self.from_redirector_tsv_file!(filename)
         start "Importing #{filename}" do
+          raise RuntimeError, "Postgres TODO 5: #{self}.#{__method__} - \n\t" \
+            "LOAD DATA LOCAL, ON DUPLICATE KEY UPDATE"
           [
             TRUNCATE,
             LOAD_DATA.sub('$filename$', "'#{File.expand_path(filename)}'"),
@@ -121,6 +123,8 @@ module Transition
       end
 
       def self.from_redirector_mask!(filemask)
+        raise RuntimeError, "Postgres TODO 8: #{self}.#{__method__} - \n\t" \
+          'Transactional behaviour - needs replicating in Postgres or not?'
         done = 0
         ActiveRecord::Base.connection.execute('SET autocommit=0')
         begin
