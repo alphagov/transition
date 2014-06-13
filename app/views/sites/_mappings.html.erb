@@ -4,7 +4,7 @@
     <%= render 'global_type' %>
   <% else %>
     <div class="list-group add-big-bottom-margin">
-      <div class="list-group-item">
+      <div class="list-group-item add-vertical-padding">
         <h4 class="list-group-item-heading">
           <%= link_to 'Mappings', site_mappings_path(@site), class: 'no-visit' %>
         </h4>
@@ -14,7 +14,7 @@
         </p>
       </div>
       <% if current_user.can_edit_site?(@site) %>
-        <div class="list-group-item">
+        <div class="list-group-item add-vertical-padding">
           <h4 class="list-group-item-heading">
             <%= link_to 'Add mappings', new_multiple_site_mappings_path(@site), class: 'no-visit' %>
           </h4>
@@ -25,7 +25,7 @@
       <% end %>
       <% most_used_tags = @site.most_used_tags %>
       <% if most_used_tags.any? %>
-        <div class="list-group-item">
+        <div class="list-group-item add-vertical-padding">
           <h4 class="list-group-item-heading">Mappings by tag</h4>
           <div class="list-group-item-text">
             <p class="text-muted add-bottom-margin">Tags used for grouping <%= @site.default_host.hostname %> mappings</p>
