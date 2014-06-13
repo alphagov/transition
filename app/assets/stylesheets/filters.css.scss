@@ -1,16 +1,16 @@
 .filters {
-  @extend %remove-bottom-margin;
-  @extend %add-top-margin;
+  @include remove-bottom-margin;
+  @include add-top-margin;
 
   .panel-heading {
     background: transparent;
   }
 
   .active-filter {
-    @extend %add-bottom-margin;
+    @include add-bottom-margin;
 
     &:last-child {
-      @extend %remove-bottom-margin;
+      @include remove-bottom-margin;
     }
   }
 
