@@ -8,6 +8,8 @@ module Transition
       def self.refresh!(site)
         start 'Creating mappings from HostPaths' do
           Transition::History.as_a_user(user) do
+            raise RuntimeError, "Postgres TODO 2: #{self}.#{__method__} - \n\t" \
+              'Sloppy GROUP BY'
             site_paths = site.host_paths.where('mapping_id is null').group('c14n_path_hash').pluck(:path)
             site_paths.each do |uncanonicalized_path|
               # Try to create them (there may be duplicates in the set and they may
