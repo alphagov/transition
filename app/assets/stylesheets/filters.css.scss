@@ -25,7 +25,7 @@
 a.filter-option,
 a.filter-option:visited,
 .filter-option {
-  color: inherit;
+  color: inherit !important;
 
   .glyphicon {
     @extend %glyphicon-smaller-than-text;
@@ -64,7 +64,6 @@ a.filter-option:visited,
 }
 
 .remove-filters {
-  @extend .inherit;
   float: right;
   margin: 5px;
 }

@@ -3,7 +3,7 @@
     <div class="panel panel-default">
       <header class="panel-heading">
         <% if @filter.active? %>
-          <%= link_to site_mappings_path(@site), class: 'remove-filters', title: 'Remove all filters' do %>
+          <%= link_to site_mappings_path(@site), class: 'remove-filters inherit', title: 'Remove all filters' do %>
             <span class="glyphicon glyphicon-remove"></span>
           <% end %>
         <% end %>
