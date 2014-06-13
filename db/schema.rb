@@ -15,99 +15,115 @@ ActiveRecord::Schema.define(:version => 20140606155408) do
 
   create_table "daily_hit_totals", :force => true do |t|
     t.integer "host_id",                  :null => false
-    t.string  "http_status", :limit => 6, :null => false
+    t.string  "http_status", :limit => 3, :null => false
     t.integer "count",                    :null => false
     t.date    "total_on",                 :null => false
   end
 
-  add_index "daily_hit_totals", ["host_id", "total_on", "http_status"], :name => "daily_hit_totals_host_id_total_on_http_status_key", :unique => true
+  add_index "daily_hit_totals", ["host_id", "total_on", "http_status"], :name => "index_daily_hit_totals_on_host_id_and_total_on_and_http_status", :unique => true
 
   create_table "hits", :force => true do |t|
     t.integer "host_id",                     :null => false
-    t.string  "path",        :limit => 2048, :null => false
-    t.string  "path_hash",   :limit => 80,   :null => false
-    t.string  "http_status", :limit => 6,    :null => false
+    t.string  "path",        :limit => 1024, :null => false
+    t.string  "path_hash",   :limit => 40,   :null => false
+    t.string  "http_status", :limit => 3,    :null => false
     t.integer "count",                       :null => false
     t.date    "hit_on",                      :null => false
     t.integer "mapping_id"
   end
 
-  add_index "hits", ["host_id", "path_hash", "hit_on", "http_status"], :name => "hits_host_id_path_hash_hit_on_http_status_key", :unique => true
+  add_index "hits", ["host_id", "hit_on"], :name => "index_hits_on_host_id_and_hit_on"
+  add_index "hits", ["host_id", "http_status"], :name => "index_hits_on_host_id_and_http_status"
+  add_index "hits", ["host_id", "path_hash", "hit_on", "http_status"], :name => "index_hits_on_host_id_and_path_hash_and_hit_on_and_http_status", :unique => true
+  add_index "hits", ["host_id", "path_hash"], :name => "index_hits_on_host_id_and_path_hash"
+  add_index "hits", ["host_id"], :name => "index_hits_on_host_id"
+  add_index "hits", ["mapping_id"], :name => "index_hits_on_mapping_id"
+  add_index "hits", ["path_hash"], :name => "index_hits_on_path_hash"
 
   create_table "hits_staging", :id => false, :force => true do |t|
-    t.string  "hostname",    :limit => 510
-    t.string  "path",        :limit => 2048
-    t.string  "http_status", :limit => 6
+    t.string  "hostname"
+    t.string  "path",        :limit => 1024
+    t.string  "http_status", :limit => 3
     t.integer "count"
     t.date    "hit_on"
   end
 
   create_table "host_paths", :force => true do |t|
-    t.string  "path",           :limit => 4096
-    t.string  "path_hash",      :limit => 510
-    t.string  "c14n_path_hash", :limit => 510
+    t.string  "path",           :limit => 2048
+    t.string  "path_hash"
+    t.string  "c14n_path_hash"
     t.integer "host_id"
     t.integer "mapping_id"
   end
 
-  add_index "host_paths", ["host_id", "path_hash"], :name => "host_paths_host_id_path_hash_key", :unique => true
+  add_index "host_paths", ["c14n_path_hash"], :name => "index_host_paths_on_c14n_path_hash"
+  add_index "host_paths", ["host_id", "path_hash"], :name => "index_host_paths_on_host_id_and_path_hash", :unique => true
+  add_index "host_paths", ["mapping_id"], :name => "index_host_paths_on_mapping_id"
 
   create_table "hosts", :force => true do |t|
-    t.integer  "site_id",                          :null => false
-    t.string   "hostname",          :limit => 510, :null => false
+    t.integer  "site_id",           :null => false
+    t.string   "hostname",          :null => false
     t.integer  "ttl"
-    t.string   "cname",             :limit => 510
-    t.string   "live_cname",        :limit => 510
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.string   "ip_address",        :limit => 510
+    t.string   "cname"
+    t.string   "live_cname"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.string   "ip_address"
     t.integer  "canonical_host_id"
   end
 
-  add_index "hosts", ["hostname"], :name => "hosts_hostname_key", :unique => true
+  add_index "hosts", ["canonical_host_id"], :name => "index_hosts_on_canonical_host_id"
+  add_index "hosts", ["hostname"], :name => "index_hosts_on_host", :unique => true
+  add_index "hosts", ["site_id"], :name => "index_hosts_on_site_id"
 
   create_table "mappings", :force => true do |t|
-    t.integer "site_id",                         :null => false
-    t.string  "path",            :limit => 2048, :null => false
-    t.string  "path_hash",       :limit => 80,   :null => false
+    t.integer "site_id",                                            :null => false
+    t.string  "path",            :limit => 1024,                    :null => false
+    t.string  "path_hash",       :limit => 40,                      :null => false
     t.text    "new_url"
     t.text    "suggested_url"
     t.text    "archive_url"
-    t.boolean "from_redirector"
-    t.string  "type",            :limit => 510,  :null => false
+    t.boolean "from_redirector",                 :default => false
+    t.string  "type",                                               :null => false
   end
 
-  add_index "mappings", ["site_id", "path_hash"], :name => "mappings_site_id_path_hash_key", :unique => true
+  add_index "mappings", ["site_id", "path_hash"], :name => "index_mappings_on_site_id_and_path_hash", :unique => true
+  add_index "mappings", ["site_id", "type"], :name => "index_mappings_on_site_id_and_type"
+  add_index "mappings", ["site_id"], :name => "index_mappings_on_site_id"
 
   create_table "mappings_batch_entries", :force => true do |t|
-    t.string  "path",              :limit => 4096
+    t.string  "path",              :limit => 2048
     t.integer "mappings_batch_id"
     t.integer "mapping_id"
-    t.boolean "processed"
+    t.boolean "processed",                         :default => false
   end
 
+  add_index "mappings_batch_entries", ["mappings_batch_id"], :name => "index_mappings_batch_entries_on_mappings_batch_id"
+
   create_table "mappings_batches", :force => true do |t|
-    t.string   "tag_list",        :limit => 510
-    t.string   "new_url",         :limit => 510
+    t.string   "tag_list"
+    t.string   "new_url"
     t.boolean  "update_existing"
     t.integer  "user_id"
     t.integer  "site_id"
-    t.datetime "created_at",                                             :null => false
-    t.datetime "updated_at",                                             :null => false
-    t.string   "state",           :limit => 510, :default => "unqueued"
-    t.boolean  "seen_outcome"
-    t.string   "type",            :limit => 510
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.string   "state",           :default => "unqueued"
+    t.boolean  "seen_outcome",    :default => false
+    t.string   "type"
   end
+
+  add_index "mappings_batches", ["user_id", "site_id"], :name => "index_mappings_batches_on_user_id_and_site_id"
 
   create_table "mappings_staging", :id => false, :force => true do |t|
     t.text   "old_url"
     t.text   "new_url"
-    t.string "host",          :limit => 510
-    t.string "path",          :limit => 510
-    t.string "path_hash",     :limit => 510
+    t.string "host"
+    t.string "path"
+    t.string "path_hash"
     t.text   "suggested_url"
     t.text   "archive_url"
-    t.string "type",          :limit => 510
+    t.string "type"
   end
 
   create_table "organisational_relationships", :force => true do |t|
@@ -115,103 +131,113 @@ ActiveRecord::Schema.define(:version => 20140606155408) do
     t.integer "child_organisation_id"
   end
 
+  add_index "organisational_relationships", ["child_organisation_id"], :name => "index_organisational_relationships_on_child_organisation_id"
+  add_index "organisational_relationships", ["parent_organisation_id"], :name => "index_organisational_relationships_on_parent_organisation_id"
+
   create_table "organisations", :force => true do |t|
-    t.string   "title",          :limit => 510, :null => false
-    t.string   "homepage",       :limit => 510
-    t.string   "furl",           :limit => 510
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-    t.string   "css",            :limit => 510
-    t.string   "ga_profile_id",  :limit => 32
-    t.string   "whitehall_slug", :limit => 510
-    t.string   "whitehall_type", :limit => 510
-    t.string   "abbreviation",   :limit => 510
+    t.string   "title",                        :null => false
+    t.string   "homepage"
+    t.string   "furl"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+    t.string   "css"
+    t.string   "ga_profile_id",  :limit => 16
+    t.string   "whitehall_slug"
+    t.string   "whitehall_type"
+    t.string   "abbreviation"
   end
 
-  add_index "organisations", ["whitehall_slug"], :name => "organisations_whitehall_slug_key", :unique => true
+  add_index "organisations", ["title"], :name => "index_organisations_on_title"
+  add_index "organisations", ["whitehall_slug"], :name => "index_organisations_on_whitehall_slug", :unique => true
 
   create_table "organisations_sites", :id => false, :force => true do |t|
     t.integer "site_id",         :null => false
     t.integer "organisation_id", :null => false
   end
 
-  add_index "organisations_sites", ["site_id", "organisation_id"], :name => "organisations_sites_site_id_organisation_id_key", :unique => true
+  add_index "organisations_sites", ["site_id", "organisation_id"], :name => "index_organisations_sites_on_site_id_and_organisation_id", :unique => true
 
   create_table "sessions", :force => true do |t|
-    t.string   "session_id", :limit => 510, :null => false
+    t.string   "session_id", :null => false
     t.text     "data"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "sites", :force => true do |t|
-    t.integer  "organisation_id",                            :null => false
-    t.string   "abbr",                        :limit => 510, :null => false
-    t.string   "query_params",                :limit => 510
-    t.datetime "tna_timestamp",                              :null => false
-    t.string   "homepage",                    :limit => 510
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
-    t.string   "global_http_status",          :limit => 6
+    t.integer  "organisation_id",                                             :null => false
+    t.string   "abbr",                                                        :null => false
+    t.string   "query_params"
+    t.datetime "tna_timestamp",                                               :null => false
+    t.string   "homepage"
+    t.datetime "created_at",                                                  :null => false
+    t.datetime "updated_at",                                                  :null => false
+    t.string   "global_http_status",          :limit => 3
     t.text     "global_new_url"
-    t.boolean  "managed_by_transition",                      :null => false
+    t.boolean  "managed_by_transition",                    :default => true,  :null => false
     t.date     "launch_date"
-    t.string   "special_redirect_strategy",   :limit => 510
-    t.boolean  "global_redirect_append_path",                :null => false
-    t.string   "global_type",                 :limit => 510
+    t.string   "special_redirect_strategy"
+    t.boolean  "global_redirect_append_path",              :default => false, :null => false
+    t.string   "global_type"
   end
 
-  add_index "sites", ["abbr"], :name => "sites_abbr_key", :unique => true
+  add_index "sites", ["abbr"], :name => "index_sites_on_site", :unique => true
+  add_index "sites", ["organisation_id"], :name => "index_sites_on_organisation_id"
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
     t.integer  "taggable_id"
-    t.string   "taggable_type", :limit => 510
+    t.string   "taggable_type"
     t.integer  "tagger_id"
-    t.string   "tagger_type",   :limit => 510
-    t.string   "context",       :limit => 256
+    t.string   "tagger_type"
+    t.string   "context",       :limit => 128
     t.datetime "created_at"
   end
 
-  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], :name => "taggings_tag_id_taggable_id_taggable_type_context_tagger_id_key", :unique => true
+  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], :name => "taggings_idx", :unique => true
   add_index "taggings", ["taggable_type", "taggable_id"], :name => "index_taggings_on_taggable_type_and_taggable_id"
 
   create_table "tags", :force => true do |t|
-    t.string  "name",           :limit => 510
-    t.integer "taggings_count",                :default => 0
+    t.string  "name"
+    t.integer "taggings_count", :default => 0
   end
 
-  add_index "tags", ["name"], :name => "tags_name_key", :unique => true
+  add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
 
   create_table "users", :force => true do |t|
-    t.string   "name",                :limit => 510
-    t.string   "email",               :limit => 510
-    t.string   "uid",                 :limit => 510
+    t.string   "name"
+    t.string   "email"
+    t.string   "uid"
     t.text     "permissions"
-    t.boolean  "remotely_signed_out"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
-    t.string   "organisation_slug",   :limit => 510
-    t.boolean  "is_robot"
+    t.boolean  "remotely_signed_out", :default => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.string   "organisation_slug"
+    t.boolean  "is_robot",            :default => false
   end
 
   create_table "versions", :force => true do |t|
-    t.string   "item_type",      :limit => 510, :null => false
-    t.integer  "item_id",                       :null => false
-    t.string   "event",          :limit => 510, :null => false
-    t.string   "whodunnit",      :limit => 510
+    t.string   "item_type",      :null => false
+    t.integer  "item_id",        :null => false
+    t.string   "event",          :null => false
+    t.string   "whodunnit"
     t.integer  "user_id"
     t.text     "object_changes"
     t.text     "object"
     t.datetime "created_at"
   end
 
+  add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
+
   create_table "whitelisted_hosts", :force => true do |t|
-    t.string   "hostname",   :limit => 510, :null => false
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.string   "hostname",   :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
-  add_index "whitelisted_hosts", ["hostname"], :name => "whitelisted_hosts_hostname_key", :unique => true
+  add_index "whitelisted_hosts", ["hostname"], :name => "index_whitelisted_hosts_on_hostname", :unique => true
 
 end
