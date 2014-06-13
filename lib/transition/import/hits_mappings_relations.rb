@@ -53,6 +53,8 @@ module Transition
           GROUP  BY hits.host_id,
                     hits.path_hash
         mySQL
+        raise RuntimeError, "Postgres TODO 1: #{self}.#{__method__} -\n\t"\
+          'Sloppy GROUP BY'
         ActiveRecord::Base.connection.execute(sql)
       end
 
