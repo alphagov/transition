@@ -84,38 +84,51 @@ module Transition
         '.*wp-login.*',
       ]
 
-      TRUNCATE = <<-mySQL
+      TRUNCATE = <<-postgreSQL
         TRUNCATE hits_staging
-      mySQL
+      postgreSQL
 
-      LOAD_DATA = <<-mySQL
-        LOAD DATA LOCAL INFILE $filename$
-        INTO TABLE
-          hits_staging
-        FIELDS TERMINATED BY '\t'
-        LINES TERMINATED BY '\\n'
-        IGNORE 1 LINES
-          (hit_on, count, http_status, hostname, path)
-      mySQL
+      LOAD_DATA = <<-postgreSQL
+        COPY hits_staging (hit_on, count, http_status, hostname, path)
+        FROM '$filename$'
+        WITH DELIMITER AS '\t' CSV HEADER
+      postgreSQL
 
-      INSERT_FROM_STAGING = <<-mySQL
-        INSERT INTO hits (host_id, path, path_hash, http_status, `count`, hit_on)
-        SELECT h.id, st.path, SHA1(st.path), st.http_status, st.count, st.hit_on
+      INSERT_FROM_STAGING = <<-postgreSQL
+        INSERT INTO hits (host_id, path, path_hash, http_status, count, hit_on)
+        SELECT h.id, st.path, encode(digest(st.path, 'sha1'), 'hex'), st.http_status, st.count, st.hit_on
         FROM   hits_staging st
         INNER JOIN hosts h on h.hostname = st.hostname
-        AND    st.path NOT IN (#{ PATHS_TO_IGNORE.map { |path| "'" + path + "'" }.join(', ') })
-        AND    st.path NOT REGEXP '#{ PATTERNS_TO_IGNORE.join('|') }'
-        ON DUPLICATE KEY UPDATE hits.count=st.count
-      mySQL
+        WHERE st.path NOT IN (#{ PATHS_TO_IGNORE.map { |path| "'" + path + "'" }.join(', ') })
+          AND st.path !~ '#{ PATTERNS_TO_IGNORE.join('|') }'
+          AND NOT EXISTS (
+            SELECT 1 FROM hits
+            WHERE path_hash = encode(digest(st.path, 'sha1'), 'hex') AND
+                  host_id = h.id AND
+                  http_status = st.http_status AND
+                  hit_on = st.hit_on
+          )
+      postgreSQL
+
+      UPDATE_FROM_STAGING = <<-postgreSQL
+        UPDATE hits
+        SET count = st.count
+        FROM hits_staging st
+        INNER JOIN hosts ON hosts.hostname = st.hostname
+        WHERE
+          hits.path_hash   = encode(digest(st.path, 'sha1'), 'hex') AND
+          hits.http_status = st.http_status AND
+          hits.hit_on      = st.hit_on AND
+          hits.host_id     = hosts.id
+      postgreSQL
 
       def self.from_redirector_tsv_file!(filename)
         start "Importing #{filename}" do
-          raise RuntimeError, "Postgres TODO 5: #{self}.#{__method__} - \n\t" \
-            "LOAD DATA LOCAL, ON DUPLICATE KEY UPDATE"
           [
             TRUNCATE,
-            LOAD_DATA.sub('$filename$', "'#{File.expand_path(filename)}'"),
-            INSERT_FROM_STAGING
+            LOAD_DATA.sub('$filename$', File.expand_path(filename)),
+            INSERT_FROM_STAGING,
+            UPDATE_FROM_STAGING
           ].flatten.each do |statement|
             ActiveRecord::Base.connection.execute(statement)
           end
@@ -123,18 +136,14 @@ module Transition
       end
 
       def self.from_redirector_mask!(filemask)
-        raise RuntimeError, "Postgres TODO 8: #{self}.#{__method__} - \n\t" \
-          'Transactional behaviour - needs replicating in Postgres or not?'
         done = 0
-        ActiveRecord::Base.connection.execute('SET autocommit=0')
+        ActiveRecord::Base.connection.execute('BEGIN')
         begin
-          Dir[File.expand_path(filemask)].each do |filename|
-            Hits.from_redirector_tsv_file!(filename)
-            done += 1
+        Dir[File.expand_path(filemask)].each do |filename|
+          Hits.from_redirector_tsv_file!(filename)
+          done += 1
           end
           ActiveRecord::Base.connection.execute('COMMIT')
-        ensure
-          ActiveRecord::Base.connection.execute('SET autocommit=1')
         end
 
         console_puts "#{done} hits files imported."
