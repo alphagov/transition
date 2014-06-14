@@ -96,7 +96,6 @@ describe Transition::Import::Hits do
     context 'a hits row already exists with a different count', testing_before_all: true do
       before :all do
         create_test_hosts
-
         date = Time.utc(2012, 10, 15)
         create(:hit, host: @businesslink_host, path: '/', count: 10, http_status: '301', hit_on: date)
         Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/businesslink_2012-10-15.tsv')
