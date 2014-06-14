@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20140925104317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pgcrypto"
 
   create_table "daily_hit_totals", force: true do |t|
     t.integer "host_id",               null: false
