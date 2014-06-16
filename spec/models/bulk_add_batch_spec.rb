@@ -111,6 +111,11 @@ describe BulkAddBatch do
       entry.should_not be_nil
       entry.mapping.should == existing_mapping
     end
+
+    it 'should create entries of the right subclass' do
+      entry = mappings_batch.entries.first
+      entry.should be_a(BulkAddBatchEntry)
+    end
   end
 
   describe '#process' do

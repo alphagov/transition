@@ -54,14 +54,14 @@ class BulkAddBatch < MappingsBatch
     existing_mappings = site.mappings.where(path_hash: canonical_path_hashes)
 
     records = canonical_paths.map do |canonical_path|
-      entry = MappingsBatchEntry.new(path: canonical_path)
+      entry = BulkAddBatchEntry.new(path: canonical_path)
       entry.mappings_batch = self
       path_hash = Digest::SHA1.hexdigest(canonical_path)
       entry.mapping = existing_mappings.detect { |mapping| mapping.path_hash == path_hash }
       entry
     end
 
-    MappingsBatchEntry.import(records, validate: false)
+    BulkAddBatchEntry.import(records, validate: false)
   end
 
   def process
