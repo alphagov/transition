@@ -31,6 +31,10 @@ class Site < ActiveRecord::Base
           joins('LEFT JOIN mappings on mappings.site_id = sites.id').
           group('sites.id') }
 
+  def mapping_count
+    read_attribute(:mapping_count).to_i
+  end
+
   def to_param
     abbr
   end
