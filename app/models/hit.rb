@@ -20,19 +20,21 @@ class Hit < ActiveRecord::Base
   validates :path_hash, presence: true
 
   scope :by_host_and_path_and_status, -> {
-    select('hits.path, sum(hits.count) as count, hits.http_status, hits.mapping_id, hits.host_id').
-      group(:path_hash, :http_status, :host_id)
+    select('hits.path AS path, sum(hits.count) as count, hits.host_id, '\
+           'hits.http_status, MIN(hits.mapping_id) as mapping_id')
+      .group(:path, :http_status, :host_id)
   }
   scope :by_path_and_status, -> {
-    select('hits.path, sum(hits.count) as count, hits.http_status, hits.mapping_id, hits.host_id').
-      group(:path_hash, :http_status)
+    select('hits.path, sum(hits.count) as count, hits.http_status,'\
+           'MIN(hits.mapping_id) AS mapping_id, MIN(hits.host_id) AS host_id')
+      .group(:path, :http_status)
   }
   scope :points_by_date, -> {
     select('hits.hit_on, sum(hits.count) as count').group(:hit_on)
   }
   scope :points_by_date_and_status, -> {
-    select('hits.hit_on, sum(hits.count) as count, hits.http_status').
-      group(:hit_on, :http_status)
+    select('hits.hit_on, sum(hits.count) as count, hits.http_status')
+      .group(:hit_on, :http_status)
   }
   scope :in_range, ->(start_date, end_date) { where('(hit_on >= ?) AND (hit_on <= ?)', start_date, end_date) }
 
