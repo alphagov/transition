@@ -15,6 +15,9 @@ FactoryGirl.define do
       type 'redirect'
       new_url 'https://www.gov.uk/somewhere'
     end
+    factory :unresolved do
+      type 'unresolved'
+    end
 
     before(:create) do |_, evaluator|
       if PaperTrail.enabled? && PaperTrail.whodunnit.nil? && evaluator.as_user
