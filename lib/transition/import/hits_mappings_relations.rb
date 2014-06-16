@@ -45,16 +45,21 @@ module Transition
         #
         # Sloppy GROUP BY - path is not subject to aggregate. Note well,
         # Postgres upgraders
-        sql = <<-mySQL
-          INSERT IGNORE INTO host_paths(host_id, path_hash, path)
-          SELECT hits.host_id, hits.path_hash, path
+        sql = <<-postgreSQL
+          INSERT INTO host_paths(host_id, path_hash, path)
+          SELECT hits.host_id, hits.path_hash, hits.path
           FROM   hits
+          WHERE NOT EXISTS (
+            SELECT 1 FROM host_paths
+            WHERE
+              host_paths.host_id   = hits.host_id AND
+              host_paths.path_hash = hits.path_hash
+          )
           #{where_host_is_in_site}
           GROUP  BY hits.host_id,
-                    hits.path_hash
-        mySQL
-        raise RuntimeError, "Postgres TODO 1: #{self}.#{__method__} -\n\t"\
-          'Sloppy GROUP BY'
+                    hits.path_hash,
+                    hits.path
+        postgreSQL
         ActiveRecord::Base.connection.execute(sql)
       end
 
@@ -78,14 +83,15 @@ module Transition
       def refresh_hits_from_host_paths!
         and_host_is_in_site = site ? "AND host_paths.host_id #{in_site_hosts}" : ''
 
-        sql = <<-mySQL
-          UPDATE hits USE INDEX (index_hits_on_host_id_and_path_hash)
-                 INNER JOIN host_paths
-                         ON host_paths.host_id = hits.host_id
-                            AND host_paths.path_hash = hits.path_hash
-                            #{and_host_is_in_site}
-          SET    hits.mapping_id = host_paths.mapping_id
-        mySQL
+        sql = <<-postgreSQL
+          UPDATE hits
+          SET  mapping_id = host_paths.mapping_id
+          FROM host_paths
+          WHERE
+            host_paths.host_id = hits.host_id AND
+            host_paths.path_hash = hits.path_hash
+            #{and_host_is_in_site}
+        postgreSQL
         ActiveRecord::Base.connection.execute(sql)
       end
 
