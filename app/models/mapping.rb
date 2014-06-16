@@ -76,6 +76,13 @@ class Mapping < ActiveRecord::Base
   end
 
   ##
+  # Return the occasional bit-part attribute +hit_count+ as a number.
+  # Preserve the possible +nil+ value.
+  def hit_count
+    read_attribute(:hit_count) && read_attribute(:hit_count).to_i
+  end
+
+  ##
   # Reconstruct old URL based on path and default site hostname
   def old_url
     "http://#{self.site.default_host.hostname}#{self.path}"
