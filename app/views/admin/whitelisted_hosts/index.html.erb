@@ -34,7 +34,7 @@
   </thead>
   <tbody>
     <% @whitelisted_hosts.each do |host| %>
-      <tr>
+      <tr <% if flash[:hostname] == host.hostname %>class="selected-row"<% end %>>
         <td><%= host.hostname %></td>
         <td><%= I18n.l host.created_at, :format => :govuk_date %></td>
         <td><%= host.originator %></td>
