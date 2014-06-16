@@ -5,22 +5,37 @@ module Transition
     class DailyHitTotals
       extend ConsoleJobWrapper
 
-      PRECOMPUTE_TOTALS_FROM_HITS = <<-mySQL
-        INSERT INTO daily_hit_totals (host_id, http_status, `count`, total_on)
-        (
-          SELECT host_id, http_status, SUM(count) as `count`, hit_on
+      INSERT_TOTALS_FROM_HITS = <<-postgreSQL
+        INSERT INTO daily_hit_totals (host_id, http_status, count, total_on)
+          SELECT host_id, http_status, SUM(count) as count, hit_on
+          FROM hits
+          WHERE NOT EXISTS (
+            SELECT 1 FROM daily_hit_totals
+            WHERE
+              host_id     = hits.host_id AND
+              http_status = hits.http_status AND
+              total_on    = hits.hit_on
+          )
+          GROUP BY host_id, http_status, hit_on
+      postgreSQL
+
+      UPDATE_TOTALS_FROM_HITS = <<-postgreSQL
+        UPDATE daily_hit_totals totals SET count = sums.count
+        FROM (
+          SELECT host_id, http_status, SUM(count) AS count, hit_on
           FROM hits
           GROUP BY host_id, http_status, hit_on
-        )
-        ON DUPLICATE KEY UPDATE `count` = VALUES(`count`)
-      mySQL
+        ) AS sums
+        WHERE
+          totals.host_id     = sums.host_id AND
+          totals.http_status = sums.http_status AND
+          totals.total_on    = sums.hit_on
+      postgreSQL
 
       def self.from_hits!
         start 'Refreshing daily hit totals from hits' do
-          raise RuntimeError, "Postgres TODO 4: #{self}.#{__method__} INSERT INTO"
-          [ PRECOMPUTE_TOTALS_FROM_HITS ].each do |statement|
-            ActiveRecord::Base.connection.execute(statement)
-          end
+          ActiveRecord::Base.connection.execute(UPDATE_TOTALS_FROM_HITS)
+          ActiveRecord::Base.connection.execute(INSERT_TOTALS_FROM_HITS)
         end
       end
     end
