@@ -73,7 +73,7 @@
     <% end %>
   </table>
 
-  <%= render partial: 'tag_list_field', locals: { bulk_tagger: @batch } %>
+  <%= render partial: 'shared/tag_list_field', locals: { tag_list: @batch.tag_list } %>
 
   <%= button_tag 'Save', class: 'btn btn-success' %>
 <% end %>

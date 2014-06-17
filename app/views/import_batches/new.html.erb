@@ -1,0 +1,33 @@
+<% breadcrumb(:import_mappings, @site) %>
+
+<%= content_for :page_title, 'Import mappings' %>
+<div class="page-title-with-border">
+  <h1>
+    <span class="small"><%= @site.default_host.hostname %></span>
+    Import mappings
+  </h1>
+</div>
+
+<p class="lead normal add-bottom-margin">
+  Please paste a <abbr title="comma separated values">CSV</abbr> or <abbr title="tab separated values">TSV</abbr> with the columns "old url,new url".<br />
+  When a URL is being archived "new URL" should be set to "TNA" or a National Archives URL.<br />
+  Omitting the new URL will create it as Unresolved.
+</p>
+<h4>Example format</h4>
+<blockquote>old url,new url
+  <br />http://<%= @site.default_host.hostname %>/redirect-from,https://www.gov.uk/redirect-to
+  <br />http://<%= @site.default_host.hostname %>/unresolved
+  <br />http://<%= @site.default_host.hostname %>/alternative-archive,TNA
+</blockquote>
+<%= form_for [@site, @import], role: 'form' do |f| %>
+  <div class="form-group">
+    <div class="old-urls">
+      <%= f.text_area :raw_csv, class: 'form-control', placeholder: 'old-url,new-url' %>
+    </div>
+  </div>
+  <%= render partial: 'shared/tag_list_field', locals: { tag_list: @import.tag_list } %>
+
+  <%= f.button 'Continue', class: 'add-vertical-margins btn btn-success' %>
+
+  <%= render partial: 'shared/explain_confirmation' %>
+<% end %>

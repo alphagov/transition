@@ -30,7 +30,7 @@
             <%= link_to 'Add mappings', new_multiple_site_mappings_path(@site), class: 'no-visit' %>
           </h4>
           <p class="list-group-item-text text-muted">
-            Create new mappings from a list of paths
+            Create new mappings from a list of paths or <%= link_to 'import from a spreadsheet', new_site_import_batch_path(@site), class: 'link-muted' %>
           </p>
         </div>
       <% end %>

@@ -2,6 +2,7 @@ require 'view/mappings/canonical_filter'
 
 class MappingsController < ApplicationController
   include PaperTrail::Rails::Controller
+  include Transition::Controller::CheckUserCanEditMappings
 
   tracks_mappings_progress except: [:find_global]
 
@@ -168,13 +169,6 @@ private
 
   def bulk_editor_class
     params[:operation] == 'tag' ? View::Mappings::BulkTagger : View::Mappings::BulkEditor
-  end
-
-  def check_user_can_edit
-    unless current_user.can_edit_site?(@site)
-      message = "You don't have permission to edit mappings for #{@site.default_host.hostname}"
-      redirect_to site_mappings_path(@site), alert: message
-    end
   end
 
   def back_or_mappings_index

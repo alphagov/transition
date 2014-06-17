@@ -61,3 +61,8 @@ crumb :edit_multiple_mappings do |site|
   link 'Edit multiple mappings', edit_multiple_site_mappings_path(site)
   parent :mappings, site
 end
+
+crumb :import_mappings do |site|
+  link "Import mappings", new_site_import_batch_path(site)
+  parent :site, site
+end

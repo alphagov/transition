@@ -18,8 +18,8 @@
       </header>
       <div class="modal-body remove-bottom-padding">
         <% if @bulk_edit.operation == 'tag' %>
-          <%= render partial: 'tag_list_field',
-                     locals: { bulk_tagger: @bulk_edit, modal: true } %>
+          <%= render partial: 'shared/tag_list_field',
+                     locals: { tag_list: @bulk_edit.tag_list, modal: true } %>
         <% end %>
         <%= render partial: 'edit_multiple_redirect',
                    locals: { new_url: @bulk_edit.new_url,
