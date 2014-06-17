@@ -5,7 +5,8 @@ development:
   password: transition
   encoding: utf8
   host: localhost
-  local_infile: true
+  variables:
+    work_mem: 10MB
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
