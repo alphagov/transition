@@ -43,7 +43,7 @@ module SitesHelper
   end
 
   def site_unresolved_link(site)
-    link_to pluralize(number_with_delimiter(site.mappings.unresolved.count), 'unresolved'),
+    link_to "#{number_with_delimiter(site.mappings.unresolved.count)} unresolved",
       site_mappings_path(site, type: 'unresolved'),
       class: 'link-muted'
   end
