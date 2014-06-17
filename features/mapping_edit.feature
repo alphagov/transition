@@ -26,10 +26,14 @@ Feature: Edit a site's mapping
     And I should see "/about" in the modal window
 
   @javascript
-  Scenario: Editing a site mapping that is an archive
+  Scenario: Changing the type of mapping
     When I make the mapping an archive
     Then I should not see redirect fields
     But I should see archive fields
+    When I make the mapping unresolved
+    Then I should not see redirect fields
+    And I should not see archive fields
+    But I should see help for the unresolved status
 
   @javascript
   Scenario: Adding an alternative archive URL

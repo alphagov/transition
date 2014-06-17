@@ -73,15 +73,14 @@ module HitsHelper
   def http_status_for(mapping)
     if mapping.redirect?
       '301'
-    elsif mapping.archive?
+    elsif mapping.archive? || mapping.unresolved?
       '410'
     end
   end
 
   def show_hit_has_become?(hit)
-    (hit.archive? || hit.error? || hit.redirect?) &&
-        hit.mapping &&
-        (hit.http_status != http_status_for(hit.mapping))
+    ((hit.archive? || hit.error?) && hit.mapping.redirect?) ||
+    ((hit.redirect? || hit.error?) && hit.mapping.archive?)
   end
 
   def hit_is_now(hit)
@@ -94,5 +93,9 @@ module HitsHelper
     elsif hit.error? && hit.mapping.archive?
       '<span class="middle-grey">Error fixed</span> &mdash; now archived'.html_safe
     end
+  end
+
+  def hit_has_unresolved_mapping
+    '<span class="middle-grey">Unresolved</span> &mdash; needs a decision'.html_safe
   end
 end

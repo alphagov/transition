@@ -15,4 +15,5 @@ ActiveSupport::Inflector.inflections do |inflect|
   # have to be renamed, e.g. NonBlankUrlValidator -> NonBlankURLValidator
   inflect.acronym 'HTTP'
   inflect.acronym 'URL'
+  inflect.uncountable 'unresolved'
 end

@@ -6,18 +6,20 @@ Feature: Editing multiple mappings for a site
   Background:
     Given I have logged in as a GDS Editor
     And there is a site called directgov belonging to an organisation directgov with these mappings:
-      | type     | path             | new_url                                 |
-      | redirect | /a               | http://a.gov.uk/directgov               |
-      | redirect | /about/branding  | http://a.gov.uk/branding                |
-      | archive  | /about/corporate |                                         |
-      | archive  | /z1              |                                         |
-      | archive  | /z2              |                                         |
-      | archive  | /z3              |                                         |
-      | archive  | /z4              |                                         |
-      | archive  | /z5              |                                         |
-      | archive  | /z6              |                                         |
-      | archive  | /z7              |                                         |
-      | archive  | /z8              |                                         |
+      | type       | path             | new_url                        | tags       |
+      | redirect   | /a               | http://a.gov.uk/directgov      |            |
+      | redirect   | /about/branding  | http://a.gov.uk/branding       |            |
+      | archive    | /about/corporate |                                |            |
+      | archive    | /z1              |                                |            |
+      | archive    | /z2              |                                |            |
+      | archive    | /z3              |                                |            |
+      | archive    | /z4              |                                |            |
+      | archive    | /z5              |                                |            |
+      | archive    | /z6              |                                |            |
+      | archive    | /z7              |                                |            |
+      | archive    | /z8              |                                |            |
+      | unresolved | /u0              |                                | unresolved |
+      | unresolved | /u1              |                                | unresolved |
     And I visit the path /sites/directgov/mappings
 
   Scenario: Selecting multiple mappings to redirect without javascript
@@ -54,7 +56,7 @@ Feature: Editing multiple mappings for a site
     And I go to edit the selected mappings
     And I save my changes
     And I click the link called "Cancel"
-    Then I should see "11 mappings"
+    Then I should see "13 mappings"
 
   Scenario: Editing multiple mappings from a filtered index page
     When I click the link "Filter mappings"
@@ -65,6 +67,13 @@ Feature: Editing multiple mappings for a site
     And I save my changes
     Then I should see "2 mappings"
     And the filter box should contain "/about"
+
+  Scenario: Text about the previous status should display by the side of a mapping on the new redirect page without javascript
+    When I click the tag filter "Unresolved"
+    And I select the first two mappings
+    And I select "Archive"
+    And I go to edit the selected mappings
+    Then I should see "currently unresolved, will archive by default"
 
   @javascript
   Scenario: Selecting multiple mappings to redirect with javascript
@@ -105,9 +114,9 @@ Feature: Editing multiple mappings for a site
     And I click the first link called "Redirect"
     Then I should see an open modal window
     And I should see a table with 9 mappings in the modal
-    When I click the link "and 2 more"
-    Then I should see a table with 11 mappings in the modal
-    And I should not see "and 2 more"
+    When I click the link "and 4 more"
+    Then I should see a table with 13 mappings in the modal
+    And I should not see "and 4 more"
 
   @javascript
   Scenario: Don't truncate a table of exactly 10 mappings

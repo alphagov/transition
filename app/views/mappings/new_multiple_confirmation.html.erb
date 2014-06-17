@@ -31,7 +31,7 @@
   <% end %>
 
   <h2 class="add-bottom-margin">
-    <%= "#{ @batch.type.titleize }" %> <%= pluralize(number_with_delimiter(@batch.entries.size), "path") %>
+    <%= new_confirmation_heading(@batch.type, @batch.entries.size) %>
     <% if @batch.redirect? %>
       <br />
       <span class="subtitle">
@@ -59,15 +59,7 @@
         <tr>
           <td <% if existing_mapping %>class="warning"<% end %>>
             <strong><%= link_to entry.path, entry.old_url, class: 'breakable' %></strong>
-            <span class="text-muted">
-              <% if existing_mapping %>
-                <% if existing_mapping.redirect? %>
-                  currently redirects to <%= link_to existing_mapping.new_url, existing_mapping.new_url, class: 'link-muted breakable' %>
-                <% elsif existing_mapping.archive? %>
-                  currently archived
-                <% end %>
-              <% end %>
-            </span>
+            <%= render partial: 'new_multiple_mapping_status_table', locals: { existing_mapping: existing_mapping } %>
           </td>
         </tr>
       <% end %>

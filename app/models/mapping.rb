@@ -11,7 +11,7 @@ class Mapping < ActiveRecord::Base
   # something else instead, without activating STI.
   self.inheritance_column = nil
 
-  SUPPORTED_TYPES = %w(redirect archive)
+  SUPPORTED_TYPES = %w(redirect archive unresolved)
 
   attr_accessible :path, :site, :type, :new_url, :suggested_url, :archive_url, :tag_list
 
@@ -53,8 +53,9 @@ class Mapping < ActiveRecord::Base
       group('mappings.path_hash')
   }
   scope :with_type, -> type { where(type: type) }
-  scope :redirects, with_type('redirect')
-  scope :archives,  with_type('archive')
+  scope :redirects,   with_type('redirect')
+  scope :archives,    with_type('archive')
+  scope :unresolved,  with_type('unresolved')
   scope :filtered_by_path,    -> term { where(term.blank? ? true : Mapping.arel_table[:path].matches("%#{term}%")) }
   scope :filtered_by_new_url, -> term { where(term.blank? ? true : Mapping.arel_table[:new_url].matches("%#{term}%")) }
 
@@ -64,6 +65,10 @@ class Mapping < ActiveRecord::Base
 
   def archive?
     type == 'archive'
+  end
+
+  def unresolved?
+    type == 'unresolved'
   end
 
   ##

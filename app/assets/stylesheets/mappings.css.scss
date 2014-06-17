@@ -5,7 +5,7 @@
 }
 
 .mapping-type-column {
-  width: 75px;
+  width: 85px;
 }
 
 .mapping-edit-column {
@@ -43,4 +43,13 @@
 .read-only-fields dd {
   margin-left: 0;
   margin-bottom: $default-vertical-margin;
+}
+
+.unresolved-type-icon {
+  color: #bbb;
+}
+
+.unresolved-type {
+  color: #aaa;
+  border-bottom: 1px dotted #ccc
 }

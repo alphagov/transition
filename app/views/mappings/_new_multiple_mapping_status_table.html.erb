@@ -1,0 +1,11 @@
+<% if existing_mapping %>
+  <span class="text-muted">
+    <% if existing_mapping.redirect? %>
+      currently redirects to <%= link_to existing_mapping.new_url, existing_mapping.new_url, class: 'link-muted breakable' %>
+    <% elsif existing_mapping.archive? %>
+      currently archived
+    <% elsif existing_mapping.unresolved? %>
+      currently unresolved, will archive by default
+    <% end %>
+  </span>
+<% end %>

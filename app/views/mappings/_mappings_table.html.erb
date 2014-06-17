@@ -50,7 +50,11 @@
         </td>
       <% end %>
       <td class="<%= "mapping-type-#{mapping.type}" %>">
-        <%= mapping.type.titleize %>
+        <% if mapping.type == "unresolved" %>
+          <span class="unresolved-type" title="No decision yet. Defaulting to archive." data-toggle="tooltip">Archive <span class="glyphicon glyphicon-question-sign unresolved-type-icon"></span></span>
+        <% else %>
+         <%= mapping.type.titleize %>
+        <% end %>
       </td>
       <td class="mapping-path">
         <strong class="pull-left"><%= link_to mapping.path, mapping.old_url, class: 'breakable' %></strong>

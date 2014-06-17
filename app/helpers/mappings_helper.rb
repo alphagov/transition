@@ -44,7 +44,7 @@ module MappingsHelper
 
   ##
   # Return a FormBuilder-compatible list of mapping types
-  # e.g. [['Redirect', 'redirect'], ['Archive', 'archive']]
+  # e.g. [['Redirect', 'redirect'], ['Archive', 'archive'], ['Unresolved', 'unresolved']]
   def options_for_supported_types
     Mapping::SUPPORTED_TYPES.map do |type|
       ["#{type.titleize}", type]
@@ -57,6 +57,14 @@ module MappingsHelper
   # to use in title and heading for edit_multiple
   def operation_name(operation)
     operation.titleize if SUPPORTED_OPERATIONS.include?(operation)
+  end
+
+  def new_confirmation_heading(type, count)
+    if type == 'unresolved'
+      "Add #{number_with_delimiter(count)} unresolved #{'path'.pluralize(count)}"
+    else
+      "#{operation_name(type)} #{pluralize(number_with_delimiter(count), "path")}"
+    end
   end
 
   def friendly_hit_count(hit_count)

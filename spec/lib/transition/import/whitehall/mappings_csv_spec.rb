@@ -86,6 +86,20 @@ describe Transition::Import::Whitehall::MappingsCSV do
         its(:new_url) { should == 'https://www.gov.uk/automated' }
       end
 
+      context 'existing unresolved mapping edited by a human' do
+        let(:csv) {
+          create(:unresolved, from_redirector: true, site: site, path: '/oldurl')
+          csv_for('/oldurl', '/automated')
+        }
+
+        subject(:mapping) { Mapping.first }
+
+        specify { Mapping.count.should == 1 }
+
+        its(:type)    { should == 'redirect' }
+        its(:new_url) { should == 'https://www.gov.uk/automated' }
+      end
+
       context 'CSV row without an Old URL' do
         let(:csv) { StringIO.new(<<-END)
 Old URL,New URL,Admin URL,State
