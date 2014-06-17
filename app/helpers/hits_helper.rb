@@ -79,9 +79,8 @@ module HitsHelper
   end
 
   def show_hit_has_become?(hit)
-    (hit.archive? || hit.error? || hit.redirect?) &&
-        hit.mapping &&
-        (hit.http_status != http_status_for(hit.mapping))
+    ((hit.archive? || hit.error?) && hit.mapping.redirect?) ||
+    ((hit.redirect? || hit.error?) && hit.mapping.archive?)
   end
 
   def hit_is_now(hit)
@@ -93,8 +92,10 @@ module HitsHelper
       '<span class="middle-grey">Error fixed</span> &mdash; now redirecting'.html_safe
     elsif hit.error? && hit.mapping.archive?
       '<span class="middle-grey">Error fixed</span> &mdash; now archived'.html_safe
-    elsif hit.mapping.unresolved?
-      '<span class="middle-grey">Unresolved</span> &mdash; needs a decision'.html_safe
     end
+  end
+
+  def hit_has_unresolved_mapping
+    '<span class="middle-grey">Unresolved</span> &mdash; needs a decision'.html_safe
   end
 end

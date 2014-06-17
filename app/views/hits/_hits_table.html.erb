@@ -23,12 +23,14 @@
           <%= render partial: 'bar_chart_row', locals: { count: hit.count, max: hits.first.count, status: hit.http_status } %>
           <strong class="breakable path">
             <%= link_to hit.path, hit.default_url %>
-            <% if show_hit_has_become?(hit) %>
-              <br>
-              <span class="text-muted"><%= hit_is_now(hit) %></span>
-            <% elsif hit.mapping && hit.mapping.unresolved? %>
-              <br>
-              <span class="middle-grey">Unresolved</span> &mdash; needs a decision
+            <% if hit.mapping %>
+              <% if hit.mapping.unresolved? %>
+                <br>
+                <span class="text-muted"><%= hit_has_unresolved_mapping %></span>
+              <% elsif show_hit_has_become?(hit) %>
+                <br>
+                <span class="text-muted"><%= hit_is_now(hit) %></span>
+              <% end %>
             <% end %>
           </strong>
         </div>

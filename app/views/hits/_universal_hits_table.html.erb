@@ -18,8 +18,12 @@
               <%= hit.host.site.organisation.title %> &middot;
               <%= link_to 'Site', site_path(hit.host.site), class: 'link-muted', title: hit.host.hostname %> &middot;
               <%= link_to 'Analytics', summary_site_hits_path(hit.host.site), class: 'link-muted' %>
-              <% if show_hit_has_become?(hit) %>
-                <span class="text-muted"> &mdash; <%= hit_is_now(hit) %></span>
+              <% if hit.mapping %>
+                <% if hit.mapping.unresolved? %>
+                  <span class="text-muted"> &mdash; <%= hit_has_unresolved_mapping %></span>
+                <% elsif show_hit_has_become?(hit) %>
+                  <span class="text-muted"> &mdash; <%= hit_is_now(hit) %></span>
+                <% end %>
               <% end %>
             </div>
           </strong>
