@@ -13,21 +13,12 @@ class ImportBatch < MappingsBatch
   after_create :create_entries
 
   def create_entries
-    CSV.parse(raw_csv).each_with_index do |row|
-      old_url_value = row[0].strip
-      new_url_value = row[1].nil? ? nil : row[1].strip
+    CSV.parse(raw_csv).each do |csv_row|
+      next unless csv_row[0].starts_with?('/')
 
-      is_unresolved = new_url_value.nil?
+      row = Transition::ImportBatchRow.new(csv_row[0], csv_row[1])
 
-      next unless old_url_value.starts_with?('/')
-
-      entry = ImportBatchEntry.new(path: old_url_value)
-      entry.type = case
-      when is_unresolved then 'unresolved'
-      when (new_url_value.upcase == 'TNA') then 'archive'
-      else 'redirect'
-      end
-      entry.new_url = entry.redirect? ? new_url_value : nil
+      entry = ImportBatchEntry.new(path: row.path, type: row.type, new_url: row.new_url)
       entry.mappings_batch = self
       entry.save!
     end
