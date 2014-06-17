@@ -9,4 +9,11 @@ FactoryGirl.define do
     association :site, strategy: :build
     association :user, strategy: :build
   end
+
+  factory :import_batch do
+    state 'unqueued'
+
+    association :site, strategy: :build
+    association :user, strategy: :build
+  end
 end
