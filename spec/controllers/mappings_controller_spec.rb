@@ -1,26 +1,10 @@
 require 'spec_helper'
 
 describe MappingsController do
-  let(:site)              { create :site, abbr: 'moj' }
-  let(:batch)             { create(:bulk_add_batch, site: site) }
-  let(:unaffiliated_user) { create(:user, organisation_slug: nil) }
-  let(:gds_bob)           { create(:gds_editor, name: 'Bob Terwhilliger') }
-  let(:mapping)           { create(:mapping, site: site, as_user: gds_bob) }
-
-  shared_examples 'disallows editing by unaffiliated user' do
-    before do
-      login_as unaffiliated_user
-      make_request
-    end
-
-    it 'redirects to the index page' do
-      expect(response).to redirect_to site_mappings_path(site)
-    end
-
-    it 'sets a flash message' do
-      flash[:alert].should include('don\'t have permission to edit')
-    end
-  end
+  let(:site)    { create :site, abbr: 'moj' }
+  let(:batch)   { create(:bulk_add_batch, site: site) }
+  let(:gds_bob) { create(:gds_editor, name: 'Bob Terwhilliger') }
+  let(:mapping) { create(:mapping, site: site, as_user: gds_bob) }
 
   describe '#index' do
     before do
@@ -460,7 +444,7 @@ describe MappingsController do
       it_behaves_like 'disallows editing by unaffiliated user'
 
       it 'does not update any mappings' do
-        login_as unaffiliated_user
+        login_as stub_user
         make_request
 
         expect(site.mappings.where(type: 'redirect').count).to be(0)
