@@ -87,24 +87,24 @@ describe Transition::Import::HitsMappingsRelations do
       Transition::Import::HitsMappingsRelations.refresh!(@site)
     end
 
-    it 'should create host_paths for this site' do
+    it 'creates host_paths for this site' do
       @site.host_paths.find_by_path(@hit.path).should_not be_nil
     end
 
-    it 'should connect mappings to hits for this site' do
+    it 'connects mappings to hits for this site' do
       @hit.reload.mapping.should_not be_nil
     end
 
-    it 'should not create host_paths for another site' do
+    it 'does not create host_paths for another site' do
       @other_site.host_paths.find_by_path(@other_site_hit.path).should be_nil
     end
 
-    it 'should not connect mappings and pre-existing host_paths for another site' do
+    it 'does not connect mappings and pre-existing host_paths for another site' do
       path = @other_mapping_with_host_path.path
       @other_site.host_paths.find_by_path(path).mapping.should be_nil
     end
 
-    it 'should not connect mappings and hits for another site' do
+    it 'does not connect mappings and hits for another site' do
       @other_site_hit.reload.mapping.should be_nil
     end
   end
