@@ -1,5 +1,5 @@
 crumb :root do
-  link "Organisations", organisations_path
+  link 'Organisations', organisations_path
 end
 
 crumb :organisation do |organisation|
@@ -38,26 +38,26 @@ crumb :filtered_mappings do |site|
 end
 
 crumb :new_mappings do |site|
-  link "New mappings", new_multiple_site_mappings_path(site)
+  link 'Add mappings', new_multiple_site_mappings_path(site)
   parent :mappings, site
 end
 
 crumb :new_mappings_confirmation do |site|
-  link "Confirm new mappings"
+  link 'Confirm new mappings'
   parent :new_mappings, site
 end
 
 crumb :edit_mapping do |mapping|
-  link "Edit mapping", edit_site_mapping_path(mapping.site, mapping)
+  link 'Edit mapping', edit_site_mapping_path(mapping.site, mapping)
   parent :mappings, mapping.site
 end
 
 crumb :history do |mapping|
-  link "History", site_mapping_versions_path(mapping.site, mapping)
+  link 'History', site_mapping_versions_path(mapping.site, mapping)
   parent :edit_mapping, mapping
 end
 
 crumb :edit_multiple_mappings do |site|
-  link "Edit multiple mappings", edit_multiple_site_mappings_path(site)
+  link 'Edit multiple mappings', edit_multiple_site_mappings_path(site)
   parent :mappings, site
 end
