@@ -3,7 +3,7 @@ task :check_for_bad_time_handling do
   matching_files = directories.select do |filename|
     match = false
     File.open(filename) do |file|
-      match = file.grep(%r{Time\.(now|utc|parse)}).any?
+      match = file.grep(%r{Time\.(now|parse)}).any?
     end
     match
   end
@@ -15,7 +15,7 @@ TimeWithZone and not Time. Use methods like:
     Time.zone.now, Time.zone.parse, n.days.ago, m.hours.from_now, etc
 
 in preference to methods like:
-    Time.now, Time.utc, Time.parse, etc
+    Time.now, Time.parse, etc
 
 Files that contain bad Time handling:
   #{matching_files.join("\n  ")}
