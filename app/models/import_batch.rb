@@ -2,6 +2,7 @@ require 'csv'
 
 class ImportBatch < MappingsBatch
   attr_accessor :raw_csv
+  attr_accessible :raw_csv
 
   def self.columns
     # Disable columns which are not used in this subclass

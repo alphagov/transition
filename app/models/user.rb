@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   include GDS::SSO::User
 
   has_many :mappings_batches
+  has_many :bulk_add_batches
+  has_many :import_batches
 
   serialize :permissions, Array
 

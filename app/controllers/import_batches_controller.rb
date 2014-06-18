@@ -9,7 +9,11 @@ class ImportBatchesController < ApplicationController
   end
 
   def create
-
+    @batch = ImportBatch.new(params[:import_batch])
+    @batch.site = @site
+    @batch.user = current_user
+    @batch.save!
+    redirect_to preview_site_import_batch_path(@site, @batch)
   end
 
 protected
