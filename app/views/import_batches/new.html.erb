@@ -19,13 +19,13 @@
   <br />http://<%= @site.default_host.hostname %>/unresolved
   <br />http://<%= @site.default_host.hostname %>/alternative-archive,TNA
 </blockquote>
-<%= form_for [@site, @import], role: 'form' do |f| %>
+<%= form_for [@site, @batch], role: 'form' do |f| %>
   <div class="form-group">
     <div class="old-urls">
       <%= f.text_area :raw_csv, class: 'form-control', placeholder: 'old-url,new-url' %>
     </div>
   </div>
-  <%= render partial: 'shared/tag_list_field', locals: { tag_list: @import.tag_list } %>
+  <%= render partial: 'shared/tag_list_field', locals: { tag_list: @batch.tag_list } %>
 
   <%= f.button 'Continue', class: 'add-vertical-margins btn btn-success' %>
 

@@ -5,7 +5,7 @@ class ImportBatchesController < ApplicationController
   before_filter :check_user_can_edit
 
   def new
-    @import = ImportBatch.new
+    @batch = ImportBatch.new
   end
 
   def create
