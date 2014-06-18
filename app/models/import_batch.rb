@@ -19,7 +19,7 @@ class ImportBatch < MappingsBatch
     CSV.parse(raw_csv).each do |csv_row|
       next unless csv_row[0].starts_with?('/') || csv_row[0].starts_with?('http')
 
-      row = Transition::ImportBatchRow.new(csv_row[0], csv_row[1])
+      row = Transition::ImportBatchRow.new(site, csv_row[0], csv_row[1])
 
       entry = ImportBatchEntry.new(path: row.path, type: row.type, new_url: row.new_url)
       entry.mappings_batch = self

@@ -2,7 +2,8 @@ module Transition
   class ImportBatchRow
     attr_reader :old_value, :new_value
 
-    def initialize(old_value, new_value)
+    def initialize(site, old_value, new_value)
+      @site = site
       @old_value = old_value.blank? ? nil : old_value.strip
       @new_value = new_value.blank? ? nil : new_value.strip
     end
@@ -16,7 +17,7 @@ module Transition
     end
 
     def path
-      Addressable::URI.parse(old_value).path
+      @site.canonical_path(old_value)
     end
 
     def new_url
