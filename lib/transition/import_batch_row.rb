@@ -16,7 +16,7 @@ module Transition
     end
 
     def path
-      old_value
+      Addressable::URI.parse(old_value).path
     end
 
     def new_url

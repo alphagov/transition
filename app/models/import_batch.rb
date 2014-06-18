@@ -17,7 +17,7 @@ class ImportBatch < MappingsBatch
 
   def create_entries
     CSV.parse(raw_csv).each do |csv_row|
-      next unless csv_row[0].starts_with?('/')
+      next unless csv_row[0].starts_with?('/') || csv_row[0].starts_with?('http')
 
       row = Transition::ImportBatchRow.new(csv_row[0], csv_row[1])
 

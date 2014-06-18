@@ -88,5 +88,16 @@ describe ImportBatch do
         its(:type)    { should == 'unresolved' }
       end
     end
+
+    context 'the old URL is an absolute URL, not a path' do
+      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+                  http://#{site.default_host.hostname}/old
+                HEREDOC
+              }
+
+      it 'sets the path to be only the path' do
+        mappings_batch.entries.first.path.should eql('/old')
+      end
+    end
   end
 end

@@ -43,6 +43,22 @@ describe Transition::ImportBatchRow do
     end
   end
 
+  describe 'path' do
+    context 'the old value is just a path' do
+      it 'should keep the path as just a path' do
+        row = Transition::ImportBatchRow.new('/old', nil)
+        row.path.should == '/old'
+      end
+    end
+
+    context 'the old value is an absolute URL' do
+      it 'should set the path to just the path' do
+        row = Transition::ImportBatchRow.new('http://foo.com/old', nil)
+        row.path.should == '/old'
+      end
+    end
+  end
+
   describe 'new_url' do
     it 'should return the new_value if it is a redirect' do
       row = Transition::ImportBatchRow.new(nil, 'http://a.com')
