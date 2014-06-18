@@ -75,10 +75,12 @@ CREATE TABLE `mappings` (
   `archive_url` text COLLATE utf8_unicode_ci,
   `from_redirector` tinyint(1) DEFAULT '0',
   `type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `hit_count` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_mappings_on_site_id_and_path_hash` (`site_id`,`path_hash`),
   KEY `index_mappings_on_site_id` (`site_id`),
-  KEY `index_mappings_on_site_id_and_type` (`site_id`,`type`)
+  KEY `index_mappings_on_site_id_and_type` (`site_id`,`type`),
+  KEY `index_mappings_on_hit_count` (`hit_count`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `mappings_batch_entries` (
@@ -352,3 +354,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140606155408');
 INSERT INTO schema_migrations (version) VALUES ('20140611144610');
 
 INSERT INTO schema_migrations (version) VALUES ('20140618092821');
+
+INSERT INTO schema_migrations (version) VALUES ('20140618145219');
