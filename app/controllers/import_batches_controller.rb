@@ -16,6 +16,13 @@ class ImportBatchesController < ApplicationController
     redirect_to preview_site_import_batch_path(@site, @batch)
   end
 
+  def preview
+    @batch = @site.import_batches.find(params[:id])
+    @redirect_count = @batch.entries.redirects.count
+    @archive_count = @batch.entries.archives.count
+    @unresolved_count = @batch.entries.unresolved.count
+  end
+
 protected
   def find_site
     @site = Site.find_by_abbr!(params[:site_id])

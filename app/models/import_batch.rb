@@ -9,6 +9,8 @@ class ImportBatch < MappingsBatch
     super().reject { |column| ['type', 'new_url'].include?(column.name) }
   end
 
+  has_many :entries, foreign_key: :mappings_batch_id, class_name: 'ImportBatchEntry', dependent: :delete_all
+
   validates :raw_csv, presence: { :if => :new_record?, message: I18n.t('mappings.import.raw_csv_empty') } # we only care about raw_csv at create-time
 
   after_create :create_entries

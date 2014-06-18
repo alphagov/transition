@@ -50,4 +50,12 @@ describe ImportBatchesController do
       end
     end
   end
+
+  describe '#preview without permission to edit' do
+    def make_request
+      get :preview, site_id: site.abbr, id: 1
+    end
+
+    it_behaves_like 'disallows editing by unaffiliated user'
+  end
 end

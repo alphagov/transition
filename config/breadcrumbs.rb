@@ -66,3 +66,8 @@ crumb :import_mappings do |site|
   link "Import mappings", new_site_import_batch_path(site)
   parent :site, site
 end
+
+crumb :preview_import_mappings do |site, batch|
+  link "Preview import", preview_site_import_batch_path(site, batch)
+  parent :import_mappings, site
+end
