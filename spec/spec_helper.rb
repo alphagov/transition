@@ -46,6 +46,8 @@ RSpec.configure do |config|
 
   config.filter_run_excluding :external_api => true
 
+  config.include RSpec::Rails::ViewRendering
+
   config.before :each do
     Transition::History.clear_user!
   end
