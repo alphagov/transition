@@ -1,47 +1,46 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.18'
+gem 'rails', '4.0.8'
+gem 'activerecord-session_store', '0.1.0'
 gem 'unicorn', '4.6.2'
-gem 'mysql2', '0.3.13'
+gem 'mysql2', '0.3.16'
 gem 'optic14n', '2.0.0'     # Ideally version should be synced with bouncer
 gem 'gds-sso', '9.3.0'
 gem 'govuk_admin_template', '1.1.1'
-gem 'plek', '1.2.0'
-gem 'htmlentities', '4.3.1'
-gem 'kaminari', '0.14.1'
+gem 'plek', '1.8.1'
+gem 'htmlentities', '4.3.2'
+gem 'kaminari', '0.16.1'
 gem 'paper_trail', '3.0.2'
 gem 'google-api-client', '0.7.1'
 gem 'gds-api-adapters', '7.14.0'
 gem 'mlanett-redis-lock', '0.2.6'
-gem 'whenever', '0.8.4'
-gem 'gretel', '3.0.5'
+gem 'whenever', '0.9.2'
+gem 'gretel', '3.0.7'
 gem 'acts-as-taggable-on', '3.1.1'
-gem 'select2-rails', '3.5.2'
+gem 'select2-rails', '3.5.7'
 gem 'activerecord-import', '0.5.0'
-gem 'sidekiq', '3.0.0'
+gem 'sidekiq', '3.1.4'
 
 # We use Errbit for tracking exceptions, which needs the airbrake gem. Config
 # for Errbit is in alphagov-deployment.
-gem 'airbrake', '3.1.15'
+gem 'airbrake', '4.0.0'
 
-gem 'logstasher', '0.4.8'
+gem 'logstasher', '0.5.3'
 
-group :assets do
-  gem 'sass', '3.2.12'
-  gem 'sass-rails', '3.2.6'
-  gem 'uglifier', '2.0.1'
-end
+gem 'sass', '3.2.19'
+gem 'sass-rails', '4.0.3'
+gem 'uglifier', '2.5.1'
 
 group :development do
   gem 'quiet_assets', '1.0.2'
 end
 
 group :test do
-  gem 'poltergeist', '1.4.1'
+  gem 'poltergeist', '1.5.1'
   gem 'launchy', '2.3.0'                  # Primarily for save_and_open_page support in Capybara
   gem 'timecop', '0.5.9.2'
   gem 'cucumber-rails', require: false
-  gem 'capybara', '2.1.0', require: false
+  gem 'capybara', '2.3.0', require: false
   gem 'factory_girl_rails', '4.1.0'
   gem 'shoulda-matchers', '2.2.0'
   gem 'ci_reporter', '1.8.0'
@@ -50,6 +49,8 @@ group :test do
 end
 
 group :development, :test do
-  gem 'rspec-rails', '2.13.2'
+  gem 'rspec-rails', '2.14.2'
+  gem 'rspec-expectations', '2.14.2'
+  gem 'rspec-mocks', '2.14.2'
   gem 'jasmine', '2.0.2'
 end
