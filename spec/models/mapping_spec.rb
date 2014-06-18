@@ -48,7 +48,7 @@ describe Mapping do
     it { should validate_presence_of(:path) }
 
     it { should validate_presence_of(:type) }
-    it { should ensure_inclusion_of(:type).in_array(['redirect', 'archive']) }
+    it { should ensure_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
 
     describe 'home pages (which are handled by Site)' do
       subject(:homepage_mapping) { build(:mapping, path: '/') }
