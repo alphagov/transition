@@ -175,7 +175,6 @@ CREATE TABLE `sites` (
   `homepage` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `global_http_status` varchar(3) COLLATE utf8_unicode_ci DEFAULT NULL,
   `global_new_url` text COLLATE utf8_unicode_ci,
   `managed_by_transition` tinyint(1) NOT NULL DEFAULT '1',
   `launch_date` date DEFAULT NULL,
@@ -351,3 +350,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140529164329');
 INSERT INTO schema_migrations (version) VALUES ('20140606155408');
 
 INSERT INTO schema_migrations (version) VALUES ('20140611144610');
+
+INSERT INTO schema_migrations (version) VALUES ('20140618092821');

@@ -34,7 +34,6 @@ describe Transition::Import::SiteYamlFile do
       its(:organisation)          { should eql(ago) }
       its(:extra_organisations)   { should eql([bv, tsol]) }
       its(:global_type)           { should eql('redirect') }
-      its(:global_http_status)    { should eql('301') }
       its(:global_new_url)        { should eql('https://www.gov.uk/a-new-world') }
       its(:global_redirect_append_path) { should eql(true) }
 
@@ -64,7 +63,6 @@ describe Transition::Import::SiteYamlFile do
         its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-update-office') }
         its(:extra_organisations)   { should eql([tsol]) }
         its(:global_type)           { should be_nil }
-        its(:global_http_status)    { should be_nil }
         its(:global_new_url)        { should be_nil }
         its(:global_redirect_append_path) { should eql(false) }
       end
