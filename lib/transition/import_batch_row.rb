@@ -38,6 +38,10 @@ module Transition
     end
 
     def <=>(other)
+      if path != other.path
+        raise ArgumentError, "Cannot compare rows with differing paths: #{path} and: #{other.path}"
+      end
+
       if redirect? && other.redirect?
         other.line_number <=> line_number
       elsif redirect?

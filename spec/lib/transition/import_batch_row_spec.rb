@@ -90,10 +90,17 @@ describe Transition::ImportBatchRow do
   end
 
   describe '<=> - comparison for being able to sort mappings for the same Old URL' do
-    let(:redirect)       { make_a_row('/redirect-me', 'https://a.gov.uk/new') }
-    let(:later_redirect) { make_a_row_with_line_number(2, '/redirect-me', 'https://a.gov.uk/later') }
-    let(:archive)        { make_a_row('/archive-me', 'TNA') }
-    let(:unresolved)     { make_a_row('/unresolved-me') }
+    let(:redirect)       { make_a_row('/old', 'https://a.gov.uk/new') }
+    let(:later_redirect) { make_a_row_with_line_number(2, '/old', 'https://a.gov.uk/later') }
+    let(:archive)        { make_a_row('/old', 'TNA') }
+    let(:unresolved)     { make_a_row('/old') }
+
+    context 'comparing rows for different paths' do
+      it 'raises an error' do
+        different_path = make_a_row('/different')
+        expect{ redirect > different_path }.to raise_error(ArgumentError)
+      end
+    end
 
     context 'a redirect' do
       it 'trump an archive' do
