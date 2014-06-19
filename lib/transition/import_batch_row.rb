@@ -2,10 +2,11 @@ module Transition
   class ImportBatchRow
     include Comparable
 
-    attr_reader :old_value, :new_value
+    attr_reader :line_number, :old_value, :new_value
 
-    def initialize(site, old_value, new_value)
+    def initialize(site, line_number, old_value, new_value)
       @site = site
+      @line_number = line_number
       @old_value = old_value.blank? ? nil : old_value.strip
       @new_value = new_value.blank? ? nil : new_value.strip
     end
@@ -37,7 +38,9 @@ module Transition
     end
 
     def <=>(other)
-      if redirect?
+      if redirect? && other.redirect?
+        other.line_number <=> line_number
+      elsif redirect?
         1
       elsif archive? && other.redirect?
         -1

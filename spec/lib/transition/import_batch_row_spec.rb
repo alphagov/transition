@@ -2,7 +2,12 @@ require 'spec_helper'
 
 describe Transition::ImportBatchRow do
   def make_a_row(old_value, new_value=nil)
-    Transition::ImportBatchRow.new(site, old_value, new_value)
+    line_number = 1
+    Transition::ImportBatchRow.new(site, line_number, old_value, new_value)
+  end
+
+  def make_a_row_with_line_number(line_number, old_value, new_value=nil)
+    Transition::ImportBatchRow.new(site, line_number, old_value, new_value)
   end
 
   let(:site) { build :site, query_params: 'significant' }
@@ -85,9 +90,10 @@ describe Transition::ImportBatchRow do
   end
 
   describe '<=> - comparison for being able to sort mappings for the same Old URL' do
-    let(:redirect)   { make_a_row('/redirect-me', 'https://a.gov.uk/new') }
-    let(:archive)    { make_a_row('/archive-me', 'TNA') }
-    let(:unresolved) { make_a_row('/unresolved-me') }
+    let(:redirect)       { make_a_row('/redirect-me', 'https://a.gov.uk/new') }
+    let(:later_redirect) { make_a_row_with_line_number(2, '/redirect-me', 'https://a.gov.uk/later') }
+    let(:archive)        { make_a_row('/archive-me', 'TNA') }
+    let(:unresolved)     { make_a_row('/unresolved-me') }
 
     context 'a redirect' do
       it 'trump an archive' do
@@ -100,7 +106,10 @@ describe Transition::ImportBatchRow do
         unresolved.should < redirect
       end
 
-      it 'trumps a later redirect'
+      it 'trumps a later redirect' do
+        redirect.should > later_redirect
+        later_redirect.should < redirect
+      end
     end
 
     context 'an archive' do

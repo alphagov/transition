@@ -16,10 +16,11 @@ class ImportBatch < MappingsBatch
   after_create :create_entries
 
   def create_entries
-    CSV.parse(raw_csv).each do |csv_row|
+    CSV.parse(raw_csv).each_with_index do |csv_row, index|
       next unless csv_row[0].starts_with?('/') || csv_row[0].starts_with?('http')
 
-      row = Transition::ImportBatchRow.new(site, csv_row[0], csv_row[1])
+      line_number = index + 1
+      row = Transition::ImportBatchRow.new(site, line_number, csv_row[0], csv_row[1])
 
       entry = ImportBatchEntry.new(path: row.path, type: row.type, new_url: row.new_url)
       entry.mappings_batch = self
