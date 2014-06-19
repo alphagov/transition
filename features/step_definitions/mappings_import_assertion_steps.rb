@@ -1,8 +1,15 @@
 Then(/^I should see how many of each type of mapping will be created$/) do
   steps %{
     Then I should see "Create 1 new redirect"
-    Then I should see "Create 1 new archive"
+    Then I should see "Create 0 new archives"
     Then I should see "Create 1 new unresolved mapping"
+  }
+end
+
+
+Then(/^I should see how many mappings will be overwritten$/) do
+  steps %{
+    Then I should see "Overwrite 1 existing mapping"
   }
 end
 

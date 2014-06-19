@@ -18,9 +18,10 @@ class ImportBatchesController < ApplicationController
 
   def preview
     @batch = @site.import_batches.find(params[:id])
-    @redirect_count = @batch.entries.redirects.count
-    @archive_count = @batch.entries.archives.count
-    @unresolved_count = @batch.entries.unresolved.count
+    @redirect_count   = @batch.entries.without_existing_mappings.redirects.count
+    @archive_count    = @batch.entries.without_existing_mappings.archives.count
+    @unresolved_count = @batch.entries.without_existing_mappings.unresolved.count
+    @overwrite_count  = @batch.entries.with_existing_mappings.count
   end
 
 protected

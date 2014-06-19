@@ -15,6 +15,9 @@
     <li class="list-group-item">Create <%= pluralize(@redirect_count, 'new redirect') %></li>
     <li class="list-group-item">Create <%= pluralize(@archive_count, 'new archive') %></li>
     <li class="list-group-item">Create <%= pluralize(@unresolved_count, 'new unresolved mapping') %></li>
+    <% if @overwrite_count > 0 %>
+      <li class="list-group-item list-group-item-warning">Overwrite <%= pluralize(@overwrite_count, 'existing mapping') %></li>
+    <% end %>
 </li>
   </ul>
 
