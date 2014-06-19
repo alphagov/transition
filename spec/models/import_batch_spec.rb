@@ -118,5 +118,19 @@ describe ImportBatch do
         entry.type.should == 'redirect'
       end
     end
+
+    context 'existing mappings' do
+      let(:existing_mapping) { create(:mapping, site: site, path: '/old') }
+      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+                        #{existing_mapping.path}
+                      HEREDOC
+                    }
+
+      it 'should relate the entry to the existing mapping' do
+        entry = mappings_batch.entries.detect { |entry| entry.path == existing_mapping.path }
+        entry.should_not be_nil
+        entry.mapping.should == existing_mapping
+      end
+    end
   end
 end

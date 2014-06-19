@@ -16,9 +16,14 @@ class ImportBatch < MappingsBatch
   after_create :create_entries
 
   def create_entries
+    canonical_path_hashes = deduplicated_csv_rows.map { |row| Digest::SHA1.hexdigest(row.path) }
+    existing_mappings = site.mappings.where(path_hash: canonical_path_hashes)
+
     deduplicated_csv_rows.each do |row|
       entry = ImportBatchEntry.new(path: row.path, type: row.type, new_url: row.new_url)
       entry.mappings_batch = self
+      path_hash = Digest::SHA1.hexdigest(row.path)
+      entry.mapping = existing_mappings.detect { |mapping| mapping.path_hash == path_hash }
       entry.save!
     end
   end
