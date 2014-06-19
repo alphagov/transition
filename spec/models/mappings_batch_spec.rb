@@ -5,7 +5,7 @@ describe MappingsBatch do
     it { should validate_presence_of(:user) }
     it { should validate_presence_of(:site) }
     it { should validate_presence_of(:paths).with_message('Enter at least one valid path') }
-    it { should ensure_inclusion_of(:type).in_array(['redirect', 'archive']) }
+    it { should ensure_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
     it { should ensure_inclusion_of(:state).in_array(MappingsBatch::PROCESSING_STATES) }
 
     describe 'paths includes URLs for another site' do
