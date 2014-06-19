@@ -12,18 +12,11 @@ module Transition
       end
 
       def refresh!
-        #
-        # A three-step refresh:
-        #
-        # 1. Refresh host_paths with INSERT IGNORE
-        # 2. Fill in the host_paths.mapping_id for all rows where missing
-        #    (using find_each, default batch size of 1000)
-        # 3. Update hits with the mapping_id from host_paths
-        #
         {
-          'Refreshing host paths' => :refresh_host_paths!,
+          'Refreshing host paths'                                  => :refresh_host_paths!,
           'Adding missing mapping_id/c14n_path_hash to host paths' => :connect_mappings_to_host_paths!,
-          'Updating hits from host paths' => :refresh_hits_from_host_paths!
+          'Updating hits from host paths'                          => :refresh_hits_from_host_paths!,
+          'Precomputing mapping hit counts'                        => :precompute_mapping_hit_counts!
         }.each_pair do |msg, step|
           start(msg) { send step }
         end
@@ -39,15 +32,16 @@ module Transition
         " IN (#{host_ids.join(',')})"
       end
 
+      def where_host_is_in_site
+        site ? "WHERE host_id #{in_site_hosts}" : ''
+      end
+
       def host_paths
-        site.present? ?
-          site.host_paths.where(mapping_id: nil) :
-          HostPath.where(mapping_id: nil)
+        site ? site.host_paths.where(mapping_id: nil) :
+                      HostPath.where(mapping_id: nil)
       end
 
       def refresh_host_paths!
-        where_host_is_in_site = site ? "WHERE host_id #{in_site_hosts}" : ''
-
         #
         # Sloppy GROUP BY - path is not subject to aggregate. Note well,
         # Postgres upgraders
@@ -90,6 +84,21 @@ module Transition
                             #{and_host_is_in_site}
           SET    hits.mapping_id = host_paths.mapping_id
         mySQL
+        ActiveRecord::Base.connection.execute(sql)
+      end
+
+      def precompute_mapping_hit_counts!
+        sql = <<-mySQL
+          UPDATE mappings
+          INNER JOIN (
+            SELECT hits.mapping_id, SUM(hits.count) AS hit_count
+            FROM hits
+            #{where_host_is_in_site}
+            GROUP BY hits.mapping_id
+          ) with_counts ON mappings.id = with_counts.mapping_id
+          SET mappings.hit_count = with_counts.hit_count
+        mySQL
+
         ActiveRecord::Base.connection.execute(sql)
       end
     end
