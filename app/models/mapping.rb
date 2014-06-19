@@ -47,11 +47,6 @@ class Mapping < ActiveRecord::Base
   validates :new_url, host_in_whitelist: { if: :redirect? }
   validates :archive_url, national_archives_url: true
 
-  scope :with_hit_count, -> {
-    select('mappings.*, SUM(hits.count) as hit_count').
-      joins('LEFT JOIN hits ON hits.mapping_id = mappings.id').
-      group('mappings.path_hash')
-  }
   scope :with_type, -> type { where(type: type) }
   scope :redirects,   with_type('redirect')
   scope :archives,    with_type('archive')
@@ -115,8 +110,6 @@ class Mapping < ActiveRecord::Base
   end
 
   def hit_percentage
-    raise NoMethodError, 'This only works in the context of :with_hit_count' unless respond_to?(:hit_count)
-
     site.hit_total_count.zero? ? 0 : (hit_count.to_f / site.hit_total_count) * 100
   end
 
