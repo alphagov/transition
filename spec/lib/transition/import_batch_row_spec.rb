@@ -79,4 +79,31 @@ describe Transition::ImportBatchRow do
       row.new_url.should be_nil
     end
   end
+
+  describe '<=> - comparison for being able to sort mappings for the same Old URL' do
+    let(:redirect)   { Transition::ImportBatchRow.new(site, '/redirect-me', 'https://a.gov.uk/new') }
+    let(:archive)    { Transition::ImportBatchRow.new(site, '/archive-me', 'TNA') }
+    let(:unresolved) { Transition::ImportBatchRow.new(site, '/unresolved-me') }
+
+    context 'a redirect' do
+      it 'trump an archive' do
+        redirect.should > archive
+        archive.should < redirect
+      end
+
+      it 'trumps an unresolved' do
+        redirect.should > unresolved
+        unresolved.should < redirect
+      end
+
+      it 'trumps a later redirect'
+    end
+
+    context 'an archive' do
+      it 'trumps an unresolved' do
+        archive.should > unresolved
+        unresolved.should < archive
+      end
+    end
+  end
 end
