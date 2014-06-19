@@ -16,15 +16,29 @@ class ImportBatch < MappingsBatch
   after_create :create_entries
 
   def create_entries
+    deduplicated_csv_rows.each do |row|
+      entry = ImportBatchEntry.new(path: row.path, type: row.type, new_url: row.new_url)
+      entry.mappings_batch = self
+      entry.save!
+    end
+  end
+
+private
+  def deduplicated_csv_rows
+    # Default entries in the hash to empty array
+    # http://stackoverflow.com/a/2552946/3726525
+    rows_by_path = Hash.new { |hash, key| hash[key] = [] }
     CSV.parse(raw_csv).each_with_index do |csv_row, index|
       next unless csv_row[0].starts_with?('/') || csv_row[0].starts_with?('http')
 
       line_number = index + 1
       row = Transition::ImportBatchRow.new(site, line_number, csv_row[0], csv_row[1])
-
-      entry = ImportBatchEntry.new(path: row.path, type: row.type, new_url: row.new_url)
-      entry.mappings_batch = self
-      entry.save!
+      rows_by_path[row.path] << row
     end
+    # The rows in each array in the hash will be in insertion order.
+    # Calling sort on each array calls the `<=>` method on ImportBatchRow,
+    # which knows which of two mappings is 'better'. The outcome is that the
+    # last entry in the array is the 'best' row for a path.
+    rows_by_path.values.map { |rows_for_a_path| rows_for_a_path.sort.last }
   end
 end

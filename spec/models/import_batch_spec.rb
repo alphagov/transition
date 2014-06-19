@@ -99,5 +99,24 @@ describe ImportBatch do
         mappings_batch.entries.first.path.should eql('/old')
       end
     end
+
+    context 'deduplicating rows' do
+      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+                  /old,
+                  /old?insignificant,TNA
+                  /OLD,http://a.gov.uk/new
+                  /old,http://a.gov.uk/ignore-later-redirects
+                HEREDOC
+              }
+
+      it 'should canonicalize and deduplicate before creating entries' do
+        mappings_batch.entries.count.should == 1
+
+        entry = mappings_batch.entries.first
+        entry.path.should == '/old'
+        entry.new_url.should == 'http://a.gov.uk/new'
+        entry.type.should == 'redirect'
+      end
+    end
   end
 end
