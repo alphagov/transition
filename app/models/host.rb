@@ -13,7 +13,7 @@ class Host < ActiveRecord::Base
 
   after_update :update_hits_relations, :if => :site_id_changed?
 
-  scope :excluding_aka, where(canonical_host_id: nil)
+  scope :excluding_aka, -> { where(canonical_host_id: nil) }
 
   def aka?
     hostname.start_with?('aka')

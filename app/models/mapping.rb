@@ -50,9 +50,9 @@ class Mapping < ActiveRecord::Base
   validates :archive_url, national_archives_url: true
 
   scope :with_type, -> type { where(type: type) }
-  scope :redirects,   with_type('redirect')
-  scope :archives,    with_type('archive')
-  scope :unresolved,  with_type('unresolved')
+  scope :redirects, -> { with_type('redirect') }
+  scope :archives,  -> { with_type('archive') }
+  scope :unresolved, ->{ with_type('unresolved') }
   scope :filtered_by_path,    -> term { where(term.blank? ? true : Mapping.arel_table[:path].matches("%#{term}%")) }
   scope :filtered_by_new_url, -> term { where(term.blank? ? true : Mapping.arel_table[:new_url].matches("%#{term}%")) }
 

@@ -14,7 +14,7 @@ class MappingsBatch < ActiveRecord::Base
   validates :site, presence: true
   validates :state, inclusion: { :in => PROCESSING_STATES }
 
-  scope :reportable, where(seen_outcome: false).where("state != 'unqueued'")
+  scope :reportable, -> { where(seen_outcome: false).where("state != 'unqueued'") }
 
   def entries_to_process
     if update_existing

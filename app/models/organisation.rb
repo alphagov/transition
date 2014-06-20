@@ -33,7 +33,7 @@ class Organisation < ActiveRecord::Base
   #
   # UNION these two ways in an INNER JOIN to pretend that the FK relationship
   # is in fact a row in organisations_sites.
-  scope :with_sites_managed_by_transition,
+  scope :with_sites_managed_by_transition, -> {
         select('organisations.*, count(sites.id) AS site_count').
         joins(
            'INNER JOIN (
@@ -44,7 +44,7 @@ class Organisation < ActiveRecord::Base
         joins('INNER JOIN sites ON sites.id = organisations_sites.site_id').
         where('sites.managed_by_transition = 1').
         group('organisations.id').  # Using a sloppy mySQL GROUP. Note well, Postgres upgraders
-        having('site_count > 0')
+        having('site_count > 0') }
 
   def to_param
     whitehall_slug
