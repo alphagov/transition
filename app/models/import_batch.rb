@@ -30,20 +30,22 @@ class ImportBatch < MappingsBatch
 
 private
   def deduplicated_csv_rows
-    # Default entries in the hash to empty array
-    # http://stackoverflow.com/a/2552946/3726525
-    rows_by_path = Hash.new { |hash, key| hash[key] = [] }
+    rows_by_path = {}
     CSV.parse(raw_csv).each_with_index do |csv_row, index|
       next unless csv_row[0].starts_with?('/') || csv_row[0].starts_with?('http')
 
       line_number = index + 1
       row = Transition::ImportBatchRow.new(site, line_number, csv_row[0], csv_row[1])
-      rows_by_path[row.path] << row
+
+      # If we don't yet have a row for this canonical path, or if the row we're
+      # considering is 'better' than the one we have already, put this row into
+      # the hash.
+      # The second expression here calls the `<=>` method on ImportBatchRow,
+      # which knows which of two mappings is 'better'
+      if !rows_by_path.has_key?(row.path) || row > rows_by_path[row.path]
+        rows_by_path[row.path] = row
+      end
     end
-    # The rows in each array in the hash will be in insertion order.
-    # Calling sort on each array calls the `<=>` method on ImportBatchRow,
-    # which knows which of two mappings is 'better'. The outcome is that the
-    # last entry in the array is the 'best' row for a path.
-    rows_by_path.values.map { |rows_for_a_path| rows_for_a_path.sort.last }
+    rows_by_path.values
   end
 end
