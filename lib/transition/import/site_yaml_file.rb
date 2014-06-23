@@ -98,16 +98,15 @@ module Transition
 
       def import_hosts!
         [yaml['host'], yaml['aliases']].flatten.compact.each do |name|
-          canonical_host = Host.where(hostname: name).first_or_create do |host|
-            host.site = site
-            host.save!
-          end
+          canonical_host = Host.where(hostname: name).first_or_initialize
+          canonical_host.site = site
+          canonical_host.save!
+
           aka_name = canonical_host.aka_hostname
-          Host.where(hostname: aka_name).first_or_create do |aka_host|
-            aka_host.site = site
-            aka_host.canonical_host_id = canonical_host.id
-            aka_host.save!
-          end
+          aka_host = Host.where(hostname: aka_name).first_or_initialize
+          aka_host.site = site
+          aka_host.canonical_host_id = canonical_host.id
+          aka_host.save!
         end
       end
 
