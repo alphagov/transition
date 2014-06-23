@@ -33,7 +33,7 @@ describe Transition::Import::SiteYamlFile do
       its(:homepage_furl)         { should eql('www.gov.uk/ago') }
       its(:managed_by_transition) { should eql(false) }
       its(:organisation)          { should eql(ago) }
-      its(:extra_organisations)   { should eql([bv, tsol]) }
+      its(:extra_organisations)   { should =~ [bv, tsol] }
       its(:global_type)           { should eql('redirect') }
       its(:global_new_url)        { should eql('https://www.gov.uk/a-new-world') }
       its(:global_redirect_append_path) { should eql(true) }
@@ -64,7 +64,7 @@ describe Transition::Import::SiteYamlFile do
         its(:tna_timestamp)         { should be_a(Time) }
         its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-update-office') }
         its(:homepage_title)        { should eql('Now has a &#39;s custom title') }
-        its(:extra_organisations)   { should eql([tsol]) }
+        its(:extra_organisations)   { should =~ [tsol] }
         its(:global_type)           { should be_nil }
         its(:global_new_url)        { should be_nil }
         its(:global_redirect_append_path) { should eql(false) }
