@@ -11,7 +11,12 @@ class BatchesController < ApplicationController
   end
 
 private
+
+  def batch_params
+    params.permit(:id)
+  end
+
   def set_batch
-    @batch = current_user.mappings_batches.find(params[:id])
+    @batch = current_user.mappings_batches.find(batch_params[:id])
   end
 end

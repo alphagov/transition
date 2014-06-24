@@ -1,5 +1,4 @@
 class Organisation < ActiveRecord::Base
-  attr_accessible :title, :homepage, :furl, :css
 
   belongs_to :parent, class_name: Organisation, foreign_key: 'parent_id'
 

@@ -13,8 +13,6 @@ class Mapping < ActiveRecord::Base
 
   SUPPORTED_TYPES = %w(redirect archive unresolved)
 
-  attr_accessible :path, :site, :type, :new_url, :suggested_url, :archive_url, :tag_list
-
   acts_as_taggable
   has_paper_trail :ignore => [:tag_list => Proc.new { |mapping|
     # tag_list appears to ActiveModel::Dirty/paper_trail to be an

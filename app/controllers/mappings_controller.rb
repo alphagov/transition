@@ -14,10 +14,10 @@ class MappingsController < ApplicationController
   end
 
   def new_multiple_confirmation
-    @batch = BulkAddBatch.new(type: params[:type],
-                               new_url: params[:new_url],
-                               tag_list: params[:tag_list],
-                               paths: params[:paths].split(/\r?\n|\r/).map(&:strip))
+    @batch = BulkAddBatch.new(type: mapping_params[:type],
+                               new_url: mapping_params[:new_url],
+                               tag_list: mapping_params[:tag_list],
+                               paths: mapping_params[:paths].split(/\r?\n|\r/).map(&:strip))
     @batch.user = current_user
     @batch.site = @site
 
@@ -27,9 +27,9 @@ class MappingsController < ApplicationController
   end
 
   def create_multiple
-    @batch = @site.mappings_batches.find(params[:mappings_batch_id])
+    @batch = @site.mappings_batches.find(mapping_params[:mappings_batch_id])
     if @batch.state == 'unqueued'
-      @batch.update_attributes!(update_existing: params[:update_existing], tag_list: params[:tag_list], state: 'queued')
+      @batch.update_attributes!(update_existing: mapping_params[:update_existing], tag_list: mapping_params[:tag_list], state: 'queued')
       if @batch.invalid?
         render action: 'new_multiple_confirmation' and return
       end
@@ -48,36 +48,36 @@ class MappingsController < ApplicationController
       end
     end
 
-    if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
-      redirect_to params[:return_path]
+    if Transition::OffSiteRedirectChecker.on_site?(mapping_params[:return_path])
+      redirect_to mapping_params[:return_path]
     else
       redirect_to site_mappings_path(@site)
     end
   end
 
   def index
-    @filter = View::Mappings::Filter.new(@site, params)
+    @filter = View::Mappings::Filter.new(@site, mapping_params)
     @mappings = @filter.mappings
   end
 
   def edit
-    @mapping = Mapping.find(params[:id])
+    @mapping = Mapping.find(mapping_params[:id])
   end
 
   def update
-    @mapping = @site.mappings.find(params[:id])
+    @mapping = @site.mappings.find(mapping_params[:id])
 
     # Tags must be assigned to separately
-    @mapping.tag_list = params[:mapping].delete(:tag_list)
-    @mapping.attributes = params[:mapping]
+    @mapping.tag_list = mapping_params[:mapping].delete(:tag_list)
+    @mapping.attributes = mapping_params[:mapping]
 
     if @mapping.save
       flash[:success] = 'Mapping saved'
       flash[:saved_mapping_ids] = [@mapping.id]
       flash[:saved_operation] = "update-single"
 
-      if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
-        redirect_to params[:return_path]
+      if Transition::OffSiteRedirectChecker.on_site?(mapping_params[:return_path])
+        redirect_to mapping_params[:return_path]
       else
         redirect_to site_mappings_path(@site)
       end
@@ -123,10 +123,10 @@ class MappingsController < ApplicationController
 
   def find_global
     # This allows finding a mapping without knowing the site first.
-    render_error(400) and return unless params[:url].present?
+    render_error(400) and return unless mapping_params[:url].present?
 
     begin
-      url = Addressable::URI.parse(params[:url])
+      url = Addressable::URI.parse(mapping_params[:url])
       render_error(400) and
         return unless url.scheme == "http" || url.scheme == "https"
     rescue Addressable::URI::InvalidURIError
@@ -146,7 +146,7 @@ class MappingsController < ApplicationController
   end
 
   def find
-    path = @site.canonical_path(params[:path])
+    path = @site.canonical_path(mapping_params[:path])
 
     if path.empty?
       notice = t('mappings.not_possible_to_edit_homepage_mapping')
@@ -155,19 +155,29 @@ class MappingsController < ApplicationController
 
     mapping = @site.mappings.find_by_path(path)
     if mapping.present?
-      redirect_to edit_site_mapping_path(@site, mapping, return_path: params[:return_path])
+      redirect_to edit_site_mapping_path(@site, mapping, return_path: mapping_params[:return_path])
     else
-      redirect_to new_multiple_site_mappings_path(@site, paths: path, return_path: params[:return_path])
+      redirect_to new_multiple_site_mappings_path(@site, paths: path, return_path: mapping_params[:return_path])
     end
   end
 
 private
+
+  def mapping_params
+    params.permit(:id, :site_id, :type, :operation, :return_path, :path,
+                  :paths, :url, :new_url, :new_url_contains, :path_contains,
+                  :mappings_batch_id, :sort, :sort_by, :suggested_url, :page,
+                  :archive_url, :tagged, :tag_list, :mapping => [:type,
+                  :path, :new_url, :tag_list, :version, :state, :update_existing,
+                  :suggested_url, :archive_url], :site => [:abbr], :mapping_ids => [])
+  end
+
   def bulk_edit
-    @bulk_edit ||= bulk_editor_class.new(@site, params, site_mappings_path(@site))
+    @bulk_edit ||= bulk_editor_class.new(@site, mapping_params, site_mappings_path(@site))
   end
 
   def bulk_editor_class
-    params[:operation] == 'tag' ? View::Mappings::BulkTagger : View::Mappings::BulkEditor
+    mapping_params[:operation] == 'tag' ? View::Mappings::BulkTagger : View::Mappings::BulkEditor
   end
 
   def back_or_mappings_index

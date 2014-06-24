@@ -1,8 +1,6 @@
 class BulkAddBatch < MappingsBatch
   attr_accessor :paths # a virtual attribute to then use for creating entries
 
-  attr_accessible :paths, :type, :new_url
-
   validates :paths, presence: {
     :if => :new_record?, # we only care about paths at create-time
     message: I18n.t('mappings.paths_empty')

@@ -1,6 +1,4 @@
 class WhitelistedHost < ActiveRecord::Base
-  attr_accessible :hostname
-
   has_paper_trail
 
   before_save :ensure_papertrail_user_config

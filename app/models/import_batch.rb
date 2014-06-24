@@ -2,7 +2,6 @@ require 'csv'
 
 class ImportBatch < MappingsBatch
   attr_accessor :raw_csv
-  attr_accessible :raw_csv
 
   disable_columns :type, :new_url
 

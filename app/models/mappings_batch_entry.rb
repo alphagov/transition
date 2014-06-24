@@ -4,8 +4,6 @@ class MappingsBatchEntry < ActiveRecord::Base
   belongs_to :mappings_batch
   belongs_to :mapping
 
-  attr_accessible :path
-
   scope :with_existing_mappings, -> { where('mapping_id is not null') }
   scope :without_existing_mappings, -> { where('mapping_id is null') }
   scope :processed, -> { where(processed: true) }

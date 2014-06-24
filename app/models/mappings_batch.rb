@@ -4,7 +4,7 @@ class MappingsBatch < ActiveRecord::Base
   FINISHED_STATES = ['succeeded', 'failed']
   PROCESSING_STATES = ['unqueued', 'queued', 'processing'] + FINISHED_STATES
 
-  attr_accessible :tag_list, :update_existing, :state
+  attr_accessor :paths # a virtual attribute to then use for creating entries
 
   belongs_to :user
   belongs_to :site
