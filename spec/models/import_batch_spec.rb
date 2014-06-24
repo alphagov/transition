@@ -58,6 +58,23 @@ describe ImportBatch do
       end
     end
 
+    describe 'new URLs' do
+      describe 'validating all new URLs for length' do
+        let(:too_long_url) { 'http://'.ljust(65536, 'x') }
+        subject(:mappings_batch) do
+          build(:import_batch, raw_csv: <<-HEREDOC.strip_heredoc
+              old url,new url
+              /old,#{too_long_url}
+            HEREDOC
+          )
+        end
+
+        before { mappings_batch.should_not be_valid }
+        it 'should declare it invalid' do
+          mappings_batch.errors[:new_urls].should == ["A new URL is too long"]
+        end
+      end
+    end
   end
 
   describe 'creating entries' do

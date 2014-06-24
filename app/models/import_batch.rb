@@ -14,6 +14,7 @@ class ImportBatch < MappingsBatch
   validates :raw_csv, presence: { :if => :new_record?, message: I18n.t('mappings.import.raw_csv_empty') } # we only care about raw_csv at create-time
   validates :old_urls, old_urls_are_for_site: true
   validates :canonical_paths, presence: { :if => :new_record?, message: I18n.t('mappings.paths_empty') }
+  validates :new_urls, each_in_collection: { validator: LengthValidator, maximum: (64.kilobytes - 1), message: I18n.t('mappings.new_url_too_long') }
 
   after_create :create_entries
 
@@ -32,6 +33,10 @@ class ImportBatch < MappingsBatch
 
   def old_urls
     deduplicated_csv_rows.map(&:old_value)
+  end
+
+  def new_urls
+    deduplicated_csv_rows.select(&:redirect?).map(&:new_url)
   end
 
   def canonical_paths
