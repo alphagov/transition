@@ -17,7 +17,7 @@ en:
   mappings:
     not_possible_to_edit_homepage_mapping: 'It’s not currently possible to edit the mapping for a site’s homepage.'
     bulk:
-      type_invalid: 'Please select either redirect or archive'
+      type_invalid: 'Please select either redirect, archive or unresolved'
       new_url_invalid: 'Enter a valid URL to redirect to'
       new_url_must_be_on_whitelist: 'The URL to redirect to must be on a whitelisted domain. Contact %{email} for more information.'
       add:
