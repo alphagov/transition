@@ -13,6 +13,7 @@ class ImportBatch < MappingsBatch
 
   validates :raw_csv, presence: { :if => :new_record?, message: I18n.t('mappings.import.raw_csv_empty') } # we only care about raw_csv at create-time
   validates :old_urls, old_urls_are_for_site: true
+  validates :canonical_paths, presence: { :if => :new_record?, message: I18n.t('mappings.paths_empty') }
 
   after_create :create_entries
 
@@ -31,6 +32,10 @@ class ImportBatch < MappingsBatch
 
   def old_urls
     deduplicated_csv_rows.map(&:old_value)
+  end
+
+  def canonical_paths
+    deduplicated_csv_rows.map(&:path)
   end
 
 private

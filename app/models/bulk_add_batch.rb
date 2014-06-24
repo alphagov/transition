@@ -3,9 +3,9 @@ class BulkAddBatch < MappingsBatch
 
   attr_accessible :paths, :type, :new_url
 
-  validates :paths, presence: { :if => :new_record?, message: I18n.t('mappings.bulk.add.paths_empty') } # we only care about paths at create-time
+  validates :paths, presence: { :if => :new_record?, message: I18n.t('mappings.paths_empty') } # we only care about paths at create-time
   validates :paths, old_urls_are_for_site: true
-  validate :paths_cannot_be_empty_once_canonicalised
+  validates :canonical_paths, presence: { :if => :new_record?, message: I18n.t('mappings.paths_empty') }
   validates :type, inclusion: { :in => Mapping::SUPPORTED_TYPES }
   with_options :if => :redirect? do |redirect|
     redirect.validates :new_url, presence: { message: I18n.t('mappings.bulk.new_url_invalid') }
@@ -23,13 +23,6 @@ class BulkAddBatch < MappingsBatch
 
   def redirect?
     type == 'redirect'
-  end
-
-  def paths_cannot_be_empty_once_canonicalised
-    return true if paths.blank?
-    if canonical_paths.empty?
-      errors.add(:paths, I18n.t('mappings.bulk.add.paths_empty'))
-    end
   end
 
   # called after_create, so in the same transaction
@@ -68,6 +61,9 @@ class BulkAddBatch < MappingsBatch
 
 private
   def canonical_paths
-    @_canonical_paths ||= paths.map { |p| site.canonical_path(p) }.select(&:present?).uniq
+    @_canonical_paths ||= begin
+      return [] if paths.blank?
+      paths.map { |p| site.canonical_path(p) }.select(&:present?).uniq
+    end
   end
 end

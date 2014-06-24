@@ -17,7 +17,15 @@ describe BulkAddBatch do
 
   describe 'validations' do
     it { should ensure_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
-    it { should validate_presence_of(:paths).with_message('Enter at least one valid path') }
+
+    describe 'paths would be empty after canonicalisation' do
+      subject(:mappings_batch) { build(:bulk_add_batch, paths: ['/']) }
+
+      before { mappings_batch.should_not be_valid }
+      it 'should declare it invalid' do
+        mappings_batch.errors[:canonical_paths].should == ['Enter at least one valid path']
+      end
+    end
 
     describe 'new_url must be present if it is a redirect' do
       subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect') }
@@ -72,15 +80,6 @@ describe BulkAddBatch do
       end
 
       it { should be_valid }
-    end
-
-    describe 'paths would be empty after canonicalisation' do
-      subject(:mappings_batch) { build(:bulk_add_batch, paths: ['/']) }
-
-      before { mappings_batch.should_not be_valid }
-      it 'should declare them invalid' do
-        mappings_batch.errors[:paths].should == ['Enter at least one valid path']
-      end
     end
 
     describe 'invalid paths with a scheme' do

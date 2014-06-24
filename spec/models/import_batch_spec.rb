@@ -41,6 +41,21 @@ describe ImportBatch do
           mappings_batch.errors[:old_urls].should == ['One or more of the URLs entered are not part of this site']
         end
       end
+
+      describe 'old URLs would be empty after canonicalisation' do
+        subject(:mappings_batch) do
+          build(:import_batch, site: site, raw_csv: <<-HEREDOC.strip_heredoc
+              old url,new url
+              old,
+            HEREDOC
+          )
+        end
+
+        before { mappings_batch.should_not be_valid }
+        it 'should declare it invalid' do
+          mappings_batch.errors[:canonical_paths].should == ['Enter at least one valid path']
+        end
+      end
     end
 
   end
