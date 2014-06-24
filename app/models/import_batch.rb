@@ -30,22 +30,26 @@ class ImportBatch < MappingsBatch
 
 private
   def deduplicated_csv_rows
-    rows_by_path = {}
-    CSV.parse(raw_csv).each_with_index do |csv_row, index|
-      next unless csv_row[0].starts_with?('/') || csv_row[0].starts_with?('http')
+    @_deduplicated_csv_rows ||= begin
+      return [] if raw_csv.blank?
 
-      line_number = index + 1
-      row = Transition::ImportBatchRow.new(site, line_number, csv_row[0], csv_row[1])
+      rows_by_path = {}
+      CSV.parse(raw_csv).each_with_index do |csv_row, index|
+        next unless csv_row[0].starts_with?('/') || csv_row[0].starts_with?('http')
 
-      # If we don't yet have a row for this canonical path, or if the row we're
-      # considering is 'better' than the one we have already, put this row into
-      # the hash.
-      # The second expression here calls the `<=>` method on ImportBatchRow,
-      # which knows which of two mappings is 'better'
-      if !rows_by_path.has_key?(row.path) || row > rows_by_path[row.path]
-        rows_by_path[row.path] = row
+        line_number = index + 1
+        row = Transition::ImportBatchRow.new(site, line_number, csv_row[0], csv_row[1])
+
+        # If we don't yet have a row for this canonical path, or if the row we're
+        # considering is 'better' than the one we have already, put this row into
+        # the hash.
+        # The second expression here calls the `<=>` method on ImportBatchRow,
+        # which knows which of two mappings is 'better'
+        if !rows_by_path.has_key?(row.path) || row > rows_by_path[row.path]
+          rows_by_path[row.path] = row
+        end
       end
+      rows_by_path.values
     end
-    rows_by_path.values
   end
 end
