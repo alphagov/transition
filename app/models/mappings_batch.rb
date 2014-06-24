@@ -132,6 +132,6 @@ class MappingsBatch < ActiveRecord::Base
 
 private
   def canonical_paths
-    @_canonical_paths = paths.map { |p| site.canonical_path(p) }.select(&:present?).uniq
+    @_canonical_paths ||= paths.map { |p| site.canonical_path(p) }.select(&:present?).uniq
   end
 end
