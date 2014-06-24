@@ -11,6 +11,8 @@ class Host < ActiveRecord::Base
   validates :site, presence: true
   validate :canonical_host_id_xor_aka_present
 
+  after_update :update_hits_relations, :if => :site_id_changed?
+
   scope :excluding_aka, where(canonical_host_id: nil)
 
   def aka?
@@ -47,5 +49,11 @@ class Host < ActiveRecord::Base
     if aka? && canonical_host_id.blank?
       errors[:canonical_host_id] << 'can\'t be blank for an aka host'
     end
+  end
+
+  def update_hits_relations
+    host_paths.update_all(mapping_id: nil, c14n_path_hash: nil)
+    hits.update_all(mapping_id: nil)
+    Transition::Import::HitsMappingsRelations.refresh!(self.site)
   end
 end
