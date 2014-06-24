@@ -53,7 +53,7 @@ Feature: Edit a site's mapping
     When I make the mapping a redirect to http:////not-a-url
     And I save the mapping
     Then I should still be editing a mapping
-    And I should see "New URL is not a URL"
+    And I should see "The URL to redirect to is not a URL"
 
   @allow-rescue
   Scenario: Visit the page of an non-existent mapping

@@ -12,6 +12,8 @@ en:
     attributes:
       whitelisted_host:
         hostname: Domain
+      mapping:
+        new_url: 'The URL to redirect to'
       mappings_batch:
         paths: Old URLs
   mappings:
