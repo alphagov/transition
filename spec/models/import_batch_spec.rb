@@ -60,7 +60,7 @@ describe ImportBatch do
 
     describe 'new URLs' do
       describe 'validating all new URLs for length' do
-        let(:too_long_url) { 'http://a.'.ljust(65536, 'x') }
+        let(:too_long_url) { 'http://a.gov.uk'.ljust(65536, 'x') }
         subject(:mappings_batch) do
           build(:import_batch, raw_csv: <<-HEREDOC.strip_heredoc
               old url,new url
@@ -71,7 +71,7 @@ describe ImportBatch do
 
         before { mappings_batch.should_not be_valid }
         it 'should declare it invalid' do
-          mappings_batch.errors[:new_urls].should == ["A new URL is too long"]
+          mappings_batch.errors[:new_urls].should include("A new URL is too long")
         end
       end
 
@@ -86,7 +86,22 @@ describe ImportBatch do
 
         before { mappings_batch.should_not be_valid }
         it 'should declare it invalid' do
-          mappings_batch.errors[:new_urls].should == ['A new URL is invalid']
+          mappings_batch.errors[:new_urls].should include('A new URL is invalid')
+        end
+      end
+
+      describe 'validating that all new URLs are on the whitelist' do
+        subject(:mappings_batch) do
+          build(:import_batch, raw_csv: <<-HEREDOC.strip_heredoc
+              old url,new url
+              /old,http://evil.com
+            HEREDOC
+          )
+        end
+
+        before { mappings_batch.should_not be_valid }
+        it 'should declare it invalid' do
+          mappings_batch.errors[:new_urls].should include('The URL to redirect to must be on a whitelisted domain. Contact transition-dev@digital.cabinet-office.gov.uk for more information.')
         end
       end
     end

@@ -16,6 +16,7 @@ class ImportBatch < MappingsBatch
   validates :canonical_paths, presence: { :if => :new_record?, message: I18n.t('mappings.paths_empty') }
   validates :new_urls, each_in_collection: { validator: LengthValidator, maximum: (64.kilobytes - 1), message: I18n.t('mappings.new_url_too_long') }
   validates :new_urls, each_in_collection: { validator: NonBlankURLValidator, message: I18n.t('mappings.import.new_url_invalid') }
+  validates :new_urls, each_in_collection: { validator: HostInWhitelistValidator, message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist', email: Rails.configuration.support_email) }
 
   after_create :create_entries
 
