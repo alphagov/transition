@@ -15,6 +15,7 @@ class ImportBatch < MappingsBatch
   validates :old_urls, old_urls_are_for_site: true
   validates :canonical_paths, presence: { :if => :new_record?, message: I18n.t('mappings.paths_empty') }
   validates :new_urls, each_in_collection: { validator: LengthValidator, maximum: (64.kilobytes - 1), message: I18n.t('mappings.new_url_too_long') }
+  validates :new_urls, each_in_collection: { validator: NonBlankURLValidator, message: I18n.t('mappings.import.new_url_invalid') }
 
   after_create :create_entries
 
