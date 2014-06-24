@@ -14,6 +14,7 @@ Feature: Import mappings
     Then I should see "http://bis.gov.uk"
     When I submit the form with valid CSV
     Then the page title should be "Preview import"
+    And I should see options to keep or overwrite the existing mappings
     And I should see how many of each type of mapping will be created
     And I should see how many mappings will be overwritten
     And I should see a preview of my mappings
