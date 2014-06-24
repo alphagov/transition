@@ -10,6 +10,39 @@ describe ImportBatch do
 
   describe 'validations' do
     it { should validate_presence_of(:raw_csv).with_message('Enter at least one valid line') }
+
+    describe 'old URLs' do
+      let(:site) { create(:site_without_host, hosts: [create(:host, hostname: 'a.com')]) }
+
+      describe 'old_urls includes URLs for this site' do
+        subject(:mappings_batch) do
+          build(:import_batch, site: site, raw_csv: <<-HEREDOC.strip_heredoc
+              old url,new url
+              http://a.com/old,
+            HEREDOC
+          )
+        end
+
+        it { should be_valid }
+      end
+
+      describe 'old_urls includes URLs which are not for this site' do
+        subject(:mappings_batch) do
+          build(:import_batch, site: site, raw_csv: <<-HEREDOC.strip_heredoc
+              old url,new url
+              http://other.com/old,
+            HEREDOC
+          )
+        end
+
+        it { should_not be_valid }
+        it 'should declare them invalid' do
+          mappings_batch.valid?
+          mappings_batch.errors[:old_urls].should == ['One or more of the URLs entered are not part of this site']
+        end
+      end
+    end
+
   end
 
   describe 'creating entries' do

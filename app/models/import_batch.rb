@@ -12,6 +12,7 @@ class ImportBatch < MappingsBatch
   has_many :entries, foreign_key: :mappings_batch_id, class_name: 'ImportBatchEntry', dependent: :delete_all
 
   validates :raw_csv, presence: { :if => :new_record?, message: I18n.t('mappings.import.raw_csv_empty') } # we only care about raw_csv at create-time
+  validates :old_urls, old_urls_are_for_site: true
 
   after_create :create_entries
 
@@ -26,6 +27,10 @@ class ImportBatch < MappingsBatch
       entry.mapping = existing_mappings.detect { |mapping| mapping.path_hash == path_hash }
       entry.save!
     end
+  end
+
+  def old_urls
+    deduplicated_csv_rows.map(&:old_value)
   end
 
 private
