@@ -16,7 +16,7 @@ Feature: Create mappings
     When I make the new mapping paths "/Needs/Canonicalizing/?q=1, /a, /r, noslash" redirect to www.gov.uk/organisations/bis
     And I continue
     Then the page title should be "Confirm new mappings"
-    And I should see options to ignore or overwrite the existing mappings
+    And I should see options to keep or overwrite the existing mappings
     And I should see the canonicalized paths "/needs/canonicalizing, /a, /r"
     But I should not see "noslash"
     And I should see "/a currently archived"

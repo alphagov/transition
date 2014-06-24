@@ -20,7 +20,7 @@
     <div class="alert alert-warning">
       <h4>We’ve found <%= pluralize(@batch.entries.with_existing_mappings.count, "existing mapping") %> for the paths entered</h4>
       <%= label_tag :update_existing_false, class: 'radio-inline' do %>
-        <%= radio_button_tag 'update_existing', 'false', true %> Ignore existing mappings
+        <%= radio_button_tag 'update_existing', 'false', true %> Keep existing mappings
       <% end %>
       <%= label_tag :update_existing_true, class: 'radio-inline' do %>
         <%= radio_button_tag 'update_existing', 'true' %> Overwrite existing mappings

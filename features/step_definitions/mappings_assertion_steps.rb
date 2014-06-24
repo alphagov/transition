@@ -133,8 +133,8 @@ Then(/^I should see a highlighted "(.*?)" label and field$/) do |label|
   expect(page).to have_selector(".field_with_errors *[name='#{label['for']}']")
 end
 
-Then(/^I should see options to ignore or overwrite the existing mappings$/) do
-  expect(page).to have_field('Ignore existing mappings', type: 'radio')
+Then(/^I should see options to keep or overwrite the existing mappings$/) do
+  expect(page).to have_field('Keep existing mappings', type: 'radio')
   expect(page).to have_field('Overwrite existing mappings', type: 'radio')
 end
 
