@@ -92,7 +92,7 @@ module Transition
       LOAD_DATA = <<-postgreSQL
         COPY hits_staging (hit_on, count, http_status, hostname, path)
         FROM '$filename$'
-        WITH DELIMITER AS '\t' CSV HEADER
+        WITH DELIMITER AS E'\t' QUOTE AS E'\b' CSV HEADER
       postgreSQL
 
       INSERT_FROM_STAGING = <<-postgreSQL
