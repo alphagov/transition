@@ -241,4 +241,20 @@ describe ImportBatch do
       end
     end
   end
+
+  describe '#process' do
+    let(:site) { create(:site) }
+
+    subject(:mappings_batch) do
+      create(:import_batch, site: site,
+             tag_list: ['a tag'],
+             raw_csv: <<-HEREDOC.strip_heredoc
+                        /a,http://a.gov.uk
+                        /b,http://a.gov.uk
+                      HEREDOC
+                 )
+    end
+
+    include_examples 'creates mappings'
+  end
 end

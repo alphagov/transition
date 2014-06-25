@@ -36,6 +36,24 @@ class MappingsBatch < ActiveRecord::Base
     state == 'failed'
   end
 
+  def process
+    with_state_tracking do
+      entries.each do |entry|
+        path_hash = Digest::SHA1.hexdigest(entry.path)
+        mapping = site.mappings.where(path_hash: path_hash).first_or_initialize
+
+        next if !update_existing && mapping.persisted?
+        mapping.path = entry.path
+        mapping.type = entry.type
+        mapping.new_url = entry.new_url
+        mapping.tag_list = [mapping.tag_list, tag_list].join(',')
+        mapping.save
+
+        entry.update_column(:processed, true)
+      end
+    end
+  end
+
   def with_state_tracking
     update_column(:state, 'processing')
     yield
