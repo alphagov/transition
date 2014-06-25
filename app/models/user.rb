@@ -7,8 +7,6 @@ class User < ActiveRecord::Base
 
   serialize :permissions, Array
 
-  attr_accessible :uid, :email, :name, :permissions, :organisation_slug, as: :oauth
-
   def admin?
     permissions.include?('admin')
   end
