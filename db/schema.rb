@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20140912150755) do
 
   create_table "hits", :force => true do |t|
     t.integer "host_id",                     :null => false
-    t.string  "path",        :limit => 1024, :null => false
+    t.string  "path",        :limit => 2048, :null => false
     t.string  "path_hash",   :limit => 40,   :null => false
     t.string  "http_status", :limit => 3,    :null => false
     t.integer "count",                       :null => false
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20140912150755) do
 
   create_table "hits_staging", :id => false, :force => true do |t|
     t.string  "hostname"
-    t.string  "path",        :limit => 1024
+    t.text    "path"
     t.string  "http_status", :limit => 3
     t.integer "count"
     t.date    "hit_on"
