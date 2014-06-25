@@ -4,11 +4,15 @@ module Transition
 
     attr_reader :line_number, :old_value, :new_value
 
-    def initialize(site, line_number, old_value, new_value)
+    def initialize(site, line_number, csv_row)
       @site = site
       @line_number = line_number
-      @old_value = old_value.blank? ? nil : old_value.strip
-      @new_value = new_value.blank? ? nil : new_value.strip
+      @old_value = csv_row[0].strip
+      @new_value = csv_row[1].present? ? csv_row[1].strip : nil
+    end
+
+    def data_row?
+      @old_value.starts_with?('/') || @old_value.starts_with?('http')
     end
 
     def type

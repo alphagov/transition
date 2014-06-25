@@ -52,10 +52,9 @@ private
 
       rows_by_path = {}
       CSV.parse(raw_csv).each_with_index do |csv_row, index|
-        next unless csv_row[0].starts_with?('/') || csv_row[0].starts_with?('http')
-
         line_number = index + 1
-        row = Transition::ImportBatchRow.new(site, line_number, csv_row[0], csv_row[1])
+        row = Transition::ImportBatchRow.new(site, line_number, csv_row)
+        next unless row.data_row?
 
         # If we don't yet have a row for this canonical path, or if the row we're
         # considering is 'better' than the one we have already, put this row into

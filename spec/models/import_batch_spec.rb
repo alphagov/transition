@@ -138,10 +138,11 @@ describe ImportBatch do
       let(:raw_csv) { <<-HEREDOC.strip_heredoc
                         old url,new url
                         /old,https://www.gov.uk/new
+                        old_url, new_url
                       HEREDOC
                     }
 
-      it 'should ignore headers in the first row' do
+      it 'should ignore headers' do
         mappings_batch.entries.count.should == 1
         entry = mappings_batch.entries.first
         entry.path.should == '/old'
