@@ -536,7 +536,7 @@ describe MappingsController do
         login_as gds_bob
         mapping_ids = [ mapping_a.id, mapping_b.id ]
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
-             type: 'redirect', new_url: '___'
+             type: 'redirect', new_url: 'http://{'
       end
 
       it 'does not update any mappings' do
