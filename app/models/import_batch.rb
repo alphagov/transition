@@ -55,6 +55,7 @@ private
         line_number = index + 1
         row = Transition::ImportBatchRow.new(site, line_number, csv_row)
         next unless row.data_row?
+        next if row.homepage?
 
         # If we don't yet have a row for this canonical path, or if the row we're
         # considering is 'better' than the one we have already, put this row into

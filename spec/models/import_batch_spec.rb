@@ -196,6 +196,18 @@ describe ImportBatch do
       end
     end
 
+    context 'the old URL canonicalizes to a homepage path' do
+      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+                  /?foo
+                  /a
+                HEREDOC
+              }
+
+      it 'does not create an entry for the homepage row' do
+        mappings_batch.entries.pluck(:path).should eql(['/a'])
+      end
+    end
+
     context 'deduplicating rows' do
       let(:raw_csv) { <<-HEREDOC.strip_heredoc
                   /old,

@@ -27,6 +27,10 @@ module Transition
       @_path ||= @site.canonical_path(old_value)
     end
 
+    def homepage?
+      path == ''
+    end
+
     def new_url
       if type == 'redirect'
         new_value
