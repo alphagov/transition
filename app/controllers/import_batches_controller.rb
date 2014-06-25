@@ -12,8 +12,11 @@ class ImportBatchesController < ApplicationController
     @batch = ImportBatch.new(params[:import_batch])
     @batch.site = @site
     @batch.user = current_user
-    @batch.save!
-    redirect_to preview_site_import_batch_path(@site, @batch)
+    if @batch.save
+      redirect_to preview_site_import_batch_path(@site, @batch)
+    else
+      render 'new'
+    end
   end
 
   def preview

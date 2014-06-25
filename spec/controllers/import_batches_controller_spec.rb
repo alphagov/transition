@@ -49,6 +49,30 @@ describe ImportBatchesController do
         expect(response).to redirect_to preview_site_import_batch_path(site, site.import_batches.first)
       end
     end
+
+    context 'with invalid parameters' do
+      before do
+        post :create, site_id: site.abbr, import_batch: {
+          raw_csv: 'a,', tag_list: ''
+        }
+      end
+
+      it 'does not create a batch for the site' do
+        site.import_batches.count.should == 0
+      end
+
+      it 'redisplays the form' do
+        expect(response).to render_template 'import_batches/new'
+      end
+
+      describe 'showing error messages' do
+        render_views
+
+        it 'shows error messages at the top of the form' do
+          expect(response.body).to include('Enter at least one valid path')
+        end
+      end
+    end
   end
 
   describe '#preview without permission to edit' do

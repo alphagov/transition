@@ -8,6 +8,10 @@
   </h1>
 </div>
 
+<% if @batch.errors %>
+  <%= render 'shared/error_messages', error_messages: @batch.errors.values.flatten(1) %>
+<% end %>
+
 <p class="lead normal add-bottom-margin">
   Please paste a <abbr title="comma separated values">CSV</abbr> or <abbr title="tab separated values">TSV</abbr> with the columns "old url,new url".<br />
   When a URL is being archived "new URL" should be set to "TNA" or a National Archives URL.<br />
@@ -21,7 +25,7 @@
 </blockquote>
 <%= form_for [@site, @batch], role: 'form' do |f| %>
   <div class="form-group">
-    <div class="old-urls">
+    <div class="old-urls <% if errors_for_raw_csv?(@batch) %>field_with_errors<% end %>">
       <%= f.text_area :raw_csv, class: 'form-control', placeholder: 'old-url,new-url' %>
     </div>
   </div>
