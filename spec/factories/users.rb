@@ -7,5 +7,9 @@ FactoryGirl.define do
     factory :gds_editor do
       permissions { ["signin", "GDS Editor"] }
     end
+
+    factory :admin do
+      permissions { ["signin", "GDS Editor", "admin"] }
+    end
   end
 end

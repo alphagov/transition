@@ -2,6 +2,10 @@ Given(/^I have logged in as a GDS Editor$/) do
   GDS::SSO.test_user = create(:gds_editor)
 end
 
+Given(/^I have logged in as an admin$/) do
+  GDS::SSO.test_user = create(:admin)
+end
+
 Given(/^I have logged in as a member of DCLG$/) do
   dclg = create(:organisation,
                 title:          'Department for Communities and Local Government',

@@ -12,7 +12,8 @@ class Admin::WhitelistedHostsController < Admin::AdminController
   def create
     @whitelisted_host = WhitelistedHost.new(params[:whitelisted_host])
     if @whitelisted_host.save
-      redirect_to admin_whitelisted_hosts_path, flash: { success: "#{@whitelisted_host.hostname} added to whitelist." }
+      redirect_to admin_whitelisted_hosts_path, flash: { success: "#{@whitelisted_host.hostname} added to whitelist.",
+                                                         hostname: @whitelisted_host.hostname }
     else
       render :new
     end

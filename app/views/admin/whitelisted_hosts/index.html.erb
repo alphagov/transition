@@ -16,17 +16,25 @@
   <% end %>
 </div>
 
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered" data-module="filterable-table">
   <thead>
     <tr class="table-header">
       <th>Domain</th>
       <th>Added</th>
       <th>Added by</th>
     </tr>
+    <tr class="if-no-js-hide table-header-secondary">
+      <td colspan="3">
+        <form>
+          <label for="whitelist-filter" class="rm">Filter whitelist</label>
+          <input id="whitelist-filter" type="text" class="form-control normal js-filter-table-input" placeholder="Filter whitelist">
+        </form>
+      </td>
+    </tr>
   </thead>
   <tbody>
     <% @whitelisted_hosts.each do |host| %>
-      <tr>
+      <tr <% if flash[:hostname] == host.hostname %>class="selected-row"<% end %>>
         <td><%= host.hostname %></td>
         <td><%= I18n.l host.created_at, :format => :govuk_date %></td>
         <td><%= host.originator %></td>
