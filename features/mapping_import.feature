@@ -4,6 +4,7 @@ Feature: Import mappings
   So that I can continue to edit them there
   And so that the mappings take effect
 
+  @javascript
   Scenario: Successfully importing a small batch of mappings
     Given I have logged in as a GDS Editor
     And there is a site called bis belonging to an organisation bis with these mappings:
@@ -18,7 +19,14 @@ Feature: Import mappings
     And I should see how many of each type of mapping will be created
     And I should see how many mappings will be overwritten
     And I should see a preview of my small batch of mappings
+    When I click the "Import" button
+    Then I should be on the bis mappings page
+    And I should see "2 mappings created" in a modal window
+    And I should see a table with 2 saved mappings in the modal
+    And I should see "/i-dont-know-what-i-am" in a modal window
+    And an analytics event with "import-ignore-existing" has fired
 
+  @javascript
   Scenario: Successfully importing a larger batch of mappings
     Given I have logged in as a GDS Editor
     And a site bis exists
@@ -28,6 +36,11 @@ Feature: Import mappings
     When I submit the form with a large valid CSV
     Then the page title should be "Preview import"
     And I should see a preview of my large batch of mappings
+    When I click the "Import" button
+    Then I should see "0 of 21 mappings added" in a modal window
+    When I visit the path /sites/bis/mappings
+    Then I should not see a modal window
+    And I should see a flash message "0 of 21 mappings added"
 
   Scenario: I don't have access
     Given I have logged in as a member of another organisation

@@ -1,3 +1,8 @@
+Then(/^I should be on the (.*) mappings page$/) do |site_abbr|
+  site = Site.find_by_abbr!(site_abbr)
+  i_should_be_on_the_path site_mappings_path(site)
+end
+
 Then(/^I should see how many of each type of mapping will be created$/) do
   steps %{
     Then I should see "Create 1 new redirect"

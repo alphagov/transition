@@ -82,4 +82,42 @@ describe ImportBatchesController do
 
     it_behaves_like 'disallows editing by unaffiliated user'
   end
+
+  describe '#import' do
+    let(:batch) { create(:import_batch, site: site) }
+
+    before do
+      login_as gds_bob
+    end
+
+    context 'a small batch' do
+      def make_request
+        post :import, site_id: site.abbr,
+            import_batch: { update_existing: 'true' },
+            id: batch.id
+      end
+
+      include_examples 'it processes a small batch inline'
+    end
+
+    context 'a large batch' do
+      let(:large_batch) { create(:large_import_batch, site: site) }
+
+      def make_request
+        post :import, site_id: site.abbr,
+              import_batch: { update_existing: 'true' },
+              id: large_batch.id
+      end
+
+      include_examples 'it processes a large batch in the background'
+    end
+
+    context 'a batch which has been submitted already' do
+      def make_request
+        post :import, site_id: site.abbr, id: batch.id, import_batch: {}
+      end
+
+      include_examples 'it doesn\'t requeue a batch which has already been queued'
+    end
+  end
 end

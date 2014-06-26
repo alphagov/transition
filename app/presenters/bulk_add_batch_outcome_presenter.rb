@@ -22,7 +22,11 @@ class BulkAddBatchOutcomePresenter
 
   def operation_description
     update_type = @batch.update_existing? ? 'overwrite' : 'ignore'
-    "bulk-add-#{@batch.type}-#{update_type}-existing"
+    if @batch.is_a?(BulkAddBatch)
+      "bulk-add-#{@batch.type}-#{update_type}-existing"
+    else
+      "import-#{update_type}-existing"
+    end
   end
 
   def affected_mapping_ids

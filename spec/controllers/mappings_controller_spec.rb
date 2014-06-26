@@ -300,53 +300,33 @@ describe MappingsController do
         login_as gds_bob
       end
 
-      context 'with a small batch' do
-        before do
+      context 'a small batch' do
+        def make_request
           post :create_multiple, site_id: site.abbr, update_existing: 'true',
-                mappings_batch_id: batch.id
+              mappings_batch_id: batch.id
         end
 
-        it 'sets a success message' do
-          flash[:success].should include('mappings created')
-        end
+        include_examples 'it processes a small batch inline'
       end
 
-      context 'with a large batch' do
-        let(:batch) { create(:bulk_add_batch, site: site,
-                              paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21}) }
+      context 'a large batch' do
+        let(:large_batch) { create(:bulk_add_batch, site: site,
+                          paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21}) }
 
-        before do
+        def make_request
           post :create_multiple, site_id: site.abbr, update_existing: 'true',
-                mappings_batch_id: batch.id
+                mappings_batch_id: large_batch.id
         end
 
-        it 'redirects to the site return URL' do
-          expect(response).to redirect_to site_mappings_path(site)
-        end
-
-        it 'queues a job' do
-          expect(MappingsBatchWorker.jobs.size).to eql(1)
-        end
-
-        it 'updates the batch state' do
-          batch.reload
-          batch.state.should == 'queued'
-        end
+        include_examples 'it processes a large batch in the background'
       end
 
-      context 'when the batch has already been queued' do
-        before do
-          batch.update_column(:state, 'finished')
+      context 'a batch which has been submitted already' do
+        def make_request
           post :create_multiple, site_id: site.abbr, mappings_batch_id: batch.id
         end
 
-        it 'doesn\'t queue it (again)' do
-          expect(MappingsBatchWorker.jobs.size).to eql(0)
-        end
-
-        it 'redirects to the site return URL' do
-          expect(response).to redirect_to site_mappings_path(site)
-        end
+        include_examples 'it doesn\'t requeue a batch which has already been queued'
       end
     end
   end

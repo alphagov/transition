@@ -9,7 +9,7 @@
   </h1>
 </div>
 
-<%= form_for [@site, @batch], url: import_site_import_batch_path(@site, @batch), role: 'form' do |f| %>
+<%= form_for [@site, @batch], url: import_site_import_batch_path(@site, @batch), method: :post, role: 'form' do |f| %>
   <% if @batch.entries.with_existing_mappings.any? %>
     <div class="alert alert-warning">
       <h4>We’ve found <%= pluralize(@batch.entries.with_existing_mappings.count, "existing mapping") %> for the paths entered</h4>
@@ -20,6 +20,8 @@
         <%= f.radio_button :update_existing, 'true' %> Overwrite existing mappings
       <% end %>
     </div>
+  <% else %>
+    <%= f.hidden_field :update_existing %>
   <% end %>
 
   <h4 class="add-bottom-margin">Running this import will</h4>
