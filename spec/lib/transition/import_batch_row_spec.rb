@@ -63,6 +63,17 @@ describe Transition::ImportBatchRow do
       row.type.should == 'redirect'
     end
 
+    it 'should be an archive when the new URL is a TNA URL' do
+      row = make_a_row('', 'http://webarchive.nationalarchives.gov.uk/*/http://a.gov.uk')
+      row.type.should == 'archive'
+    end
+
+    it 'should not raise an error when the new URL is unparseable' do
+      row = make_a_row('', 'http://}')
+      # let the ImportBatch validate and report that it isn't parseable as a New URL
+      row.type.should == 'redirect'
+    end
+
     it 'should be unresolved when the new URL is blank' do
       row = make_a_row('', ' ')
       row.type.should == 'unresolved'

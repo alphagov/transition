@@ -17,7 +17,7 @@ module Transition
 
     def type
       @_type ||= case
-                 when new_value && (new_value.upcase == 'TNA') then 'archive'
+                 when new_value && ((new_value.upcase == 'TNA') || new_url_is_a_national_archives_url?) then 'archive'
                  when new_value then 'redirect'
                  else 'unresolved'
                  end
@@ -61,6 +61,14 @@ module Transition
       else
         -1
       end
+    end
+
+  private
+    def new_url_is_a_national_archives_url?
+      host = Addressable::URI.parse(new_value).host
+      host == NationalArchivesURLValidator::NATIONAL_ARCHIVES_HOST
+    rescue Addressable::URI::InvalidURIError => e
+      false
     end
   end
 end
