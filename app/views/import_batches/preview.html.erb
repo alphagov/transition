@@ -37,7 +37,13 @@
   <%= link_to 'Cancel', site_path(@site), class: 'btn btn-default add-big-bottom-margin add-left-margin' %>
 <% end %>
 
-<h4 class="add-bottom-margin">Preview mappings (<%= @batch.entries.count %>)</h4>
+<h4 class="add-bottom-margin">
+  <% if @preview_mappings.size < @batch.entries.size %>
+    Preview mappings (<%= number_with_delimiter(@preview_mappings.size) %> of <%= number_with_delimiter(@batch.entries.size) %>)
+  <% else %>
+    Preview mappings
+  <% end %>
+</h4>
 
 <table class="mappings table table-bordered">
   <thead>
@@ -49,7 +55,7 @@
     </tr>
   </thead>
   <tbody>
-  <% @batch.entries.each do |entry| %>
+  <% @preview_mappings.each do |entry| %>
     <tr>
       <td class="<%= "mapping-type-#{entry.type}" %>">
         <% if entry.type == "unresolved" %>

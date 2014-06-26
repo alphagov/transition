@@ -13,9 +13,9 @@ Then(/^I should see how many mappings will be overwritten$/) do
   }
 end
 
-Then(/^I should see a preview of my mappings$/) do
+Then(/^I should see a preview of my small batch of mappings$/) do
   steps %{
-    Then I should see "Preview mappings (3)"
+    Then I should see "Preview mappings"
   }
   within 'table.mappings tbody' do
     expect(page).to have_selector('tr:nth-child(1) td.mapping-type-redirect', text: 'Redirect')
@@ -26,5 +26,14 @@ Then(/^I should see a preview of my mappings$/) do
     expect(page).to have_selector('tr:nth-child(1) td:last-child', text: 'will redirect to https://www.gov.uk/new')
     expect(page).to have_selector('tr:nth-child(2) td:last-child', text: '/archive-me')
     expect(page).to have_selector('tr:nth-child(3) td:last-child', text: '/i-dont-know-what-i-am')
+  end
+end
+
+Then(/^I should see a preview of my large batch of mappings$/) do
+  steps %{
+    Then I should see "Preview mappings (20 of 21)"
+  }
+  within 'table.mappings tbody' do
+    expect(page).to have_selector('tr .breakable', count: 20)
   end
 end
