@@ -29,7 +29,7 @@
       <%= f.text_area :raw_csv, class: 'form-control', placeholder: 'old-url,new-url' %>
     </div>
   </div>
-  <%= render partial: 'shared/tag_list_field', locals: { tag_list: @batch.tag_list } %>
+  <%= render partial: 'shared/tag_list_field', locals: { tag_list: @batch.tag_list, form: f } %>
 
   <%= f.button 'Continue', class: 'add-vertical-margins btn btn-success' %>
 

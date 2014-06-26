@@ -35,6 +35,8 @@
 </li>
   </ul>
 
+  <%= render partial: 'shared/tag_list_field', locals: { tag_list: @batch.tag_list, form: f } %>
+
   <%= button_tag 'Import', class: 'btn btn-success add-big-bottom-margin' %>
   <%= link_to 'Cancel', site_path(@site), class: 'btn btn-default add-big-bottom-margin add-left-margin' %>
 <% end %>
