@@ -42,7 +42,7 @@ class MappingsController < ApplicationController
         @batch.process
         @batch.update_column(:seen_outcome, true)
 
-        outcome = BulkAddBatchOutcomePresenter.new(@batch)
+        outcome = BatchOutcomePresenter.new(@batch)
         flash[:saved_mapping_ids] = outcome.affected_mapping_ids
         flash[:success] = outcome.success_message
         flash[:saved_operation] = outcome.operation_description

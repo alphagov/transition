@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe BulkAddBatchOutcomePresenter do
+describe BatchOutcomePresenter do
   let!(:site) { create(:site) }
 
   describe '#success_message' do
@@ -8,7 +8,7 @@ describe BulkAddBatchOutcomePresenter do
                           type: 'archive', update_existing: true,
                           paths: ['/a', '/B', '/c?canonical=no', '/might-exist']) }
 
-    subject { BulkAddBatchOutcomePresenter.new(batch).success_message }
+    subject { BatchOutcomePresenter.new(batch).success_message }
 
     context 'when updating at least one existing mapping' do
       let!(:existing_mapping) { create(:archived, site: site, path: '/might-exist') }
@@ -54,7 +54,7 @@ describe BulkAddBatchOutcomePresenter do
   end
 
   describe '#operation_description' do
-    subject { BulkAddBatchOutcomePresenter.new(batch).operation_description }
+    subject { BatchOutcomePresenter.new(batch).operation_description }
 
     context 'bulk adding archives' do
       let(:batch) { build(:bulk_add_batch, type: 'archive') }
