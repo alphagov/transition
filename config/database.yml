@@ -6,6 +6,7 @@ development:
   encoding: utf8
   variables:
     work_mem: 10MB
+    synchronous_commit: "off"
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -17,6 +18,8 @@ test: &test
   password: transition
   encoding: utf8
   local_infile: true
+  variables:
+    synchronous_commit: "off"
 
 production:
   adapter: postgresql
