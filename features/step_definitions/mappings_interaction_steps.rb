@@ -181,7 +181,7 @@ When(/^I delete "(?:[^"]*)" and tag the mappings "([^"]*)"$/) do |tag_list|
 end
 
 When(/^I type "([^"]*)" in the tags box$/) do |letters|
-  fill_in 'Tags', with: letters
+  i_tag_the_mappings letters
 end
 
 When(/^I jump to the mapping "(.*?)"$/) do |url|
