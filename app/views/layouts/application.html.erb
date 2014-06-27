@@ -62,8 +62,8 @@
       <div class="alert alert-<%= flash[:batch_progress][:type] %> js-progress-message js-progress-container">
         <%= flash[:batch_progress][:message] %>
       </div>
-      <% if flash[:show_background_bulk_add_progress_modal] %>
-        <%= render partial: 'mappings/background_bulk_add_progress_modal' %>
+      <% if flash[:show_background_batch_progress_modal] %>
+        <%= render partial: 'mappings/background_batch_progress_modal', locals: { batch: @reportable_batch } %>
       <% end %>
     </div>
   <% end %>

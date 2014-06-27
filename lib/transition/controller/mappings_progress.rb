@@ -12,7 +12,7 @@ module Transition
             before_filter :_find_site, options
           end
           before_filter :set_saved_mappings, options
-          before_filter :set_background_bulk_add_status_message, options
+          before_filter :set_background_batch_status_message, options
           before_filter :prevent_caching, options
         end
       end
@@ -28,7 +28,7 @@ module Transition
         end
       end
 
-      def set_background_bulk_add_status_message
+      def set_background_batch_status_message
         @reportable_batch = current_user.mappings_batches
                                         .where(site_id: @site.id)
                                         .reportable
@@ -48,7 +48,8 @@ module Transition
       def background_status_message
         done = @reportable_batch.entries.processed.count
         total = @reportable_batch.entries_to_process.count
-        "#{done} of #{total} #{'mapping'.pluralize(total)} added".html_safe
+        past_participle = "#{@reportable_batch.verb}ed"
+        "#{done} of #{total} #{'mapping'.pluralize(total)} #{past_participle}".html_safe
       end
 
       def message_type

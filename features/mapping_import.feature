@@ -39,10 +39,10 @@ Feature: Import mappings
     Then the page title should be "Preview import"
     And I should see a preview of my large batch of mappings
     When I click the "Import" button
-    Then I should see "0 of 21 mappings added" in a modal window
+    Then I should see "0 of 21 mappings imported" in a modal window
     When I visit the path /sites/bis/mappings
     Then I should not see a modal window
-    And I should see a flash message "0 of 21 mappings added"
+    And I should see a flash message "0 of 21 mappings imported"
 
   Scenario: Importing a batch without Javascript
     Given I have logged in as a GDS Editor

@@ -38,7 +38,7 @@ describe('A batch progress module', function() {
   describe('when progress is returned', function() {
 
     beforeEach(function() {
-      var response = {done: 1, total: 10};
+      var response = {done: 1, total: 10, past_participle: 'added'};
       spyOn($, 'ajax').and.callFake(function(options) {
         options.success(response);
         response.done = 2;
@@ -75,7 +75,7 @@ describe('A batch progress module', function() {
   describe('when processing is done', function() {
 
     beforeEach(function(done) {
-      var response = {done: 10, total: 10};
+      var response = {done: 10, total: 10, past_participle: 'added'};
       spyOn($, 'ajax').and.callFake(function(options) {
         options.success(response);
       });

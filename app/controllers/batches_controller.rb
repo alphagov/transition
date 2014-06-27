@@ -5,6 +5,7 @@ class BatchesController < ApplicationController
     body = {
       done:  @batch.entries.processed.count,
       total: @batch.entries_to_process.count,
+      past_participle: "#{@batch.verb}ed",
     }
     render json: body
   end

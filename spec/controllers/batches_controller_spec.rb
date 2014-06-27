@@ -20,7 +20,8 @@ describe BatchesController do
     it 'renders a JSON document' do
       expected = {
         'done' => 0,
-        'total' => 2
+        'total' => 2,
+        'past_participle' => 'added'
       }
       @parsed_response.should == expected
     end

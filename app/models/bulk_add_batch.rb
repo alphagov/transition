@@ -41,6 +41,10 @@ class BulkAddBatch < MappingsBatch
     BulkAddBatchEntry.import(records, validate: false)
   end
 
+  def verb
+    'add'
+  end
+
 private
   def canonical_paths
     @_canonical_paths ||= begin

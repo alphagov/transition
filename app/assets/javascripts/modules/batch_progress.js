@@ -26,7 +26,7 @@
       // {done: X, total: X}
       function updateProgress(progress) {
         var percent;
-        message.text(progress.done + " of " + progress.total + " mappings added");
+        message.text(progress.done + " of " + progress.total + " mappings " + progress.past_participle);
 
         if (progress.done === progress.total) {
           showSuccess(progress);

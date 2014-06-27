@@ -45,6 +45,10 @@ class ImportBatch < MappingsBatch
     deduplicated_csv_rows.map(&:path)
   end
 
+  def verb
+    'import'
+  end
+
 private
   def deduplicated_csv_rows
     @_deduplicated_csv_rows ||= begin
