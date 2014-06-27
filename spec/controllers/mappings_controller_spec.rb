@@ -45,7 +45,7 @@ describe MappingsController do
           get :index, site_id: site.abbr, sort: 'by_hits'
 
           assigns(:mappings).to_a.should ==
-            site.mappings.with_hit_count.order('hit_count DESC').to_a
+            site.mappings.order('hit_count DESC').to_a
         end
       end
     end

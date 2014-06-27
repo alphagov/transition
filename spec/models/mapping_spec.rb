@@ -259,22 +259,6 @@ describe Mapping do
         it { should have(4).mappings }
       end
     end
-
-    describe '.with_hits_summary', testing_before_all: true do
-      before :all do
-        @site = create :site, :with_mappings_and_hits
-
-        @mappings = @site.mappings.with_hit_count
-      end
-
-      it 'has the total of every type of status hit on each mapping' do
-        @mappings.map {|m| [ m.path, m.hit_count ] }.should =~ [
-          ['/path-1', 40 * 1 + 30 * 1],
-          ['/path-2', 40 * 2 + 30 * 2],
-          ['/path-3', 40 * 3 + 30 * 3]
-        ]
-      end
-    end
   end
 
   describe 'path canonicalization and relation to hits', truncate_everything: true do
