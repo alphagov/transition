@@ -28,8 +28,24 @@
   background-color: $default-HTTP-status-color;
 }
 
+.mapping-type-unresolved {
+  background-color: transparent;
+}
+
 .mapping-type-error {
   background-color: $bad-HTTP-status-color;
+}
+
+.preview .mapping-type-redirect {
+  background-color: $good-HTTP-status-color;
+}
+
+.preview .mapping-type-archive {
+  background-color: $default-HTTP-status-color;
+}
+
+.preview .mapping-type-unresolved {
+  background-color: transparent;
 }
 
 .old-urls textarea {

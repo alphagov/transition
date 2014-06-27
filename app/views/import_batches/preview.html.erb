@@ -49,7 +49,7 @@
   <% end %>
 </h4>
 
-<table class="mappings table table-bordered">
+<table class="mappings table table-bordered preview">
   <thead>
     <tr class="table-header">
       <th class="mapping-type-column" scope="col">Type</th>
@@ -60,7 +60,7 @@
   </thead>
   <tbody>
   <% @preview_mappings.each do |entry| %>
-    <tr>
+    <tr <% if entry.mapping %>class="selected-row"<% end %>>
       <td class="<%= "mapping-type-#{entry.type}" %>">
         <% if entry.type == "unresolved" %>
           <span class="unresolved-type" title="No decision yet. Defaulting to archive." data-toggle="tooltip">Archive <span class="glyphicon glyphicon-question-sign unresolved-type-icon"></span></span>
