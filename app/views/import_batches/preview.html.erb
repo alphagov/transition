@@ -9,7 +9,7 @@
   </h1>
 </div>
 
-<%= form_for [@site, @batch], url: import_site_import_batch_path(@site, @batch), method: :post, role: 'form' do |f| %>
+<%= form_for [@site, @batch], url: import_site_import_batch_path(@site, @batch), method: :post, html: {role: 'form', 'data-module' => 'toggle-overwrite-existing-mappings-count'} do |f| %>
   <% if @batch.entries.with_existing_mappings.any? %>
     <div class="alert alert-warning">
       <h4>We’ve found <%= pluralize(@batch.entries.with_existing_mappings.count, "existing mapping") %> for the paths entered</h4>
@@ -30,7 +30,7 @@
     <li class="list-group-item">Create <%= pluralize(@archive_count, 'new archive') %></li>
     <li class="list-group-item">Create <%= pluralize(@unresolved_count, 'new unresolved mapping') %></li>
     <% if @overwrite_count > 0 %>
-      <li class="list-group-item list-group-item-warning">Overwrite <%= pluralize(@overwrite_count, 'existing mapping') %></li>
+      <li class="list-group-item list-group-item-warning js-overwrite-count">Overwrite <%= pluralize(@overwrite_count, 'existing mapping') %></li>
     <% end %>
 </li>
   </ul>

@@ -18,6 +18,12 @@ Then(/^I should see how many mappings will be overwritten$/) do
   }
 end
 
+Then(/^I should not see how many mappings will be overwritten$/) do
+  steps %{
+    Then I should not see "Overwrite 1 existing mapping"
+  }
+end
+
 Then(/^I should see a preview of my small batch of mappings$/) do
   steps %{
     Then I should see "Preview mappings"

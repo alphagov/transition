@@ -13,20 +13,25 @@ Feature: Import mappings
     And I visit the path /sites/bis
     And I go to import some mappings
     Then I should see "http://bis.gov.uk"
+
     When I associate the tags "fee,fi,FO" with the mappings
-    When I submit the form with a small valid CSV
+    And I submit the form with a small valid CSV
     Then the page title should be "Preview import"
     And I should see options to keep or overwrite the existing mappings
     And I should see how many of each type of mapping will be created
-    And I should see how many mappings will be overwritten
     And I should see a preview of my small batch of mappings
     And I should see the tags "fee,fi,FO"
+    But I should not see how many mappings will be overwritten
+
+    When I choose "Overwrite existing mappings"
+    Then I should see how many mappings will be overwritten
+
     When I click the "Import" button
     Then I should be on the bis mappings page
-    And I should see "2 mappings created" in a modal window
-    And I should see a table with 2 saved mappings in the modal
+    And I should see "2 mappings created and 1 mapping updated" in a modal window
+    And I should see a table with 3 saved mappings in the modal
     And I should see "/i-dont-know-what-i-am" in a modal window
-    And an analytics event with "import-ignore-existing" has fired
+    And an analytics event with "import-overwrite-existing" has fired
 
   @javascript
   Scenario: Successfully importing a larger batch of mappings
