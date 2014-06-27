@@ -13,12 +13,14 @@ Feature: Import mappings
     And I visit the path /sites/bis
     And I go to import some mappings
     Then I should see "http://bis.gov.uk"
+    When I associate the tags "fee,fi,FO" with the mappings
     When I submit the form with a small valid CSV
     Then the page title should be "Preview import"
     And I should see options to keep or overwrite the existing mappings
     And I should see how many of each type of mapping will be created
     And I should see how many mappings will be overwritten
     And I should see a preview of my small batch of mappings
+    And I should see the tags "fee,fi,FO"
     When I click the "Import" button
     Then I should be on the bis mappings page
     And I should see "2 mappings created" in a modal window
@@ -41,6 +43,22 @@ Feature: Import mappings
     When I visit the path /sites/bis/mappings
     Then I should not see a modal window
     And I should see a flash message "0 of 21 mappings added"
+
+  Scenario: Importing a batch without Javascript
+    Given I have logged in as a GDS Editor
+    And there is a site called bis belonging to an organisation bis with these mappings:
+      | type    | path        | new_url | tags |
+      | archive | /archive-me |         |      |
+    And I visit the path /sites/bis
+    And I go to import some mappings
+    Then I should see "http://bis.gov.uk"
+    When I associate the tags "fee,fi,FO" with the mappings
+    And I submit the form with a small valid CSV
+    Then the page title should be "Preview import"
+    And I should see the tags "fee,fi,FO"
+    When I click the "Import" button
+    Then I should be on the bis mappings page
+    And I should see "2 mappings created and tagged"
 
   Scenario: I don't have access
     Given I have logged in as a member of another organisation

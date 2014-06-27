@@ -135,7 +135,7 @@ When(/^I edit that mapping$/) do
 end
 
 When(/^I associate the tags "([^"]*)" with the mappings?$/) do |comma_separated_tags|
-  fill_in 'Tags', with: comma_separated_tags
+  i_tag_the_mappings(comma_separated_tags)
 end
 
 
@@ -172,6 +172,7 @@ end
 
 When(/^I delete "(?:[^"]*)" and tag the mappings "([^"]*)"$/) do |tag_list|
   i_tag_the_mappings tag_list
+  click_button 'Save'
 end
 
 When(/^I type "([^"]*)" in the tags box$/) do |letters|
