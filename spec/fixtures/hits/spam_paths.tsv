@@ -10,3 +10,6 @@ date	count	status	host	path
 2012-10-14	11	200	www.businesslink.gov.uk	/blog/wp-admin/
 2012-10-14	11	200	www.businesslink.gov.uk	/wp-cron
 2012-10-14	11	200	www.businesslink.gov.uk	/wp-login.php
+2012-10-14	11	200	www.businesslink.gov.uk	/_vti_bin/_vti_aut/author.exe
+2012-10-14	11	200	www.businesslink.gov.uk	/_vti_pvt/access.cnf
+2012-10-14	11	200	www.businesslink.gov.uk	/.htpasswd
