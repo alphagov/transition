@@ -65,12 +65,15 @@ module Transition
 
         # Spam
         '.*\.bat',
+        '.*\.htpasswd',
         '.*\.ini',
         '.*/etc/passwd.*',
         '.*/proc/self/environ.*',
         '.*phpMyAdmin.*',
         '.*sqlpatch.php.*',
+        '.*_vti_bin.*',
         '.*_vti_inf.htm',
+        '.*_vti_pvt.*',
         '.*_vti_rpc',
         '.*wp-admin.*',
         '.*wp-cron.*',
