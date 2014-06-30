@@ -25,6 +25,8 @@ class Mapping < ActiveRecord::Base
   } ]
 
   belongs_to :site
+  has_many :hits
+
   validates :site, presence: true
   validates :path,
             length: { maximum: 1024 },
@@ -165,5 +167,7 @@ protected
 
     site.hits.where(path_hash: new_hits_hashes).update_all(mapping_id: self.id)
     host_paths.update_all(mapping_id: self.id)
+
+    self.update_column(:hit_count, hits.sum('count'))
   end
 end
