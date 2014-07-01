@@ -42,9 +42,6 @@ module Transition
       end
 
       def refresh_host_paths!
-        #
-        # Sloppy GROUP BY - path is not subject to aggregate. Note well,
-        # Postgres upgraders
         sql = <<-postgreSQL
           INSERT INTO host_paths(host_id, path_hash, path)
           SELECT hits.host_id, hits.path_hash, hits.path
@@ -88,8 +85,9 @@ module Transition
           SET  mapping_id = host_paths.mapping_id
           FROM host_paths
           WHERE
-            host_paths.host_id = hits.host_id AND
-            host_paths.path_hash = hits.path_hash
+            host_paths.host_id   = hits.host_id AND
+            host_paths.path       = hits.path AND
+            host_paths.mapping_id <> hits.mapping_id
             #{and_host_is_in_site}
         postgreSQL
         ActiveRecord::Base.connection.execute(sql)
