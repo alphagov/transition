@@ -96,13 +96,15 @@ module Transition
       def precompute_mapping_hit_counts!
         sql = <<-mySQL
           UPDATE mappings
-          INNER JOIN (
+          SET hit_count = with_counts.hit_count
+          FROM (
             SELECT hits.mapping_id, SUM(hits.count) AS hit_count
             FROM hits
             #{where_host_is_in_site}
             GROUP BY hits.mapping_id
-          ) with_counts ON mappings.id = with_counts.mapping_id
-          SET mappings.hit_count = with_counts.hit_count
+          ) with_counts
+          WHERE
+            mappings.id = with_counts.mapping_id
         mySQL
 
         ActiveRecord::Base.connection.execute(sql)
