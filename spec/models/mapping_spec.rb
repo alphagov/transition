@@ -306,6 +306,10 @@ describe Mapping do
           host_path_on_canonicalized.reload.mapping.should == mapping
         end
 
+        it 'updates the hit_count' do
+          mapping.hit_count.should == 40
+        end
+
         it 'should leave an unrelated hit alone' do
           unrelated_hit.reload.mapping.should be_nil
         end
