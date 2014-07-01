@@ -74,7 +74,7 @@ describe Transition::Import::SiteYamlFile do
         it 'should move the host and the aka host to the new site' do
           site.hosts.pluck(:hostname).should_not include('www.lslo.gov.uk')
           ago_lslo = Site.find_by_abbr('ago_lslo')
-          ago_lslo.hosts.pluck(:hostname).should == ['www.lslo.gov.uk', 'aka.lslo.gov.uk']
+          ago_lslo.hosts.pluck(:hostname).should =~ ['www.lslo.gov.uk', 'aka.lslo.gov.uk']
         end
       end
     end
