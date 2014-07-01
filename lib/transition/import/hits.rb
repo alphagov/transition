@@ -91,7 +91,8 @@ module Transition
       LOAD_DATA = <<-postgreSQL
         COPY hits_staging (hit_on, count, http_status, hostname, path)
         FROM '$filename$'
-        WITH DELIMITER AS E'\t' QUOTE AS E'\b' CSV HEADER
+        WITH DELIMITER AS E'\t' QUOTE AS E'\b' CSV HEADER;
+        ANALYZE hits_staging;
       postgreSQL
 
       INSERT_FROM_STAGING = <<-postgreSQL
@@ -103,11 +104,11 @@ module Transition
           AND st.path !~ '#{ PATTERNS_TO_IGNORE.join('|') }'
           AND NOT EXISTS (
             SELECT 1 FROM hits
-            WHERE path_hash = encode(digest(st.path, 'sha1'), 'hex') AND
-                  host_id = h.id AND
+            WHERE path        = st.path AND
+                  host_id     = h.id AND
                   http_status = st.http_status AND
-                  hit_on = st.hit_on
-          )
+                  hit_on      = st.hit_on
+          );
       postgreSQL
 
       UPDATE_FROM_STAGING = <<-postgreSQL
@@ -116,10 +117,11 @@ module Transition
         FROM hits_staging st
         INNER JOIN hosts ON hosts.hostname = st.hostname
         WHERE
-          hits.path_hash   = encode(digest(st.path, 'sha1'), 'hex') AND
+          hits.path        = st.path AND
           hits.http_status = st.http_status AND
           hits.hit_on      = st.hit_on AND
-          hits.host_id     = hosts.id
+          hits.host_id     = hosts.id AND
+          hits.count      <> st.count
       postgreSQL
 
       def self.from_redirector_tsv_file!(filename)
