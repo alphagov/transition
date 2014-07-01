@@ -138,4 +138,73 @@ describe Host do
       its(:redirected_by_gds?) { should be_false }
     end
   end
+
+  describe 'moving to a different site' do
+    context 'there are related mappings, host_paths and hits', truncate_everything: true do
+      let!(:site)          { create(:site, query_params: 'significant_on_first_site') }
+      let!(:other_site)    { create(:site) }
+      let!(:runaway_host)  { create(:host, site: site) }
+
+      context 'mappings only on original site' do
+        let!(:hit)           { create(:hit, path: '/some-path?significant_on_first_site=1', host: runaway_host) }
+        let!(:mapping)       { create(:mapping, path: hit.path, site: site) }
+
+        before do
+          # Connect everything with the old hosts
+          Transition::Import::HitsMappingsRelations.refresh!
+
+          runaway_host.site = other_site
+          runaway_host.save!
+        end
+
+        it 'clears relationships which no longer exist' do
+          # This host_path and hit shouldn't be related to this mapping any more
+          # because they are for a host which has moved to a different site.
+          #
+          # Potentially this mapping should be moved too, but we can't really tell,
+          # so leave it behind. A mapping can always be created on the new site.
+
+          hit.reload.mapping.should eql(nil)
+
+          host_path = runaway_host.host_paths.find_by_path(hit.path)
+          host_path.mapping.should eql(nil)
+        end
+
+        it 're-generates the c14n_path_hash' do
+          host_path = runaway_host.host_paths.find_by_path(hit.path)
+
+          # significant_on_first_site is not significant on the new site
+          new_path_hash = Digest::SHA1.hexdigest('/some-path')
+          host_path.c14n_path_hash.should eql(new_path_hash)
+        end
+      end
+
+      context 'mappings for the same paths exist on the new site' do
+        let!(:hit)           { create(:hit, path: '/common-path', host: runaway_host) }
+        let!(:mapping)       { create(:mapping, path: hit.path, site: site) }
+        let!(:other_mapping) { create(:mapping, path: hit.path, site: other_site) }
+
+        before do
+          # Connect everything with the old hosts
+          Transition::Import::HitsMappingsRelations.refresh!
+
+          runaway_host.site = other_site
+          runaway_host.save!
+        end
+
+        it 'creates relationships which should now exist' do
+          hit.reload.mapping.should eql(other_mapping)
+
+          host_path = runaway_host.host_paths.find_by_path(hit.path)
+          host_path.mapping.should eql(other_mapping)
+          host_path.c14n_path_hash.should_not be_nil
+        end
+
+        it 'sets the hit count on the mappings which now have hits' do
+          other_mapping.reload
+          other_mapping.hit_count.should == hit.count
+        end
+      end
+    end
+  end
 end

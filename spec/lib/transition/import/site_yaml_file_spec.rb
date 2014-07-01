@@ -56,6 +56,7 @@ describe Transition::Import::SiteYamlFile do
           redirector_yaml_file.import!
           Organisation.stub(:where).and_return([tsol])
           Transition::Import::SiteYamlFile.load('spec/fixtures/sites/updates/ago.yml').import!
+          Transition::Import::SiteYamlFile.load('spec/fixtures/sites/updates/ago_lslo.yml').import!
         end
 
         its(:launch_date)           { should eql(Date.new(2014, 12, 13)) }
@@ -65,6 +66,12 @@ describe Transition::Import::SiteYamlFile do
         its(:global_type)           { should be_nil }
         its(:global_new_url)        { should be_nil }
         its(:global_redirect_append_path) { should eql(false) }
+
+        it 'should move the host and the aka host to the new site' do
+          site.hosts.pluck(:hostname).should_not include('www.lslo.gov.uk')
+          ago_lslo = Site.find_by_abbr('ago_lslo')
+          ago_lslo.hosts.pluck(:hostname).should == ['www.lslo.gov.uk', 'aka.lslo.gov.uk']
+        end
       end
     end
   end
