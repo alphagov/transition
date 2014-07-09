@@ -43,7 +43,7 @@ module Transition
             SELECT 1 FROM host_paths
             WHERE
               host_paths.host_id   = hits.host_id AND
-              host_paths.path_hash = hits.path_hash
+              host_paths.path      = hits.path
           )
           #{and_host_is_in_site}
           GROUP  BY hits.host_id,
@@ -100,7 +100,8 @@ module Transition
             GROUP BY hits.mapping_id
           ) with_counts
           WHERE
-            mappings.id = with_counts.mapping_id
+            mappings.id = with_counts.mapping_id AND
+            mappings.hit_count IS DISTINCT FROM with_counts.hit_count
         postgreSQL
 
         ActiveRecord::Base.connection.execute(sql)
