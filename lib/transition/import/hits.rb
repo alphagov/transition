@@ -117,7 +117,7 @@ module Transition
           hits.http_status = st.http_status AND
           hits.hit_on      = st.hit_on AND
           hits.host_id     = hosts.id AND
-          hits.count      <> st.count
+          hits.count       IS DISTINCT FROM st.count
       postgreSQL
 
       def self.from_redirector_tsv_file!(filename)
@@ -134,6 +134,7 @@ module Transition
       end
 
       def self.from_redirector_mask!(filemask)
+        ActiveRecord::Base.connection.execute('set work_mem="2GB"')
         done = 0
         ActiveRecord::Base.connection.execute('BEGIN')
         begin
@@ -145,6 +146,7 @@ module Transition
         end
 
         $stderr.puts "#{done} hits files imported."
+        ActiveRecord::Base.connection.execute('set work_mem="16MB"')
       end
     end
   end
