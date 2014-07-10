@@ -29,7 +29,8 @@ module Transition
         WHERE
           totals.host_id     = sums.host_id AND
           totals.http_status = sums.http_status AND
-          totals.total_on    = sums.hit_on
+          totals.total_on    = sums.hit_on AND
+          totals.count IS DISTINCT FROM sums.count
       postgreSQL
 
       def self.from_hits!
