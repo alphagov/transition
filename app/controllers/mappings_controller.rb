@@ -167,9 +167,12 @@ private
     params.permit(:id, :site_id, :type, :operation, :return_path, :path,
                   :paths, :url, :new_url, :new_url_contains, :path_contains,
                   :mappings_batch_id, :sort, :sort_by, :suggested_url, :page,
-                  :archive_url, :tagged, :tag_list, :mapping => [:type,
-                  :path, :new_url, :tag_list, :version, :state, :update_existing,
-                  :suggested_url, :archive_url], :site => [:abbr], :mapping_ids => [])
+                  :archive_url, :tagged, :tag_list, :update_existing,
+                  :mapping => [
+                    :type, :path, :new_url, :tag_list, :version, :state,
+                    :suggested_url, :archive_url
+                  ],
+                  :site => [:abbr], :mapping_ids => [])
   end
 
   def bulk_edit
