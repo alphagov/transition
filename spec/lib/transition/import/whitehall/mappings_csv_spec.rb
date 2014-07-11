@@ -4,7 +4,7 @@ require 'transition/import/whitehall/mappings_csv'
 def csv_for(old_path, govuk_path, whitehall_state = 'published')
   StringIO.new(<<-END)
 Old URL,New URL,Admin URL,State
-http://www.dft.gov.uk#{old_path},https://www.gov.uk#{govuk_path},http://whitehall-admin/#{rand(1000)},#{whitehall_state}
+http://dft.gov.uk#{old_path},https://www.gov.uk#{govuk_path},http://whitehall-admin/#{rand(1000)},#{whitehall_state}
 END
 end
 
@@ -13,7 +13,7 @@ describe Transition::Import::Whitehall::MappingsCSV do
     let(:as_user) { create(:user, name: 'C-3PO', is_robot: true) }
 
     context 'site and host exists' do
-      let!(:site) { create(:site, abbr: 'www.dft', query_params: 'significant') }
+      let!(:site) { create(:site, abbr: 'dft', query_params: 'significant') }
 
       before do
         Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(csv)
@@ -128,17 +128,17 @@ END
     end
 
     context 'site is not managed by transition' do
-      let!(:site) { create(:site, abbr: 'www.dft', managed_by_transition: false) }
+      let!(:site) { create(:site, abbr: 'dft', managed_by_transition: false) }
       let(:csv) { csv_for('/oldurl', '/new') }
 
       it 'logs it' do
-        Rails.logger.should_receive(:warn).with("Skipping mapping for a site managed by redirector in Whitehall URL CSV: 'www.dft.gov.uk'")
+        Rails.logger.should_receive(:warn).with("Skipping mapping for a site managed by redirector in Whitehall URL CSV: 'dft.gov.uk'")
         Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(csv)
       end
     end
 
     context 'testing version recording', versioning: true do
-      let!(:site) { create(:site, abbr: 'www.dft', query_params: 'significant') }
+      let!(:site) { create(:site, abbr: 'dft', query_params: 'significant') }
       let(:csv) { csv_for('/oldurl', '/new') }
 
       before do
@@ -162,7 +162,7 @@ END
       let(:csv) { csv_for('/oldurl', '/amazing') }
 
       it 'logs an unknown host' do
-        Rails.logger.should_receive(:warn).with("Skipping mapping for unknown host in Whitehall URL CSV: 'www.dft.gov.uk'")
+        Rails.logger.should_receive(:warn).with("Skipping mapping for unknown host in Whitehall URL CSV: 'dft.gov.uk'")
         Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(csv)
       end
     end

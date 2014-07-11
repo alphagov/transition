@@ -12,6 +12,8 @@ describe Site do
     it { should validate_presence_of(:tna_timestamp) }
     it { should validate_presence_of(:organisation) }
     it { should ensure_inclusion_of(:special_redirect_strategy).in_array(['via_aka', 'supplier']) }
+    it { should allow_value("org_site1-Modifier").for(:abbr) }
+    it { should_not allow_value("org_www.site").for(:abbr) }
 
     context 'global redirect' do
       subject(:site) { build(:site, global_type: 'redirect') }
