@@ -98,4 +98,20 @@ module HitsHelper
   def hit_has_unresolved_mapping
     '<span class="middle-grey">Unresolved</span> &mdash; needs a decision'.html_safe
   end
+
+  ##
+  # Send the correct routing message for the current category and period
+  def current_category_in_period_path(period)
+    if @site
+      # Common or garden site-based hits
+      send "#{params[:category] || 'summary'}_site_hits_path",
+           period: period.query_slug,
+           site_id: @site.abbr
+    else
+      # Universal analytics
+      category = "_#{params[:category]}" if params[:category]
+      send "hits#{category}_path",
+           period: period.query_slug
+    end
+  end
 end
