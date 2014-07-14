@@ -83,14 +83,9 @@ describe Transition::Import::Hits do
     context 'a hits row already exists with a different count', testing_before_all: true do
       before :all do
         create_test_hosts
-        # Midnight 15th October 2012 was in British Summer Time. Because Rails
-        # has the timezone set to be "London" it would understand a string of
-        # 2012-10-15 to mean 23:00 on 2012-10-14, and so record
-        # 2012-10-14 in the database.
-        # By explicitly declaring the offset, we get it to understand we mean
-        # 00:00 on 2012-10-15.
-        d = Time.new(2012,10,15, 00, 00, 00, "+00:00")
-        create(:hit, host: @businesslink_host, path: '/', count: 10, http_status: '301', hit_on: d)
+
+        date = Time.utc(2012, 10, 15)
+        create(:hit, host: @businesslink_host, path: '/', count: 10, http_status: '301', hit_on: date)
         Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/businesslink_2012-10-15.tsv')
       end
 
