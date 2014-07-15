@@ -7,12 +7,32 @@
   <% else %>
     <%= filter_option_link(@site, 'Tag') %>
   <% end %>
-  <ul class="dropdown-menu" role="menu">
-    <% tags.each do |tag| %>
-      <li>
-        <%= link_to tag, @filter.query.with_tag(tag), class: 'inherit' %>
-      </li>
-    <% end %>
-  </ul>
+  <div class="dropdown-menu dropdown-text-input" role="menu">
+
+    <h4 class="add-bottom-margin">Popular tags</h4>
+    <ul class="list-unstyled">
+      <% tags.each do |tag| %>
+        <li style="display: inline">
+          <%= link_to tag, @filter.query.with_tag(tag), class: 'tag' %>
+        </li>
+      <% end %>
+    </ul>
+
+    <hr />
+
+    <h4>Filter tags</h4>
+    <div class="form-group">
+      <label class="rm">Tag</label>
+      <div class="input-group col-md-12">
+        <%= text_field_tag :tag_list, '', class: 'form-control js-tag-list' %>
+          <!-- All that needs to be done now is submitting the data in
+               the textbox to get it in ?tagged=X parameters. -->
+      </div>
+    </div>
+  </div>
 </li>
 <% end %>
+
+<script>
+  GOVUK.Tagging.ready({autocompleteWith: <%= most_used_tags_json(@site, limit: 200) %>});
+</script>
