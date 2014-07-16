@@ -18,17 +18,18 @@
       <% end %>
     </ul>
 
-    <hr />
-
-    <h4>Filter tags</h4>
-    <div class="form-group">
-      <label class="rm">Tag</label>
-      <div class="input-group col-md-12">
-        <%= text_field_tag :tag_list, '', class: 'form-control js-tag-list' %>
+    <% if tags.count > 10 %>
+      <hr />
+      <h4>Filter tags</h4>
+      <div class="form-group">
+        <label class="rm">Tag</label>
+        <div class="input-group col-md-12">
+          <%= text_field_tag :tag_list, '', class: 'form-control js-tag-list' %>
           <!-- All that needs to be done now is submitting the data in
                the textbox to get it in ?tagged=X parameters. -->
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
 </li>
 <% end %>
