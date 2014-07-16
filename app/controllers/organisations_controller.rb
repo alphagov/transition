@@ -5,14 +5,9 @@ class OrganisationsController < ApplicationController
   end
 
   def show
-    @organisation = Organisation.find_by_whitehall_slug!(organisation_params[:id])
+    @organisation = Organisation.find_by_whitehall_slug!(params[:id])
     sites = @organisation.sites.managed_by_transition.includes(:hosts)
     extra_sites = @organisation.extra_sites.managed_by_transition.includes(:hosts)
     @sites = sites.concat(extra_sites).sort_by!(&:abbr)
-  end
-
-  private
-  def organisation_params
-    params.permit(:id, :title, :homepage, :furl, :css)
   end
 end

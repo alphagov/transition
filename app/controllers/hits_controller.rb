@@ -5,7 +5,7 @@ class HitsController < ApplicationController
 
   def index
     @category = View::Hits::Category['all'].tap do |c|
-      c.hits   = hits_in_period.by_path_and_status.page(hits_params[:page]).order('count DESC')
+      c.hits   = hits_in_period.by_path_and_status.page(params[:page]).order('count DESC')
       c.points = totals_in_period
     end
   end
@@ -28,8 +28,8 @@ class HitsController < ApplicationController
 
   def category
     # Category - one of %w(archives redirect errors) (see routes.rb)
-    @category = View::Hits::Category[hits_params[:category]].tap do |c|
-      c.hits   = hits_in_period.by_path_and_status.send(c.to_sym).page(hits_params[:page]).order('count DESC')
+    @category = View::Hits::Category[params[:category]].tap do |c|
+      c.hits   = hits_in_period.by_path_and_status.send(c.to_sym).page(params[:page]).order('count DESC')
       c.points = totals_in_period.by_date_and_status.send(c.to_sym)
     end
   end
@@ -44,15 +44,15 @@ class HitsController < ApplicationController
 
   def universal_category
     # Category - one of %w(archives redirect errors) (see routes.rb)
-    @category = View::Hits::Category[hits_params[:category]].tap do |c|
-      c.hits   = hits_in_period.by_host_and_path_and_status.send(c.to_sym).page(hits_params[:page]).order('count DESC')
+    @category = View::Hits::Category[params[:category]].tap do |c|
+      c.hits   = hits_in_period.by_host_and_path_and_status.send(c.to_sym).page(params[:page]).order('count DESC')
     end
   end
 
   protected
 
   def set_period
-    @period = (View::Hits::TimePeriod[hits_params[:period]] || View::Hits::TimePeriod.default)
+    @period = (View::Hits::TimePeriod[params[:period]] || View::Hits::TimePeriod.default)
   end
 
   def hits_in_period
@@ -66,11 +66,5 @@ class HitsController < ApplicationController
 
   def totals_in_period
     @site.daily_hit_totals.by_date.in_range(@period.start_date, @period.end_date)
-  end
-
-  private
-
-  def hits_params
-    params.permit(:page, :period, :category, :site_id)
   end
 end
