@@ -56,12 +56,12 @@ class MappingsController < ApplicationController
   end
 
   def index
-    @filter = View::Mappings::Filter.new(@site, mapping_params)
+    @filter = View::Mappings::Filter.new(@site, params)
     @mappings = @filter.mappings
   end
 
   def edit
-    @mapping = Mapping.find(mapping_params[:id])
+    @mapping = Mapping.find(params[:id])
   end
 
   def update
@@ -123,10 +123,10 @@ class MappingsController < ApplicationController
 
   def find_global
     # This allows finding a mapping without knowing the site first.
-    render_error(400) and return unless mapping_params[:url].present?
+    render_error(400) and return unless params[:url].present?
 
     begin
-      url = Addressable::URI.parse(mapping_params[:url])
+      url = Addressable::URI.parse(params[:url])
       render_error(400) and
         return unless url.scheme == "http" || url.scheme == "https"
     rescue Addressable::URI::InvalidURIError
@@ -146,7 +146,7 @@ class MappingsController < ApplicationController
   end
 
   def find
-    path = @site.canonical_path(mapping_params[:path])
+    path = @site.canonical_path(params[:path])
 
     if path.empty?
       notice = t('mappings.not_possible_to_edit_homepage_mapping')
@@ -155,9 +155,9 @@ class MappingsController < ApplicationController
 
     mapping = @site.mappings.find_by_path(path)
     if mapping.present?
-      redirect_to edit_site_mapping_path(@site, mapping, return_path: mapping_params[:return_path])
+      redirect_to edit_site_mapping_path(@site, mapping, return_path: params[:return_path])
     else
-      redirect_to new_multiple_site_mappings_path(@site, paths: path, return_path: mapping_params[:return_path])
+      redirect_to new_multiple_site_mappings_path(@site, paths: path, return_path: params[:return_path])
     end
   end
 
