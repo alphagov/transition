@@ -82,6 +82,11 @@ When(/^I open the tag filter and click the tag "(.*)"$/) do |tag|
   step "I click the tag filter \"#{tag}\""
 end
 
+When(/^I search for a tag named (.*)$/) do |tag_name|
+  fill_in 'tagged', with: tag_name
+  click_button 'Filter'
+end
+
 When(/^I filter the path by ([^"]*)$/) do |path_contains|
   fill_in 'Path', with: path_contains
   click_button 'Filter'

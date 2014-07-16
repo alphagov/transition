@@ -10,6 +10,8 @@ Feature: Filter mappings
       | archive  | /about/corporate |                         | fee, fum, fiddle |
       | redirect | /about/branding  | http://a.gov.uk/branding  | fi, fum          |
       | redirect | /another         | http://a.gov.uk/directgov | fo, fiddle       |
+      | archive  | /fifth           |                         | di, do, archive  |
+      | archive  | /dead_link       |                         | dead, dying, gone|
       | archive  | /notinfilter     |                         |                  |
     And I visit the path /sites/directgov/mappings
 
@@ -97,6 +99,15 @@ Feature: Filter mappings
     Then I should see "Filtered mappings"
     And the tag filter should be visible with the tag "fum"
     And I should see mappings tagged with "fum"
+
+  @javascript
+  Scenario: Filtering by searching for a tag
+    When I open the "Tag" filter
+    Then I should see the most popular tags for this site
+    Then I should see "Filter tags"
+    When I search for a tag named gone
+    Then the tag filter should be visible with the tag "gone"
+    And I should see mappings tagged with "gone"
 
   @javascript
   Scenario: Filtering by multiple tags

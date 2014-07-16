@@ -261,6 +261,12 @@ Then(/^I should see mappings tagged with "fum" and "fiddle"$/) do
   }
 end
 
+Then(/^I should see mappings tagged with "gone"$/) do
+  steps %{
+    And I should see "/dead_link"
+  }
+end
+
 Then(/^I should be redirected to the site dashboard$/) do
   i_should_be_on_the_path site_path(@site)
 end
