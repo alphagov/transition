@@ -11,7 +11,7 @@
 
     <h4 class="add-bottom-margin">Popular tags</h4>
     <ul class="list-inline">
-      <% tags.each do |tag| %>
+      <% tags.take(10).each do |tag| # Use take to limit the number of tags. %>
         <li>
           <%= link_to tag, @filter.query.with_tag(tag), class: 'tag' %>
         </li>
