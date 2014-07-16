@@ -14,10 +14,10 @@ class MappingsController < ApplicationController
   end
 
   def new_multiple_confirmation
-    @batch = BulkAddBatch.new(type: mapping_params[:type],
-                               new_url: mapping_params[:new_url],
-                               tag_list: mapping_params[:tag_list],
-                               paths: mapping_params[:paths].split(/\r?\n|\r/).map(&:strip))
+    @batch = BulkAddBatch.new(type:     mappings_batch_params[:type],
+                               new_url:  mappings_batch_params[:new_url],
+                               tag_list: mappings_batch_params[:tag_list],
+                               paths:    mappings_batch_params[:paths].split(/\r?\n|\r/).map(&:strip))
     @batch.user = current_user
     @batch.site = @site
 
@@ -27,9 +27,12 @@ class MappingsController < ApplicationController
   end
 
   def create_multiple
-    @batch = @site.mappings_batches.find(mapping_params[:mappings_batch_id])
+    @batch = @site.mappings_batches.find(params[:mappings_batch_id])
     if @batch.state == 'unqueued'
-      @batch.update_attributes!(update_existing: mapping_params[:update_existing], tag_list: mapping_params[:tag_list], state: 'queued')
+      @batch.update_attributes!(
+        update_existing: mappings_batch_params[:update_existing],
+        tag_list:        mappings_batch_params[:tag_list],
+        state:           'queued')
       if @batch.invalid?
         render action: 'new_multiple_confirmation' and return
       end
@@ -48,8 +51,8 @@ class MappingsController < ApplicationController
       end
     end
 
-    if Transition::OffSiteRedirectChecker.on_site?(mapping_params[:return_path])
-      redirect_to mapping_params[:return_path]
+    if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
+      redirect_to params[:return_path]
     else
       redirect_to site_mappings_path(@site)
     end
@@ -65,10 +68,10 @@ class MappingsController < ApplicationController
   end
 
   def update
-    @mapping = @site.mappings.find(mapping_params[:id])
+    @mapping = @site.mappings.find(params[:id])
 
     # Tags must be assigned to separately
-    @mapping.tag_list = mapping_params[:mapping].delete(:tag_list)
+    @mapping.tag_list = params[:mapping].delete(:tag_list)
     @mapping.attributes = mapping_params[:mapping]
 
     if @mapping.save
@@ -76,8 +79,8 @@ class MappingsController < ApplicationController
       flash[:saved_mapping_ids] = [@mapping.id]
       flash[:saved_operation] = "update-single"
 
-      if Transition::OffSiteRedirectChecker.on_site?(mapping_params[:return_path])
-        redirect_to mapping_params[:return_path]
+      if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
+        redirect_to params[:return_path]
       else
         redirect_to site_mappings_path(@site)
       end
@@ -162,25 +165,32 @@ class MappingsController < ApplicationController
   end
 
 private
-
-  def mapping_params
-    params.permit(:id, :site_id, :type, :operation, :return_path, :path,
-                  :paths, :url, :new_url, :new_url_contains, :path_contains,
-                  :mappings_batch_id, :sort, :sort_by, :suggested_url, :page,
-                  :archive_url, :tagged, :tag_list, :update_existing,
-                  :mapping => [
-                    :type, :path, :new_url, :tag_list, :version, :state,
-                    :suggested_url, :archive_url
-                  ],
-                  :site => [:abbr], :mapping_ids => [])
+  def mappings_batch_params
+    params.permit(:type,
+                  :paths,
+                  :new_url,
+                  :tag_list,
+                  :update_existing)
   end
 
+  def mapping_params
+    params.permit(mapping: [
+                             :type,
+                             :path,
+                             :new_url,
+                             :tag_list,
+                             :suggested_url,
+                             :archive_url
+                           ])
+  end
+
+
   def bulk_edit
-    @bulk_edit ||= bulk_editor_class.new(@site, mapping_params, site_mappings_path(@site))
+    @bulk_edit ||= bulk_editor_class.new(@site, params, site_mappings_path(@site))
   end
 
   def bulk_editor_class
-    mapping_params[:operation] == 'tag' ? View::Mappings::BulkTagger : View::Mappings::BulkEditor
+    params[:operation] == 'tag' ? View::Mappings::BulkTagger : View::Mappings::BulkEditor
   end
 
   def back_or_mappings_index
