@@ -32,9 +32,7 @@ module Transition
     end
 
     def new_url
-      if type == 'redirect'
-        new_value
-      end
+      new_value if redirect?
     end
 
     def archive?
