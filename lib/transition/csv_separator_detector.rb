@@ -9,7 +9,7 @@ module Transition
 
     def separator_count(separator)
       counts = @rows.map { |row| row.count(separator) }
-      counts.inject { |sum, count| sum + count }
+      counts.reduce(&:+)
     end
 
     def comma_count
