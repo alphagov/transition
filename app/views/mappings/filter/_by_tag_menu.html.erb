@@ -27,7 +27,9 @@
           <label class="rm">Tag</label>
           <div class="input-group col-md-12">
             <%= text_field_tag :tagged, '', class: 'form-control js-tag-list' %>
-            <%= button_to 'Filter', site_mappings_path("$('#tagged').value();"), method: :get, class: 'btn btn-default' %>
+            <span class="input-group-btn">
+              <%= button_to 'Filter', site_mappings_path("$('#tagged').value();"), method: :get, class: 'btn btn-default' %>
+            </span>
           </div>
         </div>
       </form>
