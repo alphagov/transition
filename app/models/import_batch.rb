@@ -57,8 +57,7 @@ private
       separator = Transition::CSVSeparatorDetector.new(raw_csv.lines.to_a[0..5]).separator
 
       rows_by_path = {}
-      CSV.parse(raw_csv, col_sep: separator).each_with_index do |csv_row, index|
-        line_number = index + 1
+      CSV.parse(raw_csv, col_sep: separator).each.with_index(1) do |csv_row, line_number|
         row = Transition::ImportBatchRow.new(site, line_number, csv_row)
         next unless row.data_row?
         next if row.homepage?
