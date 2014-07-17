@@ -149,6 +149,20 @@ describe ImportBatch do
       end
     end
 
+    context 'with blank lines' do
+      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+                        /old,https://www.gov.uk/new
+
+                      HEREDOC
+                    }
+
+      it 'should ignore blank lines' do
+        mappings_batch.entries.count.should == 1
+        entry = mappings_batch.entries.first
+        entry.path.should == '/old'
+      end
+    end
+
     context 'archives' do
       let(:raw_csv) { <<-HEREDOC.strip_heredoc
                   /old,TNA
