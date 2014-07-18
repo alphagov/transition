@@ -14,15 +14,16 @@ describe Transition::Import::Hits do
       end
 
       it 'has imported hits' do
-        Hit.count.should == 2
+        Hit.count.should == 3
       end
 
       it "has not imported hits for hosts we don't know about" do
         Hit.where(path: '/unknown-host').any?.should be_false
       end
 
-      it 'has not imported hits with a count less than ten' do
-        Hit.where(path: '/too-few-count').any?.should be_false
+      it 'imports hits with any count, ' \
+         'relying on upstream processing for per-day thresholds' do
+        Hit.where(path: '/previously-too-few-count').any?.should be_true
       end
 
       describe 'the first hit' do
@@ -106,7 +107,7 @@ describe Transition::Import::Hits do
     end
 
     it 'imports hits from the combined files for the known hosts' do
-      Hit.count.should == 3
+      Hit.count.should == 4
     end
   end
 end

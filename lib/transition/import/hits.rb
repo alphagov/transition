@@ -99,7 +99,6 @@ module Transition
         SELECT h.id, st.path, SHA1(st.path), st.http_status, st.count, st.hit_on
         FROM   hits_staging st
         INNER JOIN hosts h on h.hostname = st.hostname
-        WHERE  st.count >= 10
         AND    st.path NOT IN (#{ PATHS_TO_IGNORE.map { |path| "'" + path + "'" }.join(', ') })
         AND    st.path NOT REGEXP '#{ PATTERNS_TO_IGNORE.join('|') }'
         ON DUPLICATE KEY UPDATE hits.count=st.count
