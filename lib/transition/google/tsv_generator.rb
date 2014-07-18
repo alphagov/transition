@@ -28,7 +28,7 @@ module Transition
       def generate!
         stdfile.puts HEADER
         results_pager.each do |hostname, path, count|
-          stdfile.puts "#{HIT_NEVER_STR}\t#{count}\t000\t#{hostname}\t#{path}"
+          stdfile.puts "#{HIT_NEVER_STR}\t#{count}\t000\t#{hostname}\t#{path}" if count >= 10
         end
       end
     end

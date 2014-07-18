@@ -27,7 +27,7 @@ describe Transition::Google::UrlIngester, truncate_everything: true do
   end
 
   context 'an org with a profile id exists' do
-    it 'ingests only hits for known hosts' do
+    it 'ingests only hits for known hosts above a threshold of 10' do
       create :site, abbr: 'dpm',
              organisation: create(:organisation, whitehall_slug: 'dpm')
       ingester.ingest!

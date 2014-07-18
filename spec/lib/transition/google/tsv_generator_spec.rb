@@ -5,7 +5,8 @@ describe Transition::Google::TSVGenerator do
   let(:hostpath_rows) { [
     ['host.gov.uk', '/path', 30],
     ['host.gov.uk', '/path2', 20],
-    ['nohost.gov.uk', '/path', 10]
+    ['nohost.gov.uk', '/path', 10],
+    ['nohost.gov.uk', '/too-few', 9],
   ]}
   
   let(:results_pager) { hostpath_rows.each }
@@ -19,6 +20,8 @@ describe Transition::Google::TSVGenerator do
     stdfile.should_receive(:puts).with("1970-01-01\t30\t000\thost.gov.uk\t/path")
     stdfile.should_receive(:puts).with("1970-01-01\t20\t000\thost.gov.uk\t/path2")
     stdfile.should_receive(:puts).with("1970-01-01\t10\t000\tnohost.gov.uk\t/path")
+
+    stdfile.should_not_receive(:puts).with("1970-01-01\t9\t000\tnohost.gov.uk\t/too-few")
 
     tsv_generator.generate!
   end
