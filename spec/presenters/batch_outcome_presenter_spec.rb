@@ -53,8 +53,8 @@ describe BatchOutcomePresenter do
     end
   end
 
-  describe '#operation_description' do
-    subject { BatchOutcomePresenter.new(batch).operation_description }
+  describe '#analytics_event_type' do
+    subject { BatchOutcomePresenter.new(batch).analytics_event_type }
 
     context 'bulk adding archives' do
       let(:batch) { build(:bulk_add_batch, type: 'archive') }

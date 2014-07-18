@@ -14,7 +14,7 @@ module View
         params[:operation]
       end
 
-      def operation_description
+      def analytics_event_type
         "bulk-edit-#{type}"
       end
 

@@ -45,7 +45,7 @@ class MappingsController < ApplicationController
         outcome = BatchOutcomePresenter.new(@batch)
         flash[:saved_mapping_ids] = outcome.affected_mapping_ids
         flash[:success] = outcome.success_message
-        flash[:saved_operation] = outcome.operation_description
+        flash[:saved_operation] = outcome.analytics_event_type
       end
     end
 
@@ -117,7 +117,7 @@ class MappingsController < ApplicationController
     else
       flash[:success] = bulk_edit.success_message
       flash[:saved_mapping_ids] = bulk_edit.mappings.map {|m| m.id}
-      flash[:saved_operation] = bulk_edit.operation_description
+      flash[:saved_operation] = bulk_edit.analytics_event_type
       redirect_to bulk_edit.return_path
     end
   end

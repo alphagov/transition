@@ -43,7 +43,7 @@ class ImportBatchesController < ApplicationController
         outcome = BatchOutcomePresenter.new(@batch)
         flash[:saved_mapping_ids] = outcome.affected_mapping_ids
         flash[:success] = outcome.success_message
-        flash[:saved_operation] = outcome.operation_description
+        flash[:saved_operation] = outcome.analytics_event_type
       end
     end
 

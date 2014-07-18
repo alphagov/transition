@@ -20,7 +20,7 @@ class BatchOutcomePresenter
     end
   end
 
-  def operation_description
+  def analytics_event_type
     update_type = @batch.update_existing? ? 'overwrite' : 'ignore'
     if @batch.is_a?(BulkAddBatch)
       "bulk-add-#{@batch.type}-#{update_type}-existing"
