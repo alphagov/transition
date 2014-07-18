@@ -5,18 +5,18 @@ When(/^I go to import some mappings$/) do
 end
 
 When(/^I submit the form with a small valid CSV$/) do
-  raw_csv = <<-HEREDOC.strip_heredoc
+  raw_csv = <<-CSV.strip_heredoc
                         old url,new url
                         /redirect-me,https://www.gov.uk/new
                         /archive-me,TNA
                         /i-dont-know-what-i-am,
-                      HEREDOC
+                      CSV
   fill_in 'import_batch_raw_csv', with: raw_csv
   click_button 'Continue'
 end
 
 When(/^I submit the form with a large valid CSV$/) do
-  raw_csv = <<-HEREDOC.strip_heredoc
+  raw_csv = <<-CSV.strip_heredoc
                         old url,new url
                         /1
                         /2
@@ -39,7 +39,7 @@ When(/^I submit the form with a large valid CSV$/) do
                         /19
                         /20
                         /21
-                      HEREDOC
+                      CSV
   fill_in 'import_batch_raw_csv', with: raw_csv
   click_button 'Continue'
 end

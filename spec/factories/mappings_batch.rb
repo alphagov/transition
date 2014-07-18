@@ -13,17 +13,17 @@ FactoryGirl.define do
   factory :import_batch do
     state 'unqueued'
 
-    raw_csv <<-HEREDOC.strip_heredoc
+    raw_csv <<-CSV.strip_heredoc
                 /oldurl1
                 /oldurl2
-               HEREDOC
+               CSV
 
     association :site, strategy: :build
     association :user, strategy: :build
   end
 
   factory :large_import_batch, parent: :import_batch do
-    raw_csv <<-HEREDOC.strip_heredoc
+    raw_csv <<-CSV.strip_heredoc
                 /1
                 /2
                 /3
@@ -45,6 +45,6 @@ FactoryGirl.define do
                 /19
                 /20
                 /21
-              HEREDOC
+              CSV
   end
 end

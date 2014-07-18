@@ -16,10 +16,10 @@ describe ImportBatch do
 
       describe 'old_urls includes URLs for this site' do
         subject(:mappings_batch) do
-          build(:import_batch, site: site, raw_csv: <<-HEREDOC.strip_heredoc
+          build(:import_batch, site: site, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               http://a.com/old,
-            HEREDOC
+            CSV
           )
         end
 
@@ -28,10 +28,10 @@ describe ImportBatch do
 
       describe 'old_urls includes URLs which are not for this site' do
         subject(:mappings_batch) do
-          build(:import_batch, site: site, raw_csv: <<-HEREDOC.strip_heredoc
+          build(:import_batch, site: site, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               http://other.com/old,
-            HEREDOC
+            CSV
           )
         end
 
@@ -44,10 +44,10 @@ describe ImportBatch do
 
       describe 'old URLs would be empty after canonicalisation' do
         subject(:mappings_batch) do
-          build(:import_batch, site: site, raw_csv: <<-HEREDOC.strip_heredoc
+          build(:import_batch, site: site, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               old,
-            HEREDOC
+            CSV
           )
         end
 
@@ -62,10 +62,10 @@ describe ImportBatch do
       describe 'validating all new URLs for length' do
         let(:too_long_url) { 'http://a.gov.uk'.ljust(65536, 'x') }
         subject(:mappings_batch) do
-          build(:import_batch, raw_csv: <<-HEREDOC.strip_heredoc
+          build(:import_batch, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               /old,#{too_long_url}
-            HEREDOC
+            CSV
           )
         end
 
@@ -77,10 +77,10 @@ describe ImportBatch do
 
       describe 'validating that all new URLs are valid URLs' do
         subject(:mappings_batch) do
-          build(:import_batch, raw_csv: <<-HEREDOC.strip_heredoc
+          build(:import_batch, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               /old,www.gov.uk
-            HEREDOC
+            CSV
           )
         end
 
@@ -92,10 +92,10 @@ describe ImportBatch do
 
       describe 'validating that all new URLs are on the whitelist' do
         subject(:mappings_batch) do
-          build(:import_batch, raw_csv: <<-HEREDOC.strip_heredoc
+          build(:import_batch, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               /old,http://evil.com
-            HEREDOC
+            CSV
           )
         end
 
@@ -113,9 +113,9 @@ describe ImportBatch do
                                         raw_csv: raw_csv
                                       ) }
     context 'rosy case' do
-      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+      let(:raw_csv) { <<-CSV.strip_heredoc
                         /old,https://www.gov.uk/new
-                      HEREDOC
+                      CSV
                     }
 
       it 'should create an entry for each data row' do
@@ -135,11 +135,11 @@ describe ImportBatch do
     end
 
     context 'with headers' do
-      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+      let(:raw_csv) { <<-CSV.strip_heredoc
                         old url,new url
                         /old,https://www.gov.uk/new
                         old_url, new_url
-                      HEREDOC
+                      CSV
                     }
 
       it 'should ignore headers' do
@@ -150,10 +150,10 @@ describe ImportBatch do
     end
 
     context 'with blank lines' do
-      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+      let(:raw_csv) { <<-CSV.strip_heredoc
                         /old,https://www.gov.uk/new
 
-                      HEREDOC
+                      CSV
                     }
 
       it 'should ignore blank lines' do
@@ -164,9 +164,9 @@ describe ImportBatch do
     end
 
     context 'archives' do
-      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+      let(:raw_csv) { <<-CSV.strip_heredoc
                   /old,TNA
-                HEREDOC
+                CSV
               }
       it 'should create an entry for each data row' do
         mappings_batch.entries.count.should == 1
@@ -182,9 +182,9 @@ describe ImportBatch do
     end
 
     context 'unresolved' do
-      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+      let(:raw_csv) { <<-CSV.strip_heredoc
                   /old
-                HEREDOC
+                CSV
               }
       it 'should create an entry for each data row' do
         mappings_batch.entries.count.should == 1
@@ -200,9 +200,9 @@ describe ImportBatch do
     end
 
     context 'the old URL is an absolute URL, not a path' do
-      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+      let(:raw_csv) { <<-CSV.strip_heredoc
                   http://#{site.default_host.hostname}/old
-                HEREDOC
+                CSV
               }
 
       it 'sets the path to be only the path' do
@@ -211,10 +211,10 @@ describe ImportBatch do
     end
 
     context 'the old URL canonicalizes to a homepage path' do
-      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+      let(:raw_csv) { <<-CSV.strip_heredoc
                   /?foo
                   /a
-                HEREDOC
+                CSV
               }
 
       it 'does not create an entry for the homepage row' do
@@ -223,12 +223,12 @@ describe ImportBatch do
     end
 
     context 'deduplicating rows' do
-      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+      let(:raw_csv) { <<-CSV.strip_heredoc
                   /old,
                   /old?insignificant,TNA
                   /OLD,http://a.gov.uk/new
                   /old,http://a.gov.uk/ignore-later-redirects
-                HEREDOC
+                CSV
               }
 
       it 'should canonicalize and deduplicate before creating entries' do
@@ -243,9 +243,9 @@ describe ImportBatch do
 
     context 'existing mappings' do
       let(:existing_mapping) { create(:mapping, site: site, path: '/old') }
-      let(:raw_csv) { <<-HEREDOC.strip_heredoc
+      let(:raw_csv) { <<-CSV.strip_heredoc
                         #{existing_mapping.path}
-                      HEREDOC
+                      CSV
                     }
 
       it 'should relate the entry to the existing mapping' do
@@ -262,10 +262,10 @@ describe ImportBatch do
     subject(:mappings_batch) do
       create(:import_batch, site: site,
              tag_list: ['a tag'],
-             raw_csv: <<-HEREDOC.strip_heredoc
+             raw_csv: <<-CSV.strip_heredoc
                         /a,http://a.gov.uk
                         /b,http://a.gov.uk
-                      HEREDOC
+                      CSV
                  )
     end
 
