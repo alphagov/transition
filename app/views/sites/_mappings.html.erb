@@ -19,7 +19,8 @@
             <%= link_to 'Paths needing a decision', site_mappings_path(@site, type: 'unresolved'), class: 'no-visit' %>
           </h4>
           <p class="list-group-item-text text-muted">
-            <strong><%= number_with_delimiter(@unresolved_mappings_count) %> paths</strong> are unresolved – that’s <strong><%= site_unresolved_mappings_percentage(@site) %> of mappings</strong>.<br />
+            <strong><%= pluralize(number_with_delimiter(@unresolved_mappings_count), 'path') %></strong>
+              <%= @unresolved_mappings_count == 1 ? 'is' : 'are' %> unresolved – that’s <strong><%= site_unresolved_mappings_percentage(@site) %> of mappings</strong>.<br />
             (After transition, mappings without a type will be archived by default.)
           </p>
         </div>
