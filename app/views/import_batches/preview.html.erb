@@ -10,9 +10,9 @@
 </div>
 
 <%= form_for [@site, @batch], url: import_site_import_batch_path(@site, @batch), method: :post, html: {role: 'form', 'data-module' => 'toggle-overwrite-existing-mappings-count'} do |f| %>
-  <% if @batch.entries.with_existing_mappings.any? %>
+  <% if @preview.existing_mappings_count > 0 %>
     <div class="alert alert-warning">
-      <h4>We’ve found <%= pluralize(@batch.entries.with_existing_mappings.count, "existing mapping") %> for the paths entered</h4>
+      <h4>We’ve found <%= pluralize(@preview.existing_mappings_count, "existing mapping") %> for the paths entered</h4>
       <%= f.label :update_existing_false, class: 'radio-inline' do %>
         <%= f.radio_button :update_existing, 'false', checked: true %> Keep existing mappings
       <% end %>
@@ -26,11 +26,11 @@
 
   <h4 class="add-bottom-margin">Running this import will</h4>
   <ul class="list-group">
-    <li class="list-group-item">Create <%= pluralize(@redirect_count, 'new redirect') %></li>
-    <li class="list-group-item">Create <%= pluralize(@archive_count, 'new archive') %></li>
-    <li class="list-group-item">Create <%= pluralize(@unresolved_count, 'new unresolved mapping') %></li>
-    <% if @overwrite_count > 0 %>
-      <li class="list-group-item list-group-item-warning js-overwrite-count">Overwrite <%= pluralize(@overwrite_count, 'existing mapping') %></li>
+    <li class="list-group-item">Create <%= pluralize(@preview.redirect_count, 'new redirect') %></li>
+    <li class="list-group-item">Create <%= pluralize(@preview.archive_count, 'new archive') %></li>
+    <li class="list-group-item">Create <%= pluralize(@preview.unresolved_count, 'new unresolved mapping') %></li>
+    <% if @preview.existing_mappings_count > 0 %>
+      <li class="list-group-item list-group-item-warning js-overwrite-count">Overwrite <%= pluralize(@preview.existing_mappings_count, 'existing mapping') %></li>
     <% end %>
 </li>
   </ul>
@@ -42,8 +42,8 @@
 <% end %>
 
 <h4 class="add-bottom-margin">
-  <% if @preview_mappings.size < @batch.entries.size %>
-    Preview mappings (<%= number_with_delimiter(@preview_mappings.size) %> of <%= number_with_delimiter(@batch.entries.size) %>)
+  <% if @preview.mappings.size < @batch.entries.size %>
+    Preview mappings (<%= number_with_delimiter(@preview.mappings.size) %> of <%= number_with_delimiter(@batch.entries.size) %>)
   <% else %>
     Preview mappings
   <% end %>
@@ -59,7 +59,7 @@
     </tr>
   </thead>
   <tbody>
-  <% @preview_mappings.each do |entry| %>
+  <% @preview.mappings.each do |entry| %>
     <tr <% if entry.mapping %>class="selected-row"<% end %>>
       <td class="<%= "mapping-type-#{entry.type}" %>">
         <% if entry.type == "unresolved" %>

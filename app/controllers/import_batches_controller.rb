@@ -22,11 +22,7 @@ class ImportBatchesController < ApplicationController
   end
 
   def preview
-    @redirect_count   = @batch.entries.without_existing_mappings.redirects.count
-    @archive_count    = @batch.entries.without_existing_mappings.archives.count
-    @unresolved_count = @batch.entries.without_existing_mappings.unresolved.count
-    @overwrite_count  = @batch.entries.with_existing_mappings.count
-    @preview_mappings = @batch.entries.limit(20)
+    @preview = BatchPreviewPresenter.new(@batch)
   end
 
   def import
