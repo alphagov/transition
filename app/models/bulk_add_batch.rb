@@ -3,15 +3,24 @@ class BulkAddBatch < MappingsBatch
 
   attr_accessible :paths, :type, :new_url
 
-  validates :paths, presence: { :if => :new_record?, message: I18n.t('mappings.paths_empty') } # we only care about paths at create-time
+  validates :paths, presence: {
+    :if => :new_record?, # we only care about paths at create-time
+    message: I18n.t('mappings.paths_empty')
+  }
   validates :paths, old_urls_are_for_site: true
-  validates :canonical_paths, presence: { :if => :new_record?, message: I18n.t('mappings.paths_empty') }
+  validates :canonical_paths, presence: {
+    :if => :new_record?,
+    message: I18n.t('mappings.paths_empty')
+  }
   validates :type, inclusion: { :in => Mapping::SUPPORTED_TYPES }
   with_options :if => :redirect? do |redirect|
     redirect.validates :new_url, presence: { message: I18n.t('mappings.bulk.new_url_invalid') }
     redirect.validates :new_url, length: { maximum: (64.kilobytes - 1) }
     redirect.validates :new_url, non_blank_url: { message: I18n.t('mappings.bulk.new_url_invalid') }
-    redirect.validates :new_url, host_in_whitelist: { message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist', email: Rails.configuration.support_email) }
+    redirect.validates :new_url, host_in_whitelist: {
+      message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist',
+      email: Rails.configuration.support_email)
+    }
   end
 
   before_validation :fill_in_scheme
