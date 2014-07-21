@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Transition::CSVSeparatorDetector do
+describe Transition::Import::CSV::CSVSeparatorDetector do
   def make_a_detector(rows)
-    Transition::CSVSeparatorDetector.new(rows)
+    Transition::Import::CSV::CSVSeparatorDetector.new(rows)
   end
 
   describe '#separator_count' do

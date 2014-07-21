@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe Transition::ImportBatchRow do
+describe Transition::Import::CSV::ImportBatchRow do
   def make_a_row(old_value, new_value=nil)
     line_number = 1
-    Transition::ImportBatchRow.new(site, line_number, [old_value, new_value])
+    Transition::Import::CSV::ImportBatchRow.new(site, line_number, [old_value, new_value])
   end
 
   def make_a_row_with_line_number(line_number, old_value, new_value=nil)
-    Transition::ImportBatchRow.new(site, line_number, [old_value, new_value])
+    Transition::Import::CSV::ImportBatchRow.new(site, line_number, [old_value, new_value])
   end
 
   let(:site) { build :site, query_params: 'significant' }

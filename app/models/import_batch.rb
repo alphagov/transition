@@ -72,13 +72,13 @@ private
     @_deduplicated_csv_rows ||= begin
       return [] if raw_csv.blank?
 
-      separator = Transition::CSVSeparatorDetector.new(raw_csv.lines.to_a[0..5]).separator
+      separator = Transition::Import::CSV::CSVSeparatorDetector.new(raw_csv.lines.to_a[0..5]).separator
 
       rows_by_path = {}
       CSV.parse(raw_csv, col_sep: separator).each.with_index(1) do |csv_row, line_number|
         next unless csv_row.present?  # Blank lines are parsed as []
 
-        row = Transition::ImportBatchRow.new(site, line_number, csv_row)
+        row = Transition::Import::CSV::ImportBatchRow.new(site, line_number, csv_row)
         next unless row.data_row?
         next if row.homepage?
 
