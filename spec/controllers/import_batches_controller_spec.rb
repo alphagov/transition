@@ -14,17 +14,17 @@ describe ImportBatchesController do
     end
   end
 
-  describe '#create without permission to edit' do
-    def make_request
-      post :create, site_id: site.abbr
-    end
-
-    it_behaves_like 'disallows editing by unaffiliated user'
-  end
-
   describe '#create' do
     before do
       login_as gds_bob
+    end
+
+    context 'without permission to edit' do
+      def make_request
+        post :create, site_id: site.abbr
+      end
+
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
     context 'with valid parameters' do
