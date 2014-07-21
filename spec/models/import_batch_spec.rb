@@ -104,6 +104,25 @@ describe ImportBatch do
           mappings_batch.errors[:new_urls].should include('The URL to redirect to must be on a whitelisted domain. Contact transition-dev@digital.cabinet-office.gov.uk for more information.')
         end
       end
+
+      context 'when an invalid new URL appears multiple times in the raw CSV' do
+        subject(:mappings_batch) do
+          build(:import_batch, raw_csv: <<-CSV.strip_heredoc
+              /old-1,http://evil.com
+              /old-2,http://evil.com
+              /old-3,http://evil.com
+              /old-4,http://evil.com
+              /old-5,http://evil.com
+              /old-6,http://also-bad.com
+            CSV
+          )
+        end
+
+        before { mappings_batch.should_not be_valid }
+        it 'should include the error message once per unique new URL' do
+          expect(mappings_batch.errors[:new_urls].size).to eql(2)
+        end
+      end
     end
   end
 

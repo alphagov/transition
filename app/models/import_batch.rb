@@ -56,7 +56,7 @@ class ImportBatch < MappingsBatch
   end
 
   def new_urls
-    deduplicated_csv_rows.select(&:redirect?).map(&:new_url)
+    deduplicated_csv_rows.select(&:redirect?).map(&:new_url).uniq
   end
 
   def canonical_paths
