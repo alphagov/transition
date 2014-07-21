@@ -13,6 +13,10 @@ module Transition
           @new_value = csv_row[1].present? ? csv_row[1].strip : nil
         end
 
+        def ignorable?
+          !data_row? || homepage?
+        end
+
         def data_row?
           @old_value.starts_with?('/') || @old_value.starts_with?('http')
         end

@@ -30,6 +30,24 @@ describe Transition::Import::CSV::ImportBatchRow do
     end
   end
 
+  describe 'ignorable?' do
+    it 'is true for all rows which we can\'t or wont\'t use' do
+      [
+        make_a_row('old URL', 'new URL'),
+        make_a_row('random', 'sentence'),
+        make_a_row('oops/missed/a/slash', nil),
+        make_a_row('http://homepage.com', nil)
+      ].each do |row|
+        row.ignorable?.should be_true
+      end
+    end
+
+    it 'is false for rows which we want to use' do
+      row = make_a_row(' /a', nil)
+      row.ignorable?.should be_false
+    end
+  end
+
   describe 'data_row?' do
     it 'rejects random headings' do
       row = make_a_row('   URLs   ', nil)

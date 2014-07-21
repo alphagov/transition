@@ -79,8 +79,7 @@ private
         next unless csv_row.present?  # Blank lines are parsed as []
 
         row = Transition::Import::CSV::ImportBatchRow.new(site, line_number, csv_row)
-        next unless row.data_row?
-        next if row.homepage?
+        next if row.ignorable?
 
         # If we don't yet have a row for this canonical path, or if the row we're
         # considering is 'better' than the one we have already, put this row into
