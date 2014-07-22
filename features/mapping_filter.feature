@@ -104,7 +104,7 @@ Feature: Filter mappings
   Scenario: Filtering by searching for a tag
     When I open the "Tag" filter
     Then I should see the most popular tags for this site
-    Then I should see "Filter tags"
+    Then I should see "All tags"
     When I search for a tag named gone
     Then the tag filter should be visible with the tag "gone"
     And I should see mappings tagged with "gone"
