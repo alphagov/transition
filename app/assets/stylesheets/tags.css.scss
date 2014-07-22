@@ -75,3 +75,8 @@ a.tag:hover {
   padding-left: 7px;
   padding-top: 3px;
 }
+
+.input-group .select2-choices {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
