@@ -2,6 +2,10 @@ When(/^I click the (?:link|tab)(?: called)? "([^"]+)"$/) do |link_title|
   click_link link_title
 end
 
+When(/^I click the "([^"]+)" button$/) do |title|
+  click_button title
+end
+
 When(/^I click the first (?:link|tab)(?: called)? "([^"]+)"$/) do |link_title|
   first(:link, link_title).click
 end

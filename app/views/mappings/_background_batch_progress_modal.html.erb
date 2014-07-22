@@ -1,9 +1,9 @@
-<div class="modal modal-background-bulk-add modal-with-btn-in-title" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-module="auto-show-modal">
+<div class="modal modal-background-batch modal-with-btn-in-title" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-module="auto-show-modal">
   <div class="modal-dialog">
     <div class="modal-content">
       <header class="modal-header">
         <h3 class="modal-title">
-          Adding mappings
+          <%= batch.verb.titleize %>ing mappings
         </h3>
         <a href="#close" data-dismiss="modal" class="btn btn-success btn-modal-close">OK</a>
       </header>
@@ -20,7 +20,7 @@
             </div>
           </div>
         </div>
-        <p class="js-remove-on-success well">You may leave this page at any time and Transition will continue to add your mappings in the background.</p>
+        <p class="js-remove-on-success well">You may leave this page at any time and Transition will continue to <%= batch.verb %> your mappings in the background.</p>
       </div>
     </div>
   </div>

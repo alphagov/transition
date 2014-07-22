@@ -1,4 +1,6 @@
 class MappingsBatchEntry < ActiveRecord::Base
+  self.inheritance_column = :klass
+
   belongs_to :mappings_batch
   belongs_to :mapping
 
@@ -12,19 +14,7 @@ class MappingsBatchEntry < ActiveRecord::Base
     "http://#{mappings_batch.site.default_host.hostname}#{self.path}"
   end
 
-  def new_url
-    mappings_batch.new_url
-  end
-
-  def type
-    mappings_batch.type
-  end
-
   def tags
     mappings_batch.tag_list.split(',')
-  end
-
-  def redirect?
-    mappings_batch.redirect?
   end
 end

@@ -17,7 +17,7 @@ module Transition
             #
             # Rows are like:
             # Old URL,New URL,Admin URL,State
-            CSV.new(urls_io, headers: true).each do |row|
+            ::CSV.new(urls_io, headers: true).each do |row|
               next if row['Old URL'].blank?
               next unless row['State'] == 'published'
 

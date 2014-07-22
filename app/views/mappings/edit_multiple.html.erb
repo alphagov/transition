@@ -18,7 +18,7 @@
   <%= hidden_field_tag "return_path", @bulk_edit.return_path %>
 
   <% if @bulk_edit.operation == 'tag' %>
-    <%= render partial: 'tag_list_field', locals: { bulk_tagger: @bulk_edit } %>
+    <%= render partial: 'shared/tag_list_field', locals: { tag_list: @bulk_edit.tag_list } %>
   <% end %>
 
   <%= link_to 'Cancel', @bulk_edit.return_path, class: 'btn btn-default add-right-margin' %>

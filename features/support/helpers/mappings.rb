@@ -16,7 +16,6 @@ module Helpers
       else
         fill_in 'Tags', with: tag_list
       end
-      click_button 'Save'
     end
   end
 end

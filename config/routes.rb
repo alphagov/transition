@@ -35,6 +35,13 @@ Transition::Application.routes.draw do
         post 'update_multiple'
 
         get 'filter'
+
+        resources :import_batches, only: [:new, :create] do
+          member do
+            get 'preview'
+            post 'import'
+          end
+        end
       end
     end
 

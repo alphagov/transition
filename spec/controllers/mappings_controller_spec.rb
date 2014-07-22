@@ -1,26 +1,10 @@
 require 'spec_helper'
 
 describe MappingsController do
-  let(:site)              { create :site, abbr: 'moj' }
-  let(:batch)             { create(:mappings_batch, site: site) }
-  let(:unaffiliated_user) { create(:user, organisation_slug: nil) }
-  let(:gds_bob)           { create(:gds_editor, name: 'Bob Terwhilliger') }
-  let(:mapping)           { create(:mapping, site: site, as_user: gds_bob) }
-
-  shared_examples 'disallows editing by unaffiliated user' do
-    before do
-      login_as unaffiliated_user
-      make_request
-    end
-
-    it 'redirects to the index page' do
-      expect(response).to redirect_to site_mappings_path(site)
-    end
-
-    it 'sets a flash message' do
-      flash[:alert].should include('don\'t have permission to edit')
-    end
-  end
+  let(:site)    { create :site, abbr: 'moj' }
+  let(:batch)   { create(:bulk_add_batch, site: site) }
+  let(:gds_bob) { create(:gds_editor, name: 'Bob Terwhilliger') }
+  let(:mapping) { create(:mapping, site: site, as_user: gds_bob) }
 
   describe '#index' do
     before do
@@ -316,53 +300,33 @@ describe MappingsController do
         login_as gds_bob
       end
 
-      context 'with a small batch' do
-        before do
+      context 'a small batch' do
+        def make_request
           post :create_multiple, site_id: site.abbr, update_existing: 'true',
-                mappings_batch_id: batch.id
+              mappings_batch_id: batch.id
         end
 
-        it 'sets a success message' do
-          flash[:success].should include('mappings created')
-        end
+        include_examples 'it processes a small batch inline'
       end
 
-      context 'with a large batch' do
-        let(:batch) { create(:mappings_batch, site: site,
-                              paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21}) }
+      context 'a large batch' do
+        let(:large_batch) { create(:bulk_add_batch, site: site,
+                          paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21}) }
 
-        before do
+        def make_request
           post :create_multiple, site_id: site.abbr, update_existing: 'true',
-                mappings_batch_id: batch.id
+                mappings_batch_id: large_batch.id
         end
 
-        it 'redirects to the site return URL' do
-          expect(response).to redirect_to site_mappings_path(site)
-        end
-
-        it 'queues a job' do
-          expect(MappingsBatchWorker.jobs.size).to eql(1)
-        end
-
-        it 'updates the batch state' do
-          batch.reload
-          batch.state.should == 'queued'
-        end
+        include_examples 'it processes a large batch in the background'
       end
 
-      context 'when the batch has already been queued' do
-        before do
-          batch.update_column(:state, 'finished')
+      context 'a batch which has been submitted already' do
+        def make_request
           post :create_multiple, site_id: site.abbr, mappings_batch_id: batch.id
         end
 
-        it 'doesn\'t queue it (again)' do
-          expect(MappingsBatchWorker.jobs.size).to eql(0)
-        end
-
-        it 'redirects to the site return URL' do
-          expect(response).to redirect_to site_mappings_path(site)
-        end
+        include_examples 'it doesn\'t requeue a batch which has already been queued'
       end
     end
   end
@@ -460,7 +424,7 @@ describe MappingsController do
       it_behaves_like 'disallows editing by unaffiliated user'
 
       it 'does not update any mappings' do
-        login_as unaffiliated_user
+        login_as stub_user
         make_request
 
         expect(site.mappings.where(type: 'redirect').count).to be(0)
@@ -547,7 +511,7 @@ describe MappingsController do
 
   describe 'displaying background bulk add status' do
     context 'outcome hasn\'t been seen yet' do
-      let!(:mappings_batch) { create(:mappings_batch, site: site, user: gds_bob, state: 'succeeded') }
+      let!(:mappings_batch) { create(:bulk_add_batch, site: site, user: gds_bob, state: 'succeeded') }
       before do
         login_as(gds_bob)
         get :index, site_id: site
@@ -570,7 +534,7 @@ describe MappingsController do
     end
 
     context 'outcome has been seen' do
-      let!(:mappings_batch) { create(:mappings_batch, site: site, user: gds_bob, state: 'succeeded', seen_outcome: true) }
+      let!(:mappings_batch) { create(:bulk_add_batch, site: site, user: gds_bob, state: 'succeeded', seen_outcome: true) }
       before do
         login_as(gds_bob)
         get :index, site_id: site
@@ -588,7 +552,7 @@ describe MappingsController do
     end
 
     context 'the batch is for another site' do
-      let!(:mappings_batch) { create(:mappings_batch, site: create(:site), user: gds_bob, state: 'succeeded') }
+      let!(:mappings_batch) { create(:bulk_add_batch, site: create(:site), user: gds_bob, state: 'succeeded') }
       before do
         login_as(gds_bob)
         get :index, site_id: site

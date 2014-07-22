@@ -26,7 +26,7 @@
   </div>
   <%= render partial: 'unresolved_mappings_description' %>
 
-  <div class="form-group <% if @batch.errors[:paths].any? %>field_with_errors<% end %>">
+  <div class="form-group <% if @batch.errors[:paths].any? || @batch.errors[:canonical_paths].any? %>field_with_errors<% end %>">
     <%#
       Capture label HTML to avoid using a block, this circumvents a problem with
       rails not wrapping the label with 'field_with_errors' on error
@@ -73,12 +73,10 @@
     </dl>
   <% end %>
 
-  <%= render partial: 'tag_list_field', locals: { bulk_tagger: @batch } %>
+  <%= render partial: 'shared/tag_list_field', locals: { tag_list: @batch.tag_list } %>
 
   <%= button_tag 'Continue', class: 'add-vertical-margins btn btn-success' %>
 
-  <div class="row">
-    <p class="col-md-8 text-muted">When you submit the form we’ll convert the URLs to lowercase and order the query parameters so they are consistent, and we’ll check whether they already exist. There will be a review step before your changes are saved.</p>
-  </div>
+  <%= render partial: 'shared/explain_confirmation' %>
 
 <% end %>

@@ -149,7 +149,12 @@ Then(/^I should see the canonicalized paths "(.*?)"$/) do |paths|
 end
 
 Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
-  expect(page).to have_field('Tags', with: tag_list)
+  if @_javascript
+    field = find(:xpath, '//input[contains(@class, "select2-offscreen")]')
+    field.value.should == tag_list
+  else
+    expect(page).to have_field('Tags', with: tag_list)
+  end
 end
 
 Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|

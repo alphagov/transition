@@ -16,7 +16,7 @@ module View
         false
       end
 
-      def operation_description
+      def analytics_event_type
         "bulk-edit-tag"
       end
 

@@ -1,16 +1,10 @@
 class MappingsBatch < ActiveRecord::Base
-
-  # ActiveRecord uses a column named 'type' for Single Table Inheritance, and
-  # by default activates STI if a 'type' column is present. Setting the column
-  # name for STI to something else allows us to use a 'type' column for
-  # something else instead, without activating STI.
-  self.inheritance_column = nil
+  self.inheritance_column = :klass
 
   FINISHED_STATES = ['succeeded', 'failed']
   PROCESSING_STATES = ['unqueued', 'queued', 'processing'] + FINISHED_STATES
 
-  attr_accessor :paths # a virtual attribute to then use for creating entries
-  attr_accessible :paths, :type, :new_url, :tag_list, :update_existing, :state
+  attr_accessible :tag_list, :update_existing, :state
 
   belongs_to :user
   belongs_to :site
@@ -18,22 +12,9 @@ class MappingsBatch < ActiveRecord::Base
 
   validates :user, presence: true
   validates :site, presence: true
-  validates :type, inclusion: { :in => Mapping::SUPPORTED_TYPES }
-  with_options :if => :redirect? do |redirect|
-    redirect.validates :new_url, presence: { message: I18n.t('mappings.bulk.new_url_invalid') }
-    redirect.validates :new_url, length: { maximum: (64.kilobytes - 1) }
-    redirect.validates :new_url, non_blank_url: { message: I18n.t('mappings.bulk.new_url_invalid') }
-    redirect.validates :new_url, host_in_whitelist: { message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist', email: Rails.configuration.support_email) }
-  end
-  validates :paths, presence: { :if => :new_record?, message: I18n.t('mappings.bulk.add.paths_empty') } # we only care about paths at create-time
   validates :state, inclusion: { :in => PROCESSING_STATES }
-  validate :paths_cannot_include_hosts_for_another_site, :paths_cannot_be_empty_once_canonicalised
 
   scope :reportable, where(seen_outcome: false).where("state != 'unqueued'")
-
-  before_validation :fill_in_scheme
-
-  after_create :create_entries
 
   def entries_to_process
     if update_existing
@@ -41,10 +22,6 @@ class MappingsBatch < ActiveRecord::Base
     else
       entries.without_existing_mappings
     end
-  end
-
-  def redirect?
-    type == 'redirect'
   end
 
   def finished?
@@ -59,50 +36,6 @@ class MappingsBatch < ActiveRecord::Base
     state == 'failed'
   end
 
-  def fill_in_scheme
-    self.new_url = Mapping.ensure_url(new_url)
-  end
-
-  def paths_cannot_include_hosts_for_another_site
-    return true if paths.blank?
-    hosts = paths.grep(/^http/).map do |url|
-      begin
-        uri = Addressable::URI.parse(url)
-        uri.host
-      rescue Addressable::URI::InvalidURIError
-        errors.add(:paths, "Old URLs includes an invalid URL: #{url}")
-      end
-    end
-    hosts.uniq!
-
-    if hosts.any? && (hosts.size != site.hosts.where(hostname: hosts).count)
-      errors.add(:paths, I18n.t('mappings.bulk.add.hosts_invalid'))
-    end
-  end
-
-  def paths_cannot_be_empty_once_canonicalised
-    return true if paths.blank?
-    if canonical_paths.empty?
-      errors.add(:paths, I18n.t('mappings.bulk.add.paths_empty'))
-    end
-  end
-
-  # called after_create, so in the same transaction
-  def create_entries
-    canonical_path_hashes = canonical_paths.map { |path| Digest::SHA1.hexdigest(path) }
-    existing_mappings = site.mappings.where(path_hash: canonical_path_hashes)
-
-    records = canonical_paths.map do |canonical_path|
-      entry = MappingsBatchEntry.new(path: canonical_path)
-      entry.mappings_batch = self
-      path_hash = Digest::SHA1.hexdigest(canonical_path)
-      entry.mapping = existing_mappings.detect { |mapping| mapping.path_hash == path_hash }
-      entry
-    end
-
-    MappingsBatchEntry.import(records, validate: false)
-  end
-
   def process
     with_state_tracking do
       entries.each do |entry|
@@ -111,8 +44,8 @@ class MappingsBatch < ActiveRecord::Base
 
         next if !update_existing && mapping.persisted?
         mapping.path = entry.path
-        mapping.type = type
-        mapping.new_url = new_url
+        mapping.type = entry.type
+        mapping.new_url = entry.new_url
         mapping.tag_list = [mapping.tag_list, tag_list].join(',')
         mapping.save
 
@@ -128,10 +61,5 @@ class MappingsBatch < ActiveRecord::Base
   rescue => e
     update_column(:state, 'failed')
     raise
-  end
-
-private
-  def canonical_paths
-    @_canonical_paths ||= paths.map { |p| site.canonical_path(p) }.select(&:present?).uniq
   end
 end
