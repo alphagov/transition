@@ -16,8 +16,8 @@
 
     <% if tags.count > 10 %>
       <hr />
-
       <h4>Multiple tags</h4>
+      <%= label_tag :tagged, 'Tag', class: 'rm' %>
       <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
         <%= hidden_filter_fields_except(@filter, :tagged) %>
         <div class="form-group">
