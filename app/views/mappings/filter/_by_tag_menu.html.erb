@@ -17,18 +17,19 @@
     <% if tags.count > 10 %>
       <hr />
 
-      <h4>Filter tags</h4>
-      <form id="tag_filter_form">
+      <h4>Multiple tags</h4>
+      <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
+        <%= hidden_filter_fields_except(@filter, :tagged) %>
         <div class="form-group">
           <label class="rm">Tag</label>
           <div class="input-group col-md-12">
-            <%= text_field_tag :tagged, '', class: 'form-control js-tag-list' %>
+            <%= text_field_tag :tagged, @filter.tagged, class: 'form-control js-tag-list' %>
             <span class="input-group-btn">
-              <%= button_to 'Filter', site_mappings_path("$('#tagged').value();"), method: :get, class: 'btn btn-default' %>
+              <%= button_tag 'Filter', class: 'btn btn-default' %>
             </span>
           </div>
         </div>
-      </form>
+      <% end %>
     <% end %>
   </div>
 </li>
