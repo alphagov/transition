@@ -2,7 +2,7 @@ require 'view/mappings/canonical_filter'
 
 class MappingsController < ApplicationController
   include PaperTrail::Rails::Controller
-  include Transition::Controller::CheckUserCanEditMappings
+  include CheckUserCanEditMappings
 
   tracks_mappings_progress except: [:find_global]
 
