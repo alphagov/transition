@@ -1,9 +1,8 @@
 class ImportBatchesController < ApplicationController
   include PaperTrail::Rails::Controller
-  include CheckUserCanEditMappings
 
   before_filter :find_site
-  before_filter :check_user_can_edit
+  checks_user_can_edit
   before_filter :find_batch, only: [:preview, :import]
 
   def new

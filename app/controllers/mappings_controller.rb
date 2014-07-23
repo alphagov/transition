@@ -2,12 +2,11 @@ require 'view/mappings/canonical_filter'
 
 class MappingsController < ApplicationController
   include PaperTrail::Rails::Controller
-  include CheckUserCanEditMappings
 
   tracks_mappings_progress except: [:find_global]
 
   before_filter :check_global_redirect_or_archive, except: [:find_global]
-  before_filter :check_user_can_edit, except: [:index, :find, :find_global]
+  checks_user_can_edit except: [:index, :find, :find_global]
 
   def new_multiple
     paths = params[:paths].present? ? params[:paths].split(',') : []
