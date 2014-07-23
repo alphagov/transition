@@ -53,7 +53,7 @@ describe ImportBatch do
 
         before { mappings_batch.should_not be_valid }
         it 'should declare it invalid' do
-          mappings_batch.errors[:canonical_paths].should == ['Enter at least one valid path']
+          mappings_batch.errors[:canonical_paths].should == ['Enter at least one valid path or full URL']
         end
       end
     end

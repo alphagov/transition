@@ -69,7 +69,7 @@ describe ImportBatchesController do
         render_views
 
         it 'shows error messages at the top of the form' do
-          expect(response.body).to include('Enter at least one valid path')
+          expect(response.body).to include('Enter at least one valid path or full URL')
         end
       end
     end
