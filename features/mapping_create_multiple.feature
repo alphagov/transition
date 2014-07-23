@@ -77,7 +77,7 @@ Feature: Create mappings
     And I go to create some mappings
     When I make the new mapping paths "noslash" redirect to __INVALID_URL__
     And I continue
-    Then I should see "Enter at least one valid path"
+    Then I should see "Enter at least one valid path or full URL"
     And I should see a highlighted "Old URLs" label and field
     And the "Old URLs" value should be "noslash"
     And I should see "Enter a valid URL to redirect to"
