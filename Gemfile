@@ -5,7 +5,7 @@ gem 'unicorn', '4.6.2'
 gem 'mysql2', '0.3.13'
 gem 'optic14n', '2.0.0'     # Ideally version should be synced with bouncer
 gem 'gds-sso', '9.3.0'
-gem 'govuk_admin_template', '1.1.0'
+gem 'govuk_admin_template', '1.1.1'
 gem 'plek', '1.2.0'
 gem 'htmlentities', '4.3.1'
 gem 'kaminari', '0.14.1'
