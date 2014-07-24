@@ -40,7 +40,7 @@
         <% end %>
       </td>
       <td class="title">
-        <%= link_to org.title, organisation_path(org) %>
+        <%= link_to org.title, organisation_path(org), class: 'js-open-on-submit' %>
       </td>
       <td>
         <%= pluralize(org.site_count, 'site') %>
