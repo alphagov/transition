@@ -83,6 +83,8 @@ module Transition
           site.global_new_url        = global_new_url
           site.global_redirect_append_path = global_redirect_append_path
           site.homepage              = yaml['homepage']
+          site.homepage_title        = yaml['homepage_title']
+          site.homepage_furl         = yaml['homepage_furl']
           site.managed_by_transition = managed_by_transition?
 
           site.save!
