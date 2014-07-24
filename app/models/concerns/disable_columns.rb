@@ -11,6 +11,18 @@ module DisableColumns
         super().reject { |column| disabled_column_list.include?(column.name) }
       end
     end
+
+    # This callback disables the columns when fetching an instance from the database
+    class_eval do
+      include DisableColumns
+
+      after_initialize :delete_disabled_columns_from_attributes
+    end
+  end
+
+protected
+  def delete_disabled_columns_from_attributes
+    @attributes = @attributes.reject { |name| disabled_column_list.include?(name) }
   end
 end
 
