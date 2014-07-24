@@ -5,11 +5,11 @@ describe BulkAddBatch do
     # In this test, we need to implicitly call #valid? using { be_valid } so
     # that the before_validation callbacks are called so that we can test that
     # they do the right thing.
-    describe 'filling in scheme of New URL' do
+    context 'when there is no scheme' do
       subject(:mappings_batch) { build(:bulk_add_batch, new_url: 'www.gov.uk') }
 
       before { mappings_batch.should be_valid }
-      it 'should add a scheme if none included' do
+      it 'should add a scheme' do
         mappings_batch.new_url.should == 'https://www.gov.uk'
       end
     end
@@ -18,61 +18,65 @@ describe BulkAddBatch do
   describe 'validations' do
     it { should ensure_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
 
-    describe 'paths would be empty after canonicalisation' do
-      subject(:mappings_batch) { build(:bulk_add_batch, paths: ['/']) }
-
+    context 'when the mappings batch is invalid' do
       before { mappings_batch.should_not be_valid }
-      it 'should declare it invalid' do
-        mappings_batch.errors[:canonical_paths].should == ['Enter at least one valid path or full URL']
+
+      context 'when paths are empty after canonicalisation' do
+        subject(:mappings_batch) { build(:bulk_add_batch, paths: ['/']) }
+
+        it 'should declare it invalid' do
+          mappings_batch.errors[:canonical_paths].should == ['Enter at least one valid path or full URL']
+        end
+      end
+
+      context 'when it is a redirect' do
+        subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect') }
+
+        it 'must have a new URL' do
+          mappings_batch.errors[:new_url].should == ['Enter a valid URL to redirect to']
+        end
+      end
+
+      context 'when the new URL is too long' do
+        subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect', new_url: 'http://'.ljust(65536, 'x')) }
+
+        it 'is invalid' do
+          mappings_batch.errors[:new_url].should include('is too long (maximum is 65535 characters)')
+        end
+      end
+
+      context 'when the new URL is invalid' do
+        subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect', new_url: 'newurl') }
+
+        it 'errors and asks for a valid one' do
+          mappings_batch.errors[:new_url].should include('Enter a valid URL to redirect to')
+        end
+      end
+
+      context 'when the new URL is not whitelisted' do
+        subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect', new_url: 'http://bad.com') }
+
+        it 'errors and asks for a whitelisted one' do
+          mappings_batch.errors[:new_url].should include('The URL to redirect to must be on a whitelisted domain. Contact transition-dev@digital.cabinet-office.gov.uk for more information.')
+        end
+      end
+
+      context 'when the path list includes a URL for another site' do
+        subject(:mappings_batch) { build(:bulk_add_batch, paths: ['http://another.com/foo']) }
+
+        it 'errors and asks for a URL that is part of the current site' do
+          mappings_batch.errors[:paths].should == ['One or more of the URLs entered are not part of this site']
+        end
+      end
+
+      context 'when a new URL given to paths is invalid' do
+        subject(:mappings_batch) { build(:bulk_add_batch, type: 'archive', paths: ['http://newurl/foo[1]']) }
+
+        it { should_not be_valid }
       end
     end
 
-    describe 'new_url must be present if it is a redirect' do
-      subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect') }
-
-      before { mappings_batch.should_not be_valid }
-      it 'should declare it invalid' do
-        mappings_batch.errors[:new_url].should == ['Enter a valid URL to redirect to']
-      end
-    end
-
-    describe 'constrains the length of new URL' do
-      subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect', new_url: 'http://'.ljust(65536, 'x')) }
-
-      before { mappings_batch.should_not be_valid }
-      it 'should declare it invalid' do
-        mappings_batch.errors[:new_url].should include('is too long (maximum is 65535 characters)')
-      end
-    end
-
-    describe 'invalid new URLs' do
-      subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect', new_url: 'newurl') }
-
-      before { mappings_batch.should_not be_valid }
-      it 'should declare it invalid' do
-        mappings_batch.errors[:new_url].should include('Enter a valid URL to redirect to')
-      end
-    end
-
-    describe 'non-whitelisted new URLs' do
-      subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect', new_url: 'http://bad.com') }
-
-      before { mappings_batch.should_not be_valid }
-      it 'should declare it invalid' do
-        mappings_batch.errors[:new_url].should include('The URL to redirect to must be on a whitelisted domain. Contact transition-dev@digital.cabinet-office.gov.uk for more information.')
-      end
-    end
-
-    describe 'paths includes URLs for another site' do
-      subject(:mappings_batch) { build(:bulk_add_batch, paths: ['http://another.com/foo']) }
-
-      before { mappings_batch.should_not be_valid }
-      it 'should declare them invalid' do
-        mappings_batch.errors[:paths].should == ['One or more of the URLs entered are not part of this site']
-      end
-    end
-
-    describe 'paths includes URLs for this site' do
+    context 'when the path list includes only URLs for this site' do
       let(:site) { create(:site_without_host, hosts: [create(:host, hostname: 'a.com')]) }
 
       subject(:mappings_batch) do
@@ -80,15 +84,6 @@ describe BulkAddBatch do
       end
 
       it { should be_valid }
-    end
-
-    describe 'invalid paths with a scheme' do
-      subject(:mappings_batch) { build(:bulk_add_batch, type: 'archive', paths: ['http://newurl/foo[1]']) }
-
-      before { mappings_batch.should_not be_valid }
-      it 'should not raise an error' do
-        expect { mappings_batch.valid? }.not_to raise_error
-      end
     end
   end
 
