@@ -37,12 +37,6 @@ module Transition
         HTMLEntities.new.decode(yaml['title'])
       end
 
-      %w(furl redirection_date homepage css).each do |name|
-        define_method name.to_sym do
-          yaml[name]
-        end
-      end
-
       def has_global_type?
         # cdn.hm-treasury.gov.uk has a regex in the global value, which Bouncer
         # implements as a "rule", so we can ignore it.
