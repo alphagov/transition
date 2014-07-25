@@ -1,0 +1,39 @@
+<% content_for(:page_title, 'Leaderboard') %>
+
+<table class="table table-striped table-bordered">
+  <thead class="table-header">
+    <th rowspan="2">Organisation</th>
+    <th rowspan="2">Sites</th>
+    <th colspan="3">Mappings
+      <tr>
+        <th>Total</th>
+        <th>Unresolved</th>
+        <th>Errors</th>
+      </tr>
+    </th>
+  </thead>
+  <tbody>
+    <% Organisation.all.each do |org| %>
+    <tr>
+      <td><%= org.title %></td>
+      <% @sites = Site.where(organisation_id: org.id) %>
+      <td><%= @sites.count %></td>
+      <% all_mappings = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM mappings, sites
+                          WHERE mappings.site_id = sites.id
+                          AND sites.organisation_id = #{org.id};").first %>
+      <td><%= all_mappings.first %></td>
+      <% unresolved_mappings = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM mappings, sites
+                                WHERE mappings.site_id = sites.id
+                                AND mappings.type = 'unresolved'
+                                AND sites.organisation_id = #{org.id};").first %>
+      <td><%= unresolved_mappings.first %></td>
+      <% erroring_mappings = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM hits, mappings, sites
+                                                                    WHERE mappings.site_id = sites.id
+                                                                    AND hits.http_status = '404'
+                                                                    AND hits.mapping_id = mappings.id
+                                                                    AND sites.organisation_id = #{org.id};").first %>
+      <td><%= erroring_mappings.first %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -19,6 +19,9 @@
     <li <% if current_page?(hits_path) %> class="active" <% end %>>
       <%= link_to 'Universal analytics', hits_path %>
     </li>
+    <li <% if current_page?(leaderboard_path) %> class="active" <% end %>>
+      <%= link_to 'Leaderboard', leaderboard_path %>
+    </li>
   <% end %>
   <% if current_user.admin? %>
     <li <% if current_page?(admin_whitelisted_hosts_path) %> class="active" <% end %>>
