@@ -18,7 +18,7 @@ module Transition
         end
 
         def data_row?
-          @old_value.starts_with?('/') || @old_value.starts_with?('http')
+          @old_value.starts_with?('/') || @old_value =~ Transition::PathOrURL::STARTS_WITH_HTTP_SCHEME
         end
 
         def type

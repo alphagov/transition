@@ -9,7 +9,7 @@ class OldURLsAreForSiteValidator < ActiveModel::EachValidator
   end
 
   def hosts_in_old_urls(old_urls)
-    hosts = old_urls.grep(/^http/).map do |url|
+    hosts = old_urls.grep(Transition::PathOrURL::STARTS_WITH_HTTP_SCHEME).map do |url|
       begin
         uri = Addressable::URI.parse(url)
         uri.host
