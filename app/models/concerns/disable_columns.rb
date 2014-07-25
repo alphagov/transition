@@ -5,17 +5,10 @@ module DisableColumns
       cattr_accessor :disabled_column_list do
         columns.map(&:to_s)
       end
-
-      # Overriding this method disables the columns when instantiating
-      def columns
-        super().reject { |column| disabled_column_list.include?(column.name) }
-      end
     end
 
-    # This callback disables the columns when fetching an instance from the database
     class_eval do
       include DisableColumns
-
       after_initialize :delete_disabled_columns_from_attributes
     end
   end
