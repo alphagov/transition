@@ -45,6 +45,39 @@ class Organisation < ActiveRecord::Base
         group('organisations.id').  # Using a sloppy mySQL GROUP. Note well, Postgres upgraders
         having('site_count > 0') }
 
+  scope :leaderboard, select(<<-mySQL
+    organisations.title,
+    COUNT(*)                                     AS site_count,
+    SUM(site_mapping_counts.mapping_count)       AS mappings_across_sites,
+    SUM(unresolved_mapping_counts.mapping_count) AS unresolved_mapping_count,
+    SUM(error_counts.error_count)                AS error_count
+  mySQL
+  ).joins(<<-mySQL
+    INNER JOIN sites
+           ON sites.`organisation_id` = organisations.id
+    LEFT JOIN (SELECT sites.id AS site_id,
+                      COUNT(*) AS mapping_count
+               FROM   mappings
+                      INNER JOIN sites
+                              ON sites.id = mappings.site_id
+               GROUP  BY sites.id) site_mapping_counts ON site_mapping_counts.site_id = sites.id
+    LEFT JOIN (SELECT sites.id AS site_id,
+                      COUNT(*) AS mapping_count
+               FROM   mappings
+                      INNER JOIN sites
+                              ON sites.id = mappings.site_id
+               WHERE  mappings.type = 'unresolved'
+               GROUP  BY sites.id) unresolved_mapping_counts ON unresolved_mapping_counts.site_id = sites.id
+    LEFT JOIN (SELECT hosts.site_id AS site_id,
+                      SUM(count) AS error_count
+               FROM   daily_hit_totals
+                      INNER JOIN `hosts`
+                              ON `hosts`.id = daily_hit_totals.host_id
+               WHERE  daily_hit_totals.http_status = '404'
+               GROUP BY site_id) AS error_counts ON error_counts.site_id = sites.id
+    mySQL
+  ).group('organisations.id')
+
   def to_param
     whitehall_slug
   end

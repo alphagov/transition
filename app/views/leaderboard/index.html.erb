@@ -13,27 +13,13 @@
     </th>
   </thead>
   <tbody>
-    <% Organisation.all.each do |org| %>
+    <% Organisation.leaderboard.each do |org| %>
     <tr>
       <td><%= org.title %></td>
-      <% @sites = Site.where(organisation_id: org.id) %>
-      <td><%= @sites.count %></td>
-      <% all_mappings = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM mappings
-                          INNER JOIN sites ON mappings.site_id = sites.id
-                          AND sites.organisation_id = #{org.id};").first %>
-      <td><%= number_with_delimiter(all_mappings.first) %></td>
-      <% unresolved_mappings = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM mappings
-                                  INNER JOIN sites ON mappings.site_id = sites.id
-                                  AND mappings.type = 'unresolved'
-                                  AND sites.organisation_id = #{org.id};").first %>
-      <td><%= number_with_delimiter(unresolved_mappings.first) %></td>
-      <% erroring_mappings = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM hits
-                                                                    INNER JOIN mappings ON mappings.id = hits.mapping_id
-                                                                    AND hits.http_status = '404'
-                                                                    AND hits.mapping_id = mappings.id
-                                                                    INNER JOIN sites ON sites.organisation_id = #{org.id}
-                                                                    AND mappings.site_id = sites.id;").first %>
-      <td><%= number_with_delimiter(erroring_mappings.first) %></td>
+      <td><%= org.site_count %></td>
+      <td><%= number_with_delimiter(org.mappings_across_sites) %></td>
+      <td><%= number_with_delimiter(org.unresolved_mapping_count) %></td>
+      <td><%= number_with_delimiter(org.error_count) %></td>
     </tr>
     <% end %>
   </tbody>
