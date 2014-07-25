@@ -1,7 +1,7 @@
-module MappingsProgress
+module TrackMappingsProgress
   def tracks_mappings_progress(options = {})
     class_eval do
-      include MappingsProgress
+      include TrackMappingsProgress
 
       unless _process_action_callbacks.any? { |c| c.kind == :before && c.filter == :find_site }
         # Make sure find_site is there in the call chain, we depend on it,
@@ -76,5 +76,5 @@ protected
 end
 
 if defined?(ActionController::Base)
-  ActionController::Base.extend MappingsProgress
+  ActionController::Base.extend TrackMappingsProgress
 end
