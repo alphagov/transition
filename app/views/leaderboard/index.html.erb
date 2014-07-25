@@ -21,19 +21,19 @@
       <% all_mappings = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM mappings
                           INNER JOIN sites ON mappings.site_id = sites.id
                           AND sites.organisation_id = #{org.id};").first %>
-      <td><%= all_mappings.first %></td>
+      <td><%= number_with_delimiter(all_mappings.first) %></td>
       <% unresolved_mappings = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM mappings
                                   INNER JOIN sites ON mappings.site_id = sites.id
                                   AND mappings.type = 'unresolved'
                                   AND sites.organisation_id = #{org.id};").first %>
-      <td><%= unresolved_mappings.first %></td>
+      <td><%= number_with_delimiter(unresolved_mappings.first) %></td>
       <% erroring_mappings = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM hits
                                                                     INNER JOIN mappings ON mappings.id = hits.mapping_id
                                                                     AND hits.http_status = '404'
                                                                     AND hits.mapping_id = mappings.id
                                                                     INNER JOIN sites ON sites.organisation_id = #{org.id}
                                                                     AND mappings.site_id = sites.id;").first %>
-      <td><%= erroring_mappings.first %></td>
+      <td><%= number_with_delimiter(erroring_mappings.first) %></td>
     </tr>
     <% end %>
   </tbody>
