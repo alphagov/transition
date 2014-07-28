@@ -22,22 +22,17 @@ ActiveRecord::Schema.define(version: 20140912150755) do
   add_index "daily_hit_totals", ["host_id", "total_on", "http_status"], :name => "index_daily_hit_totals_on_host_id_and_total_on_and_http_status", :unique => true
 
   create_table "hits", :force => true do |t|
-    t.integer "host_id",                     :null => false
-    t.string  "path",        :limit => 2048, :null => false
-    t.string  "path_hash",   :limit => 40,   :null => false
-    t.string  "http_status", :limit => 3,    :null => false
-    t.integer "count",                       :null => false
-    t.date    "hit_on",                      :null => false
+    t.integer "host_id",                   :null => false
+    t.text    "path",                      :null => false
+    t.string  "path_hash",   :limit => 40, :null => false
+    t.string  "http_status", :limit => 3,  :null => false
+    t.integer "count",                     :null => false
+    t.date    "hit_on",                    :null => false
     t.integer "mapping_id"
   end
 
-  add_index "hits", ["host_id", "hit_on"], :name => "index_hits_on_host_id_and_hit_on"
-  add_index "hits", ["host_id", "http_status"], :name => "index_hits_on_host_id_and_http_status"
-  add_index "hits", ["host_id", "path_hash", "hit_on", "http_status"], :name => "index_hits_on_host_id_and_path_hash_and_hit_on_and_http_status", :unique => true
-  add_index "hits", ["host_id", "path_hash"], :name => "index_hits_on_host_id_and_path_hash"
-  add_index "hits", ["host_id"], :name => "index_hits_on_host_id"
-  add_index "hits", ["mapping_id"], :name => "index_hits_on_mapping_id"
-  add_index "hits", ["path_hash"], :name => "index_hits_on_path_hash"
+  add_index "hits", ["host_id", "hit_on", "http_status"], :name => "index_hits_on_host_id_and_hit_on_and_http_status"
+  add_index "hits", ["host_id", "path", "hit_on", "http_status"], :name => "index_hits_on_host_id_and_path_and_hit_on_and_http_status", :unique => true
 
   create_table "hits_staging", :id => false, :force => true do |t|
     t.string  "hostname"
@@ -91,10 +86,12 @@ ActiveRecord::Schema.define(version: 20140912150755) do
     t.text    "new_url"
     t.text    "suggested_url"
     t.text    "archive_url"
-    t.boolean "from_redirector"
-    t.string  "type",            limit: 510,                  null: false
+    t.boolean "from_redirector",                 :default => false
+    t.string  "type",                                               :null => false
+    t.integer "hit_count"
   end
 
+  add_index "mappings", ["hit_count"], :name => "index_mappings_on_hit_count"
   add_index "mappings", ["site_id", "path_hash"], :name => "index_mappings_on_site_id_and_path_hash", :unique => true
   add_index "mappings", ["site_id", "type"], :name => "index_mappings_on_site_id_and_type"
   add_index "mappings", ["site_id"], :name => "index_mappings_on_site_id"
@@ -104,6 +101,9 @@ ActiveRecord::Schema.define(version: 20140912150755) do
     t.integer "mappings_batch_id"
     t.integer "mapping_id"
     t.boolean "processed",                         :default => false
+    t.string  "klass"
+    t.string  "new_url"
+    t.string  "type"
   end
 
   add_index "mappings_batch_entries", ["mappings_batch_id"], :name => "index_mappings_batch_entries_on_mappings_batch_id"
@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(version: 20140912150755) do
     t.string   "state",           :default => "unqueued"
     t.boolean  "seen_outcome",    :default => false
     t.string   "type"
+    t.string   "klass"
   end
 
   add_index "mappings_batches", ["user_id", "site_id"], :name => "index_mappings_batches_on_user_id_and_site_id"
