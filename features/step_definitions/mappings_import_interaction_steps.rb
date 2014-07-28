@@ -61,3 +61,9 @@ end
 When(/^I confirm the preview$/) do
   click_button("Import")
 end
+
+And(/^I should see that my unresolved mapping is there$/) do
+  steps %{
+    And I should see "/i-dont-know-what-i-am" in a modal window
+  }
+end

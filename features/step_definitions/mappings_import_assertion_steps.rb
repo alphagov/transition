@@ -60,3 +60,9 @@ Then(/^I should see less prominent progress of the import$/) do
     And I should see a flash message "0 of 21 mappings imported"
   }
 end
+
+Then(/^we have recorded analytics that show that import with overwrite existing was used$/) do
+  steps %{
+    And an analytics event with "import-overwrite-existing" has fired
+  }
+end

@@ -30,8 +30,8 @@ Feature: Import mappings
     Then I should be on the bis mappings page
     And I should see "2 mappings created and 1 mapping updated" in a modal window
     And I should see a table with 3 saved mappings in the modal
-    And I should see "/i-dont-know-what-i-am" in a modal window
-    And an analytics event with "import-overwrite-existing" has fired
+    And I should see that my unresolved mapping is there
+    And we have recorded analytics that show that import with overwrite existing was used
 
   @javascript
   Scenario: Successfully importing a larger batch of mappings
