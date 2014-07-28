@@ -36,13 +36,9 @@ ActiveRecord::Schema.define(version: 20140925104317) do
     t.integer "mapping_id"
   end
 
-  add_index "hits", ["host_id", "hit_on"], name: "index_hits_on_host_id_and_hit_on", using: :btree
-  add_index "hits", ["host_id", "http_status"], name: "index_hits_on_host_id_and_http_status", using: :btree
-  add_index "hits", ["host_id", "path_hash", "hit_on", "http_status"], name: "index_hits_on_host_id_and_path_hash_and_hit_on_and_http_status", unique: true, using: :btree
-  add_index "hits", ["host_id", "path_hash"], name: "index_hits_on_host_id_and_path_hash", using: :btree
-  add_index "hits", ["host_id"], name: "index_hits_on_host_id", using: :btree
+  add_index "hits", ["host_id", "hit_on", "http_status"], name: "index_hits_on_host_id_and_hit_on_and_http_status", using: :btree
+  add_index "hits", ["host_id", "path", "hit_on", "http_status"], name: "index_hits_on_host_id_and_path_and_hit_on_and_http_status", unique: true, using: :btree
   add_index "hits", ["mapping_id"], name: "index_hits_on_mapping_id", using: :btree
-  add_index "hits", ["path_hash"], name: "index_hits_on_path_hash", using: :btree
 
   create_table "hits_staging", id: false, force: true do |t|
     t.string  "hostname"
