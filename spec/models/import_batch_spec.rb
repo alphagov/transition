@@ -182,6 +182,20 @@ describe ImportBatch do
       end
     end
 
+    context 'with lines containing only a separator' do
+      let(:raw_csv) { <<-CSV.strip_heredoc
+                        /old,https://www.gov.uk/new
+                        ,
+                      CSV
+                    }
+
+      it 'should ignore those lines' do
+        mappings_batch.entries.count.should == 1
+        entry = mappings_batch.entries.first
+        entry.path.should == '/old'
+      end
+    end
+
     context 'archives' do
       let(:raw_csv) { <<-CSV.strip_heredoc
                   /old,TNA
