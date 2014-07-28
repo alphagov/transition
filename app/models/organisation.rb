@@ -47,6 +47,7 @@ class Organisation < ActiveRecord::Base
 
   scope :leaderboard, select(<<-mySQL
     organisations.title,
+    organisations.whitehall_slug,
     COUNT(*)                                     AS site_count,
     SUM(site_mapping_counts.mapping_count)       AS mappings_across_sites,
     SUM(unresolved_mapping_counts.mapping_count) AS unresolved_mapping_count,

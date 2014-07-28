@@ -15,7 +15,7 @@
   <tbody>
     <% Organisation.leaderboard.each do |org| %>
     <tr>
-      <td><%= org.title %></td>
+      <td><%= link_to org.title, organisation_path(org) %></td>
       <td><%= org.site_count %></td>
       <td><%= number_with_delimiter(org.mappings_across_sites) %></td>
       <td><%= number_with_delimiter(org.unresolved_mapping_count) %></td>
