@@ -1,3 +1,13 @@
+When(/^I import a large valid CSV for bis$/) do
+  steps %{
+    And a site bis exists
+    And I visit the path /sites/bis
+    And I go to import some mappings
+    Then I should see "http://bis.gov.uk"
+    When I submit the form with a large valid CSV
+  }
+end
+
 When(/^I go to import some mappings$/) do
   steps %{
     And I click the first link called "import from a spreadsheet"
@@ -42,4 +52,12 @@ When(/^I submit the form with a large valid CSV$/) do
                       CSV
   fill_in 'import_batch_raw_csv', with: raw_csv
   click_button 'Continue'
+end
+
+When(/^I navigate away to the bis mappings page$/) do
+  visit(site_mappings_path('bis'))
+end
+
+When(/^I confirm the preview$/) do
+  click_button("Import")
 end
