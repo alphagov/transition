@@ -7,12 +7,34 @@
   <% else %>
     <%= filter_option_link(@site, 'Tag') %>
   <% end %>
-  <ul class="dropdown-menu" role="menu">
-    <% tags.each do |tag| %>
-      <li>
-        <%= link_to tag, @filter.query.with_tag(tag), class: 'inherit' %>
-      </li>
+  <div class="dropdown-menu dropdown-text-input" role="menu">
+
+    <h4 class="add-bottom-margin">Popular tags</h4>
+    <% tags.take(10).each do |tag| # Use take to limit the number of tags. %>
+      <%= link_to tag, @filter.query.with_tag(tag), class: 'tag' %>
     <% end %>
-  </ul>
+
+    <% if tags.count > 10 %>
+      <hr />
+      <h4>All tags</h4>
+      <%= label_tag :tagged, 'Tag', class: 'rm' %>
+      <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
+        <%= hidden_filter_fields_except(@filter, :tagged) %>
+        <div class="form-group">
+          <label class="rm">Tag</label>
+          <div class="input-group col-md-12">
+            <%= text_field_tag :tagged, @filter.tagged, class: 'form-control js-tag-list' %>
+            <span class="input-group-btn">
+              <%= button_tag 'Filter', class: 'btn btn-default' %>
+            </span>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
 </li>
 <% end %>
+
+<script>
+  GOVUK.Tagging.ready({autocompleteWith: <%= most_used_tags_json(@site, limit: 200) %>});
+</script>
