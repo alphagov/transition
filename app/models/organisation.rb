@@ -77,7 +77,7 @@ class Organisation < ActiveRecord::Base
                WHERE  daily_hit_totals.http_status = '404'
                GROUP BY site_id) AS error_counts ON error_counts.site_id = sites.id
     mySQL
-  ).group('organisations.id')
+  ).group('organisations.id').order('error_count DESC')
 
   def to_param
     whitehall_slug
