@@ -20,6 +20,6 @@ class BatchPreviewPresenter
   end
 
   def mappings
-    @batch.entries.limit(20)
+    @batch.entries.order(:id).limit(20)
   end
 end
