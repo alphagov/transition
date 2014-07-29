@@ -4,10 +4,7 @@ class ImportBatch < MappingsBatch
   attr_accessor :raw_csv
   attr_accessible :raw_csv
 
-  def self.columns
-    # Disable columns which are not used in this subclass
-    super().reject { |column| ['type', 'new_url'].include?(column.name) }
-  end
+  disable_columns :type, :new_url
 
   has_many :entries, foreign_key: :mappings_batch_id, class_name: 'ImportBatchEntry',
     dependent: :delete_all
