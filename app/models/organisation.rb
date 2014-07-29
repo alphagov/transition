@@ -75,6 +75,7 @@ class Organisation < ActiveRecord::Base
                       INNER JOIN `hosts`
                               ON `hosts`.id = daily_hit_totals.host_id
                WHERE  daily_hit_totals.http_status = '404'
+               AND daily_hit_totals.total_on >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
                GROUP BY site_id) AS error_counts ON error_counts.site_id = sites.id
     mySQL
   ).group('organisations.id').order('error_count DESC')
