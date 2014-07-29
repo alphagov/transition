@@ -29,7 +29,7 @@ shared_examples 'creates mappings' do
         existing_mapping.reload
         existing_mapping.type.should == 'archive'
         existing_mapping.new_url.should be_nil
-        entry = mappings_batch.entries.first
+        entry = mappings_batch.entries.where(path: existing_mapping.path).first
         entry.processed.should be_false
       end
     end
