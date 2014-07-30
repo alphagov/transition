@@ -7,7 +7,7 @@ shared_examples 'creates mappings' do
     end
 
     it 'should populate the fields on the new mapping' do
-      mapping = site.mappings.first
+      mapping = site.mappings.where(path: '/a').first
       mapping.path.should == '/a'
       mapping.type.should == 'redirect'
       mapping.new_url.should == 'http://a.gov.uk'

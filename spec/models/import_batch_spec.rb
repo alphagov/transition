@@ -304,7 +304,7 @@ describe ImportBatch do
 
     subject(:mappings_batch) do
       create(:import_batch, site: site,
-             tag_list: ['a tag'],
+             tag_list: 'a tag',
              raw_csv: <<-CSV.strip_heredoc
                         /a,http://a.gov.uk
                         /b,http://a.gov.uk
