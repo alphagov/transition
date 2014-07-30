@@ -248,8 +248,8 @@ describe Site do
     context 'the site has hits' do
       before do
         site.default_host.hits.concat [
-          create(:hit, path: '/1', count: 10),
-          create(:hit, path: '/2', count: 20)
+          create(:hit, path: '/1', hit_on: Date.today, count: 10),
+          create(:hit, path: '/2', hit_on: Date.yesterday, count: 20)
         ]
 
         Transition::Import::DailyHitTotals.from_hits!
