@@ -16,7 +16,7 @@ describe Transition::Google::ResultsPager do
     'max-results' => 5
   }}
 
-  let(:analytics_api) { stub('Analytics API').as_null_object }
+  let(:analytics_api) { double('Analytics API').as_null_object }
   let(:test_client) do
     double(Google::APIClient).tap { |client| client.stub(:discovered_api).and_return(analytics_api) }
   end

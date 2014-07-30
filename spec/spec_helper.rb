@@ -3,6 +3,8 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'rspec/expectations'
+require 'rspec/mocks'
 require 'transition/history'
 
 require 'sidekiq/testing'
@@ -45,6 +47,8 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 
   config.filter_run_excluding :external_api => true
+
+  config.include RSpec::Rails::ViewRendering
 
   config.before :each do
     Transition::History.clear_user!

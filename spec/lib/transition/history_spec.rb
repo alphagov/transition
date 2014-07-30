@@ -66,23 +66,24 @@ module Transition
         before { PaperTrail.enabled = false }
         after  { PaperTrail.enabled = true }
 
-        it 'should not raise an exception' do
-          expect { Transition::History.ensure_user! }.not_to raise_error(Transition::History::PaperTrailUserNotSetError)
+        it 'does not fail' do
+          expect { Transition::History.ensure_user! }.not_to raise_error
         end
       end
 
       context 'when PaperTrail is enabled' do
-        context 'with the correct configuration' do
-          it 'should not raise an exception' do
-            expect { Transition::History.ensure_user! }.not_to raise_error(Transition::History::PaperTrailUserNotSetError)
+        context 'with a user' do
+          it 'does not fail' do
+            expect { Transition::History.ensure_user! }.not_to raise_error
           end
         end
 
-        context 'without the correct configuration' do
+        context 'without a user' do
           before { Transition::History.clear_user! }
 
-          it 'should fail with an exception' do
-            expect { Transition::History.ensure_user! }.to raise_error(Transition::History::PaperTrailUserNotSetError)
+          it 'fails' do
+            expect { Transition::History.ensure_user! }.to \
+              raise_error(Transition::History::PaperTrailUserNotSetError)
           end
         end
       end

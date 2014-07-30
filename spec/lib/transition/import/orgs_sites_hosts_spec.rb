@@ -62,7 +62,7 @@ describe Transition::Import::OrgsSitesHosts do
         subject { Organisation.find_by_whitehall_slug! 'uk-atomic-energy-authority' }
 
         it                         { should have(1).site }
-        its(:parent_organisations) { should eql [bis] }
+        its(:parent_organisations) { should =~ [bis] }
         its(:abbreviation)         { should eql 'UKAEA' }
         its(:whitehall_type)       { should eql 'Executive non-departmental public body' }
       end
@@ -81,7 +81,7 @@ describe Transition::Import::OrgsSitesHosts do
           subject { Organisation.find_by_whitehall_slug! 'uk-atomic-energy-authority' }
 
           its(:parent_organisations) { should have_exactly(1).organisations }
-          its(:parent_organisations) { should eql [bis] }
+          its(:parent_organisations) { should =~ [bis] }
         end
       end
     end

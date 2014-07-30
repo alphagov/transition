@@ -14,10 +14,10 @@ class MappingsController < ApplicationController
   end
 
   def new_multiple_confirmation
-    @batch = BulkAddBatch.new(type: params[:type],
-                               new_url: params[:new_url],
-                               tag_list: params[:tag_list],
-                               paths: params[:paths].split(/\r?\n|\r/).map(&:strip))
+    @batch = BulkAddBatch.new(type:     mappings_batch_params[:type],
+                               new_url:  mappings_batch_params[:new_url],
+                               tag_list: mappings_batch_params[:tag_list],
+                               paths:    mappings_batch_params[:paths].split(/\r?\n|\r/).map(&:strip))
     @batch.user = current_user
     @batch.site = @site
 
@@ -29,7 +29,10 @@ class MappingsController < ApplicationController
   def create_multiple
     @batch = @site.mappings_batches.find(params[:mappings_batch_id])
     if @batch.state == 'unqueued'
-      @batch.update_attributes!(update_existing: params[:update_existing], tag_list: params[:tag_list], state: 'queued')
+      @batch.update_attributes!(
+        update_existing: mappings_batch_params[:update_existing],
+        tag_list:        mappings_batch_params[:tag_list],
+        state:           'queued')
       if @batch.invalid?
         render action: 'new_multiple_confirmation' and return
       end
@@ -69,7 +72,7 @@ class MappingsController < ApplicationController
 
     # Tags must be assigned to separately
     @mapping.tag_list = params[:mapping].delete(:tag_list)
-    @mapping.attributes = params[:mapping]
+    @mapping.attributes = mapping_params[:mapping]
 
     if @mapping.save
       flash[:success] = 'Mapping saved'
@@ -162,6 +165,26 @@ class MappingsController < ApplicationController
   end
 
 private
+  def mappings_batch_params
+    params.permit(:type,
+                  :paths,
+                  :new_url,
+                  :tag_list,
+                  :update_existing)
+  end
+
+  def mapping_params
+    params.permit(mapping: [
+                             :type,
+                             :path,
+                             :new_url,
+                             :tag_list,
+                             :suggested_url,
+                             :archive_url
+                           ])
+  end
+
+
   def bulk_edit
     @bulk_edit ||= bulk_editor_class.new(@site, params, site_mappings_path(@site))
   end

@@ -15,7 +15,7 @@
     <ul class="nav navbar-nav">
     <% unless View::Hits::TimePeriod.all.include?(@period) %>
       <li class="active">
-        <%= link_to action: controller.action_name, period: @period.query_slug do %>
+        <%= link_to current_category_in_period_path(@period) do %>
           <span class="rm">Current period: </span>
           <%= @period.title %>
         <% end %>
@@ -23,7 +23,7 @@
     <% end %>
     <% View::Hits::TimePeriod.all.each do |period| %>
       <li <% if period == @period %>class="active"<% end %>>
-        <%= link_to action: controller.action_name, period: period.query_slug do %>
+        <%= link_to current_category_in_period_path(period) do %>
           <% if period == @period %>
             <span class="rm">Current period: </span>
           <% else %>

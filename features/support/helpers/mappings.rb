@@ -10,6 +10,11 @@ module Helpers
       end
     end
 
+    def i_type_letters_into_tags(letters)
+      raise 'Only relevant to JavaScript tests' unless @_javascript
+      find('input.select2-input').set(letters)
+    end
+
     def i_tag_the_mappings(tag_list)
       if @_javascript
         find(:xpath, '//input[contains(@class, "select2-offscreen")]').set(tag_list)

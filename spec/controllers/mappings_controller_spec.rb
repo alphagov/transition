@@ -462,7 +462,7 @@ describe MappingsController do
       it 'saves a version for each mapping recording the change' do
         [mapping_a, mapping_b].each do |mapping|
           mapping.reload
-          expect(mapping.versions.count).to be(2)
+          expect(mapping.versions.count).to eql(2)
           expect(mapping.versions.last.whodunnit).to eql('Bob Terwhilliger')
         end
       end

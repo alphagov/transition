@@ -10,7 +10,7 @@ class ImportBatchesController < ApplicationController
   end
 
   def create
-    @batch = ImportBatch.new(params[:import_batch])
+    @batch = ImportBatch.new(batch_params)
     @batch.site = @site
     @batch.user = current_user
     if @batch.save
@@ -26,7 +26,7 @@ class ImportBatchesController < ApplicationController
 
   def import
     if @batch.state == 'unqueued'
-      @batch.update_attributes!(params[:import_batch].merge(state: 'queued'))
+      @batch.update_attributes!(batch_params.merge(state: 'queued'))
 
       if @batch.entries_to_process.count > 20
         MappingsBatchWorker.perform_async(@batch.id)
@@ -46,6 +46,10 @@ class ImportBatchesController < ApplicationController
   end
 
 protected
+  def batch_params
+    params.require(:import_batch).permit(:tag_list, :raw_csv, :update_existing)
+  end
+
   def find_site
     @site = Site.find_by_abbr!(params[:site_id])
   end

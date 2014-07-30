@@ -13,8 +13,6 @@ class Mapping < ActiveRecord::Base
 
   SUPPORTED_TYPES = %w(redirect archive unresolved)
 
-  attr_accessible :path, :site, :type, :new_url, :suggested_url, :archive_url, :tag_list
-
   acts_as_taggable
   has_paper_trail :ignore => [:tag_list => Proc.new { |mapping|
     # tag_list appears to ActiveModel::Dirty/paper_trail to be an
@@ -50,11 +48,15 @@ class Mapping < ActiveRecord::Base
   validates :archive_url, national_archives_url: true
 
   scope :with_type, -> type { where(type: type) }
-  scope :redirects,   with_type('redirect')
-  scope :archives,    with_type('archive')
-  scope :unresolved,  with_type('unresolved')
-  scope :filtered_by_path,    -> term { where(term.blank? ? true : Mapping.arel_table[:path].matches("%#{term}%")) }
-  scope :filtered_by_new_url, -> term { where(term.blank? ? true : Mapping.arel_table[:new_url].matches("%#{term}%")) }
+  scope :redirects, -> { with_type('redirect') }
+  scope :archives,  -> { with_type('archive') }
+  scope :unresolved, ->{ with_type('unresolved') }
+  scope :filtered_by_path, -> term do
+    where(term.blank? ? true : Mapping.arel_table[:path].matches("%#{term}%")).references(:mapping)
+  end
+  scope :filtered_by_new_url, -> term do
+    where(term.blank? ? true : Mapping.arel_table[:new_url].matches("%#{term}%")).references(:mapping)
+  end
 
   def redirect?
     type == 'redirect'

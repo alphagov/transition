@@ -4,7 +4,7 @@ class MappingsBatch < ActiveRecord::Base
   FINISHED_STATES = ['succeeded', 'failed']
   PROCESSING_STATES = ['unqueued', 'queued', 'processing'] + FINISHED_STATES
 
-  attr_accessible :tag_list, :update_existing, :state
+  attr_accessor :paths # a virtual attribute to then use for creating entries
 
   belongs_to :user
   belongs_to :site
@@ -14,7 +14,7 @@ class MappingsBatch < ActiveRecord::Base
   validates :site, presence: true
   validates :state, inclusion: { :in => PROCESSING_STATES }
 
-  scope :reportable, where(seen_outcome: false).where("state != 'unqueued'")
+  scope :reportable, -> { where(seen_outcome: false).where("state != 'unqueued'") }
 
   def entries_to_process
     if update_existing

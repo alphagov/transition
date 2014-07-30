@@ -69,4 +69,74 @@ describe HitsHelper do
       it { should include('{"c":[{"v":"Date(2012, 11, 30)"},{"v":"Transition"},{"v":1000,"f":"1,000"},{"v":4,"f":"4"},{"v":4,"f":"4"}]}') }
     end
   end
+
+  describe '#current_category_in_period_path' do
+    let(:params) { {} }
+    let(:period) do
+      double('TimePeriod').tap do |period|
+        period.stub(:query_slug).and_return('yesterday')
+      end
+    end
+
+    subject(:path) { helper.current_category_in_period_path(period) }
+
+    before do
+      helper.stub(:params).and_return(params)
+      # stubs @site internal to helper
+      helper.class_eval { attr_writer :site }
+      helper.site = site
+    end
+
+    context 'when a site is present' do
+      let(:site) { build :site, abbr: 'site_abbr' }
+
+      it 'defaults to the summary with the period' do
+        path.should == '/sites/site_abbr/hits/summary?period=yesterday'
+      end
+
+      context 'when a category is set' do
+        let(:params) { { category: 'errors' } }
+        it 'links to that site/period hits/errors path with the period' do
+          path.should == '/sites/site_abbr/hits/errors?period=yesterday'
+        end
+
+        context 'when the time period is default' do
+          let(:period) do
+            double('TimePeriod').tap do |period|
+              period.stub(:query_slug).and_return(nil)
+            end
+          end
+          it 'links to the current category without a query' do
+            path.should == '/sites/site_abbr/hits/errors'
+          end
+        end
+      end
+    end
+
+    context 'when no site is present (universal analytics)' do
+      let(:site) { nil }
+
+      it 'links to the main hits/errors path with the period' do
+        path.should == '/hits?period=yesterday'
+      end
+
+      context 'when a category is set' do
+        let(:params) { { category: 'errors' } }
+        it 'links to the main hits/errors path with the period' do
+          path.should == '/hits/errors?period=yesterday'
+        end
+
+        context 'when the time period is default' do
+          let(:period) do
+            double('TimePeriod').tap do |period|
+              period.stub(:query_slug).and_return(nil)
+            end
+          end
+          it 'links to the current category without a query' do
+            path.should == '/hits/errors'
+          end
+        end
+      end
+    end
+  end
 end
