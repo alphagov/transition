@@ -15,6 +15,22 @@ describe Site do
     it { should allow_value("org_site1-Modifier").for(:abbr) }
     it { should_not allow_value("org_www.site").for(:abbr) }
 
+    describe 'homepage' do
+      it { should validate_presence_of(:homepage) }
+
+      describe 'the homepage errors' do
+        subject(:site) do
+          build(:site, homepage: 'www.no-scheme.gov.uk')
+        end
+
+        before { site.should_not be_valid }
+
+        it 'should validate the homepage as a full URL' do
+          site.errors[:homepage].should == ['is not a URL']
+        end
+      end
+    end
+
     context 'global redirect' do
       subject(:site) { build(:site, global_type: 'redirect') }
 

@@ -16,6 +16,7 @@ class Site < ActiveRecord::Base
 
   validates_presence_of :tna_timestamp
   validates_presence_of :organisation
+  validates :homepage, presence: true, non_blank_url: true
   validates :abbr, uniqueness: true, presence: true, format: { with: /\A[a-zA-Z0-9_\-]+\z/, message: 'can only contain alphanumeric characters, underscores and dashes' }
   validates_inclusion_of :special_redirect_strategy, in: %w{ via_aka supplier }, allow_nil: true
   validates :global_new_url, presence: { :if => :global_redirect? }
