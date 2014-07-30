@@ -1,10 +1,12 @@
 <%= site.transition_status.to_s.capitalize.dasherize %>
-<% if site.special_redirect_strategy == 'supplier' %>
-  <span class="text-muted">
-    <i data-toggle="tooltip" title="Site is managed by an external supplier" class="glyphicon glyphicon-question-sign"></i>
-  </span>
-<% elsif site.special_redirect_strategy == 'via_aka' %>
-  <span class="text-muted">
-    <i data-toggle="tooltip" title="Site is partially redirected via an aka domain" class="glyphicon glyphicon-question-sign"></i>
-  </span>
+<% if site.transition_status == :indeterminate %>
+  <% if site.special_redirect_strategy == 'supplier' %>
+    <span class="text-muted">
+      <i data-toggle="tooltip" title="Site is managed by an external supplier" class="glyphicon glyphicon-question-sign"></i>
+    </span>
+  <% elsif site.special_redirect_strategy == 'via_aka' %>
+    <span class="text-muted">
+      <i data-toggle="tooltip" title="Site is partially redirected via an aka domain" class="glyphicon glyphicon-question-sign"></i>
+    </span>
+  <% end %>
 <% end %>
