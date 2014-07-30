@@ -30,6 +30,7 @@ describe Transition::Import::SiteYamlFile do
       its(:launch_date)           { should eql(Date.new(2012, 12, 13)) }
       its(:tna_timestamp)         { should be_a(Time) }
       its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-generals-office') }
+      its(:homepage_furl)         { should eql('www.gov.uk/ago') }
       its(:managed_by_transition) { should eql(false) }
       its(:organisation)          { should eql(ago) }
       its(:extra_organisations)   { should eql([bv, tsol]) }
@@ -62,6 +63,7 @@ describe Transition::Import::SiteYamlFile do
         its(:launch_date)           { should eql(Date.new(2014, 12, 13)) }
         its(:tna_timestamp)         { should be_a(Time) }
         its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-update-office') }
+        its(:homepage_title)        { should eql('Now has a &#39;s custom title') }
         its(:extra_organisations)   { should eql([tsol]) }
         its(:global_type)           { should be_nil }
         its(:global_new_url)        { should be_nil }
