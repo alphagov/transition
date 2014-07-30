@@ -189,6 +189,8 @@ ActiveRecord::Schema.define(version: 20140815095728) do
     t.string   "special_redirect_strategy"
     t.boolean  "global_redirect_append_path",              :default => false, :null => false
     t.string   "global_type"
+    t.string   "homepage_title"
+    t.string   "homepage_furl"
   end
 
   add_index "sites", ["abbr"], :name => "index_sites_on_site", :unique => true
