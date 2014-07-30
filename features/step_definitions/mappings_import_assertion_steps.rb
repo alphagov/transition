@@ -48,3 +48,21 @@ Then(/^I should see a preview of my large batch of mappings$/) do
     expect(page).to have_selector('tr .breakable', count: 20)
   end
 end
+
+Then(/^I should see prominent progress of the import$/) do
+  steps %{
+    Then I should see "0 of 21 mappings imported" in a modal window
+  }
+end
+
+Then(/^I should see less prominent progress of the import$/) do
+  steps %{
+    And I should see a flash message "0 of 21 mappings imported"
+  }
+end
+
+Then(/^we have recorded analytics that show that import with overwrite existing was used$/) do
+  steps %{
+    And an analytics event with "import-overwrite-existing" has fired
+  }
+end

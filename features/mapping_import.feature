@@ -30,24 +30,18 @@ Feature: Import mappings
     Then I should be on the bis mappings page
     And I should see "2 mappings created and 1 mapping updated" in a modal window
     And I should see a table with 3 saved mappings in the modal
-    And I should see "/i-dont-know-what-i-am" in a modal window
-    And an analytics event with "import-overwrite-existing" has fired
+    And I should see that my unresolved mapping is there
+    And we have recorded analytics that show that import with overwrite existing was used
 
   @javascript
   Scenario: Successfully importing a larger batch of mappings
     Given I have logged in as a GDS Editor
-    And a site bis exists
-    And I visit the path /sites/bis
-    And I go to import some mappings
-    Then I should see "http://bis.gov.uk"
-    When I submit the form with a large valid CSV
-    Then the page title should be "Preview import"
-    And I should see a preview of my large batch of mappings
-    When I click the "Import" button
-    Then I should see "0 of 21 mappings imported" in a modal window
-    When I visit the path /sites/bis/mappings
-    Then I should not see a modal window
-    And I should see a flash message "0 of 21 mappings imported"
+    When I import a large valid CSV for bis
+    Then I should see a preview of my large batch of mappings
+    When I confirm the preview
+    Then I should see prominent progress of the import
+    When I navigate away to the bis mappings page
+    Then I should see less prominent progress of the import
 
   Scenario: Importing a batch without Javascript
     Given I have logged in as a GDS Editor
