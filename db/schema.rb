@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140708144520) do
+ActiveRecord::Schema.define(:version => 20140724164511) do
 
   create_table "daily_hit_totals", :force => true do |t|
     t.integer "host_id",                  :null => false
@@ -182,6 +182,8 @@ ActiveRecord::Schema.define(:version => 20140708144520) do
     t.string   "special_redirect_strategy"
     t.boolean  "global_redirect_append_path", :default => false, :null => false
     t.string   "global_type"
+    t.string   "homepage_title"
+    t.string   "homepage_furl"
   end
 
   add_index "sites", ["abbr"], :name => "index_sites_on_site", :unique => true
