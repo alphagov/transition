@@ -75,7 +75,7 @@ class Site < ActiveRecord::Base
   end
 
   def hit_total_count
-    @hit_total_count ||= daily_hit_totals.select('SUM(count) AS total').first[:total].to_i
+    @hit_total_count ||= daily_hit_totals.sum(:count)
   end
 
   def update_hits_relations
