@@ -1,13 +1,9 @@
 class AddPostgresCrypto < ActiveRecord::Migration
   def up
-    execute <<-postgreSQL
-      CREATE EXTENSION IF NOT EXISTS pgcrypto
-    postgreSQL
+    enable_extension 'pgcrypto'
   end
 
   def down
-    execute <<-postgreSQL
-      DROP EXTENSION IF EXISTS pgcrypto
-    postgreSQL
+    disable_extension 'pgcrypto'
   end
 end
