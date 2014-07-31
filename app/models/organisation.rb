@@ -45,6 +45,8 @@ class Organisation < ActiveRecord::Base
         group('organisations.id').  # Using a sloppy mySQL GROUP. Note well, Postgres upgraders
         having('site_count > 0') }
 
+  # Returns organisations ordered by descending error count across
+  # all their sites.
   scope :leaderboard, -> { select(<<-mySQL
     organisations.title,
     organisations.whitehall_slug,
