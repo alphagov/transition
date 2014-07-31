@@ -16,8 +16,8 @@ describe Organisation do
   end
 
   describe 'leaderboard' do
-    describe 'each organisation' do
-      before do
+    describe 'each organisation', testing_before_all: true do
+      before :all do
         organisation = create :organisation, :with_site
         other_site = create :site, organisation: organisation
         create :mapping, site: organisation.sites.first, type: 'unresolved'
@@ -50,8 +50,8 @@ describe Organisation do
       end
     end
 
-    describe 'sorting the leaderboard' do
-      before do
+    describe 'sorting the leaderboard', testing_before_all: true do
+      before :all do
         organisation = create :organisation, :with_site
         create :mapping, site: organisation.sites.first, type: 'unresolved'
         create :daily_hit_total, host: organisation.sites.first.hosts.first, count: 132, http_status: '404'
