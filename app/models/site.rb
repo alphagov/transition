@@ -55,7 +55,7 @@ class Site < ActiveRecord::Base
   end
 
   def canonical_path(path_or_url)
-    if path_or_url.start_with?('http')
+    if path_or_url =~ Transition::PathOrURL::STARTS_WITH_HTTP_SCHEME
       url = path_or_url
     else
       # BLURI takes a full URL, but we only care about the path. There's no

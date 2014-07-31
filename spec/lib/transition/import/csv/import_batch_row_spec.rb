@@ -59,8 +59,8 @@ describe Transition::Import::CSV::ImportBatchRow do
       row.data_row?.should be_true
     end
 
-    it 'accepts rows with http' do
-      row = make_a_row(' http', nil)
+    it 'accepts rows with http/https scheme' do
+      row = make_a_row(' http://', nil)
       row.data_row?.should be_true
     end
   end
