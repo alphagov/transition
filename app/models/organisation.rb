@@ -45,7 +45,7 @@ class Organisation < ActiveRecord::Base
         group('organisations.id').  # Using a sloppy mySQL GROUP. Note well, Postgres upgraders
         having('site_count > 0') }
 
-  scope :leaderboard, select(<<-mySQL
+  scope :leaderboard, -> { select(<<-mySQL
     organisations.title,
     organisations.whitehall_slug,
     COUNT(*)                                     AS site_count,
@@ -78,7 +78,7 @@ class Organisation < ActiveRecord::Base
                AND daily_hit_totals.total_on >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
                GROUP BY site_id) AS error_counts ON error_counts.site_id = sites.id
     mySQL
-  ).group('organisations.id').order('error_count DESC')
+  ).group('organisations.id').order('error_count DESC') }
 
   def to_param
     whitehall_slug
