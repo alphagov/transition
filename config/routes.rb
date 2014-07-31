@@ -20,6 +20,8 @@ Transition::Application.routes.draw do
   get 'hits/errors',    to: 'hits#universal_category', defaults: { category: 'errors' }
   get 'hits/archives',  to: 'hits#universal_category', defaults: { category: 'archives' }
 
+  get 'leaderboard', to: 'leaderboard#index'
+
   resources :sites, only: [:show] do
 
     get 'mappings/find', as: 'mapping_find'
