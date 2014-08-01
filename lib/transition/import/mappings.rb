@@ -1,6 +1,10 @@
+require 'transition/import/console_job_wrapper'
+
 module Transition
   module Import
     class Mappings
+      extend ConsoleJobWrapper
+
       TRUNCATE = <<-mySQL
         TRUNCATE mappings_staging
       mySQL
@@ -37,13 +41,17 @@ module Transition
 
       def self.from_redirector_csv_file!(filename)
         if managed_by_transition?(filename)
-          $stderr.puts "skipped #{filename} because this site is managed by Transition"
+          console_puts "skipped #{filename} because this site is managed by Transition"
         else
-          $stderr.print "Importing #{filename} ... "
-          [TRUNCATE, LOAD_DATA.sub('$filename$', "'#{File.expand_path(filename)}'"), INSERT_FROM_STAGING].each do |statement|
-            ActiveRecord::Base.connection.execute(statement)
+          start "Importing #{filename}" do
+            [
+              TRUNCATE,
+              LOAD_DATA.sub('$filename$', "'#{File.expand_path(filename)}'"),
+              INSERT_FROM_STAGING
+            ].each do |statement|
+              ActiveRecord::Base.connection.execute(statement)
+            end
           end
-          $stderr.puts 'done.'
         end
       end
 

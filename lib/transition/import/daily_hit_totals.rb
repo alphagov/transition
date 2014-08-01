@@ -1,6 +1,10 @@
+require 'transition/import/console_job_wrapper'
+
 module Transition
   module Import
     class DailyHitTotals
+      extend ConsoleJobWrapper
+
       PRECOMPUTE_TOTALS_FROM_HITS = <<-mySQL
         INSERT INTO daily_hit_totals (host_id, http_status, `count`, total_on)
         (
@@ -12,11 +16,11 @@ module Transition
       mySQL
 
       def self.from_hits!
-        $stderr.print 'Refreshing daily hit totals from hits ... '
-        [ PRECOMPUTE_TOTALS_FROM_HITS ].each do |statement|
-          ActiveRecord::Base.connection.execute(statement)
+        start 'Refreshing daily hit totals from hits' do
+          [ PRECOMPUTE_TOTALS_FROM_HITS ].each do |statement|
+            ActiveRecord::Base.connection.execute(statement)
+          end
         end
-        $stderr.puts 'done.'
       end
     end
   end

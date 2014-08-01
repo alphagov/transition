@@ -1,6 +1,10 @@
+require 'transition/import/console_job_wrapper'
+
 module Transition
   module Import
     class Hits
+      extend ConsoleJobWrapper
+
       # Lines should probably never be removed from this, only added.
       PATHS_TO_IGNORE = [
         # Generic site furniture
@@ -105,15 +109,15 @@ module Transition
       mySQL
 
       def self.from_redirector_tsv_file!(filename)
-        $stderr.print "Importing #{filename} ... "
-        [
-          TRUNCATE,
-          LOAD_DATA.sub('$filename$', "'#{File.expand_path(filename)}'"),
-          INSERT_FROM_STAGING
-        ].flatten.each do |statement|
-          ActiveRecord::Base.connection.execute(statement)
+        start "Importing #{filename}" do
+          [
+            TRUNCATE,
+            LOAD_DATA.sub('$filename$', "'#{File.expand_path(filename)}'"),
+            INSERT_FROM_STAGING
+          ].flatten.each do |statement|
+            ActiveRecord::Base.connection.execute(statement)
+          end
         end
-        $stderr.puts 'done.'
       end
 
       def self.from_redirector_mask!(filemask)
@@ -129,7 +133,7 @@ module Transition
           ActiveRecord::Base.connection.execute('SET autocommit=1')
         end
 
-        $stderr.puts "#{done} hits files imported."
+        console_puts "#{done} hits files imported."
       end
     end
   end

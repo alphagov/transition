@@ -69,4 +69,8 @@ RSpec.configure do |config|
   config.before(:each) do
     Sidekiq::Worker.clear_all
   end
+
+  config.before(:suite) do
+    Transition::Import::ConsoleJobWrapper.active = false
+  end
 end
