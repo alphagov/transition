@@ -33,9 +33,16 @@ module View
       end
 
       def canonical_substring
-        # Canonicalization requires a path. Canonicalize a substring
-        # by pretending the substring is a path, then remove the leading '/'
-        @site.canonical_path('/' + @filter)[1..-1]
+        if @filter.starts_with?('/')
+          @site.canonical_path(@filter)
+        else
+          # Pretend that this string is a well-formed path so it can be
+          # canonicalised, by adding a leading slash. Then remove it afterwards.
+          # Otherwise we would be assuming that the filter value was meant to
+          # have a leading slash, which may not be the case - the user might
+          # have meant to supply a fragment of a directory name.
+          @site.canonical_path('/' + @filter)[1..-1]
+        end
       end
 
       def path?

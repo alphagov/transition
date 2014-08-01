@@ -55,12 +55,15 @@ class Site < ActiveRecord::Base
   end
 
   def canonical_path(path_or_url)
-    if path_or_url =~ Transition::PathOrURL::STARTS_WITH_HTTP_SCHEME
+    if Transition::PathOrURL.starts_with_http_scheme?(path_or_url)
       url = path_or_url
+    elsif !path_or_url.starts_with?('/') &&
+        Transition::PathOrURL.starts_with_a_domain?(path_or_url)
+      url = 'http://' + path_or_url
     else
       # BLURI takes a full URL, but we only care about the path. There's no
       # benefit in making an extra query to get a real hostname for the site.
-      url = 'http://www.example.com' + path_or_url
+      url = File.join('http://www.example.com', path_or_url)
     end
 
     bluri = BLURI(url).canonicalize!(allow_query: query_params.split(":"))
