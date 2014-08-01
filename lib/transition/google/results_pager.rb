@@ -1,4 +1,5 @@
 require 'transition/google/api_client'
+require 'transition/import/console_job_wrapper'
 
 module Transition
   module Google
@@ -6,6 +7,7 @@ module Transition
     # Treats pages of GA results as a single enumerable of rows
     class ResultsPager
       include Enumerable
+      include Transition::Import::ConsoleJobWrapper
 
       attr_accessor :parameters, :client
 
@@ -31,7 +33,7 @@ module Transition
 
       def each(start_index = 1, &block)
         parameters.merge!('start-index' => start_index) unless start_index == 1
-        $stderr.puts "Getting start-index=#{start_index}, page size #{parameters['max-results']}"
+        console_puts "Getting start-index=#{start_index}, page size #{parameters['max-results']}"
 
         result = client.execute!(api_method: @analytics.data.ga.get, parameters: parameters)
 
