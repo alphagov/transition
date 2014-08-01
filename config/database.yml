@@ -4,6 +4,7 @@ development:
   username: transition
   password: transition
   encoding: utf8
+  host: localhost
   local_infile: true
 
 # Warning: The database defined as "test" will be erased and
@@ -15,6 +16,7 @@ test: &test
   username: transition
   password: transition
   encoding: utf8
+  host: localhost
   local_infile: true
 
 production:
