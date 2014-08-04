@@ -86,6 +86,7 @@ module Transition
           site.homepage_title        = yaml['homepage_title']
           site.homepage_furl         = yaml['homepage_furl']
           site.managed_by_transition = managed_by_transition?
+          site.special_redirect_strategy = yaml['special_redirect_strategy']
 
           site.save!
         end

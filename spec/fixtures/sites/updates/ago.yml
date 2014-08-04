@@ -13,3 +13,4 @@ aliases:
 css: attorney-generals-office
 extra_organisation_slugs:
 - treasury-solicitor-s-office
+special_redirect_strategy: via_aka
