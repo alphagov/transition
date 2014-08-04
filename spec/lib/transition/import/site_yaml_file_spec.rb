@@ -37,6 +37,7 @@ describe Transition::Import::SiteYamlFile do
       its(:global_type)           { should eql('redirect') }
       its(:global_new_url)        { should eql('https://www.gov.uk/a-new-world') }
       its(:global_redirect_append_path) { should eql(true) }
+      its(:special_redirect_strategy) { should be_nil }
 
       it 'should get hosts including aka hosts' do
         hosts = %w{
@@ -68,6 +69,7 @@ describe Transition::Import::SiteYamlFile do
         its(:global_type)           { should be_nil }
         its(:global_new_url)        { should be_nil }
         its(:global_redirect_append_path) { should eql(false) }
+        its(:special_redirect_strategy) { should eql('via_aka') }
 
         it 'should move the host and the aka host to the new site' do
           site.hosts.pluck(:hostname).should_not include('www.lslo.gov.uk')
