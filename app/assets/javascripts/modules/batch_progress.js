@@ -36,6 +36,7 @@
         percent = (progress.done/progress.total * 100).toFixed(0);
         percentDone.text(percent);
         bar.css('width', percent + '%');
+        bar.attr('aria-valuenow', percent);
         timeout = setTimeout(requestProgress, 1000);
       }
 

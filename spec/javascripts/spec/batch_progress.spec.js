@@ -50,6 +50,10 @@ describe('A batch progress module', function() {
       expect(element.find('.js-progress-bar').attr('style')).toMatch('width: 10%;');
     });
 
+    it('updates the aria value now attribute', function() {
+      expect(element.find('.js-progress-bar').attr('aria-valuenow')).toMatch(10);
+    });
+
     it('updates the count of done mappings', function() {
       expect(element.find('.js-progress-message').text()).toBe('1 of 10 mappings added');
     });
