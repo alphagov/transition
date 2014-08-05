@@ -42,7 +42,7 @@ group :test do
   gem 'cucumber-rails', require: false
   gem 'capybara', '2.3.0', require: false
   gem 'factory_girl_rails', '4.1.0'
-  gem 'shoulda-matchers', '2.2.0'
+  gem 'shoulda-matchers', '2.6.2'
   gem 'ci_reporter', '1.8.0'
   gem 'database_cleaner', '1.0.1'
   gem 'webmock', '1.11.0', require: false
