@@ -22,7 +22,12 @@ describe ImportBatch do
     it { should validate_presence_of(:raw_csv).with_message('Enter at least one valid line') }
 
     describe 'old URLs' do
-      let(:site) { create(:site_without_host, hosts: [create(:host, hostname: 'a.com')]) }
+      let(:host) { create(:host, hostname: 'a.com') }
+      let(:site) { create(:site_without_host) }
+
+      before do
+        site.hosts = [host]
+      end
 
       describe 'old_urls includes URLs for this site' do
         subject(:mappings_batch) do

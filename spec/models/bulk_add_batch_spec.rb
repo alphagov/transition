@@ -77,7 +77,12 @@ describe BulkAddBatch do
     end
 
     context 'when the path list includes only URLs for this site' do
-      let(:site) { create(:site_without_host, hosts: [create(:host, hostname: 'a.com')]) }
+      let(:host) { create(:host, hostname: 'a.com') }
+      let(:site) { create(:site_without_host) }
+
+      before do
+        site.hosts = [host]
+      end
 
       subject(:mappings_batch) do
         build(:bulk_add_batch, site: site, paths: ['http://a.com/a', 'http://a.com/a'])
