@@ -1,5 +1,5 @@
 <h3 class="add-vertical-margins">
-  <% if category.hits.count == 1 %>
+  <% if category.hits.length == 1 %>
     <%= category.hits.length %> <%= category.title.singularize %>
   <% elsif category.hits.length >= 2 and category.hits.length < 10 %>
     <%= category.hits.length %> <%= category.title %>
