@@ -7,8 +7,15 @@ end
 Given(/^a site "([^"]*)" exists with mappings with lots of tags$/) do |site_abbr|
   @site = create :site, abbr: site_abbr
   [10, 11].each do |tag_count|
+    # The site dashboard only displays the 10 most popular tags. If we make it
+    # so that there are 11 tags on this site, 10 of which are predictably more
+    # popular, and should be displayed, but the eleventh one should be excluded.
+    #
+    # To do this, we create:
+    #   a mapping with tags:        1, 2, 3, ... 9, 10
+    #   a second mapping with tags: 1, 2, 3, ... 9, 10, 11
     @site.mappings << create(:archived).tap do |mapping|
-      mapping.tag_list = (1..tag_count.to_i).to_a.to_s[1..-2]
+      mapping.tag_list = (1..tag_count.to_i).to_a.join(', ')
     end
   end
 
