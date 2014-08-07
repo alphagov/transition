@@ -47,7 +47,7 @@ Scenario: Mappings by tag
   And a site "ukba" exists with mappings with lots of tags
   When I visit this site page
   Then I should see "Mappings by tag"
-  And I should see the top 50 most used tags
+  And I should see the top 10 most used tags
 
 Scenario: I belong to a different organisation
   Given I have logged in as a member of DCLG

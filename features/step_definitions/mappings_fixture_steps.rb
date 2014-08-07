@@ -6,7 +6,7 @@ end
 
 Given(/^a site "([^"]*)" exists with mappings with lots of tags$/) do |site_abbr|
   @site = create :site, abbr: site_abbr
-  [50, 51].each do |tag_count|
+  [10, 11].each do |tag_count|
     @site.mappings << create(:archived).tap do |mapping|
       mapping.tag_list = (1..tag_count.to_i).to_a.to_s[1..-2]
     end
