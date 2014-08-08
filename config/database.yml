@@ -1,6 +1,7 @@
 development:
   adapter: postgresql
   database: transition_development
+  template: template0
   encoding: utf8
   variables:
     work_mem: 10MB
@@ -12,6 +13,7 @@ development:
 test: &test
   adapter: postgresql
   database: transition_test<%= ENV['TEST_ENV_NUMBER'] %>
+  template: template0
   encoding: utf8
   local_infile: true
   variables:
@@ -20,6 +22,7 @@ test: &test
 production:
   adapter: postgresql
   database: transition_production
+  template: template0
   encoding: utf8
   local_infile: true
 
