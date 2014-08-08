@@ -1,10 +1,7 @@
 development:
   adapter: postgresql
   database: transition_development
-  username: transition
-  password: transition
   encoding: utf8
-  host: localhost
   variables:
     work_mem: 10MB
     synchronous_commit: "off"
@@ -15,10 +12,7 @@ development:
 test: &test
   adapter: postgresql
   database: transition_test<%= ENV['TEST_ENV_NUMBER'] %>
-  username: transition
-  password: transition
   encoding: utf8
-  host: localhost
   local_infile: true
   variables:
     synchronous_commit: "off"
