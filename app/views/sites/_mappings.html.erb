@@ -21,7 +21,7 @@
           <p class="list-group-item-text text-muted">
             <strong><%= pluralize(number_with_delimiter(@unresolved_mappings_count), 'path') %></strong>
               <%= @unresolved_mappings_count == 1 ? 'is' : 'are' %> unresolved – that’s <strong><%= site_unresolved_mappings_percentage(@site) %> of mappings</strong>.<br />
-            (After transition, mappings without a type will be archived by default.)
+            (After transition, mappings without a type will be treated as archives.)
           </p>
         </div>
       <% end %>
