@@ -219,6 +219,21 @@ describe Site do
       @raw_path = '/'
       subject.should eql('')
     end
+
+    it "inserts a missing first slash" do
+      @raw_path = 'foo'
+      subject.should eql('/foo')
+    end
+
+    it "inserts a missing first slash, unless the first part appears to be a domain" do
+      @raw_path = 'www.a.gov.uk/foo'
+      subject.should eql('/foo')
+    end
+
+    it "handles absolute URLs" do
+      @raw_path = 'http://www.a.gov.uk/foo'
+      subject.should eql('/foo')
+    end
   end
 
   describe '#hit_total_count', truncate_everything: true do

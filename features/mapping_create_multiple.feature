@@ -18,12 +18,12 @@ Feature: Create mappings
     Then the page title should be "Confirm new mappings"
     And I should see options to keep or overwrite the existing mappings
     And I should see the canonicalized paths "/needs/canonicalizing, /a, /r"
-    But I should not see "noslash"
+    But I should see "/noslash"
     And I should see "/a currently archived"
     And I should see "/r currently redirects to http://somewhere.gov.uk"
     When I save my changes
-    Then I should see "1 mapping created" in a modal window
-    And I should see a table with 1 saved mapping in the modal
+    Then I should see "2 mappings created" in a modal window
+    And I should see a table with 2 saved mappings in the modal
     And I should see "/needs/canonicalizing" in a modal window
     And an analytics event with "bulk-add-redirect-ignore-existing" has fired
 
@@ -75,11 +75,11 @@ Feature: Create mappings
     And a site bis exists
     And I visit the path /sites/bis/mappings
     And I go to create some mappings
-    When I make the new mapping paths "noslash" redirect to __INVALID_URL__
+    When I make the new mapping paths "/" redirect to __INVALID_URL__
     And I continue
     Then I should see "Enter at least one valid path or full URL"
     And I should see a highlighted "Old URLs" label and field
-    And the "Old URLs" value should be "noslash"
+    And the "Old URLs" value should be "/"
     And I should see "Enter a valid URL to redirect to"
     And I should see a highlighted "Redirect to" label and field
     And the "Redirect to" value should be "http://__INVALID_URL__"
