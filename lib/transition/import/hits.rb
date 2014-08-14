@@ -152,18 +152,16 @@ module Transition
         done, unchanged = 0, 0
 
         ActiveRecord::Base.connection.execute('set work_mem="2GB"')
-        ActiveRecord::Base.connection.execute('BEGIN')
-        begin
+        Hit.transaction do
           Dir[File.expand_path(filemask)].each do |filename|
             Hits.from_redirector_tsv_file!(filename) ? done += 1 : unchanged += 1
           end
-          ActiveRecord::Base.connection.execute('COMMIT')
         end
 
         console_puts "#{done} hits files imported (#{unchanged} unchanged)."
 
-        done
         ActiveRecord::Base.connection.execute('set work_mem="16MB"')
+        done
       end
     end
   end
