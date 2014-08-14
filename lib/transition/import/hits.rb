@@ -90,9 +90,8 @@ module Transition
 
       LOAD_DATA = <<-postgreSQL
         COPY hits_staging (hit_on, count, http_status, hostname, path)
-        FROM '$filename$'
-        WITH DELIMITER AS E'\t' QUOTE AS E'\b' CSV HEADER;
-        ANALYZE hits_staging;
+        FROM STDIN
+        WITH DELIMITER AS E'\t' QUOTE AS E'\b' CSV HEADER
       postgreSQL
 
       INSERT_FROM_STAGING = <<-postgreSQL
@@ -124,29 +123,31 @@ module Transition
           hits.count       IS DISTINCT FROM st.count
       postgreSQL
 
+      def self.copy_to_hits_staging(filename)
+        ActiveRecord::Base.connection.raw_connection.tap do |raw|
+          raw.copy_data(LOAD_DATA) do
+            raw.put_copy_data(File.open(filename, 'r').read)
+          end
+        end
+      end
+
       def self.from_redirector_tsv_file!(filename)
         start "Importing #{filename}" do
-          [
-            TRUNCATE,
-            LOAD_DATA.sub('$filename$', File.expand_path(filename)),
-            INSERT_FROM_STAGING,
-            UPDATE_FROM_STAGING
-          ].flatten.each do |statement|
-            ActiveRecord::Base.connection.execute(statement)
-          end
+          ActiveRecord::Base.connection.execute(TRUNCATE)
+          copy_to_hits_staging(filename)
+          ActiveRecord::Base.connection.execute(INSERT_FROM_STAGING)
+          ActiveRecord::Base.connection.execute(UPDATE_FROM_STAGING)
         end
       end
 
       def self.from_redirector_mask!(filemask)
         ActiveRecord::Base.connection.execute('set work_mem="2GB"')
         done = 0
-        ActiveRecord::Base.connection.execute('BEGIN')
-        begin
-        Dir[File.expand_path(filemask)].each do |filename|
-          Hits.from_redirector_tsv_file!(filename)
-          done += 1
+        Hit.transaction do
+          Dir[File.expand_path(filemask)].each do |filename|
+            Hits.from_redirector_tsv_file!(filename)
+            done += 1
           end
-          ActiveRecord::Base.connection.execute('COMMIT')
         end
 
         console_puts "#{done} hits files imported."
