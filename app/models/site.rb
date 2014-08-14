@@ -99,7 +99,7 @@ class Site < ActiveRecord::Base
       .joins('INNER JOIN mappings ON mappings.id = taggings.taggable_id')
       .where('mappings.site_id = ?', id)
       .group('tags.name')
-      .order('count DESC')
+      .order('count DESC, tags.name')
       .limit(limit)
       .map(&:name)
   end

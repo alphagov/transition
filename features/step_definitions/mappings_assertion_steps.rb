@@ -29,7 +29,8 @@ end
 
 Then(/^I should see the most popular tags for this site$/) do
   within '.filters .dropdown-menu' do
-    should_have_links_to_tags(%w(fee fi fo fum fiddle))
+    expect(page).to have_selector('a.tag', count: 10)
+    should_have_links_to_tags(%w(fiddle fum archive dead di do dying fee fi fo))
   end
 end
 
