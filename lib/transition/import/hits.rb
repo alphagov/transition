@@ -140,13 +140,11 @@ module Transition
       def self.from_redirector_mask!(filemask)
         ActiveRecord::Base.connection.execute('set work_mem="2GB"')
         done = 0
-        ActiveRecord::Base.connection.execute('BEGIN')
-        begin
-        Dir[File.expand_path(filemask)].each do |filename|
-          Hits.from_redirector_tsv_file!(filename)
-          done += 1
+        Hit.transaction do
+          Dir[File.expand_path(filemask)].each do |filename|
+            Hits.from_redirector_tsv_file!(filename)
+            done += 1
           end
-          ActiveRecord::Base.connection.execute('COMMIT')
         end
 
         console_puts "#{done} hits files imported."
