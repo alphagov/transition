@@ -109,8 +109,14 @@ module Transition
       mySQL
 
       def self.from_redirector_tsv_file!(filename)
-        start "Importing #{filename}" do
+        start "Importing #{filename}" do |job|
           expanded_filename = File.expand_path(filename)
+
+          import_record = ImportedHitsFile.where(
+            filename: expanded_filename).first_or_initialize
+
+          job.skip! and next if import_record.same_on_disk?
+
           [
             TRUNCATE,
             LOAD_DATA.sub('$filename$', "'#{expanded_filename}'"),
@@ -118,7 +124,7 @@ module Transition
           ].flatten.each do |statement|
             ActiveRecord::Base.connection.execute(statement)
           end
-          ImportedHitsFile.create(filename: expanded_filename)
+          import_record.save!
         end
       end
 
