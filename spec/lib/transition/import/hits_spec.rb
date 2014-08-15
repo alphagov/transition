@@ -10,11 +10,23 @@ describe Transition::Import::Hits do
     context 'a single import from a file with no suggested/archive URLs', testing_before_all: true do
       before :all do
         create_test_hosts
-        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/businesslink_2012-10-14.tsv')
+        @import_tsv_filename = 'spec/fixtures/hits/businesslink_2012-10-14.tsv'
+        Transition::Import::Hits.from_redirector_tsv_file!(@import_tsv_filename)
       end
 
       it 'has imported hits' do
         Hit.count.should == 3
+      end
+
+      describe 'the tracking of the file via ImportedHitsFile' do
+        specify { ImportedHitsFile.should have(1).file }
+
+        describe 'the only file' do
+          subject(:file) { ImportedHitsFile.first }
+
+          its(:content_hash) { should == Digest::SHA1.hexdigest(File.read(@import_tsv_filename)) }
+          its(:filename)     { should == File.expand_path(@import_tsv_filename) }
+        end
       end
 
       it "has not imported hits for hosts we don't know about" do
@@ -97,6 +109,18 @@ describe Transition::Import::Hits do
       it 'updates the count for the existing row' do
         Hit.first.count.should eql(21)
       end
+    end
+
+    context 'a second import from an unchanged hits file' do
+      before do
+        create_test_hosts
+        Transition::Import::Hits.from_redirector_mask!('spec/fixtures/hits/businesslink_*.tsv')
+      end
+
+
+    end
+    context 'a second import from a changed hits file', testing_before_all: true do
+
     end
   end
 

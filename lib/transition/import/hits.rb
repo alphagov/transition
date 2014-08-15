@@ -110,13 +110,15 @@ module Transition
 
       def self.from_redirector_tsv_file!(filename)
         start "Importing #{filename}" do
+          expanded_filename = File.expand_path(filename)
           [
             TRUNCATE,
-            LOAD_DATA.sub('$filename$', "'#{File.expand_path(filename)}'"),
+            LOAD_DATA.sub('$filename$', "'#{expanded_filename}'"),
             INSERT_FROM_STAGING
           ].flatten.each do |statement|
             ActiveRecord::Base.connection.execute(statement)
           end
+          ImportedHitsFile.create(filename: expanded_filename)
         end
       end
 
