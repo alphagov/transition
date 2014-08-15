@@ -5,6 +5,16 @@ module Transition
         [:print, :puts].each { |sym| define_method(sym) {|*_|} }
       end
 
+      class Job
+        def skip!
+          @skip = true
+        end
+
+        def skipped?
+          @skip
+        end
+      end
+
       def self.active=(value)
         @active = value
       end
@@ -27,12 +37,13 @@ module Transition
 
       ##
       # Common idiom of doing a thing, then printing a done message on the same line
-      def start(message, options = {doing: '...', done: 'done'})
+      def start(message, options = {doing: '...', done: 'done', skipped: 'skipped'})
         return unless block_given?
 
         console_print "#{message} #{options[:doing]} "
-        yield
-        console_puts "#{options[:done]}"
+        job = Job.new
+        yield job
+        console_puts "#{job.skipped? ? options[:skipped] : options[:done]}"
       end
     end
   end
