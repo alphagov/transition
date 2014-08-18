@@ -41,9 +41,17 @@ module Transition
         return unless block_given?
 
         console_print "#{message} #{options[:doing]} "
+
         job = Job.new
-        yield job
-        console_puts "#{job.skipped? ? options[:skipped] : options[:done]}"
+        return_value = yield job
+
+        if job.skipped?
+          console_puts options[:skipped]
+          false
+        else
+          console_puts options[:done]
+          return_value
+        end
       end
     end
   end
