@@ -142,6 +142,8 @@ module Transition
         end
 
         console_puts "#{done} hits files imported (#{unchanged} unchanged)."
+
+        done
       end
     end
   end
