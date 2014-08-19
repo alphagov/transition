@@ -110,9 +110,10 @@ describe MappingsController do
     end
 
     context 'when the URL isn\'t an HTTP(S) URL' do
-      it 'returns a 400 error' do
-        get :find_global, url: "huihguifbelgfebigf"
-        expect(response.status).to eq(400)
+      let!(:host) { create :host, hostname: 'example.com' }
+      it 'prefixes http:// to the beginning of the string and checks if it is a site' do
+        get :find_global, url: 'example.com/hello'
+        expect(response.status).to redirect_to site_mapping_find_url(host.site, path: '/hello')
       end
     end
 
