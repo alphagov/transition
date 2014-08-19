@@ -10,11 +10,23 @@ describe Transition::Import::Hits do
     context 'a single import from a file with no suggested/archive URLs', testing_before_all: true do
       before :all do
         create_test_hosts
-        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/businesslink_2012-10-14.tsv')
+        @import_tsv_filename = 'spec/fixtures/hits/businesslink_2012-10-14.tsv'
+        Transition::Import::Hits.from_redirector_tsv_file!(@import_tsv_filename)
       end
 
       it 'has imported hits' do
         Hit.count.should == 3
+      end
+
+      describe 'the tracking of the file via ImportedHitsFile' do
+        specify { ImportedHitsFile.should have(1).file }
+
+        describe 'the only file' do
+          subject(:file) { ImportedHitsFile.first }
+
+          its(:content_hash) { should == Digest::SHA1.hexdigest(File.read(@import_tsv_filename)) }
+          its(:filename)     { should == File.expand_path(@import_tsv_filename) }
+        end
       end
 
       it "has not imported hits for hosts we don't know about" do
@@ -96,6 +108,70 @@ describe Transition::Import::Hits do
 
       it 'updates the count for the existing row' do
         Hit.first.count.should eql(21)
+      end
+    end
+
+    context 'a second import' do
+      let(:original_import_time) { Time.zone.parse '2014-08-15 14:59:59' }
+      let(:later_import_time   ) { Time.zone.parse '2014-08-15 15:59:59' }
+      let(:import_tsv_filename ) do
+        'spec/fixtures/hits/tmp_changed_hits_file.tsv'.tap do |temporary_file|
+          FileUtils.cp('spec/fixtures/hits/businesslink_2012-10-14.tsv', temporary_file)
+        end
+      end
+      let(:one_and_only_import) { ImportedHitsFile.first }
+
+      before do
+        Host.delete_all; create_test_hosts
+        # first import to fresh DB
+        Timecop.freeze(original_import_time)
+        Transition::Import::Hits.from_redirector_tsv_file!(import_tsv_filename)
+      end
+
+      after do
+        Timecop.return
+        File.delete(import_tsv_filename)
+      end
+
+      it 'has recorded the time of the import' do
+        one_and_only_import.created_at.should == original_import_time
+        one_and_only_import.updated_at.should == original_import_time
+      end
+
+      context 'from an unchanged hits file' do
+        before do
+          Timecop.freeze(later_import_time)
+          Transition::Import::Hits.should_receive(:console_puts).with('skipped')
+          Transition::Import::Hits.from_redirector_tsv_file!(import_tsv_filename)
+        end
+
+        it 'leaves the record of the first import unchanged' do
+          one_and_only_import.created_at.should == original_import_time
+          one_and_only_import.updated_at.should == original_import_time
+        end
+      end
+
+      context 'from a changed hits file' do
+        before do
+          @old_content_hash = ImportedHitsFile.first.content_hash
+
+          File.open(import_tsv_filename, 'a') do |tsv|
+            tsv.puts "2012-11-14\t33\t301\twww.businesslink.gov.uk\t/altered-hits"
+          end
+
+          Timecop.freeze(later_import_time)
+          Transition::Import::Hits.from_redirector_tsv_file!(import_tsv_filename)
+        end
+
+        it 'updates the record of the first import' do
+          one_and_only_import.created_at.should == original_import_time
+          one_and_only_import.updated_at.should == later_import_time
+          one_and_only_import.content_hash.should_not == @old_content_hash
+        end
+
+        it 'imports the new hits' do
+          Hit.where(path: '/altered-hits').first.should_not be_nil
+        end
       end
     end
   end

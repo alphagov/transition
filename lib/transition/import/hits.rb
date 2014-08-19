@@ -109,31 +109,41 @@ module Transition
       mySQL
 
       def self.from_redirector_tsv_file!(filename)
-        start "Importing #{filename}" do
+        start "Importing #{filename}" do |job|
+          expanded_filename = File.expand_path(filename)
+
+          import_record = ImportedHitsFile.where(
+            filename: expanded_filename).first_or_initialize
+
+          job.skip! and next if import_record.same_on_disk?
+
           [
             TRUNCATE,
-            LOAD_DATA.sub('$filename$', "'#{File.expand_path(filename)}'"),
+            LOAD_DATA.sub('$filename$', "'#{expanded_filename}'"),
             INSERT_FROM_STAGING
           ].flatten.each do |statement|
             ActiveRecord::Base.connection.execute(statement)
           end
+          import_record.save!
         end
       end
 
       def self.from_redirector_mask!(filemask)
-        done = 0
+        done, unchanged = 0, 0
+
         ActiveRecord::Base.connection.execute('SET autocommit=0')
         begin
           Dir[File.expand_path(filemask)].each do |filename|
-            Hits.from_redirector_tsv_file!(filename)
-            done += 1
+            Hits.from_redirector_tsv_file!(filename) ? done += 1 : unchanged += 1
           end
           ActiveRecord::Base.connection.execute('COMMIT')
         ensure
           ActiveRecord::Base.connection.execute('SET autocommit=1')
         end
 
-        console_puts "#{done} hits files imported."
+        console_puts "#{done} hits files imported (#{unchanged} unchanged)."
+
+        done
       end
     end
   end

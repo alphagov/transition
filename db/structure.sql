@@ -123,6 +123,23 @@ CREATE TABLE `hosts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `imported_hits_files`
+--
+
+DROP TABLE IF EXISTS `imported_hits_files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `imported_hits_files` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `filename` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `content_hash` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `mappings`
 --
 
@@ -439,7 +456,7 @@ CREATE TABLE `whitelisted_hosts` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-08-07 15:34:15
+-- Dump completed on 2014-08-15 11:13:20
 INSERT INTO schema_migrations (version) VALUES ('20130910133049');
 
 INSERT INTO schema_migrations (version) VALUES ('20130910135517');
@@ -553,5 +570,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140618145219');
 INSERT INTO schema_migrations (version) VALUES ('20140623135055');
 
 INSERT INTO schema_migrations (version) VALUES ('20140724164511');
+
+INSERT INTO schema_migrations (version) VALUES ('20140815095728');
 
 
