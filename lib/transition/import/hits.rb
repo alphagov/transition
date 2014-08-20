@@ -135,17 +135,19 @@ module Transition
         start "Importing #{filename}" do |job|
           expanded_filename = File.expand_path(filename)
 
-          import_record = ImportedHitsFile.where(
-            filename: expanded_filename).first_or_initialize
+          Hit.transaction do
+            import_record = ImportedHitsFile.where(
+              filename: expanded_filename).first_or_initialize
 
-          job.skip! and next if import_record.same_on_disk?
+            job.skip! and next if import_record.same_on_disk?
 
-          ActiveRecord::Base.connection.execute(TRUNCATE)
-          copy_to_hits_staging(filename)
-          ActiveRecord::Base.connection.execute(INSERT_FROM_STAGING)
-          ActiveRecord::Base.connection.execute(UPDATE_FROM_STAGING)
+            ActiveRecord::Base.connection.execute(TRUNCATE)
+            copy_to_hits_staging(filename)
+            ActiveRecord::Base.connection.execute(INSERT_FROM_STAGING)
+            ActiveRecord::Base.connection.execute(UPDATE_FROM_STAGING)
 
-          import_record.save!
+            import_record.save!
+          end
         end
       end
 
@@ -153,10 +155,8 @@ module Transition
         done, unchanged = 0, 0
 
         ActiveRecord::Base.connection.execute('set work_mem="2GB"')
-        Hit.transaction do
-          Dir[File.expand_path(filemask)].each do |filename|
-            Hits.from_redirector_tsv_file!(filename) ? done += 1 : unchanged += 1
-          end
+        Dir[File.expand_path(filemask)].each do |filename|
+          Hits.from_redirector_tsv_file!(filename) ? done += 1 : unchanged += 1
         end
 
         console_puts "#{done} hits files imported (#{unchanged} unchanged)."
