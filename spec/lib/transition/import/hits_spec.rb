@@ -93,6 +93,17 @@ describe Transition::Import::Hits do
       end
     end
 
+    context 'import from a file with way-too-long paths', testing_before_all: true do
+      before :all do
+        create_test_hosts
+        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/too_long_paths.tsv')
+      end
+
+      it 'should ignore hits that are too long and won\'t fit in our 2048-char limit' do
+        Hit.pluck(:path).sort.should eql(['/legitimate'])
+      end
+    end
+
     context 'a hits row already exists with a different count', testing_before_all: true do
       before :all do
         create_test_hosts

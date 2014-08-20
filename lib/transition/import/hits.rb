@@ -99,7 +99,8 @@ module Transition
         SELECT h.id, st.path, encode(digest(st.path, 'sha1'), 'hex'), st.http_status, st.count, st.hit_on
         FROM   hits_staging st
         INNER JOIN hosts h on h.hostname = st.hostname
-        WHERE st.path NOT IN (#{ PATHS_TO_IGNORE.map { |path| "'" + path + "'" }.join(', ') })
+        WHERE LENGTH(st.path) <= 2048
+          AND st.path NOT IN (#{ PATHS_TO_IGNORE.map { |path| "'" + path + "'" }.join(', ') })
           AND st.path !~ '#{ PATTERNS_TO_IGNORE.join('|') }'
           AND NOT EXISTS (
             SELECT 1 FROM hits
