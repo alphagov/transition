@@ -128,10 +128,14 @@ class MappingsController < ApplicationController
     # This allows finding a mapping without knowing the site first.
     render_error(400) and return unless params[:url].present?
 
+    if !Transition::PathOrURL.starts_with_http_scheme?(params[:url])
+      url = 'http://' + params[:url] # Add a dummy scheme
+    else
+      url = params[:url]
+    end
+
     begin
-      url = Addressable::URI.parse(params[:url])
-      render_error(400) and
-        return unless url.scheme == "http" || url.scheme == "https"
+      url = Addressable::URI.parse(url)
     rescue Addressable::URI::InvalidURIError
       render_error(400) and return
     end

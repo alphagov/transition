@@ -65,3 +65,9 @@ Feature: Edit a site's mapping
     When I visit the path /sites/bis
     And I jump to the mapping "http://bis.gov.uk/about"
     Then I should see "Edit mapping"
+
+  @javascript
+  Scenario: Jumping to a site mapping without specifying a site scheme
+    When I visit the path /sites/bis
+    And I jump to the mapping "bis.gov.uk/about"
+    Then I should see "Edit mapping"
