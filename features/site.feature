@@ -90,3 +90,15 @@ Scenario: Visit the page of an non-existent site
   Given I have logged in as a GDS Editor
   When I visit the path /sites/not_a_site
   Then I should see our custom 404 page
+
+@javascript
+Scenario: Jumping to a site
+  When I visit the home page
+  And I jump to the site or mapping "http://www.bis.gov.uk"
+  Then I should see "www.bis.gov.uk"
+
+@javascript
+Scenario: Jumping to a site appending a / but nothing after it
+  When I visit the home page
+  And I jump to the site or mapping "http://www.bis.gov.uk/"
+  Then I should see "www.bis.gov.uk"

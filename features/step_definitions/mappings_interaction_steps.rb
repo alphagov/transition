@@ -184,7 +184,7 @@ When(/^I type "([^"]*)" in the tags box$/) do |letters|
   i_type_letters_into_tags(letters)
 end
 
-When(/^I jump to the mapping "(.*?)"$/) do |url|
+When(/^I jump to the site or mapping "(.*?)"$/) do |url|
   page.execute_script("Mousetrap.trigger('g m');")
   fill_in 'Old URL', with: url
   click_button 'Go to mapping'
