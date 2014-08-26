@@ -6,16 +6,16 @@
 
     that.start = function(element) {
 
-      var mappingModal = element.find('.js-go-to-mapping');
-      Mousetrap.bind('g m', openGotoMappingModal);
+      var mappingOrSiteModal = element.find('.js-go-to-site-or-mapping');
+      Mousetrap.bind('g m', openGotoSiteOrMappingModal);
 
-      function openGotoMappingModal() {
-        mappingModal.on('shown.bs.modal', function() {
+      function openGotoSiteOrMappingModal() {
+        mappingOrSiteModal.on('shown.bs.modal', function() {
           setTimeout(function() {
-            mappingModal.find('input[type="text"]').focus();
+            mappingOrSiteModal.find('input[type="text"]').focus();
           }, 50);
         });
-        mappingModal.modal('show');
+        mappingOrSiteModal.modal('show');
       }
     }
   };
