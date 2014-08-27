@@ -26,6 +26,13 @@ Feature: List organisations
     But I should not see a link to the organisation ukti
 
   @javascript
+  Scenario: See the "Jump to mapping" link with Javascript enabled
+    When I visit the home page
+    Then I should see a link to "Jump to a mapping"
+    When I click the link "Jump to a mapping"
+    Then I should see "Go to mapping" in a modal window
+
+  @javascript
   Scenario: Filter the list page
     When I visit the home page
     And I filter organisations by "foreign"
