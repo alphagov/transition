@@ -12,7 +12,7 @@ class BulkAddBatchesController < ApplicationController
     @batch = BulkAddBatch.new(paths: paths)
   end
 
-  def new_multiple_confirmation
+  def create
     @batch = BulkAddBatch.new(type:     mappings_batch_params[:type],
                                new_url:  mappings_batch_params[:new_url],
                                tag_list: mappings_batch_params[:tag_list],
@@ -33,7 +33,7 @@ class BulkAddBatchesController < ApplicationController
         tag_list:        mappings_batch_params[:tag_list],
         state:           'queued')
       if @batch.invalid?
-        render action: 'new_multiple_confirmation' and return
+        render action: 'create' and return
       end
 
       if @batch.entries_to_process.count > 20

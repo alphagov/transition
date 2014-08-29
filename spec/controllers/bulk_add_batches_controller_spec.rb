@@ -27,10 +27,10 @@ describe BulkAddBatchesController do
     end
   end
 
-  describe '#new_multiple_confirmation' do
+  describe '#create' do
     context 'without permission to edit' do
       def make_request
-        post :new_multiple_confirmation, site_id: site.abbr
+        post :create, site_id: site.abbr
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
