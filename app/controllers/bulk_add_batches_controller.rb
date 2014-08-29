@@ -25,7 +25,7 @@ class BulkAddBatchesController < ApplicationController
     end
   end
 
-  def create_multiple
+  def import
     @batch = @site.mappings_batches.find(params[:id])
     if @batch.state == 'unqueued'
       @batch.update_attributes!(

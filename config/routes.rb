@@ -40,7 +40,7 @@ Transition::Application.routes.draw do
           end
 
           member do
-            post 'create_multiple'
+            post 'import'
           end
         end
 

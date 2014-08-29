@@ -37,10 +37,10 @@ describe BulkAddBatchesController do
     end
   end
 
-  describe '#create_multiple' do
+  describe '#import' do
     context 'without permission to edit' do
       def make_request
-        post :create_multiple, site_id: site.abbr, id: batch.id
+        post :import, site_id: site.abbr, id: batch.id
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -53,7 +53,7 @@ describe BulkAddBatchesController do
 
       context 'a small batch' do
         def make_request
-          post :create_multiple, site_id: site.abbr, update_existing: 'true',
+          post :import, site_id: site.abbr, update_existing: 'true',
               id: batch.id
         end
 
@@ -65,7 +65,7 @@ describe BulkAddBatchesController do
                           paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21}) }
 
         def make_request
-          post :create_multiple, site_id: site.abbr, update_existing: 'true',
+          post :import, site_id: site.abbr, update_existing: 'true',
                 id: large_batch.id
         end
 
@@ -74,7 +74,7 @@ describe BulkAddBatchesController do
 
       context 'a batch which has been submitted already' do
         def make_request
-          post :create_multiple, site_id: site.abbr, id: batch.id
+          post :import, site_id: site.abbr, id: batch.id
         end
 
         include_examples 'it doesn\'t requeue a batch which has already been queued'
@@ -93,7 +93,7 @@ describe BulkAddBatchesController do
       # ActionController::RequestForgeryProtection::ClassMethods to return false
       # in order to test our override of the verify_authenticity_token method
       subject.stub(:verified_request?).and_return(false)
-      post :create_multiple, site_id: mapping.site, id: batch.id
+      post :import, site_id: mapping.site, id: batch.id
       response.status.should eql(403)
       response.body.should eql('Invalid authenticity token')
     end
@@ -104,9 +104,9 @@ describe BulkAddBatchesController do
       login_as gds_bob
     end
 
-    context '#create_multiple' do
+    context '#import' do
       it 'should redirect to mappings index' do
-        post :create_multiple, site_id: site.abbr, id: batch.id,
+        post :import, site_id: site.abbr, id: batch.id,
                return_path: 'http://malicious.com'
         expect(response).to redirect_to site_mappings_path(site)
       end
