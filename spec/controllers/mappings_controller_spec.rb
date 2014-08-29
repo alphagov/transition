@@ -147,7 +147,7 @@ describe MappingsController do
       it 'redirects to the new mappings form' do
         get :find, site_id: site.abbr, path: raw_path
 
-        expect(response).to redirect_to new_multiple_site_mappings_path(site, paths: canonicalized_path)
+        expect(response).to redirect_to new_multiple_site_bulk_add_batches_path(site, paths: canonicalized_path)
       end
     end
 
@@ -252,82 +252,6 @@ describe MappingsController do
 
       it 'has saved all tags as lowercase' do
         tags_as_strings.should == ['fee', 'fi', 'fo']
-      end
-    end
-  end
-
-  describe '#new_multiple' do
-    context 'without permission to edit' do
-      def make_request
-        get :new_multiple, site_id: site.abbr
-      end
-
-      it_behaves_like 'disallows editing by unaffiliated user'
-    end
-
-    context 'when the user does have permission' do
-      before do
-        login_as gds_bob
-      end
-
-      it 'displays the form' do
-        get :new_multiple, site_id: site.abbr
-        expect(response.status).to eql(200)
-      end
-    end
-  end
-
-  describe '#new_multiple_confirmation' do
-    context 'without permission to edit' do
-      def make_request
-        post :new_multiple_confirmation, site_id: site.abbr
-      end
-
-      it_behaves_like 'disallows editing by unaffiliated user'
-    end
-  end
-
-  describe '#create_multiple' do
-    context 'without permission to edit' do
-      def make_request
-        post :create_multiple, site_id: site.abbr, mappings_batch_id: batch.id
-      end
-
-      it_behaves_like 'disallows editing by unaffiliated user'
-    end
-
-    context 'when user can edit the site' do
-      before do
-        login_as gds_bob
-      end
-
-      context 'a small batch' do
-        def make_request
-          post :create_multiple, site_id: site.abbr, update_existing: 'true',
-              mappings_batch_id: batch.id
-        end
-
-        include_examples 'it processes a small batch inline'
-      end
-
-      context 'a large batch' do
-        let(:large_batch) { create(:bulk_add_batch, site: site,
-                          paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21}) }
-
-        def make_request
-          post :create_multiple, site_id: site.abbr, update_existing: 'true',
-                mappings_batch_id: large_batch.id
-        end
-
-        include_examples 'it processes a large batch in the background'
-      end
-
-      context 'a batch which has been submitted already' do
-        def make_request
-          post :create_multiple, site_id: site.abbr, mappings_batch_id: batch.id
-        end
-
-        include_examples 'it doesn\'t requeue a batch which has already been queued'
       end
     end
   end
@@ -576,8 +500,8 @@ describe MappingsController do
       # ActionController::RequestForgeryProtection::ClassMethods to return false
       # in order to test our override of the verify_authenticity_token method
       subject.stub(:verified_request?).and_return(false)
-      post :create_multiple, site_id: mapping.site,
-           mapping: { paths: ['/foo'], type: 'archive', update_existing: 'false' }
+      post :update, site_id: mapping.site, id: mapping.id,
+              mapping: { path: '/foo' }
       response.status.should eql(403)
       response.body.should eql('Invalid authenticity token')
     end
@@ -610,14 +534,6 @@ describe MappingsController do
              operation: 'redirect', new_url: 'http://a.gov.uk',
              return_path: 'http://malicious.com'
 
-        expect(response).to redirect_to site_mappings_path(site)
-      end
-    end
-
-    context '#create_multiple' do
-      it 'should redirect to mappings index' do
-        post :create_multiple, site_id: site.abbr, mappings_batch_id: batch.id,
-               return_path: 'http://malicious.com'
         expect(response).to redirect_to site_mappings_path(site)
       end
     end

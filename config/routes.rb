@@ -29,14 +29,18 @@ Transition::Application.routes.draw do
       resources :versions, only: [:index]
 
       collection do
-        get  'new_multiple'
-        post 'new_multiple_confirmation'
-        post 'create_multiple'
-
         post 'edit_multiple'
         post 'update_multiple'
 
         get 'filter'
+
+        resources :bulk_add_batches, only: [] do
+          collection do
+            get  'new_multiple'
+            post 'new_multiple_confirmation'
+            post 'create_multiple'
+          end
+        end
 
         resources :import_batches, only: [:new, :create] do
           member do

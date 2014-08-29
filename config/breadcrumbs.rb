@@ -38,7 +38,7 @@ crumb :filtered_mappings do |site|
 end
 
 crumb :new_mappings do |site|
-  link 'Add mappings', new_multiple_site_mappings_path(site)
+  link 'Add mappings', new_multiple_confirmation_site_bulk_add_batches_path(site)
   parent :mappings, site
 end
 

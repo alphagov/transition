@@ -8,7 +8,7 @@
   </h1>
 </div>
 
-<%= form_tag new_multiple_confirmation_site_mappings_path(@site), role: 'form', 'data-module' => 'toggle-mapping-form-fields' do %>
+<%= form_tag new_multiple_confirmation_site_bulk_add_batches_path(@site), role: 'form', 'data-module' => 'toggle-mapping-form-fields' do %>
 
   <% if @batch.errors %>
     <%= render 'shared/error_messages', error_messages: @batch.errors.values.flatten(1) %>
@@ -24,7 +24,7 @@
       <%= select_tag :type, options_for_select(options_for_supported_types, @batch.type), { class: 'form-control remove-bottom-margin js-type' } %>
     </div>
   </div>
-  <%= render partial: 'unresolved_mappings_description' %>
+  <%= render partial: 'mappings/unresolved_mappings_description' %>
 
   <div class="form-group <% if @batch.errors[:paths].any? || @batch.errors[:canonical_paths].any? %>field_with_errors<% end %>">
     <%#
