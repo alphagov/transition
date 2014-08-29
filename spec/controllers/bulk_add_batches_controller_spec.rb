@@ -40,7 +40,7 @@ describe BulkAddBatchesController do
   describe '#create_multiple' do
     context 'without permission to edit' do
       def make_request
-        post :create_multiple, site_id: site.abbr, mappings_batch_id: batch.id
+        post :create_multiple, site_id: site.abbr, id: batch.id
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -54,7 +54,7 @@ describe BulkAddBatchesController do
       context 'a small batch' do
         def make_request
           post :create_multiple, site_id: site.abbr, update_existing: 'true',
-              mappings_batch_id: batch.id
+              id: batch.id
         end
 
         include_examples 'it processes a small batch inline'
@@ -66,7 +66,7 @@ describe BulkAddBatchesController do
 
         def make_request
           post :create_multiple, site_id: site.abbr, update_existing: 'true',
-                mappings_batch_id: large_batch.id
+                id: large_batch.id
         end
 
         include_examples 'it processes a large batch in the background'
@@ -74,7 +74,7 @@ describe BulkAddBatchesController do
 
       context 'a batch which has been submitted already' do
         def make_request
-          post :create_multiple, site_id: site.abbr, mappings_batch_id: batch.id
+          post :create_multiple, site_id: site.abbr, id: batch.id
         end
 
         include_examples 'it doesn\'t requeue a batch which has already been queued'
@@ -93,7 +93,7 @@ describe BulkAddBatchesController do
       # ActionController::RequestForgeryProtection::ClassMethods to return false
       # in order to test our override of the verify_authenticity_token method
       subject.stub(:verified_request?).and_return(false)
-      post :create_multiple, site_id: mapping.site, mappings_batch_id: batch.id
+      post :create_multiple, site_id: mapping.site, id: batch.id
       response.status.should eql(403)
       response.body.should eql('Invalid authenticity token')
     end
@@ -106,7 +106,7 @@ describe BulkAddBatchesController do
 
     context '#create_multiple' do
       it 'should redirect to mappings index' do
-        post :create_multiple, site_id: site.abbr, mappings_batch_id: batch.id,
+        post :create_multiple, site_id: site.abbr, id: batch.id,
                return_path: 'http://malicious.com'
         expect(response).to redirect_to site_mappings_path(site)
       end

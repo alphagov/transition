@@ -38,6 +38,9 @@ Transition::Application.routes.draw do
           collection do
             get  'new_multiple'
             post 'new_multiple_confirmation'
+          end
+
+          member do
             post 'create_multiple'
           end
         end
