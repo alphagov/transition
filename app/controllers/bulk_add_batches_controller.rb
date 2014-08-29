@@ -20,9 +20,15 @@ class BulkAddBatchesController < ApplicationController
     @batch.user = current_user
     @batch.site = @site
 
-    unless @batch.save
+    if @batch.save
+      redirect_to preview_site_bulk_add_batch_path(@site, @batch, return_path: params[:return_path])
+    else
       render action: 'new'
     end
+  end
+
+  def preview
+    @batch = @site.mappings_batches.find(params[:id])
   end
 
   def import

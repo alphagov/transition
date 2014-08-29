@@ -36,6 +36,7 @@ Transition::Application.routes.draw do
 
         resources :bulk_add_batches, only: [:new, :create] do
           member do
+            get 'preview'
             post 'import'
           end
         end
