@@ -34,9 +34,8 @@ Transition::Application.routes.draw do
 
         get 'filter'
 
-        resources :bulk_add_batches, only: [] do
+        resources :bulk_add_batches, only: [:new] do
           collection do
-            get  'new_multiple'
             post 'new_multiple_confirmation'
           end
 

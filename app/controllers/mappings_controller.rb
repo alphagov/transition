@@ -120,7 +120,7 @@ class MappingsController < ApplicationController
     if mapping.present?
       redirect_to edit_site_mapping_path(@site, mapping, return_path: params[:return_path])
     else
-      redirect_to new_multiple_site_bulk_add_batches_path(@site, paths: path, return_path: params[:return_path])
+      redirect_to new_site_bulk_add_batch_path(@site, paths: path, return_path: params[:return_path])
     end
   end
 

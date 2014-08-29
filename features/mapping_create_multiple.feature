@@ -67,7 +67,7 @@ Feature: Create mappings
     And a site bis exists
     And I visit the path /sites/bis/mappings
     Then I should not see "Add mappings"
-    And I visit the path /sites/bis/mappings/bulk_add_batches/new_multiple
+    And I visit the path /sites/bis/mappings/bulk_add_batches/new
     Then I should see "You don't have permission to edit mappings for"
 
   Scenario: Errors shown for invalid inputs

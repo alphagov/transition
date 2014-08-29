@@ -147,7 +147,7 @@ describe MappingsController do
       it 'redirects to the new mappings form' do
         get :find, site_id: site.abbr, path: raw_path
 
-        expect(response).to redirect_to new_multiple_site_bulk_add_batches_path(site, paths: canonicalized_path)
+        expect(response).to redirect_to new_site_bulk_add_batch_path(site, paths: canonicalized_path)
       end
     end
 

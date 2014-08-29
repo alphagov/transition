@@ -7,7 +7,7 @@ class BulkAddBatchesController < ApplicationController
 
   checks_user_can_edit
 
-  def new_multiple
+  def new
     paths = params[:paths].present? ? params[:paths].split(',') : []
     @batch = BulkAddBatch.new(paths: paths)
   end
@@ -21,7 +21,7 @@ class BulkAddBatchesController < ApplicationController
     @batch.site = @site
 
     unless @batch.save
-      render action: 'new_multiple'
+      render action: 'new'
     end
   end
 

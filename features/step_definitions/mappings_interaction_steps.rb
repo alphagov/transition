@@ -145,7 +145,7 @@ end
 
 
 When(/^I add multiple paths with tags "([^"]*)" and continue$/) do |tag_list|
-  visit new_multiple_site_bulk_add_batches_path(@site)
+  visit new_site_bulk_add_batch_path(@site)
 
   step 'I make the new mapping paths "/1, /2, /3" redirect to www.gov.uk/organisations/ukba'
   step "I associate the tags \"#{tag_list}\" with the mappings"

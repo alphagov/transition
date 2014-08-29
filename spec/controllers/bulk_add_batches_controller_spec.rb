@@ -6,10 +6,10 @@ describe BulkAddBatchesController do
   let(:gds_bob) { create(:gds_editor, name: 'Bob Terwhilliger') }
   let(:mapping) { create(:mapping, site: site, as_user: gds_bob) }
 
-  describe '#new_multiple' do
+  describe '#new' do
     context 'without permission to edit' do
       def make_request
-        get :new_multiple, site_id: site.abbr
+        get :new, site_id: site.abbr
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -21,7 +21,7 @@ describe BulkAddBatchesController do
       end
 
       it 'displays the form' do
-        get :new_multiple, site_id: site.abbr
+        get :new, site_id: site.abbr
         expect(response.status).to eql(200)
       end
     end
