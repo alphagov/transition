@@ -128,6 +128,11 @@ describe Host do
       its(:redirected_by_gds?) { should be_true }
     end
 
+    context 'IP pointing at the redirector EC2 box' do
+      subject { build(:host, cname: nil, ip_address: '46.137.92.159') }
+      its(:redirected_by_gds?) { should be_true }
+    end
+
     context 'external CNAME' do
       subject { build(:host, cname: 'bis-tms-101-L01.eduserv.org.uk') }
       its(:redirected_by_gds?) { should be_false }
@@ -135,6 +140,11 @@ describe Host do
 
     context 'no CNAME (A-record only)' do
       subject { build(:host, cname: nil) }
+      its(:redirected_by_gds?) { should be_false }
+    end
+
+    context 'IP pointing at a non-redirector EC2 box' do
+      subject { build(:host, cname: nil, ip_address: '127.0.0.1') }
       its(:redirected_by_gds?) { should be_false }
     end
   end

@@ -38,7 +38,9 @@ class Host < ActiveRecord::Base
   end
 
   def redirected_by_gds?
-    /^redirector-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/.match(cname).present?
+    # The IP address here is that of the redirector EC2 box.
+    ip_address == '46.137.92.159' ||
+      /^redirector-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/.match(cname).present?
   end
 
   def canonical_host_id_xor_aka_present
