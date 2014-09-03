@@ -4,13 +4,11 @@
 
 <div class="page-title">
   <h1>
-    Organisations<br/>
-    <small>
-      Transitioning <%= @site_count %> government sites,
-      across <%= @organisations.length %> organisations, to GOV.UK.<br />
-      <a href="#" class="if-no-js-hide no-visit" data-module="mousetrap-trigger" data-keys="g m">Jump to a site or mapping</a>
-    </small>
+    Organisations
   </h1>
+  <p class="lead text-muted normal">
+    Use a URL to <a href="#" class="if-no-js-hide link-muted" data-module="mousetrap-trigger" data-keys="g m">jump to a site or mapping</a> or find your organisation below.
+  </p>
 </div>
 
 <table class="organisations table table-striped table-bordered" data-module="filterable-table">
@@ -18,9 +16,9 @@
     <tr class="table-header">
       <th class="abbr" scope="col">Abbreviation</th>
       <th class="title" scope="col">
-        Organisation
+        Organisation (<%= @organisations.length %>)
       </th>
-      <th scope="col">Sites</th>
+      <th scope="col">Sites (<%= @site_count %>)</th>
     </tr>
     <tr class="if-no-js-hide table-header-secondary">
       <td colspan="3">

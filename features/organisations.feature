@@ -26,10 +26,10 @@ Feature: List organisations
     But I should not see a link to the organisation ukti
 
   @javascript
-  Scenario: See the "Jump to a site or mapping" link with Javascript enabled
+  Scenario: See the "jump to a site or mapping" link with Javascript enabled
     When I visit the home page
-    Then I should see a link to "Jump to a site or mapping"
-    When I click the link "Jump to a site or mapping"
+    Then I should see a link to "jump to a site or mapping"
+    When I click the link "jump to a site or mapping"
     Then I should see "Go to site or mapping" in a modal window
 
   @javascript

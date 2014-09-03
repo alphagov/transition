@@ -8,15 +8,18 @@
             Go to site or mapping
           </h3>
         </header>
-        <div class="modal-body">
-          <%= form_tag mappings_find_global_path, method: 'get', role: 'form' do %>
+        <%= form_tag mappings_find_global_path, method: 'get', role: 'form' do %>
+          <div class="modal-body">
             <div class="form-group">
               <%= label_tag :url, 'Old URL' %>
               <%= text_field_tag(:url, nil, class: 'form-control') %>
             </div>
-            <%= button_tag 'Go to site or mapping', class: 'btn btn-success' %>
-          <% end %>
-        </div>
+          </div>
+          <div class="modal-footer">
+            <%= button_tag 'Go to site or mapping', class: 'add-bottom-margin btn btn-success' %>
+            <p class="text-muted remove-bottom-margin">Open this on any page by typing ‘g’ then ‘m’ (go to mapping).</p>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
