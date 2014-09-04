@@ -149,7 +149,13 @@ class MappingsController < ApplicationController
       return
     end
 
-    redirect_to site_mapping_find_url(site, path: url.request_uri)
+    # Only redirect to the mapping if the original URL had a path,
+    # otherwise this errors because / is not editable.
+    if url.request_uri =~ /^\/.+/
+      redirect_to site_mapping_find_url(site, path: url.request_uri)
+    else
+      redirect_to site_url(site)
+    end
   end
 
   def find
