@@ -8,3 +8,9 @@ Feature: Leaderboard
   Given I have logged in as a GDS Editor
   When I visit the leaderboard page
   Then I should see the header "Department leaderboard"
+
+  Scenario: Visit the leaderboard page without GDS Editor permission
+  Given I have logged in as a member of DCLG
+  When I visit the leaderboard page
+  Then I should be redirected to the homepage
+  And I should see "Only GDS Editors can access the leaderboard."
