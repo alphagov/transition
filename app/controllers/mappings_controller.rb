@@ -10,7 +10,19 @@ class MappingsController < ApplicationController
 
   def index
     @filter = View::Mappings::Filter.new(@site, params)
-    @mappings = @filter.mappings
+    respond_to do |format|
+      format.html do
+        @mappings = @filter.mappings
+        render :index
+      end
+      format.csv do
+        @mappings = @filter.unpaginated_mappings
+        data = MappingsCSVPresenter.new(@mappings).to_csv
+        timestamp = I18n.l(Time.zone.now, :format => :govuk_date)
+        filename = "#{@site.default_host.hostname} mappings at #{timestamp}.csv"
+        send_data data, filename: filename
+      end
+    end
   end
 
   def edit

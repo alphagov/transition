@@ -79,8 +79,32 @@ describe MappingsController do
         assigns(:filter).path_contains.should eql('https://}')
       end
     end
-  end
 
+    describe 'requesting a csv' do
+      describe 'with one mapping' do
+        let!(:mappings) { create(:redirect, path: '/a', new_url: 'http://f.gov.uk/1', site: site) }
+
+        it 'produces a CSV' do
+          get :index, site_id: site.abbr, format: 'csv'
+          expect(response.headers['Content-Type']).to eql('text/csv')
+          csv = CSV.parse(response.body)
+          expect(csv.first).to eql(['Old URL', 'Type', 'New URL', 'Archive URL', 'Suggested URL'])
+          expect(csv.size).to eql(2)
+          expect(csv[1]).to eql(['http://moj.gov.uk/a', 'redirect', 'http://f.gov.uk/1', nil, nil])
+        end
+      end
+
+      describe 'with more mappings than appear on one page' do
+        let!(:mappings) { (1..101).each { create(:mapping, site: site) } }
+
+        it 'includes all mappings, not just the current page' do
+          get :index, site_id: site.abbr, format: 'csv'
+          csv = CSV.parse(response.body)
+          expect(csv.size).to eql(102) # header + 101 rows
+        end
+      end
+    end
+  end
 
   describe '#find_global' do
     before do

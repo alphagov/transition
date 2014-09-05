@@ -60,10 +60,13 @@ module View
       end
 
       def mappings
+        unpaginated_mappings.page(params[:page])
+      end
+
+      def unpaginated_mappings
         mappings = site.mappings
           .includes(:site)
           .includes(:taggings => :tag)
-          .page(params[:page])
 
         mappings = mappings.redirects   if type == 'redirect'
         mappings = mappings.archives    if type == 'archive'
