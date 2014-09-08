@@ -32,10 +32,7 @@ class BulkAddBatchesController < ApplicationController
 
   def import
     if @batch.state == 'unqueued'
-      @batch.update_attributes!(
-        update_existing: batch_params[:update_existing],
-        tag_list:        batch_params[:tag_list],
-        state:           'queued')
+      @batch.update_attributes!(batch_params.merge(state: 'queued'))
 
       if @batch.entries_to_process.count > 20
         MappingsBatchWorker.perform_async(@batch.id)
