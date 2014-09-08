@@ -1,10 +1,9 @@
-<% period = { period: @period.query_slug } %>
 <%= bootstrap_flavour_tabs(
       {
-        'Summary'    => hits_path(period),
-        'Errors'     => hits_errors_path(period),
-        'Archives'   => hits_archives_path(period),
-        'Redirects'  => hits_redirects_path(period)
+        'Summary'    => hits_path(period: @period.query_slug),
+        'Errors'     => hits_category_path(period: @period.query_slug, category: 'errors'),
+        'Archives'   => hits_category_path(period: @period.query_slug, category: 'archives'),
+        'Redirects'  => hits_category_path(period: @period.query_slug, category: 'redirects')
       }, active: active
     )
 %>

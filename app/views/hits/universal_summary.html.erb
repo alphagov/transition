@@ -17,7 +17,7 @@
       <%= render partial: 'category_title', locals: {category: category} %>
       <% if category.hits.any? %>
         <%= render partial: 'universal_hits_table', locals: { hits: category.hits } %>
-        <%= link_to "See all #{category.name}", (send category.path_method_universal, period: @period.query_slug) %>
+        <%= link_to "See all #{category.name}", hits_category_path(category: category.name, period: @period.query_slug) %>
       <% end %>
     </section>
   <% end  %>
