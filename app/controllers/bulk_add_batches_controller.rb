@@ -3,9 +3,9 @@ require 'view/mappings/canonical_filter'
 class BulkAddBatchesController < ApplicationController
   include PaperTrail::Rails::Controller
 
-  tracks_mappings_progress except: [:find_global]
-
+  before_filter :find_site
   checks_user_can_edit
+  before_filter :find_batch, only: [:preview, :import]
 
   def new
     paths = params[:paths].present? ? params[:paths].split(',') : []
@@ -28,11 +28,9 @@ class BulkAddBatchesController < ApplicationController
   end
 
   def preview
-    @batch = @site.mappings_batches.find(params[:id])
   end
 
   def import
-    @batch = @site.mappings_batches.find(params[:id])
     if @batch.state == 'unqueued'
       @batch.update_attributes!(
         update_existing: mappings_batch_params[:update_existing],
@@ -70,5 +68,13 @@ private
                   :new_url,
                   :tag_list,
                   :update_existing)
+  end
+
+  def find_site
+    @site = Site.find_by_abbr!(params[:site_id])
+  end
+
+  def find_batch
+    @batch = @site.bulk_add_batches.find(params[:id])
   end
 end
