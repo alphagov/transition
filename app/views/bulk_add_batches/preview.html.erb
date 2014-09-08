@@ -9,8 +9,7 @@
   </h1>
 </div>
 
-<%= form_tag create_multiple_site_mappings_path(@site) do %>
-  <%= hidden_field_tag 'mappings_batch_id', @batch.id %>
+<%= form_tag import_site_bulk_add_batch_path(@site, @batch) do %>
 
   <% if params[:return_path].present? %>
     <%= hidden_field_tag 'return_path', params[:return_path] %>
@@ -59,7 +58,7 @@
         <tr>
           <td <% if existing_mapping %>class="warning"<% end %>>
             <strong><%= link_to entry.path, entry.old_url, class: 'breakable' %></strong>
-            <%= render partial: 'new_multiple_mapping_status_table', locals: { existing_mapping: existing_mapping } %>
+            <%= render partial: 'mappings/new_multiple_mapping_status_table', locals: { existing_mapping: existing_mapping } %>
           </td>
         </tr>
       <% end %>

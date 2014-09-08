@@ -26,14 +26,14 @@ Then(/^I should be able to edit the site's mappings$/) do
     expect(page).to have_selector('.list-group-item-heading', text: 'Mappings')
     expect(page).to have_link('a', href: site_mappings_path(@site))
     expect(page).to have_selector('.list-group-item-heading', text: 'Add mappings')
-    expect(page).to have_link('a', href: new_multiple_site_mappings_path(@site))
+    expect(page).to have_link('a', href: new_site_bulk_add_batch_path(@site))
   end
 end
 
 Then(/^I should not be able to edit the site's mappings$/) do
   within '.mappings' do
     expect(page).not_to have_selector('.list-group-item-heading', text: 'Add mappings')
-    expect(page).not_to have_link('a', href: new_multiple_site_mappings_path(@site))
+    expect(page).not_to have_link('a', href: new_site_bulk_add_batch_path(@site))
   end
 end
 
