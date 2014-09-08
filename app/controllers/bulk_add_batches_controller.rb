@@ -36,9 +36,6 @@ class BulkAddBatchesController < ApplicationController
         update_existing: batch_params[:update_existing],
         tag_list:        batch_params[:tag_list],
         state:           'queued')
-      if @batch.invalid?
-        render action: 'create' and return
-      end
 
       if @batch.entries_to_process.count > 20
         MappingsBatchWorker.perform_async(@batch.id)
