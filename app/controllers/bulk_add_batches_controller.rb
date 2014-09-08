@@ -13,10 +13,10 @@ class BulkAddBatchesController < ApplicationController
   end
 
   def create
-    @batch = BulkAddBatch.new(type:     mappings_batch_params[:type],
-                               new_url:  mappings_batch_params[:new_url],
-                               tag_list: mappings_batch_params[:tag_list],
-                               paths:    mappings_batch_params[:paths].split(/\r?\n|\r/).map(&:strip))
+    @batch = BulkAddBatch.new(type:     batch_params[:type],
+                               new_url:  batch_params[:new_url],
+                               tag_list: batch_params[:tag_list],
+                               paths:    batch_params[:paths].split(/\r?\n|\r/).map(&:strip))
     @batch.user = current_user
     @batch.site = @site
 
@@ -33,8 +33,8 @@ class BulkAddBatchesController < ApplicationController
   def import
     if @batch.state == 'unqueued'
       @batch.update_attributes!(
-        update_existing: mappings_batch_params[:update_existing],
-        tag_list:        mappings_batch_params[:tag_list],
+        update_existing: batch_params[:update_existing],
+        tag_list:        batch_params[:tag_list],
         state:           'queued')
       if @batch.invalid?
         render action: 'create' and return
@@ -62,7 +62,7 @@ class BulkAddBatchesController < ApplicationController
   end
 
 private
-  def mappings_batch_params
+  def batch_params
     params.permit(:type,
                   :paths,
                   :new_url,
