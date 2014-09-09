@@ -103,15 +103,19 @@ module HitsHelper
   # Send the correct routing message for the current category and period
   def current_category_in_period_path(period)
     if @site
-      # Common or garden site-based hits
-      send "#{params[:category] || 'summary'}_site_hits_path",
-           period: period.query_slug,
-           site_id: @site.abbr
+      # Hits for a specific site
+      if params[:category]
+        category_site_hits_path(@site, category: params[:category], period: period.query_slug)
+      else
+        summary_site_hits_path(@site, period: period.query_slug)
+      end
     else
       # Universal analytics
-      category = "_#{params[:category]}" if params[:category]
-      send "hits#{category}_path",
-           period: period.query_slug
+      if params[:category]
+        hits_category_path(category: params[:category], period: period.query_slug)
+      else
+        hits_path(period: period.query_slug)
+      end
     end
   end
 end

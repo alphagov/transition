@@ -16,9 +16,7 @@ Transition::Application.routes.draw do
 
   get 'mappings/find_global', to: 'mappings#find_global'
   get 'hits', to: 'hits#universal_summary'
-  get 'hits/redirects', to: 'hits#universal_category', defaults: { category: 'redirects' }
-  get 'hits/errors',    to: 'hits#universal_category', defaults: { category: 'errors' }
-  get 'hits/archives',  to: 'hits#universal_category', defaults: { category: 'archives' }
+  get 'hits/category', to: 'hits#universal_category'
 
   get 'leaderboard', to: 'leaderboard#index'
 
@@ -55,9 +53,7 @@ Transition::Application.routes.draw do
     resources :hits, only: [:index] do
       collection do
         get 'summary'
-        get 'redirects', to: 'hits#category', defaults: { category: 'redirects' }
-        get 'errors',    to: 'hits#category', defaults: { category: 'errors' }
-        get 'archives',  to: 'hits#category', defaults: { category: 'archives' }
+        get 'category'
       end
     end
   end

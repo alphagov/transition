@@ -16,8 +16,6 @@ describe View::Hits::Category do
       its(:to_sym)             { should == :all }
       its(:color)              { should == '#333' }
       its(:plural)             { should == 'hits' }
-      its(:path_method)        { should == :site_hits_path }
-      its(:path_method_universal) { should == :hits_path }
     end
 
     describe 'indexing' do
@@ -31,7 +29,6 @@ describe View::Hits::Category do
       its(:to_sym)      { should == :errors }
       its(:color)       { should == '#e99' }
       its(:plural)      { should == 'errors' }
-      its(:path_method) { should == :errors_site_hits_path }
 
       describe 'the polyfill of points when points= is called' do
         context 'valid data' do

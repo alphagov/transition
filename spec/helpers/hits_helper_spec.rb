@@ -96,8 +96,8 @@ describe HitsHelper do
 
       context 'when a category is set' do
         let(:params) { { category: 'errors' } }
-        it 'links to that site/period hits/errors path with the period' do
-          path.should == '/sites/site_abbr/hits/errors?period=yesterday'
+        it 'links to the category and period for the site' do
+          path.should == '/sites/site_abbr/hits/category?category=errors&period=yesterday'
         end
 
         context 'when the time period is default' do
@@ -106,8 +106,8 @@ describe HitsHelper do
               period.stub(:query_slug).and_return(nil)
             end
           end
-          it 'links to the current category without a query' do
-            path.should == '/sites/site_abbr/hits/errors'
+          it 'links to the category without the period for the site' do
+            path.should == '/sites/site_abbr/hits/category?category=errors'
           end
         end
       end
@@ -116,14 +116,14 @@ describe HitsHelper do
     context 'when no site is present (universal analytics)' do
       let(:site) { nil }
 
-      it 'links to the main hits/errors path with the period' do
+      it 'links to the universal hits with the period' do
         path.should == '/hits?period=yesterday'
       end
 
       context 'when a category is set' do
         let(:params) { { category: 'errors' } }
-        it 'links to the main hits/errors path with the period' do
-          path.should == '/hits/errors?period=yesterday'
+        it 'links to the universal hits with the category and period' do
+          path.should == '/hits/category?category=errors&period=yesterday'
         end
 
         context 'when the time period is default' do
@@ -132,8 +132,8 @@ describe HitsHelper do
               period.stub(:query_slug).and_return(nil)
             end
           end
-          it 'links to the current category without a query' do
-            path.should == '/hits/errors'
+          it 'links to the universal hits current category without the period' do
+            path.should == '/hits/category?category=errors'
           end
         end
       end

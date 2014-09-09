@@ -2,7 +2,7 @@
   <%= render partial: 'category_title', locals: {category: category} %>
   <% if category.hits.any? %>
     <%= render partial: 'hits_table', locals: { hits: category.hits} %>
-    <%= link_to "See all #{category.name}", (send category.path_method, @site, period: @period.query_slug) %>
+    <%= link_to "See all #{category.name}", category_site_hits_path(@site, category: category.name, period: @period.query_slug) %>
   <% else %>
     <p class="no-content no-content-bordered">
       There are no known <%= category.name.pluralize %> for <%= @site.abbr %> <%= @period.no_content %>.
