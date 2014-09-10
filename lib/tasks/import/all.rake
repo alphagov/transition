@@ -3,7 +3,7 @@ def glob_from_array(array)
 end
 
 namespace :import do
-  desc 'Import Organisations, Sites, Hosts, Mappings and Hits'
+  desc 'Import Organisations, Sites, Hosts, Hits and update DNS details'
   task :all => [
     'import:all:orgs_sites_hosts',
     'import:all:hits',
@@ -18,11 +18,6 @@ namespace :import do
         'data/redirector/data/sites/*.yml',
       ]
       Rake::Task['import:orgs_sites_hosts'].invoke(glob_from_array(patterns))
-    end
-
-    desc 'Import all mappings'
-    task :mappings do
-      Rake::Task['import:mappings'].invoke('data/redirector/data/mappings/*.csv')
     end
 
     desc 'Import all hits'
