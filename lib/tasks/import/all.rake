@@ -3,7 +3,7 @@ def glob_from_array(array)
 end
 
 namespace :import do
-  desc 'Import Organisations, Sites, Hosts and Hits'
+  desc 'Import Organisations, Sites, Hosts, Hits and update DNS details'
   task :all => [
     'import:all:orgs_sites_hosts',
     'import:all:hits',
