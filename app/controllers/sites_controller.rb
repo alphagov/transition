@@ -1,10 +1,8 @@
 class SitesController < ApplicationController
   before_filter :find_site
+  before_filter :check_user_is_gds_editor, only: [:edit, :update]
 
   def edit
-    if !current_user.gds_editor?
-      redirect_to site_path(@site), flash: { alert: "You don't have permission to edit transition dates" }
-    end
   end
 
   def update
@@ -29,5 +27,12 @@ private
 
   def site_params
     params.require(:site).permit(:launch_date)
+  end
+
+  def check_user_is_gds_editor
+    unless current_user.gds_editor?
+      message = 'Only GDS Editors can access that.'
+      redirect_to site_path(@site), alert: message
+    end
   end
 end

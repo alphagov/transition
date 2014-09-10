@@ -26,7 +26,7 @@
       <%= big_launch_days_number(@site) %>
       <%= date_or_not_yet(@site.launch_date) %>
       <br />
-      <% if current_user.gds_editor? %>
+      <% if current_user.gds_editor? || current_user.admin? %>
         <span class="small"><%= link_to 'Edit date', edit_site_path(@site) %></span>
       <% end %>
     </div>

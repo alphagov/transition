@@ -24,6 +24,6 @@ shared_examples 'disallows editing by non-GDS Editors' do
   end
 
   it 'sets a flash message' do
-    flash[:alert].should include('don\'t have permission to edit')
+    flash[:alert].should eql('Only GDS Editors can access that.')
   end
 end

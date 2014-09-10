@@ -130,4 +130,4 @@ Scenario: Editing a site's transition date as a non-GDS Editor
   Then I should not see "Edit date"
   When I visit the path /sites/dclg/edit
   Then I should be redirected to the site dashboard
-  And I should see "You don't have permission to edit transition dates"
+  And I should see "Only GDS Editors can access that."
