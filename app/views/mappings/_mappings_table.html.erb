@@ -92,7 +92,7 @@
   </tbody>
   <% if include_footer && current_user.can_edit_site?(site) %>
     <tfoot class="if-no-js-hide">
-      <%= render partial: 'mappings/mappings_table_header', locals: {footer: true, include_bulk_add: include_bulk_add} %>
+      <%= render partial: 'mappings/mappings_table_header', locals: {footer: true, include_export: include_export, include_bulk_add: include_bulk_add} %>
     </tfoot>
   <% end %>
 </table>

@@ -1,10 +1,12 @@
 require 'spec_helper'
+require 'csv'
 
 describe MappingsController do
-  let(:site)    { create :site, abbr: 'moj' }
-  let(:batch)   { create(:bulk_add_batch, site: site) }
-  let(:gds_bob) { create(:gds_editor, name: 'Bob Terwhilliger') }
-  let(:mapping) { create(:mapping, site: site, as_user: gds_bob) }
+  let(:site)       { create :site, abbr: 'moj' }
+  let(:batch)      { create(:bulk_add_batch, site: site) }
+  let(:gds_bob)    { create(:gds_editor, name: 'Bob Terwhilliger') }
+  let(:admin_user) { create(:user, permissions: ['admin', 'signin'])}
+  let(:mapping)    { create(:mapping, site: site, as_user: gds_bob) }
 
   describe '#index' do
     before do
@@ -81,26 +83,44 @@ describe MappingsController do
     end
 
     describe 'requesting a csv' do
-      describe 'with one mapping' do
-        let!(:mappings) { create(:redirect, path: '/a', new_url: 'http://f.gov.uk/1', site: site) }
+      context 'as a non-admin user' do
+        before do
+          login_as(gds_bob)
+        end
 
-        it 'produces a CSV' do
+        it 'prevents you from accessing it' do
           get :index, site_id: site.abbr, format: 'csv'
-          expect(response.headers['Content-Type']).to eql('text/csv')
-          csv = CSV.parse(response.body)
-          expect(csv.first).to eql(['Old URL', 'Type', 'New URL', 'Archive URL', 'Suggested URL'])
-          expect(csv.size).to eql(2)
-          expect(csv[1]).to eql(['http://moj.gov.uk/a', 'redirect', 'http://f.gov.uk/1', nil, nil])
+          expect(response).to redirect_to site_mappings_path(site)
+          expect(flash[:notice]).to eql('Only admin users can access the CSV export')
         end
       end
 
-      describe 'with more mappings than appear on one page' do
-        let!(:mappings) { (1..101).each { create(:mapping, site: site) } }
+      context 'as an admin user' do
+        before do
+          login_as(admin_user)
+        end
 
-        it 'includes all mappings, not just the current page' do
-          get :index, site_id: site.abbr, format: 'csv'
-          csv = CSV.parse(response.body)
-          expect(csv.size).to eql(102) # header + 101 rows
+        describe 'with one mapping' do
+          let!(:mappings) { create(:redirect, path: '/a', new_url: 'http://f.gov.uk/1', site: site) }
+
+          it 'produces a CSV' do
+            get :index, site_id: site.abbr, format: 'csv'
+            expect(response.headers['Content-Type']).to eql('text/csv')
+            csv = CSV.parse(response.body)
+            expect(csv.first).to eql(['Old URL', 'Type', 'New URL', 'Archive URL', 'Suggested URL'])
+            expect(csv.size).to eql(2)
+            expect(csv[1]).to eql(['http://moj.gov.uk/a', 'redirect', 'http://f.gov.uk/1', nil, nil])
+          end
+        end
+
+        describe 'with more mappings than appear on one page' do
+          let!(:mappings) { (1..101).each { create(:mapping, site: site) } }
+
+          it 'includes all mappings, not just the current page' do
+            get :index, site_id: site.abbr, format: 'csv'
+            csv = CSV.parse(response.body)
+            expect(csv.size).to eql(102) # header + 101 rows
+          end
         end
       end
     end

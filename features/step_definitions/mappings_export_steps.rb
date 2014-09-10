@@ -1,5 +1,5 @@
 When(/^I export the mappings$/) do
-  click_link "Export CSV"
+  click_link "Export CSV", match: :first
 end
 
 Then(/^I should get a CSV containing exactly (\d+) mappings$/) do |mappings_count|
