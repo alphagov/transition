@@ -26,7 +26,7 @@
           var date      = dataTable.getValue(rowNumber, 0);
           var formatter = new google.visualization.DateFormat({pattern: 'yyyyMMdd'});
 
-          window.location = "?period=" + formatter.formatValue(date);
+          window.location = URI(window.location).setSearch("period", formatter.formatValue(date));
         }
 
         // Documentation
