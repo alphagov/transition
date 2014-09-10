@@ -12,11 +12,13 @@
       <div class="col-md-8">
         <dl class="read-only-fields add-vertical-margins">
           <%= f.label :old_date, 'Old transition date:' %>
-          <%= @site.launch_date %>
+          <%= date_or_not_yet(@site.launch_date) %>
         </dl>
         <div class="input-group">
           <%= f.label :launch_date, 'New transition date:' %>
-          <%= f.date_field :launch_date, class: 'form-control' %>
+          <%= f.date_select(:launch_date,
+                              order: [:day, :month, :year],
+                              html: { class: 'form-control' }) %>
         </div>
       </div>
     </div>

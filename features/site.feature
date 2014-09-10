@@ -119,9 +119,10 @@ Scenario: Editing a site's transition date as a GDS Editor
   And a site bis exists
   And I visit this site page
   When I click the link "Edit date"
-  And I enter "20/09/2014" into the launch date box and click save
+  And I enter "20", "September", "2014" into the launch date select boxes and click save
   Then I should be redirected to the site dashboard
   And I should see "Transition date updated"
+  And I should see "20 September 2014"
 
 Scenario: Editing a site's transition date as a non-GDS Editor
   Given I have logged in as a member of DCLG

@@ -6,8 +6,7 @@ class SitesController < ApplicationController
   end
 
   def update
-    @site.launch_date = site_params[:launch_date]
-    if @site.save
+    if @site.update(site_params)
       redirect_to site_path(@site), flash: { success: 'Transition date updated' }
     else
       redirect_to edit_site_path(@site), flash: { alert: "We couldn't save your change" }
