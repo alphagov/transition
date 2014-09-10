@@ -27,7 +27,6 @@ describe Transition::Import::SiteYamlFile do
 
       subject(:site) { Site.find_by_abbr('ago') }
 
-      its(:launch_date)           { should eql(Date.new(2012, 12, 13)) }
       its(:tna_timestamp)         { should be_a(Time) }
       its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-generals-office') }
       its(:homepage_furl)         { should eql('www.gov.uk/ago') }
@@ -61,7 +60,6 @@ describe Transition::Import::SiteYamlFile do
           Transition::Import::SiteYamlFile.load('spec/fixtures/sites/updates/ago_lslo.yml').import!
         end
 
-        its(:launch_date)           { should eql(Date.new(2014, 12, 13)) }
         its(:tna_timestamp)         { should be_a(Time) }
         its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-update-office') }
         its(:homepage_title)        { should eql('Now has a &#39;s custom title') }

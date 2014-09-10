@@ -76,7 +76,6 @@ module Transition
         @site = Site.where(abbr: abbr).first_or_initialize.tap do |site|
           site.organisation          = Organisation.find_by_whitehall_slug(whitehall_slug)
 
-          site.launch_date           = yaml['redirection_date']
           site.tna_timestamp         = DateTime.strptime(yaml['tna_timestamp'].to_s, '%Y%m%d%H%M%S')
           site.query_params          = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
           site.global_type           = global_type
