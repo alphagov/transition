@@ -25,6 +25,9 @@
     <div class="highlight days-from-launch add-big-bottom-margin">
       <%= big_launch_days_number(@site) %>
       <%= date_or_not_yet(@site.launch_date) %>
+      <% if current_user.gds_editor? %>
+        <span class="small"><%= link_to 'Edit date', edit_site_path(@site) %></span>
+      <% end %>
     </div>
 
     <% unless @site.transition_status == :live %>

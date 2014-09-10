@@ -113,3 +113,21 @@ Scenario: Jumping to a non-existent site
   When I visit the home page
   And I jump to the site or mapping "http://not-a-site.gov.uk"
   Then I should see the header "Unknown site"
+
+Scenario: Editing a site's transition date as a GDS Editor
+  Given I have logged in as a GDS Editor
+  And a site bis exists
+  And I visit this site page
+  When I click the link "Edit date"
+  And I enter "20/09/2014" into the launch date box and click save
+  Then I should be redirected to the site dashboard
+  And I should see "Transition date updated"
+
+Scenario: Editing a site's transition date as a non-GDS Editor
+  Given I have logged in as a member of DCLG
+  And a site dclg exists
+  And I visit this site page
+  Then I should not see "Edit date"
+  When I visit the path /sites/dclg/edit
+  Then I should be redirected to the site dashboard
+  And I should see "You don't have permission to edit transition dates"
