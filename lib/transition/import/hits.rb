@@ -1,3 +1,4 @@
+require 'pathname'
 require 'transition/import/console_job_wrapper'
 
 module Transition
@@ -110,16 +111,17 @@ module Transition
 
       def self.from_redirector_tsv_file!(filename)
         start "Importing #{filename}" do |job|
-          expanded_filename = File.expand_path(filename)
+          absolute_filename = File.expand_path(filename, Rails.root)
+          relative_filename = Pathname.new(absolute_filename).relative_path_from(Rails.root).to_s
 
           import_record = ImportedHitsFile.where(
-            filename: expanded_filename).first_or_initialize
+            filename: relative_filename).first_or_initialize
 
           job.skip! and next if import_record.same_on_disk?
 
           [
             TRUNCATE,
-            LOAD_DATA.sub('$filename$', "'#{expanded_filename}'"),
+            LOAD_DATA.sub('$filename$', "'#{absolute_filename}'"),
             INSERT_FROM_STAGING
           ].flatten.each do |statement|
             ActiveRecord::Base.connection.execute(statement)
