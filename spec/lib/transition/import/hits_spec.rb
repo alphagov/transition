@@ -25,7 +25,7 @@ describe Transition::Import::Hits do
           subject(:file) { ImportedHitsFile.first }
 
           its(:content_hash) { should == Digest::SHA1.hexdigest(File.read(@import_tsv_filename)) }
-          its(:filename)     { should == File.expand_path(@import_tsv_filename) }
+          its(:filename)     { should == @import_tsv_filename }
         end
       end
 
