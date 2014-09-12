@@ -42,7 +42,9 @@
                   <span class="text-muted">Unknown</span>
                 <% end %>
               </td>
-              <td><%= host.cname || host.ip_address || 'Unknown' %></td>
+              <td>
+                <span class="breakable"><%= host.cname || host.ip_address || 'Unknown' %></span>
+              </td>
               <td>
                 <% if host.aka_host %>
                   <% if host.aka_host.redirected_by_gds? %>
