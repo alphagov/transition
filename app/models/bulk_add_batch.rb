@@ -19,6 +19,9 @@ class BulkAddBatch < MappingsBatch
       message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist',
       email: Rails.configuration.support_email)
     }
+    redirect.validates :new_url, not_a_national_archives_url: {
+      message: I18n.t('mappings.bulk.new_url_must_not_be_on_tna')
+    }
   end
 
   before_validation :fill_in_scheme

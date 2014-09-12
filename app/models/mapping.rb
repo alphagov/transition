@@ -44,6 +44,7 @@ class Mapping < ActiveRecord::Base
   validates :new_url, :suggested_url, :archive_url, length: { maximum: (64.kilobytes - 1) }, non_blank_url: true
   validates :new_url, presence: { if: :redirect?, message: 'required when mapping is a redirect' }
   validates :new_url, host_in_whitelist: { if: :redirect? }
+  validates :new_url, not_a_national_archives_url: { if: :redirect? }
   validates :archive_url, national_archives_url: true
 
   scope :with_type, -> type { where(type: type) }
