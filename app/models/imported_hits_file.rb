@@ -3,7 +3,7 @@ require 'digest'
 class ImportedHitsFile < ActiveRecord::Base
   before_validation :set_content_hash
 
-  validates :filename,     presence: true
+  validates :filename,     presence: true, uniqueness: true
   validates :content_hash, presence: true
 
   def same_on_disk?

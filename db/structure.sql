@@ -135,7 +135,8 @@ CREATE TABLE `imported_hits_files` (
   `content_hash` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_imported_hits_files_on_filename` (`filename`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -456,7 +457,7 @@ CREATE TABLE `whitelisted_hosts` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-09-11 12:35:42
+-- Dump completed on 2014-09-12 15:10:44
 INSERT INTO schema_migrations (version) VALUES ('20130910133049');
 
 INSERT INTO schema_migrations (version) VALUES ('20130910135517');
@@ -574,3 +575,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140724164511');
 INSERT INTO schema_migrations (version) VALUES ('20140815095728');
 
 INSERT INTO schema_migrations (version) VALUES ('20140911113424');
+
+INSERT INTO schema_migrations (version) VALUES ('20140912150755');
