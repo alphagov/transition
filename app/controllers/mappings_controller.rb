@@ -10,7 +10,23 @@ class MappingsController < ApplicationController
 
   def index
     @filter = View::Mappings::Filter.new(@site, params)
-    @mappings = @filter.mappings
+    respond_to do |format|
+      format.html do
+        @mappings = @filter.mappings
+        render :index
+      end
+      format.csv do
+        if current_user.admin?
+          @mappings = @filter.unpaginated_mappings
+          data = MappingsCSVPresenter.new(@mappings).to_csv
+          timestamp = I18n.l(Time.zone.now, :format => :govuk_date)
+          filename = "#{@site.default_host.hostname} mappings at #{timestamp}.csv"
+          send_data data, filename: filename
+        else
+          safely_redirect_to_start_point(notice: 'Only admin users can access the CSV export')
+        end
+      end
+    end
   end
 
   def edit
@@ -28,12 +44,7 @@ class MappingsController < ApplicationController
       flash[:success] = 'Mapping saved'
       flash[:saved_mapping_ids] = [@mapping.id]
       flash[:saved_operation] = "update-single"
-
-      if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
-        redirect_to params[:return_path]
-      else
-        redirect_to site_mappings_path(@site)
-      end
+      safely_redirect_to_start_point
     else
       render action: 'edit'
     end
@@ -162,6 +173,14 @@ private
         message = "This site has been entirely archived."
       end
       redirect_to site_path(@site), alert: "#{message} You can't edit its mappings."
+    end
+  end
+
+  def safely_redirect_to_start_point(redirect_to_options={})
+    if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
+      redirect_to params[:return_path], redirect_to_options
+    else
+      redirect_to site_mappings_path(@site), redirect_to_options
     end
   end
 end
