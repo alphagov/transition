@@ -3,6 +3,7 @@ require 'spec_helper'
 describe ImportedHitsFile do
   describe 'validations' do
     it { should validate_presence_of(:filename) }
+    it { should validate_uniqueness_of(:filename) }
   end
 
   let(:test_file) do
