@@ -118,8 +118,7 @@ Scenario: Editing a site's transition date as a GDS Editor
   Given I have logged in as a GDS Editor
   And a site bis exists
   And I visit this site page
-  When I click the link "Edit date"
-  And I enter "20", "September", "2014" into the launch date select boxes and click save
+  When I edit this site's transition date
   Then I should be redirected to the site dashboard
   And I should see "Transition date updated"
   And I should see "20 September 2014"
