@@ -93,12 +93,23 @@ Scenario: Visit the page of an non-existent site
 
 @javascript
 Scenario: Jumping to a site
+  Given I have logged in as a member of DCLG
+  And a site bis exists
   When I visit the home page
-  And I jump to the site or mapping "http://www.bis.gov.uk"
-  Then I should see "www.bis.gov.uk"
+  And I jump to the site or mapping "http://bis.gov.uk"
+  Then I should see the header "bis.gov.uk"
 
 @javascript
 Scenario: Jumping to a site appending a / but nothing after it
+  Given I have logged in as a member of DCLG
+  And a site bis exists
   When I visit the home page
-  And I jump to the site or mapping "http://www.bis.gov.uk/"
-  Then I should see "www.bis.gov.uk"
+  And I jump to the site or mapping "http://bis.gov.uk/"
+  Then I should see the header "bis.gov.uk"
+
+@javascript
+Scenario: Jumping to a non-existent site
+  Given I have logged in as a member of DCLG
+  When I visit the home page
+  And I jump to the site or mapping "http://not-a-site.gov.uk"
+  Then I should see the header "Unknown site"
