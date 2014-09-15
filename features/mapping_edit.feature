@@ -55,6 +55,12 @@ Feature: Edit a site's mapping
     Then I should still be editing a mapping
     And I should see "The URL to redirect to is not a URL"
 
+  Scenario: Error when trying to redirect to the National Archives
+    When I make the mapping a redirect to http://webarchive.nationalarchives.gov.uk/mapping
+    And I save the mapping
+    Then I should still be editing a mapping
+    And I should see "The URL to redirect to must not be to the National Archives. Use an archive mapping for that."
+
   @allow-rescue
   Scenario: Visit the page of an non-existent mapping
     And I visit the path /sites/bis/mappings/123456789/edit
