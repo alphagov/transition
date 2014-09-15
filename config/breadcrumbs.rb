@@ -52,6 +52,11 @@ crumb :edit_mapping do |mapping|
   parent :mappings, mapping.site
 end
 
+crumb :edit_site do |site|
+  link 'Edit site', edit_site_path(site)
+  parent :site, site
+end
+
 crumb :history do |mapping|
   link 'History', site_mapping_versions_path(mapping.site, mapping)
   parent :edit_mapping, mapping
