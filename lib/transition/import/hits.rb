@@ -1,10 +1,12 @@
 require 'pathname'
 require 'transition/import/console_job_wrapper'
+require 'transition/import/postgresql_settings'
 
 module Transition
   module Import
     class Hits
       extend ConsoleJobWrapper
+      extend PostgreSQLSettings
 
       # Lines should probably never be removed from this, only added.
       PATHS_TO_IGNORE = [
@@ -157,14 +159,14 @@ module Transition
       def self.from_redirector_mask!(filemask)
         done, unchanged = 0, 0
 
-        ActiveRecord::Base.connection.execute('set work_mem="2GB"')
-        Dir[File.expand_path(filemask)].each do |filename|
-          Hits.from_redirector_tsv_file!(filename) ? done += 1 : unchanged += 1
+        change_settings('work_mem' => '2GB') do
+          Dir[File.expand_path(filemask)].each do |filename|
+            Hits.from_redirector_tsv_file!(filename) ? done += 1 : unchanged += 1
+          end
+
+          console_puts "#{done} hits files imported (#{unchanged} unchanged)."
         end
 
-        console_puts "#{done} hits files imported (#{unchanged} unchanged)."
-
-        ActiveRecord::Base.connection.execute('set work_mem="16MB"')
         done
       end
     end

@@ -17,6 +17,7 @@ test: &test
   encoding: utf8
   local_infile: true
   variables:
+    work_mem: 1MB
     synchronous_commit: "off"
 
 production:
