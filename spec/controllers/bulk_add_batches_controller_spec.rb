@@ -37,6 +37,26 @@ describe BulkAddBatchesController do
     end
   end
 
+  describe '#preview' do
+    before do
+      login_as gds_bob
+    end
+
+    context 'when the return path is on site' do
+      it 'returns to where it came from' do
+        get :preview, site_id: site.abbr, id: batch.id, return_path: '/donkey'
+        assigns(:bulk_add_cancel_destination).should eq('/donkey')
+      end
+    end
+
+    context 'when the return path is off site' do
+      it 'returns to the site mappings path' do
+        get :preview, site_id: site.abbr, id: batch.id, return_path: 'http://google.com'
+        assigns(:bulk_add_cancel_destination).should eq(site_mappings_path(site.abbr))
+      end
+    end
+  end
+
   describe '#import' do
     context 'without permission to edit' do
       def make_request

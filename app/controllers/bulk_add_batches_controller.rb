@@ -28,6 +28,11 @@ class BulkAddBatchesController < ApplicationController
   end
 
   def preview
+    if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
+      @bulk_add_cancel_destination = params[:return_path]
+    else
+      @bulk_add_cancel_destination = site_mappings_path(@site)
+    end
   end
 
   def import
