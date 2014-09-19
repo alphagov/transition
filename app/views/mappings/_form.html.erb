@@ -6,10 +6,13 @@
   <% end %>
 
   <div class="form-group row">
-    <div class="col-md-2">
-      <%= f.label :type, 'Type' %>
-      <%= f.select :type, options_for_supported_types, {}, { class: 'form-control remove-bottom-margin js-type' } %>
-    </div>
+    <legend class="legend-reset add-label-margin bold">Type</legend>
+    <% Mapping::SUPPORTED_TYPES.each do |type| %>
+      <%= label_tag(nil, class: 'radio-inline') do %>
+        <%= radio_button_tag(:type, type, type == 'redirect', class: 'js-type') %>
+        <%= type.titleize %>
+      <% end %>
+    <% end %>
   </div>
   <%= render partial: 'unresolved_mappings_description' %>
 
