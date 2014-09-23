@@ -127,16 +127,6 @@ END
       end
     end
 
-    context 'site is not managed by transition' do
-      let!(:site) { create(:site, abbr: 'dft', managed_by_transition: false) }
-      let(:csv) { csv_for('/oldurl', '/new') }
-
-      it 'logs it' do
-        Rails.logger.should_receive(:warn).with("Skipping mapping for a site managed by redirector in Whitehall URL CSV: 'dft.gov.uk'")
-        Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(csv)
-      end
-    end
-
     context 'testing version recording', versioning: true do
       let!(:site) { create(:site, abbr: 'dft', query_params: 'significant') }
       let(:csv) { csv_for('/oldurl', '/new') }

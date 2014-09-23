@@ -6,11 +6,9 @@ module Transition
     # A transition-centric view over redirector yaml
     class SiteYamlFile
       attr_accessor :yaml
-      attr_writer   :managed_by_transition
 
-      def initialize(yaml, managed_by_transition)
+      def initialize(yaml)
         self.yaml = yaml
-        self.managed_by_transition = managed_by_transition
       end
 
       def import!
@@ -65,11 +63,6 @@ module Transition
         !! yaml['global_redirect_append_path']
       end
 
-      def managed_by_transition?
-        # Always exactly true/false values, not just "falsey"
-        # - this is also going to the DB, which won't allow nil
-        !!@managed_by_transition
-      end
 
       attr_reader :site
       def import_site!
@@ -84,7 +77,6 @@ module Transition
           site.homepage              = yaml['homepage']
           site.homepage_title        = yaml['homepage_title']
           site.homepage_furl         = yaml['homepage_furl']
-          site.managed_by_transition = managed_by_transition?
           site.special_redirect_strategy = yaml['special_redirect_strategy']
 
           site.save!
@@ -107,8 +99,7 @@ module Transition
       end
 
       def self.load(yaml_filename)
-        managed_by_transition = (yaml_filename =~ /\/transition-sites\//)
-        SiteYamlFile.new(YAML.load(File.read(yaml_filename)), managed_by_transition)
+        SiteYamlFile.new(YAML.load(File.read(yaml_filename)))
       end
     end
   end
