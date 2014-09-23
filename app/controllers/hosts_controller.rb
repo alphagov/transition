@@ -1,6 +1,6 @@
 class HostsController < ActionController::Base
   def index
-    @hosts = Host.includes(:site)
+    @hosts = Host.all
 
     render json: HostsPresenter.new(@hosts).as_hash.to_json
   end
