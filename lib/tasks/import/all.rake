@@ -15,7 +15,6 @@ namespace :import do
     task :orgs_sites_hosts do
       patterns = [
         'data/redirector/data/transition-sites/*.yml',
-        'data/redirector/data/sites/*.yml',
       ]
       Rake::Task['import:orgs_sites_hosts'].invoke(glob_from_array(patterns))
     end
