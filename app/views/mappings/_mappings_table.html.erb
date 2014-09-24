@@ -10,7 +10,7 @@
   <div data-module="selectable-table">
     <% if fix_header %><div data-module="fixed-table-header"><% end %>
 <% end %>
-<%= form_tag edit_multiple_site_mappings_path(site), remote: true do %>
+<%= form_tag edit_multiple_site_mappings_path(site), remote: true, authenticity_token: true do %>
 <table class="mappings <%= css if css %> table table-bordered">
   <thead>
     <tr class="table-header">
