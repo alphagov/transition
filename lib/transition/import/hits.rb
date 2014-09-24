@@ -143,7 +143,7 @@ module Transition
           ActiveRecord::Base.connection.execute('SET autocommit=1')
         end
 
-        console_puts "#{done} hits files imported (#{unchanged} unchanged)."
+        console_puts "#{done} hits #{'file'.pluralize(done)} imported (#{unchanged} unchanged)."
 
         done
       end
