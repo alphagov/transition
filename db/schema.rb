@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140613165318) do
+ActiveRecord::Schema.define(version: 20140924105220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,8 +36,10 @@ ActiveRecord::Schema.define(version: 20140613165318) do
     t.integer "mapping_id"
   end
 
-  add_index "hits", ["host_id", "hit_on", "http_status"], name: "index_hits_on_host_id_and_hit_on_and_http_status", using: :btree
+  add_index "hits", ["host_id", "hit_on"], name: "index_hits_on_host_id_and_hit_on", using: :btree
+  add_index "hits", ["host_id", "http_status"], name: "index_hits_on_host_id_and_http_status", using: :btree
   add_index "hits", ["host_id", "path", "hit_on", "http_status"], name: "index_hits_on_host_id_and_path_and_hit_on_and_http_status", unique: true, using: :btree
+  add_index "hits", ["mapping_id"], name: "index_hits_on_mapping_id", using: :btree
 
   create_table "hits_staging", id: false, force: true do |t|
     t.string  "hostname"
