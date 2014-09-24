@@ -36,10 +36,6 @@ describe Transition::Import::OrgsSitesHosts do
         Host.count.should == (35 * 2) # 35 hosts plus 35 aka hosts
       end
 
-      it 'sets managed_by_transition to false for sites not in transition-sites' do
-        Site.where(managed_by_transition: true).should == [@ukti]
-      end
-
       ##
       # BusinessLink and Directgov never existed in Whitehall.
       describe 'sites with organisations that sort of don\'t exist' do

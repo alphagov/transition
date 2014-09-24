@@ -5,7 +5,6 @@ FactoryGirl.define do
     query_params ''
     launch_date { 1.month.ago }
     tna_timestamp '2012-08-16 22:40:15'
-    managed_by_transition true
 
     association :organisation
 

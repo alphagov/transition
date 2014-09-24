@@ -26,7 +26,6 @@ class Site < ActiveRecord::Base
 
   after_update :update_hits_relations, :if => :query_params_changed?
 
-  scope :managed_by_transition, -> { where(managed_by_transition: true) }
   scope :with_mapping_count, -> {
         select('sites.*, COUNT(mappings.id) as mapping_count').
           joins('LEFT JOIN mappings on mappings.site_id = sites.id').

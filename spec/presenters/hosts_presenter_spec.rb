@@ -18,11 +18,6 @@ describe 'HostsPresenter' do
       it 'contains the number of hosts' do
         expect(results.count).to be(3)
       end
-
-      describe 'the first host' do
-        subject { results.first }
-        its([:managed_by_transition]) { should be_true }
-      end
     end
   end
 end

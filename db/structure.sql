@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.37, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.38, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: transition_development
 -- ------------------------------------------------------
--- Server version	5.5.37-0ubuntu0.12.04.1-log
+-- Server version	5.5.38-0ubuntu0.12.04.1-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -336,7 +336,6 @@ CREATE TABLE `sites` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `global_new_url` text COLLATE utf8_unicode_ci,
-  `managed_by_transition` tinyint(1) NOT NULL DEFAULT '1',
   `launch_date` date DEFAULT NULL,
   `special_redirect_strategy` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `global_redirect_append_path` tinyint(1) NOT NULL DEFAULT '0',
@@ -457,7 +456,7 @@ CREATE TABLE `whitelisted_hosts` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-09-12 15:10:44
+-- Dump completed on 2014-09-22 15:30:48
 INSERT INTO schema_migrations (version) VALUES ('20130910133049');
 
 INSERT INTO schema_migrations (version) VALUES ('20130910135517');
@@ -577,3 +576,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140815095728');
 INSERT INTO schema_migrations (version) VALUES ('20140911113424');
 
 INSERT INTO schema_migrations (version) VALUES ('20140912150755');
+
+INSERT INTO schema_migrations (version) VALUES ('20140922152625');
+
+

@@ -10,16 +10,3 @@ Feature: View hosts
     When I visit the path /hosts
     Then I should see JSON
     And the status in the response body should be "ok"
-
-  @allow-rescue
-  Scenario: Visit the hosts API when a host's site does not exist
-    Given that the first host's site does not exist
-    When I visit the path /hosts
-    Then I should see our custom 500 page
-
-  @allow-rescue
-  Scenario: Visit the hosts API when a host's site does not exist, requesting JSON
-    Given that the first host's site does not exist
-    When I visit the path /hosts.json
-    Then I should see JSON
-    And the status in the response body should be "error"

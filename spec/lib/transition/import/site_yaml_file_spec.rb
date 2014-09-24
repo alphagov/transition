@@ -9,9 +9,6 @@ describe Transition::Import::SiteYamlFile do
 
     its(:abbr)           { should eql 'ago' }
     its(:whitehall_slug) { should eql 'attorney-generals-office' }
-    it 'is not managed by transition - it doesn\'t have transition-sites in path' do
-      redirector_yaml_file.should_not be_managed_by_transition
-    end
     its(:extra_organisation_slugs) { should eql(['bona-vacantia', 'treasury-solicitor-s-office']) }
 
     describe '#import!' do
@@ -30,7 +27,6 @@ describe Transition::Import::SiteYamlFile do
       its(:tna_timestamp)         { should be_a(Time) }
       its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-generals-office') }
       its(:homepage_furl)         { should eql('www.gov.uk/ago') }
-      its(:managed_by_transition) { should eql(false) }
       its(:organisation)          { should eql(ago) }
       its(:extra_organisations)   { should =~ [bv, tsol] }
       its(:global_type)           { should eql('redirect') }
@@ -85,9 +81,5 @@ describe Transition::Import::SiteYamlFile do
 
     its(:abbr)           { should eql 'ukti' }
     its(:whitehall_slug) { should eql 'uk-trade-investment' }
-
-    it 'is managed by transition - it has transition-sites in path' do
-      transition_yaml_file.should be_managed_by_transition
-    end
   end
 end
