@@ -456,7 +456,7 @@ CREATE TABLE `whitelisted_hosts` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-09-22 15:30:48
+-- Dump completed on 2014-09-25 11:10:33
 INSERT INTO schema_migrations (version) VALUES ('20130910133049');
 
 INSERT INTO schema_migrations (version) VALUES ('20130910135517');
@@ -579,4 +579,4 @@ INSERT INTO schema_migrations (version) VALUES ('20140912150755');
 
 INSERT INTO schema_migrations (version) VALUES ('20140922152625');
 
-
+INSERT INTO schema_migrations (version) VALUES ('20140925104317');
