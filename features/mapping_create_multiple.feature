@@ -83,3 +83,14 @@ Feature: Create mappings
     And I should see "Enter a valid URL to redirect to"
     And I should see a highlighted "Redirect to" label and field
     And the "Redirect to" value should be "http://__INVALID_URL__"
+
+  Scenario: Error when trying to redirect to the National Archives
+    Given I have logged in as a GDS Editor
+    And a site bis exists
+    And I visit the path /sites/bis/mappings
+    And I go to create some mappings
+    And I make the new mapping paths "/archive" redirect to http://webarchive.nationalarchives.gov.uk/archive
+    And I continue
+    Then I should see "You must use an archive mapping to link to the National Archives, not a redirect"
+    And I should see a highlighted "Redirect to" label and field
+    And the "Redirect to" value should be "http://webarchive.nationalarchives.gov.uk/archive"
