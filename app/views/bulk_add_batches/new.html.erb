@@ -23,7 +23,8 @@
       <legend class="legend-reset add-label-margin bold">Type</legend>
       <% Mapping::SUPPORTED_TYPES.each do |type| %>
         <%= label_tag(nil, class: 'radio-inline') do %>
-          <%= radio_button_tag(:type, type, type == 'redirect', class: 'js-type') %>
+          <% selected_type = @batch.type || 'redirect' %>
+          <%= radio_button_tag(:type, type, (type == selected_type), class: 'js-type') %>
           <%= type.titleize %>
         <% end %>
       <% end %>

@@ -9,9 +9,8 @@
     <div class="col-md-3">
       <legend class="legend-reset add-label-margin bold">Type</legend>
       <% Mapping::SUPPORTED_TYPES.each do |type| %>
-        <%= label_tag(nil, class: 'radio-inline') do %>
-          <% checked = @mapping.type || (type == 'redirect') %>
-          <%= radio_button_tag(:type, type, checked, class: 'js-type') %>
+        <%= f.label :type, class: 'radio-inline' do %>
+          <%= f.radio_button :type, type, class: 'js-type' %>
           <%= type.titleize %>
         <% end %>
       <% end %>
