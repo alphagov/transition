@@ -19,13 +19,15 @@
   <% end %>
 
   <div class="form-group row <% if @batch.errors[:type].any? %>field_with_errors<% end %>">
-    <legend class="legend-reset add-label-margin bold">Type</legend>
-    <% Mapping::SUPPORTED_TYPES.each do |type| %>
-      <%= label_tag(nil, class: 'radio-inline') do %>
-        <%= radio_button_tag(:type, type, type == 'redirect', class: 'js-type') %>
-        <%= type.titleize %>
+    <div class="col-md-3">
+      <legend class="legend-reset add-label-margin bold">Type</legend>
+      <% Mapping::SUPPORTED_TYPES.each do |type| %>
+        <%= label_tag(nil, class: 'radio-inline') do %>
+          <%= radio_button_tag(:type, type, type == 'redirect', class: 'js-type') %>
+          <%= type.titleize %>
+        <% end %>
       <% end %>
-    <% end %>
+    </div>
   </div>
   <%= render partial: 'mappings/unresolved_mappings_description' %>
 
