@@ -1,4 +1,4 @@
-class DeleteTNANewURLs < ActiveRecord::Migration
+class DeleteTnaNewURLs < ActiveRecord::Migration
   class Mapping < ActiveRecord::Base
     self.inheritance_column = nil
   end
