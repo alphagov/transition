@@ -5,7 +5,6 @@ namespace :import do
   task :mappings_from_host_paths, [:site_abbr] => :environment do |_, args|
     site = Site.find_by_abbr(args[:site_abbr])
     raise "No site found for #{args[:site_abbr]}" unless site
-    raise 'ABORT: This site is not managed by transition' unless site.managed_by_transition?
 
     if site.global_type
       STDOUT.flush
