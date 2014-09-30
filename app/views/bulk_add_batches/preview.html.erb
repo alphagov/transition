@@ -75,4 +75,5 @@
   <%= render partial: 'shared/tag_list_field', locals: { tag_list: @batch.tag_list } %>
 
   <%= button_tag 'Save', class: 'btn btn-success' %>
+  <%= link_to 'Cancel', @bulk_add_cancel_destination, class: 'btn btn-default add-left-margin' %>
 <% end %>
