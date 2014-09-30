@@ -37,7 +37,8 @@ Feature: Edit a site's mapping
 
   @javascript
   Scenario: Adding an alternative archive URL
-    When I click the link "Use an alternative"
+    When I make the mapping an archive
+    And I click the link "Use an alternative"
     Then I should see the National Archives link replaced with an alternative National Archives field
     When I enter an archive URL but then click "Cancel"
     Then I should see the National Archives link again
@@ -46,7 +47,8 @@ Feature: Edit a site's mapping
 
   @javascript
   Scenario: Adding a suggested URL
-    When I click the link "Suggest a private sector URL"
+    When I make the mapping an archive
+    And I click the link "Suggest a private sector URL"
     Then I should see the link replaced with a suggested URL field
 
   Scenario: Editing a mapping with invalid values

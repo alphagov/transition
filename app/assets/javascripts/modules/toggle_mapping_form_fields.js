@@ -18,7 +18,7 @@
 
       function toggleFormFieldsets() {
 
-        var selectedMappingType = mappingType.val();
+        var selectedMappingType = mappingType.filter(':checked').val();
 
         switch (selectedMappingType) {
 

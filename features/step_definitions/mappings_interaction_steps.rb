@@ -9,16 +9,16 @@ When(/^I visit the site\'s mappings$/) do
 end
 
 When(/^I make the mapping a redirect to (.*)$/) do |new_url|
-  select 'Redirect', from: 'Type'
+  choose 'Redirect'
   fill_in 'Redirects to', with: new_url
 end
 
 When(/^I make the mapping an archive$/) do
-  select 'Archive', from: 'Type'
+  choose 'Archive'
 end
 
 When(/^I make the mapping unresolved$/) do
-  select 'Unresolved', from: 'Type'
+  choose 'Unresolved'
 end
 
 When(/^I continue?$/) do
@@ -122,8 +122,8 @@ When(/^I make (\d+) new mapping paths redirect to (.*)$/) do |mappings_count, ne
 end
 
 When(/^I make the new mapping paths "(.*?)" unresolved$/) do |paths|
+  choose 'Unresolved'
   fill_in 'Old URLs', with: paths.gsub(/, /, "\n")
-  select 'Unresolved', from: 'Type'
 end
 
 When(/^I enter an archive URL but then click "Cancel"$/) do
