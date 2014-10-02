@@ -49,7 +49,7 @@ Feature: Editing multiple mappings for a site
     And I go to edit the selected mappings
     And I save my changes
     Then the page title should be "Redirect mappings"
-    And I should see "Enter a valid URL"
+    And I should see "New URL required when mapping is a redirect"
 
   Scenario: Cancelling an attempt to redirect multiple mappings after entering several invalid URLs
     When I select the first two mappings

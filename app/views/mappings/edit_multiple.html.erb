@@ -14,7 +14,7 @@
              locals: { modal: false, mappings: @bulk_edit.mappings, site: @site } %>
   <%= render partial: 'edit_multiple_redirect',
              locals: { new_url: @bulk_edit.new_url,
-                       new_url_error: @new_url_error, operation: @bulk_edit.operation } %>
+                       new_url_error: @bulk_edit.new_url_error, operation: @bulk_edit.operation } %>
   <%= hidden_field_tag "return_path", @bulk_edit.return_path %>
 
   <% if @bulk_edit.operation == 'tag' %>

@@ -26,6 +26,12 @@ module View
           test_mapping.errors.size == 1 && test_mapping.errors[:new_url].present?
       end
 
+      def new_url_error
+        if test_mapping.errors[:new_url]
+          "New URL #{test_mapping.errors[:new_url].first}"
+        end
+      end
+
       def test_mapping
         # Before trying to update any real mappings, construct a test mapping using
         # the submitted data to see if it validates:
