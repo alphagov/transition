@@ -15,7 +15,11 @@ class Host < ActiveRecord::Base
 
   scope :excluding_aka, -> { where(canonical_host_id: nil) }
 
-  REDIRECTOR_IP_ADDRESSES = ['46.137.92.159', '216.146.46.10', '216.146.46.11']
+  FASTLY_ANYCAST_IPS = ['23.235.33.144', '23.235.37.144'] # To be used for new root domains
+  DYN_DNS_IPS        = ['216.146.46.10', '216.146.46.11'] # Used for a few domains we control
+  AMAZON_LEGACY_IP   = ['46.137.92.159']                  # We're migrating domains off this
+  REDIRECTOR_IPS     = FASTLY_ANYCAST_IPS + DYN_DNS_IPS + AMAZON_LEGACY_IP
+
   REDIRECTOR_CNAME = /^redirector-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/
 
   def aka?
@@ -41,7 +45,7 @@ class Host < ActiveRecord::Base
   end
 
   def redirected_by_gds?
-    REDIRECTOR_IP_ADDRESSES.include?(ip_address) ||
+    REDIRECTOR_IPS.include?(ip_address) ||
       REDIRECTOR_CNAME.match(cname).present?
   end
 
