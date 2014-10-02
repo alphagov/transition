@@ -15,7 +15,7 @@ class Host < ActiveRecord::Base
 
   scope :excluding_aka, -> { where(canonical_host_id: nil) }
 
-  REDIRECTOR_IP_ADDRESSES = ['46.137.92.159', '216.146.46.10', '216.146.46.11']
+  REDIRECTOR_IP_ADDRESSES = ['46.137.92.159', '216.146.46.10', '216.146.46.11', '23.235.33.144', '23.235.37.144']
   REDIRECTOR_CNAME = /^redirector-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/
 
   def aka?
