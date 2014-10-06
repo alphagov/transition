@@ -81,8 +81,8 @@ module View
       end
 
       def new_url_error
-        if test_mapping.errors[:new_url]
-          "New URL #{test_mapping.errors[:new_url].first}"
+        if test_mapping.errors[:new_url].present?
+          test_mapping.errors.full_messages_for(:new_url).first
         end
       end
 
