@@ -5,6 +5,7 @@ development:
   encoding: utf8
   variables:
     work_mem: 10MB
+    maintenance_work_mem: 128MB
     synchronous_commit: "off"
 
 # Warning: The database defined as "test" will be erased and
