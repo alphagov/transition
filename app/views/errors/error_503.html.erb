@@ -1,0 +1,6 @@
+<% content_for(:page_title, '503') %>
+
+<h1 class="page-title">
+  <%= @custom_header || 'Temporarily unavailable' %>
+</h1>
+<p><%= @custom_body || 'Transition is unavailable due to scheduled maintenance' %></p>
