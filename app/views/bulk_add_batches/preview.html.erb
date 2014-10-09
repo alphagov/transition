@@ -39,7 +39,7 @@
     <% end %>
   </h2>
 
-  <% preview_mappings = @batch.entries.limit(20) %>
+  <% preview_mappings = @batch.entries.order(:id).limit(20) %>
   <table class="table table-bordered table-striped">
     <thead>
       <tr class="table-header">
