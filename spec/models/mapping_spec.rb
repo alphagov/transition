@@ -98,7 +98,7 @@ describe Mapping do
               mapping.should_not be_valid
             end
 
-            its([:new_url]) { should == ['required when mapping is a redirect'] }
+            its([:new_url]) { should == ['is required'] }
           end
         end
       end

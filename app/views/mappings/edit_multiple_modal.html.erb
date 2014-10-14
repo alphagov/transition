@@ -23,7 +23,7 @@
         <% end %>
         <%= render partial: 'edit_multiple_redirect',
                    locals: { new_url: @bulk_edit.new_url,
-                             new_url_error: @new_url_error,
+                             new_url_error: @bulk_edit.new_url_error,
                              operation: @bulk_edit.operation } %>
         <%= render partial: 'edit_multiple_table',
                    locals: { modal: true,

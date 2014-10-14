@@ -42,7 +42,7 @@ class Mapping < ActiveRecord::Base
   after_create :update_hit_relations
 
   validates :new_url, :suggested_url, :archive_url, length: { maximum: (64.kilobytes - 1) }, non_blank_url: true
-  validates :new_url, presence: { if: :redirect?, message: 'required when mapping is a redirect' }
+  validates :new_url, presence: { if: :redirect?, message: 'is required' }
   validates :new_url, host_in_whitelist: { if: :redirect? }
   validates :new_url, not_a_national_archives_url: { if: :redirect?, message: 'must not be to the National Archives. Use an archive mapping for that.' }
   validates :archive_url, national_archives_url: true
