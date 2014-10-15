@@ -4,4 +4,8 @@ form {
       width: auto;
     }
   }
+
+  input[type=radio] {
+    cursor: pointer;
+  }
 }
