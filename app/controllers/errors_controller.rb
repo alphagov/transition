@@ -19,6 +19,10 @@ class ErrorsController < ActionController::Base
     error_response(500, "500 Internal Server Error")
   end
 
+  def error_503
+    error_response(503, "503 Service Unavailable")
+  end
+
 private
 
   def json_error(message)

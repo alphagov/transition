@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   before_filter :require_signin_permission!
 
+  before_filter :exclude_all_users_except_admins_during_maintenance
+
   protect_from_forgery
 
   rescue_from ActionController::InvalidAuthenticityToken do
@@ -26,5 +28,9 @@ class ApplicationController < ActionController::Base
 private
   def verify_authenticity_token
     raise ActionController::InvalidAuthenticityToken unless verified_request?
+  end
+
+  def exclude_all_users_except_admins_during_maintenance
+    render_error(503) if Transition::Application.config.down_for_maintenance && !current_user.admin?
   end
 end
