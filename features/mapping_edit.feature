@@ -48,7 +48,7 @@ Feature: Edit a site's mapping
   @javascript
   Scenario: Adding a suggested URL
     When I make the mapping an archive
-    And I click the link "Suggest a private sector URL"
+    And I click the link "Suggest a non-government URL"
     Then I should see the link replaced with a suggested URL field
 
   Scenario: Editing a mapping with invalid values
