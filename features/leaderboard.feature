@@ -6,8 +6,9 @@ Feature: Leaderboard
 
   Scenario: Visit the leaderboard page
   Given I have logged in as a GDS Editor
+  And there are errors for one organisation but not for another
   When I visit the leaderboard page
-  Then I should see the header "Department leaderboard"
+  Then I should see a list of organisations sorted by decreasing error count
 
   Scenario: Visit the leaderboard page without GDS Editor permission
   Given I have logged in as a member of DCLG

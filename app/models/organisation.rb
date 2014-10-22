@@ -81,7 +81,7 @@ class Organisation < ActiveRecord::Base
                AND daily_hit_totals.total_on >= (current_date - 30)
                GROUP BY site_id) AS error_counts ON error_counts.site_id = sites.id
     postgreSQL
-  ).group('organisations.id').order('error_count DESC') }
+  ).group('organisations.id').order('error_count DESC NULLS LAST') }
 
   def to_param
     whitehall_slug
