@@ -74,7 +74,7 @@
     <div data-module="toggle">
       <p class="if-no-js-hide js-toggle-target <% if @mapping.suggested_url %>if-js-hide<% end %>">
         Did this page contain content that shouldn’t be met by government?<br/>
-        <a href="#suggest-url" class="js-toggle link-muted">Suggest a private sector URL</a>
+        <a href="#suggest-url" class="js-toggle link-muted">Suggest a non-government URL</a>
       </p>
       <div class="<% unless @mapping.suggested_url %>if-js-hide<% end %> js-toggle-target">
         <%= f.label :suggested_url do %>
