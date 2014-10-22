@@ -60,20 +60,20 @@ class Organisation < ActiveRecord::Base
     INNER JOIN sites
            ON sites.organisation_id = organisations.id
     LEFT JOIN (SELECT sites.id AS site_id,
-                      COUNT(*) AS mapping_count
+                      COUNT(*)::integer AS mapping_count
                FROM   mappings
                       INNER JOIN sites
                               ON sites.id = mappings.site_id
                GROUP  BY sites.id) site_mapping_counts ON site_mapping_counts.site_id = sites.id
     LEFT JOIN (SELECT sites.id AS site_id,
-                      COUNT(*) AS mapping_count
+                      COUNT(*)::integer AS mapping_count
                FROM   mappings
                       INNER JOIN sites
                               ON sites.id = mappings.site_id
                WHERE  mappings.type = 'unresolved'
                GROUP  BY sites.id) unresolved_mapping_counts ON unresolved_mapping_counts.site_id = sites.id
     LEFT JOIN (SELECT hosts.site_id AS site_id,
-                      SUM(count) AS error_count
+                      SUM(count)::integer AS error_count
                FROM   daily_hit_totals
                       INNER JOIN hosts
                               ON hosts.id = daily_hit_totals.host_id
