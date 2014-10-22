@@ -21,7 +21,7 @@
     </th>
   </thead>
   <tbody>
-    <% Organisation.leaderboard.each do |org| %>
+    <% @leaderboard.each do |org| %>
     <tr>
       <td><%= link_to org.title, organisation_path(org) %></td>
       <td><%= org.site_count %></td>
