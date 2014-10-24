@@ -1,10 +1,12 @@
 require 'pathname'
 require 'transition/import/console_job_wrapper'
+require 'transition/import/postgresql_settings'
 
 module Transition
   module Import
     class Hits
       extend ConsoleJobWrapper
+      extend PostgreSQLSettings
 
       # Lines should probably never be removed from this, only added.
       PATHS_TO_IGNORE = [
@@ -85,65 +87,85 @@ module Transition
         '.*wp-login.*',
       ]
 
-      TRUNCATE = <<-mySQL
+      TRUNCATE = <<-postgreSQL
         TRUNCATE hits_staging
-      mySQL
+      postgreSQL
 
-      LOAD_DATA = <<-mySQL
-        LOAD DATA LOCAL INFILE $filename$
-        INTO TABLE
-          hits_staging
-        FIELDS TERMINATED BY '\t'
-        LINES TERMINATED BY '\\n'
-        IGNORE 1 LINES
-          (hit_on, count, http_status, hostname, path)
-      mySQL
+      LOAD_DATA = <<-postgreSQL
+        COPY hits_staging (hit_on, count, http_status, hostname, path)
+        FROM STDIN
+        WITH DELIMITER AS E'\t' QUOTE AS E'\b' CSV HEADER
+      postgreSQL
 
-      INSERT_FROM_STAGING = <<-mySQL
-        INSERT INTO hits (host_id, path, path_hash, http_status, `count`, hit_on)
-        SELECT h.id, st.path, SHA1(st.path), st.http_status, st.count, st.hit_on
+      INSERT_FROM_STAGING = <<-postgreSQL
+        INSERT INTO hits (host_id, path, path_hash, http_status, count, hit_on)
+        SELECT h.id, st.path, encode(digest(st.path, 'sha1'), 'hex'), st.http_status, st.count, st.hit_on
         FROM   hits_staging st
         INNER JOIN hosts h on h.hostname = st.hostname
-        AND    st.path NOT IN (#{ PATHS_TO_IGNORE.map { |path| "'" + path + "'" }.join(', ') })
-        AND    st.path NOT REGEXP '#{ PATTERNS_TO_IGNORE.join('|') }'
-        ON DUPLICATE KEY UPDATE hits.count=st.count
-      mySQL
+        WHERE LENGTH(st.path) <= 2048
+          AND st.path NOT IN (#{ PATHS_TO_IGNORE.map { |path| "'" + path + "'" }.join(', ') })
+          AND st.path !~ '#{ PATTERNS_TO_IGNORE.join('|') }'
+          AND NOT EXISTS (
+            SELECT 1 FROM hits
+            WHERE path        = st.path AND
+                  host_id     = h.id AND
+                  http_status = st.http_status AND
+                  hit_on      = st.hit_on
+          );
+      postgreSQL
+
+      UPDATE_FROM_STAGING = <<-postgreSQL
+        UPDATE hits
+        SET count = st.count
+        FROM hits_staging st
+        INNER JOIN hosts ON hosts.hostname = st.hostname
+        WHERE
+          hits.path        = st.path AND
+          hits.http_status = st.http_status AND
+          hits.hit_on      = st.hit_on AND
+          hits.host_id     = hosts.id AND
+          hits.count       IS DISTINCT FROM st.count
+      postgreSQL
+
+      def self.copy_to_hits_staging(filename)
+        ActiveRecord::Base.connection.raw_connection.tap do |raw|
+          raw.copy_data(LOAD_DATA) do
+            raw.put_copy_data(File.open(filename, 'r').read)
+          end
+        end
+      end
 
       def self.from_redirector_tsv_file!(filename)
         start "Importing #{filename}" do |job|
           absolute_filename = File.expand_path(filename, Rails.root)
           relative_filename = Pathname.new(absolute_filename).relative_path_from(Rails.root).to_s
 
-          import_record = ImportedHitsFile.where(
-            filename: relative_filename).first_or_initialize
+          Hit.transaction do
+            import_record = ImportedHitsFile.where(
+                filename: relative_filename).first_or_initialize
 
-          job.skip! and next if import_record.same_on_disk?
+            job.skip! and next if import_record.same_on_disk?
 
-          [
-            TRUNCATE,
-            LOAD_DATA.sub('$filename$', "'#{absolute_filename}'"),
-            INSERT_FROM_STAGING
-          ].flatten.each do |statement|
-            ActiveRecord::Base.connection.execute(statement)
+            ActiveRecord::Base.connection.execute(TRUNCATE)
+            copy_to_hits_staging(absolute_filename)
+            ActiveRecord::Base.connection.execute(INSERT_FROM_STAGING)
+            ActiveRecord::Base.connection.execute(UPDATE_FROM_STAGING)
+
+            import_record.save!
           end
-          import_record.save!
         end
       end
 
       def self.from_redirector_mask!(filemask)
         done, unchanged = 0, 0
 
-        ActiveRecord::Base.connection.execute('SET autocommit=0')
-        begin
+        change_settings('work_mem' => '2GB') do
           Dir[File.expand_path(filemask)].each do |filename|
             Hits.from_redirector_tsv_file!(filename) ? done += 1 : unchanged += 1
           end
-          ActiveRecord::Base.connection.execute('COMMIT')
-        ensure
-          ActiveRecord::Base.connection.execute('SET autocommit=1')
-        end
 
-        console_puts "#{done} hits #{'file'.pluralize(done)} imported (#{unchanged} unchanged)."
+          console_puts "#{done} hits #{'file'.pluralize(done)} imported (#{unchanged} unchanged)."
+        end
 
         done
       end

@@ -47,6 +47,11 @@ class Mapping < ActiveRecord::Base
   validates :new_url, not_a_national_archives_url: { if: :redirect?, message: 'must not be to the National Archives. Use an archive mapping for that.' }
   validates :archive_url, national_archives_url: true
 
+  scope :with_hit_count, -> {
+    select('mappings.*, SUM(hits.count) as hit_count').
+      joins('LEFT JOIN hits ON hits.mapping_id = mappings.id').
+      group('mappings.id')
+  }
   scope :with_type, -> type { where(type: type) }
   scope :redirects, -> { with_type('redirect') }
   scope :archives,  -> { with_type('archive') }
@@ -68,6 +73,13 @@ class Mapping < ActiveRecord::Base
 
   def unresolved?
     type == 'unresolved'
+  end
+
+  ##
+  # Return the occasional bit-part attribute +hit_count+ as a number.
+  # Preserve the possible +nil+ value.
+  def hit_count
+    read_attribute(:hit_count) && read_attribute(:hit_count).to_i
   end
 
   ##

@@ -31,6 +31,10 @@ class Site < ActiveRecord::Base
           joins('LEFT JOIN mappings on mappings.site_id = sites.id').
           group('sites.id') }
 
+  def mapping_count
+    read_attribute(:mapping_count).to_i
+  end
+
   def to_param
     abbr
   end
@@ -44,7 +48,7 @@ class Site < ActiveRecord::Base
   end
 
   def default_host
-    @default_host ||= hosts.excluding_aka.first
+    @default_host ||= hosts.excluding_aka.order(:id).first
   end
 
   def transition_status
@@ -71,7 +75,7 @@ class Site < ActiveRecord::Base
   end
 
   def hit_total_count
-    @hit_total_count ||= daily_hit_totals.select('SUM(count) AS total').first[:total].to_i
+    @hit_total_count ||= daily_hit_totals.sum(:count)
   end
 
   def update_hits_relations
@@ -94,7 +98,7 @@ class Site < ActiveRecord::Base
       .joins('INNER JOIN mappings ON mappings.id = taggings.taggable_id')
       .where('mappings.site_id = ?', id)
       .group('tags.name')
-      .order('count DESC')
+      .order('count DESC, tags.name')
       .limit(limit)
       .map(&:name)
   end

@@ -75,7 +75,7 @@ module View
         mappings = mappings.redirects.filtered_by_new_url(new_url_contains) if new_url_contains.present?
         mappings = mappings.tagged_with(tagged) if tagged.present?
 
-        mappings.order(sort_by_hits? ? 'hit_count DESC' : :path)
+        mappings.order(sort_by_hits? ? 'mappings.hit_count DESC NULLS LAST' : 'mappings.path')
       end
 
       ##

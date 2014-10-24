@@ -12,14 +12,10 @@ module Transition
       end
 
       def refresh!
-        {
-          'Refreshing host paths'                                  => :refresh_host_paths!,
-          'Adding missing mapping_id/c14n_path_hash to host paths' => :connect_mappings_to_host_paths!,
-          'Updating hits from host paths'                          => :refresh_hits_from_host_paths!,
-          'Precomputing mapping hit counts'                        => :precompute_mapping_hit_counts!
-        }.each_pair do |msg, step|
-          start(msg) { send step }
-        end
+        start('Refreshing host paths'                                 ) { refresh_host_paths! }
+        start('Adding missing mapping_id/c14n_path_hash to host paths') { connect_mappings_to_host_paths! }
+        start('Updating hits from host paths'                         ) { refresh_hits_from_host_paths! }
+        start('Precomputing mapping hit counts'                       ) { precompute_mapping_hit_counts! }
       end
 
       def self.refresh!(site = nil)
@@ -32,27 +28,28 @@ module Transition
         " IN (#{host_ids.join(',')})"
       end
 
-      def where_host_is_in_site
-        site ? "WHERE host_id #{in_site_hosts}" : ''
-      end
-
       def host_paths
         site ? site.host_paths.where(mapping_id: nil) :
                       HostPath.where(mapping_id: nil)
       end
 
       def refresh_host_paths!
-        #
-        # Sloppy GROUP BY - path is not subject to aggregate. Note well,
-        # Postgres upgraders
-        sql = <<-mySQL
-          INSERT IGNORE INTO host_paths(host_id, path_hash, path)
-          SELECT hits.host_id, hits.path_hash, path
+        and_host_is_in_site = site ? "AND hits.host_id #{in_site_hosts}" : ''
+        sql = <<-postgreSQL
+          INSERT INTO host_paths(host_id, path_hash, path)
+          SELECT hits.host_id, hits.path_hash, hits.path
           FROM   hits
-          #{where_host_is_in_site}
+          WHERE NOT EXISTS (
+            SELECT 1 FROM host_paths
+            WHERE
+              host_paths.host_id   = hits.host_id AND
+              host_paths.path      = hits.path
+          )
+          #{and_host_is_in_site}
           GROUP  BY hits.host_id,
-                    hits.path_hash
-        mySQL
+                    hits.path_hash,
+                    hits.path
+        postgreSQL
         ActiveRecord::Base.connection.execute(sql)
       end
 
@@ -76,28 +73,36 @@ module Transition
       def refresh_hits_from_host_paths!
         and_host_is_in_site = site ? "AND host_paths.host_id #{in_site_hosts}" : ''
 
-        sql = <<-mySQL
-          UPDATE hits USE INDEX (index_hits_on_host_id_and_path_hash)
-                 INNER JOIN host_paths
-                         ON host_paths.host_id = hits.host_id
-                            AND host_paths.path_hash = hits.path_hash
-                            #{and_host_is_in_site}
-          SET    hits.mapping_id = host_paths.mapping_id
-        mySQL
+        # IS DISTINCT FROM is effectively <> - see
+        # https://gist.github.com/rgarner/7cccbc504de7c8d56702
+        sql = <<-postgreSQL
+          UPDATE hits
+          SET  mapping_id = host_paths.mapping_id
+          FROM host_paths
+          WHERE
+            host_paths.host_id   = hits.host_id AND
+            host_paths.path      = hits.path AND
+            host_paths.mapping_id IS DISTINCT FROM hits.mapping_id
+            #{and_host_is_in_site}
+        postgreSQL
         ActiveRecord::Base.connection.execute(sql)
       end
 
       def precompute_mapping_hit_counts!
-        sql = <<-mySQL
+        where_host_is_in_site = site ? "WHERE host_id #{in_site_hosts}" : ''
+        sql = <<-postgreSQL
           UPDATE mappings
-          INNER JOIN (
+          SET hit_count = with_counts.hit_count
+          FROM (
             SELECT hits.mapping_id, SUM(hits.count) AS hit_count
             FROM hits
             #{where_host_is_in_site}
             GROUP BY hits.mapping_id
-          ) with_counts ON mappings.id = with_counts.mapping_id
-          SET mappings.hit_count = with_counts.hit_count
-        mySQL
+          ) with_counts
+          WHERE
+            mappings.id = with_counts.mapping_id AND
+            mappings.hit_count IS DISTINCT FROM with_counts.hit_count
+        postgreSQL
 
         ActiveRecord::Base.connection.execute(sql)
       end

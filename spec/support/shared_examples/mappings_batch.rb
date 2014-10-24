@@ -7,7 +7,7 @@ shared_examples 'creates mappings' do
     end
 
     it 'should populate the fields on the new mapping' do
-      mapping = site.mappings.first
+      mapping = site.mappings.where(path: '/a').first
       mapping.path.should == '/a'
       mapping.type.should == 'redirect'
       mapping.new_url.should == 'http://a.gov.uk'
@@ -29,7 +29,7 @@ shared_examples 'creates mappings' do
         existing_mapping.reload
         existing_mapping.type.should == 'archive'
         existing_mapping.new_url.should be_nil
-        entry = mappings_batch.entries.first
+        entry = mappings_batch.entries.where(path: existing_mapping.path).first
         entry.processed.should be_false
       end
     end

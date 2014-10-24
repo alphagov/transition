@@ -123,7 +123,7 @@ describe BulkAddBatch do
     subject(:mappings_batch) do
       create(:bulk_add_batch, site: site,
               paths: ['/a', '/b'],
-              type: 'redirect', new_url: 'http://a.gov.uk', tag_list: ['a tag'])
+              type: 'redirect', new_url: 'http://a.gov.uk', tag_list: 'a tag')
     end
 
     include_examples 'creates mappings'
