@@ -13,5 +13,7 @@ class BatchesController < ApplicationController
 private
   def set_batch
     @batch = current_user.mappings_batches.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    head 404
   end
 end
