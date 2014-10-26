@@ -12,7 +12,8 @@ every :day, at: ['4:15am', '2pm'] do
   rake 'import:whitehall:mappings'
 end
 
-every :hour do
+# every hour 7am-7pm, Mon-Fri
+every '0 07-19 * * 1-5' do
   rake 'import:dns_details'
 end
 
