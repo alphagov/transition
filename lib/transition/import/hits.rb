@@ -159,7 +159,7 @@ module Transition
       def self.from_redirector_mask!(filemask)
         done, unchanged = 0, 0
 
-        change_settings('work_mem' => '2GB') do
+        change_settings('work_mem' => '2GB', 'synchronous_commit' => 'off') do
           Dir[File.expand_path(filemask)].each do |filename|
             Hits.from_redirector_tsv_file!(filename) ? done += 1 : unchanged += 1
           end
