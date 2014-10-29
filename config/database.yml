@@ -6,7 +6,6 @@ development:
   variables:
     work_mem: 10MB
     maintenance_work_mem: 128MB
-    synchronous_commit: "off"
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -16,17 +15,8 @@ test: &test
   database: transition_test<%= ENV['TEST_ENV_NUMBER'] %>
   template: template0
   encoding: utf8
-  local_infile: true
   variables:
     work_mem: 1MB
-    synchronous_commit: "off"
-
-production:
-  adapter: postgresql
-  database: transition_production
-  template: template0
-  encoding: utf8
-  local_infile: true
 
 cucumber:
   <<: *test
