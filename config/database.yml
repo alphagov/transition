@@ -15,7 +15,6 @@ test: &test
   database: transition_test<%= ENV['TEST_ENV_NUMBER'] %>
   template: template0
   encoding: utf8
-  local_infile: true
   variables:
     work_mem: 1MB
 
@@ -24,7 +23,6 @@ production:
   database: transition_production
   template: template0
   encoding: utf8
-  local_infile: true
 
 cucumber:
   <<: *test
