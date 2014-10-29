@@ -48,6 +48,38 @@ describe Transition::Import::SiteYamlFile do
         site.hosts.pluck(:hostname).sort.should eql(hosts.sort)
       end
 
+      describe '#import! lowercases uppercased hosts' do
+        let(:directgov)  { build :organisation, whitehall_slug: 'directgov' }
+
+        before do
+          Organisation.stub(:find_by_whitehall_slug).and_return(directgov)
+          Transition::Import::SiteYamlFile.load('spec/fixtures/sites/someyaml/directgov_uppercase.yml').import!
+        end
+
+        let(:site) { Site.find_by_abbr('directgov_uppercase') }
+
+        it 'imports the hosts as lowercase' do
+          site.hosts.pluck(:hostname).should_not include('www.DIRECT.gov.uk')
+          site.hosts.pluck(:hostname).should include('www.direct.gov.uk')
+        end
+      end
+
+      describe '#import! lowercases uppercased aliases' do
+        let(:directgov) { build :organisation, whitehall_slug: 'directgov' }
+
+        before do
+          Organisation.stub(:find_by_whitehall_slug).and_return(directgov)
+          Transition::Import::SiteYamlFile.load('spec/fixtures/sites/someyaml/directgov_uppercase.yml').import!
+        end
+
+        let(:site) { Site.find_by_abbr('directgov_uppercase') }
+
+        it 'imports the aliases as lowercase' do
+          site.hosts.pluck(:hostname).should_not include('MOBILE.DIRECT.gov.uk')
+          site.hosts.pluck(:hostname).should include('mobile.direct.gov.uk')
+        end
+      end
+
       describe 'updates' do
         before do
           redirector_yaml_file.import!
