@@ -18,11 +18,5 @@ test: &test
   variables:
     work_mem: 1MB
 
-production:
-  adapter: postgresql
-  database: transition_production
-  template: template0
-  encoding: utf8
-
 cucumber:
   <<: *test
