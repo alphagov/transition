@@ -99,6 +99,32 @@ describe BulkAddBatchesController do
 
         include_examples 'it doesn\'t requeue a batch which has already been queued'
       end
+
+      context 'a redirect batch containing long new_urls' do
+        let!(:whitelisted_host) { create :whitelisted_host, hostname: 'example.com' }
+        let(:stem)              { "http://#{whitelisted_host.hostname}/"  }
+        let(:long_url)          { "#{stem}#{'x' * (2048 - stem.length) }" }
+        let(:batch) do
+          create(:bulk_add_batch,
+                 site: site,
+                 type: 'redirect',
+                 new_url: long_url)
+        end
+
+        before do
+          post :import, site_id: site.abbr, id: batch.id
+        end
+
+        it 'creates each mapping in the batch' do
+          expect(site.mappings).to have(2).mappings
+        end
+
+        it 'has the long url for each' do
+          Mapping.all.each do |mapping|
+            expect(mapping.new_url).to eql(long_url)
+          end
+        end
+      end
     end
   end
 

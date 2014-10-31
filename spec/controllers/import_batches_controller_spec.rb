@@ -28,9 +28,13 @@ describe ImportBatchesController do
     end
 
     context 'with valid parameters' do
+      let!(:whitelisted_host) { create :whitelisted_host, hostname: 'example.com' }
+      let(:stem)              { "http://#{whitelisted_host.hostname}/"  }
+      let(:long_url)          { "#{stem}#{'x' * (2048 - stem.length) }" }
       before do
         post :create, site_id: site.abbr, import_batch: {
-          raw_csv: '/a,TNA', tag_list: ''
+          raw_csv: "/a,TNA\n/b,#{long_url}",
+          tag_list: ''
         }
       end
 
@@ -43,6 +47,21 @@ describe ImportBatchesController do
         entry = site.import_batches.first.entries.first
         entry.path.should eql('/a')
         entry.type.should eql('archive')
+      end
+
+      describe 'the archive entry' do
+        subject { site.import_batches.first.entries.first }
+
+        its(:path) { should eql('/a') }
+        its(:type) { should eql('archive')}
+      end
+
+      describe 'the redirect entry' do
+        subject { site.import_batches.first.entries.last }
+
+        its(:path)    { should eql('/b') }
+        its(:type)    { should eql('redirect')}
+        its(:new_url) { should eql(long_url)}
       end
 
       it 'redirects to the preview page' do

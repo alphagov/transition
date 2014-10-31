@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925104317) do
+ActiveRecord::Schema.define(version: 20141031104246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(version: 20140925104317) do
     t.integer "mapping_id"
     t.boolean "processed",                      default: false
     t.string  "klass"
-    t.string  "new_url"
+    t.string  "new_url",           limit: 2048
     t.string  "type"
   end
 
@@ -117,14 +117,14 @@ ActiveRecord::Schema.define(version: 20140925104317) do
 
   create_table "mappings_batches", force: true do |t|
     t.string   "tag_list"
-    t.string   "new_url"
+    t.string   "new_url",         limit: 2048
     t.boolean  "update_existing"
     t.integer  "user_id"
     t.integer  "site_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.string   "state",           default: "unqueued"
-    t.boolean  "seen_outcome",    default: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.string   "state",                        default: "unqueued"
+    t.boolean  "seen_outcome",                 default: false
     t.string   "type"
     t.string   "klass"
   end
