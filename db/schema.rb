@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141103111339) do
+ActiveRecord::Schema.define(version: 20141103142639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(version: 20141103111339) do
   end
 
   add_index "mappings", ["hit_count"], name: "index_mappings_on_hit_count", using: :btree
+  add_index "mappings", ["site_id", "path"], name: "index_mappings_on_site_id_and_path", unique: true, using: :btree
   add_index "mappings", ["site_id", "path_hash"], name: "index_mappings_on_site_id_and_path_hash", unique: true, using: :btree
   add_index "mappings", ["site_id", "type"], name: "index_mappings_on_site_id_and_type", using: :btree
   add_index "mappings", ["site_id"], name: "index_mappings_on_site_id", using: :btree
