@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141103110325) do
+ActiveRecord::Schema.define(version: 20141103111339) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -130,17 +130,6 @@ ActiveRecord::Schema.define(version: 20141103110325) do
   end
 
   add_index "mappings_batches", ["user_id", "site_id"], name: "index_mappings_batches_on_user_id_and_site_id", using: :btree
-
-  create_table "mappings_staging", id: false, force: true do |t|
-    t.text   "old_url"
-    t.text   "new_url"
-    t.string "host"
-    t.string "path"
-    t.string "path_hash"
-    t.text   "suggested_url"
-    t.text   "archive_url"
-    t.string "type"
-  end
 
   create_table "organisational_relationships", force: true do |t|
     t.integer "parent_organisation_id"
