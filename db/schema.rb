@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925104317) do
+ActiveRecord::Schema.define(version: 20141103111339) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,7 +88,7 @@ ActiveRecord::Schema.define(version: 20140925104317) do
 
   create_table "mappings", force: true do |t|
     t.integer "site_id",                                      null: false
-    t.string  "path",            limit: 1024,                 null: false
+    t.string  "path",            limit: 2048,                 null: false
     t.string  "path_hash",       limit: 40,                   null: false
     t.text    "new_url"
     t.text    "suggested_url"
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(version: 20140925104317) do
     t.integer "mapping_id"
     t.boolean "processed",                      default: false
     t.string  "klass"
-    t.string  "new_url"
+    t.string  "new_url",           limit: 2048
     t.string  "type"
   end
 
@@ -117,30 +117,19 @@ ActiveRecord::Schema.define(version: 20140925104317) do
 
   create_table "mappings_batches", force: true do |t|
     t.string   "tag_list"
-    t.string   "new_url"
+    t.string   "new_url",         limit: 2048
     t.boolean  "update_existing"
     t.integer  "user_id"
     t.integer  "site_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.string   "state",           default: "unqueued"
-    t.boolean  "seen_outcome",    default: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.string   "state",                        default: "unqueued"
+    t.boolean  "seen_outcome",                 default: false
     t.string   "type"
     t.string   "klass"
   end
 
   add_index "mappings_batches", ["user_id", "site_id"], name: "index_mappings_batches_on_user_id_and_site_id", using: :btree
-
-  create_table "mappings_staging", id: false, force: true do |t|
-    t.text   "old_url"
-    t.text   "new_url"
-    t.string "host"
-    t.string "path"
-    t.string "path_hash"
-    t.text   "suggested_url"
-    t.text   "archive_url"
-    t.string "type"
-  end
 
   create_table "organisational_relationships", force: true do |t|
     t.integer "parent_organisation_id"
