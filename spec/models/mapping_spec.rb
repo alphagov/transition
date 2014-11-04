@@ -60,7 +60,7 @@ describe Mapping do
       end
     end
 
-    it { should ensure_length_of(:path).is_at_most(1024) }
+    it { should ensure_length_of(:path).is_at_most(2048) }
     it 'ensures paths are unique to a site' do
       site = create(:site)
       create(:archived, path: '/foo', site: site)
@@ -68,12 +68,12 @@ describe Mapping do
     end
 
     it 'constrains the length of all URL fields' do
-      too_long_url = 'http://'.ljust(65536, 'x')
+      too_long_url = 'http://'.ljust(2049, 'x')
 
       [:new_url, :suggested_url, :archive_url].each do |url_attr|
         mapping = build(:mapping, url_attr => too_long_url)
         mapping.should_not be_valid
-        mapping.errors[url_attr].should include('is too long (maximum is 65535 characters)')
+        mapping.errors[url_attr].should include('is too long (maximum is 2048 characters)')
       end
     end
 
