@@ -38,10 +38,10 @@ describe BulkAddBatch do
       end
 
       context 'when the new URL is too long' do
-        subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect', new_url: 'http://'.ljust(65536, 'x')) }
+        subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect', new_url: 'http://'.ljust(2049, 'x')) }
 
         it 'is invalid' do
-          mappings_batch.errors[:new_url].should include('is too long (maximum is 65535 characters)')
+          mappings_batch.errors[:new_url].should include('is too long (maximum is 2048 characters)')
         end
       end
 

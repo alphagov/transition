@@ -13,7 +13,7 @@ class BulkAddBatch < MappingsBatch
   validates :type, inclusion: { :in => Mapping::SUPPORTED_TYPES }
   with_options :if => :redirect? do |redirect|
     redirect.validates :new_url, presence: { message: I18n.t('mappings.bulk.new_url_invalid') }
-    redirect.validates :new_url, length: { maximum: (64.kilobytes - 1) }
+    redirect.validates :new_url, length: { maximum: 2048 }
     redirect.validates :new_url, non_blank_url: { message: I18n.t('mappings.bulk.new_url_invalid') }
     redirect.validates :new_url, host_in_whitelist: {
       message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist',
