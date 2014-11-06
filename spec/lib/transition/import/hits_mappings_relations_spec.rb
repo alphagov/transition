@@ -49,7 +49,8 @@ describe Transition::Import::HitsMappingsRelations do
     describe 'The first HostPath' do
       subject { HostPath.where(path: '/this/Exists?and=can&canonicalize=1&significant=1').first }
 
-      its(:canonical_path) { should eql('/this/exists?significant=1') }
+      its(:path_hash)      { should eql(Digest::SHA1.hexdigest('/this/Exists?and=can&canonicalize=1&significant=1')) }
+      its(:c14n_path_hash) { should eql(Digest::SHA1.hexdigest('/this/exists?significant=1')) }
     end
 
     context 'when canonicalization has changed since a previous refresh' do

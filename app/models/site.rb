@@ -79,7 +79,7 @@ class Site < ActiveRecord::Base
   end
 
   def update_hits_relations
-    host_paths.update_all(mapping_id: nil, canonical_path: nil)
+    host_paths.update_all(mapping_id: nil, c14n_path_hash: nil)
     hits.update_all(mapping_id: nil)
     Transition::Import::HitsMappingsRelations.refresh!(self)
   end

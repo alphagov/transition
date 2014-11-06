@@ -45,6 +45,7 @@ describe Transition::Import::Hits do
         its(:hit_on)    { should eql(Date.new(2012, 10, 14)) }
         its(:count)     { should eql(21) }
         its(:path)      { should eql('/') }
+        its(:path_hash) { should eql('42099b4af021e53fd8fd4e056c2568d7c2e3ffa8') }
       end
     end
 
