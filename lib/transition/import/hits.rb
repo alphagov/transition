@@ -98,8 +98,8 @@ module Transition
       postgreSQL
 
       INSERT_FROM_STAGING = <<-postgreSQL
-        INSERT INTO hits (host_id, path, http_status, count, hit_on)
-        SELECT h.id, st.path, st.http_status, st.count, st.hit_on
+        INSERT INTO hits (host_id, path, path_hash, http_status, count, hit_on)
+        SELECT h.id, st.path, encode(digest(st.path, 'sha1'), 'hex'), st.http_status, st.count, st.hit_on
         FROM   hits_staging st
         INNER JOIN hosts h on h.hostname = st.hostname
         WHERE LENGTH(st.path) <= 2048
