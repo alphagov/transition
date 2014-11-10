@@ -34,7 +34,7 @@ module Transition
                 Rails.logger.warn("Skipping mapping for unknown host in Whitehall URL CSV: '#{old_uri.host}'")
               else
                 canonical_path = host.site.canonical_path(row['Old URL'])
-                existing_mapping = host.site.mappings.where(path_hash: path_hash(canonical_path)).first
+                existing_mapping = host.site.mappings.where(path: canonical_path).first
 
                 if existing_mapping
                     if existing_mapping.type == 'archive' ||
@@ -52,10 +52,6 @@ module Transition
 
         def hosts_by_hostname
           @_hosts ||= Host.all.inject({}) { |accumulator,host| accumulator.merge(host.hostname => host) }
-        end
-
-        def path_hash(canonical_path)
-          Digest::SHA1.hexdigest(canonical_path)
         end
       end
     end
