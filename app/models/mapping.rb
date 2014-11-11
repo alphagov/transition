@@ -30,7 +30,7 @@ class Mapping < ActiveRecord::Base
             exclusion: { in: ['/'], message: I18n.t('mappings.not_possible_to_edit_homepage_mapping')},
             is_path: true
   validates :type, presence: true, inclusion: { :in => SUPPORTED_TYPES }
-  validates :site_id, uniqueness: { scope: [:path], message: 'Mapping already exists for this site and path!' }
+  validates :path, uniqueness: { scope: [:site_id], message: 'Mapping already exists for this site and path!' }
 
   before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path
 
