@@ -29,7 +29,7 @@ describe Transition::Import::OrgsSitesHosts do
       end
 
       it 'has imported sites' do
-        Site.count.should == 11
+        Site.count.should == 12
       end
 
       it 'has imported hosts' do

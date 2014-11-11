@@ -20,8 +20,16 @@ module Transition
         yaml['site']
       end
 
+      def aliases
+        yaml['aliases'] && yaml['aliases'].map(&:downcase)
+      end
+
       def extra_organisation_slugs
         yaml['extra_organisation_slugs']
+      end
+
+      def host
+        yaml['host'].downcase
       end
 
       def whitehall_slug
@@ -38,7 +46,7 @@ module Transition
       def has_global_type?
         # cdn.hm-treasury.gov.uk has a regex in the global value, which Bouncer
         # implements as a "rule", so we can ignore it.
-        yaml['global'] && (yaml['host'] != 'cdn.hm-treasury.gov.uk')
+        yaml['global'] && (host != 'cdn.hm-treasury.gov.uk')
       end
 
       def global_type
@@ -85,7 +93,7 @@ module Transition
       end
 
       def import_hosts!
-        [yaml['host'], yaml['aliases']].flatten.compact.each do |name|
+        [host, aliases].flatten.compact.each do |name|
           canonical_host = Host.where(hostname: name).first_or_initialize
           canonical_host.site = site
           canonical_host.save!
