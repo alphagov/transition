@@ -37,12 +37,14 @@ class BulkAddBatch < MappingsBatch
 
   # called after_create, so in the same transaction
   def create_entries
-    existing_mappings = site.mappings.where(path: canonical_paths)
+    canonical_path_hashes = canonical_paths.map { |path| Digest::SHA1.hexdigest(path) }
+    existing_mappings = site.mappings.where(path_hash: canonical_path_hashes)
 
     records = canonical_paths.map do |canonical_path|
       entry = BulkAddBatchEntry.new(path: canonical_path)
       entry.mappings_batch = self
-      entry.mapping = existing_mappings.detect { |mapping| mapping.path == canonical_path }
+      path_hash = Digest::SHA1.hexdigest(canonical_path)
+      entry.mapping = existing_mappings.detect { |mapping| mapping.path_hash == path_hash }
       entry
     end
 

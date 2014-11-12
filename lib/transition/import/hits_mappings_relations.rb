@@ -13,7 +13,7 @@ module Transition
 
       def refresh!
         start('Refreshing host paths'                                 ) { refresh_host_paths! }
-        start('Adding missing mapping_id/canonical_path to host paths') { connect_mappings_to_host_paths! }
+        start('Adding missing mapping_id/c14n_path_hash to host paths') { connect_mappings_to_host_paths! }
         start('Updating hits from host paths'                         ) { refresh_hits_from_host_paths! }
         start('Precomputing mapping hit counts'                       ) { precompute_mapping_hit_counts! }
       end
@@ -36,8 +36,8 @@ module Transition
       def refresh_host_paths!
         and_host_is_in_site = site ? "AND hits.host_id #{in_site_hosts}" : ''
         sql = <<-postgreSQL
-          INSERT INTO host_paths(host_id, path)
-          SELECT hits.host_id, hits.path
+          INSERT INTO host_paths(host_id, path_hash, path)
+          SELECT hits.host_id, hits.path_hash, hits.path
           FROM   hits
           WHERE NOT EXISTS (
             SELECT 1 FROM host_paths
@@ -47,6 +47,7 @@ module Transition
           )
           #{and_host_is_in_site}
           GROUP  BY hits.host_id,
+                    hits.path_hash,
                     hits.path
         postgreSQL
         ActiveRecord::Base.connection.execute(sql)
@@ -56,14 +57,15 @@ module Transition
         host_paths.includes(:host).find_each do |host_path|
           site = host_path.host.site
 
-          canonical_path = site.canonical_path(host_path.path)
+          c14nized_path_hash =
+            Digest::SHA1.hexdigest(site.canonical_path(host_path.path))
           mapping_id = Mapping.where(
-            path: canonical_path, site_id: site.id).pluck(:id).first
+            path_hash: c14nized_path_hash, site_id: site.id).pluck(:id).first
 
-          if host_path.mapping_id != mapping_id || host_path.canonical_path != canonical_path
+          if host_path.mapping_id != mapping_id || host_path.c14n_path_hash != c14nized_path_hash
             host_path.update_columns(
               mapping_id: mapping_id,
-              canonical_path: canonical_path)
+              c14n_path_hash: c14nized_path_hash)
           end
         end
       end
