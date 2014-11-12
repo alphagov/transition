@@ -10,7 +10,7 @@ module Transition
           Transition::History.as_a_user(user) do
             site_paths = site.host_paths
               .select('MIN(host_paths.path) AS path')
-              .where('mapping_id is null').group('canonical_path').map(&:path)
+              .where('mapping_id is null').group('c14n_path_hash').map(&:path)
 
             site_paths.each do |uncanonicalized_path|
               # Try to create them (there may be duplicates in the set and they may

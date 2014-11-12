@@ -36,6 +36,7 @@ describe Transition::Import::MappingsFromHostPaths do
       subject { @site.mappings.first }
 
       its(:path)        { should eql('/foo') }
+      its(:path_hash)   { should eql(@host_path.c14n_path_hash) }
       its(:type)        { should eql('unresolved') }
     end
 

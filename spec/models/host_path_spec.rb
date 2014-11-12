@@ -12,6 +12,7 @@ describe HostPath do
     end
 
     its(:path)           { should eql(uncanonicalized_path) }
-    its(:canonical_path) { should eql(canonicalized_path)   }
+    its(:path_hash)      { should eql(Digest::SHA1.hexdigest(uncanonicalized_path)) }
+    its(:c14n_path_hash) { should eql(Digest::SHA1.hexdigest(canonicalized_path)) }
   end
 end
