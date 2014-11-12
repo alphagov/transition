@@ -183,6 +183,7 @@ ActiveRecord::Schema.define(version: 20141120164444) do
     t.string   "global_type"
     t.string   "homepage_title"
     t.string   "homepage_furl"
+    t.boolean  "precompute_all_hits_view",    default: false, null: false
   end
 
   add_index "sites", ["abbr"], name: "index_sites_on_site", unique: true, using: :btree
