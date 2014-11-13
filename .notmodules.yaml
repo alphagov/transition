@@ -1,4 +1,4 @@
-- path  : data/redirector
+- path  : data/transition-config
   url   : git@github.com:alphagov/transition-config.git
 - path  : data/transition-stats
   url   : git@github.com:alphagov/transition-stats.git

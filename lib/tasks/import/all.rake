@@ -14,7 +14,7 @@ namespace :import do
     desc 'Import all Organisations, Sites and Hosts'
     task :orgs_sites_hosts do
       patterns = [
-        'data/redirector/data/transition-sites/*.yml',
+        'data/transition-config/data/transition-sites/*.yml',
       ]
       Rake::Task['import:orgs_sites_hosts'].invoke(glob_from_array(patterns))
     end
