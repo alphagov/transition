@@ -1,10 +1,12 @@
 require 'optic14n'
 require 'transition/import/console_job_wrapper'
+require 'transition/import/postgresql_settings'
 
 module Transition
   module Import
     class HitsMappingsRelations
       include Transition::Import::ConsoleJobWrapper
+      include Transition::Import::PostgreSQLSettings
 
       attr_accessor :site
       def initialize(site = nil)
@@ -50,7 +52,9 @@ module Transition
                     hits.path_hash,
                     hits.path
         postgreSQL
-        ActiveRecord::Base.connection.execute(sql)
+        change_settings('work_mem' => '256MB') do
+          ActiveRecord::Base.connection.execute(sql)
+        end
       end
 
       def connect_mappings_to_host_paths!
