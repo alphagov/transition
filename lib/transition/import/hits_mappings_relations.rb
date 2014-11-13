@@ -57,14 +57,18 @@ module Transition
         host_paths.includes(:host).find_each do |host_path|
           site = host_path.host.site
 
-          c14nized_path_hash =
-            Digest::SHA1.hexdigest(site.canonical_path(host_path.path))
-          mapping_id = Mapping.where(
+          canonical_path     = site.canonical_path(host_path.path)
+          c14nized_path_hash = Digest::SHA1.hexdigest(canonical_path)
+          mapping_id         = Mapping.where(
             path_hash: c14nized_path_hash, site_id: site.id).pluck(:id).first
 
-          if host_path.mapping_id != mapping_id || host_path.c14n_path_hash != c14nized_path_hash
+          needs_update = host_path.mapping_id != mapping_id ||
+            host_path.c14n_path_hash != c14nized_path_hash ||
+            host_path.canonical_path != canonical_path
+          if needs_update
             host_path.update_columns(
               mapping_id: mapping_id,
+              canonical_path: canonical_path,
               c14n_path_hash: c14nized_path_hash)
           end
         end

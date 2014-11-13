@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141103142639) do
+ActiveRecord::Schema.define(version: 20141113115152) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20141103142639) do
     t.string  "c14n_path_hash"
     t.integer "host_id"
     t.integer "mapping_id"
+    t.string  "canonical_path", limit: 2048
   end
 
   add_index "host_paths", ["c14n_path_hash"], name: "index_host_paths_on_c14n_path_hash", using: :btree
