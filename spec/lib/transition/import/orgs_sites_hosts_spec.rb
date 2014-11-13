@@ -2,12 +2,12 @@ require 'spec_helper'
 require 'transition/import/orgs_sites_hosts'
 
 describe Transition::Import::OrgsSitesHosts do
-  describe '.from_redirector_yaml!' do
+  describe '.from_yaml!' do
 
     context 'there are no valid yaml files' do
       it 'reports the lack' do
         expect {
-          Transition::Import::OrgsSitesHosts.from_redirector_yaml!(
+          Transition::Import::OrgsSitesHosts.from_yaml!(
             'spec/fixtures/sites/noyaml/*.yml',
             Transition::Import::WhitehallOrgs.new('spec/fixtures/whitehall/orgs_abridged.yml')
           )
@@ -17,7 +17,7 @@ describe Transition::Import::OrgsSitesHosts do
 
     context 'importing valid yaml files', testing_before_all: true do
       before :all do
-        Transition::Import::OrgsSitesHosts.from_redirector_yaml!(
+        Transition::Import::OrgsSitesHosts.from_yaml!(
           'spec/fixtures/sites/someyaml/**/*.yml',
           Transition::Import::WhitehallOrgs.new('spec/fixtures/whitehall/orgs_abridged.yml')
         )
@@ -65,7 +65,7 @@ describe Transition::Import::OrgsSitesHosts do
 
       context 'the import is run again' do
         before :all do
-          Transition::Import::OrgsSitesHosts.from_redirector_yaml!(
+          Transition::Import::OrgsSitesHosts.from_yaml!(
             'spec/fixtures/sites/someyaml/*.yml',
             Transition::Import::WhitehallOrgs.new('spec/fixtures/whitehall/orgs_abridged.yml')
           )

@@ -28,7 +28,7 @@ module Benchmark
           number_of_runs.times do
             delete_hits_and_import_records
 
-            b.report { Transition::Import::Hits.from_redirector_mask!(test_files_mask) }
+            b.report { Transition::Import::Hits.from_mask!(test_files_mask) }
           end
         end
       end
