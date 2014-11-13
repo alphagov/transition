@@ -1,9 +1,11 @@
 require 'transition/import/console_job_wrapper'
+require 'transition/import/postgresql_settings'
 
 module Transition
   module Import
     class DailyHitTotals
       extend ConsoleJobWrapper
+      extend PostgreSQLSettings
 
       INSERT_TOTALS_FROM_HITS = <<-postgreSQL
         INSERT INTO daily_hit_totals (host_id, http_status, count, total_on)
@@ -35,8 +37,10 @@ module Transition
 
       def self.from_hits!
         start 'Refreshing daily hit totals from hits' do
-          ActiveRecord::Base.connection.execute(UPDATE_TOTALS_FROM_HITS)
-          ActiveRecord::Base.connection.execute(INSERT_TOTALS_FROM_HITS)
+          change_settings('work_mem' => '256MB') do
+            ActiveRecord::Base.connection.execute(UPDATE_TOTALS_FROM_HITS)
+            ActiveRecord::Base.connection.execute(INSERT_TOTALS_FROM_HITS)
+          end
         end
       end
     end
