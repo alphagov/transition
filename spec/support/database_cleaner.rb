@@ -11,6 +11,16 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
+  ##
+  # Use if your specs are using their own transactions and you don't
+  # want the implicit wrapped transaction around specs. Not using this
+  # can result in the dreaded PG::InFailedTransaction, which may
+  # bork a whole load of successive specs
+  config.before(:each, :truncate_everything => true) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean
+  end
+
   config.before(:each, :js => true) do
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean
