@@ -38,8 +38,8 @@ describe Postgres::MaterializedView do
   end
 
   describe '.create', truncate_everything: true do
-    before { execute('DROP MATERIALIZED VIEW IF EXISTS totally_new_view;') }
-    after  { execute('DROP MATERIALIZED VIEW IF EXISTS totally_new_view;') }
+    before { execute('DROP MATERIALIZED VIEW IF EXISTS "totally_new-view";') }
+    after  { execute('DROP MATERIALIZED VIEW IF EXISTS "totally_new-view";') }
 
     context 'no options given' do
       context 'view already exists' do
@@ -53,14 +53,14 @@ describe Postgres::MaterializedView do
         end
       end
 
-      context 'view does not exist' do
+      context 'view does not exist and view names need quoting' do
         it 'creates new views' do
           Postgres::MaterializedView.create(
-            'totally_new_view',
+            'totally_new-view',
             'SELECT 1'
           )
 
-          expect(Postgres::MaterializedView).to exist('totally_new_view')
+          expect(Postgres::MaterializedView).to exist('totally_new-view')
         end
       end
     end

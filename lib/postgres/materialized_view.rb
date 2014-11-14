@@ -19,7 +19,7 @@ module Postgres
     end
 
     def self.refresh(name)
-      execute("REFRESH MATERIALIZED VIEW #{name}")
+      execute(%(REFRESH MATERIALIZED VIEW "#{name}"))
     end
 
     def self.get_body(name)
@@ -30,7 +30,7 @@ module Postgres
   private
 
     def self.drop_sql(name)
-      "DROP MATERIALIZED VIEW IF EXISTS #{name};"
+      %(DROP MATERIALIZED VIEW IF EXISTS "#{name}";)
     end
   end
 end
