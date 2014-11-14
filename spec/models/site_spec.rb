@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'postgres/materialized_view'
 
 describe Site do
   describe 'relationships' do
@@ -256,6 +257,35 @@ describe Site do
       end
 
       it { should == 30 }
+    end
+  end
+
+  describe 'precomputed views' do
+    subject(:site) { build :site, abbr: 'hmrc', precompute_all_hits_view: false }
+
+    it 'quotes a conventional view name' do
+      site.precomputed_view_name.should eql('"hmrc_all_hits"')
+    end
+
+    describe '#able_to_use_view?' do
+      context 'the view is not there' do
+        before { Postgres::MaterializedView.stub(:exist?).and_return(false) }
+
+        it { should_not be_able_to_use_view }
+      end
+      context 'the view is there, but precompute_hits_view is false' do
+        before { Postgres::MaterializedView.stub(:exist?).and_return(true) }
+
+        it { should_not be_able_to_use_view }
+      end
+      context 'the view is there and precompute_hits_view is true' do
+        before do
+          site.precompute_all_hits_view = true
+          Postgres::MaterializedView.should_receive(:exist?).and_return(true)
+        end
+
+        it { should be_able_to_use_view }
+      end
     end
   end
 end

@@ -1,35 +1,40 @@
 require 'spec_helper'
 require 'transition/import/daily_hit_totals'
+require 'postgres/materialized_view'
 
 describe HitsController do
+  let(:site) do
+    create :site, precompute_all_hits_view: precompute_all_hits_view do |site|
+      site.hosts << create(:host, hostname: 'alias.gov.uk', site: site)
+    end
+  end
+
+  let(:host)                     { site.default_host }
+  let(:host_alias)               { site.hosts.last }
+  let(:precompute_all_hits_view) { false }
+
+  let!(:errors) do
+    [
+      create(:hit, host: host, hit_on: '2012-12-28', count: 1, http_status: '404'),
+      create(:hit, host: host, hit_on: '2012-12-31', count: 1, http_status: '404')
+    ]
+  end
+  let!(:archives) do
+    [
+      create(:hit, host: host, hit_on: '2012-12-28', count: 2, http_status: '410'),
+      create(:hit, host: host, hit_on: '2012-12-31', count: 2, http_status: '410'),
+      create(:hit, host: host_alias, hit_on: '2012-12-31', count: 2, http_status: '410')
+    ]
+  end
+
+  before do
+    Timecop.freeze(Date.new(2013, 01, 01))
+    login_as_stub_user
+    Transition::Import::DailyHitTotals.from_hits!
+  end
+
   describe '#category' do
-    let(:site) do
-      create :site do |site|
-        site.hosts << create(:host, hostname: 'alias.gov.uk', site: site)
-      end
-    end
-
-    let(:host)       { site.default_host }
-    let(:host_alias) { site.hosts.last }
-
-    let!(:errors) do
-      [
-        create(:hit, host: host, hit_on: '2012-12-28', count: 1, http_status: '404'),
-        create(:hit, host: host, hit_on: '2012-12-31', count: 1, http_status: '404')
-      ]
-    end
-    let!(:archives) do
-      [
-       create(:hit, host: host, hit_on: '2012-12-28', count: 2, http_status: '410'),
-       create(:hit, host: host, hit_on: '2012-12-31', count: 2, http_status: '410'),
-       create(:hit, host: host_alias, hit_on: '2012-12-31', count: 2, http_status: '410')
-      ]
-    end
-
     before do
-      Timecop.freeze(Date.new(2013, 01, 01))
-      login_as_stub_user
-      Transition::Import::DailyHitTotals.from_hits!
       get :category, site_id: site, category: test_category_name
     end
 
@@ -64,5 +69,65 @@ describe HitsController do
         category.hits.length.should == 1
       end
     end
+  end
+
+  describe '#index', truncate_everything: true do
+    let(:category) { assigns[:category] }
+    let(:paths)    { category.hits.map { |h| [h.http_status, h.path, h.count] } }
+
+    before do
+      Site.should_receive(:find_by_abbr!).and_return(site)
+    end
+
+    shared_examples 'it has hits and points whether or not we used a view' do
+      it 'has paths once for each status ordered by descending count' do
+        paths.should == [['410', '/article/123', 6],
+                         ['404', '/article/123', 2]]
+      end
+      it 'has one point per day' do
+        category.should have(4).points
+      end
+    end
+
+    context 'site is small; all hits view is not precomputed' do
+      before do
+        site.should_not receive(:precomputed_all_hits)
+
+        get :index, site_id: site, period: 'all-time'
+      end
+
+      it_behaves_like 'it has hits and points whether or not we used a view'
+    end
+
+    context 'site is large; all hits view is precomputed' do
+      let(:precompute_all_hits_view) { true }
+
+      context 'the view has been precomputed' do
+        before do
+          Transition::Import::MaterializedViews::Hits.refresh!
+
+          site.should receive(:precomputed_all_hits).and_call_original
+
+          get :index, site_id: site, period: 'all-time'
+        end
+
+        it_behaves_like 'it has hits and points whether or not we used a view'
+      end
+
+      context 'the view is not yet there, so we fall back to calculation' do
+        before do
+          ActiveRecord::Base.connection.execute(
+            %(DROP MATERIALIZED VIEW IF EXISTS #{site.precomputed_view_name})
+          )
+
+          site.should_not receive(:precomputed_all_hits)
+
+          get :index, site_id: site, period: 'all-time'
+        end
+
+        it_behaves_like 'it has hits and points whether or not we used a view'
+      end
+    end
+
   end
 end
