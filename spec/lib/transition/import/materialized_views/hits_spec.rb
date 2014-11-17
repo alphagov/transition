@@ -16,7 +16,7 @@ describe Transition::Import::MaterializedViews::Hits do
           postgreSQL
         )
       end
-      Transition::Import::MaterializedViews::Hits.refresh!
+      Transition::Import::MaterializedViews::Hits.replace!
     end
 
     it 'does not create views for small sites' do
@@ -34,7 +34,7 @@ describe Transition::Import::MaterializedViews::Hits do
         ofsted = @sites.find { |s| s.abbr == 'ofsted' }
         ofsted.default_host.hits << create(:hit, host: ofsted.default_host)
 
-        Transition::Import::MaterializedViews::Hits.refresh!
+        Transition::Import::MaterializedViews::Hits.replace!
       end
 
       it 'refreshes the view' do

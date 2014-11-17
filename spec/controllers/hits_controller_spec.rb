@@ -104,7 +104,7 @@ describe HitsController do
 
       context 'the view has been precomputed' do
         before do
-          Transition::Import::MaterializedViews::Hits.refresh!
+          Transition::Import::MaterializedViews::Hits.replace!
 
           site.should receive(:precomputed_all_hits).and_call_original
 

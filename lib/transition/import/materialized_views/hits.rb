@@ -19,17 +19,15 @@ module Transition
           postgreSQL
         end
 
-        def self.refresh!
+        def self.replace!
           Site.where(precompute_all_hits_view: true).each do |site|
             view_name = "#{site.abbr}_all_hits"
 
-            if Postgres::MaterializedView.exist?(view_name)
-              console_puts "Refreshing #{view_name}"
-              Postgres::MaterializedView.refresh(view_name)
-            else
-              console_puts "Creating #{view_name}"
-              Postgres::MaterializedView.create(view_name, all_hits_all_time(site))
-            end
+            doing = Postgres::MaterializedView.exist?(view_name) ? 'Refreshing' : 'Creating'
+
+            console_puts "#{doing} #{view_name}"
+            Postgres::MaterializedView.create(
+              view_name, all_hits_all_time(site), replace: true)
           end
         end
       end

@@ -4,7 +4,7 @@ namespace :import do
   namespace :hits do
     desc 'Refresh materialized views for all hits, all-time on larger sites'
     task :refresh_materialized => :environment do
-      Transition::Import::MaterializedViews::Hits.refresh!
+      Transition::Import::MaterializedViews::Hits.replace!
     end
   end
 end
