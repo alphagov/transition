@@ -8,27 +8,21 @@ module Transition
     class WhitehallOrgs
       include Enumerable
 
-      def initialize(cached_org_path = nil)
-        @cached_org_path = cached_org_path
-      end
-
-      ##
-      # Place to put complete cached copy of orgs API.
-      # Cache expires when the date changes, so could be valid
-      # for up to 24 hours.
-      def cached_org_path
-        @cached_org_path ||=
-          "/tmp/all_whitehall_orgs-#{Time.zone.now.strftime('%Y-%m-%d')}.yaml"
+      # org_yaml_path is only for test usage, so that we can pass in a fixture
+      # rather than calling a live API. In production this always calls the
+      # live API.
+      def initialize(org_yaml_path = nil)
+        @org_yaml_path = org_yaml_path
       end
 
       def organisations
         @organisations ||= begin
-          return YAML.load(File.read(cached_org_path)) if File.exist?(cached_org_path)
+          if @org_yaml_path.present? && File.exist?(@org_yaml_path)
+            return YAML.load(File.read(@org_yaml_path))
+          end
 
           api = GdsApi::Organisations.new(Plek.current.find('whitehall-admin'))
-          api.organisations.with_subsequent_pages.to_a.tap do |orgs|
-            File.open(cached_org_path, 'w') { |f| f.write(YAML.dump(orgs)) }
-          end
+          api.organisations.with_subsequent_pages.to_a
         end
       end
 
