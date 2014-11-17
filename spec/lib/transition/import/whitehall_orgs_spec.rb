@@ -4,9 +4,7 @@ require 'transition/import/whitehall_orgs'
 describe Transition::Import::WhitehallOrgs do
   context 'with an API response stubbed to fixtures' do
     subject(:whitehall_orgs) do
-      Transition::Import::WhitehallOrgs.new.tap do |orgs|
-        orgs.stub(:cached_org_path).and_return('spec/fixtures/whitehall/orgs_abridged.yml')
-      end
+      Transition::Import::WhitehallOrgs.new('spec/fixtures/whitehall/orgs_abridged.yml')
     end
 
     it { should have(6).organisations }
