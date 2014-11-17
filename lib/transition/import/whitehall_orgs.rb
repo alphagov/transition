@@ -8,14 +8,17 @@ module Transition
     class WhitehallOrgs
       include Enumerable
 
-      def initialize(cached_org_path = nil)
-        @cached_org_path = cached_org_path
+      # org_yaml_path is only for test usage, so that we can pass in a fixture
+      # rather than calling a live API. In production this always calls the
+      # live API.
+      def initialize(org_yaml_path = nil)
+        @org_yaml_path = org_yaml_path
       end
 
       def organisations
         @organisations ||= begin
-          if @cached_org_path.present? && File.exist?(@cached_org_path)
-            return YAML.load(File.read(@cached_org_path))
+          if @org_yaml_path.present? && File.exist?(@org_yaml_path)
+            return YAML.load(File.read(@org_yaml_path))
           end
 
           api = GdsApi::Organisations.new(Plek.current.find('whitehall-admin'))
