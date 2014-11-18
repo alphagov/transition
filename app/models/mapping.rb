@@ -1,4 +1,3 @@
-require 'digest/sha1'
 require 'transition/history'
 
 class Mapping < ActiveRecord::Base
@@ -32,10 +31,7 @@ class Mapping < ActiveRecord::Base
   validates :type, presence: true, inclusion: { :in => SUPPORTED_TYPES }
   validates :path, uniqueness: { scope: [:site_id], message: 'Mapping already exists for this site and path!' }
 
-  # set a hash of the path because we can't have a unique index on
-  # the path (it's too long)
-  before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path, :set_path_hash
-  validates :path_hash, presence: true
+  before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path
 
   before_save :ensure_papertrail_user_config
 
@@ -160,10 +156,6 @@ protected
     # The path isn't parseable, so leave it intact for validations to report
   end
 
-  def set_path_hash
-    self.path_hash = Digest::SHA1.hexdigest(path) if path_changed?
-  end
-
   def canonicalize_path
     self.path = site.canonical_path(path) unless (site.nil? || path == '/' || path =~ /^[^\/]/)
   end
@@ -177,10 +169,10 @@ protected
   end
 
   def update_hit_relations
-    host_paths = site.host_paths.where(c14n_path_hash: path_hash)
-    new_hits_hashes = host_paths.pluck(:path_hash)
+    host_paths = site.host_paths.where(canonical_path: path)
+    new_hits_paths = host_paths.pluck(:path)
 
-    site.hits.where(path_hash: new_hits_hashes).update_all(mapping_id: self.id)
+    site.hits.where(path: new_hits_paths).update_all(mapping_id: self.id)
     host_paths.update_all(mapping_id: self.id)
 
     self.update_column(:hit_count, hits.sum('count'))
