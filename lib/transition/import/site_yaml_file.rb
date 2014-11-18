@@ -2,8 +2,6 @@ require 'htmlentities'
 
 module Transition
   module Import
-    ##
-    # A transition-centric view over redirector yaml
     class SiteYamlFile
       attr_accessor :yaml
 

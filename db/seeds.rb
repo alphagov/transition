@@ -11,5 +11,5 @@ if Rails.env.development?
   end
 end
 
-puts "To import the data from redirector, plus Hit data, run this: "
+puts "To import the data from transition-config, plus Hit data, run this: "
 puts "  bundle exec rake import:all"

@@ -66,7 +66,7 @@ module Transition
 
       def ingest!(output_file = Tempfile.new('hit-ingest'))
         list(output_file) do |output|
-          Transition::Import::Hits.from_redirector_tsv_file!(output.path)
+          Transition::Import::Hits.from_tsv!(output.path)
         end
       end
     end

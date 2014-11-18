@@ -102,7 +102,8 @@ class Mapping < ActiveRecord::Base
 
   def edited_by_human?
     # Intent: has this mapping (ever) been edited by a human? We treat
-    # redirector's mappings as human-edited because they are curated.
+    # mappings that were imported from redirector (now called transition-config)
+    # as human-edited because they are curated.
     #
     # Assumptions:
     #

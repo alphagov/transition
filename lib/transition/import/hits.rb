@@ -135,7 +135,7 @@ module Transition
         end
       end
 
-      def self.from_redirector_tsv_file!(filename)
+      def self.from_tsv!(filename)
         start "Importing #{filename}" do |job|
           absolute_filename = File.expand_path(filename, Rails.root)
           relative_filename = Pathname.new(absolute_filename).relative_path_from(Rails.root).to_s
@@ -156,12 +156,12 @@ module Transition
         end
       end
 
-      def self.from_redirector_mask!(filemask)
+      def self.from_mask!(filemask)
         done, unchanged = 0, 0
 
         change_settings('work_mem' => '2GB') do
           Dir[File.expand_path(filemask)].each do |filename|
-            Hits.from_redirector_tsv_file!(filename) ? done += 1 : unchanged += 1
+            Hits.from_tsv!(filename) ? done += 1 : unchanged += 1
           end
 
           console_puts "#{done} hits #{'file'.pluralize(done)} imported (#{unchanged} unchanged)."

@@ -2,8 +2,8 @@ require 'spec_helper'
 require 'transition/import/site_yaml_file'
 
 describe Transition::Import::SiteYamlFile do
-  context 'A redirector YAML file' do
-    subject(:redirector_yaml_file) do
+  context 'A site YAML file' do
+    subject(:yaml_file) do
       Transition::Import::SiteYamlFile.load('spec/fixtures/sites/someyaml/ago.yml')
     end
 
@@ -19,7 +19,7 @@ describe Transition::Import::SiteYamlFile do
       before do
         Organisation.stub(:find_by_whitehall_slug).and_return(ago)
         Organisation.stub(:where).and_return([bv, tsol])
-        redirector_yaml_file.import!
+        yaml_file.import!
       end
 
       subject(:site) { Site.find_by_abbr('ago') }
@@ -82,7 +82,7 @@ describe Transition::Import::SiteYamlFile do
 
       describe 'updates' do
         before do
-          redirector_yaml_file.import!
+          yaml_file.import!
           Organisation.stub(:where).and_return([tsol])
           Transition::Import::SiteYamlFile.load('spec/fixtures/sites/updates/ago.yml').import!
           Transition::Import::SiteYamlFile.load('spec/fixtures/sites/updates/ago_lslo.yml').import!

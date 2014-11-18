@@ -6,12 +6,12 @@ describe Transition::Import::Hits do
     @businesslink_host = create :host, hostname: 'www.businesslink.gov.uk'
   end
 
-  describe '.from_redirector_tsv_file!' do
+  describe '.from_tsv!' do
     context 'a single import from a file with no suggested/archive URLs', testing_before_all: true do
       before :all do
         create_test_hosts
         @import_tsv_filename = 'spec/fixtures/hits/businesslink_2012-10-14.tsv'
-        Transition::Import::Hits.from_redirector_tsv_file!(@import_tsv_filename)
+        Transition::Import::Hits.from_tsv!(@import_tsv_filename)
       end
 
       it 'has imported hits' do
@@ -52,7 +52,7 @@ describe Transition::Import::Hits do
     context 'a single import from a file with bouncer-related paths', testing_before_all: true do
       before :all do
         create_test_hosts
-        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/bouncer_paths.tsv')
+        Transition::Import::Hits.from_tsv!('spec/fixtures/hits/bouncer_paths.tsv')
       end
 
       it 'should ignore hits that are a bouncer implementation detail' do
@@ -63,7 +63,7 @@ describe Transition::Import::Hits do
     context 'import from a file with furniture asset paths', testing_before_all: true do
       before :all do
         create_test_hosts
-        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/furniture_paths.tsv')
+        Transition::Import::Hits.from_tsv!('spec/fixtures/hits/furniture_paths.tsv')
       end
 
       it 'should ignore hits that are furniture so are uninteresting and unlikely to be mapped' do
@@ -74,7 +74,7 @@ describe Transition::Import::Hits do
     context 'import from a file with spam paths', testing_before_all: true do
       before :all do
         create_test_hosts
-        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/spam_paths.tsv')
+        Transition::Import::Hits.from_tsv!('spec/fixtures/hits/spam_paths.tsv')
       end
 
       it 'should ignore hits that are spam and so unlikely to be mapped' do
@@ -85,7 +85,7 @@ describe Transition::Import::Hits do
     context 'import from a file with cruft paths', testing_before_all: true do
       before :all do
         create_test_hosts
-        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/cruft_paths.tsv')
+        Transition::Import::Hits.from_tsv!('spec/fixtures/hits/cruft_paths.tsv')
       end
 
       it 'should ignore hits that are cruft and so unlikely to be mapped' do
@@ -96,7 +96,7 @@ describe Transition::Import::Hits do
     context 'import from a file with way-too-long paths', testing_before_all: true do
       before :all do
         create_test_hosts
-        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/too_long_paths.tsv')
+        Transition::Import::Hits.from_tsv!('spec/fixtures/hits/too_long_paths.tsv')
       end
 
       it 'should ignore hits that are too long and won\'t fit in our 2048-char limit' do
@@ -109,7 +109,7 @@ describe Transition::Import::Hits do
         create_test_hosts
         date = Time.utc(2012, 10, 15)
         create(:hit, host: @businesslink_host, path: '/', count: 10, http_status: '301', hit_on: date)
-        Transition::Import::Hits.from_redirector_tsv_file!('spec/fixtures/hits/businesslink_2012-10-15.tsv')
+        Transition::Import::Hits.from_tsv!('spec/fixtures/hits/businesslink_2012-10-15.tsv')
       end
 
       it 'does not create a second hits row' do
@@ -135,7 +135,7 @@ describe Transition::Import::Hits do
         Host.delete_all; create_test_hosts
         # first import to fresh DB
         Timecop.freeze(original_import_time)
-        Transition::Import::Hits.from_redirector_tsv_file!(import_tsv_filename)
+        Transition::Import::Hits.from_tsv!(import_tsv_filename)
       end
 
       after do
@@ -152,7 +152,7 @@ describe Transition::Import::Hits do
         before do
           Timecop.freeze(later_import_time)
           Transition::Import::Hits.should_receive(:console_puts).with('skipped')
-          Transition::Import::Hits.from_redirector_tsv_file!(import_tsv_filename)
+          Transition::Import::Hits.from_tsv!(import_tsv_filename)
         end
 
         it 'leaves the record of the first import unchanged' do
@@ -170,7 +170,7 @@ describe Transition::Import::Hits do
           end
 
           Timecop.freeze(later_import_time)
-          Transition::Import::Hits.from_redirector_tsv_file!(import_tsv_filename)
+          Transition::Import::Hits.from_tsv!(import_tsv_filename)
         end
 
         it 'updates the record of the first import' do
@@ -186,10 +186,10 @@ describe Transition::Import::Hits do
     end
   end
 
-  describe '.from_redirector_mask!', testing_before_all: true do
+  describe '.from_mask!', testing_before_all: true do
     before :all do
       create_test_hosts
-      Transition::Import::Hits.from_redirector_mask!('spec/fixtures/hits/businesslink_*.tsv')
+      Transition::Import::Hits.from_mask!('spec/fixtures/hits/businesslink_*.tsv')
     end
 
     it 'imports hits from the combined files for the known hosts' do
