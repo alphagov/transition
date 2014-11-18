@@ -271,7 +271,6 @@ describe Mapping do
     end
 
     its(:path)        { should eql(canonicalized_path) }
-    its(:path_hash)   { should eql(Digest::SHA1.hexdigest(canonicalized_path)) }
 
     describe 'the linkage to hits' do
       let!(:hit_on_uncanonicalized) { create :hit, path: uncanonicalized_path, host: site.default_host }

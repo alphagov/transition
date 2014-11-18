@@ -179,14 +179,6 @@ describe Host do
           host_path = runaway_host.host_paths.find_by_path(hit.path)
           host_path.mapping.should eql(nil)
         end
-
-        it 're-generates the c14n_path_hash' do
-          host_path = runaway_host.host_paths.find_by_path(hit.path)
-
-          # significant_on_first_site is not significant on the new site
-          new_path_hash = Digest::SHA1.hexdigest('/some-path')
-          host_path.c14n_path_hash.should eql(new_path_hash)
-        end
       end
 
       context 'mappings for the same paths exist on the new site' do
@@ -207,7 +199,7 @@ describe Host do
 
           host_path = runaway_host.host_paths.find_by_path(hit.path)
           host_path.mapping.should eql(other_mapping)
-          host_path.c14n_path_hash.should_not be_nil
+          host_path.canonical_path.should_not be_nil
         end
 
         it 'sets the hit count on the mappings which now have hits' do

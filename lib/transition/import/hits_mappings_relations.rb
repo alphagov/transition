@@ -15,7 +15,7 @@ module Transition
 
       def refresh!
         start('Refreshing host paths'                                 ) { refresh_host_paths! }
-        start('Adding missing mapping_id/c14n_path_hash to host paths') { connect_mappings_to_host_paths! }
+        start('Adding missing mapping_id/canonical_path to host paths') { connect_mappings_to_host_paths! }
         start('Updating hits from host paths'                         ) { refresh_hits_from_host_paths! }
         start('Precomputing mapping hit counts'                       ) { precompute_mapping_hit_counts! }
       end
@@ -38,8 +38,8 @@ module Transition
       def refresh_host_paths!
         and_host_is_in_site = site ? "AND hits.host_id #{in_site_hosts}" : ''
         sql = <<-postgreSQL
-          INSERT INTO host_paths(host_id, path_hash, path)
-          SELECT hits.host_id, hits.path_hash, hits.path
+          INSERT INTO host_paths(host_id, path)
+          SELECT hits.host_id, hits.path
           FROM   hits
           WHERE NOT EXISTS (
             SELECT 1 FROM host_paths
@@ -49,7 +49,6 @@ module Transition
           )
           #{and_host_is_in_site}
           GROUP  BY hits.host_id,
-                    hits.path_hash,
                     hits.path
         postgreSQL
         change_settings('work_mem' => '256MB') do
@@ -62,18 +61,13 @@ module Transition
           site = host_path.host.site
 
           canonical_path     = site.canonical_path(host_path.path)
-          c14nized_path_hash = Digest::SHA1.hexdigest(canonical_path)
-          mapping_id         = Mapping.where(
-            path_hash: c14nized_path_hash, site_id: site.id).pluck(:id).first
+          mapping_id = Mapping.where(
+            path: canonical_path, site_id: site.id).pluck(:id).first
 
-          needs_update = host_path.mapping_id != mapping_id ||
-            host_path.c14n_path_hash != c14nized_path_hash ||
-            host_path.canonical_path != canonical_path
-          if needs_update
+          if host_path.mapping_id != mapping_id || host_path.canonical_path != canonical_path
             host_path.update_columns(
               mapping_id: mapping_id,
-              canonical_path: canonical_path,
-              c14n_path_hash: c14nized_path_hash)
+              canonical_path: canonical_path)
           end
         end
       end

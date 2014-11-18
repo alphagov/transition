@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141114110930) do
+ActiveRecord::Schema.define(version: 20141118121300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20141114110930) do
   create_table "hits", force: true do |t|
     t.integer "host_id",                  null: false
     t.string  "path",        limit: 2048, null: false
-    t.string  "path_hash",   limit: 40,   null: false
+    t.string  "path_hash",   limit: 40
     t.string  "http_status", limit: 3,    null: false
     t.integer "count",                    null: false
     t.date    "hit_on",                   null: false
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 20141114110930) do
     t.string  "canonical_path", limit: 2048
   end
 
-  add_index "host_paths", ["c14n_path_hash"], name: "index_host_paths_on_c14n_path_hash", using: :btree
-  add_index "host_paths", ["host_id", "path_hash"], name: "index_host_paths_on_host_id_and_path_hash", unique: true, using: :btree
+  add_index "host_paths", ["canonical_path"], name: "index_host_paths_on_canonical_path", using: :btree
+  add_index "host_paths", ["host_id", "path"], name: "index_host_paths_on_host_id_and_path", unique: true, using: :btree
   add_index "host_paths", ["mapping_id"], name: "index_host_paths_on_mapping_id", using: :btree
 
   create_table "hosts", force: true do |t|
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 20141114110930) do
   create_table "mappings", force: true do |t|
     t.integer "site_id",                                      null: false
     t.string  "path",            limit: 2048,                 null: false
-    t.string  "path_hash",       limit: 40,                   null: false
+    t.string  "path_hash",       limit: 40
     t.text    "new_url"
     t.text    "suggested_url"
     t.text    "archive_url"
