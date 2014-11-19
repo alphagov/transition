@@ -2,6 +2,8 @@ class PopulateHostPathsCanonicalPath < ActiveRecord::Migration
   include ActionView::Helpers::DateHelper
 
   def up
+    Site.reset_column_information
+
     record_offset = 0
     batch_size    = 5000
     total_records = HostPath.where(canonical_path: nil).count
