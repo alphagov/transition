@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141118121300) do
+ActiveRecord::Schema.define(version: 20141119113045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,7 +29,6 @@ ActiveRecord::Schema.define(version: 20141118121300) do
   create_table "hits", force: true do |t|
     t.integer "host_id",                  null: false
     t.string  "path",        limit: 2048, null: false
-    t.string  "path_hash",   limit: 40
     t.string  "http_status", limit: 3,    null: false
     t.integer "count",                    null: false
     t.date    "hit_on",                   null: false
@@ -51,8 +50,6 @@ ActiveRecord::Schema.define(version: 20141118121300) do
 
   create_table "host_paths", force: true do |t|
     t.string  "path",           limit: 2048
-    t.string  "path_hash"
-    t.string  "c14n_path_hash"
     t.integer "host_id"
     t.integer "mapping_id"
     t.string  "canonical_path", limit: 2048
@@ -90,7 +87,6 @@ ActiveRecord::Schema.define(version: 20141118121300) do
   create_table "mappings", force: true do |t|
     t.integer "site_id",                                      null: false
     t.string  "path",            limit: 2048,                 null: false
-    t.string  "path_hash",       limit: 40
     t.text    "new_url"
     t.text    "suggested_url"
     t.text    "archive_url"
@@ -101,7 +97,6 @@ ActiveRecord::Schema.define(version: 20141118121300) do
 
   add_index "mappings", ["hit_count"], name: "index_mappings_on_hit_count", using: :btree
   add_index "mappings", ["site_id", "path"], name: "index_mappings_on_site_id_and_path", unique: true, using: :btree
-  add_index "mappings", ["site_id", "path_hash"], name: "index_mappings_on_site_id_and_path_hash", unique: true, using: :btree
   add_index "mappings", ["site_id", "type"], name: "index_mappings_on_site_id_and_type", using: :btree
   add_index "mappings", ["site_id"], name: "index_mappings_on_site_id", using: :btree
 
