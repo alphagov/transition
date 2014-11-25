@@ -24,13 +24,6 @@ class Hit < ActiveRecord::Base
            'MIN(hits.mapping_id) AS mapping_id, MIN(hits.host_id) AS host_id')
       .group(:path, :http_status)
   }
-  scope :points_by_date, -> {
-    select('hits.hit_on, sum(hits.count) as count').group(:hit_on)
-  }
-  scope :points_by_date_and_status, -> {
-    select('hits.hit_on, sum(hits.count) as count, hits.http_status')
-      .group(:hit_on, :http_status)
-  }
   scope :in_range, ->(start_date, end_date) { where('(hit_on >= ?) AND (hit_on <= ?)', start_date, end_date) }
 
   scope :errors,     -> { where(http_status: '404') }
