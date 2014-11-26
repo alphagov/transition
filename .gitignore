@@ -7,8 +7,10 @@
 # Ignore bundler config
 /.bundle
 
-# Ignore places we might be getting other data
-/data/
+# Ignore everything in the data directory...
+/data/*
+# ...except this file, so that we keep the (otherwise empty) data directory itself
+!/data/.gitkeep
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
