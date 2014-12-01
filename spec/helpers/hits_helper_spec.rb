@@ -71,10 +71,11 @@ describe HitsHelper do
   end
 
   describe '#current_category_in_period_path' do
-    let(:params) { {} }
+    let(:params)     { {} }
+    let(:query_slug) { 'yesterday' }
     let(:period) do
       double('TimePeriod').tap do |period|
-        period.stub(:query_slug).and_return('yesterday')
+        period.stub(:query_slug).and_return(query_slug)
       end
     end
 
@@ -90,8 +91,10 @@ describe HitsHelper do
     context 'when a site is present' do
       let(:site) { build :site, abbr: 'site_abbr' }
 
-      it 'defaults to the summary with the period' do
-        path.should == '/sites/site_abbr/hits/summary?period=yesterday'
+      context 'when no category is set' do
+        it 'defaults to the summary with the period' do
+          path.should == '/sites/site_abbr/hits/summary?period=yesterday'
+        end
       end
 
       context 'when a category is set' do
@@ -101,11 +104,8 @@ describe HitsHelper do
         end
 
         context 'when the time period is default' do
-          let(:period) do
-            double('TimePeriod').tap do |period|
-              period.stub(:query_slug).and_return(nil)
-            end
-          end
+          let(:query_slug) { nil }
+
           it 'links to the category without the period for the site' do
             path.should == '/sites/site_abbr/hits/category?category=errors'
           end
@@ -127,11 +127,8 @@ describe HitsHelper do
         end
 
         context 'when the time period is default' do
-          let(:period) do
-            double('TimePeriod').tap do |period|
-              period.stub(:query_slug).and_return(nil)
-            end
-          end
+          let(:query_slug) { nil }
+
           it 'links to the universal hits current category without the period' do
             path.should == '/hits/category?category=errors'
           end
