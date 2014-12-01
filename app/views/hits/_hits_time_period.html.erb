@@ -1,3 +1,4 @@
+<% exclude_all_time ||= false %>
 <div class="hits-time-period navbar navbar-default add-top-margin">
   <h2 class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".hits-time-period .navbar-collapse">
@@ -21,7 +22,7 @@
         <% end %>
       </li>
     <% end %>
-    <% View::Hits::TimePeriod.all.each do |period| %>
+    <% View::Hits::TimePeriod.all.reject {|period| exclude_all_time && period.slug == 'all-time' }.each do |period| %>
       <li <% if period == @period %>class="active"<% end %>>
         <%= link_to current_category_in_period_path(period) do %>
           <% if period == @period %>

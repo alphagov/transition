@@ -219,3 +219,7 @@ Then(/^I should see sections for the most common errors, archives and redirects$
     And I should see a section for the most common redirects
   }
 end
+
+Then(/^there should be no "All time" link$/) do
+  expect(page).not_to have_link('All time')
+end
