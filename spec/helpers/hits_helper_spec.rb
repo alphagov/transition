@@ -71,18 +71,20 @@ describe HitsHelper do
   end
 
   describe '#current_category_in_period_path' do
-    let(:params)     { {} }
-    let(:query_slug) { 'yesterday' }
-    let(:period) do
-      double('TimePeriod').tap do |period|
-        period.stub(:query_slug).and_return(query_slug)
-      end
-    end
+    let(:action)     { 'summary' }
+    let(:category)   { nil }
+    let(:period)     { 'yesterday' }
 
-    subject(:path) { helper.current_category_in_period_path(period) }
+    let(:time_period){ double 'TimePeriod' }
+
+    subject(:path) { helper.current_category_in_period_path(time_period) }
 
     before do
-      helper.stub(:params).and_return(params)
+      time_period.stub(:query_slug).and_return(period)
+
+      helper.stub(:action_name).and_return(action)
+      helper.stub(:params).and_return({ period: period, category: category })
+
       # stubs @site internal to helper
       helper.class_eval { attr_writer :site }
       helper.site = site
@@ -98,17 +100,25 @@ describe HitsHelper do
       end
 
       context 'when a category is set' do
-        let(:params) { { category: 'errors' } }
+        let(:category) { 'errors' }
         it 'links to the category and period for the site' do
           path.should == '/sites/site_abbr/hits/category?category=errors&period=yesterday'
         end
 
         context 'when the time period is default' do
-          let(:query_slug) { nil }
+          let(:period) { nil }
 
           it 'links to the category without the period for the site' do
             path.should == '/sites/site_abbr/hits/category?category=errors'
           end
+        end
+      end
+
+      context 'when we are looking at all hits' do
+        let(:action) { 'index' }
+
+        it 'defaults to all hits with the period' do
+          path.should == '/sites/site_abbr/hits?period=yesterday'
         end
       end
     end
@@ -121,13 +131,14 @@ describe HitsHelper do
       end
 
       context 'when a category is set' do
-        let(:params) { { category: 'errors' } }
+        let(:category) { 'errors' }
+
         it 'links to the universal hits with the category and period' do
           path.should == '/hits/category?category=errors&period=yesterday'
         end
 
         context 'when the time period is default' do
-          let(:query_slug) { nil }
+          let(:period) { nil }
 
           it 'links to the universal hits current category without the period' do
             path.should == '/hits/category?category=errors'
