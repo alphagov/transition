@@ -15,7 +15,7 @@
 </div>
 
 <%= render partial: universal ? 'universal_hits_tabs' : 'hits_tabs', locals: { active: active } %>
-<%= render partial: 'hits_time_period' %>
+<%= render partial: 'hits_time_period', locals: { exclude_all_time: universal } %>
 
 <% unless universal %>
   <% if @category.points.length > 1 && first_page? %>

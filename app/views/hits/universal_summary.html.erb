@@ -9,7 +9,7 @@
 </div>
 
 <%= render partial: 'universal_hits_tabs', locals: { active: 'Summary' } %>
-<%= render partial: 'hits_time_period' %>
+<%= render partial: 'hits_time_period', locals: { exclude_all_time: true } %>
 
 <% @sections.each do |category| %>
   <% if category.hits.any?  %>

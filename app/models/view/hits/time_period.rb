@@ -45,8 +45,10 @@ module View
         dates.map { |date| date.strftime('%-d %b %Y') }.join(' - ')
       end
 
-      def self.all
-        PERIODS_BY_SLUG.values
+      def self.all(options = { exclude_all_time: false })
+        PERIODS_BY_SLUG.values.reject do |p|
+          options[:exclude_all_time] && p.slug == 'all-time'
+        end
       end
 
       def self.default

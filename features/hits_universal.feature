@@ -64,12 +64,14 @@ Scenario: Hits for all sites are shown in a summary
   And it should show only the top 10 errors in descending count order
   And it should show only the top 10 archives in descending count order
   And it should show only the top 10 redirects in descending count order
+  And there should be no "All time" link
 
 Scenario: Hits exist and show the last 30 days by default
   When I click the link "Redirects"
   Then I should see hits from the last 30 days with a redirect status, in descending count order
   And I should see hits for the Attorney General, Cabinet Office and FCO sites
   And the period "Last 30 days" should be selected
+  And there should be no "All time" link
 
 Scenario: Hits exist and can be filtered by error and time period "Yesterday"
   When I click the link "Errors"
@@ -82,10 +84,3 @@ Scenario: Hits exist and can be filtered by archives
   When I click the link "Archives"
   Then I should see hits from the last 30 days with an archive status, in descending count order
   And I should see hits for the Attorney General, Cabinet Office and FCO sites
-
-Scenario: Hits exist and can be filtered by redirects and time period "All time"
-  When I click the link "Redirects"
-  And I filter by the date period "All time"
-  Then I should see all hits with a redirect status, in descending count order
-  And I should see hits for the Attorney General, Cabinet Office and FCO sites
-  And the period "All time" should be selected
