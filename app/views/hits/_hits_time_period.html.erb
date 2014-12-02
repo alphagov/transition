@@ -22,7 +22,7 @@
         <% end %>
       </li>
     <% end %>
-    <% View::Hits::TimePeriod.all.reject {|period| exclude_all_time && period.slug == 'all-time' }.each do |period| %>
+    <% View::Hits::TimePeriod.all(exclude_all_time: exclude_all_time).each do |period| %>
       <li <% if period == @period %>class="active"<% end %>>
         <%= link_to current_category_in_period_path(period) do %>
           <% if period == @period %>
