@@ -106,6 +106,8 @@ module HitsHelper
       # Hits for a specific site
       if params[:category]
         category_site_hits_path(@site, category: params[:category], period: period.query_slug)
+      elsif viewing_all_hits?
+        site_hits_path(@site, period: period.query_slug)
       else
         summary_site_hits_path(@site, period: period.query_slug)
       end
@@ -117,5 +119,9 @@ module HitsHelper
         hits_path(period: period.query_slug)
       end
     end
+  end
+
+  def viewing_all_hits?
+    action_name == 'index'
   end
 end
