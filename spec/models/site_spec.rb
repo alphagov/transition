@@ -269,19 +269,19 @@ describe Site do
 
     describe '#able_to_use_view?' do
       context 'the view is not there' do
-        before { Postgres::MaterializedView.stub(:exist?).and_return(false) }
+        before { Postgres::MaterializedView.stub(:exists?).and_return(false) }
 
         it { should_not be_able_to_use_view }
       end
       context 'the view is there, but precompute_hits_view is false' do
-        before { Postgres::MaterializedView.stub(:exist?).and_return(true) }
+        before { Postgres::MaterializedView.stub(:exists?).and_return(true) }
 
         it { should_not be_able_to_use_view }
       end
       context 'the view is there and precompute_hits_view is true' do
         before do
           site.precompute_all_hits_view = true
-          Postgres::MaterializedView.should_receive(:exist?).and_return(true)
+          Postgres::MaterializedView.should_receive(:exists?).and_return(true)
         end
 
         it { should be_able_to_use_view }

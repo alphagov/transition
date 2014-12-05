@@ -4,7 +4,7 @@ module Postgres
       ActiveRecord::Base.connection.execute(sql)
     end
 
-    def self.exist?(name)
+    def self.exists?(name)
       begin
         # Quickest way to determine if a relation exists is to ask Postgres to
         # cast its name to a regclass. If the relation is absent, this will

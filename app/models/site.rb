@@ -114,6 +114,6 @@ class Site < ActiveRecord::Base
   end
 
   def able_to_use_view?
-    precompute_all_hits_view && Postgres::MaterializedView.exist?(precomputed_view_name)
+    precompute_all_hits_view && Postgres::MaterializedView.exists?(precomputed_view_name)
   end
 end
