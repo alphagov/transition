@@ -7,21 +7,21 @@ describe Postgres::MaterializedView do
   end
 
   before do
-    # Always create a just_for_testing view with SELECT 1 as the body
+    # All tests start with an unmodified pre_existing_view
     execute(
       <<-postgreSQL
-        DROP MATERIALIZED VIEW IF EXISTS just_for_testing;
+        DROP MATERIALIZED VIEW IF EXISTS pre_existing_view;
 
-        CREATE MATERIALIZED VIEW just_for_testing
+        CREATE MATERIALIZED VIEW pre_existing_view
         AS
-          SELECT 1;
+          SELECT 1 AS unmodified;
       postgreSQL
     )
   end
 
   describe '.exist?' do
     it 'finds views that exist' do
-      expect(Postgres::MaterializedView).to exist('just_for_testing')
+      expect(Postgres::MaterializedView).to exist('pre_existing_view')
     end
 
     it 'does not find views that don\'t exist' do
@@ -32,7 +32,7 @@ describe Postgres::MaterializedView do
   describe '.get_body' do
     it 'gets the body' do
       Postgres::MaterializedView.get_body(
-        'just_for_testing'
+        'pre_existing_view'
       ).should include('SELECT 1')
     end
   end
@@ -46,8 +46,8 @@ describe Postgres::MaterializedView do
         it 'fails' do
           expect {
             Postgres::MaterializedView.create(
-              'just_for_testing',
-              'SELECT 1'
+              'pre_existing_view',
+              'SELECT 3 as doomed_attempt'
             )
           }.to raise_error(ActiveRecord::StatementInvalid, /PG::DuplicateTable/)
         end
@@ -68,20 +68,20 @@ describe Postgres::MaterializedView do
     context 'replace requested' do
       it 'replaces existing views' do
         Postgres::MaterializedView.create(
-          'just_for_testing',
-          'SELECT 2;',
+          'pre_existing_view',
+          'SELECT 2 AS modified;',
           replace: true
         )
-        body = Postgres::MaterializedView.get_body('just_for_testing')
-        body.should include('SELECT 2')
+        body = Postgres::MaterializedView.get_body('pre_existing_view')
+        body.should include('SELECT 2 AS modified')
       end
     end
   end
 
   describe '.drop' do
     it 'drops views, yo' do
-      Postgres::MaterializedView.drop('just_for_testing')
-      expect(Postgres::MaterializedView).not_to exist('just_for_testing')
+      Postgres::MaterializedView.drop('pre_existing_view')
+      expect(Postgres::MaterializedView).not_to exist('pre_existing_view')
     end
   end
 
