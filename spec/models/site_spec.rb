@@ -261,10 +261,12 @@ describe Site do
   end
 
   describe 'precomputed views' do
-    subject(:site) { build :site, abbr: 'hmrc', precompute_all_hits_view: false }
+    let(:precompute) { false }
 
-    it 'quotes a conventional view name' do
-      site.precomputed_view_name.should eql('"hmrc_all_hits"')
+    subject(:site) { build :site, abbr: 'hmrc', precompute_all_hits_view: precompute }
+
+    it 'calculates a conventional view name' do
+      site.precomputed_view_name.should eql('hmrc_all_hits')
     end
 
     describe '#able_to_use_view?' do
@@ -279,12 +281,28 @@ describe Site do
         it { should_not be_able_to_use_view }
       end
       context 'the view is there and precompute_hits_view is true' do
+        let(:precompute) { true }
         before do
-          site.precompute_all_hits_view = true
           Postgres::MaterializedView.should_receive(:exists?).and_return(true)
         end
 
         it { should be_able_to_use_view }
+      end
+    end
+
+    describe 'the automatic removal of un-needed views' do
+      let(:precompute) { true }
+
+      context 'precompute_all_hits_view is set to false from true' do
+        before do
+          site.save!
+          Postgres::MaterializedView.should_receive(:drop).with(site.precomputed_view_name)
+        end
+
+        it 'drops the view' do
+          # testing the should_receive expectation in the before block
+          site.update_attribute(:precompute_all_hits_view, false)
+        end
       end
     end
   end

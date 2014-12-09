@@ -117,7 +117,7 @@ describe HitsController do
       context 'the view is not yet there, so we fall back to calculation' do
         before do
           ActiveRecord::Base.connection.execute(
-            %(DROP MATERIALIZED VIEW IF EXISTS #{site.precomputed_view_name})
+            %(DROP MATERIALIZED VIEW IF EXISTS "#{site.precomputed_view_name}")
           )
 
           site.should_not receive(:precomputed_all_hits)
