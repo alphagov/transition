@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'transition/import/hits_mappings_relations'
 
 describe Transition::Import::HitsMappingsRelations do
-  describe '.refresh!', truncate_everything: true do
+  describe '.refresh!' do
     before do
       @host = create :host, site: create(:site_without_host, query_params: 'significant')
       @site = @host.site

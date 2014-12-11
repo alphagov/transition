@@ -13,7 +13,7 @@ describe MappingsController do
       login_as_stub_user
     end
 
-    describe 'sorting', truncate_everything: true do
+    describe 'sorting' do
       let(:site)     { create :site, :with_mappings_and_hits }
 
       context 'in the absence of a sort parameter' do

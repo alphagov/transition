@@ -150,7 +150,7 @@ describe Host do
   end
 
   describe 'moving to a different site' do
-    context 'there are related mappings, host_paths and hits', truncate_everything: true do
+    context 'there are related mappings, host_paths and hits' do
       let!(:site)          { create(:site, query_params: 'significant_on_first_site') }
       let!(:other_site)    { create(:site) }
       let!(:runaway_host)  { create(:host, site: site) }
