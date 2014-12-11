@@ -11,16 +11,6 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
-  ##
-  # For tests that are using MySQL DDE, i.e. anything with an
-  # import/ingest using LOAD DATA LOCAL INFILE
-  # *OR* any test using a myISAM table for which you need
-  # the table to be in a known state per-test I.E. HITS
-  config.before(:each, :truncate_everything => true) do
-    DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.clean
-  end
-
   config.before(:each, :js => true) do
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean

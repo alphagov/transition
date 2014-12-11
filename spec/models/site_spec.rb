@@ -51,7 +51,7 @@ describe Site do
   end
 
   describe 'changing query_params' do
-    context 'there are related mappings, host_paths and hits', truncate_everything: true do
+    context 'there are related mappings, host_paths and hits' do
       let!(:host)          { create(:host, site: create(:site, query_params: 'initial')) }
       let!(:site)          { host.site }
       let!(:hit)           { create(:hit, path: '/this/Exists?added_later=2&initial=1', host: host) }
@@ -236,7 +236,7 @@ describe Site do
     end
   end
 
-  describe '#hit_total_count', truncate_everything: true do
+  describe '#hit_total_count' do
     let(:site) { create :site }
 
     subject    { site.hit_total_count }

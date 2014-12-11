@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'transition/google/url_ingester'
 
-describe Transition::Google::UrlIngester, truncate_everything: true do
+describe Transition::Google::UrlIngester do
   TOO_FEW = 9
   let(:hostpath_rows) {[
     ['dpm.gov.uk', '/path', 30],

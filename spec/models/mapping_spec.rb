@@ -261,7 +261,7 @@ describe Mapping do
     end
   end
 
-  describe 'path canonicalization and relation to hits', truncate_everything: true do
+  describe 'path canonicalization and relation to hits' do
     let(:uncanonicalized_path) { '/A/b/c?significant=1&really-significant=2&insignificant=2' }
     let(:canonicalized_path)   { '/a/b/c?really-significant=2&significant=1' }
     let(:site)                 { create(:site, query_params: 'significant:really-significant')}
