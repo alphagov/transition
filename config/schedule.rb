@@ -21,3 +21,7 @@ every :day, at: '3am' do
   rake 'clear_expired_sessions'
   rake 'clear_old_mappings_batches'
 end
+
+every :day, at: ['12:30am', '12:30pm'] do
+  rake 'import:hits:refresh_materialized'
+end

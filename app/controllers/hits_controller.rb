@@ -5,8 +5,14 @@ class HitsController < ApplicationController
 
   def index
     @category = View::Hits::Category['all'].tap do |c|
-      c.hits   = hits_in_period.by_path_and_status.page(params[:page]).order('count DESC')
       c.points = totals_in_period
+
+      if @period.slug == 'all-time' && @site.able_to_use_view?
+        c.hits = @site.precomputed_all_hits
+          .includes(:mapping, {:host => :site}).page(params[:page])
+      else
+        c.hits = hits_in_period.by_path_and_status.page(params[:page]).order('count DESC')
+      end
     end
   end
 
@@ -66,4 +72,5 @@ class HitsController < ApplicationController
   def totals_in_period
     @site.daily_hit_totals.by_date.in_range(@period.start_date, @period.end_date)
   end
+
 end

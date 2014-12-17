@@ -70,5 +70,14 @@
     <dd><%= @site.query_params.presence || 'None' %></dd>
     <dt>The National Archive (<abbr>TNA</abbr>) timestamp</dt>
     <dd><%= I18n.l(@site.tna_timestamp, :format => :govuk_date) %> <span class="text-muted"> — <%= @site.tna_timestamp.to_formatted_s(:number) %></span></dd>
+    <% if current_user.admin? %>
+      <dt>
+        All hits/all-time view precomputed
+        <i data-toggle="tooltip" title="" class="glyphicon glyphicon-question-sign"
+           data-original-title="If the site has a large number of hits, set this via rake to precompute a materialized view for all hits/all-time">
+        </i>
+      </dt>
+      <dd><%= @site.precompute_all_hits_view ? 'Yes' : 'No' %></dd>
+    <% end %>
   </dl>
 </div>

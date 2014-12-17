@@ -1,3 +1,5 @@
+require 'postgres/materialized_view'
+
 class Site < ActiveRecord::Base
 
   belongs_to :organisation
@@ -25,6 +27,7 @@ class Site < ActiveRecord::Base
                                        :if => :global_redirect_append_path }
 
   after_update :update_hits_relations, :if => :query_params_changed?
+  after_update :remove_all_hits_view,  :if => :should_remove_unused_view?
 
   scope :with_mapping_count, -> {
         select('sites.*, COUNT(mappings.id) as mapping_count').
@@ -101,5 +104,26 @@ class Site < ActiveRecord::Base
       .order('count DESC, tags.name')
       .limit(limit)
       .map(&:name)
+  end
+
+  def precomputed_all_hits
+    Hit.select(%("#{precomputed_view_name}".*)).from(%("#{precomputed_view_name}"))
+  end
+
+  def precomputed_view_name
+    @_precomputed_view_name = %(#{abbr}_all_hits)
+  end
+
+  def able_to_use_view?
+    precompute_all_hits_view && Postgres::MaterializedView.exists?(precomputed_view_name)
+  end
+
+private
+  def should_remove_unused_view?
+    precompute_all_hits_view_changed? && precompute_all_hits_view == false
+  end
+
+  def remove_all_hits_view
+    Postgres::MaterializedView.drop(precomputed_view_name)
   end
 end
