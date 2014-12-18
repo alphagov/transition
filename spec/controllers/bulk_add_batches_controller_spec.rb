@@ -141,7 +141,6 @@ describe BulkAddBatchesController do
       subject.stub(:verified_request?).and_return(false)
       post :import, site_id: mapping.site, id: batch.id
       response.status.should eql(403)
-      response.body.should eql('Invalid authenticity token')
     end
   end
 

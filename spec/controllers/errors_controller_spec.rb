@@ -16,6 +16,42 @@ describe ErrorsController do
     end
   end
 
+  describe '#error_403' do
+    before do
+      get :error_403
+    end
+
+    it 'responds with the correct HTTP status code' do
+      expect(response.status).to be(403)
+    end
+
+    it 'renders our custom error page' do
+      expect(response).to render_template 'errors/error_403'
+    end
+
+    it 'uses the error page layout' do
+      expect(response).to render_template 'layouts/error_page'
+    end
+
+    it 'includes the friendly message' do
+      expect(response.body).to include('Forbidden')
+    end
+
+    context 'when requesting JSON' do
+      before do
+        get :error_403, format: 'json'
+        @parsed_response = JSON.parse(response.body)
+      end
+
+      it_behaves_like 'a JSON error'
+
+      it 'responds with the correct HTTP status code' do
+        expect(response.status).to be(403)
+      end
+    end
+
+  end
+
   describe '#error_404' do
     before do
       get :error_404
