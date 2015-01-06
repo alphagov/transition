@@ -547,7 +547,6 @@ describe MappingsController do
       post :update, site_id: mapping.site, id: mapping.id,
               mapping: { path: '/foo' }
       response.status.should eql(403)
-      response.body.should eql('Invalid authenticity token')
     end
   end
 

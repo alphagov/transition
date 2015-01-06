@@ -8,7 +8,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   rescue_from ActionController::InvalidAuthenticityToken do
-    render text: "Invalid authenticity token", status: 403
+    render_error(403,
+                 body: "Invalid authenticity token")
   end
 
   def user_for_paper_trail

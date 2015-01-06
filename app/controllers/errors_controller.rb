@@ -7,6 +7,10 @@ class ErrorsController < ActionController::Base
     error_response(400, "Bad Request")
   end
 
+  def error_403
+    error_response(403, "403 Forbidden")
+  end
+
   def error_404
     error_response(404, "404 Not Found")
   end
