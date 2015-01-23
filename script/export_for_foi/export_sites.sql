@@ -1,5 +1,6 @@
 COPY (
-  SELECT abbr,
+  SELECT
+    abbr AS "Abbreviation",
     launch_date AS "Launch Date",
     homepage AS "New Homepage",
     query_params AS "Significant querystring parameters (colon separated)",

@@ -1,5 +1,6 @@
 COPY (
-  SELECT sites.abbr,
+  SELECT
+    sites.abbr AS "Abbreviation",
     path AS "Old Path",
     new_url AS "Redirect URL",
     suggested_url AS "Suggested URL",
