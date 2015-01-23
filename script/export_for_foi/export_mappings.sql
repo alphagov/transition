@@ -8,4 +8,5 @@ COPY (
     FROM mappings
     INNER JOIN sites ON mappings.site_id = sites.id
     WHERE sites.global_type IS NULL
+    ORDER BY sites.abbr, path
 ) TO STDOUT WITH DELIMITER ',' CSV HEADER;

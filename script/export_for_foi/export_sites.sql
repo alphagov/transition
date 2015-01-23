@@ -6,4 +6,5 @@ COPY (
     global_new_url AS "New URL for global 301",
     CASE global_redirect_append_path WHEN 'f' THEN 'false' WHEN 't' THEN 'true' END AS "Append requested path to new path? (for global 301)"
     FROM sites
+    ORDER BY abbr
 ) TO STDOUT WITH DELIMITER ',' CSV HEADER;
