@@ -62,11 +62,7 @@ module Transition
             ActiveRecord::Base.connection.raw_connection.tap do |raw_conn|
               raw_conn.copy_data(sql) do
                 while row = raw_conn.get_copy_data
-                  begin
-                    f.write(row)
-                  rescue Encoding::UndefinedConversionError => e
-                    puts "Ignoring row, can't convert from #{e.source_encoding} to #{e.destination_encoding}: #{row}"
-                  end
+                  f.write(row.force_encoding('UTF-8'))
                 end
               end
             end
