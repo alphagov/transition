@@ -13,7 +13,7 @@ module Transition
             homepage AS "New Homepage",
             to_char(tna_timestamp, 'YYYYMMDDHH24MISS') AS "TNA Timestamp",
             query_params AS "Significant querystring parameters (colon separated)",
-            CASE global_type WHEN 'unresolved' THEN 410 WHEN 'archive' THEN 410 WHEN 'redirect' THEN 301 END AS global_http_status,
+            CASE global_type WHEN 'unresolved' THEN 410 WHEN 'archive' THEN 410 WHEN 'redirect' THEN 301 END AS "Global HTTP status",
             global_new_url AS "New URL for global 301",
             CASE global_redirect_append_path WHEN 'f' THEN 'false' WHEN 't' THEN 'true' END AS "Append requested path to new URL? (for global 301)"
             FROM sites
@@ -24,7 +24,7 @@ module Transition
       EXPORT_HOSTS = <<-postgreSQL
         COPY (
         SELECT
-          sites.abbr AS "Abbreviation",
+          sites.abbr AS "Site abbreviation",
           hostname
           FROM hosts
           INNER JOIN sites ON hosts.site_id = sites.id
@@ -36,7 +36,7 @@ module Transition
       EXPORT_MAPPINGS = <<-postgreSQL
         COPY (
           SELECT
-            sites.abbr AS "Abbreviation",
+            sites.abbr AS "Site abbreviation",
             path AS "Old Path",
             CASE type WHEN 'unresolved' THEN 410 WHEN 'archive' THEN 410 WHEN 'redirect' THEN 301 END AS "HTTP status",
             new_url AS "Redirect URL",
