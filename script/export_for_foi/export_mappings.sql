@@ -2,7 +2,7 @@ COPY (
   SELECT
     sites.abbr AS "Abbreviation",
     path AS "Old Path",
-    CASE type WHEN 'unresolved' THEN 410 WHEN 'archive' THEN 410 WHEN 'redirect' THEN 301 END AS http_status,
+    CASE type WHEN 'unresolved' THEN 410 WHEN 'archive' THEN 410 WHEN 'redirect' THEN 301 END AS "HTTP status",
     new_url AS "Redirect URL",
     archive_url AS "Custom Archive URL",
     suggested_url AS "Suggested URL"
