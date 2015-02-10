@@ -63,6 +63,6 @@ module Transition
     config.assets.precompile += %w(html5.js)
     config.assets.precompile += %w(respond.min.js)
 
-    config.support_email = 'transition-dev@digital.cabinet-office.gov.uk'
+    config.support_email = 'govuk-core-team@digital.cabinet-office.gov.uk'
   end
 end

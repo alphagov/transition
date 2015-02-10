@@ -128,7 +128,7 @@ describe Mapping do
           subject(:mapping) { build(:redirect, new_url: 'http://m.com/foo') }
 
           it 'fails' do
-            mapping.errors[:new_url].should == ['must be on a whitelisted domain. Contact transition-dev@digital.cabinet-office.gov.uk for more information.']
+            mapping.errors[:new_url].should == ['must be on a whitelisted domain. Contact govuk-core-team@digital.cabinet-office.gov.uk for more information.']
           end
         end
 
