@@ -23,6 +23,18 @@ describe WhitelistedHost do
           whitelisted_host.errors_on(:hostname).should include('cannot end in .gov.uk or .mod.uk - these are automatically whitelisted')
         end
       end
+
+      context 'is valid' do
+        subject(:whitelisted_host) { build(:whitelisted_host, hostname: 'B.com ') }
+
+        its(:valid?) { should be_true }
+        it 'should strip whitespace and downcase the hostname' do
+          # This processing is done in before_validation callbacks, so we need
+          # to trigger validation first:
+          whitelisted_host.valid?
+          whitelisted_host.hostname.should eq('b.com')
+        end
+      end
     end
   end
 end

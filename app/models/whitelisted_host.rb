@@ -4,6 +4,7 @@ class WhitelistedHost < ActiveRecord::Base
   before_save :ensure_papertrail_user_config
 
   before_validation { hostname.try(:downcase!) }
+  before_validation { hostname.try(:strip!) }
   validates :hostname, presence: true
   validates :hostname, hostname: true
   validates :hostname, uniqueness: { message: 'is already in the list' }
