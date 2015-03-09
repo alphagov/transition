@@ -20,7 +20,7 @@ describe WhitelistedHost do
 
         its(:valid?) { should be_false }
         it 'should have an error' do
-          whitelisted_host.errors_on(:hostname).should include('cannot end in .gov.uk or .mod.uk - these are automatically whitelisted')
+          whitelisted_host.errors_on(:hostname).should include('cannot end in .gov.uk, .mod.uk or .nhs.uk - these are automatically whitelisted')
         end
       end
 
