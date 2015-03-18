@@ -1,7 +1,7 @@
 Feature: Whitelist
   As a Transition Admin,
   I would like to see a whitelist of sites
-  So that I can see which sites we're redirecting to outside of .gov.uk or .mod.uk
+  So that I can see which sites we're redirecting to outside of .gov.uk, .mod.uk or .nhs.uk
 
   Scenario: Visit the whitelist page as an admin
     Given I have logged in as an admin

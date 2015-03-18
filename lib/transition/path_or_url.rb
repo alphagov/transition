@@ -11,6 +11,7 @@ module Transition
         .info
         .mod.uk
         .net
+        .nhs.uk
         .org
         .org.uk
         .police.uk

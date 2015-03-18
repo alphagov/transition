@@ -151,6 +151,12 @@ describe Mapping do
           it { should be_valid }
         end
 
+        context 'is on *.nhs.uk' do
+          subject(:mapping) { build(:redirect, new_url: 'http://m.nhs.uk/foo') }
+
+          it { should be_valid }
+        end
+
         context 'mapping is not a redirect' do
           subject(:mapping) { build(:archived, new_url: 'http://evil.com') }
 
