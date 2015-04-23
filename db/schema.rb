@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150421161752) do
+ActiveRecord::Schema.define(version: 20150421161957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -214,12 +214,13 @@ ActiveRecord::Schema.define(version: 20150421161752) do
     t.string   "email"
     t.string   "uid"
     t.text     "permissions"
-    t.boolean  "remotely_signed_out", default: false
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.boolean  "remotely_signed_out",     default: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.string   "organisation_slug"
-    t.boolean  "is_robot",            default: false
-    t.boolean  "disabled",            default: false
+    t.boolean  "is_robot",                default: false
+    t.boolean  "disabled",                default: false
+    t.string   "organisation_content_id"
   end
 
   create_table "versions", force: true do |t|
