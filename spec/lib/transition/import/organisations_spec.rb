@@ -31,6 +31,7 @@ describe Transition::Import::Organisations do
       subject(:ukti) { Organisation.find_by_whitehall_slug('uk-trade-investment') }
 
       its(:abbreviation)   { should eql 'UKTI' }
+      its(:content_id)     { should eql '8ded75c7-29ea-4831-958c-4f07fd73425d'}
       its(:whitehall_slug) { should eql 'uk-trade-investment' }
       its(:whitehall_type) { should eql 'Non-ministerial department' }
       its(:homepage)       { should eql 'https://www.gov.uk/government/organisations/uk-trade-investment' }
