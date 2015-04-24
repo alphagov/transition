@@ -25,6 +25,7 @@ class Organisation < ActiveRecord::Base
   validates_presence_of :whitehall_slug
   validates_uniqueness_of :whitehall_slug
   validates_presence_of :title
+  validates_presence_of :content_id
 
   # We have two ways of joining a site to an org:
   # 1. By the site's FK relationship to organisations
