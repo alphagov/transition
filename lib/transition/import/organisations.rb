@@ -19,6 +19,7 @@ module Transition
       def create(whitehall_org)
         Organisation.where(whitehall_slug: whitehall_org.details.slug).first_or_initialize.tap do |target|
           target.whitehall_slug  = whitehall_org.details.slug
+          target.content_id     = whitehall_org.details.content_id
 
           target.whitehall_type = whitehall_org.format
           target.title          = whitehall_org.title

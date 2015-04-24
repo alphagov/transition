@@ -8,6 +8,7 @@
     :web_url: https://www.gov.uk/government/organisations/attorney-generals-office
     :details: !ruby/object:OpenStruct
       table:
+        :content_id: e7b3e7f0-7414-433e-9d3c-47267dd1eab7
         :slug: attorney-generals-office
         :abbreviation: AGO
         :closed_at: 
@@ -39,6 +40,7 @@
     :web_url: https://www.gov.uk/government/organisations/department-for-business-innovation-skills
     :details: !ruby/object:OpenStruct
       table:
+        :content_id: 11654417-b031-46af-b50b-630bc352bd64
         :slug: department-for-business-innovation-skills
         :abbreviation: BIS
         :closed_at: 
@@ -270,6 +272,7 @@
     :web_url: https://www.gov.uk/government/organisations/foreign-commonwealth-office
     :details: !ruby/object:OpenStruct
       table:
+        :content_id: d10aaeb2-ae06-4735-a1b3-abadca401332
         :slug: foreign-commonwealth-office
         :abbreviation: FCO
         :closed_at: 
@@ -329,6 +332,7 @@
     :web_url: https://www.gov.uk/government/organisations/wales-office
     :details: !ruby/object:OpenStruct
       table:
+        :content_id: 66d3e072-aa95-45f9-b418-c2163138f39e
         :slug: wales-office
         :abbreviation: WO
         :closed_at: 
@@ -348,6 +352,7 @@
     :web_url: https://www.anybleedingenvironment.gov.uk/government/organisations/uk-trade-investment
     :details: !ruby/object:OpenStruct
       table:
+        :content_id: 8ded75c7-29ea-4831-958c-4f07fd73425d
         :slug: uk-trade-investment
         :abbreviation: UKTI
         :closed_at: 
@@ -375,6 +380,7 @@
     :web_url: https://www.gov.uk/government/organisations/uk-atomic-energy-authority
     :details: !ruby/object:OpenStruct
       table:
+        :content_id: d1aae494-8594-41b6-8ace-fb81f6c1815b
         :slug: uk-atomic-energy-authority
         :abbreviation: UKAEA
         :closed_at: 
