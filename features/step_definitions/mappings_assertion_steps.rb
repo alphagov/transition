@@ -84,6 +84,12 @@ Then(/^the archive URL field should be empty$/) do
   field_labeled('Alternative National Archives URL').value.should be_empty
 end
 
+And(/^"Raise a support request through the GOV.UK Support form" should be a link$/) do
+  within 'div.alert.alert-danger' do
+    expect(page).to have_selector('a')
+  end
+end
+
 But(/^I should see help for the unresolved status$/) do
   within '[data-module="toggle-mapping-form-fields"]' do
     expect(page).to have_selector('.js-for-unresolved')

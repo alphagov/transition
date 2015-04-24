@@ -2,7 +2,7 @@ class HostInWhitelistValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return if value.blank?
     unless in_whitelist?(value)
-      message = (options[:message] || "must be on a whitelisted domain. Contact #{Rails.configuration.support_email} for more information.")
+      message = (options[:message] || "must be on a whitelisted domain. <a href='https://support.production.alphagov.co.uk/general_request/new'>Raise a support request through the GOV.UK Support form</a> for more information.")
       record.errors.add(attribute, message)
     end
   end

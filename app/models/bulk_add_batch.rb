@@ -16,8 +16,7 @@ class BulkAddBatch < MappingsBatch
     redirect.validates :new_url, length: { maximum: 2048 }
     redirect.validates :new_url, non_blank_url: { message: I18n.t('mappings.bulk.new_url_invalid') }
     redirect.validates :new_url, host_in_whitelist: {
-      message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist',
-      email: Rails.configuration.support_email)
+      message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist')
     }
     redirect.validates :new_url, not_a_national_archives_url: {
       message: I18n.t('mappings.bulk.new_url_must_not_be_on_tna')

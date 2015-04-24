@@ -57,6 +57,13 @@ Feature: Edit a site's mapping
     Then I should still be editing a mapping
     And I should see "The URL to redirect to is not a URL"
 
+  Scenario: Error when trying to redirect to a host not on the whitelist
+    When I make the mapping a redirect to "http://not-on-whitelist.com"
+    And I save the mapping
+    Then I should still be editing a mapping
+    And I should see "The URL to redirect to must be on a whitelisted domain. Raise a support request through the GOV.UK Support form for more information."
+    And "Raise a support request through the GOV.UK Support form" should be a link
+
   Scenario: Error when trying to redirect to the National Archives
     When I make the mapping a redirect to http://webarchive.nationalarchives.gov.uk/mapping
     And I save the mapping

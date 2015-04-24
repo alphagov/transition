@@ -1,11 +1,11 @@
 <% if error_messages.present? %>
   <div class="alert alert-danger">
     <% if error_messages.size == 1 %>
-      <p><%= error_messages.first %></p>
+      <p><%= error_messages.first.html_safe %></p>
     <% else %>
       <ul>
         <% error_messages.each do |message| %>
-          <li><%= message %></li>
+          <li><%= message.html_safe %></li>
         <% end %>
       </ul>
     <% end %>

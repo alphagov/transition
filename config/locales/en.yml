@@ -31,7 +31,7 @@ en:
     bulk:
       type_invalid: 'Please select either redirect, archive or unresolved'
       new_url_invalid: 'Enter a valid URL to redirect to'
-      new_url_must_be_on_whitelist: 'The URL to redirect to must be on a whitelisted domain. Contact %{email} for more information.'
+      new_url_must_be_on_whitelist: "The URL to redirect to must be on a whitelisted domain. <a href='https://support.production.alphagov.co.uk/general_request/new'>Raise a support request through the GOV.UK Support form</a> for more information."
       new_url_must_not_be_on_tna: 'You must use an archive mapping to link to the National Archives, not a redirect'
       edit:
         mappings_empty: 'No mappings were selected'

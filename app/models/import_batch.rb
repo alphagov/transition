@@ -28,8 +28,7 @@ class ImportBatch < MappingsBatch
   }
   validates :new_urls, each_in_collection: {
     validator: HostInWhitelistValidator,
-    message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist',
-      email: Rails.configuration.support_email)
+    message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist')
   }
 
   after_create :create_entries
