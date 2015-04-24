@@ -12,7 +12,7 @@ Given(/^I have logged in as a member of DCLG$/) do
                 abbreviation:   'DCLG',
                 whitehall_slug: 'department-for-communities-and-local-government')
 
-  GDS::SSO.test_user = create(:user, organisation_slug: dclg.whitehall_slug)
+  GDS::SSO.test_user = create(:user, organisation_content_id: dclg.content_id)
 end
 
 Given(/^I log in as a SIRO$/) do
@@ -24,5 +24,5 @@ Given(/^I have logged in as a GDS Editor called "([^"]*)"$/) do |name|
 end
 
 Given(/^I have logged in as a member of another organisation$/) do
-  GDS::SSO.test_user = create(:user, organisation_slug: 'slug-for-another-org')
+  GDS::SSO.test_user = create(:user, organisation_content_id: SecureRandom.uuid)
 end
