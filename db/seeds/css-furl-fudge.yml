@@ -37,9 +37,6 @@ regulatory-policy-committee:
 uk-atomic-energy-authority:
   :css: department-for-business-innovation-skills
   :furl: www.gov.uk/ukaea
-directgov:
-  :css: directgov
-  :furl: www.gov.uk
 cabinet-office:
   :css: cabinet-office
   :furl: www.gov.uk/cabinet-office

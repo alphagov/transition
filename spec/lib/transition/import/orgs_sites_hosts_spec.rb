@@ -25,31 +25,15 @@ describe Transition::Import::OrgsSitesHosts do
       end
 
       it 'has imported orgs' do
-        Organisation.count.should == 8
+        Organisation.count.should == 6
       end
 
       it 'has imported sites' do
-        Site.count.should == 12
+        Site.count.should == 8
       end
 
       it 'has imported hosts' do
-        Host.count.should == (35 * 2) # 35 hosts plus 35 aka hosts
-      end
-
-      ##
-      # BusinessLink and Directgov never existed in Whitehall.
-      describe 'sites with organisations that sort of don\'t exist' do
-        let(:businesslink) { Organisation.find_by_whitehall_slug('business-link') }
-        let(:directgov)    { Organisation.find_by_whitehall_slug('directgov') }
-
-        it 'has assigned sites to businesslink' do
-          Site.find_by_abbr!('businesslink').organisation.should == businesslink
-          Site.find_by_abbr!('businesslink_events').organisation.should == businesslink
-        end
-        it 'has assigned sites to Directgov' do
-          Site.find_by_abbr!('directgov').organisation.should == directgov
-          Site.find_by_abbr!('directgov_campaigns').organisation.should == directgov
-        end
+        Host.count.should == (12 * 2) # 12 hosts plus 12 aka hosts
       end
 
       describe 'a child organisation with its own hosted site' do
