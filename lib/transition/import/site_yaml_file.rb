@@ -70,6 +70,10 @@ module Transition
       attr_reader :site
       def import_site!
         @site = Site.where(abbr: abbr).first_or_initialize.tap do |site|
+          # transition-config uses slugs to identify organisations because
+          # content_ids are user-unfriendly and add complexity. We think it will
+          # be very infrequent that an organisation with a slug change will be
+          # in transition-config.
           site.organisation          = Organisation.find_by_whitehall_slug(whitehall_slug)
 
           site.tna_timestamp         = DateTime.strptime(yaml['tna_timestamp'].to_s, '%Y%m%d%H%M%S')
@@ -84,6 +88,7 @@ module Transition
 
           site.save!
         end
+        # Again, transition-config uses slugs to identify organisations
         @site.extra_organisations = Organisation.where(whitehall_slug: extra_organisation_slugs)
       end
 
