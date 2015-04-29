@@ -31,10 +31,7 @@ module Transition
       end
 
       def whitehall_slug
-        yaml['whitehall_slug'] || case abbr
-                                    when /^directgov.*/ then 'directgov'
-                                    when /^businesslink.*/ then 'business-link'
-                                  end
+        yaml['whitehall_slug']
       end
 
       def title

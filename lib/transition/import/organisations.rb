@@ -43,7 +43,7 @@ module Transition
       end
 
       def import!
-        whitehall_orgs.organisations.concat(Organisations.that_never_existed).each do |whitehall_org|
+        whitehall_orgs.organisations.each do |whitehall_org|
           create(whitehall_org)
         end
       end
@@ -56,27 +56,6 @@ module Transition
             e.transaction.rollback
           end
         end
-      end
-
-      def Organisations.that_never_existed
-        [
-          OpenStruct.new({
-                           title: 'Directgov',
-                           parent_organisations: [],
-                           details: OpenStruct.new({
-                             slug: 'directgov',
-                             abbreviation: nil
-                           })
-                         }),
-          OpenStruct.new({
-                           title: 'Business Link',
-                           parent_organisations: [],
-                           details: OpenStruct.new({
-                             slug: 'business-link',
-                             abbreviation: nil
-                           })
-                         })
-        ]
       end
     end
   end
