@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
 
   def own_organisation
     @_own_organisation ||=
-      Organisation.find_by_whitehall_slug(organisation_slug) if organisation_slug
+      Organisation.find_by_content_id(organisation_content_id) if organisation_content_id
   end
 
   def is_human?
