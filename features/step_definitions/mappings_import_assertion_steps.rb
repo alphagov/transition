@@ -63,6 +63,6 @@ end
 
 Then(/^we have recorded analytics that show that import with overwrite existing was used$/) do
   steps %{
-    And an analytics event with "import-overwrite-existing" has fired
+    And an automatic analytics event with "import-overwrite-existing" will fire
   }
 end

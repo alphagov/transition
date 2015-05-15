@@ -53,9 +53,9 @@ end
 
 # Google analytics tracking
 
-Then(/^an analytics event with "([^"]*)" has fired$/) do |contents|
-  gaq = page.evaluate_script('window._gaq').flatten
-  expect(gaq.include?(contents)).to be_true
+Then(/^an automatic analytics event with "([^"]*)" will fire$/) do |contents|
+  expect(page).to have_selector(
+    "[data-module='auto-track-event'][data-track-label*='#{contents}']")
 end
 
 # HTML structure

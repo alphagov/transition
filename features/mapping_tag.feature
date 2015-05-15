@@ -61,7 +61,7 @@ Scenario: Bulk adding tags to existing mappings (JS)
   And mapping 3 should have the tags "fo, fum"
   And I should see an open modal window
   And I should see a table with 2 saved mappings in the modal
-  And an analytics event with "bulk-edit-tag" has fired
+  And an automatic analytics event with "bulk-edit-tag" will fire
 
 @javascript
 Scenario: Autocompleting popular tags

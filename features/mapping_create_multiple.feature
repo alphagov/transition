@@ -25,7 +25,7 @@ Feature: Create mappings
     Then I should see "2 mappings created" in a modal window
     And I should see a table with 2 saved mappings in the modal
     And I should see "/needs/canonicalizing" in a modal window
-    And an analytics event with "bulk-add-redirect-ignore-existing" has fired
+    And an automatic analytics event with "bulk-add-redirect-ignore-existing" will fire
 
   @javascript
   Scenario: Creating a large batch (that will be processed in the background)

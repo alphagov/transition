@@ -82,7 +82,7 @@ Feature: Editing multiple mappings for a site
     Then I should see an open modal window
     And I should see a form that contains my selection within the modal
     And I should see "Redirect mappings" in the modal window
-    And an analytics event with "bulk-edit-redirect" has fired
+    And an automatic analytics event with "bulk-edit-redirect" will fire
     When I enter a new URL to redirect to
     And I save my changes
     Then I should see an open modal window
@@ -90,7 +90,7 @@ Feature: Editing multiple mappings for a site
     And I should see a table with 2 saved mappings in the modal
     And I should see "/a" in the modal window
     And I should see "/about/branding" in the modal window
-    And an analytics event with "bulk-edit-redirect" has fired
+    And an automatic analytics event with "bulk-edit-redirect" will fire
 
   @javascript
   Scenario: Selecting multiple mappings to archive with javascript
@@ -99,14 +99,14 @@ Feature: Editing multiple mappings for a site
     Then I should see an open modal window
     And I should see a form that contains my selection within the modal
     And I should see "Archive mappings" in the modal window
-    And an analytics event with "bulk-edit-archive" has fired
+    And an automatic analytics event with "bulk-edit-archive" will fire
     When I save my changes
     Then I should see an open modal window
     And I should see "Mappings updated" in the modal window
     And I should see a table with 2 saved mappings in the modal
     And I should see "/a" in the modal window
     And I should see "/about/branding" in the modal window
-    And an analytics event with "bulk-edit-archive" has fired
+    And an automatic analytics event with "bulk-edit-archive" will fire
 
   @javascript
   Scenario: Truncating a table of mappings in a modal
