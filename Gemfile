@@ -27,8 +27,8 @@ gem 'airbrake', '4.0.0'
 
 gem 'logstasher', '0.5.3'
 
-gem 'sass', '3.2.19'
-gem 'sass-rails', '4.0.3'
+gem 'sass', '3.4.14'
+gem 'sass-rails', '5.0.3'
 gem 'uglifier', '2.5.1'
 
 group :development do
