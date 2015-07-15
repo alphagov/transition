@@ -309,14 +309,19 @@ describe ImportBatch do
 
     subject(:mappings_batch) do
       create(:import_batch, site: site,
-             tag_list: 'a tag',
+             tag_list: tag_list,
              raw_csv: <<-CSV.strip_heredoc
-                        /a,http://a.gov.uk
+                        #{path},#{new_url}
                         /b,http://a.gov.uk
                       CSV
                  )
     end
 
+    let(:path) { '/a' }
+    let(:new_url) { 'http://a.gov.uk' }
+    let(:tag_list) { 'a tag' }
+
     include_examples 'creates mappings'
+    include_examples 'creates redirect mapping'
   end
 end
