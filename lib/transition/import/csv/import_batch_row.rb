@@ -68,6 +68,8 @@ module Transition
             1
           elsif archive? && other.redirect?
             -1
+          elsif archive? && other.archive?
+            other.line_number <=> line_number
           elsif archive?
             1
           else

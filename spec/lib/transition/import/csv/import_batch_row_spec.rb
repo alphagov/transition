@@ -163,6 +163,7 @@ describe Transition::Import::CSV::ImportBatchRow do
     let(:redirect)       { make_a_row('/old', 'https://a.gov.uk/new') }
     let(:later_redirect) { make_a_row_with_line_number(2, '/old', 'https://a.gov.uk/later') }
     let(:archive)        { make_a_row('/old', 'TNA') }
+    let(:later_archive)  { make_a_row_with_line_number(2, '/old', 'TNA') }
     let(:unresolved)     { make_a_row('/old') }
 
     context 'comparing rows for different paths' do
@@ -193,6 +194,11 @@ describe Transition::Import::CSV::ImportBatchRow do
       it 'trumps an unresolved' do
         archive.should > unresolved
         unresolved.should < archive
+      end
+
+      it 'trumps a later archive' do
+        archive.should > later_archive
+        later_archive.should < archive
       end
     end
   end
