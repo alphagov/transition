@@ -140,6 +140,25 @@ describe Transition::Import::CSV::ImportBatchRow do
     end
   end
 
+  describe '#archive_url' do
+    context 'with a custom archive URL' do
+      let(:archive_url) { 'http://webarchive.nationalarchives.gov.uk/*/http://a.com' }
+      let(:row) { make_a_row('', archive_url) }
+
+      it 'returns the custom URL' do
+        expect(row.archive_url).to eq(archive_url)
+      end
+    end
+
+    context 'for a regular archive mapping' do
+      let(:row) { make_a_row('', 'TNA') }
+
+      it 'returns nil' do
+        expect(row.archive_url).to be_nil
+      end
+    end
+  end
+
   describe '<=> - comparison for being able to sort mappings for the same Old URL' do
     let(:redirect)       { make_a_row('/old', 'https://a.gov.uk/new') }
     let(:later_redirect) { make_a_row_with_line_number(2, '/old', 'https://a.gov.uk/later') }
