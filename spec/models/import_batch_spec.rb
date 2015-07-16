@@ -352,17 +352,32 @@ describe ImportBatch do
       create(:import_batch, site: site,
              tag_list: tag_list,
              raw_csv: <<-CSV.strip_heredoc
-                        #{path},#{new_url}
-                        /b,http://a.gov.uk
+                        #{path_to_be_redirected},#{new_url}
+                        #{path_to_be_archived},#{archive_url}
                       CSV
                  )
     end
 
-    let(:path) { '/a' }
+    let(:path_to_be_redirected) { '/a' }
     let(:new_url) { 'http://a.gov.uk' }
+
+    let(:path_to_be_archived) { '/b' }
+    let(:archive_url) { 'http://webarchive.nationalarchives.gov.uk/*/http://a.com/foo' }
+
     let(:tag_list) { 'a tag' }
 
     include_examples 'creates mappings'
-    include_examples 'creates redirect mapping'
+
+    context 'with a redirect mapping' do
+      let(:path) { path_to_be_redirected }
+
+      include_examples 'creates redirect mapping'
+    end
+
+    context 'with a custom archive URL mapping' do
+      let(:path) { path_to_be_archived }
+
+      include_examples 'creates custom archive URL mapping'
+    end
   end
 end
