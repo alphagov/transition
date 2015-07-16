@@ -223,9 +223,10 @@ describe ImportBatch do
       describe 'the first entry' do
         subject(:entry) { mappings_batch.entries.first }
 
-        its(:path)    { should == '/old' }
-        its(:new_url) { should be_nil }
-        its(:type)    { should == 'archive' }
+        its(:path)        { should == '/old' }
+        its(:new_url)     { should be_nil }
+        its(:archive_url) { should be_nil }
+        its(:type)        { should == 'archive' }
       end
     end
 
