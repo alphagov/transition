@@ -13,6 +13,22 @@ shared_examples 'creates redirect mapping' do
   end
 end
 
+shared_examples 'creates custom archive URL mapping' do
+  context 'some context' do
+    before { mappings_batch.process }
+
+    let(:mapping) { site.mappings.where(path: path).first }
+
+    it 'should populate the fields on the new mapping' do
+      mapping.path.should == path
+      mapping.type.should == 'archive'
+      mapping.new_url.should == nil
+      mapping.archive_url.should == archive_url
+      mapping.tag_list.should == tag_list.split(",")
+    end
+  end
+end
+
 shared_examples 'creates mappings' do
   context 'rosy case' do
     before { mappings_batch.process }
