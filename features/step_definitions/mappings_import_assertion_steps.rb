@@ -11,6 +11,11 @@ Then(/^I should see how many of each type of mapping will be created$/) do
   }
 end
 
+Then(/^I should see how many archive mappings will be created and how many have custom URLs$/) do
+  steps %{
+    Then I should see "Create 3 new archives (2 with custom URLs)"
+  }
+end
 
 Then(/^I should see how many mappings will be overwritten$/) do
   steps %{
