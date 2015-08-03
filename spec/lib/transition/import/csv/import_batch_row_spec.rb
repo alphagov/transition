@@ -166,6 +166,10 @@ describe Transition::Import::CSV::ImportBatchRow do
     let(:later_archive)  { make_a_row_with_line_number(2, '/old', 'TNA') }
     let(:unresolved)     { make_a_row('/old') }
 
+    let(:archive_url)           { 'http://webarchive.nationalarchives.gov.uk/*/http://a.com' }
+    let(:custom_archive)        { make_a_row('/old', archive_url) }
+    let(:later_custom_archive)  { make_a_row_with_line_number(2, '/old', archive_url) }
+
     context 'comparing rows for different paths' do
       it 'raises an error' do
         different_path = make_a_row('/different')
@@ -199,6 +203,18 @@ describe Transition::Import::CSV::ImportBatchRow do
       it 'trumps a later archive' do
         archive.should > later_archive
         later_archive.should < archive
+      end
+    end
+
+    context 'an archive with a custom URL' do
+      it 'trumps a regular archive' do
+        custom_archive.should > archive
+        archive.should < custom_archive
+      end
+
+      it 'trumps a later custom archive' do
+        custom_archive.should > later_custom_archive
+        later_custom_archive.should < custom_archive
       end
     end
   end
