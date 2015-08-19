@@ -5,7 +5,7 @@ describe VersionsHelper do
   describe '#friendly_field_name' do
     specify { helper.friendly_field_name('type').should == 'Type' }
 
-    specify { helper.friendly_field_name('archive_url').should == 'Alternative Archive URL' }
+    specify { helper.friendly_field_name('archive_url').should == 'Custom Archive URL' }
 
     specify { helper.friendly_field_name('miscellaneous').should == 'Miscellaneous' }
   end
@@ -21,7 +21,7 @@ describe VersionsHelper do
   describe '#friendly_changeset_title' do
     specify { helper.friendly_changeset_title({'id' => 1}).should == 'Mapping created' }
 
-    specify { helper.friendly_changeset_title({'archive_url' => 1}).should == 'Alternative Archive URL updated' }
+    specify { helper.friendly_changeset_title({'archive_url' => 1}).should == 'Custom Archive URL updated' }
 
     specify { helper.friendly_changeset_title({'miscellaneous' => 1}).should == 'Miscellaneous updated' }
 

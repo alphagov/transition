@@ -127,7 +127,7 @@ When(/^I make the new mapping paths "(.*?)" unresolved$/) do |paths|
 end
 
 When(/^I enter an archive URL but then click "Cancel"$/) do
-  fill_in 'Alternative National Archives URL', with: 'anything'
+  fill_in 'Custom National Archives URL', with: 'anything'
   click_link 'Cancel'
 end
 

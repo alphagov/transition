@@ -49,12 +49,12 @@
         <dt>National Archives</dt>
         <dd>
           <%= link_to @mapping.national_archive_url, @mapping.national_archive_url %><br />
-          <span class="text-muted">Is this archive missing? <a href="#add-alternative-url" class="if-no-js-hide link-muted js-toggle">Use an alternative</a></span>
+          <span class="text-muted">Is this archive missing? <a href="#add-custom-url" class="if-no-js-hide link-muted js-toggle">Use an alternative</a></span>
         </dd>
       </dl>
       <div class="add-bottom-margin js-toggle-target <% unless @mapping.archive_url %>if-js-hide<% end %>">
         <%= f.label :archive_url do %>
-          Alternative National Archives URL (<%= link_to 'Find on the National Archives', @mapping.national_archive_index_url %>)
+          Custom National Archives URL (<%= link_to 'Find on the National Archives', @mapping.national_archive_index_url %>)
         <% end %>
         <div class="row">
           <div class="col-md-8">

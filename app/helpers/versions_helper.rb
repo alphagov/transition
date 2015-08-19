@@ -25,7 +25,7 @@ module VersionsHelper
       friendly_changeset_title_for_type(changeset['type'][1])
     elsif changeset.length == 1
       first = changeset.first[0].titleize
-      first = 'Alternative Archive URL' if first == 'Archive URL'
+      first = 'Custom Archive URL' if first == 'Archive URL'
       "#{first} updated"
     else
       "Multiple properties updated"
@@ -35,7 +35,7 @@ module VersionsHelper
   def friendly_field_name(field)
     case field
     when 'archive_url'
-      'Alternative Archive URL'
+      'Custom Archive URL'
     else
       field.titleize
     end
