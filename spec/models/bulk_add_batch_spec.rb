@@ -122,11 +122,16 @@ describe BulkAddBatch do
 
     subject(:mappings_batch) do
       create(:bulk_add_batch, site: site,
-              paths: ['/a', '/b'],
-              type: 'redirect', new_url: 'http://a.gov.uk', tag_list: 'a tag')
+              paths: [path, '/b'],
+              type: 'redirect', new_url: new_url, tag_list: tag_list)
     end
 
+    let(:path) { '/a' }
+    let(:new_url) { 'http://a.gov.uk' }
+    let(:tag_list) { 'a tag' }
+
     include_examples 'creates mappings'
+    include_examples 'creates redirect mapping'
   end
 
   describe 'recording history', versioning: true do

@@ -30,6 +30,11 @@ class ImportBatch < MappingsBatch
     validator: HostInWhitelistValidator,
     message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist')
   }
+  validates :archive_urls, each_in_collection: {
+    validator: LengthValidator,
+    maximum: (64.kilobytes - 1),
+    message: I18n.t('mappings.new_url_too_long')
+  }
 
   after_create :create_entries
 
@@ -38,7 +43,13 @@ class ImportBatch < MappingsBatch
     existing_mappings = site.mappings.where(path: canonical_paths)
 
     deduplicated_csv_rows.each do |row|
-      entry = ImportBatchEntry.new(path: row.path, type: row.type, new_url: row.new_url)
+      entry = ImportBatchEntry.new(
+        path: row.path,
+        type: row.type,
+        new_url: row.new_url,
+        archive_url: row.archive_url,
+      )
+
       entry.mappings_batch = self
       entry.mapping = existing_mappings.detect { |mapping| mapping.path == row.path }
       entry.save!
@@ -51,6 +62,10 @@ class ImportBatch < MappingsBatch
 
   def new_urls
     deduplicated_csv_rows.select(&:redirect?).map(&:new_url).uniq
+  end
+
+  def archive_urls
+    deduplicated_csv_rows.map(&:archive_url).compact
   end
 
   def canonical_paths

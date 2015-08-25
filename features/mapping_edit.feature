@@ -36,10 +36,10 @@ Feature: Edit a site's mapping
     But I should see help for the unresolved status
 
   @javascript
-  Scenario: Adding an alternative archive URL
+  Scenario: Adding a custom archive URL
     When I make the mapping an archive
     And I click the link "Use an alternative"
-    Then I should see the National Archives link replaced with an alternative National Archives field
+    Then I should see the National Archives link replaced with a custom National Archives field
     When I enter an archive URL but then click "Cancel"
     Then I should see the National Archives link again
     When I click the link "Use an alternative"

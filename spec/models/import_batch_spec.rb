@@ -139,6 +139,24 @@ describe ImportBatch do
         end
       end
     end
+
+    describe 'archive URLs' do
+      describe 'validating all archive URLs for length' do
+        let(:too_long_url) { 'http://webarchive.nationalarchives.gov.uk/*/http://a.com'.ljust(65536, 'x') }
+        subject(:mappings_batch) do
+          build(:import_batch, raw_csv: <<-CSV.strip_heredoc
+              old url,new url
+              /old,#{too_long_url}
+            CSV
+          )
+        end
+
+        before { mappings_batch.should_not be_valid }
+        it 'should declare it invalid' do
+          mappings_batch.errors[:archive_urls].should include("A new URL is too long")
+        end
+      end
+    end
   end
 
   describe 'creating entries' do
@@ -212,20 +230,43 @@ describe ImportBatch do
     end
 
     context 'archives' do
-      let(:raw_csv) { <<-CSV.strip_heredoc
-                  /old,TNA
-                CSV
-              }
-      it 'should create an entry for each data row' do
-        mappings_batch.entries.count.should == 1
+      context 'without a custom archive URL' do
+        let(:raw_csv) { <<-CSV.strip_heredoc
+                    /old,TNA
+                  CSV
+                }
+        it 'should create an entry for each data row' do
+          mappings_batch.entries.count.should == 1
+        end
+
+        describe 'the first entry' do
+          subject(:entry) { mappings_batch.entries.first }
+
+          its(:path)        { should == '/old' }
+          its(:new_url)     { should be_nil }
+          its(:archive_url) { should be_nil }
+          its(:type)        { should == 'archive' }
+        end
       end
 
-      describe 'the first entry' do
-        subject(:entry) { mappings_batch.entries.first }
+      context 'with custom archive URL' do
+        let(:archive_url) { 'http://webarchive.nationalarchives.gov.uk/*/http://a.com' }
+        let(:raw_csv) { <<-CSV.strip_heredoc
+                    /old,#{archive_url}
+                  CSV
+                }
+        it 'should create an entry for each data row' do
+          mappings_batch.entries.count.should == 1
+        end
 
-        its(:path)    { should == '/old' }
-        its(:new_url) { should be_nil }
-        its(:type)    { should == 'archive' }
+        describe 'the first entry' do
+          subject(:entry) { mappings_batch.entries.first }
+
+          its(:path)        { should == '/old' }
+          its(:new_url)     { should be_nil }
+          its(:archive_url) { should == archive_url }
+          its(:type)        { should == 'archive' }
+        end
       end
     end
 
@@ -309,14 +350,34 @@ describe ImportBatch do
 
     subject(:mappings_batch) do
       create(:import_batch, site: site,
-             tag_list: 'a tag',
+             tag_list: tag_list,
              raw_csv: <<-CSV.strip_heredoc
-                        /a,http://a.gov.uk
-                        /b,http://a.gov.uk
+                        #{path_to_be_redirected},#{new_url}
+                        #{path_to_be_archived},#{archive_url}
                       CSV
                  )
     end
 
+    let(:path_to_be_redirected) { '/a' }
+    let(:new_url) { 'http://a.gov.uk' }
+
+    let(:path_to_be_archived) { '/b' }
+    let(:archive_url) { 'http://webarchive.nationalarchives.gov.uk/*/http://a.com/foo' }
+
+    let(:tag_list) { 'a tag' }
+
     include_examples 'creates mappings'
+
+    context 'with a redirect mapping' do
+      let(:path) { path_to_be_redirected }
+
+      include_examples 'creates redirect mapping'
+    end
+
+    context 'with a custom archive URL mapping' do
+      let(:path) { path_to_be_archived }
+
+      include_examples 'creates custom archive URL mapping'
+    end
   end
 end

@@ -33,6 +33,14 @@ Feature: Import mappings
     And I should see that my unresolved mapping is there
     And we have recorded analytics that show that import with overwrite existing was used
 
+  Scenario: Importing archive mappings with and without custom URLs
+    Given I have logged in as a GDS Editor
+    And a site bis exists
+    And I visit the path /sites/bis
+    And I go to import some mappings
+    When I submit the form with a small CSV of archive mappings
+    Then I should see how many archive mappings will be created and how many have custom URLs
+
   @javascript
   Scenario: Successfully importing a larger batch of mappings
     Given I have logged in as a GDS Editor

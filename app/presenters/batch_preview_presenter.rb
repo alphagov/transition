@@ -11,6 +11,10 @@ class BatchPreviewPresenter
     @batch.entries.without_existing_mappings.archives.count
   end
 
+  def custom_archive_url_count
+    @batch.entries.with_custom_archive_urls.count
+  end
+
   def unresolved_count
     @batch.entries.without_existing_mappings.unresolved.count
   end

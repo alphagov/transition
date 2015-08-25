@@ -25,6 +25,17 @@ When(/^I submit the form with a small valid CSV$/) do
   click_button 'Continue'
 end
 
+When(/^I submit the form with a small CSV of archive mappings$/) do
+  raw_csv = <<-CSV.strip_heredoc
+                        old url,new url
+                        /archive-me,TNA
+                        /archive-me-as-well,http://webarchive.nationalarchives.gov.uk/20120816224015/http://bis.gov.uk/about
+                        /dont-forget-me,http://webarchive.nationalarchives.gov.uk/20120816224015/http://bis.gov.uk/faq
+                      CSV
+  fill_in 'import_batch_raw_csv', with: raw_csv
+  click_button 'Continue'
+end
+
 When(/^I navigate away to the bis mappings page$/) do
   visit(site_mappings_path('bis'))
 end

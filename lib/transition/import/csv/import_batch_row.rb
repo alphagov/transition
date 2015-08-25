@@ -41,8 +41,20 @@ module Transition
           new_value if redirect?
         end
 
+        def archive_url
+          new_value if archive_with_custom_url?
+        end
+
         def archive?
           type == 'archive'
+        end
+
+        def archive_with_custom_url?
+          archive? && new_value && new_url_is_a_national_archives_url?
+        end
+
+        def archive_without_custom_url?
+          archive? && !archive_with_custom_url?
         end
 
         def redirect?
@@ -60,6 +72,12 @@ module Transition
             1
           elsif archive? && other.redirect?
             -1
+          elsif archive_with_custom_url? && other.archive_without_custom_url?
+            1
+          elsif archive_without_custom_url? && other.archive_with_custom_url?
+            -1
+          elsif archive? && other.archive?
+            other.line_number <=> line_number
           elsif archive?
             1
           else
