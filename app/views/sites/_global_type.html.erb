@@ -16,7 +16,7 @@
           http://<%= @site.default_host.hostname %><strong>/specific/path</strong> <br />
           gets redirected to: <br />
           <%= @site.global_new_url %><strong>/specific/path</strong> <br /><br />
-          To make changes please contact your Transition Manager.
+          To make changes please contact your Proposition Manager.
         <% elsif @site.global_redirect? %>
           <%= I18n.t('mappings.global_type.redirect') %>
         <% elsif @site.global_archive? %>

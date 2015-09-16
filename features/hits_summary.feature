@@ -1,6 +1,6 @@
 @javascript
 Feature: Summary traffic for site
-  As a GDS transition manager/GDS performance analyst
+  As a GDS proposition manager/GDS performance analyst
   I want to see a summary of traffic to a site
   So that I can more easily decide what to fix next based on performance
 

@@ -1,5 +1,5 @@
 Feature: All traffic for site
-  As a GDS transition manager/GDS performance analyst
+  As a GDS proposition manager/GDS performance analyst
   I want to see all hits to a site
   So that I can see what to fix next and can fix it
 
