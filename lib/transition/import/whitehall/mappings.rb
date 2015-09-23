@@ -5,7 +5,7 @@ module Transition
   module Import
     module Whitehall
       class Mappings
-        WHITEHALL_URL = 'https://whitehall-admin.production.alphagov.co.uk/government/mappings.csv'
+        WHITEHALL_URL = "#{Plek.current.find('whitehall-admin')}/government/mappings.csv"
         AS_USER_EMAIL = 'whitehall-urls-robot@dummy.com'
 
         def initialize(options = {})
