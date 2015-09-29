@@ -116,7 +116,7 @@ describe ImportBatch do
 
         before { mappings_batch.should_not be_valid }
         it 'should declare it invalid' do
-          mappings_batch.errors[:new_urls].should include("The URL to redirect to must be on a whitelisted domain. <a href='https://support.production.alphagov.co.uk/general_request/new'>Raise a support request through the GOV.UK Support form</a> for more information.")
+          mappings_batch.errors[:new_urls].should include("The URL to redirect to must be on a whitelisted domain. <a href='https://support.publishing.service.gov.uk/general_request/new'>Raise a support request through the GOV.UK Support form</a> for more information.")
         end
       end
 

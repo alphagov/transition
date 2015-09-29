@@ -57,7 +57,7 @@ describe BulkAddBatch do
         subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect', new_url: 'http://bad.com') }
 
         it 'errors and asks for a whitelisted one' do
-          mappings_batch.errors[:new_url].should include("The URL to redirect to must be on a whitelisted domain. <a href='https://support.production.alphagov.co.uk/general_request/new'>Raise a support request through the GOV.UK Support form</a> for more information.")
+          mappings_batch.errors[:new_url].should include("The URL to redirect to must be on a whitelisted domain. <a href='https://support.publishing.service.gov.uk/general_request/new'>Raise a support request through the GOV.UK Support form</a> for more information.")
         end
       end
 
