@@ -22,29 +22,27 @@ module Transition
 
       private
         def destroy_site_data
+          destroy_all_versions
+
           destroy_all_mappings
 
           destroy_all_hosts
-
-          destroy_organisation
 
           @site.destroy
 
           console_puts "Deleted site: #{@site.abbr}"
         end
 
-        def destroy_all_mappings
-          console_puts "Removing mappings and versions for site: #{@site.abbr}"
-          Mapping.where(site_id: @site.id).each do |map|
-            destroy_all_versions(map)
-
-            console_puts "Removing mapping: #{map.path}"
-            map.destroy
+        def destroy_all_versions
+          console_puts "Removing versions for: #{@site.abbr}"
+          @site.mappings.each do |map|
+            map.versions.destroy_all
           end
         end
 
-        def destroy_all_versions(map)
-          map.versions.each(&:destroy)
+        def destroy_all_mappings
+          console_puts "Removing mappings for: #{@site.abbr}"
+          @site.mappings.destroy_all
         end
 
         def destroy_all_hosts
@@ -52,51 +50,23 @@ module Transition
             destroy_all_hits(host)
 
             destroy_all_host_paths(host)
-
-            console_puts "Removing host: #{host.hostname}"
-            host.destroy
           end
+
+          console_puts "Removing all hosts"
+          @site.hosts.destroy_all
         end
 
         def destroy_all_hits(host)
           console_puts "Removing daily hits for host: #{host.hostname}"
-          DailyHitTotal.where(host_id: host.id).each(&:destroy)
+          host.daily_hit_totals.destroy_all
 
           console_puts "Removing hits for host: #{host.hostname}"
-          Hit.where(host_id: host.id).each(&:destroy)
+          host.hits.destroy_all
         end
 
         def destroy_all_host_paths(host)
           console_puts "Removing host paths for host: #{host.hostname}"
-          HostPath.where(host_id: host.id).each(&:destroy)
-        end
-
-        def destroy_organisation
-          destroy_organisational_relationships
-
-          destroy_organisations_sites
-
-          console_puts "Removing organisation: #{@site.homepage}"
-          Organisation.where(id: @site.organisation_id).destroy_all
-        end
-
-        def destroy_organisational_relationships
-          console_puts "Removing organisational relationships for site: #{@site.abbr}"
-          OrganisationalRelationship
-            .where(child_organisation_id: @site.organisation_id)
-            .each(&:destroy)
-        end
-
-        def destroy_organisations_sites
-          console_puts "Removing organisations sites: #{@site.abbr}"
-
-          delete = "DELETE FROM organisations_sites WHERE"
-          by_site_id = "site_id = #{@site.id}"
-          by_org_id = "organisation_id = #{@site.organisation_id}"
-
-          ActiveRecord::Base.connection.execute("#{delete} #{by_site_id}")
-
-          ActiveRecord::Base.connection.execute("#{delete} #{by_org_id}")
+          host.host_paths.destroy_all
         end
 
       end
