@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.11'
+gem 'rails', '4.1.14.1'
 gem 'activerecord-session_store', '0.1.0'
 gem 'unicorn', '4.6.2'
 gem 'pg', '0.17.1'
@@ -19,7 +19,7 @@ gem 'gretel', '3.0.7'
 gem 'acts-as-taggable-on', '3.1.1'
 gem 'select2-rails', '3.5.7'
 gem 'activerecord-import', '0.5.0'
-gem 'sidekiq', '3.1.4'
+gem 'sidekiq', '3.4.2'
 
 # We use Errbit for tracking exceptions, which needs the airbrake gem. Config
 # for Errbit is in alphagov-deployment.
@@ -29,7 +29,7 @@ gem 'logstasher', '0.5.3'
 
 gem 'sass', '3.4.14'
 gem 'sass-rails', '5.0.3'
-gem 'uglifier', '2.5.1'
+gem 'uglifier', '2.7.2'
 
 group :development do
   gem 'quiet_assets', '1.0.2'
@@ -49,6 +49,7 @@ group :test do
 end
 
 group :development, :test do
+  gem 'pry'
   gem 'rspec-rails', '2.14.2'
   gem 'rspec-expectations', '2.14.2'
   gem 'rspec-mocks', '2.14.2'
