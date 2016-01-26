@@ -29,7 +29,7 @@ gem 'logstasher', '0.5.3'
 
 gem 'sass', '3.4.14'
 gem 'sass-rails', '5.0.3'
-gem 'uglifier', '2.5.1'
+gem 'uglifier', '2.7.2'
 
 group :development do
   gem 'quiet_assets', '1.0.2'
