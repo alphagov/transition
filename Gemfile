@@ -49,6 +49,7 @@ group :test do
 end
 
 group :development, :test do
+  gem 'pry'
   gem 'rspec-rails', '2.14.2'
   gem 'rspec-expectations', '2.14.2'
   gem 'rspec-mocks', '2.14.2'
