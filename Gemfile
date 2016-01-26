@@ -19,7 +19,7 @@ gem 'gretel', '3.0.7'
 gem 'acts-as-taggable-on', '3.1.1'
 gem 'select2-rails', '3.5.7'
 gem 'activerecord-import', '0.5.0'
-gem 'sidekiq', '3.1.4'
+gem 'sidekiq', '3.4.2'
 
 # We use Errbit for tracking exceptions, which needs the airbrake gem. Config
 # for Errbit is in alphagov-deployment.
