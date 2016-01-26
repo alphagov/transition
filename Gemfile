@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.11'
+gem 'rails', '4.1.14.1'
 gem 'activerecord-session_store', '0.1.0'
 gem 'unicorn', '4.6.2'
 gem 'pg', '0.17.1'
