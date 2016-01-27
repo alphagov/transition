@@ -41,8 +41,7 @@ end
 
 Then(/^each path should be a link to the real URL$/) do
   within '.hits' do
-    anchors = page.all(:css, '.path a')
-    expect(anchors).to have(4).links
+    expect(page).to have_css('.path a', count: 4)
   end
 end
 

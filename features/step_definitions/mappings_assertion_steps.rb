@@ -81,7 +81,7 @@ Then(/^I should see the National Archives link again$/) do
 end
 
 Then(/^the archive URL field should be empty$/) do
-  field_labeled('Custom National Archives URL').value.should be_empty
+  expect(field_labeled('Custom National Archives URL').value).to be_empty
 end
 
 And(/^"Raise a support request through the GOV.UK Support form" should be a link$/) do
@@ -158,7 +158,7 @@ end
 Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
   if @_javascript
     field = find(:xpath, '//input[contains(@class, "select2-offscreen")]')
-    field.value.should == tag_list
+    expect(field.value).to eq(tag_list)
   else
     expect(page).to have_field('Tags', with: tag_list)
   end
