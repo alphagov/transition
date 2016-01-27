@@ -50,8 +50,8 @@ end
 
 group :development, :test do
   gem 'pry'
-  gem 'rspec-rails', '2.14.2'
-  gem 'rspec-expectations', '2.14.2'
-  gem 'rspec-mocks', '2.14.2'
+  gem 'rspec-rails', '2.99.0'
+  gem 'rspec-expectations', '2.99.0'
+  gem 'rspec-mocks', '2.99.0'
   gem 'jasmine', '2.0.2'
 end
