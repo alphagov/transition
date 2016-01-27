@@ -413,7 +413,7 @@ describe Mapping do
       subject(:mapping) { create :mapping, as_user: alice }
 
       it 'has 1 version' do
-        expect(subject.size).to eq(1)
+        expect(subject.versions.size).to eq(1)
       end
 
       describe 'the last version' do
@@ -443,7 +443,7 @@ describe Mapping do
         end
 
         it 'has 2 versions' do
-          expect(subject.size).to eq(2)
+          expect(subject.versions.size).to eq(2)
         end
 
         describe 'the last version' do
@@ -538,7 +538,7 @@ describe Mapping do
         end
 
         it 'has 3 versions' do
-          expect(subject.size).to eq(3)
+          expect(subject.versions.size).to eq(3)
         end
 
         describe '#last_editor' do

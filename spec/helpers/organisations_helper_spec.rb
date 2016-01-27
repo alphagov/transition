@@ -36,7 +36,7 @@ describe OrganisationsHelper do
 
       it 'should be a link to the only parent' do
         expected = link_to parent_1.title, organisation_path(parent_1)
-        expect(all_links).to { eql(expected) }
+        expect(all_links).to eql(expected)
       end
     end
 
@@ -51,7 +51,7 @@ describe OrganisationsHelper do
         expected = link_to parent_1.title, organisation_path(parent_1)
         expected += ' and '
         expected += link_to parent_2.title, organisation_path(parent_2)
-        expect(all_links).to { eql(expected) }
+        expect(all_links).to eql(expected)
       end
     end
 
@@ -69,7 +69,7 @@ describe OrganisationsHelper do
         expected += link_to parent_2.title, organisation_path(parent_2)
         expected += ' and '
         expected += link_to parent_3.title, organisation_path(parent_3)
-        expect(all_links).to { eql(expected) }
+        expect(all_links).to eql(expected)
       end
     end
   end

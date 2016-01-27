@@ -89,8 +89,8 @@ describe SitesHelper do
   describe 'calculating unresolved percentages' do
     let(:site) do
       double('site').tap do |site|
-        site.stub_chain(:mappings, :unresolved, :count).and_return(unresolved_count)
-        site.stub_chain(:mappings, :count).and_return(total_mappings)
+        allow(site).to receive_message_chain(:mappings, :unresolved, :count).and_return(unresolved_count)
+        allow(site).to receive_message_chain(:mappings, :count).and_return(total_mappings)
       end
     end
 

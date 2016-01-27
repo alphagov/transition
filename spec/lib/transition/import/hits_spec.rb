@@ -19,7 +19,7 @@ describe Transition::Import::Hits do
       end
 
       describe 'the tracking of the file via ImportedHitsFile' do
-        specify { expect(ImportedHitsFile.size).to eq(1) }
+        specify { expect(ImportedHitsFile.count).to eq(1) }
 
         describe 'the only file' do
           subject(:file) { ImportedHitsFile.first }

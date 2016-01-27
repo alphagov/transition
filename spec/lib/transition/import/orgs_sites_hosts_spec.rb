@@ -41,7 +41,7 @@ describe Transition::Import::OrgsSitesHosts do
 
         subject { Organisation.find_by_whitehall_slug! 'uk-atomic-energy-authority' }
 
-        it                         'has 1 site' do
+        it 'has 1 site' do
           expect(subject.sites.size).to eq(1)
         end
 
