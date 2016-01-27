@@ -249,6 +249,8 @@ GEM
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     retriable (2.1.0)
+    rspec-collection_matchers (1.1.2)
+      rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.4.2)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
@@ -364,6 +366,7 @@ DEPENDENCIES
   pry
   quiet_assets (= 1.0.2)
   rails (= 4.1.14.1)
+  rspec-collection_matchers (= 1.1.2)
   rspec-expectations (= 3.4.0)
   rspec-mocks (= 3.4.1)
   rspec-rails (= 3.4.1)

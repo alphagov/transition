@@ -53,5 +53,6 @@ group :development, :test do
   gem 'rspec-rails', '3.4.1'
   gem 'rspec-expectations', '3.4.0'
   gem 'rspec-mocks', '3.4.1'
+  gem 'rspec-collection_matchers', '1.1.2'
   gem 'jasmine', '2.0.2'
 end
