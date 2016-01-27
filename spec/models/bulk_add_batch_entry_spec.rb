@@ -7,9 +7,20 @@ describe BulkAddBatchEntry do
 
       subject(:entry) { build(:bulk_add_batch_entry, mappings_batch: mappings_batch) }
 
-      its(:new_url)   { should eql('http://cheese') }
-      its(:type)      { should eql('redirect') }
-      its(:redirect?) { should be_true }
+      describe '#new_url' do
+        subject { super().new_url }
+        it { is_expected.to eql('http://cheese') }
+      end
+
+      describe '#type' do
+        subject { super().type }
+        it { is_expected.to eql('redirect') }
+      end
+
+      describe '#redirect?' do
+        subject { super().redirect? }
+        it { is_expected.to be_truthy }
+      end
     end
   end
 end

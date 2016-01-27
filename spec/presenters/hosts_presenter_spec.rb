@@ -8,9 +8,20 @@ describe 'HostsPresenter' do
   describe '#as_hash' do
     subject(:presented_hosts) { HostsPresenter.new(Host.includes(:site)).as_hash }
 
-    its([:results])        { should_not be_empty }
-    its([:total])          { should     be(3) }
-    its([:_response_info]) { should_not be_empty }
+    describe '[:results]' do
+      subject { super()[:results] }
+      it { is_expected.not_to be_empty }
+    end
+
+    describe '[:total]' do
+      subject { super()[:total] }
+      it { is_expected.to     be(3) }
+    end
+
+    describe '[:_response_info]' do
+      subject { super()[:_response_info] }
+      it { is_expected.not_to be_empty }
+    end
 
     describe '#as_hash results' do
       subject(:results) { HostsPresenter.new(Host.includes(:site)).as_hash[:results] }

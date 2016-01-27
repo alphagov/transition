@@ -8,17 +8,17 @@ describe Transition::Import::CSV::CSVSeparatorDetector do
   describe '#separator_count' do
     it 'should be 1 when there is only one row with one separator' do
       detector = make_a_detector(['/a,'])
-      detector.separator_count(',').should == 1
+      expect(detector.separator_count(',')).to eq(1)
     end
 
     it 'should be 1 when only one of two rows has the separator' do
       detector = make_a_detector(['/a', '/b,TNA'])
-      detector.separator_count(',').should == 1
+      expect(detector.separator_count(',')).to eq(1)
     end
 
     it 'ignores other separators and only counts the given one' do
       detector = make_a_detector(["/a\tTNA", '/b,TNA', '/c,', '/d,'])
-      detector.separator_count(',').should == 3
+      expect(detector.separator_count(',')).to eq(3)
     end
   end
 
@@ -26,21 +26,21 @@ describe Transition::Import::CSV::CSVSeparatorDetector do
     context 'when there are more commas than tabs in the rows' do
       it 'is comma' do
         detector = make_a_detector(["/a\tTNA", '/b,TNA', '/c,', '/d,'])
-        detector.separator.should == ','
+        expect(detector.separator).to eq(',')
       end
     end
 
     context 'when there are more tabs than commas in the rows' do
       it 'is tab' do
         detector = make_a_detector(["/a\tTNA", "/b,\tTNA", "/c\t", '/d,'])
-        detector.separator.should == "\t"
+        expect(detector.separator).to eq("\t")
       end
     end
 
     context 'when there are equal numbers of tabs and commas' do
       it 'is tab' do
         detector = make_a_detector(["/a\tTNA", "/b\tTNA", '/c,', '/d,'])
-        detector.separator.should == "\t"
+        expect(detector.separator).to eq("\t")
       end
     end
   end

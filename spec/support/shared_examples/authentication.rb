@@ -9,7 +9,7 @@ shared_examples 'disallows editing by unaffiliated user' do
   end
 
   it 'sets a flash message' do
-    flash[:alert].should include('don\'t have permission to edit')
+    expect(flash[:alert]).to include('don\'t have permission to edit')
   end
 end
 
@@ -24,6 +24,6 @@ shared_examples 'disallows editing by non-GDS Editors' do
   end
 
   it 'sets a flash message' do
-    flash[:alert].should eql('Only GDS Editors can access that.')
+    expect(flash[:alert]).to eql('Only GDS Editors can access that.')
   end
 end

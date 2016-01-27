@@ -19,14 +19,14 @@ describe TagsHelper do
     context 'when no limit is set' do
       let(:options) { {} }
       it 'returns all the tags for all the mappings' do
-        tags_as_array.should =~ %w(tag1 tag2 tag3 tag4 tag5 tag6)
+        expect(tags_as_array).to match_array(%w(tag1 tag2 tag3 tag4 tag5 tag6))
       end
     end
 
     context 'when a limit of 3 is set' do
       let(:options) { { limit: 3 } }
       it 'includes only the most-used tags' do
-        tags_as_array.should =~ %w(tag1 tag3 tag4)
+        expect(tags_as_array).to match_array(%w(tag1 tag3 tag4))
       end
     end
   end

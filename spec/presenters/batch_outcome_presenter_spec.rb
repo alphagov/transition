@@ -15,7 +15,7 @@ describe BatchOutcomePresenter do
 
       before { batch.process }
 
-      it { should eql('3 mappings created and 1 mapping updated. All tagged with "fee, fi, fo".') }
+      it { is_expected.to eql('3 mappings created and 1 mapping updated. All tagged with "fee, fi, fo".') }
     end
 
     context 'when updating only existing mappings' do
@@ -29,12 +29,12 @@ describe BatchOutcomePresenter do
       before { batch.process }
 
       context 'when updating and tagging' do
-        it { should eql('4 mappings updated and tagged with "fee, fi, fo"') }
+        it { is_expected.to eql('4 mappings updated and tagged with "fee, fi, fo"') }
       end
 
       context 'when not tagging' do
         before { batch.update_column(:tag_list, nil) }
-        it { should eql('4 mappings updated') }
+        it { is_expected.to eql('4 mappings updated') }
       end
     end
 
@@ -42,13 +42,13 @@ describe BatchOutcomePresenter do
       before  { batch.process }
 
       context 'when creating some mappings and updating none' do
-        it { should eql('4 mappings created and tagged with "fee, fi, fo"') }
+        it { is_expected.to eql('4 mappings created and tagged with "fee, fi, fo"') }
       end
 
       context 'when creating some mappings, updating none and tagging none' do
         before { batch.update_column(:tag_list, nil) }
 
-        it { should eql('4 mappings created') }
+        it { is_expected.to eql('4 mappings created') }
       end
     end
   end
@@ -58,22 +58,22 @@ describe BatchOutcomePresenter do
 
     context 'bulk adding archives' do
       let(:batch) { build(:bulk_add_batch, type: 'archive') }
-      it { should eql('bulk-add-archive-ignore-existing') }
+      it { is_expected.to eql('bulk-add-archive-ignore-existing') }
     end
 
     context 'bulk adding redirects' do
       let(:batch) { build(:bulk_add_batch, type: 'redirect') }
-      it { should eql('bulk-add-redirect-ignore-existing') }
+      it { is_expected.to eql('bulk-add-redirect-ignore-existing') }
     end
 
     context 'bulk adding archives with overwrite' do
       let(:batch) { build(:bulk_add_batch, type: 'archive', update_existing: true) }
-      it { should eql('bulk-add-archive-overwrite-existing') }
+      it { is_expected.to eql('bulk-add-archive-overwrite-existing') }
     end
 
     context 'bulk adding redirects with overwrite' do
       let(:batch) { build(:bulk_add_batch, type: 'redirect', update_existing: true) }
-      it { should eql('bulk-add-redirect-overwrite-existing') }
+      it { is_expected.to eql('bulk-add-redirect-overwrite-existing') }
     end
   end
 end

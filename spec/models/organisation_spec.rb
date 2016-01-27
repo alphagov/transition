@@ -2,16 +2,16 @@ require 'spec_helper'
 
 describe Organisation do
   describe 'relationships' do
-    it { should have_many(:sites) }
-    it { should have_many(:hosts).through(:sites) }
-    it { should have_many(:mappings).through(:sites) }
+    it { is_expected.to have_many(:sites) }
+    it { is_expected.to have_many(:hosts).through(:sites) }
+    it { is_expected.to have_many(:mappings).through(:sites) }
   end
 
   describe 'validations' do
-    it { should validate_presence_of(:whitehall_slug) }
+    it { is_expected.to validate_presence_of(:whitehall_slug) }
     it 'ensures whitehall_slugs are unique' do
       create :organisation
-      should validate_uniqueness_of(:whitehall_slug)
+      is_expected.to validate_uniqueness_of(:whitehall_slug)
     end
   end
 
@@ -30,23 +30,23 @@ describe Organisation do
       subject(:leaderboard) { Organisation.leaderboard }
 
       it 'returns an array of organisations' do
-        leaderboard.first.should be_a Organisation
+        expect(leaderboard.first).to be_a Organisation
       end
 
       it 'adds a site count' do
-        leaderboard.first.site_count.should eq(2)
+        expect(leaderboard.first.site_count).to eq(2)
       end
 
       it 'adds a total mapping count' do
-        leaderboard.first.mappings_across_sites.should eq(3)
+        expect(leaderboard.first.mappings_across_sites).to eq(3)
       end
 
       it 'adds an unresolved mapping count' do
-        leaderboard.first.unresolved_mapping_count.should eq(1)
+        expect(leaderboard.first.unresolved_mapping_count).to eq(1)
       end
 
       it 'adds a count of the errors in the last thirty days' do
-        leaderboard.first.error_count.should eq(159)
+        expect(leaderboard.first.error_count).to eq(159)
       end
     end
 
@@ -64,7 +64,7 @@ describe Organisation do
       subject(:leaderboard) { Organisation.leaderboard }
 
       it 'orders them in descending order of error count' do
-        leaderboard.first.error_count.should eq(175)
+        expect(leaderboard.first.error_count).to eq(175)
       end
     end
   end

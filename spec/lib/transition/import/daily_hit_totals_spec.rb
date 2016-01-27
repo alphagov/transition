@@ -24,7 +24,7 @@ describe Transition::Import::DailyHitTotals do
 
       it 'has imported one total for the 404s, '\
          'two for the other statuses on the next day' do
-        DailyHitTotal.count.should == 3
+        expect(DailyHitTotal.count).to eq(3)
       end
 
       describe 'The DailyHitTotal for the three halloween 404s' do
@@ -32,18 +32,29 @@ describe Transition::Import::DailyHitTotals do
           DailyHitTotal.where(total_on: @halloween, http_status: '404').first
         end
 
-        its(:host)        { should eql(@host) }
-        its(:http_status) { should eql('404') }
-        its(:total_on)    { should eql(@halloween) }
+        describe '#host' do
+          subject { super().host }
+          it { is_expected.to eql(@host) }
+        end
+
+        describe '#http_status' do
+          subject { super().http_status }
+          it { is_expected.to eql('404') }
+        end
+
+        describe '#total_on' do
+          subject { super().total_on }
+          it { is_expected.to eql(@halloween) }
+        end
 
         it 'has overwritten the previous total of 13' do
-          total.count.should                  eql(30)
-          @previous_total.reload.count.should eql(30)
+          expect(total.count).to                  eql(30)
+          expect(@previous_total.reload.count).to eql(30)
         end
       end
 
       it 'has two totals for separate statuses on 1/11' do
-        DailyHitTotal.where(total_on: @first_of_nov).should have(2).totals
+        expect(DailyHitTotal.where(total_on: @first_of_nov).size).to eq(2)
       end
     end
   end

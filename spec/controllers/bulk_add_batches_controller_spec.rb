@@ -45,14 +45,14 @@ describe BulkAddBatchesController do
     context 'when the return path is on site' do
       it 'returns to where it came from' do
         get :preview, site_id: site.abbr, id: batch.id, return_path: '/donkey'
-        assigns(:bulk_add_cancel_destination).should eq('/donkey')
+        expect(assigns(:bulk_add_cancel_destination)).to eq('/donkey')
       end
     end
 
     context 'when the return path is off site' do
       it 'returns to the site mappings path' do
         get :preview, site_id: site.abbr, id: batch.id, return_path: 'http://google.com'
-        assigns(:bulk_add_cancel_destination).should eq(site_mappings_path(site.abbr))
+        expect(assigns(:bulk_add_cancel_destination)).to eq(site_mappings_path(site.abbr))
       end
     end
   end
@@ -116,7 +116,7 @@ describe BulkAddBatchesController do
         end
 
         it 'creates each mapping in the batch' do
-          expect(site.mappings).to have(2).mappings
+          expect(site.mappings.size).to eq(2)
         end
 
         it 'has the long url for each' do
@@ -138,9 +138,9 @@ describe BulkAddBatchesController do
       # stubbing the verified_request? method from
       # ActionController::RequestForgeryProtection::ClassMethods to return false
       # in order to test our override of the verify_authenticity_token method
-      subject.stub(:verified_request?).and_return(false)
+      allow(subject).to receive(:verified_request?).and_return(false)
       post :import, site_id: mapping.site, id: batch.id
-      response.status.should eql(403)
+      expect(response.status).to eql(403)
     end
   end
 

@@ -19,7 +19,7 @@ describe View::Mappings::BulkTagger do
   }
 
   it 'has common tags from the mappings' do
-    bulk_tagger.common_tags.should =~ %w(fum fox)
+    expect(bulk_tagger.common_tags).to match_array(%w(fum fox))
   end
 
   describe '#tag_list' do
@@ -27,15 +27,15 @@ describe View::Mappings::BulkTagger do
 
     context 'when the tag list is compact' do
       let(:tag_list) { 'fox,fiddle' }
-      it { should eql('fox, fiddle') }
+      it { is_expected.to eql('fox, fiddle') }
     end
     context 'when the tag list is expanded' do
       let(:tag_list) { 'fox,    fiddle' }
-      it { should eql('fox, fiddle') }
+      it { is_expected.to eql('fox, fiddle') }
     end
     context 'when the tag list is not supplied' do
       let(:tag_list) { nil }
-      it { should eql(bulk_tagger.common_tags.join(', ')) }
+      it { is_expected.to eql(bulk_tagger.common_tags.join(', ')) }
     end
   end
 
@@ -46,16 +46,16 @@ describe View::Mappings::BulkTagger do
       let(:tag_list) { 'fox, fiddle' }
 
       it 'has seen no failures' do
-        bulk_tagger.failures.should be_empty
+        expect(bulk_tagger.failures).to be_empty
       end
       it 'has updated mapping 1' do
-        mappings.first.reload.tag_list.should =~ %w(fee fiddle fox)
+        expect(mappings.first.reload.tag_list).to match_array(%w(fee fiddle fox))
       end
       it 'has updated mapping 2' do
-        mappings.second.reload.tag_list.should =~ %w(fi fiddle fox)
+        expect(mappings.second.reload.tag_list).to match_array(%w(fi fiddle fox))
       end
       it 'has updated mapping 3' do
-        mappings.third.reload.tag_list.should =~ %w(fo fiddle fox)
+        expect(mappings.third.reload.tag_list).to match_array(%w(fo fiddle fox))
       end
     end
 
@@ -63,16 +63,16 @@ describe View::Mappings::BulkTagger do
       let(:tag_list) { '' }
 
       it 'has seen no failures' do
-        bulk_tagger.failures.should be_empty
+        expect(bulk_tagger.failures).to be_empty
       end
       it 'has updated mapping 1' do
-        mappings.first.reload.tag_list.should =~ %w(fee)
+        expect(mappings.first.reload.tag_list).to match_array(%w(fee))
       end
       it 'has updated mapping 2' do
-        mappings.second.reload.tag_list.should =~ %w(fi)
+        expect(mappings.second.reload.tag_list).to match_array(%w(fi))
       end
       it 'has updated mapping 3' do
-        mappings.third.reload.tag_list.should =~ %w(fo)
+        expect(mappings.third.reload.tag_list).to match_array(%w(fo))
       end
     end
   end

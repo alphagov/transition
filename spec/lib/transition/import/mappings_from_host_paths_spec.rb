@@ -17,7 +17,7 @@ describe Transition::Import::MappingsFromHostPaths do
   context 'a site with no HostPaths' do
     it 'should do nothing' do
       Transition::Import::MappingsFromHostPaths.refresh!(@site)
-      Mapping.count.should eql(0)
+      expect(Mapping.count).to eql(0)
     end
   end
 
@@ -29,28 +29,42 @@ describe Transition::Import::MappingsFromHostPaths do
     end
 
     it 'should create a mapping' do
-      Mapping.count.should eql(1)
+      expect(Mapping.count).to eql(1)
     end
 
     describe 'the mapping' do
       subject { @site.mappings.first }
 
-      its(:path)        { should eql('/foo') }
-      its(:type)        { should eql('unresolved') }
+      describe '#path' do
+        subject { super().path }
+        it { is_expected.to eql('/foo') }
+      end
+
+      describe '#type' do
+        subject { super().type }
+        it { is_expected.to eql('unresolved') }
+      end
     end
 
     # We're not refreshing the mappings-hits link in this task;
     # hits_mappings_relations should be run to do this.
     it 'should not modify the host_path' do
-      @host_path.mapping_id.should be_nil
+      expect(@host_path.mapping_id).to be_nil
     end
 
     describe 'should create a history entry', versioning: true do
       let(:mapping) { @site.mappings.first }
       subject { mapping.versions.first }
 
-      its(:item_id)   { should eql(mapping.id) }
-      its(:whodunnit) { should eql('Logs mappings robot') }
+      describe '#item_id' do
+        subject { super().item_id }
+        it { is_expected.to eql(mapping.id) }
+      end
+
+      describe '#whodunnit' do
+        subject { super().whodunnit }
+        it { is_expected.to eql('Logs mappings robot') }
+      end
     end
 
     context 'another site has HostPaths' do
@@ -61,8 +75,8 @@ describe Transition::Import::MappingsFromHostPaths do
       end
 
       it 'should not create mappings for the other site' do
-        @another_site.mappings.count.should eql(0)
-        @site.mappings.count.should eql(1)
+        expect(@another_site.mappings.count).to eql(0)
+        expect(@site.mappings.count).to eql(1)
       end
     end
   end
@@ -76,13 +90,16 @@ describe Transition::Import::MappingsFromHostPaths do
     end
 
     it 'should not create any more mappings' do
-      Mapping.count.should eql(1)
+      expect(Mapping.count).to eql(1)
     end
 
     describe 'the (unchanged) existing mapping' do
       subject { @mapping }
 
-      its(:type) { should eql('redirect') }
+      describe '#type' do
+        subject { super().type }
+        it { is_expected.to eql('redirect') }
+      end
     end
   end
 
@@ -97,7 +114,7 @@ describe Transition::Import::MappingsFromHostPaths do
     end
 
     it 'should create mappings for HostPaths for each host' do
-      @site.mappings.count.should eql(2)
+      expect(@site.mappings.count).to eql(2)
     end
   end
 
@@ -112,7 +129,7 @@ describe Transition::Import::MappingsFromHostPaths do
     end
 
     it 'should create one mapping' do
-      @site.mappings.count.should eql(1)
+      expect(@site.mappings.count).to eql(1)
     end
   end
 end

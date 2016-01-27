@@ -3,7 +3,7 @@ require 'transition/history'
 
 module Transition
   describe History, versioning: true do
-    specify { PaperTrail.should be_enabled }
+    specify { expect(PaperTrail).to be_enabled }
 
     let(:user) { create :user }
 
@@ -15,26 +15,26 @@ module Transition
 
     describe '.set_user!' do
       it 'sets the controller_info' do
-        PaperTrail.controller_info.should eql({ user_id: user.id })
+        expect(PaperTrail.controller_info).to eql({ user_id: user.id })
       end
 
       it 'sets the whodunnit to the user\'s name' do
-        PaperTrail.whodunnit.should eql(user.name)
+        expect(PaperTrail.whodunnit).to eql(user.name)
       end
     end
 
     describe '.clear_user!' do
       before do
-        PaperTrail.whodunnit.should eql(user.name)
+        expect(PaperTrail.whodunnit).to eql(user.name)
         Transition::History.clear_user!
       end
 
       it 'clears the controller_info' do
-        PaperTrail.controller_info.should be_nil
+        expect(PaperTrail.controller_info).to be_nil
       end
 
       it 'clears the whodunnit' do
-        PaperTrail.whodunnit.should be_nil
+        expect(PaperTrail.whodunnit).to be_nil
       end
     end
 
@@ -48,16 +48,16 @@ module Transition
 
       it 'sets the new user for the block' do
         Transition::History.as_a_user(user_who_does_stuff) do
-          PaperTrail.whodunnit.should eql(user_who_does_stuff.name)
-          PaperTrail.controller_info.should eql({ user_id: user_who_does_stuff.id })
+          expect(PaperTrail.whodunnit).to eql(user_who_does_stuff.name)
+          expect(PaperTrail.controller_info).to eql({ user_id: user_who_does_stuff.id })
         end
       end
 
       it 'reverts to the original config afterwards' do
         Transition::History.as_a_user(user_who_does_stuff) { }
 
-        PaperTrail.whodunnit.should eql(original_user.name)
-        PaperTrail.controller_info.should eql({ user_id: original_user.id })
+        expect(PaperTrail.whodunnit).to eql(original_user.name)
+        expect(PaperTrail.controller_info).to eql({ user_id: original_user.id })
       end
     end
 

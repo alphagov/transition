@@ -24,7 +24,7 @@ describe BatchesController do
           'total' => 2,
           'past_participle' => 'added'
         }
-        @parsed_response.should == expected
+        expect(@parsed_response).to eq(expected)
       end
     end
 

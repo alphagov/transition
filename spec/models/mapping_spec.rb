@@ -5,66 +5,87 @@ require 'transition/import/hits_mappings_relations'
 require 'transition/history'
 
 describe Mapping do
-  specify { PaperTrail.should_not be_enabled } # testing our tests a little here, but if this fails, tests will be slow
+  specify { expect(PaperTrail).not_to be_enabled } # testing our tests a little here, but if this fails, tests will be slow
 
   describe 'relationships' do
-    it { should belong_to(:site) }
+    it { is_expected.to belong_to(:site) }
   end
 
   describe '#redirect?' do
-    its(:redirect?) { should be_false }
+    describe '#redirect?' do
+      subject { super().redirect? }
+      it { is_expected.to be_falsey }
+    end
     it 'is true when its type is redirect' do
       subject.type = 'redirect'
-      subject.redirect?.should be_true
+      expect(subject.redirect?).to be_truthy
     end
   end
 
   describe '#archive?' do
-    its(:archive?) { should be_false }
+    describe '#archive?' do
+      subject { super().archive? }
+      it { is_expected.to be_falsey }
+    end
     it 'is true when its type is archive' do
       subject.type = 'archive'
-      subject.archive?.should be_true
+      expect(subject.archive?).to be_truthy
     end
   end
 
   describe '#unresolved?' do
-    its(:unresolved?) { should be_false }
+    describe '#unresolved?' do
+      subject { super().unresolved? }
+      it { is_expected.to be_falsey }
+    end
     it 'is true when its type is unresolved' do
       subject.type = 'unresolved'
-      subject.unresolved?.should be_true
+      expect(subject.unresolved?).to be_truthy
     end
   end
 
   describe 'url generation (based on mapping path and site host)' do
     subject(:mapping) { create :mapping, site: create(:site, abbr: 'cic_regulator'), path: '/some-path' }
 
-    its(:old_url)                    { should == 'http://cic_regulator.gov.uk/some-path' }
-    its(:national_archive_url)       { should == 'http://webarchive.nationalarchives.gov.uk/20120816224015/http://cic_regulator.gov.uk/some-path' }
-    its(:national_archive_index_url) { should == 'http://webarchive.nationalarchives.gov.uk/*/http://cic_regulator.gov.uk/some-path' }
+    describe '#old_url' do
+      subject { super().old_url }
+      it { is_expected.to eq('http://cic_regulator.gov.uk/some-path') }
+    end
+
+    describe '#national_archive_url' do
+      subject { super().national_archive_url }
+      it { is_expected.to eq('http://webarchive.nationalarchives.gov.uk/20120816224015/http://cic_regulator.gov.uk/some-path') }
+    end
+
+    describe '#national_archive_index_url' do
+      subject { super().national_archive_index_url }
+      it { is_expected.to eq('http://webarchive.nationalarchives.gov.uk/*/http://cic_regulator.gov.uk/some-path') }
+    end
   end
 
   describe 'validations' do
-    it { should validate_presence_of(:site) }
-    it { should validate_presence_of(:path) }
+    it { is_expected.to validate_presence_of(:site) }
+    it { is_expected.to validate_presence_of(:path) }
 
-    it { should validate_presence_of(:type) }
-    it { should ensure_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
+    it { is_expected.to validate_presence_of(:type) }
+    it { is_expected.to ensure_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
 
     describe 'home pages (which are handled by Site)' do
       subject(:homepage_mapping) { build(:mapping, path: '/') }
 
-      before { homepage_mapping.should_not be_valid }
+      before { expect(homepage_mapping).not_to be_valid }
       it 'disallows homepages' do
-        homepage_mapping.errors[:path].should ==
+        expect(homepage_mapping.errors[:path]).to eq(
           ["It’s not currently possible to edit the mapping for a site’s homepage."]
+        )
       end
     end
 
-    it { should ensure_length_of(:path).is_at_most(2048) }
+    it { is_expected.to ensure_length_of(:path).is_at_most(2048) }
     it 'ensures paths are unique to a site' do
       site = create(:site)
       create(:archived, path: '/foo', site: site)
-      lambda { build(:archived, path: '/foo', site: site).save! }.should raise_error(ActiveRecord::RecordInvalid)
+      expect { build(:archived, path: '/foo', site: site).save! }.to raise_error(ActiveRecord::RecordInvalid)
     end
 
     it 'constrains the length of all URL fields' do
@@ -72,8 +93,8 @@ describe Mapping do
 
       [:new_url, :suggested_url, :archive_url].each do |url_attr|
         mapping = build(:mapping, url_attr => too_long_url)
-        mapping.should_not be_valid
-        mapping.errors[url_attr].should include('is too long (maximum is 2048 characters)')
+        expect(mapping).not_to be_valid
+        expect(mapping.errors[url_attr]).to include('is too long (maximum is 2048 characters)')
       end
     end
 
@@ -88,17 +109,31 @@ describe Mapping do
         describe 'the errors' do
           subject { mapping.errors }
 
-          its([:new_url])       { should include('is not a URL') }
-          its([:suggested_url]) { should == ['is not a URL'] }
-          its([:archive_url])   { should be_empty }
+          describe '[:new_url]' do
+            subject { super()[:new_url] }
+            it { is_expected.to include('is not a URL') }
+          end
+
+          describe '[:suggested_url]' do
+            subject { super()[:suggested_url] }
+            it { is_expected.to eq(['is not a URL']) }
+          end
+
+          describe '[:archive_url]' do
+            subject { super()[:archive_url] }
+            it { is_expected.to be_empty }
+          end
 
           context 'failure to supply a new URL for a redirect' do
             before do
               mapping.new_url = ''
-              mapping.should_not be_valid
+              expect(mapping).not_to be_valid
             end
 
-            its([:new_url]) { should == ['is required'] }
+            describe '[:new_url]' do
+              subject { super()[:new_url] }
+              it { is_expected.to eq(['is required']) }
+            end
           end
         end
       end
@@ -110,8 +145,16 @@ describe Mapping do
 
         describe 'the errors' do
           subject { mapping.errors }
-          its([:new_url])       { should include('is not a URL') }
-          its([:suggested_url]) { should == ['is not a URL'] }
+
+          describe '[:new_url]' do
+            subject { super()[:new_url] }
+            it { is_expected.to include('is not a URL') }
+          end
+
+          describe '[:suggested_url]' do
+            subject { super()[:suggested_url] }
+            it { is_expected.to eq(['is not a URL']) }
+          end
         end
       end
 
@@ -119,7 +162,7 @@ describe Mapping do
         subject(:mapping) { build(:archived, archive_url: 'http://malicious.com/foo')}
 
         it 'fails' do
-          mapping.errors[:archive_url].should == ['must be on the National Archives domain, webarchive.nationalarchives.gov.uk']
+          expect(mapping.errors[:archive_url]).to eq(['must be on the National Archives domain, webarchive.nationalarchives.gov.uk'])
         end
       end
 
@@ -128,7 +171,7 @@ describe Mapping do
           subject(:mapping) { build(:redirect, new_url: 'http://m.com/foo') }
 
           it 'fails' do
-            mapping.errors[:new_url].should == ["must be on a whitelisted domain. <a href='https://support.publishing.service.gov.uk/general_request/new'>Raise a support request through the GOV.UK Support form</a> for more information."]
+            expect(mapping.errors[:new_url]).to eq(["must be on a whitelisted domain. <a href='https://support.publishing.service.gov.uk/general_request/new'>Raise a support request through the GOV.UK Support form</a> for more information."])
           end
         end
 
@@ -136,34 +179,34 @@ describe Mapping do
           before { create(:whitelisted_host, hostname: 'whitelisted.com') }
           subject(:mapping) { build(:redirect, new_url: 'http://whitelisted.com/a') }
 
-          it { should be_valid }
+          it { is_expected.to be_valid }
         end
 
         context 'is on *.gov.uk' do
           subject(:mapping) { build(:redirect, new_url: 'http://m.gov.uk/foo') }
 
-          it { should be_valid }
+          it { is_expected.to be_valid }
         end
 
         context 'is on *.mod.uk' do
           subject(:mapping) { build(:redirect, new_url: 'http://m.mod.uk/foo') }
 
-          it { should be_valid }
+          it { is_expected.to be_valid }
         end
 
         context 'is on *.nhs.uk' do
           subject(:mapping) { build(:redirect, new_url: 'http://m.nhs.uk/foo') }
 
-          it { should be_valid }
+          it { is_expected.to be_valid }
         end
 
         context 'mapping is not a redirect' do
           subject(:mapping) { build(:archived, new_url: 'http://evil.com') }
 
-          it { should be_valid }
+          it { is_expected.to be_valid }
           it 'still saves the value that would be invalid if it was a redirect' do
             mapping.save
-            mapping.reload.new_url.should == 'http://evil.com'
+            expect(mapping.reload.new_url).to eq('http://evil.com')
           end
         end
       end
@@ -172,7 +215,7 @@ describe Mapping do
         subject(:mapping) { build(:archived, path: '') }
 
         it 'fails' do
-          mapping.errors[:path].should == ["can't be blank"]
+          expect(mapping.errors[:path]).to eq(["can't be blank"])
         end
       end
 
@@ -180,7 +223,7 @@ describe Mapping do
         subject(:mapping) { build(:archived, path: 'not_a_path') }
 
         it 'fails' do
-          mapping.errors[:path].should == ['must start with a forward slash "/"']
+          expect(mapping.errors[:path]).to eq(['must start with a forward slash "/"'])
         end
       end
     end
@@ -196,23 +239,23 @@ describe Mapping do
       # but changing it means forking. And we can live with it.
       context 'there are double-quoted tags' do
         let(:test_input) { %("Fee fi", "FO", fum, thing:1234) }
-        it { should eql(['fee fi', '"fo"', 'fum', 'thing:1234']) }
+        it { is_expected.to eql(['fee fi', '"fo"', 'fum', 'thing:1234']) }
       end
       context 'there are single-quoted tags' do
         let(:test_input) { %('Fee fi', 'FO', fum, thing:1234) }
-        it { should eql(['fee fi', "'fo'", 'fum', 'thing:1234']) }
+        it { is_expected.to eql(['fee fi', "'fo'", 'fum', 'thing:1234']) }
       end
       context 'there are special characters' do
         let(:test_input) { %('<Fee fi>', '\\FO/', ¿fum?) }
-        it { should eql(['<fee fi>', "'\\fo/'", '¿fum?']) }
+        it { is_expected.to eql(['<fee fi>', "'\\fo/'", '¿fum?']) }
       end
       context 'there are blanks' do
         let(:test_input) { %(,     ,    hello, hi    , ho) }
-        it { should eql(%w(hello hi ho)) }
+        it { is_expected.to eql(%w(hello hi ho)) }
       end
       context 'there are only blanks' do
         let(:test_input) { %(,     ,       , ,   ) }
-        it { should eql([]) }
+        it { is_expected.to eql([]) }
       end
     end
   end
@@ -229,16 +272,18 @@ describe Mapping do
       context 'a filter is supplied' do
         subject { Mapping.filtered_by_path('about').map(&:path) }
 
-        it { should include('/about') }
-        it { should include('/about/branding') }
-        it { should_not include('/a') }
-        it { should_not include('/other') }
+        it { is_expected.to include('/about') }
+        it { is_expected.to include('/about/branding') }
+        it { is_expected.not_to include('/a') }
+        it { is_expected.not_to include('/other') }
       end
 
       context 'no filter is supplied' do
         subject { Mapping.filtered_by_path(nil) }
 
-        it { should have(4).mappings }
+        it 'has 4 mappings' do
+          expect(subject.size).to eq(4)
+        end
       end
     end
 
@@ -253,16 +298,18 @@ describe Mapping do
       context 'a filter is supplied' do
         subject { Mapping.filtered_by_new_url('about').map(&:new_url) }
 
-        it { should include('http://f.gov.uk/about') }
-        it { should include('http://f.gov.uk/about/branding') }
-        it { should_not include('http://f.gov.uk/a') }
-        it { should_not include('http://f.gov.uk/other') }
+        it { is_expected.to include('http://f.gov.uk/about') }
+        it { is_expected.to include('http://f.gov.uk/about/branding') }
+        it { is_expected.not_to include('http://f.gov.uk/a') }
+        it { is_expected.not_to include('http://f.gov.uk/other') }
       end
 
       context 'no filter is supplied' do
         subject { Mapping.filtered_by_path(nil) }
 
-        it { should have(4).mappings }
+        it 'has 4 mappings' do
+          expect(subject.size).to eq(4)
+        end
       end
     end
   end
@@ -276,7 +323,10 @@ describe Mapping do
       create(:archived, path: uncanonicalized_path, site: site)
     end
 
-    its(:path)        { should eql(canonicalized_path) }
+    describe '#path' do
+      subject { super().path }
+      it { is_expected.to eql(canonicalized_path) }
+    end
 
     describe 'the linkage to hits' do
       let!(:hit_on_uncanonicalized) { create :hit, path: uncanonicalized_path, host: site.default_host }
@@ -295,32 +345,32 @@ describe Mapping do
         end
 
         it 'links the uncanonicalized hit to the mapping' do
-          hit_on_uncanonicalized.reload.mapping.should == mapping
+          expect(hit_on_uncanonicalized.reload.mapping).to eq(mapping)
         end
 
         it 'links the canonicalized hit to the mapping' do
-          hit_on_canonicalized.reload.mapping.should == mapping
+          expect(hit_on_canonicalized.reload.mapping).to eq(mapping)
         end
 
         it 'links the uncanonicalized host_path to the mapping' do
-          host_path_on_uncanonicalized.reload.mapping.should == mapping
+          expect(host_path_on_uncanonicalized.reload.mapping).to eq(mapping)
 
         end
 
         it 'link the canonicalized host_path to the mapping' do
-          host_path_on_canonicalized.reload.mapping.should == mapping
+          expect(host_path_on_canonicalized.reload.mapping).to eq(mapping)
         end
 
         it 'updates the hit_count' do
-          mapping.hit_count.should == 40
+          expect(mapping.hit_count).to eq(40)
         end
 
         it 'should leave an unrelated hit alone' do
-          unrelated_hit.reload.mapping.should be_nil
+          expect(unrelated_hit.reload.mapping).to be_nil
         end
 
         it 'should leave an unrelated host_path alone' do
-          unrelated_host_path.reload.mapping.should be_nil
+          expect(unrelated_host_path.reload.mapping).to be_nil
         end
       end
     end
@@ -331,7 +381,10 @@ describe Mapping do
       create :archived, archive_url: ''
     end
 
-    its(:archive_url) { should be_nil }
+    describe '#archive_url' do
+      subject { super().archive_url }
+      it { is_expected.to be_nil }
+    end
   end
 
   it 'should rewrite the URLs to ensure they have a scheme before validation' do
@@ -341,15 +394,15 @@ describe Mapping do
 
     mapping.valid? # trigger before_validation hooks
 
-    mapping.suggested_url.should eql('http://www.example.com')
-    mapping.archive_url.should eql('http://webarchive.nationalarchives.gov.uk')
-    mapping.new_url.should eql('https://www.gov.uk')
+    expect(mapping.suggested_url).to eql('http://www.example.com')
+    expect(mapping.archive_url).to eql('http://webarchive.nationalarchives.gov.uk')
+    expect(mapping.new_url).to eql('https://www.gov.uk')
   end
 
   it 'converts URLs supplied for path into a path, including query' do
     site = create(:site, query_params: 'q')
     mapping = create(:mapping, path: 'http://www.example.com/foobar?q=1', site: site)
-    mapping.path.should == '/foobar?q=1'
+    expect(mapping.path).to eq('/foobar?q=1')
   end
 
   describe 'The paper trail', versioning: true do
@@ -359,14 +412,27 @@ describe Mapping do
     context 'with the correct configuration' do
       subject(:mapping) { create :mapping, as_user: alice }
 
-      it { should have(1).versions }
+      it 'has 1 version' do
+        expect(subject.size).to eq(1)
+      end
 
       describe 'the last version' do
         subject { mapping.versions.last }
 
-        its(:whodunnit) { should eql alice.name }
-        its(:user_id)   { should eql alice.id }
-        its(:event)     { should eql 'create' }
+        describe '#whodunnit' do
+          subject { super().whodunnit }
+          it { is_expected.to eql alice.name }
+        end
+
+        describe '#user_id' do
+          subject { super().user_id }
+          it { is_expected.to eql alice.id }
+        end
+
+        describe '#event' do
+          subject { super().event }
+          it { is_expected.to eql 'create' }
+        end
       end
 
       describe 'an update from Bob' do
@@ -376,14 +442,27 @@ describe Mapping do
           end
         end
 
-        it { should have(2).versions }
+        it 'has 2 versions' do
+          expect(subject.size).to eq(2)
+        end
 
         describe 'the last version' do
           subject { mapping.versions.last }
 
-          its(:whodunnit)  { should eql bob.name }
-          its(:user_id)    { should eql bob.id }
-          its(:event)      { should eql 'update'}
+          describe '#whodunnit' do
+            subject { super().whodunnit }
+            it { is_expected.to eql bob.name }
+          end
+
+          describe '#user_id' do
+            subject { super().user_id }
+            it { is_expected.to eql bob.id }
+          end
+
+          describe '#event' do
+            subject { super().event }
+            it { is_expected.to eql 'update'}
+          end
         end
       end
     end
@@ -399,7 +478,10 @@ describe Mapping do
     context 'imported from redirector' do
       subject(:mapping) { create(:mapping, from_redirector: true) }
 
-      its(:edited_by_human?) { should be_true }
+      describe '#edited_by_human?' do
+        subject { super().edited_by_human? }
+        it { is_expected.to be_truthy }
+      end
     end
 
     context 'has been edited by a human', versioning: true do
@@ -407,7 +489,10 @@ describe Mapping do
 
       subject(:mapping) { create(:mapping, as_user: human) }
 
-      its(:edited_by_human?) { should be_true }
+      describe '#edited_by_human?' do
+        subject { super().edited_by_human? }
+        it { is_expected.to be_truthy }
+      end
     end
 
     context 'has been edited by a robot', versioning: true do
@@ -415,7 +500,10 @@ describe Mapping do
 
       subject(:mapping) { create(:mapping, as_user: robot) }
 
-      its(:edited_by_human?) { should be_false }
+      describe '#edited_by_human?' do
+        subject { super().edited_by_human? }
+        it { is_expected.to be_falsey }
+      end
     end
   end
 
@@ -423,7 +511,10 @@ describe Mapping do
     context 'no versions exist' do
       subject(:mapping) { create(:mapping, from_redirector: true) }
 
-      its(:last_editor) { should be_nil }
+      describe '#last_editor' do
+        subject { super().last_editor }
+        it { is_expected.to be_nil }
+      end
     end
 
     context 'versions exist', versioning: true do
@@ -431,7 +522,10 @@ describe Mapping do
       subject(:mapping) { create(:mapping, as_user: user) }
 
       context 'only one version exists' do
-        its(:last_editor) { should eql(user) }
+        describe '#last_editor' do
+          subject { super().last_editor }
+          it { is_expected.to eql(user) }
+        end
       end
 
       context 'several versions exist' do
@@ -443,9 +537,14 @@ describe Mapping do
           end
         end
 
-        it { should have(3).versions }
+        it 'has 3 versions' do
+          expect(subject.size).to eq(3)
+        end
 
-        its(:last_editor) { should eql(other_user) }
+        describe '#last_editor' do
+          subject { super().last_editor }
+          it { is_expected.to eql(other_user) }
+        end
       end
     end
   end

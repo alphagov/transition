@@ -6,54 +6,103 @@ describe View::Hits::TimePeriod do
     context 'with no arguments' do
       subject(:all_periods) { View::Hits::TimePeriod.all }
 
-      it { should be_an(Array) }
-      it { should have(4).periods }
+      it { is_expected.to be_an(Array) }
+      it 'has 4 periods' do
+        expect(subject.size).to eq(4)
+      end
 
       describe 'the first' do
         subject { View::Hits::TimePeriod.all.first }
 
-        it { should be_a(View::Hits::TimePeriod) }
+        it { is_expected.to be_a(View::Hits::TimePeriod) }
 
-        its(:title)      { should == 'Yesterday' }
-        its(:slug)       { should == 'yesterday' }
-        its(:query_slug) { should == 'yesterday' }
+        describe '#title' do
+          subject { super().title }
+          it { is_expected.to eq('Yesterday') }
+        end
+
+        describe '#slug' do
+          subject { super().slug }
+          it { is_expected.to eq('yesterday') }
+        end
+
+        describe '#query_slug' do
+          subject { super().query_slug }
+          it { is_expected.to eq('yesterday') }
+        end
       end
     end
 
     context 'excluding "All time"' do
       subject(:periods_except_all_time) { View::Hits::TimePeriod.all(exclude_all_time: true) }
 
-      it { should have(3).periods }
-      it { should_not include(View::Hits::TimePeriod['all-time']) }
+      it 'has 3 periods' do
+        expect(subject.size).to eq(3)
+      end
+      it { is_expected.not_to include(View::Hits::TimePeriod['all-time']) }
     end
   end
 
   describe 'the default, last-30-days' do
     subject { View::Hits::TimePeriod.default }
 
-    its(:title)      { should == 'Last 30 days' }
-    its(:slug)       { should == 'last-30-days' }
-    its(:query_slug) { should be_nil }
-    its(:no_content) { should == 'in this time period' }
+    describe '#title' do
+      subject { super().title }
+      it { is_expected.to eq('Last 30 days') }
+    end
+
+    describe '#slug' do
+      subject { super().slug }
+      it { is_expected.to eq('last-30-days') }
+    end
+
+    describe '#query_slug' do
+      subject { super().query_slug }
+      it { is_expected.to be_nil }
+    end
+
+    describe '#no_content' do
+      subject { super().no_content }
+      it { is_expected.to eq('in this time period') }
+    end
   end
 
   describe 'indexing on slug' do
     it 'returns nil on unrecognised time periods' do
-      View::Hits::TimePeriod['non-existent'].should be_nil
+      expect(View::Hits::TimePeriod['non-existent']).to be_nil
     end
 
     describe 'All time' do
       subject { View::Hits::TimePeriod['all-time'] }
 
-      its(:title)      { should == 'All time' }
-      its(:range)      { should == (100.years.ago.to_date..Date.today) }
-      its(:start_date) { should == 100.years.ago.to_date }
-      its(:end_date)   { should == Date.today }
-      its(:no_content) { should == 'yet' }
+      describe '#title' do
+        subject { super().title }
+        it { is_expected.to eq('All time') }
+      end
+
+      describe '#range' do
+        subject { super().range }
+        it { is_expected.to eq(100.years.ago.to_date..Date.today) }
+      end
+
+      describe '#start_date' do
+        subject { super().start_date }
+        it { is_expected.to eq(100.years.ago.to_date) }
+      end
+
+      describe '#end_date' do
+        subject { super().end_date }
+        it { is_expected.to eq(Date.today) }
+      end
+
+      describe '#no_content' do
+        subject { super().no_content }
+        it { is_expected.to eq('yet') }
+      end
 
       it 'calculates dates correctly even if, say, the server has been up a few decades' do
         Timecop.freeze(Date.new(2112, 10, 31)) do
-          View::Hits::TimePeriod['all-time'].range.should == (100.years.ago.to_date..Date.today)
+          expect(View::Hits::TimePeriod['all-time'].range).to eq(100.years.ago.to_date..Date.today)
         end
       end
     end
@@ -61,15 +110,34 @@ describe View::Hits::TimePeriod do
     describe 'Last 30 days' do
       subject { View::Hits::TimePeriod['last-30-days'] }
 
-      its(:title)      { should == 'Last 30 days' }
-      its(:range)      { should == (30.days.ago.to_date..Date.today) }
-      its(:start_date) { should == 30.days.ago.to_date }
-      its(:end_date)   { should == Date.today }
-      its(:no_content) { should == 'in this time period' }
+      describe '#title' do
+        subject { super().title }
+        it { is_expected.to eq('Last 30 days') }
+      end
+
+      describe '#range' do
+        subject { super().range }
+        it { is_expected.to eq(30.days.ago.to_date..Date.today) }
+      end
+
+      describe '#start_date' do
+        subject { super().start_date }
+        it { is_expected.to eq(30.days.ago.to_date) }
+      end
+
+      describe '#end_date' do
+        subject { super().end_date }
+        it { is_expected.to eq(Date.today) }
+      end
+
+      describe '#no_content' do
+        subject { super().no_content }
+        it { is_expected.to eq('in this time period') }
+      end
 
       it 'calculates dates correctly even if, say, the server has been up a few decades' do
         Timecop.freeze(Date.new(2112, 10, 31)) do
-          View::Hits::TimePeriod['last-30-days'].range.should == (30.days.ago.to_date..Date.today)
+          expect(View::Hits::TimePeriod['last-30-days'].range).to eq(30.days.ago.to_date..Date.today)
         end
       end
     end
@@ -78,25 +146,79 @@ describe View::Hits::TimePeriod do
       context 'A valid period' do
         subject { View::Hits::TimePeriod['20131001-20131031'] }
 
-        its(:start_date)  { should == Date.new(2013, 10, 1) }
-        its(:end_date)    { should == Date.new(2013, 10, 31) }
-        its(:range)       { should == (Date.new(2013, 10, 1)..Date.new(2013, 10, 31)) }
-        its(:title)       { should == '1 Oct 2013 - 31 Oct 2013' }
-        its(:slug)        { should == '20131001-20131031' }
-        its(:no_content)  { should == 'in this time period' }
-        its(:single_day?) { should be_false }
+        describe '#start_date' do
+          subject { super().start_date }
+          it { is_expected.to eq(Date.new(2013, 10, 1)) }
+        end
+
+        describe '#end_date' do
+          subject { super().end_date }
+          it { is_expected.to eq(Date.new(2013, 10, 31)) }
+        end
+
+        describe '#range' do
+          subject { super().range }
+          it { is_expected.to eq(Date.new(2013, 10, 1)..Date.new(2013, 10, 31)) }
+        end
+
+        describe '#title' do
+          subject { super().title }
+          it { is_expected.to eq('1 Oct 2013 - 31 Oct 2013') }
+        end
+
+        describe '#slug' do
+          subject { super().slug }
+          it { is_expected.to eq('20131001-20131031') }
+        end
+
+        describe '#no_content' do
+          subject { super().no_content }
+          it { is_expected.to eq('in this time period') }
+        end
+
+        describe '#single_day?' do
+          subject { super().single_day? }
+          it { is_expected.to be_falsey }
+        end
       end
 
       context 'A valid single date' do
         subject { View::Hits::TimePeriod['20131001'] }
 
-        its(:start_date)  { should == Date.new(2013, 10, 1) }
-        its(:end_date)    { should == Date.new(2013, 10, 1) }
-        its(:range)       { should == (Date.new(2013, 10, 1)..Date.new(2013, 10, 1)) }
-        its(:title)       { should == '1 Oct 2013' }
-        its(:slug)        { should == '20131001' }
-        its(:no_content)  { should == 'in this time period' }
-        its(:single_day?) { should be_true }
+        describe '#start_date' do
+          subject { super().start_date }
+          it { is_expected.to eq(Date.new(2013, 10, 1)) }
+        end
+
+        describe '#end_date' do
+          subject { super().end_date }
+          it { is_expected.to eq(Date.new(2013, 10, 1)) }
+        end
+
+        describe '#range' do
+          subject { super().range }
+          it { is_expected.to eq(Date.new(2013, 10, 1)..Date.new(2013, 10, 1)) }
+        end
+
+        describe '#title' do
+          subject { super().title }
+          it { is_expected.to eq('1 Oct 2013') }
+        end
+
+        describe '#slug' do
+          subject { super().slug }
+          it { is_expected.to eq('20131001') }
+        end
+
+        describe '#no_content' do
+          subject { super().no_content }
+          it { is_expected.to eq('in this time period') }
+        end
+
+        describe '#single_day?' do
+          subject { super().single_day? }
+          it { is_expected.to be_truthy }
+        end
       end
 
       context 'Invalid periods' do

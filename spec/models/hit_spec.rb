@@ -2,25 +2,28 @@ require 'spec_helper'
 
 describe Hit do
   describe 'relationships' do
-    it { should belong_to(:host) }
+    it { is_expected.to belong_to(:host) }
   end
 
   describe 'validations' do
-    it { should validate_presence_of(:host) }
-    it { should validate_presence_of(:path) }
-    it { should validate_presence_of(:count) }
-    it { should validate_numericality_of(:count).is_greater_than_or_equal_to(0) }
+    it { is_expected.to validate_presence_of(:host) }
+    it { is_expected.to validate_presence_of(:path) }
+    it { is_expected.to validate_presence_of(:count) }
+    it { is_expected.to validate_numericality_of(:count).is_greater_than_or_equal_to(0) }
   end
 
   describe 'attributes set before validation' do
     subject { create :hit, hit_on: DateTime.new(2014, 12, 31, 23, 59, 59) }
 
-    its(:hit_on)    { should eql(DateTime.new(2014, 12, 31, 0, 0, 0)) }
+    describe '#hit_on' do
+      subject { super().hit_on }
+      it { is_expected.to eql(DateTime.new(2014, 12, 31, 0, 0, 0)) }
+    end
   end
 
   describe '#homepage?' do
-    specify { create(:hit, path: '/').homepage?.should be_true }
-    specify { create(:hit, path: '/?q=1').homepage?.should be_true }
-    specify { create(:hit, path: '/foo').homepage?.should be_false }
+    specify { expect(create(:hit, path: '/').homepage?).to be_truthy }
+    specify { expect(create(:hit, path: '/?q=1').homepage?).to be_truthy }
+    specify { expect(create(:hit, path: '/foo').homepage?).to be_falsey }
   end
 end

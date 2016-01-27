@@ -8,24 +8,24 @@ describe BulkAddBatch do
     context 'when there is no scheme' do
       subject(:mappings_batch) { build(:bulk_add_batch, new_url: 'www.gov.uk') }
 
-      before { mappings_batch.should be_valid }
+      before { expect(mappings_batch).to be_valid }
       it 'should add a scheme' do
-        mappings_batch.new_url.should == 'https://www.gov.uk'
+        expect(mappings_batch.new_url).to eq('https://www.gov.uk')
       end
     end
   end
 
   describe 'validations' do
-    it { should ensure_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
+    it { is_expected.to ensure_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
 
     context 'when the mappings batch is invalid' do
-      before { mappings_batch.should_not be_valid }
+      before { expect(mappings_batch).not_to be_valid }
 
       context 'when paths are empty after canonicalisation' do
         subject(:mappings_batch) { build(:bulk_add_batch, paths: ['/']) }
 
         it 'should declare it invalid' do
-          mappings_batch.errors[:canonical_paths].should == ['Enter at least one valid path or full URL']
+          expect(mappings_batch.errors[:canonical_paths]).to eq(['Enter at least one valid path or full URL'])
         end
       end
 
@@ -33,7 +33,7 @@ describe BulkAddBatch do
         subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect') }
 
         it 'must have a new URL' do
-          mappings_batch.errors[:new_url].should == ['Enter a valid URL to redirect to']
+          expect(mappings_batch.errors[:new_url]).to eq(['Enter a valid URL to redirect to'])
         end
       end
 
@@ -41,7 +41,7 @@ describe BulkAddBatch do
         subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect', new_url: 'http://'.ljust(2049, 'x')) }
 
         it 'is invalid' do
-          mappings_batch.errors[:new_url].should include('is too long (maximum is 2048 characters)')
+          expect(mappings_batch.errors[:new_url]).to include('is too long (maximum is 2048 characters)')
         end
       end
 
@@ -49,7 +49,7 @@ describe BulkAddBatch do
         subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect', new_url: 'newurl') }
 
         it 'errors and asks for a valid one' do
-          mappings_batch.errors[:new_url].should include('Enter a valid URL to redirect to')
+          expect(mappings_batch.errors[:new_url]).to include('Enter a valid URL to redirect to')
         end
       end
 
@@ -57,7 +57,7 @@ describe BulkAddBatch do
         subject(:mappings_batch) { build(:bulk_add_batch, type: 'redirect', new_url: 'http://bad.com') }
 
         it 'errors and asks for a whitelisted one' do
-          mappings_batch.errors[:new_url].should include("The URL to redirect to must be on a whitelisted domain. <a href='https://support.publishing.service.gov.uk/general_request/new'>Raise a support request through the GOV.UK Support form</a> for more information.")
+          expect(mappings_batch.errors[:new_url]).to include("The URL to redirect to must be on a whitelisted domain. <a href='https://support.publishing.service.gov.uk/general_request/new'>Raise a support request through the GOV.UK Support form</a> for more information.")
         end
       end
 
@@ -65,14 +65,14 @@ describe BulkAddBatch do
         subject(:mappings_batch) { build(:bulk_add_batch, paths: ['http://another.com/foo']) }
 
         it 'errors and asks for a URL that is part of the current site' do
-          mappings_batch.errors[:paths].should == ['One or more of the URLs entered are not part of this site']
+          expect(mappings_batch.errors[:paths]).to eq(['One or more of the URLs entered are not part of this site'])
         end
       end
 
       context 'when a new URL given to paths is invalid' do
         subject(:mappings_batch) { build(:bulk_add_batch, type: 'archive', paths: ['http://newurl/foo[1]']) }
 
-        it { should_not be_valid }
+        it { is_expected.not_to be_valid }
       end
     end
 
@@ -88,7 +88,7 @@ describe BulkAddBatch do
         build(:bulk_add_batch, site: site, paths: ['http://a.com/a', 'http://a.com/a'])
       end
 
-      it { should be_valid }
+      it { is_expected.to be_valid }
     end
   end
 
@@ -100,20 +100,20 @@ describe BulkAddBatch do
                                       paths: ['/a?insignificant', '/a', '/b?significant']) }
 
     it 'should create an entry for each canonicalised path' do
-      mappings_batch.entries.count.should == 2
+      expect(mappings_batch.entries.count).to eq(2)
       entry_paths = mappings_batch.entries.map(&:path)
-      entry_paths.sort.should == ['/a', '/b?significant'].sort
+      expect(entry_paths.sort).to eq(['/a', '/b?significant'].sort)
     end
 
     it 'should relate the entry to the existing mapping' do
       entry = mappings_batch.entries.detect { |entry| entry.path == existing_mapping.path }
-      entry.should_not be_nil
-      entry.mapping.should == existing_mapping
+      expect(entry).not_to be_nil
+      expect(entry.mapping).to eq(existing_mapping)
     end
 
     it 'should create entries of the right subclass' do
       entry = mappings_batch.entries.first
-      entry.should be_a(BulkAddBatchEntry)
+      expect(entry).to be_a(BulkAddBatchEntry)
     end
   end
 
@@ -147,12 +147,12 @@ describe BulkAddBatch do
         mappings_batch.process
       end
 
-      site.mappings.count.should == 1
+      expect(site.mappings.count).to eq(1)
 
       mapping = site.mappings.first
 
       version = mapping.versions.first
-      version.changeset.should_not include('tag_list')
+      expect(version.changeset).not_to include('tag_list')
     end
   end
 end

@@ -3,31 +3,31 @@ require 'postgres/materialized_view'
 
 describe Site do
   describe 'relationships' do
-    it { should belong_to(:organisation) }
-    it { should have_many(:hosts) }
-    it { should have_many(:mappings) }
+    it { is_expected.to belong_to(:organisation) }
+    it { is_expected.to have_many(:hosts) }
+    it { is_expected.to have_many(:mappings) }
   end
 
   describe 'validations' do
-    it { should validate_presence_of(:abbr) }
-    it { should validate_presence_of(:tna_timestamp) }
-    it { should validate_presence_of(:organisation) }
-    it { should ensure_inclusion_of(:special_redirect_strategy).in_array(['via_aka', 'supplier']) }
-    it { should allow_value("org_site1-Modifier").for(:abbr) }
-    it { should_not allow_value("org_www.site").for(:abbr) }
+    it { is_expected.to validate_presence_of(:abbr) }
+    it { is_expected.to validate_presence_of(:tna_timestamp) }
+    it { is_expected.to validate_presence_of(:organisation) }
+    it { is_expected.to ensure_inclusion_of(:special_redirect_strategy).in_array(['via_aka', 'supplier']) }
+    it { is_expected.to allow_value("org_site1-Modifier").for(:abbr) }
+    it { is_expected.not_to allow_value("org_www.site").for(:abbr) }
 
     describe 'homepage' do
-      it { should validate_presence_of(:homepage) }
+      it { is_expected.to validate_presence_of(:homepage) }
 
       describe 'the homepage errors' do
         subject(:site) do
           build(:site, homepage: 'www.no-scheme.gov.uk')
         end
 
-        before { site.should_not be_valid }
+        before { expect(site).not_to be_valid }
 
         it 'should validate the homepage as a full URL' do
-          site.errors[:homepage].should == ['is not a URL']
+          expect(site.errors[:homepage]).to eq(['is not a URL'])
         end
       end
     end
@@ -35,18 +35,18 @@ describe Site do
     context 'global redirect' do
       subject(:site) { build(:site, global_type: 'redirect') }
 
-      before { site.should_not be_valid }
+      before { expect(site).not_to be_valid }
       it 'should validate presence of global_new_url' do
-        site.errors[:global_new_url].should == ['can\'t be blank']
+        expect(site.errors[:global_new_url]).to eq(['can\'t be blank'])
       end
     end
 
     context 'global redirect with path appended' do
       subject(:site) { build(:site, global_type: 'redirect', global_redirect_append_path: true, global_new_url: 'http://a.com/?') }
 
-      before { site.should_not be_valid }
+      before { expect(site).not_to be_valid }
       it 'should disallow a global_new_url with a querystring' do
-        site.errors[:global_new_url].should == ['cannot contain a query when the path is appended']
+        expect(site.errors[:global_new_url]).to eq(['cannot contain a query when the path is appended'])
       end
     end
   end
@@ -74,16 +74,16 @@ describe Site do
         # ('added_later=2')
 
         host_path = HostPath.find_by_path(hit.path)
-        host_path.mapping.should eql(nil)
+        expect(host_path.mapping).to eql(nil)
 
-        hit.reload.mapping.should eql(nil)
+        expect(hit.reload.mapping).to eql(nil)
       end
 
       it 'should keep relationships which still exist' do
         other_host_path = HostPath.find_by_path(other_hit.path)
-        other_host_path.mapping.should eql(other_mapping)
+        expect(other_host_path.mapping).to eql(other_mapping)
 
-        other_hit.reload.mapping.should eql(other_mapping)
+        expect(other_hit.reload.mapping).to eql(other_mapping)
       end
     end
   end
@@ -100,12 +100,12 @@ describe Site do
 
       it 'has counts available on #mapping_count' do
         site = site_list.find { |s| s.id == site_with_mappings.id }
-        site.mapping_count.should == 2
+        expect(site.mapping_count).to eq(2)
       end
 
       it 'correctly counts 0 for sites without mappings' do
         site = site_list.find { |s| s.id == site_without_mappings.id }
-        site.mapping_count.should == 0
+        expect(site.mapping_count).to eq(0)
       end
     end
 
@@ -126,7 +126,7 @@ describe Site do
       subject(:tag_strings) { site_with_mappings.most_used_tags(2) }
 
       it 'includes the top two tags, but not the less popular tags' do
-        tag_strings.should =~ %w(popular1 popular2)
+        expect(tag_strings).to match_array(%w(popular1 popular2))
       end
     end
   end
@@ -142,26 +142,26 @@ describe Site do
         create(:host, :with_third_party_cname, site: site)
       end
 
-      it     { should eql(:live) }
+      it     { is_expected.to eql(:live) }
     end
 
     context 'site is under supplier redirect' do
       before { site.special_redirect_strategy = 'supplier' }
-      it     { should eql(:indeterminate) }
+      it     { is_expected.to eql(:indeterminate) }
 
       context 'but it has a host with a live redirect' do
         before { site.hosts << create(:host, :with_govuk_cname ) }
-        it     { should eql(:live) }
+        it     { is_expected.to eql(:live) }
       end
     end
 
     context 'site is under aka redirect' do
       before { site.special_redirect_strategy = 'via_aka' }
-      it     { should eql(:indeterminate) }
+      it     { is_expected.to eql(:indeterminate) }
 
       context 'but it has a host with a live redirect' do
         before { site.hosts << create(:host, :with_govuk_cname ) }
-        it     { should eql(:live) }
+        it     { is_expected.to eql(:live) }
       end
     end
 
@@ -172,11 +172,11 @@ describe Site do
                       canonical_host_id: host.id)
       end
 
-      it { should eql(:pre_transition) }
+      it { is_expected.to eql(:pre_transition) }
     end
 
     context 'in any other case' do
-      it { should eql(:pre_transition) }
+      it { is_expected.to eql(:pre_transition) }
     end
   end
 
@@ -192,7 +192,10 @@ describe Site do
       site.default_host
     end
 
-    its(:hostname) { should eql('www.f.com') }
+    describe '#hostname' do
+      subject { super().hostname }
+      it { is_expected.to eql('www.f.com') }
+    end
   end
 
   describe '#canonical_path' do
@@ -203,37 +206,37 @@ describe Site do
 
     it "should be a canonicalized path" do
       @raw_path = '/ABOUT/FUN///#noreally'
-      subject.should eql('/about/fun')
+      expect(subject).to eql('/about/fun')
     end
 
     it "should retain the site's significant query params" do
       @raw_path = '/ABOUT?foo=BAZ&bar=beer'
-      subject.should eql('/about?bar=beer&foo=baz')
+      expect(subject).to eql('/about?bar=beer&foo=baz')
     end
 
     it "should not retain other query params" do
       @raw_path = '/ABOUT?foo=BAZ&rain=shine'
-      subject.should eql('/about?foo=baz')
+      expect(subject).to eql('/about?foo=baz')
     end
 
     it "should handle an empty path gracefully" do
       @raw_path = '/'
-      subject.should eql('')
+      expect(subject).to eql('')
     end
 
     it "inserts a missing first slash" do
       @raw_path = 'foo'
-      subject.should eql('/foo')
+      expect(subject).to eql('/foo')
     end
 
     it "inserts a missing first slash, unless the first part appears to be a domain" do
       @raw_path = 'www.a.gov.uk/foo'
-      subject.should eql('/foo')
+      expect(subject).to eql('/foo')
     end
 
     it "handles absolute URLs" do
       @raw_path = 'http://www.a.gov.uk/foo'
-      subject.should eql('/foo')
+      expect(subject).to eql('/foo')
     end
   end
 
@@ -243,7 +246,7 @@ describe Site do
     subject    { site.hit_total_count }
 
     context 'the site has no hits at all' do
-      it { should be_zero }
+      it { is_expected.to be_zero }
     end
 
     context 'the site has hits' do
@@ -256,7 +259,7 @@ describe Site do
         Transition::Import::DailyHitTotals.from_hits!
       end
 
-      it { should == 30 }
+      it { is_expected.to eq(30) }
     end
   end
 
@@ -266,27 +269,27 @@ describe Site do
     subject(:site) { build :site, abbr: 'hmrc', precompute_all_hits_view: precompute }
 
     it 'calculates a conventional view name' do
-      site.precomputed_view_name.should eql('hmrc_all_hits')
+      expect(site.precomputed_view_name).to eql('hmrc_all_hits')
     end
 
     describe '#able_to_use_view?' do
       context 'the view is not there' do
-        before { Postgres::MaterializedView.stub(:exists?).and_return(false) }
+        before { allow(Postgres::MaterializedView).to receive(:exists?).and_return(false) }
 
-        it { should_not be_able_to_use_view }
+        it { is_expected.not_to be_able_to_use_view }
       end
       context 'the view is there, but precompute_hits_view is false' do
-        before { Postgres::MaterializedView.stub(:exists?).and_return(true) }
+        before { allow(Postgres::MaterializedView).to receive(:exists?).and_return(true) }
 
-        it { should_not be_able_to_use_view }
+        it { is_expected.not_to be_able_to_use_view }
       end
       context 'the view is there and precompute_hits_view is true' do
         let(:precompute) { true }
         before do
-          Postgres::MaterializedView.should_receive(:exists?).and_return(true)
+          expect(Postgres::MaterializedView).to receive(:exists?).and_return(true)
         end
 
-        it { should be_able_to_use_view }
+        it { is_expected.to be_able_to_use_view }
       end
     end
 
@@ -296,7 +299,7 @@ describe Site do
       context 'precompute_all_hits_view is set to false from true' do
         before do
           site.save!
-          Postgres::MaterializedView.should_receive(:drop).with(site.precomputed_view_name)
+          expect(Postgres::MaterializedView).to receive(:drop).with(site.precomputed_view_name)
         end
 
         it 'drops the view' do

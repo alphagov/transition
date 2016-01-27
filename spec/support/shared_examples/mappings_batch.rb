@@ -5,10 +5,10 @@ shared_examples 'creates redirect mapping' do
     let(:mapping) { site.mappings.where(path: path).first }
 
     it 'should populate the fields on the new mapping' do
-      mapping.path.should == path
-      mapping.type.should == 'redirect'
-      mapping.new_url.should == new_url
-      mapping.tag_list.should == tag_list.split(",")
+      expect(mapping.path).to eq(path)
+      expect(mapping.type).to eq('redirect')
+      expect(mapping.new_url).to eq(new_url)
+      expect(mapping.tag_list).to eq(tag_list.split(","))
     end
   end
 end
@@ -20,11 +20,11 @@ shared_examples 'creates custom archive URL mapping' do
     let(:mapping) { site.mappings.where(path: path).first }
 
     it 'should populate the fields on the new mapping' do
-      mapping.path.should == path
-      mapping.type.should == 'archive'
-      mapping.new_url.should == nil
-      mapping.archive_url.should == archive_url
-      mapping.tag_list.should == tag_list.split(",")
+      expect(mapping.path).to eq(path)
+      expect(mapping.type).to eq('archive')
+      expect(mapping.new_url).to eq(nil)
+      expect(mapping.archive_url).to eq(archive_url)
+      expect(mapping.tag_list).to eq(tag_list.split(","))
     end
   end
 end
@@ -34,12 +34,12 @@ shared_examples 'creates mappings' do
     before { mappings_batch.process }
 
     it 'should create mappings for each entry' do
-      site.mappings.count.should == 2
+      expect(site.mappings.count).to eq(2)
     end
 
     it 'should mark each entry as processed' do
       entry = mappings_batch.entries.first
-      entry.processed.should be_true
+      expect(entry.processed).to be_truthy
     end
   end
 
@@ -50,10 +50,10 @@ shared_examples 'creates mappings' do
       it 'should ignore them' do
         mappings_batch.process
         existing_mapping.reload
-        existing_mapping.type.should == 'archive'
-        existing_mapping.new_url.should be_nil
+        expect(existing_mapping.type).to eq('archive')
+        expect(existing_mapping.new_url).to be_nil
         entry = mappings_batch.entries.where(path: existing_mapping.path).first
-        entry.processed.should be_false
+        expect(entry.processed).to be_falsey
       end
     end
 
@@ -63,9 +63,9 @@ shared_examples 'creates mappings' do
         mappings_batch.process
 
         existing_mapping.reload
-        existing_mapping.type.should == 'redirect'
-        existing_mapping.new_url.should == 'http://a.gov.uk'
-        existing_mapping.tag_list.sort.should == ['a tag', 'existing tag']
+        expect(existing_mapping.type).to eq('redirect')
+        expect(existing_mapping.new_url).to eq('http://a.gov.uk')
+        expect(existing_mapping.tag_list.sort).to eq(['a tag', 'existing tag'])
       end
     end
   end
@@ -73,14 +73,14 @@ shared_examples 'creates mappings' do
   describe 'recording state' do
     it 'should set it to succeeded' do
       mappings_batch.process
-      mappings_batch.state.should == 'succeeded'
+      expect(mappings_batch.state).to eq('succeeded')
     end
 
     context 'error raised during processing' do
       it 'should set the state to failed and reraise the error' do
-        ActiveRecord::Relation.any_instance.stub(:first_or_initialize) { raise_error }
+        allow_any_instance_of(ActiveRecord::Relation).to receive(:first_or_initialize) { raise_error }
         expect { mappings_batch.process }.to raise_error
-        mappings_batch.state.should == 'failed'
+        expect(mappings_batch.state).to eq('failed')
       end
     end
   end

@@ -15,7 +15,7 @@ describe Transition::Google::UrlIngester do
   before do
     # The only part we're stubbing is the pager, which normally talks to Google.
     # The rest is actual integration.
-    ingester.stub(:results_pager).and_return(hostpath_rows)
+    allow(ingester).to receive(:results_pager).and_return(hostpath_rows)
   end
 
   context 'the org has no profile id' do
@@ -31,7 +31,7 @@ describe Transition::Google::UrlIngester do
       create :site, abbr: 'dpm',
              organisation: create(:organisation, whitehall_slug: 'dpm')
       ingester.ingest!
-      Hit.all.should have(2).hits
+      expect(Hit.all.size).to eq(2)
     end
   end
 end

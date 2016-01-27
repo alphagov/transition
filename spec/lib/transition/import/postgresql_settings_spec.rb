@@ -35,21 +35,21 @@ describe Transition::Import::PostgreSQLSettings do
   describe '#change_settings' do
     it 'temporarily changes multiple valid settings' do
       old_work_mem = object.get_setting('work_mem')
-      old_work_mem.should_not  == '3MB' # shouldn't be what we're going to set it to
+      expect(old_work_mem).not_to  eq('3MB') # shouldn't be what we're going to set it to
 
       old_maintenance_work_mem = object.get_setting('maintenance_work_mem')
-      old_maintenance_work_mem.should_not  == '4MB' # shouldn't be what we're going to set it to
+      expect(old_maintenance_work_mem).not_to  eq('4MB') # shouldn't be what we're going to set it to
 
       object.change_settings(
         'work_mem' => '3MB',
         'maintenance_work_mem' => '4MB'
       ) do
-        object.get_setting('work_mem').should eql('3MB')
-        object.get_setting('maintenance_work_mem').should eql('4MB')
+        expect(object.get_setting('work_mem')).to eql('3MB')
+        expect(object.get_setting('maintenance_work_mem')).to eql('4MB')
       end
 
-      object.get_setting('work_mem').should eql(old_work_mem)
-      object.get_setting('maintenance_work_mem').should eql(old_maintenance_work_mem)
+      expect(object.get_setting('work_mem')).to eql(old_work_mem)
+      expect(object.get_setting('maintenance_work_mem')).to eql(old_maintenance_work_mem)
     end
 
     it 'changes settings back despite any errors in the block' do

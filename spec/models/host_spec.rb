@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Host do
   describe 'relationships' do
-    it { should belong_to(:site) }
+    it { is_expected.to belong_to(:site) }
   end
 
   describe 'validations' do
@@ -12,29 +12,35 @@ describe Host do
       # to test validations which aren't dependent on aka? (for hostname in
       # particular) we need to stub aka? to see that validation actually working.
       before do
-        subject.stub(:aka?).and_return(false)
+        allow(subject).to receive(:aka?).and_return(false)
       end
 
-      it { should validate_presence_of(:hostname) }
-      it { should validate_presence_of(:site) }
+      it { is_expected.to validate_presence_of(:hostname) }
+      it { is_expected.to validate_presence_of(:site) }
     end
 
     describe 'canonical_host_id' do
       context 'if not aka but has canonical_host_id' do
         subject(:host) { build :host, hostname: 'foo.gov.uk', canonical_host_id: 1 }
 
-        its(:valid?) { should be_false }
+        describe '#valid?' do
+          subject { super().valid? }
+          it { is_expected.to be_falsey }
+        end
         it 'should have an error for canonical_host_id' do
-          host.errors_on(:canonical_host_id).should include('must be blank for a non-aka host')
+          expect(host.errors_on(:canonical_host_id)).to include('must be blank for a non-aka host')
         end
       end
 
       context 'if aka but has no canonical_host_id' do
         subject(:host) { build :host, hostname: 'aka-foo.gov.uk' }
 
-        its(:valid?) { should be_false }
+        describe '#valid?' do
+          subject { super().valid? }
+          it { is_expected.to be_falsey }
+        end
         it 'should have an error for canonical_host_id' do
-          host.errors_on(:canonical_host_id).should include('can\'t be blank for an aka host')
+          expect(host.errors_on(:canonical_host_id)).to include('can\'t be blank for an aka host')
         end
       end
     end
@@ -43,18 +49,24 @@ describe Host do
       context 'includes a path' do
         subject(:host) { build :host, hostname: 'rarfoo.gov.uk/foo/' }
 
-        its(:valid?) { should be_false }
+        describe '#valid?' do
+          subject { super().valid? }
+          it { is_expected.to be_falsey }
+        end
         it 'should have an error for invalid hostname' do
-          host.errors_on(:hostname).should include('is an invalid hostname')
+          expect(host.errors_on(:hostname)).to include('is an invalid hostname')
         end
       end
 
       context 'unparseable' do
         subject(:host) { build :host, hostname: 'a}b.com' }
 
-        its(:valid?) { should be_false }
+        describe '#valid?' do
+          subject { super().valid? }
+          it { is_expected.to be_falsey }
+        end
         it 'should have an error for invalid hostname' do
-          host.errors_on(:hostname).should include('is an invalid hostname')
+          expect(host.errors_on(:hostname)).to include('is an invalid hostname')
         end
       end
     end
@@ -70,7 +82,7 @@ describe Host do
       end
 
       subject { site.hosts.excluding_aka.pluck(:hostname) }
-      it { should =~ ['www.foo.com', 'foo.com'] }
+      it { is_expected.to match_array(['www.foo.com', 'foo.com']) }
     end
   end
 
@@ -79,22 +91,22 @@ describe Host do
 
     context 'a www host' do
       let(:host) { build(:host, hostname: 'www.foo.com') }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context 'a non-www host' do
       let(:host) { build(:host, hostname: 'foo.com') }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context 'an aka. host' do
       let(:host) { build(:host, hostname: 'aka.foo.com') }
-      it { should be_true }
+      it { is_expected.to be_truthy }
     end
 
     context 'an aka- host' do
       let(:host) { build(:host, hostname: 'aka-foo.com') }
-      it { should be_true }
+      it { is_expected.to be_truthy }
     end
   end
 
@@ -103,49 +115,73 @@ describe Host do
 
     context "when the hostname has no www" do
       let(:host) { build(:host, hostname: 'foo.com') }
-      it { should eql('aka-foo.com') }
+      it { is_expected.to eql('aka-foo.com') }
     end
 
     context "when the hostname has www on the front" do
       let(:host) { build(:host, hostname: 'www.foo.com') }
-      it { should eql('aka.foo.com') }
+      it { is_expected.to eql('aka.foo.com') }
     end
 
     context "when the hostname has www2 on the front" do
       let(:host) { build(:host, hostname: 'www2.lowpay.gov.uk') }
-      it { should eql('aka-www2.lowpay.gov.uk') }
+      it { is_expected.to eql('aka-www2.lowpay.gov.uk') }
     end
   end
 
   describe '#redirected_by_gds?' do
     context 'standard CDN CNAME' do
       subject { build(:host, cname: 'redirector-cdn.production.govuk.service.gov.uk') }
-      its(:redirected_by_gds?) { should be_true }
+
+      describe '#redirected_by_gds?' do
+        subject { super().redirected_by_gds? }
+        it { is_expected.to be_truthy }
+      end
     end
 
     context 'businesslink events CDN CNAME' do
       subject { build(:host, cname: 'redirector-cdn-ssl-events-businesslink.production.govuk.service.gov.uk') }
-      its(:redirected_by_gds?) { should be_true }
+
+      describe '#redirected_by_gds?' do
+        subject { super().redirected_by_gds? }
+        it { is_expected.to be_truthy }
+      end
     end
 
     context 'IP pointing at the redirector EC2 box' do
       subject { build(:host, cname: nil, ip_address: '46.137.92.159') }
-      its(:redirected_by_gds?) { should be_true }
+
+      describe '#redirected_by_gds?' do
+        subject { super().redirected_by_gds? }
+        it { is_expected.to be_truthy }
+      end
     end
 
     context 'external CNAME' do
       subject { build(:host, cname: 'bis-tms-101-L01.eduserv.org.uk') }
-      its(:redirected_by_gds?) { should be_false }
+
+      describe '#redirected_by_gds?' do
+        subject { super().redirected_by_gds? }
+        it { is_expected.to be_falsey }
+      end
     end
 
     context 'no CNAME (A-record only)' do
       subject { build(:host, cname: nil) }
-      its(:redirected_by_gds?) { should be_false }
+
+      describe '#redirected_by_gds?' do
+        subject { super().redirected_by_gds? }
+        it { is_expected.to be_falsey }
+      end
     end
 
     context 'IP pointing at a non-redirector EC2 box' do
       subject { build(:host, cname: nil, ip_address: '127.0.0.1') }
-      its(:redirected_by_gds?) { should be_false }
+
+      describe '#redirected_by_gds?' do
+        subject { super().redirected_by_gds? }
+        it { is_expected.to be_falsey }
+      end
     end
   end
 
@@ -174,10 +210,10 @@ describe Host do
           # Potentially this mapping should be moved too, but we can't really tell,
           # so leave it behind. A mapping can always be created on the new site.
 
-          hit.reload.mapping.should eql(nil)
+          expect(hit.reload.mapping).to eql(nil)
 
           host_path = runaway_host.host_paths.find_by_path(hit.path)
-          host_path.mapping.should eql(nil)
+          expect(host_path.mapping).to eql(nil)
         end
       end
 
@@ -195,16 +231,16 @@ describe Host do
         end
 
         it 'creates relationships which should now exist' do
-          hit.reload.mapping.should eql(other_mapping)
+          expect(hit.reload.mapping).to eql(other_mapping)
 
           host_path = runaway_host.host_paths.find_by_path(hit.path)
-          host_path.mapping.should eql(other_mapping)
-          host_path.canonical_path.should_not be_nil
+          expect(host_path.mapping).to eql(other_mapping)
+          expect(host_path.canonical_path).not_to be_nil
         end
 
         it 'sets the hit count on the mappings which now have hits' do
           other_mapping.reload
-          other_mapping.hit_count.should == hit.count
+          expect(other_mapping.hit_count).to eq(hit.count)
         end
       end
     end

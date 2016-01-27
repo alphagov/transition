@@ -15,18 +15,18 @@ describe Transition::Import::CSV::ImportBatchRow do
   describe 'initializer' do
     it 'should strip leading and trailing whitespace' do
       row = make_a_row(' a ', " b\t")
-      row.old_value.should == 'a'
-      row.new_value.should == 'b'
+      expect(row.old_value).to eq('a')
+      expect(row.new_value).to eq('b')
     end
 
     it 'should strip the old value' do
       row = make_a_row('  ', nil)
-      row.old_value.should eql('')
+      expect(row.old_value).to eql('')
     end
 
     it 'should turn a blank new value to nil' do
       row = make_a_row('', " \t")
-      row.new_value.should be_nil
+      expect(row.new_value).to be_nil
     end
   end
 
@@ -38,63 +38,63 @@ describe Transition::Import::CSV::ImportBatchRow do
         make_a_row('oops/missed/a/slash', nil),
         make_a_row('http://homepage.com', nil)
       ].each do |row|
-        row.ignorable?.should be_true
+        expect(row.ignorable?).to be_truthy
       end
     end
 
     it 'is false for rows which we want to use' do
       row = make_a_row(' /a', nil)
-      row.ignorable?.should be_false
+      expect(row.ignorable?).to be_falsey
     end
   end
 
   describe 'data_row?' do
     it 'rejects random headings' do
       row = make_a_row('   URLs   ', nil)
-      row.data_row?.should be_false
+      expect(row.data_row?).to be_falsey
     end
 
     it 'accepts rows with leading whitespace' do
       row = make_a_row(' /a', nil)
-      row.data_row?.should be_true
+      expect(row.data_row?).to be_truthy
     end
 
     it 'accepts rows with http/https scheme' do
       row = make_a_row(' http://', nil)
-      row.data_row?.should be_true
+      expect(row.data_row?).to be_truthy
     end
   end
 
   describe 'type' do
     it 'should be an archive if the new_value is "TNA"' do
       row = make_a_row('', 'TNA')
-      row.type.should == 'archive'
+      expect(row.type).to eq('archive')
     end
 
     it 'should be an archive regardless of the case of "TNA"' do
       row = make_a_row('', 'tNa')
-      row.type.should == 'archive'
+      expect(row.type).to eq('archive')
     end
 
     it 'should not be an archive when the new URL contains "TNA"' do
       row = make_a_row('', 'http://a.com/antna')
-      row.type.should == 'redirect'
+      expect(row.type).to eq('redirect')
     end
 
     it 'should be an archive when the new URL is a TNA URL' do
       row = make_a_row('', 'http://webarchive.nationalarchives.gov.uk/*/http://a.gov.uk')
-      row.type.should == 'archive'
+      expect(row.type).to eq('archive')
     end
 
     it 'should not raise an error when the new URL is unparseable' do
       row = make_a_row('', 'http://}')
       # let the ImportBatch validate and report that it isn't parseable as a New URL
-      row.type.should == 'redirect'
+      expect(row.type).to eq('redirect')
     end
 
     it 'should be unresolved when the new URL is blank' do
       row = make_a_row('', ' ')
-      row.type.should == 'unresolved'
+      expect(row.type).to eq('unresolved')
     end
   end
 
@@ -102,28 +102,28 @@ describe Transition::Import::CSV::ImportBatchRow do
     context 'the old value is empty' do
       it 'should keep the path as just a path' do
         row = make_a_row('', nil)
-        row.path.should == ''
+        expect(row.path).to eq('')
       end
     end
 
     context 'the old value is just a path' do
       it 'should keep the path as just a path' do
         row = make_a_row('/old', nil)
-        row.path.should == '/old'
+        expect(row.path).to eq('/old')
       end
     end
 
     context 'the old value is an absolute URL' do
       it 'should set the path to just the path' do
         row = make_a_row('http://foo.com/old', nil)
-        row.path.should == '/old'
+        expect(row.path).to eq('/old')
       end
     end
 
     describe 'canonicalization' do
       it 'should canonicalize the path' do
         row = make_a_row('http://foo.com/old?significant=keep&insignificant=drop', nil)
-        row.path.should == '/old?significant=keep'
+        expect(row.path).to eq('/old?significant=keep')
       end
     end
   end
@@ -131,12 +131,12 @@ describe Transition::Import::CSV::ImportBatchRow do
   describe 'new_url' do
     it 'should return the new_value if it is a redirect' do
       row = make_a_row('', 'http://a.com')
-      row.new_url.should == 'http://a.com'
+      expect(row.new_url).to eq('http://a.com')
     end
 
     it 'should return nil if it is not a redirect' do
       row = make_a_row('', 'TNA')
-      row.new_url.should be_nil
+      expect(row.new_url).to be_nil
     end
   end
 
@@ -179,42 +179,42 @@ describe Transition::Import::CSV::ImportBatchRow do
 
     context 'a redirect' do
       it 'trump an archive' do
-        redirect.should > archive
-        archive.should < redirect
+        expect(redirect).to be > archive
+        expect(archive).to be < redirect
       end
 
       it 'trumps an unresolved' do
-        redirect.should > unresolved
-        unresolved.should < redirect
+        expect(redirect).to be > unresolved
+        expect(unresolved).to be < redirect
       end
 
       it 'trumps a later redirect' do
-        redirect.should > later_redirect
-        later_redirect.should < redirect
+        expect(redirect).to be > later_redirect
+        expect(later_redirect).to be < redirect
       end
     end
 
     context 'an archive' do
       it 'trumps an unresolved' do
-        archive.should > unresolved
-        unresolved.should < archive
+        expect(archive).to be > unresolved
+        expect(unresolved).to be < archive
       end
 
       it 'trumps a later archive' do
-        archive.should > later_archive
-        later_archive.should < archive
+        expect(archive).to be > later_archive
+        expect(later_archive).to be < archive
       end
     end
 
     context 'an archive with a custom URL' do
       it 'trumps a regular archive' do
-        custom_archive.should > archive
-        archive.should < custom_archive
+        expect(custom_archive).to be > archive
+        expect(archive).to be < custom_archive
       end
 
       it 'trumps a later custom archive' do
-        custom_archive.should > later_custom_archive
-        later_custom_archive.should < custom_archive
+        expect(custom_archive).to be > later_custom_archive
+        expect(later_custom_archive).to be < custom_archive
       end
     end
   end

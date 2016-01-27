@@ -8,7 +8,10 @@ describe User do
     context 'user has no organisation set' do
       subject(:user) { create(:user, organisation_content_id: nil) }
 
-      its(:own_organisation) { should eql(nil) }
+      describe '#own_organisation' do
+        subject { super().own_organisation }
+        it { is_expected.to eql(nil) }
+      end
     end
 
     context 'user has an organisation slug set' do
@@ -16,13 +19,19 @@ describe User do
       let(:ministry_of_funk) { create(:organisation, content_id: content_id) }
       subject(:user) { create(:user, organisation_content_id: ministry_of_funk.content_id) }
 
-      its(:own_organisation) { should eql(ministry_of_funk) }
+      describe '#own_organisation' do
+        subject { super().own_organisation }
+        it { is_expected.to eql(ministry_of_funk) }
+      end
     end
 
     context 'user has an organisation set that we don\'t have' do
       subject(:user) { create(:user, organisation_content_id: SecureRandom.uuid) }
 
-      its(:own_organisation) { should eql(nil) }
+      describe '#own_organisation' do
+        subject { super().own_organisation }
+        it { is_expected.to eql(nil) }
+      end
     end
   end
 
@@ -30,13 +39,19 @@ describe User do
     context 'doesn\'t have permission' do
       subject(:user) { create(:user, permissions: ["signin"])}
 
-      its(:gds_editor?) { should be_false }
+      describe '#gds_editor?' do
+        subject { super().gds_editor? }
+        it { is_expected.to be_falsey }
+      end
     end
 
     context 'has relevant permission' do
       subject(:user) { create(:gds_editor) }
 
-      its(:gds_editor?) { should be_true }
+      describe '#gds_editor?' do
+        subject { super().gds_editor? }
+        it { is_expected.to be_truthy }
+      end
     end
   end
 
@@ -49,7 +64,7 @@ describe User do
       subject(:user)     { create(:gds_editor) }
 
       it 'lets them edit anything' do
-        user.can_edit_site?(generic_site).should be_true
+        expect(user.can_edit_site?(generic_site)).to be_truthy
       end
     end
 
@@ -57,7 +72,7 @@ describe User do
       let(:generic_site) { create(:site) }
       subject(:user)     { create(:user) }
 
-      specify { user.can_edit_site?(generic_site).should be_false }
+      specify { expect(user.can_edit_site?(generic_site)).to be_falsey }
     end
 
     context 'an organisation is a primary owner of a site' do
@@ -65,21 +80,21 @@ describe User do
         let(:site)     { create(:site, organisation: ministry_of_funk) }
         subject(:user) { create(:user, organisation_content_id: ministry_of_funk.content_id) }
 
-        specify { user.can_edit_site?(site).should be_true }
+        specify { expect(user.can_edit_site?(site)).to be_truthy }
       end
 
       context 'user is a member of a parent organisation' do
         let(:site_of_child) { create(:site, organisation: agency_of_soul) }
         subject(:user)      { create(:user, organisation_content_id: ministry_of_funk.content_id) }
 
-        specify { user.can_edit_site?(site_of_child).should be_true }
+        specify { expect(user.can_edit_site?(site_of_child)).to be_truthy }
       end
 
       context 'user is a member of a child organisation' do
         let(:site_of_parent) { create(:site, organisation: ministry_of_funk) }
         subject(:user)       { create(:user, organisation_content_id: agency_of_soul.content_id) }
 
-        specify { user.can_edit_site?(site_of_parent).should be_false }
+        specify { expect(user.can_edit_site?(site_of_parent)).to be_falsey }
       end
 
       context 'user is a member of one parent organisation and not a member of another parent' do
@@ -89,7 +104,7 @@ describe User do
         let(:site_of_child) { create(:site, organisation: agency_of_soul) }
         subject(:user)      { create(:user, organisation_content_id: ministry_of_funk.content_id) }
 
-        specify { user.can_edit_site?(site_of_child).should be_true }
+        specify { expect(user.can_edit_site?(site_of_child)).to be_truthy }
       end
     end
 
@@ -102,14 +117,14 @@ describe User do
       context 'user is a member of an extra organisation' do
         subject(:user) { create(:user, organisation_content_id: shoe_procurement_bureau.content_id) }
 
-        specify { user.can_edit_site?(site).should be_true }
+        specify { expect(user.can_edit_site?(site)).to be_truthy }
       end
 
       context 'user is a member of an extra organisation\'s parent' do
         let(:ministry_of_silly_walks)   { create(:organisation) }
         subject(:user)                  { create(:user, organisation_content_id: ministry_of_silly_walks.content_id) }
 
-        specify { user.can_edit_site?(site).should be_false }
+        specify { expect(user.can_edit_site?(site)).to be_falsey }
       end
     end
   end

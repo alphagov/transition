@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe OrganisationalRelationship do
   describe 'relationships' do
-    it { should belong_to(:parent_organisation).class_name('Organisation') }
-    it { should belong_to(:child_organisation).class_name('Organisation') }
+    it { is_expected.to belong_to(:parent_organisation).class_name('Organisation') }
+    it { is_expected.to belong_to(:child_organisation).class_name('Organisation') }
   end
 
   describe 'validations' do
