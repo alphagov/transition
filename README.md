@@ -6,9 +6,8 @@ of mappings for use with [Bouncer](https://github.com/alphagov/bouncer).
 ## Dependencies
 
 * Redis
-* PostgreSQL 9.3+ (the app uses materialized views, which were introduced in 9.3)
-    * To get PostgreSQL 9.3 in the development VM, build a new one on Trusty with
-`govuk_dev_dist=trusty vagrant up`.
+* PostgreSQL 9.3+ (the app uses materialized views, which were introduced in 9.3).
+  This is included in the Trusty dev VM, which is now the default.
 
 ## Running the app
 
