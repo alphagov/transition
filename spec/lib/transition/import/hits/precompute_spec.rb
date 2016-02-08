@@ -11,7 +11,10 @@ describe Transition::Import::Hits::Precompute do
   before do
     # We only care about certain console messages. Don't
     # let rspec-mocks bully us about the others.
-    precompute_setter.console.as_null_object
+    null_console = double('console').as_null_object
+    # TODO: refactor to provide a setter or initialize argument to allow
+    # this to be provided via a public api instead of forcing it like this
+    precompute_setter.instance_variable_set("@console", null_console)
   end
 
   describe '#update!' do
