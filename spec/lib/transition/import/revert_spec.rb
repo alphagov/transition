@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/revert'
 
 describe Transition::Import::Revert::Sites do

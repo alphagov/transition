@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe OrganisationsHelper do
   describe '#date_or_not_yet' do

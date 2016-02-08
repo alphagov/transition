@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/google/api_client'
 
 describe Transition::Google::APIClient do

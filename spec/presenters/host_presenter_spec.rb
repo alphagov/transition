@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'HostPresenter' do
   describe '#as_hash' do

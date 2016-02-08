@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe BatchesHelper do
   describe '#errors_for_raw_csv?' do

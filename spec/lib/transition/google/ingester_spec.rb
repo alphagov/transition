@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/google/url_ingester'
 
 describe Transition::Google::UrlIngester do

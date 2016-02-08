@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/hits_mappings_relations'
 
 describe Transition::Import::HitsMappingsRelations do

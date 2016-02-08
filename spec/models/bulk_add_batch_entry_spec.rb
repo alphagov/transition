@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe BulkAddBatchEntry do
   describe 'disabled fields' do

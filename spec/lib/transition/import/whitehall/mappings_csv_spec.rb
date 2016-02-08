@@ -1,14 +1,14 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/whitehall/mappings_csv'
 
-def csv_for(old_path, govuk_path, whitehall_state = 'published')
-  StringIO.new(<<-END)
+describe Transition::Import::Whitehall::MappingsCSV do
+  def csv_for(old_path, govuk_path, whitehall_state = 'published')
+    StringIO.new(<<-END)
 Old URL,New URL,Admin URL,State
 http://dft.gov.uk#{old_path},https://www.gov.uk#{govuk_path},http://whitehall-admin/#{rand(1000)},#{whitehall_state}
 END
-end
+  end
 
-describe Transition::Import::Whitehall::MappingsCSV do
   describe 'from_csv' do
     let(:as_user) { create(:user, name: 'C-3PO', is_robot: true) }
 

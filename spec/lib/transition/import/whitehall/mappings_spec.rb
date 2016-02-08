@@ -1,3 +1,4 @@
+require 'rails_helper'
 require 'transition/import/whitehall/mappings'
 
 describe Transition::Import::Whitehall::Mappings do

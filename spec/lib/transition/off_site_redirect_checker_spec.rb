@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Transition::OffSiteRedirectChecker do
   describe 'on_site?' do

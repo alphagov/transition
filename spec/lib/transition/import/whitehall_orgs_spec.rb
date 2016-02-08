@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/whitehall_orgs'
 
 describe Transition::Import::WhitehallOrgs do

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/postgresql_settings'
 
 describe Transition::Import::PostgreSQLSettings do

@@ -1,6 +1,6 @@
 #encoding: utf-8
 
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/hits_mappings_relations'
 require 'transition/history'
 

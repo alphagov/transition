@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/daily_hit_totals'
 require 'postgres/materialized_view'
 

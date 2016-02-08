@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe SitesController do
   let(:site)    { create :site, abbr: 'moj' }

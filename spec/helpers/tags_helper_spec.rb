@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TagsHelper do
   describe '#most_used_tags_json' do

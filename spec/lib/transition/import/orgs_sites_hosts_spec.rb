@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/orgs_sites_hosts'
 
 describe Transition::Import::OrgsSitesHosts do

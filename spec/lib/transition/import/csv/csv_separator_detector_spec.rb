@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'transition/import/csv/csv_separator_detector'
 
 describe Transition::Import::CSV::CSVSeparatorDetector do
   def make_a_detector(rows)

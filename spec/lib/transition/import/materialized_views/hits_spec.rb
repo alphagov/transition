@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/materialized_views/hits'
 
 describe Transition::Import::MaterializedViews::Hits do

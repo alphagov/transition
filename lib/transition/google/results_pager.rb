@@ -1,5 +1,6 @@
 require 'transition/google/api_client'
 require 'transition/import/console_job_wrapper'
+require 'json'
 
 module Transition
   module Google

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/mappings_from_host_paths'
 
 describe Transition::Import::MappingsFromHostPaths do

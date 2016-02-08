@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/daily_hit_totals'
 
 describe Transition::Import::DailyHitTotals do

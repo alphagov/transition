@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/google/tsv_generator'
 
 describe Transition::Google::TSVGenerator do
@@ -8,7 +8,7 @@ describe Transition::Google::TSVGenerator do
     ['nohost.gov.uk', '/path', 10],
     ['nohost.gov.uk', '/too-few', 9],
   ]}
-  
+
   let(:results_pager) { hostpath_rows.each }
   let(:stdfile)       { double '$stdout' }
 

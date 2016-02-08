@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/revert_entirely_unsafe'
 
 describe Transition::Import::RevertEntirelyUnsafe::RevertSite do

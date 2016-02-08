@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe FilterHelper do
   describe '#hidden_filter_fields_except' do

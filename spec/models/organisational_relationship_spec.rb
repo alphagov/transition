@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe OrganisationalRelationship do
   describe 'relationships' do

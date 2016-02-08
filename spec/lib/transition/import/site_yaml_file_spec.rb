@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/site_yaml_file'
 
 describe Transition::Import::SiteYamlFile do

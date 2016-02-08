@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe MappingsHelper do
   let(:site)    { build(:site) }
