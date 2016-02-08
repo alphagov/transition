@@ -76,14 +76,6 @@ describe Transition::Import::OrgsSitesHosts do
 
           describe '#parent_organisations' do
             subject { super().parent_organisations }
-
-            it 'has 1 organisation' do
-              expect(subject.organisations.size).to eq(1)
-            end
-          end
-
-          describe '#parent_organisations' do
-            subject { super().parent_organisations }
             it { is_expected.to match_array([bis]) }
           end
         end

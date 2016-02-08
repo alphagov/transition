@@ -74,7 +74,7 @@ describe View::Hits::Category do
           before { errors_category.points = errors }
 
           it 'has 4 points' do
-            expect(subject.size).to eq(4)
+            expect(subject.points.size).to eq(4)
           end
 
           describe '#points' do

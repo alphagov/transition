@@ -44,8 +44,8 @@ describe HitsController do
     context 'a single-status category, errors' do
       let(:test_category_name) { 'errors' }
 
-      it 'has one point per day' do
-        expect(category.size).to eq(4)
+      it 'has four points' do
+        expect(category.points.size).to eq(4)
       end
       it 'adds up to two total errors' do
         expect(sum_of_hit_counts).to eq(2)
@@ -55,10 +55,10 @@ describe HitsController do
     context 'a multi-status category, archives' do
       let(:test_category_name) { 'archives' }
 
-      it 'has one point per day' do
-        expect(category.size).to eq(4)
+      it 'has four points' do
+        expect(category.points.size).to eq(4)
       end
-      it 'adds up to eight total archives' do
+      it 'adds up to six total archives' do
         expect(sum_of_hit_counts).to eq(6)
       end
       it 'groups hits by path and status' do
@@ -84,8 +84,8 @@ describe HitsController do
         expect(paths).to eq([['410', '/article/123', 6],
                          ['404', '/article/123', 2]])
       end
-      it 'has one point per day' do
-        expect(category.size).to eq(4)
+      it 'has four points' do
+        expect(category.points.size).to eq(4)
       end
     end
 
