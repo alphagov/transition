@@ -78,8 +78,8 @@ shared_examples 'creates mappings' do
 
     context 'error raised during processing' do
       it 'should set the state to failed and reraise the error' do
-        allow_any_instance_of(ActiveRecord::Relation).to receive(:first_or_initialize) { raise_error }
-        expect { mappings_batch.process }.to raise_error
+        allow_any_instance_of(ActiveRecord::Relation).to receive(:first_or_initialize).and_raise("Uh-oh!")
+        expect { mappings_batch.process }.to raise_error(/Uh-oh!/)
         expect(mappings_batch.state).to eq('failed')
       end
     end
