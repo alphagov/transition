@@ -1,8 +1,8 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe MappingsBatchEntry do
   describe 'relationships' do
-    it { should belong_to(:mappings_batch) }
-    it { should belong_to(:mapping) }
+    it { is_expected.to belong_to(:mappings_batch) }
+    it { is_expected.to belong_to(:mapping) }
   end
 end

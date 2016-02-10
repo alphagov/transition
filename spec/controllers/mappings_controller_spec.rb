@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'csv'
 
 describe MappingsController do
@@ -22,7 +22,7 @@ describe MappingsController do
           create(:mapping, site: site, path: '/..')
           get :index, site_id: site.abbr
 
-          assigns(:mappings).to_a.should == site.mappings.order(:path).to_a
+          expect(assigns(:mappings).to_a).to eq(site.mappings.order(:path).to_a)
         end
       end
 
@@ -30,8 +30,9 @@ describe MappingsController do
         it 'orders mappings by hit count' do
           get :index, site_id: site.abbr, sort: 'by_hits'
 
-          assigns(:mappings).to_a.should ==
+          expect(assigns(:mappings).to_a).to eq(
             site.mappings.order('hit_count DESC').to_a
+          )
         end
       end
     end
@@ -43,17 +44,17 @@ describe MappingsController do
 
       it 'filters mappings by path' do
         get :index, site_id: site.abbr, path_contains: 'a'
-        assigns(:mappings).should == [mapping_a]
+        expect(assigns(:mappings)).to eq([mapping_a])
       end
 
       it 'canonicalizes filter input' do
         get :index, site_id: site.abbr, path_contains: '/A?q=1'
-        assigns(:mappings).should == [mapping_a]
+        expect(assigns(:mappings)).to eq([mapping_a])
       end
 
       it 'filters mappings by new_url' do
         get :index, site_id: site.abbr, new_url_contains: 'f.gov.uk/1'
-        assigns(:mappings).should == [mapping_a]
+        expect(assigns(:mappings)).to eq([mapping_a])
       end
 
       it 'ignores non-redirect mappings when filtering by new_url' do
@@ -63,22 +64,22 @@ describe MappingsController do
         create :archived, new_url: 'http://f.gov.uk/1', site: site
 
         get :index, site_id: site.abbr, new_url_contains: 'f.gov.uk/1'
-        assigns(:mappings).should == [mapping_a]
+        expect(assigns(:mappings)).to eq([mapping_a])
       end
 
       it 'does not canonicalize the filter for new_url' do
         get :index, site_id: site.abbr, new_url_contains: '/A/B/C/1?q=1'
-        assigns(:filter).new_url_contains.should == '/A/B/C/1?q=1'
+        expect(assigns(:filter).new_url_contains).to eq('/A/B/C/1?q=1')
       end
 
       it 'extracts paths from full URLs supplied for filtering' do
         get :index, site_id: site.abbr, path_contains: 'https://www.example.com/foobar'
-        assigns(:filter).path_contains.should eql('/foobar')
+        expect(assigns(:filter).path_contains).to eql('/foobar')
       end
 
       it 'gracefully degrades if the filtering value looks like a URL but is unparseable' do
         get :index, site_id: site.abbr, path_contains: 'https://}'
-        assigns(:filter).path_contains.should eql('https://}')
+        expect(assigns(:filter).path_contains).to eql('https://}')
       end
     end
 
@@ -269,14 +270,21 @@ describe MappingsController do
         end
 
         it 'canonicalizes the path' do
-          mapping.reload.path.should == '/needs/canonicalization'
+          expect(mapping.reload.path).to eq('/needs/canonicalization')
         end
 
         describe 'the recorded user' do
           subject { Mapping.first.versions.last }
 
-          its(:whodunnit) { should eql('Bob Terwhilliger') }
-          its(:user_id)   { should eql(gds_bob.id) }
+          describe '#whodunnit' do
+            subject { super().whodunnit }
+            it { is_expected.to eql('Bob Terwhilliger') }
+          end
+
+          describe '#user_id' do
+            subject { super().user_id }
+            it { is_expected.to eql(gds_bob.id) }
+          end
         end
       end
     end
@@ -295,7 +303,7 @@ describe MappingsController do
       subject(:tags_as_strings) { mapping.reload.tags.map(&:to_s) }
 
       it 'has saved all tags as lowercase' do
-        tags_as_strings.should =~ ['fee', 'fi', 'fo']
+        expect(tags_as_strings).to match_array(['fee', 'fi', 'fo'])
       end
     end
   end
@@ -487,18 +495,18 @@ describe MappingsController do
       end
 
       it 'should set the progress message' do
-        flash.now[:batch_progress].should eql(message: '0 of 2 mappings added', type: :success)
+        expect(flash.now[:batch_progress]).to eql(message: '0 of 2 mappings added', type: :success)
       end
 
       it 'should prevent caching of the page' do
-        response.headers['Cache-Control'].should == 'no-cache, no-store, max-age=0, must-revalidate'
-        response.headers['Pragma'].should == 'no-cache'
-        response.headers['Expires'].should == 'Fri, 01 Jan 1990 00:00:00 GMT'
+        expect(response.headers['Cache-Control']).to eq('no-cache, no-store, max-age=0, must-revalidate')
+        expect(response.headers['Pragma']).to eq('no-cache')
+        expect(response.headers['Expires']).to eq('Fri, 01 Jan 1990 00:00:00 GMT')
       end
 
       it 'should record that the outcome of processing the batch has been seen' do
         mappings_batch.reload
-        mappings_batch.seen_outcome.should == true
+        expect(mappings_batch.seen_outcome).to eq(true)
       end
     end
 
@@ -510,13 +518,13 @@ describe MappingsController do
       end
 
       it 'should not show an outcome message' do
-        flash.now[:batch_progress].should be_nil
+        expect(flash.now[:batch_progress]).to be_nil
       end
 
       it 'should not prevent caching of the page' do
-        response.headers['Cache-Control'].should be_nil
-        response.headers['Pragma'].should be_nil
-        response.headers['Expires'].should be_nil
+        expect(response.headers['Cache-Control']).to be_nil
+        expect(response.headers['Pragma']).to be_nil
+        expect(response.headers['Expires']).to be_nil
       end
     end
 
@@ -528,7 +536,7 @@ describe MappingsController do
       end
 
       it 'should not show' do
-        flash.now[:batch_progress].should be_nil
+        expect(flash.now[:batch_progress]).to be_nil
       end
     end
   end
@@ -543,10 +551,10 @@ describe MappingsController do
       # stubbing the verified_request? method from
       # ActionController::RequestForgeryProtection::ClassMethods to return false
       # in order to test our override of the verify_authenticity_token method
-      subject.stub(:verified_request?).and_return(false)
+      allow(subject).to receive(:verified_request?).and_return(false)
       post :update, site_id: mapping.site, id: mapping.id,
               mapping: { path: '/foo' }
-      response.status.should eql(403)
+      expect(response.status).to eql(403)
     end
   end
 
@@ -595,7 +603,7 @@ describe MappingsController do
       end
 
       it 'sets a flash message' do
-        flash[:alert].should include(expected_alert)
+        expect(flash[:alert]).to include(expected_alert)
       end
     end
 

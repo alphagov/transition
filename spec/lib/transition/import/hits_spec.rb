@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/hits'
 
 describe Transition::Import::Hits do
@@ -15,36 +15,58 @@ describe Transition::Import::Hits do
       end
 
       it 'has imported hits' do
-        Hit.count.should == 3
+        expect(Hit.count).to eq(3)
       end
 
       describe 'the tracking of the file via ImportedHitsFile' do
-        specify { ImportedHitsFile.should have(1).file }
+        specify { expect(ImportedHitsFile.count).to eq(1) }
 
         describe 'the only file' do
           subject(:file) { ImportedHitsFile.first }
 
-          its(:content_hash) { should == Digest::SHA1.hexdigest(File.read(@import_tsv_filename)) }
-          its(:filename)     { should == @import_tsv_filename }
+          describe '#content_hash' do
+            subject { super().content_hash }
+            it { is_expected.to eq(Digest::SHA1.hexdigest(File.read(@import_tsv_filename))) }
+          end
+
+          describe '#filename' do
+            subject { super().filename }
+            it { is_expected.to eq(@import_tsv_filename) }
+          end
         end
       end
 
       it "has not imported hits for hosts we don't know about" do
-        Hit.where(path: '/unknown-host').should_not be_any
+        expect(Hit.where(path: '/unknown-host')).not_to be_any
       end
 
       it 'imports hits with any count, ' \
          'relying on upstream processing for per-day thresholds' do
-        Hit.where(path: '/previously-too-few-count').any?.should be_true
+        expect(Hit.where(path: '/previously-too-few-count').any?).to be_truthy
       end
 
       describe 'the homepage hit' do
         subject(:hit) { Hit.where(path: '/').first }
 
-        its(:host)      { should eql(@businesslink_host) }
-        its(:hit_on)    { should eql(Date.new(2012, 10, 14)) }
-        its(:count)     { should eql(21) }
-        its(:path)      { should eql('/') }
+        describe '#host' do
+          subject { super().host }
+          it { is_expected.to eql(@businesslink_host) }
+        end
+
+        describe '#hit_on' do
+          subject { super().hit_on }
+          it { is_expected.to eql(Date.new(2012, 10, 14)) }
+        end
+
+        describe '#count' do
+          subject { super().count }
+          it { is_expected.to eql(21) }
+        end
+
+        describe '#path' do
+          subject { super().path }
+          it { is_expected.to eql('/') }
+        end
       end
     end
 
@@ -55,7 +77,7 @@ describe Transition::Import::Hits do
       end
 
       it 'should ignore hits that are a bouncer implementation detail' do
-        Hit.count.should eql(1)
+        expect(Hit.count).to eql(1)
       end
     end
 
@@ -66,7 +88,7 @@ describe Transition::Import::Hits do
       end
 
       it 'should ignore hits that are furniture so are uninteresting and unlikely to be mapped' do
-        Hit.pluck(:path).sort.should eql(['/legitimate'])
+        expect(Hit.pluck(:path).sort).to eql(['/legitimate'])
       end
     end
 
@@ -77,7 +99,7 @@ describe Transition::Import::Hits do
       end
 
       it 'should ignore hits that are spam and so unlikely to be mapped' do
-        Hit.pluck(:path).sort.should eql(['/legitimate'])
+        expect(Hit.pluck(:path).sort).to eql(['/legitimate'])
       end
     end
 
@@ -88,7 +110,7 @@ describe Transition::Import::Hits do
       end
 
       it 'should ignore hits that are cruft and so unlikely to be mapped' do
-        Hit.pluck(:path).sort.should eql(['/legitimate'])
+        expect(Hit.pluck(:path).sort).to eql(['/legitimate'])
       end
     end
 
@@ -99,7 +121,7 @@ describe Transition::Import::Hits do
       end
 
       it 'should ignore hits that are too long and won\'t fit in our 2048-char limit' do
-        Hit.pluck(:path).sort.should eql(['/legitimate'])
+        expect(Hit.pluck(:path).sort).to eql(['/legitimate'])
       end
     end
 
@@ -112,11 +134,11 @@ describe Transition::Import::Hits do
       end
 
       it 'does not create a second hits row' do
-        Hit.count.should eql(1)
+        expect(Hit.count).to eql(1)
       end
 
       it 'updates the count for the existing row' do
-        Hit.first.count.should eql(21)
+        expect(Hit.first.count).to eql(21)
       end
     end
 
@@ -143,20 +165,20 @@ describe Transition::Import::Hits do
       end
 
       it 'has recorded the time of the import' do
-        one_and_only_import.created_at.should == original_import_time
-        one_and_only_import.updated_at.should == original_import_time
+        expect(one_and_only_import.created_at).to eq(original_import_time)
+        expect(one_and_only_import.updated_at).to eq(original_import_time)
       end
 
       context 'from an unchanged hits file' do
         before do
           Timecop.freeze(later_import_time)
-          Transition::Import::Hits.should_receive(:console_puts).with('skipped')
+          expect(Transition::Import::Hits).to receive(:console_puts).with('skipped')
           Transition::Import::Hits.from_tsv!(import_tsv_filename)
         end
 
         it 'leaves the record of the first import unchanged' do
-          one_and_only_import.created_at.should == original_import_time
-          one_and_only_import.updated_at.should == original_import_time
+          expect(one_and_only_import.created_at).to eq(original_import_time)
+          expect(one_and_only_import.updated_at).to eq(original_import_time)
         end
       end
 
@@ -173,13 +195,13 @@ describe Transition::Import::Hits do
         end
 
         it 'updates the record of the first import' do
-          one_and_only_import.created_at.should == original_import_time
-          one_and_only_import.updated_at.should == later_import_time
-          one_and_only_import.content_hash.should_not == @old_content_hash
+          expect(one_and_only_import.created_at).to eq(original_import_time)
+          expect(one_and_only_import.updated_at).to eq(later_import_time)
+          expect(one_and_only_import.content_hash).not_to eq(@old_content_hash)
         end
 
         it 'imports the new hits' do
-          Hit.where(path: '/altered-hits').first.should_not be_nil
+          expect(Hit.where(path: '/altered-hits').first).not_to be_nil
         end
       end
     end
@@ -192,7 +214,7 @@ describe Transition::Import::Hits do
     end
 
     it 'imports hits from the combined files for the known hosts' do
-      Hit.count.should == 4
+      expect(Hit.count).to eq(4)
     end
   end
 end

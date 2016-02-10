@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/orgs_sites_hosts'
 
 describe Transition::Import::OrgsSitesHosts do
@@ -25,15 +25,15 @@ describe Transition::Import::OrgsSitesHosts do
       end
 
       it 'has imported orgs' do
-        Organisation.count.should == 6
+        expect(Organisation.count).to eq(6)
       end
 
       it 'has imported sites' do
-        Site.count.should == 8
+        expect(Site.count).to eq(8)
       end
 
       it 'has imported hosts' do
-        Host.count.should == (12 * 2) # 12 hosts plus 12 aka hosts
+        expect(Host.count).to eq(12 * 2) # 12 hosts plus 12 aka hosts
       end
 
       describe 'a child organisation with its own hosted site' do
@@ -41,10 +41,24 @@ describe Transition::Import::OrgsSitesHosts do
 
         subject { Organisation.find_by_whitehall_slug! 'uk-atomic-energy-authority' }
 
-        it                         { should have(1).site }
-        its(:parent_organisations) { should =~ [bis] }
-        its(:abbreviation)         { should eql 'UKAEA' }
-        its(:whitehall_type)       { should eql 'Executive non-departmental public body' }
+        it 'has 1 site' do
+          expect(subject.sites.size).to eq(1)
+        end
+
+        describe '#parent_organisations' do
+          subject { super().parent_organisations }
+          it { is_expected.to match_array([bis]) }
+        end
+
+        describe '#abbreviation' do
+          subject { super().abbreviation }
+          it { is_expected.to eql 'UKAEA' }
+        end
+
+        describe '#whitehall_type' do
+          subject { super().whitehall_type }
+          it { is_expected.to eql 'Executive non-departmental public body' }
+        end
       end
 
       context 'the import is run again' do
@@ -60,8 +74,10 @@ describe Transition::Import::OrgsSitesHosts do
 
           subject { Organisation.find_by_whitehall_slug! 'uk-atomic-energy-authority' }
 
-          its(:parent_organisations) { should have_exactly(1).organisations }
-          its(:parent_organisations) { should =~ [bis] }
+          describe '#parent_organisations' do
+            subject { super().parent_organisations }
+            it { is_expected.to match_array([bis]) }
+          end
         end
       end
     end

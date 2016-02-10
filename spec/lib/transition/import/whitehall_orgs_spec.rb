@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/whitehall_orgs'
 
 describe Transition::Import::WhitehallOrgs do
@@ -7,7 +7,9 @@ describe Transition::Import::WhitehallOrgs do
       Transition::Import::WhitehallOrgs.new('spec/fixtures/whitehall/orgs_abridged.yml')
     end
 
-    it { should have(6).organisations }
+    it 'has 6 organisations' do
+      expect(subject.organisations.size).to eq(6)
+    end
 
     describe '#by_id' do
       subject(:ago) do
@@ -16,9 +18,16 @@ describe Transition::Import::WhitehallOrgs do
         ]
       end
 
-      it                   { should be_an(OpenStruct) }
-      specify              { ago.format.should == 'Ministerial department' }
-      its(:'details.slug') { should == 'attorney-generals-office' }
+      it                   { is_expected.to be_an(OpenStruct) }
+      specify              { expect(ago.format).to eq('Ministerial department') }
+
+      describe '#details' do
+        subject { super().details }
+        describe '#slug' do
+          subject { super().slug }
+          it { is_expected.to eq('attorney-generals-office') }
+        end
+      end
     end
   end
 end

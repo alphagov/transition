@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe BatchesController do
   describe 'GET #show' do
@@ -24,7 +24,7 @@ describe BatchesController do
           'total' => 2,
           'past_participle' => 'added'
         }
-        @parsed_response.should == expected
+        expect(@parsed_response).to eq(expected)
       end
     end
 

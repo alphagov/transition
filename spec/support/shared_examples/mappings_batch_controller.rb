@@ -5,12 +5,12 @@ shared_examples 'it processes a small batch inline' do
 
   context 'with a small batch' do
     it 'sets a success message' do
-      flash[:success].should include('mappings created')
+      expect(flash[:success]).to include('mappings created')
     end
 
     it 'the batch state should be finished' do
       batch.reload
-      batch.state.should == 'succeeded'
+      expect(batch.state).to eq('succeeded')
     end
   end
 end
@@ -30,7 +30,7 @@ shared_examples 'it processes a large batch in the background' do
 
   it 'updates the batch state' do
     large_batch.reload
-    large_batch.state.should == 'queued'
+    expect(large_batch.state).to eq('queued')
   end
 end
 

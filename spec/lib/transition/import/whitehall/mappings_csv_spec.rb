@@ -1,14 +1,14 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/whitehall/mappings_csv'
 
-def csv_for(old_path, govuk_path, whitehall_state = 'published')
-  StringIO.new(<<-END)
+describe Transition::Import::Whitehall::MappingsCSV do
+  def csv_for(old_path, govuk_path, whitehall_state = 'published')
+    StringIO.new(<<-END)
 Old URL,New URL,Admin URL,State
 http://dft.gov.uk#{old_path},https://www.gov.uk#{govuk_path},http://whitehall-admin/#{rand(1000)},#{whitehall_state}
 END
-end
+  end
 
-describe Transition::Import::Whitehall::MappingsCSV do
   describe 'from_csv' do
     let(:as_user) { create(:user, name: 'C-3PO', is_robot: true) }
 
@@ -24,12 +24,27 @@ describe Transition::Import::Whitehall::MappingsCSV do
 
         subject(:mapping) { Mapping.first }
 
-        specify { Mapping.count.should == 1 }
+        specify { expect(Mapping.count).to eq(1) }
 
-        its(:site)        { should == site }
-        its(:path)        { should == '/oldurl' }
-        its(:new_url)     { should == 'https://www.gov.uk/new' }
-        its(:type)        { should == 'redirect' }
+        describe '#site' do
+          subject { super().site }
+          it { is_expected.to eq(site) }
+        end
+
+        describe '#path' do
+          subject { super().path }
+          it { is_expected.to eq('/oldurl') }
+        end
+
+        describe '#new_url' do
+          subject { super().new_url }
+          it { is_expected.to eq('https://www.gov.uk/new') }
+        end
+
+        describe '#type' do
+          subject { super().type }
+          it { is_expected.to eq('redirect') }
+        end
       end
 
       context 'Old URL is not canonical, no mapping' do
@@ -37,12 +52,27 @@ describe Transition::Import::Whitehall::MappingsCSV do
 
         subject(:mapping) { Mapping.first }
 
-        specify { Mapping.count.should == 1 }
+        specify { expect(Mapping.count).to eq(1) }
 
-        its(:site)    { should == site }
-        its(:path)    { should == '/oldurl?significant=aha' }
-        its(:new_url) { should == 'https://www.gov.uk/new' }
-        its(:type)    { should == 'redirect' }
+        describe '#site' do
+          subject { super().site }
+          it { is_expected.to eq(site) }
+        end
+
+        describe '#path' do
+          subject { super().path }
+          it { is_expected.to eq('/oldurl?significant=aha') }
+        end
+
+        describe '#new_url' do
+          subject { super().new_url }
+          it { is_expected.to eq('https://www.gov.uk/new') }
+        end
+
+        describe '#type' do
+          subject { super().type }
+          it { is_expected.to eq('redirect') }
+        end
       end
 
       context 'existing mapping and the Old URL is not canonical' do
@@ -51,12 +81,27 @@ describe Transition::Import::Whitehall::MappingsCSV do
 
         subject(:mapping) { Mapping.first }
 
-        specify { Mapping.count.should == 1 }
+        specify { expect(Mapping.count).to eq(1) }
 
-        its(:site)    { should == site }
-        its(:path)    { should == '/oldurl?significant=aha' }
-        its(:new_url) { should == 'https://www.gov.uk/amazing' }
-        its(:type)    { should == 'redirect' }
+        describe '#site' do
+          subject { super().site }
+          it { is_expected.to eq(site) }
+        end
+
+        describe '#path' do
+          subject { super().path }
+          it { is_expected.to eq('/oldurl?significant=aha') }
+        end
+
+        describe '#new_url' do
+          subject { super().new_url }
+          it { is_expected.to eq('https://www.gov.uk/amazing') }
+        end
+
+        describe '#type' do
+          subject { super().type }
+          it { is_expected.to eq('redirect') }
+        end
       end
 
       context 'existing redirect mapping edited by a human' do
@@ -67,9 +112,12 @@ describe Transition::Import::Whitehall::MappingsCSV do
 
         subject(:mapping) { Mapping.first }
 
-        specify { Mapping.count.should == 1 }
+        specify { expect(Mapping.count).to eq(1) }
 
-        its(:new_url)     { should == 'https://www.gov.uk/curated' }
+        describe '#new_url' do
+          subject { super().new_url }
+          it { is_expected.to eq('https://www.gov.uk/curated') }
+        end
       end
 
       context 'existing archive mapping edited by a human' do
@@ -80,10 +128,17 @@ describe Transition::Import::Whitehall::MappingsCSV do
 
         subject(:mapping) { Mapping.first }
 
-        specify { Mapping.count.should == 1 }
+        specify { expect(Mapping.count).to eq(1) }
 
-        its(:type)    { should == 'redirect' }
-        its(:new_url) { should == 'https://www.gov.uk/automated' }
+        describe '#type' do
+          subject { super().type }
+          it { is_expected.to eq('redirect') }
+        end
+
+        describe '#new_url' do
+          subject { super().new_url }
+          it { is_expected.to eq('https://www.gov.uk/automated') }
+        end
       end
 
       context 'existing unresolved mapping edited by a human' do
@@ -94,10 +149,17 @@ describe Transition::Import::Whitehall::MappingsCSV do
 
         subject(:mapping) { Mapping.first }
 
-        specify { Mapping.count.should == 1 }
+        specify { expect(Mapping.count).to eq(1) }
 
-        its(:type)    { should == 'redirect' }
-        its(:new_url) { should == 'https://www.gov.uk/automated' }
+        describe '#type' do
+          subject { super().type }
+          it { is_expected.to eq('redirect') }
+        end
+
+        describe '#new_url' do
+          subject { super().new_url }
+          it { is_expected.to eq('https://www.gov.uk/automated') }
+        end
       end
 
       context 'CSV row without an Old URL' do
@@ -107,13 +169,13 @@ Old URL,New URL,Admin URL,State
 END
 }
 
-        specify { Mapping.count.should == 0 }
+        specify { expect(Mapping.count).to eq(0) }
       end
 
       context 'row has a State which isn\'t "published"' do
         let(:csv) { csv_for('/oldurl', '/new', 'draft') }
 
-        specify { Mapping.all.count.should == 0 }
+        specify { expect(Mapping.all.count).to eq(0) }
       end
 
       context 'Old URL is unparseable' do
@@ -123,7 +185,7 @@ http://_____/old,https://www.gov.uk/a-document,http://whitehall-admin/#{rand(100
 END
 }
 
-        specify { Mapping.all.count.should == 0 }
+        specify { expect(Mapping.all.count).to eq(0) }
       end
     end
 
@@ -138,13 +200,13 @@ END
       subject(:mapping) { Mapping.first }
 
       specify 'records the changes being made by a robot user' do
-        mapping.versions.size.should == 1
-        mapping.versions.first.whodunnit.should == as_user.name
-        mapping.versions.first.user_id.should == as_user.id
+        expect(mapping.versions.size).to eq(1)
+        expect(mapping.versions.first.whodunnit).to eq(as_user.name)
+        expect(mapping.versions.first.user_id).to eq(as_user.id)
       end
 
       specify 'reverts the whodunnit user' do
-        ::PaperTrail.whodunnit.should be_nil
+        expect(::PaperTrail.whodunnit).to be_nil
       end
     end
 
@@ -152,7 +214,7 @@ END
       let(:csv) { csv_for('/oldurl', '/amazing') }
 
       it 'logs an unknown host' do
-        Rails.logger.should_receive(:warn).with("Skipping mapping for unknown host in Whitehall URL CSV: 'dft.gov.uk'")
+        expect(Rails.logger).to receive(:warn).with("Skipping mapping for unknown host in Whitehall URL CSV: 'dft.gov.uk'")
         Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(csv)
       end
     end

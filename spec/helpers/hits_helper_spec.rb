@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe HitsHelper do
 
@@ -9,17 +9,17 @@ describe HitsHelper do
 
     context 'there are totals' do
       it 'is true' do
-        helper.any_totals_for?(some_totals).should be_true
+        expect(helper.any_totals_for?(some_totals)).to be_truthy
       end
     end
 
     context 'there are no totals' do
       it 'is false' do
-        helper.any_totals_for?(no_totals).should be_false
+        expect(helper.any_totals_for?(no_totals)).to be_falsey
       end
 
       it 'is false' do
-        helper.any_totals_for?(nil).should be_false
+        expect(helper.any_totals_for?(nil)).to be_falsey
       end
     end
   end
@@ -56,17 +56,17 @@ describe HitsHelper do
 
     subject(:array) { helper.google_data_table(categories, live_site_that_transitioned_on_2012_12_30) }
 
-    it { should be_a(String) }
-    it { should include('{"label":"Date","type":"date"}') }
-    it { should include('{"label":"Archives","type":"number"},{"label":"Errors","type":"number"},{"label":"Redirects","type":"number"}') }
-    it { should_not include('nil') }
+    it { is_expected.to be_a(String) }
+    it { is_expected.to include('{"label":"Date","type":"date"}') }
+    it { is_expected.to include('{"label":"Archives","type":"number"},{"label":"Errors","type":"number"},{"label":"Redirects","type":"number"}') }
+    it { is_expected.not_to include('nil') }
 
     describe 'it includes a normal data row' do
-      it { should include('{"c":[{"v":"Date(2012, 11, 31)"},{"v":""},{"v":3,"f":"3"},{"v":3,"f":"3"},{"v":0,"f":"0"}]}') }
+      it { is_expected.to include('{"c":[{"v":"Date(2012, 11, 31)"},{"v":""},{"v":3,"f":"3"},{"v":3,"f":"3"},{"v":0,"f":"0"}]}') }
     end
 
     describe 'it includes an annotation on the transition date' do
-      it { should include('{"c":[{"v":"Date(2012, 11, 30)"},{"v":"Transition"},{"v":1000,"f":"1,000"},{"v":4,"f":"4"},{"v":4,"f":"4"}]}') }
+      it { is_expected.to include('{"c":[{"v":"Date(2012, 11, 30)"},{"v":"Transition"},{"v":1000,"f":"1,000"},{"v":4,"f":"4"},{"v":4,"f":"4"}]}') }
     end
   end
 
@@ -80,10 +80,10 @@ describe HitsHelper do
     subject(:path) { helper.current_category_in_period_path(time_period) }
 
     before do
-      time_period.stub(:query_slug).and_return(period)
+      allow(time_period).to receive(:query_slug).and_return(period)
 
-      helper.stub(:action_name).and_return(action)
-      helper.stub(:params).and_return({ period: period, category: category })
+      allow(helper).to receive(:action_name).and_return(action)
+      allow(helper).to receive(:params).and_return({ period: period, category: category })
 
       # stubs @site internal to helper
       helper.class_eval { attr_writer :site }
@@ -95,21 +95,21 @@ describe HitsHelper do
 
       context 'when no category is set' do
         it 'defaults to the summary with the period' do
-          path.should == '/sites/site_abbr/hits/summary?period=yesterday'
+          expect(path).to eq('/sites/site_abbr/hits/summary?period=yesterday')
         end
       end
 
       context 'when a category is set' do
         let(:category) { 'errors' }
         it 'links to the category and period for the site' do
-          path.should == '/sites/site_abbr/hits/category?category=errors&period=yesterday'
+          expect(path).to eq('/sites/site_abbr/hits/category?category=errors&period=yesterday')
         end
 
         context 'when the time period is default' do
           let(:period) { nil }
 
           it 'links to the category without the period for the site' do
-            path.should == '/sites/site_abbr/hits/category?category=errors'
+            expect(path).to eq('/sites/site_abbr/hits/category?category=errors')
           end
         end
       end
@@ -118,7 +118,7 @@ describe HitsHelper do
         let(:action) { 'index' }
 
         it 'defaults to all hits with the period' do
-          path.should == '/sites/site_abbr/hits?period=yesterday'
+          expect(path).to eq('/sites/site_abbr/hits?period=yesterday')
         end
       end
     end
@@ -127,21 +127,21 @@ describe HitsHelper do
       let(:site) { nil }
 
       it 'links to the universal hits with the period' do
-        path.should == '/hits?period=yesterday'
+        expect(path).to eq('/hits?period=yesterday')
       end
 
       context 'when a category is set' do
         let(:category) { 'errors' }
 
         it 'links to the universal hits with the category and period' do
-          path.should == '/hits/category?category=errors&period=yesterday'
+          expect(path).to eq('/hits/category?category=errors&period=yesterday')
         end
 
         context 'when the time period is default' do
           let(:period) { nil }
 
           it 'links to the universal hits current category without the period' do
-            path.should == '/hits/category?category=errors'
+            expect(path).to eq('/hits/category?category=errors')
           end
         end
       end

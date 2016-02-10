@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ImportBatch do
   describe 'disabled fields' do
@@ -19,7 +19,7 @@ describe ImportBatch do
   end
 
   describe 'validations' do
-    it { should validate_presence_of(:raw_csv).with_message('Enter at least one valid line') }
+    it { is_expected.to validate_presence_of(:raw_csv).with_message('Enter at least one valid line') }
 
     describe 'old URLs' do
       let(:host) { create(:host, hostname: 'a.com') }
@@ -38,7 +38,7 @@ describe ImportBatch do
           )
         end
 
-        it { should be_valid }
+        it { is_expected.to be_valid }
       end
 
       describe 'old_urls includes URLs which are not for this site' do
@@ -50,10 +50,10 @@ describe ImportBatch do
           )
         end
 
-        it { should_not be_valid }
+        it { is_expected.not_to be_valid }
         it 'should declare them invalid' do
           mappings_batch.valid?
-          mappings_batch.errors[:old_urls].should == ['One or more of the URLs entered are not part of this site']
+          expect(mappings_batch.errors[:old_urls]).to eq(['One or more of the URLs entered are not part of this site'])
         end
       end
 
@@ -66,9 +66,9 @@ describe ImportBatch do
           )
         end
 
-        before { mappings_batch.should_not be_valid }
+        before { expect(mappings_batch).not_to be_valid }
         it 'should declare it invalid' do
-          mappings_batch.errors[:canonical_paths].should == ['Enter at least one valid path or full URL']
+          expect(mappings_batch.errors[:canonical_paths]).to eq(['Enter at least one valid path or full URL'])
         end
       end
     end
@@ -84,9 +84,9 @@ describe ImportBatch do
           )
         end
 
-        before { mappings_batch.should_not be_valid }
+        before { expect(mappings_batch).not_to be_valid }
         it 'should declare it invalid' do
-          mappings_batch.errors[:new_urls].should include("A new URL is too long")
+          expect(mappings_batch.errors[:new_urls]).to include("A new URL is too long")
         end
       end
 
@@ -99,9 +99,9 @@ describe ImportBatch do
           )
         end
 
-        before { mappings_batch.should_not be_valid }
+        before { expect(mappings_batch).not_to be_valid }
         it 'should declare it invalid' do
-          mappings_batch.errors[:new_urls].should include('A new URL is invalid')
+          expect(mappings_batch.errors[:new_urls]).to include('A new URL is invalid')
         end
       end
 
@@ -114,9 +114,9 @@ describe ImportBatch do
           )
         end
 
-        before { mappings_batch.should_not be_valid }
+        before { expect(mappings_batch).not_to be_valid }
         it 'should declare it invalid' do
-          mappings_batch.errors[:new_urls].should include("The URL to redirect to must be on a whitelisted domain. <a href='https://support.publishing.service.gov.uk/general_request/new'>Raise a support request through the GOV.UK Support form</a> for more information.")
+          expect(mappings_batch.errors[:new_urls]).to include("The URL to redirect to must be on a whitelisted domain. <a href='https://support.publishing.service.gov.uk/general_request/new'>Raise a support request through the GOV.UK Support form</a> for more information.")
         end
       end
 
@@ -133,7 +133,7 @@ describe ImportBatch do
           )
         end
 
-        before { mappings_batch.should_not be_valid }
+        before { expect(mappings_batch).not_to be_valid }
         it 'should include the error message once per unique new URL' do
           expect(mappings_batch.errors[:new_urls].size).to eql(2)
         end
@@ -151,9 +151,9 @@ describe ImportBatch do
           )
         end
 
-        before { mappings_batch.should_not be_valid }
+        before { expect(mappings_batch).not_to be_valid }
         it 'should declare it invalid' do
-          mappings_batch.errors[:archive_urls].should include("A new URL is too long")
+          expect(mappings_batch.errors[:archive_urls]).to include("A new URL is too long")
         end
       end
     end
@@ -171,17 +171,28 @@ describe ImportBatch do
                     }
 
       it 'should create an entry for each data row' do
-        mappings_batch.entries.count.should == 1
+        expect(mappings_batch.entries.count).to eq(1)
       end
 
       describe 'the first entry' do
         subject(:entry) { mappings_batch.entries.first }
 
-        its(:path)    { should == '/old' }
-        its(:new_url) { should == 'https://www.gov.uk/new' }
-        its(:type)    { should == 'redirect' }
+        describe '#path' do
+          subject { super().path }
+          it { is_expected.to eq('/old') }
+        end
+
+        describe '#new_url' do
+          subject { super().new_url }
+          it { is_expected.to eq('https://www.gov.uk/new') }
+        end
+
+        describe '#type' do
+          subject { super().type }
+          it { is_expected.to eq('redirect') }
+        end
         it 'should create an entry of the right subclass' do
-          entry.should be_a(ImportBatchEntry)
+          expect(entry).to be_a(ImportBatchEntry)
         end
       end
     end
@@ -195,9 +206,9 @@ describe ImportBatch do
                     }
 
       it 'should ignore headers' do
-        mappings_batch.entries.count.should == 1
+        expect(mappings_batch.entries.count).to eq(1)
         entry = mappings_batch.entries.first
-        entry.path.should == '/old'
+        expect(entry.path).to eq('/old')
       end
     end
 
@@ -209,9 +220,9 @@ describe ImportBatch do
                     }
 
       it 'should ignore blank lines' do
-        mappings_batch.entries.count.should == 1
+        expect(mappings_batch.entries.count).to eq(1)
         entry = mappings_batch.entries.first
-        entry.path.should == '/old'
+        expect(entry.path).to eq('/old')
       end
     end
 
@@ -223,9 +234,9 @@ describe ImportBatch do
                     }
 
       it 'should ignore those lines' do
-        mappings_batch.entries.count.should == 1
+        expect(mappings_batch.entries.count).to eq(1)
         entry = mappings_batch.entries.first
-        entry.path.should == '/old'
+        expect(entry.path).to eq('/old')
       end
     end
 
@@ -236,16 +247,31 @@ describe ImportBatch do
                   CSV
                 }
         it 'should create an entry for each data row' do
-          mappings_batch.entries.count.should == 1
+          expect(mappings_batch.entries.count).to eq(1)
         end
 
         describe 'the first entry' do
           subject(:entry) { mappings_batch.entries.first }
 
-          its(:path)        { should == '/old' }
-          its(:new_url)     { should be_nil }
-          its(:archive_url) { should be_nil }
-          its(:type)        { should == 'archive' }
+          describe '#path' do
+            subject { super().path }
+            it { is_expected.to eq('/old') }
+          end
+
+          describe '#new_url' do
+            subject { super().new_url }
+            it { is_expected.to be_nil }
+          end
+
+          describe '#archive_url' do
+            subject { super().archive_url }
+            it { is_expected.to be_nil }
+          end
+
+          describe '#type' do
+            subject { super().type }
+            it { is_expected.to eq('archive') }
+          end
         end
       end
 
@@ -256,16 +282,31 @@ describe ImportBatch do
                   CSV
                 }
         it 'should create an entry for each data row' do
-          mappings_batch.entries.count.should == 1
+          expect(mappings_batch.entries.count).to eq(1)
         end
 
         describe 'the first entry' do
           subject(:entry) { mappings_batch.entries.first }
 
-          its(:path)        { should == '/old' }
-          its(:new_url)     { should be_nil }
-          its(:archive_url) { should == archive_url }
-          its(:type)        { should == 'archive' }
+          describe '#path' do
+            subject { super().path }
+            it { is_expected.to eq('/old') }
+          end
+
+          describe '#new_url' do
+            subject { super().new_url }
+            it { is_expected.to be_nil }
+          end
+
+          describe '#archive_url' do
+            subject { super().archive_url }
+            it { is_expected.to eq(archive_url) }
+          end
+
+          describe '#type' do
+            subject { super().type }
+            it { is_expected.to eq('archive') }
+          end
         end
       end
     end
@@ -276,15 +317,26 @@ describe ImportBatch do
                 CSV
               }
       it 'should create an entry for each data row' do
-        mappings_batch.entries.count.should == 1
+        expect(mappings_batch.entries.count).to eq(1)
       end
 
       describe 'the first entry' do
         subject(:entry) { mappings_batch.entries.first }
 
-        its(:path)    { should == '/old' }
-        its(:new_url) { should be_nil }
-        its(:type)    { should == 'unresolved' }
+        describe '#path' do
+          subject { super().path }
+          it { is_expected.to eq('/old') }
+        end
+
+        describe '#new_url' do
+          subject { super().new_url }
+          it { is_expected.to be_nil }
+        end
+
+        describe '#type' do
+          subject { super().type }
+          it { is_expected.to eq('unresolved') }
+        end
       end
     end
 
@@ -295,7 +347,7 @@ describe ImportBatch do
               }
 
       it 'sets the path to be only the path' do
-        mappings_batch.entries.first.path.should eql('/old')
+        expect(mappings_batch.entries.first.path).to eql('/old')
       end
     end
 
@@ -307,7 +359,7 @@ describe ImportBatch do
               }
 
       it 'does not create an entry for the homepage row' do
-        mappings_batch.entries.pluck(:path).should eql(['/a'])
+        expect(mappings_batch.entries.pluck(:path)).to eql(['/a'])
       end
     end
 
@@ -321,12 +373,12 @@ describe ImportBatch do
               }
 
       it 'should canonicalize and deduplicate before creating entries' do
-        mappings_batch.entries.count.should == 1
+        expect(mappings_batch.entries.count).to eq(1)
 
         entry = mappings_batch.entries.first
-        entry.path.should == '/old'
-        entry.new_url.should == 'http://a.gov.uk/new'
-        entry.type.should == 'redirect'
+        expect(entry.path).to eq('/old')
+        expect(entry.new_url).to eq('http://a.gov.uk/new')
+        expect(entry.type).to eq('redirect')
       end
     end
 
@@ -339,8 +391,8 @@ describe ImportBatch do
 
       it 'should relate the entry to the existing mapping' do
         entry = mappings_batch.entries.detect { |entry| entry.path == existing_mapping.path }
-        entry.should_not be_nil
-        entry.mapping.should == existing_mapping
+        expect(entry).not_to be_nil
+        expect(entry.mapping).to eq(existing_mapping)
       end
     end
   end

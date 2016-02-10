@@ -10,8 +10,15 @@ describe MappingsBatchWorker do
 
       subject { Mapping.first.versions.last }
 
-      its(:whodunnit) { should eql('Bob') }
-      its(:user_id)   { should eql(user.id) }
+      describe '#whodunnit' do
+        subject { super().whodunnit }
+        it { is_expected.to eql('Bob') }
+      end
+
+      describe '#user_id' do
+        subject { super().user_id }
+        it { is_expected.to eql(user.id) }
+      end
     end
 
     context 'batch being deleted before processing' do

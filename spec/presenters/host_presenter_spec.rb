@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'HostPresenter' do
   describe '#as_hash' do
@@ -7,7 +7,11 @@ describe 'HostPresenter' do
 
     subject { HostPresenter.new(host).as_hash }
 
-    it { should have_key(:hostname) }
-    its([:hostname]) { should eql(host.hostname) }
+    it { is_expected.to have_key(:hostname) }
+
+    describe '[:hostname]' do
+      subject { super()[:hostname] }
+      it { is_expected.to eql(host.hostname) }
+    end
   end
 end

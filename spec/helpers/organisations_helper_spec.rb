@@ -1,22 +1,22 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe OrganisationsHelper do
   describe '#date_or_not_yet' do
-    specify { helper.date_or_not_yet(nil).should == 'No date set' }
-    specify { helper.date_or_not_yet(Date.new(2014)).should == '1 January 2014' }
+    specify { expect(helper.date_or_not_yet(nil)).to eq('No date set') }
+    specify { expect(helper.date_or_not_yet(Date.new(2014))).to eq('1 January 2014') }
   end
 
   describe '#add_indefinite_article' do
-    specify { helper.add_indefinite_article('non-departmental body').should == 'a non-departmental body' }
-    specify { helper.add_indefinite_article('advisory non-departmental body').should == 'an advisory non-departmental body' }
+    specify { expect(helper.add_indefinite_article('non-departmental body')).to eq('a non-departmental body') }
+    specify { expect(helper.add_indefinite_article('advisory non-departmental body')).to eq('an advisory non-departmental body') }
   end
 
   describe '#relationship_display_name' do
     let(:executive_body) { create :organisation }
     let(:other)          { create :organisation, whitehall_type: 'Other' }
 
-    specify { helper.relationship_display_name(executive_body).should == 'is an executive non-departmental public body of' }
-    specify { helper.relationship_display_name(other).should == 'works with' }
+    specify { expect(helper.relationship_display_name(executive_body)).to eq('is an executive non-departmental public body of') }
+    specify { expect(helper.relationship_display_name(other)).to eq('works with') }
   end
 
   describe '#links_to_all_parents' do
@@ -25,7 +25,7 @@ describe OrganisationsHelper do
     subject(:all_links) { helper.links_to_all_parents(org) }
 
     context 'no parents' do
-      it { should eql('') }
+      it { is_expected.to eql('') }
     end
 
     context 'one parent' do
@@ -36,7 +36,7 @@ describe OrganisationsHelper do
 
       it 'should be a link to the only parent' do
         expected = link_to parent_1.title, organisation_path(parent_1)
-        all_links.should { eql(expected) }
+        expect(all_links).to eql(expected)
       end
     end
 
@@ -51,7 +51,7 @@ describe OrganisationsHelper do
         expected = link_to parent_1.title, organisation_path(parent_1)
         expected += ' and '
         expected += link_to parent_2.title, organisation_path(parent_2)
-        all_links.should { eql(expected) }
+        expect(all_links).to eql(expected)
       end
     end
 
@@ -69,7 +69,7 @@ describe OrganisationsHelper do
         expected += link_to parent_2.title, organisation_path(parent_2)
         expected += ' and '
         expected += link_to parent_3.title, organisation_path(parent_3)
-        all_links.should { eql(expected) }
+        expect(all_links).to eql(expected)
       end
     end
   end

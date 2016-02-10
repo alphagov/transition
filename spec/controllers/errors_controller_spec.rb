@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ErrorsController do
   # This controller does not require authentication so its views must not

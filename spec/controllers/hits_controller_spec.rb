@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/daily_hit_totals'
 require 'postgres/materialized_view'
 
@@ -44,29 +44,29 @@ describe HitsController do
     context 'a single-status category, errors' do
       let(:test_category_name) { 'errors' }
 
-      it 'has one point per day' do
-        category.should have(4).points
+      it 'has four points' do
+        expect(category.points.size).to eq(4)
       end
       it 'adds up to two total errors' do
-        sum_of_hit_counts.should == 2
+        expect(sum_of_hit_counts).to eq(2)
       end
     end
 
     context 'a multi-status category, archives' do
       let(:test_category_name) { 'archives' }
 
-      it 'has one point per day' do
-        category.should have(4).points
+      it 'has four points' do
+        expect(category.points.size).to eq(4)
       end
-      it 'adds up to eight total archives' do
-        sum_of_hit_counts.should == 6
+      it 'adds up to six total archives' do
+        expect(sum_of_hit_counts).to eq(6)
       end
       it 'groups hits by path and status' do
         results = category.hits.map {|r| [r.http_status, r.path, r.count]}
-        results.should == [
+        expect(results).to eq([
           ['410', '/article/123', 6]
-        ]
-        category.hits.length.should == 1
+        ])
+        expect(category.hits.length).to eq(1)
       end
     end
   end
@@ -76,22 +76,22 @@ describe HitsController do
     let(:paths)    { category.hits.map { |h| [h.http_status, h.path, h.count] } }
 
     before do
-      Site.should_receive(:find_by_abbr!).and_return(site)
+      expect(Site).to receive(:find_by_abbr!).and_return(site)
     end
 
     shared_examples 'it has hits and points whether or not we used a view' do
       it 'has paths once for each status ordered by descending count' do
-        paths.should == [['410', '/article/123', 6],
-                         ['404', '/article/123', 2]]
+        expect(paths).to eq([['410', '/article/123', 6],
+                         ['404', '/article/123', 2]])
       end
-      it 'has one point per day' do
-        category.should have(4).points
+      it 'has four points' do
+        expect(category.points.size).to eq(4)
       end
     end
 
     context 'site is small; all hits view is not precomputed' do
       before do
-        site.should_not receive(:precomputed_all_hits)
+        expect(site).not_to receive(:precomputed_all_hits)
 
         get :index, site_id: site, period: 'all-time'
       end
@@ -106,7 +106,7 @@ describe HitsController do
         before do
           Transition::Import::MaterializedViews::Hits.replace!
 
-          site.should receive(:precomputed_all_hits).and_call_original
+          expect(site).to receive(:precomputed_all_hits).and_call_original
 
           get :index, site_id: site, period: 'all-time'
         end
@@ -120,7 +120,7 @@ describe HitsController do
             %(DROP MATERIALIZED VIEW IF EXISTS "#{site.precomputed_view_name}")
           )
 
-          site.should_not receive(:precomputed_all_hits)
+          expect(site).not_to receive(:precomputed_all_hits)
 
           get :index, site_id: site, period: 'all-time'
         end

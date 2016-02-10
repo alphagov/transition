@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/hits_mappings_relations'
 
 describe Transition::Import::HitsMappingsRelations do
@@ -22,34 +22,37 @@ describe Transition::Import::HitsMappingsRelations do
     end
 
     it 'points the hit for which there is a path at the corresponding mapping' do
-      @hit_with_mapping.reload.mapping.should == @mapping
+      expect(@hit_with_mapping.reload.mapping).to eq(@mapping)
     end
 
     it 'points the c14nable hit for which there is a path at the corresponding mapping' do
-      @c14n_hit_with_mapping.reload.mapping.should == @mapping
+      expect(@c14n_hit_with_mapping.reload.mapping).to eq(@mapping)
     end
 
     it 'leaves the hit for which there is no mapping alone' do
-      @hit_without_mapping.reload.mapping.should be_nil
+      expect(@hit_without_mapping.reload.mapping).to be_nil
     end
 
     it 'has a HostPath per uncanonicalized hit (all of them!)' do
-      HostPath.all.should have(4).host_paths
+      expect(HostPath.all.size).to eq(4)
     end
 
     it 'precomputes the total hits for mappings across all sites' do
-      @mapping.reload.hit_count.should == @hit_with_mapping.count + @c14n_hit_with_mapping.count
-      @other_site_mapping.reload.hit_count.should == @other_site_hit.count
+      expect(@mapping.reload.hit_count).to eq(@hit_with_mapping.count + @c14n_hit_with_mapping.count)
+      expect(@other_site_mapping.reload.hit_count).to eq(@other_site_hit.count)
     end
 
     it 'points the offsite hit at it\'s own site' do
-      @other_site_hit.reload.mapping.should == @other_site_mapping
+      expect(@other_site_hit.reload.mapping).to eq(@other_site_mapping)
     end
 
     describe 'The first HostPath' do
       subject { HostPath.where(path: '/this/Exists?and=can&canonicalize=1&significant=1').first }
 
-      its(:canonical_path) { should eql('/this/exists?significant=1') }
+      describe '#canonical_path' do
+        subject { super().canonical_path }
+        it { is_expected.to eql('/this/exists?significant=1') }
+      end
     end
 
     context 'when canonicalization has changed since a previous refresh' do
@@ -63,12 +66,12 @@ describe Transition::Import::HitsMappingsRelations do
       end
 
       it 'should have linked the new mapping to the existing c14n hit' do
-        @c14n_hit_with_mapping.mapping.should eql(@new_mapping)
+        expect(@c14n_hit_with_mapping.mapping).to eql(@new_mapping)
       end
 
       it 'should have linked the new mapping to the existing host_path' do
         host_path = HostPath.where(path: @c14n_hit_with_mapping.path).first
-        host_path.mapping.should eql(@new_mapping)
+        expect(host_path.mapping).to eql(@new_mapping)
       end
     end
   end
@@ -99,32 +102,32 @@ describe Transition::Import::HitsMappingsRelations do
     end
 
     it 'creates host_paths for this site' do
-      @site.host_paths.find_by_path(@hit.path).should be_a(HostPath)
+      expect(@site.host_paths.find_by_path(@hit.path)).to be_a(HostPath)
     end
 
     it 'connects mappings to hits for this site' do
-      @hit.reload.mapping.should_not be_nil
+      expect(@hit.reload.mapping).not_to be_nil
     end
 
     it 'does not create host_paths for another site' do
-      @other_site.host_paths.find_by_path(@other_site_hit.path).should be_nil
+      expect(@other_site.host_paths.find_by_path(@other_site_hit.path)).to be_nil
     end
 
     it 'does not connect mappings and pre-existing host_paths for another site' do
       path = @other_mapping_with_host_path.path
-      @other_site.host_paths.find_by_path(path).mapping.should be_nil
+      expect(@other_site.host_paths.find_by_path(path).mapping).to be_nil
     end
 
     it 'does not connect mappings and hits for another site' do
-      @other_site_hit.reload.mapping.should be_nil
+      expect(@other_site_hit.reload.mapping).to be_nil
     end
 
     it 'precomputes hit counts for mappings for this site' do
-      @mapping.reload.hit_count.should == @hit.count + @hit2.count
+      expect(@mapping.reload.hit_count).to eq(@hit.count + @hit2.count)
     end
 
     it 'does not precompute Mapping#hit_count for another site' do
-      @mapping_connected_previously.reload.hit_count.should be_nil
+      expect(@mapping_connected_previously.reload.hit_count).to be_nil
     end
   end
 end

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe BatchPreviewPresenter, testing_before_all: true do
   before :all do

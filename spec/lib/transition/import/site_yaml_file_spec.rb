@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/site_yaml_file'
 
 describe Transition::Import::SiteYamlFile do
@@ -7,9 +7,20 @@ describe Transition::Import::SiteYamlFile do
       Transition::Import::SiteYamlFile.load('spec/fixtures/sites/someyaml/ago.yml')
     end
 
-    its(:abbr)           { should eql 'ago' }
-    its(:whitehall_slug) { should eql 'attorney-generals-office' }
-    its(:extra_organisation_slugs) { should eql(['bona-vacantia', 'treasury-solicitor-s-office']) }
+    describe '#abbr' do
+      subject { super().abbr }
+      it { is_expected.to eql 'ago' }
+    end
+
+    describe '#whitehall_slug' do
+      subject { super().whitehall_slug }
+      it { is_expected.to eql 'attorney-generals-office' }
+    end
+
+    describe '#extra_organisation_slugs' do
+      subject { super().extra_organisation_slugs }
+      it { is_expected.to eql(['bona-vacantia', 'treasury-solicitor-s-office']) }
+    end
 
     describe '#import!' do
       let(:ago)  { build :organisation, whitehall_slug: 'attorney-generals-office' }
@@ -17,22 +28,57 @@ describe Transition::Import::SiteYamlFile do
       let(:tsol) { build :organisation, whitehall_slug: 'treasury-solicitor-s-office' }
 
       before do
-        Organisation.stub(:find_by_whitehall_slug).and_return(ago)
-        Organisation.stub(:where).and_return([bv, tsol])
+        allow(Organisation).to receive(:find_by_whitehall_slug).and_return(ago)
+        allow(Organisation).to receive(:where).and_return([bv, tsol])
         yaml_file.import!
       end
 
       subject(:site) { Site.find_by_abbr('ago') }
 
-      its(:tna_timestamp)         { should be_a(Time) }
-      its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-generals-office') }
-      its(:homepage_furl)         { should eql('www.gov.uk/ago') }
-      its(:organisation)          { should eql(ago) }
-      its(:extra_organisations)   { should =~ [bv, tsol] }
-      its(:global_type)           { should eql('redirect') }
-      its(:global_new_url)        { should eql('https://www.gov.uk/a-new-world') }
-      its(:global_redirect_append_path) { should eql(true) }
-      its(:special_redirect_strategy) { should be_nil }
+      describe '#tna_timestamp' do
+        subject { super().tna_timestamp }
+        it { is_expected.to be_a(Time) }
+      end
+
+      describe '#homepage' do
+        subject { super().homepage }
+        it { is_expected.to eql('https://www.gov.uk/government/organisations/attorney-generals-office') }
+      end
+
+      describe '#homepage_furl' do
+        subject { super().homepage_furl }
+        it { is_expected.to eql('www.gov.uk/ago') }
+      end
+
+      describe '#organisation' do
+        subject { super().organisation }
+        it { is_expected.to eql(ago) }
+      end
+
+      describe '#extra_organisations' do
+        subject { super().extra_organisations }
+        it { is_expected.to match_array([bv, tsol]) }
+      end
+
+      describe '#global_type' do
+        subject { super().global_type }
+        it { is_expected.to eql('redirect') }
+      end
+
+      describe '#global_new_url' do
+        subject { super().global_new_url }
+        it { is_expected.to eql('https://www.gov.uk/a-new-world') }
+      end
+
+      describe '#global_redirect_append_path' do
+        subject { super().global_redirect_append_path }
+        it { is_expected.to eql(true) }
+      end
+
+      describe '#special_redirect_strategy' do
+        subject { super().special_redirect_strategy }
+        it { is_expected.to be_nil }
+      end
 
       it 'should get hosts including aka hosts' do
         hosts = %w{
@@ -45,22 +91,22 @@ describe Transition::Import::SiteYamlFile do
           www.lslo.gov.uk
           aka.lslo.gov.uk
         }
-        site.hosts.pluck(:hostname).sort.should eql(hosts.sort)
+        expect(site.hosts.pluck(:hostname).sort).to eql(hosts.sort)
       end
 
       describe '#import! lowercases uppercased hosts' do
         let(:directgov)  { build :organisation, whitehall_slug: 'directgov' }
 
         before do
-          Organisation.stub(:find_by_whitehall_slug).and_return(directgov)
+          allow(Organisation).to receive(:find_by_whitehall_slug).and_return(directgov)
           Transition::Import::SiteYamlFile.load('spec/fixtures/sites/someyaml/directgov_uppercase.yml').import!
         end
 
         let(:site) { Site.find_by_abbr('directgov_uppercase') }
 
         it 'imports the hosts as lowercase' do
-          site.hosts.pluck(:hostname).should_not include('www.DIRECT.gov.uk')
-          site.hosts.pluck(:hostname).should include('www.direct.gov.uk')
+          expect(site.hosts.pluck(:hostname)).not_to include('www.DIRECT.gov.uk')
+          expect(site.hosts.pluck(:hostname)).to include('www.direct.gov.uk')
         end
       end
 
@@ -68,39 +114,70 @@ describe Transition::Import::SiteYamlFile do
         let(:directgov) { build :organisation, whitehall_slug: 'directgov' }
 
         before do
-          Organisation.stub(:find_by_whitehall_slug).and_return(directgov)
+          allow(Organisation).to receive(:find_by_whitehall_slug).and_return(directgov)
           Transition::Import::SiteYamlFile.load('spec/fixtures/sites/someyaml/directgov_uppercase.yml').import!
         end
 
         let(:site) { Site.find_by_abbr('directgov_uppercase') }
 
         it 'imports the aliases as lowercase' do
-          site.hosts.pluck(:hostname).should_not include('MOBILE.DIRECT.gov.uk')
-          site.hosts.pluck(:hostname).should include('mobile.direct.gov.uk')
+          expect(site.hosts.pluck(:hostname)).not_to include('MOBILE.DIRECT.gov.uk')
+          expect(site.hosts.pluck(:hostname)).to include('mobile.direct.gov.uk')
         end
       end
 
       describe 'updates' do
         before do
           yaml_file.import!
-          Organisation.stub(:where).and_return([tsol])
+          allow(Organisation).to receive(:where).and_return([tsol])
           Transition::Import::SiteYamlFile.load('spec/fixtures/sites/updates/ago.yml').import!
           Transition::Import::SiteYamlFile.load('spec/fixtures/sites/updates/ago_lslo.yml').import!
         end
 
-        its(:tna_timestamp)         { should be_a(Time) }
-        its(:homepage)              { should eql('https://www.gov.uk/government/organisations/attorney-update-office') }
-        its(:homepage_title)        { should eql('Now has a &#39;s custom title') }
-        its(:extra_organisations)   { should =~ [tsol] }
-        its(:global_type)           { should be_nil }
-        its(:global_new_url)        { should be_nil }
-        its(:global_redirect_append_path) { should eql(false) }
-        its(:special_redirect_strategy) { should eql('via_aka') }
+        describe '#tna_timestamp' do
+          subject { super().tna_timestamp }
+          it { is_expected.to be_a(Time) }
+        end
+
+        describe '#homepage' do
+          subject { super().homepage }
+          it { is_expected.to eql('https://www.gov.uk/government/organisations/attorney-update-office') }
+        end
+
+        describe '#homepage_title' do
+          subject { super().homepage_title }
+          it { is_expected.to eql('Now has a &#39;s custom title') }
+        end
+
+        describe '#extra_organisations' do
+          subject { super().extra_organisations }
+          it { is_expected.to match_array([tsol]) }
+        end
+
+        describe '#global_type' do
+          subject { super().global_type }
+          it { is_expected.to be_nil }
+        end
+
+        describe '#global_new_url' do
+          subject { super().global_new_url }
+          it { is_expected.to be_nil }
+        end
+
+        describe '#global_redirect_append_path' do
+          subject { super().global_redirect_append_path }
+          it { is_expected.to eql(false) }
+        end
+
+        describe '#special_redirect_strategy' do
+          subject { super().special_redirect_strategy }
+          it { is_expected.to eql('via_aka') }
+        end
 
         it 'should move the host and the aka host to the new site' do
-          site.hosts.pluck(:hostname).should_not include('www.lslo.gov.uk')
+          expect(site.hosts.pluck(:hostname)).not_to include('www.lslo.gov.uk')
           ago_lslo = Site.find_by_abbr('ago_lslo')
-          ago_lslo.hosts.pluck(:hostname).should =~ ['www.lslo.gov.uk', 'aka.lslo.gov.uk']
+          expect(ago_lslo.hosts.pluck(:hostname)).to match_array(['www.lslo.gov.uk', 'aka.lslo.gov.uk'])
         end
       end
     end
@@ -111,7 +188,14 @@ describe Transition::Import::SiteYamlFile do
       Transition::Import::SiteYamlFile.load('spec/fixtures/sites/someyaml/transition-sites/ukti.yml')
     end
 
-    its(:abbr)           { should eql 'ukti' }
-    its(:whitehall_slug) { should eql 'uk-trade-investment' }
+    describe '#abbr' do
+      subject { super().abbr }
+      it { is_expected.to eql 'ukti' }
+    end
+
+    describe '#whitehall_slug' do
+      subject { super().whitehall_slug }
+      it { is_expected.to eql 'uk-trade-investment' }
+    end
   end
 end

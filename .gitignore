@@ -25,3 +25,6 @@
 
 # Ignore secret things
 /config/ga_*
+
+# Ignore spec/examples.txt for re-running
+/spec/examples.txt

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe HostPath do
   describe 'path canonicalization' do
@@ -11,7 +11,14 @@ describe HostPath do
       create(:host_path, path: uncanonicalized_path, host: host)
     end
 
-    its(:path)           { should eql(uncanonicalized_path) }
-    its(:canonical_path) { should eql(canonicalized_path)   }
+    describe '#path' do
+      subject { super().path }
+      it { is_expected.to eql(uncanonicalized_path) }
+    end
+
+    describe '#canonical_path' do
+      subject { super().canonical_path }
+      it { is_expected.to eql(canonicalized_path)   }
+    end
   end
 end

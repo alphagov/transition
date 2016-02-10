@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/materialized_views/hits'
 
 describe Transition::Import::MaterializedViews::Hits do
@@ -38,7 +38,7 @@ describe Transition::Import::MaterializedViews::Hits do
       end
 
       it 'refreshes the view' do
-        Hit.select('*').from('ofsted_all_hits').should have(1).row
+        expect(Hit.select('*').from('ofsted_all_hits').size).to eq(1)
       end
     end
   end

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'postgres/materialized_view'
 
 describe Postgres::MaterializedView do
@@ -31,9 +31,9 @@ describe Postgres::MaterializedView do
 
   describe '.get_body' do
     it 'gets the body' do
-      Postgres::MaterializedView.get_body(
+      expect(Postgres::MaterializedView.get_body(
         'pre_existing_view'
-      ).should include('SELECT 1')
+      )).to include('SELECT 1')
     end
   end
 
@@ -73,7 +73,7 @@ describe Postgres::MaterializedView do
           replace: true
         )
         body = Postgres::MaterializedView.get_body('pre_existing_view')
-        body.should include('SELECT 2 AS modified')
+        expect(body).to include('SELECT 2 AS modified')
       end
     end
   end

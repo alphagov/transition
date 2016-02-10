@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe OrganisationsController do
   describe '#index' do
@@ -12,7 +12,7 @@ describe OrganisationsController do
     end
 
     it 'orders organisations alphabetically' do
-      assigns(:organisations).should == [organisation_a, organisation_z]
+      expect(assigns(:organisations)).to eq([organisation_a, organisation_z])
     end
   end
 end

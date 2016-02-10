@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/organisations'
 require 'transition/import/sites'
 
@@ -11,7 +11,7 @@ describe Transition::Import::Organisations do
     end
 
     it 'has imported orgs - one per org in orgs_abridged.yml' do
-      Organisation.count.should == 6
+      expect(Organisation.count).to eq(6)
     end
 
     describe 'an organisation with multiple parents' do
@@ -20,20 +20,49 @@ describe Transition::Import::Organisations do
 
       subject(:ukti) { Organisation.find_by_whitehall_slug('uk-trade-investment') }
 
-      its(:abbreviation)   { should eql 'UKTI' }
-      its(:content_id)     { should eql '8ded75c7-29ea-4831-958c-4f07fd73425d'}
-      its(:whitehall_slug) { should eql 'uk-trade-investment' }
-      its(:whitehall_type) { should eql 'Non-ministerial department' }
-      its(:homepage)       { should eql 'https://www.gov.uk/government/organisations/uk-trade-investment' }
+      describe '#abbreviation' do
+        subject { super().abbreviation }
+        it { is_expected.to eql 'UKTI' }
+      end
 
-      its(:parent_organisations) { should =~ [bis, fco] }
+      describe '#content_id' do
+        subject { super().content_id }
+        it { is_expected.to eql '8ded75c7-29ea-4831-958c-4f07fd73425d'}
+      end
+
+      describe '#whitehall_slug' do
+        subject { super().whitehall_slug }
+        it { is_expected.to eql 'uk-trade-investment' }
+      end
+
+      describe '#whitehall_type' do
+        subject { super().whitehall_type }
+        it { is_expected.to eql 'Non-ministerial department' }
+      end
+
+      describe '#homepage' do
+        subject { super().homepage }
+        it { is_expected.to eql 'https://www.gov.uk/government/organisations/uk-trade-investment' }
+      end
+
+      describe '#parent_organisations' do
+        subject { super().parent_organisations }
+        it { is_expected.to match_array([bis, fco]) }
+      end
     end
 
     describe 'fudged CSS/URL details' do
       subject(:ago) { Organisation.find_by_whitehall_slug('attorney-generals-office') }
 
-      its(:css)  { should eql 'attorney-generals-office' }
-      its(:furl) { should eql 'www.gov.uk/ago' }
+      describe '#css' do
+        subject { super().css }
+        it { is_expected.to eql 'attorney-generals-office' }
+      end
+
+      describe '#furl' do
+        subject { super().furl }
+        it { is_expected.to eql 'www.gov.uk/ago' }
+      end
     end
 
   end

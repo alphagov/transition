@@ -1,42 +1,42 @@
 #encoding: utf-8
-require 'spec_helper'
+require 'rails_helper'
 
 describe VersionsHelper do
   describe '#friendly_field_name' do
-    specify { helper.friendly_field_name('type').should == 'Type' }
+    specify { expect(helper.friendly_field_name('type')).to eq('Type') }
 
-    specify { helper.friendly_field_name('archive_url').should == 'Custom Archive URL' }
+    specify { expect(helper.friendly_field_name('archive_url')).to eq('Custom Archive URL') }
 
-    specify { helper.friendly_field_name('miscellaneous').should == 'Miscellaneous' }
+    specify { expect(helper.friendly_field_name('miscellaneous')).to eq('Miscellaneous') }
   end
 
   describe '#friendly_changeset_title_for_type' do
-    specify { helper.friendly_changeset_title_for_type('archive').should == 'Switched mapping to an Archive' }
+    specify { expect(helper.friendly_changeset_title_for_type('archive')).to eq('Switched mapping to an Archive') }
 
-    specify { helper.friendly_changeset_title_for_type('redirect').should == 'Switched mapping to a Redirect' }
+    specify { expect(helper.friendly_changeset_title_for_type('redirect')).to eq('Switched mapping to a Redirect') }
 
-    specify { helper.friendly_changeset_title_for_type('foo').should == 'Switched mapping type' }
+    specify { expect(helper.friendly_changeset_title_for_type('foo')).to eq('Switched mapping type') }
   end
 
   describe '#friendly_changeset_title' do
-    specify { helper.friendly_changeset_title({'id' => 1}).should == 'Mapping created' }
+    specify { expect(helper.friendly_changeset_title({'id' => 1})).to eq('Mapping created') }
 
-    specify { helper.friendly_changeset_title({'archive_url' => 1}).should == 'Custom Archive URL updated' }
+    specify { expect(helper.friendly_changeset_title({'archive_url' => 1})).to eq('Custom Archive URL updated') }
 
-    specify { helper.friendly_changeset_title({'miscellaneous' => 1}).should == 'Miscellaneous updated' }
+    specify { expect(helper.friendly_changeset_title({'miscellaneous' => 1})).to eq('Miscellaneous updated') }
 
-    specify { helper.friendly_changeset_title({'archive_url' => 1, 'miscellaneous' => 1}).should == 'Multiple properties updated' }
+    specify { expect(helper.friendly_changeset_title({'archive_url' => 1, 'miscellaneous' => 1})).to eq('Multiple properties updated') }
 
-    specify { helper.friendly_changeset_title({'type' => ['redirect', 'archive']}).should == 'Switched mapping to an Archive' }
+    specify { expect(helper.friendly_changeset_title({'type' => ['redirect', 'archive']})).to eq('Switched mapping to an Archive') }
   end
 
   describe '#friendly_changeset_old_to_new' do
-    specify { helper.friendly_changeset_old_to_new('misc', ['old', 'new']).should == 'old → new' }
+    specify { expect(helper.friendly_changeset_old_to_new('misc', ['old', 'new'])).to eq('old → new') }
 
-    specify { helper.friendly_changeset_old_to_new('misc', ['', 'new']).should == '<blank> → new' }
+    specify { expect(helper.friendly_changeset_old_to_new('misc', ['', 'new'])).to eq('<blank> → new') }
 
-    specify { helper.friendly_changeset_old_to_new('type', ['archive', 'redirect']).should == 'Archive → Redirect' }
+    specify { expect(helper.friendly_changeset_old_to_new('type', ['archive', 'redirect'])).to eq('Archive → Redirect') }
 
-    specify { helper.friendly_changeset_old_to_new('type', ['', 'redirect']).should == '<blank> → Redirect' }
+    specify { expect(helper.friendly_changeset_old_to_new('type', ['', 'redirect'])).to eq('<blank> → Redirect') }
   end
 end

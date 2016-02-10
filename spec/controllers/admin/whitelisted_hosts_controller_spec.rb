@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Admin::WhitelistedHostsController do
   let(:normal_user) { create(:user, permissions: ['signin']) }
@@ -15,7 +15,7 @@ describe Admin::WhitelistedHostsController do
     end
 
     it 'sets a flash message' do
-      flash[:alert].should include('Only admins can access that.')
+      expect(flash[:alert]).to include('Only admins can access that.')
     end
   end
 
@@ -35,7 +35,7 @@ describe Admin::WhitelistedHostsController do
       end
 
       it 'lists the whitelisted_hosts' do
-        assigns(:whitelisted_hosts).size.should == 2
+        expect(assigns(:whitelisted_hosts).size).to eq(2)
       end
     end
   end
@@ -66,11 +66,11 @@ describe Admin::WhitelistedHostsController do
       end
 
       it 'should set a success message' do
-        flash[:success].should == "a.com added to whitelist."
+        expect(flash[:success]).to eq("a.com added to whitelist.")
       end
 
       it 'should create the host' do
-        WhitelistedHost.find_by_hostname('a.com').should_not be_nil
+        expect(WhitelistedHost.find_by_hostname('a.com')).not_to be_nil
       end
 
       context 'with an invalid hostname' do

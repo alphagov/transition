@@ -2,7 +2,7 @@ module Helpers
   module Page
     def i_should_be_on_the_path(path)
       uri = Addressable::URI.parse(current_url)
-      uri.path.should == path
+      expect(uri.path).to eq(path)
     end
   end
 end

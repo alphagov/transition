@@ -1,21 +1,38 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe View::Hits::Category do
   describe '.all' do
     subject(:all_categories) { View::Hits::Category.all }
 
-    it { should be_an(Array) }
-    it { should have(4).categories }
+    it { is_expected.to be_an(Array) }
+    it 'has 4 categories' do
+      expect(subject.size).to eq(4)
+    end
 
     describe 'the first' do
       subject(:all_category) { View::Hits::Category.all.first }
 
-      it { should be_a(View::Hits::Category) }
+      it { is_expected.to be_a(View::Hits::Category) }
 
-      its(:title)              { should == 'All hits' }
-      its(:to_sym)             { should == :all }
-      its(:color)              { should == '#333' }
-      its(:plural)             { should == 'hits' }
+      describe '#title' do
+        subject { super().title }
+        it { is_expected.to eq('All hits') }
+      end
+
+      describe '#to_sym' do
+        subject { super().to_sym }
+        it { is_expected.to eq(:all) }
+      end
+
+      describe '#color' do
+        subject { super().color }
+        it { is_expected.to eq('#333') }
+      end
+
+      describe '#plural' do
+        subject { super().plural }
+        it { is_expected.to eq('hits') }
+      end
     end
 
     describe 'indexing' do
@@ -25,10 +42,25 @@ describe View::Hits::Category do
 
       subject(:errors_category) { View::Hits::Category['errors'] }
 
-      its(:title)       { should == 'Errors' }
-      its(:to_sym)      { should == :errors }
-      its(:color)       { should == '#e99' }
-      its(:plural)      { should == 'errors' }
+      describe '#title' do
+        subject { super().title }
+        it { is_expected.to eq('Errors') }
+      end
+
+      describe '#to_sym' do
+        subject { super().to_sym }
+        it { is_expected.to eq(:errors) }
+      end
+
+      describe '#color' do
+        subject { super().color }
+        it { is_expected.to eq('#e99') }
+      end
+
+      describe '#plural' do
+        subject { super().plural }
+        it { is_expected.to eq('errors') }
+      end
 
       describe 'the polyfill of points when points= is called' do
         context 'valid data' do
@@ -41,16 +73,38 @@ describe View::Hits::Category do
 
           before { errors_category.points = errors }
 
-          it { should have(4).points }
+          it 'has 4 points' do
+            expect(subject.points.size).to eq(4)
+          end
 
-          its(:'points.first') { should == errors.first }
-          its(:'points.last')  { should == errors.last }
+          describe '#points' do
+            subject { super().points }
+            describe '#first' do
+              subject { super().first }
+              it { is_expected.to eq(errors.first) }
+            end
+          end
+
+          describe '#points' do
+            subject { super().points }
+            describe '#last' do
+              subject { super().last }
+              it { is_expected.to eq(errors.last) }
+            end
+          end
 
           describe 'the first inserted total' do
             subject { errors_category.points[1] }
 
-            its(:total_on) { should eql(Date.new(2012, 12, 29)) }
-            its(:count) { should eql(0) }
+            describe '#total_on' do
+              subject { super().total_on }
+              it { is_expected.to eql(Date.new(2012, 12, 29)) }
+            end
+
+            describe '#count' do
+              subject { super().count }
+              it { is_expected.to eql(0) }
+            end
           end
         end
 

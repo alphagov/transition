@@ -77,7 +77,7 @@ end
 # Status codes
 
 Then(/^I should see our custom 404 page$/) do
-  page.status_code.should eql(404)
+  expect(page.status_code).to eql(404)
   steps %{
     Then I should see "Page could not be found"
     And I should see a link to "GOV.UK Transition"
@@ -95,5 +95,5 @@ end
 # Content-Type
 
 Then(/^I should see JSON$/) do
-  page.response_headers['Content-Type'].should include('application/json')
+  expect(page.response_headers['Content-Type']).to include('application/json')
 end

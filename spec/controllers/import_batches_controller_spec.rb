@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ImportBatchesController do
   let(:site)    { create :site, abbr: 'moj' }
@@ -39,29 +39,47 @@ describe ImportBatchesController do
       end
 
       it 'creates a batch for the site' do
-        site.import_batches.count.should == 1
+        expect(site.import_batches.count).to eq(1)
       end
 
       it 'creates entries for the batch' do
-        site.import_batches.entries.count.should eql(1)
+        expect(site.import_batches.entries.count).to eql(1)
         entry = site.import_batches.first.entries.first
-        entry.path.should eql('/a')
-        entry.type.should eql('archive')
+        expect(entry.path).to eql('/a')
+        expect(entry.type).to eql('archive')
       end
 
       describe 'the archive entry' do
         subject { site.import_batches.first.entries.first }
 
-        its(:path) { should eql('/a') }
-        its(:type) { should eql('archive')}
+        describe '#path' do
+          subject { super().path }
+          it { is_expected.to eql('/a') }
+        end
+
+        describe '#type' do
+          subject { super().type }
+          it { is_expected.to eql('archive')}
+        end
       end
 
       describe 'the redirect entry' do
         subject { site.import_batches.first.entries.last }
 
-        its(:path)    { should eql('/b') }
-        its(:type)    { should eql('redirect')}
-        its(:new_url) { should eql(long_url)}
+        describe '#path' do
+          subject { super().path }
+          it { is_expected.to eql('/b') }
+        end
+
+        describe '#type' do
+          subject { super().type }
+          it { is_expected.to eql('redirect')}
+        end
+
+        describe '#new_url' do
+          subject { super().new_url }
+          it { is_expected.to eql(long_url)}
+        end
       end
 
       it 'redirects to the preview page' do
@@ -77,7 +95,7 @@ describe ImportBatchesController do
       end
 
       it 'does not create a batch for the site' do
-        site.import_batches.count.should == 0
+        expect(site.import_batches.count).to eq(0)
       end
 
       it 'redisplays the form' do

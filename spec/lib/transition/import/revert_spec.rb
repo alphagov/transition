@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transition/import/revert'
 
 describe Transition::Import::Revert::Sites do
@@ -13,9 +13,9 @@ describe Transition::Import::Revert::Sites do
       @original_site_count = 8
       @original_host_count = 24
       @original_bv_extra_sites_count = 1
-      Site.count.should eql(@original_site_count)
-      Host.count.should eql(@original_host_count)
-      @bona_vacantia.extra_sites.count.should eql(@original_bv_extra_sites_count)
+      expect(Site.count).to eql(@original_site_count)
+      expect(Host.count).to eql(@original_host_count)
+      expect(@bona_vacantia.extra_sites.count).to eql(@original_bv_extra_sites_count)
     end
 
     context 'deleting sites which can be deleted' do
@@ -26,17 +26,17 @@ describe Transition::Import::Revert::Sites do
       end
 
       it 'should have deleted the sites' do
-        Site.count.should eql(6)
-        Site.where(abbr: site_abbrs).should be_empty
+        expect(Site.count).to eql(6)
+        expect(Site.where(abbr: site_abbrs)).to be_empty
       end
 
       it 'should have deleted the hosts' do
-        Host.count.should eql(14)
-        Host.find_by(hostname: 'www.bis.gov.uk').should be_nil
+        expect(Host.count).to eql(14)
+        expect(Host.find_by(hostname: 'www.bis.gov.uk')).to be_nil
       end
 
       it 'should have deleted the sites\' links to extra organisations' do
-        @bona_vacantia.extra_sites.size.should eql(0)
+        expect(@bona_vacantia.extra_sites.size).to eql(0)
       end
     end
 
@@ -48,9 +48,9 @@ describe Transition::Import::Revert::Sites do
       end
 
       it 'should not delete the site or any related data' do
-        Site.count.should eql(@original_site_count)
-        Host.count.should eql(@original_host_count)
-        @bona_vacantia.extra_sites.count.should eql(@original_bv_extra_sites_count)
+        expect(Site.count).to eql(@original_site_count)
+        expect(Host.count).to eql(@original_host_count)
+        expect(@bona_vacantia.extra_sites.count).to eql(@original_bv_extra_sites_count)
       end
     end
 
@@ -62,9 +62,9 @@ describe Transition::Import::Revert::Sites do
       end
 
       it 'should not delete the site or any related data' do
-        Site.count.should eql(@original_site_count)
-        Host.count.should eql(@original_host_count)
-        @bona_vacantia.extra_sites.count.should eql(@original_bv_extra_sites_count)
+        expect(Site.count).to eql(@original_site_count)
+        expect(Host.count).to eql(@original_host_count)
+        expect(@bona_vacantia.extra_sites.count).to eql(@original_bv_extra_sites_count)
       end
     end
 
@@ -74,9 +74,9 @@ describe Transition::Import::Revert::Sites do
       end
 
       it 'should not delete any sites or any related data' do
-        Site.count.should eql(@original_site_count)
-        Host.count.should eql(@original_host_count)
-        @bona_vacantia.extra_sites.count.should eql(@original_bv_extra_sites_count)
+        expect(Site.count).to eql(@original_site_count)
+        expect(Host.count).to eql(@original_host_count)
+        expect(@bona_vacantia.extra_sites.count).to eql(@original_bv_extra_sites_count)
       end
     end
   end
