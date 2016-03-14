@@ -68,7 +68,7 @@ describe Mapping do
     it { is_expected.to validate_presence_of(:path) }
 
     it { is_expected.to validate_presence_of(:type) }
-    it { is_expected.to ensure_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
+    it { is_expected.to validate_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
 
     describe 'home pages (which are handled by Site)' do
       subject(:homepage_mapping) { build(:mapping, path: '/') }
@@ -81,7 +81,7 @@ describe Mapping do
       end
     end
 
-    it { is_expected.to ensure_length_of(:path).is_at_most(2048) }
+    it { is_expected.to validate_length_of(:path).is_at_most(2048) }
     it 'ensures paths are unique to a site' do
       site = create(:site)
       create(:archived, path: '/foo', site: site)

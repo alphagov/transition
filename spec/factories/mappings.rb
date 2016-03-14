@@ -2,7 +2,7 @@ require 'transition/history'
 
 FactoryGirl.define do
   factory :mapping do
-    ignore do
+    transient do
       as_user { build(:user, id: 1, name: 'test user') }
     end
 

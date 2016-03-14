@@ -37,15 +37,15 @@ end
 
 group :test do
   gem 'poltergeist', '1.5.1'
-  gem 'launchy', '2.3.0'                  # Primarily for save_and_open_page support in Capybara
-  gem 'timecop', '0.5.9.2'
+  gem 'launchy', '2.4.3'                  # Primarily for save_and_open_page support in Capybara
+  gem 'timecop', '0.8.0'
   gem 'cucumber-rails', require: false
-  gem 'capybara', '2.3.0', require: false
-  gem 'factory_girl_rails', '4.1.0'
-  gem 'shoulda-matchers', '2.6.2'
+  gem 'capybara', '2.6.2', require: false
+  gem 'factory_girl_rails', '4.6.0'
+  gem 'shoulda-matchers', '3.1.1'
   gem 'ci_reporter', '1.8.0'
-  gem 'database_cleaner', '1.0.1'
-  gem 'webmock', '1.11.0', require: false
+  gem 'database_cleaner', '1.5.1'
+  gem 'webmock', '1.24.2', require: false
 end
 
 group :development, :test do
