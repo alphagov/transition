@@ -43,7 +43,6 @@ group :test do
   gem 'capybara', '2.6.2', require: false
   gem 'factory_girl_rails', '4.6.0'
   gem 'shoulda-matchers', '3.1.1'
-  gem 'ci_reporter', '1.8.0'
   gem 'database_cleaner', '1.5.1'
   gem 'webmock', '1.24.2', require: false
 end

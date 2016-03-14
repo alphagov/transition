@@ -64,8 +64,6 @@ GEM
     celluloid (0.16.0)
       timers (~> 4.0.0)
     chronic (0.10.2)
-    ci_reporter (1.8.0)
-      builder (>= 2.1.2)
     cliver (0.3.2)
     coderay (1.1.0)
     concurrent-ruby (1.0.0)
@@ -346,7 +344,6 @@ DEPENDENCIES
   acts-as-taggable-on (= 3.1.1)
   airbrake (= 4.0.0)
   capybara (= 2.6.2)
-  ci_reporter (= 1.8.0)
   cucumber-rails
   database_cleaner (= 1.5.1)
   factory_girl_rails (= 4.6.0)
