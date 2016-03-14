@@ -8,12 +8,12 @@ gem 'optic14n', '2.0.0'     # Ideally version should be synced with bouncer
 gem 'gds-sso', '12.0.0'
 gem 'govuk_admin_template', '4.1.1'
 gem 'plek', '1.12.0'
-gem 'htmlentities', '4.3.2'
+gem 'htmlentities', '4.3.4'
 gem 'kaminari', '0.16.3'
 gem 'paper_trail', '3.0.2'
-gem 'google-api-client', '0.7.1'
+gem 'google-api-client', '0.8.6'
 gem 'gds-api-adapters', '29.6.0'
-gem 'mlanett-redis-lock', '0.2.6'
+gem 'mlanett-redis-lock', '0.2.7'
 gem 'whenever', '0.9.4'
 gem 'gretel', '3.0.8'
 gem 'acts-as-taggable-on', '3.5.0'
@@ -32,7 +32,7 @@ gem 'sass-rails', '5.0.3'
 gem 'uglifier', '2.7.2'
 
 group :development do
-  gem 'quiet_assets', '1.0.2'
+  gem 'quiet_assets', '1.1.0'
 end
 
 group :test do
