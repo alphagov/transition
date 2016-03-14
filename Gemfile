@@ -23,7 +23,7 @@ gem 'sidekiq', '3.4.2'
 
 # We use Errbit for tracking exceptions, which needs the airbrake gem. Config
 # for Errbit is in alphagov-deployment.
-gem 'airbrake', '4.0.0'
+gem 'airbrake', '~> 4.3.0'
 
 gem 'logstasher', '0.5.3'
 
