@@ -18,7 +18,7 @@ gem 'whenever', '0.9.4'
 gem 'gretel', '3.0.8'
 gem 'acts-as-taggable-on', '3.5.0'
 gem 'select2-rails', '3.5.7'
-gem 'activerecord-import', '0.5.0'
+gem 'activerecord-import', '0.12.0'
 gem 'sidekiq', '4.1.1'
 gem 'redis-namespace', '1.5.2'
 
