@@ -411,6 +411,10 @@ describe Mapping do
     expect(mapping.path).to eq('/foobar?q=1')
   end
 
+  it "has a paper trail" do
+    is_expected.to be_versioned
+  end
+
   describe 'The paper trail', versioning: true do
     let(:alice) { create :user, name: 'Alice' }
     let(:bob)   { create :user, name: 'Bob' }

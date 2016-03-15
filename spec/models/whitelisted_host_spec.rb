@@ -47,4 +47,8 @@ describe WhitelistedHost do
       end
     end
   end
+
+  it "has a paper trail" do
+    is_expected.to be_versioned
+  end
 end
