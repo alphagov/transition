@@ -28,6 +28,9 @@ module Transition
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    # TODO: this is no longer an encouraged pattern for dynamic error pages
+    # as it has many edgecases (See: https://github.com/rails/rails/pull/17815)
+    # We should consider changing how we do this.
     # Route exceptions to our custom error pages.
     config.exceptions_app = self.routes
 
