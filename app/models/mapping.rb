@@ -53,10 +53,10 @@ class Mapping < ActiveRecord::Base
   scope :archives,  -> { with_type('archive') }
   scope :unresolved, ->{ with_type('unresolved') }
   scope :filtered_by_path, -> term do
-    where(term.blank? ? true : Mapping.arel_table[:path].matches("%#{term}%")).references(:mapping)
+    where(Mapping.arel_table[:path].matches("%#{term}%")).references(:mapping) if term.present?
   end
   scope :filtered_by_new_url, -> term do
-    where(term.blank? ? true : Mapping.arel_table[:new_url].matches("%#{term}%")).references(:mapping)
+    where(Mapping.arel_table[:new_url].matches("%#{term}%")).references(:mapping) if term.present?
   end
 
   def redirect?
