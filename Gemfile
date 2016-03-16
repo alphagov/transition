@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.14.1'
+gem 'rails', '4.2.6'
 gem 'activerecord-session_store', '0.1.2'
 gem 'unicorn', '4.6.2'
 gem 'pg', '0.18.4'
@@ -29,11 +29,12 @@ gem 'airbrake', '~> 4.3.0'
 gem 'logstasher', '0.6.5'
 
 gem 'sass', '3.4.14'
-gem 'sass-rails', '5.0.3'
+gem 'sass-rails', '5.0.4'
 gem 'uglifier', '2.7.2'
 
 group :development do
   gem 'quiet_assets', '1.1.0'
+  gem 'web-console', '~> 2.0'
 end
 
 group :test do

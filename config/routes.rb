@@ -1,4 +1,4 @@
-Transition::Application.routes.draw do
+Rails.application.routes.draw do
   mount GovukAdminTemplate::Engine, at: '/style-guide'
   root to: 'organisations#index'
 

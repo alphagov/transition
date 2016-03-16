@@ -8,7 +8,7 @@ namespace :import do
       if ENV['FILENAME']
         options = { filename: ENV['FILENAME'] }
       else
-        govuk_basic_auth = Transition::Application.config.govuk_basic_auth
+        govuk_basic_auth = Rails.application.config.govuk_basic_auth
         options = {
           username: govuk_basic_auth[:username] || ENV['AUTH_USERNAME'] || raise('Basic AUTH_USERNAME is required'),
           password: govuk_basic_auth[:password] || ENV['AUTH_PASSWORD'] || raise('Basic AUTH_PASSWORD is required'),

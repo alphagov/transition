@@ -1,1 +1,1 @@
-Transition::Application.config.down_for_maintenance = false
+Rails.application.config.down_for_maintenance = false

@@ -5,7 +5,9 @@ class ApplicationController < ActionController::Base
 
   before_filter :exclude_all_users_except_admins_during_maintenance
 
-  protect_from_forgery
+  # Prevent CSRF attacks by raising an exception.
+  # For APIs, you may want to use :null_session instead.
+  protect_from_forgery with: :null_session
 
   rescue_from ActionController::InvalidAuthenticityToken do
     render_error(403,
@@ -32,6 +34,6 @@ private
   end
 
   def exclude_all_users_except_admins_during_maintenance
-    render_error(503) if Transition::Application.config.down_for_maintenance && !current_user.admin?
+    render_error(503) if Rails.application.config.down_for_maintenance && !current_user.admin?
   end
 end
