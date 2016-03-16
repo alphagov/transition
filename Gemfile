@@ -53,5 +53,5 @@ group :development, :test do
   gem 'pry'
   gem 'rspec-rails', '3.4.2'
   gem 'rspec-collection_matchers', '1.1.2'
-  gem 'jasmine', '2.0.2'
+  gem 'jasmine', '2.4.0'
 end
