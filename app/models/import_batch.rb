@@ -3,8 +3,6 @@ require 'csv'
 class ImportBatch < MappingsBatch
   attr_accessor :raw_csv
 
-  disable_columns :type, :new_url
-
   has_many :entries, foreign_key: :mappings_batch_id, class_name: 'ImportBatchEntry',
     dependent: :delete_all
 
