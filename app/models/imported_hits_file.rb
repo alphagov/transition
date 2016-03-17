@@ -7,12 +7,17 @@ class ImportedHitsFile < ActiveRecord::Base
   validates :content_hash, presence: true
 
   def same_on_disk?
-    content_hash == Digest::SHA1.hexdigest(File.read(filename))
+    if File.exists?(filename)
+      content_hash == Digest::SHA1.hexdigest(File.read(filename))
+    else
+      false
+    end
   end
 
 private
   def set_content_hash
-    filename && (
-      self.content_hash = Digest::SHA1.hexdigest(File.read(filename)))
+    filename && File.exists?(filename) && (
+      self.content_hash = Digest::SHA1.hexdigest(File.read(filename))
+    )
   end
 end

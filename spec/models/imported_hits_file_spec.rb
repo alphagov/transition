@@ -29,7 +29,12 @@ describe ImportedHitsFile do
       before { File.open(test_file, 'a') { |f| f.puts 'a change' } }
       it     { is_expected.to be_falsey }
     end
+
+    context 'when a file on disk no longer exists' do
+      before { File.delete(test_file) }
+      it     { is_expected.to be_falsey }
+    end
   end
 
-  after { File.delete(test_file) }
+  after { File.delete(test_file) if File.exists?(test_file) }
 end
