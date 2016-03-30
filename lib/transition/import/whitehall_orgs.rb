@@ -16,14 +16,7 @@ module Transition
       end
 
       def organisations
-        @organisations ||= begin
-          if @org_yaml_path.present? && File.exist?(@org_yaml_path)
-            return YAML.load(File.read(@org_yaml_path))
-          end
-
-          api = GdsApi::Organisations.new(Plek.current.find('whitehall-admin'))
-          api.organisations.with_subsequent_pages.to_a
-        end
+        @organisations ||= load_orgs
       end
 
       def each(&block)
@@ -35,6 +28,29 @@ module Transition
           hash[org.id] = org
           hash
         end
+      end
+
+      private
+
+      def load_orgs
+        if load_orgs_from_yaml?
+          load_orgs_from_yaml
+        else
+          load_orgs_from_api
+        end
+      end
+
+      def load_orgs_from_yaml?
+        @org_yaml_path.present? && File.exist?(@org_yaml_path)
+      end
+
+      def load_orgs_from_yaml
+        GdsApi::Response.build_ostruct_recursively(YAML.load(File.read(@org_yaml_path)))
+      end
+
+      def load_orgs_from_api
+        api = GdsApi::Organisations.new(Plek.current.find('whitehall-admin'))
+        api.organisations.with_subsequent_pages.to_a
       end
     end
   end

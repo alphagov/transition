@@ -1,23 +1,6 @@
 require 'rails_helper'
 
 describe ImportBatch do
-  describe 'disabled fields' do
-    context 'when initializing a batch' do
-      it 'should prevent access to fields which are irrelevant to this subclass' do
-        expect{ ImportBatch.new.type }.to raise_error(ActiveModel::MissingAttributeError)
-        expect{ ImportBatch.new.new_url }.to raise_error(ActiveModel::MissingAttributeError)
-      end
-    end
-
-    context 'when fetching a batch' do
-      let!(:batch) { create :import_batch }
-      it 'should prevent access to fields which are irrelevant to this subclass' do
-        expect{ ImportBatch.first.type }.to raise_error(ActiveModel::MissingAttributeError)
-        expect{ ImportBatch.first.new_url }.to raise_error(ActiveModel::MissingAttributeError)
-      end
-    end
-  end
-
   describe 'validations' do
     it { is_expected.to validate_presence_of(:raw_csv).with_message('Enter at least one valid line') }
 

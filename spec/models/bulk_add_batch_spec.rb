@@ -16,7 +16,7 @@ describe BulkAddBatch do
   end
 
   describe 'validations' do
-    it { is_expected.to ensure_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
+    it { is_expected.to validate_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
 
     context 'when the mappings batch is invalid' do
       before { expect(mappings_batch).not_to be_valid }

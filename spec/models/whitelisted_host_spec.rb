@@ -2,8 +2,9 @@ require 'rails_helper'
 
 describe WhitelistedHost do
   describe 'validations' do
+    subject { create(:whitelisted_host) }
     it { is_expected.to validate_presence_of(:hostname) }
-    it { is_expected.to validate_uniqueness_of(:hostname).with_message('is already in the list') }
+    it { is_expected.to validate_uniqueness_of(:hostname).with_message('is already in the list').case_insensitive }
 
     describe 'hostname' do
       context 'is invalid' do
@@ -45,5 +46,9 @@ describe WhitelistedHost do
         end
       end
     end
+  end
+
+  it "has a paper trail" do
+    is_expected.to be_versioned
   end
 end

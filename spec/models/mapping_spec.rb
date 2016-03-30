@@ -68,7 +68,7 @@ describe Mapping do
     it { is_expected.to validate_presence_of(:path) }
 
     it { is_expected.to validate_presence_of(:type) }
-    it { is_expected.to ensure_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
+    it { is_expected.to validate_inclusion_of(:type).in_array(Mapping::SUPPORTED_TYPES) }
 
     describe 'home pages (which are handled by Site)' do
       subject(:homepage_mapping) { build(:mapping, path: '/') }
@@ -81,7 +81,7 @@ describe Mapping do
       end
     end
 
-    it { is_expected.to ensure_length_of(:path).is_at_most(2048) }
+    it { is_expected.to validate_length_of(:path).is_at_most(2048) }
     it 'ensures paths are unique to a site' do
       site = create(:site)
       create(:archived, path: '/foo', site: site)
@@ -235,19 +235,25 @@ describe Mapping do
 
       before { mapping.tag_list = test_input }
 
-      # We don't like this behaviour (it keeps quotes in tags with no spaces),
-      # but changing it means forking. And we can live with it.
       context 'there are double-quoted tags' do
         let(:test_input) { %("Fee fi", "FO", fum, thing:1234) }
-        it { is_expected.to eql(['fee fi', '"fo"', 'fum', 'thing:1234']) }
+        it { is_expected.to eql(['fee fi', 'fo', 'fum', 'thing:1234']) }
+      end
+      context 'there are double-quotes in tags' do
+        let(:test_input) { %("Fee \"fi fo fum\"", thing:1234) }
+        it { is_expected.to eql(['fee "fi fo fum"', 'thing:1234']) }
       end
       context 'there are single-quoted tags' do
         let(:test_input) { %('Fee fi', 'FO', fum, thing:1234) }
-        it { is_expected.to eql(['fee fi', "'fo'", 'fum', 'thing:1234']) }
+        it { is_expected.to eql(['fee fi', 'fo', 'fum', 'thing:1234']) }
+      end
+      context 'there are single-quotes in tags' do
+        let(:test_input) { %("Fee 'fi fo fum'", thing:1234) }
+        it { is_expected.to eql(["fee 'fi fo fum'", 'thing:1234']) }
       end
       context 'there are special characters' do
         let(:test_input) { %('<Fee fi>', '\\FO/', ¿fum?) }
-        it { is_expected.to eql(['<fee fi>', "'\\fo/'", '¿fum?']) }
+        it { is_expected.to eql(['<fee fi>', '\\fo/', '¿fum?']) }
       end
       context 'there are blanks' do
         let(:test_input) { %(,     ,    hello, hi    , ho) }
@@ -403,6 +409,10 @@ describe Mapping do
     site = create(:site, query_params: 'q')
     mapping = create(:mapping, path: 'http://www.example.com/foobar?q=1', site: site)
     expect(mapping.path).to eq('/foobar?q=1')
+  end
+
+  it "has a paper trail" do
+    is_expected.to be_versioned
   end
 
   describe 'The paper trail', versioning: true do

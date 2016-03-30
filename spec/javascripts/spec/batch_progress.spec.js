@@ -51,7 +51,7 @@ describe('A batch progress module', function() {
     });
 
     it('updates the aria value now attribute', function() {
-      expect(element.find('.js-progress-bar').attr('aria-valuenow')).toMatch(10);
+      expect(element.find('.js-progress-bar').attr('aria-valuenow')).toMatch('10');
     });
 
     it('updates the count of done mappings', function() {
