@@ -17,7 +17,7 @@ Feature: List organisations
 
   Scenario: Visit the list page
     When I visit the home page
-    Then I should see "Hello"
+    Then I should see "Stub User"
     And I should see the header "Organisations"
     And I should see an organisations table with 3 rows
     And I should see a link to the organisation bis

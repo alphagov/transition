@@ -1,4 +1,3 @@
-<%# blocks for govuk_admin_template %>
 <% content_for :head do %>
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
@@ -38,15 +37,8 @@
         "favicon-#{environment_style}.png" : "favicon.png" %>
 <% end %>
 
-<% #content_for concatenates successive calls %>
 <% content_for :page_title do %> | GOV.UK Transition<% end %>
-
-<% content_for :navbar_right do %>
-  Hello, <%= link_to current_user.name, Plek.current.find('signon') %>
-  &bull; <%= link_to 'Sign out', gds_sign_out_path %>
-<% end %>
 <% content_for :footer_version do %><%= CURRENT_RELEASE_SHA %><% end %>
-<% content_for :app_title do %>GOV.UK Transition<% end %>
 <% content_for :content do %>
   <% # Map bootstrap alerts to Rails flashes, but keep notice and alert as they are pecial cased with redirect_to %>
   <% [:success, :info, :warning, :danger, :notice, :alert].select { |k| flash[k].present? }.each do |k| %>
@@ -92,5 +84,5 @@
   <%= yield %>
   <%= render partial: 'shared/go_to' %>
 <% end %>
-<%# use the govuk_admin_foundation layout %>
+
 <%= render :template => 'layouts/govuk_admin_template' %>
