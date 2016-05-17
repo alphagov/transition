@@ -54,7 +54,7 @@ module HitsHelper
       rows << {
         c: [
              { v: "Date(#{date.year}, #{date.month - 1}, #{date.day})" },
-             { v: date == transition_date ? 'Transition' : ''},
+             { v: date == transition_date ? 'Transition' : nil },
              *categories.map do |c|
                count_for_category = category_counts[c.name] || 0
                { v: count_for_category, f: number_with_delimiter(count_for_category) }
