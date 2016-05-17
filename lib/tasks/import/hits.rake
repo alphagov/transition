@@ -11,4 +11,12 @@ namespace :import do
       Transition::Import::HitsMappingsRelations.refresh!
     end
   end
+
+  desc 'Import hits from sql table by date'
+  task :sql_hits, [:date] => :environment do |_, args|
+    date = args[:date]
+    Transition::Import::RawSqlHits.update!(date)
+    Transition::Import::DailyHitTotals.from_hits!
+    Transition::Import::HitsMappingsRelations.refresh!
+  end
 end
