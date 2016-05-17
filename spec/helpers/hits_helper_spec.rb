@@ -62,7 +62,7 @@ describe HitsHelper do
     it { is_expected.not_to include('nil') }
 
     describe 'it includes a normal data row' do
-      it { is_expected.to include('{"c":[{"v":"Date(2012, 11, 31)"},{"v":""},{"v":3,"f":"3"},{"v":3,"f":"3"},{"v":0,"f":"0"}]}') }
+      it { is_expected.to include('{"c":[{"v":"Date(2012, 11, 31)"},{"v":null},{"v":3,"f":"3"},{"v":3,"f":"3"},{"v":0,"f":"0"}]}') }
     end
 
     describe 'it includes an annotation on the transition date' do
