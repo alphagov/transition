@@ -1,0 +1,17 @@
+<h3 class="remove-top-margin add-bottom-margin">Billing</h3>
+
+<div class="highlight highlight-<%= @site.transition_status.to_s.dasherize %> add-bottom-margin">
+  <span class="small">Last month</span>
+  <br/>
+  <span class="big-message"><%= number_with_delimiter hits_last_calendar_month(@hosts) %></span>
+  <br/>
+  <span class="small">quests</span>
+</div>
+
+<div class="highlight days-from-launch add-big-bottom-margin">
+  <span class="small">Current period</span>
+  <br/>
+  <span class="big-message"><%= number_with_delimiter hits_this_calendar_month(@hosts) %></span>
+  <br/>
+  <span class="small">requests</span>
+</div>

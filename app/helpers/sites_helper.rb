@@ -55,4 +55,23 @@ module SitesHelper
       '0%'
     end
   end
+
+  def hits_last_calendar_month(hosts)
+    hits = hosts.collect do |host|
+      host.hits.select do |hit|
+        hit.hit_on >= Date.today.beginning_of_month - 1.month &&
+          hit.hit_on < Date.today.beginning_of_month
+      end
+    end.flatten
+    hits.inject(0) { |sum,hit| sum + hit.count }
+  end
+
+  def hits_this_calendar_month(hosts)
+    hits = hosts.collect do |host|
+      host.hits.select do |hit|
+        hit.hit_on >= Date.today.beginning_of_month
+      end
+    end.flatten
+    hits.inject(0) { |sum,hit| sum + hit.count }
+  end
 end
