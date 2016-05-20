@@ -5,7 +5,6 @@ gem 'activerecord-session_store', '0.1.2'
 gem 'unicorn', '4.6.2'
 gem 'pg', '0.18.4'
 gem 'optic14n', '2.0.0'     # Ideally version should be synced with bouncer
-gem 'gds-sso', '12.0.0'
 gem 'govuk_admin_template', '4.2.0'
 gem 'plek', '1.12.0'
 gem 'htmlentities', '4.3.4'
@@ -21,6 +20,11 @@ gem 'select2-rails', '3.5.7'
 gem 'activerecord-import', '0.12.0'
 gem 'sidekiq', '4.1.1'
 gem 'redis-namespace', '1.5.2'
+gem 'rails_warden', '0.5.8'
+
+# Custom authentication...
+gem 'omniauth', '1.3.1'
+gem 'omniauth-zendesk-oauth2', '0.1'
 
 # We use Errbit for tracking exceptions, which needs the airbrake gem. Config
 # for Errbit is in alphagov-deployment.

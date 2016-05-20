@@ -1,9 +1,28 @@
 class ApplicationController < ActionController::Base
-  include GDS::SSO::ControllerMethods
+  # include CommonAuthentication
 
-  before_filter :require_signin_permission!
-
+  # before_filter :require_signin_permission!
   before_filter :exclude_all_users_except_admins_during_maintenance
+
+  # this is sooo bad.
+  before_filter :janky_session_user
+
+  def janky_session_user
+    @current_user ||= User.find(session[:user_id])
+  rescue
+    if @current_user.nil?
+      redirect_to home_path
+    end
+  end
+
+  helper_method :current_user
+  def current_user
+    @current_user
+  end
+
+  def user_signed_in?
+    !current_user.nil?
+  end
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.

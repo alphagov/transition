@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   mount GovukAdminTemplate::Engine, at: '/style-guide'
+
   root to: 'organisations#index'
 
   resources :style, only: [:index]
@@ -10,6 +11,11 @@ Rails.application.routes.draw do
   match '/404' => 'errors#error_404', via: [:get, :post]
   match '/422' => 'errors#error_422', via: [:get, :post]
   match '/500' => 'errors#error_500', via: [:get, :post]
+
+  get 'login', to: 'authentication#new'
+  get 'auth/zendesk/callback', to: 'authentication#create'
+  get 'logout', to: 'authentication#destroy'
+  get 'home', to: 'authentication#index'
 
   resources :hosts, only: [:index]
 
