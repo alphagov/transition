@@ -1,9 +1,6 @@
 require 'rails_helper'
-require 'gds-sso/lint/user_spec'
 
 describe User do
-  it_behaves_like "a gds-sso user class"
-
   describe 'organisation' do
     context 'user has no organisation set' do
       subject(:user) { create(:user, organisation_content_id: nil) }
