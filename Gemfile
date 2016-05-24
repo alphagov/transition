@@ -5,13 +5,11 @@ gem 'activerecord-session_store', '0.1.2'
 gem 'unicorn', '4.6.2'
 gem 'pg', '0.18.4'
 gem 'optic14n', '2.0.0'     # Ideally version should be synced with bouncer
-gem 'govuk_admin_template', '4.2.0'
 gem 'plek', '1.12.0'
 gem 'htmlentities', '4.3.4'
 gem 'kaminari', '0.16.3'
 gem 'paper_trail', '4.1.0'
 gem 'google-api-client', '0.8.6'
-gem 'gds-api-adapters', '29.6.0'
 gem 'mlanett-redis-lock', '0.2.7'
 gem 'whenever', '0.9.4'
 gem 'gretel', '3.0.8'
@@ -21,6 +19,11 @@ gem 'activerecord-import', '0.12.0'
 gem 'sidekiq', '4.1.1'
 gem 'redis-namespace', '1.5.2'
 gem 'rails_warden', '0.5.8'
+
+# Remove GDS specific stuff...
+# gem 'govuk_admin_template', '4.2.0'
+# gem 'gds-api-adapters', '29.6.0'
+gem 'bootstrap-sass', '3.3.5.1'
 
 # Custom authentication...
 gem 'omniauth', '1.3.1'

@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  mount GovukAdminTemplate::Engine, at: '/style-guide'
-
   root to: 'organisations#index'
 
   resources :style, only: [:index]

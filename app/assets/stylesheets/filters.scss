@@ -1,16 +1,16 @@
 .filters {
-  @include remove-bottom-margin;
-  @include add-top-margin;
+  // @include remove-bottom-margin;
+  // @include add-top-margin;
 
   .panel-heading {
     background: transparent;
   }
 
   .active-filter {
-    @include add-bottom-margin;
+    // @include add-bottom-margin;
 
     &:last-child {
-      @include remove-bottom-margin;
+      // @include remove-bottom-margin;
     }
   }
 
@@ -28,7 +28,7 @@ a.filter-option:visited,
   color: inherit !important;
 
   .glyphicon {
-    @extend %glyphicon-smaller-than-text;
+    // @extend %glyphicon-smaller-than-text;
   }
 
   &.filter-selected {
