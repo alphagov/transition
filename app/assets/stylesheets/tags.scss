@@ -31,7 +31,7 @@ a.tag:hover {
 }
 
 .tag .glyphicon-remove {
-  @extend %glyphicon-smaller-than-text;
+  // @extend %glyphicon-smaller-than-text;
   position: relative;
   top: (1em/14);
 }
@@ -55,7 +55,7 @@ a.tag:hover {
 .select2-container .select2-choices .select2-search-choice-close {
   @extend .glyphicon;
   @extend .glyphicon-remove;
-  @extend %glyphicon-smaller-than-text;
+  // @extend %glyphicon-smaller-than-text;
   background-image: none;
   position: absolute;
   top: 11px;

@@ -161,6 +161,15 @@ ActiveRecord::Schema.define(version: 20160314150053) do
 
   add_index "organisations_sites", ["site_id", "organisation_id"], name: "index_organisations_sites_on_site_id_and_organisation_id", unique: true, using: :btree
 
+  create_table "requests", force: :cascade do |t|
+    t.string "hostname"
+    t.text   "path"
+    t.string "http_status", limit: 3
+    t.date   "hit_on"
+  end
+
+  add_index "requests", ["hit_on", "hostname", "path", "http_status"], name: "index_requests_on_hit_on_and_hostname_and_path_and_http_status", using: :btree
+
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
     t.text     "data"
