@@ -33,7 +33,7 @@ module Transition
         PATTERNS = [
           # Generic site furniture
           '.*\.css',
-          '.*\.js',
+          '.*\.js(\W|$)',
           '.*\.gif',
           '.*\.ico',
           '.*\.jpg',
