@@ -17,8 +17,8 @@
     plot: function(literalDataTable, colors) {
 
       var chartContainer = $('.js-hits-graph').get(0);
-      window.google.load("visualization", "1", {packages:["corechart"]});
-      window.google.setOnLoadCallback(drawChart);
+      window.google.charts.load('current', {packages: ['corechart']});
+      window.google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
         function onDateSelected() {

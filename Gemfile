@@ -38,7 +38,8 @@ group :development do
 end
 
 group :test do
-  gem 'poltergeist', '1.5.1'
+  gem 'poltergeist', '1.10.0'
+  gem 'phantomjs', '2.1.1.0'
   gem 'launchy', '2.4.3'                  # Primarily for save_and_open_page support in Capybara
   gem 'timecop', '0.8.0'
   gem 'cucumber-rails', require: false

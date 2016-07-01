@@ -11,8 +11,10 @@ describe('A hits module', function() {
       $('body').append(container);
 
       window.google = {
-        load: function() {},
-        setOnLoadCallback: function() {},
+        charts: {
+          load: function() {},
+          setOnLoadCallback: function() {},
+        },
         visualization: {
           events: {
             addListener: function() {}
@@ -29,10 +31,10 @@ describe('A hits module', function() {
     });
 
     it('waits for google charts API to load' , function() {
-      spyOn(window.google, "setOnLoadCallback");
+      spyOn(window.google.charts, "setOnLoadCallback");
 
       root.GOVUK.Hits.plot();
-      expect(window.google.setOnLoadCallback).toHaveBeenCalledWith(jasmine.any(Function));
+      expect(window.google.charts.setOnLoadCallback).toHaveBeenCalledWith(jasmine.any(Function));
     });
 
     describe('when the chart API has loaded', function() {
@@ -44,7 +46,7 @@ describe('A hits module', function() {
       beforeEach(function() {
         chartFn = {draw: function() {}};
 
-        spyOn(window.google, "setOnLoadCallback").and.callFake(function(callback) {
+        spyOn(window.google.charts, "setOnLoadCallback").and.callFake(function(callback) {
           callbackFn = callback;
         });
 
