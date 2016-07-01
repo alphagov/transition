@@ -4,6 +4,7 @@ require 'phantomjs'
 Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new(app, {
     phantomjs: Phantomjs.path,
+    window_size: [1366, 768],
     debug: false
   })
 end
