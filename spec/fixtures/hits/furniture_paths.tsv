@@ -1,5 +1,6 @@
 date	count	status	host	path
 2012-10-14	11	200	www.businesslink.gov.uk	/legitimate
+2012-10-14	11	200	www.businesslink.gov.uk	/index.jsp
 2012-10-14	11	200	www.businesslink.gov.uk	/static/css/theme3.css
 2012-10-14	11	200	www.businesslink.gov.uk	/syntegra/js/s_code_remote.js
 2012-10-14	11	200	www.businesslink.gov.uk	/foo.eot

@@ -88,7 +88,7 @@ describe Transition::Import::Hits do
       end
 
       it 'should ignore hits that are furniture so are uninteresting and unlikely to be mapped' do
-        expect(Hit.pluck(:path).sort).to eql(['/legitimate'])
+        expect(Hit.pluck(:path).sort).to eql(['/index.jsp', '/legitimate'])
       end
     end
 
