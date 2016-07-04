@@ -75,11 +75,11 @@ end
 
 Then(/^I should see a trend for all hits, errors, archives and redirects$/) do
   ['#333333', '#ee9999', '#99ee99', '#aaaaaa'].each do |color|
-    expect(page).to have_selector("path[stroke='#{color}']")
+    expect(page).to have_selector(".hits-graph svg path[stroke='#{color}']")
   end
 
   ['All hits', 'Errors', 'Archives', 'Redirects'].each do |category|
-    expect(page).to have_svg_text(category)
+    expect(page).to have_selector('.hits-graph svg text', text: category)
   end
 end
 
@@ -155,12 +155,8 @@ Then(/^I should see a[n]? (\w+) graph showing a (\w+) trend line(?: with )?([0-9
     color = '#aaaaaa'
   end
 
-  # Poltergeist doesnt correctly find content of SVG text elements
-  # Use an SVG matcher instead of:
-  # expect(page).to have_selector('text', text: 'Errors')
-
-  expect(page).to have_svg_text(category.titleize)
-  expect(page).to have_selector("path[stroke='#{color}']")
+  expect(page).to have_selector('.hits-graph svg text', text: category.titleize)
+  expect(page).to have_selector(".hits-graph svg path[stroke='#{color}']")
 
   expect(page).to have_hit_graph_points(points.to_i) if points.present?
 end
