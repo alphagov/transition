@@ -4,7 +4,7 @@ gem 'rails', '4.2.6'
 gem 'activerecord-session_store', '0.1.2'
 gem 'unicorn', '4.6.2'
 gem 'pg', '0.18.4'
-gem 'optic14n', '2.0.0'     # Ideally version should be synced with bouncer
+gem 'optic14n', '2.0.1'     # Ideally version should be synced with bouncer
 gem 'gds-sso', '12.0.0'
 gem 'govuk_admin_template', '4.2.0'
 gem 'plek', '1.12.0'
