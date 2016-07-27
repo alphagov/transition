@@ -14,6 +14,7 @@ describe Transition::Import::HitsMappingsRelations do
       @other_site_hit        = create :hit, path: '/this/exists?significant=1', host: @other_host
       @c14n_hit_with_mapping = create :hit, path: '/this/Exists?and=can&canonicalize=1&significant=1', host: @host
       @hit_without_mapping   = create :hit, path: '/this/does/not/exist', host: @host
+      @hit_with_broken_path = create :hit, path: '/statistics/child%E2?%3Fpoverty%E2%3F%3Fstats.htm', host: @host
 
       @mapping               = create :mapping, path: '/this/exists?significant=1', site: @site
       @other_site_mapping    = create :mapping, path: '/this/exists?significant=1', site: @other_site
@@ -25,6 +26,10 @@ describe Transition::Import::HitsMappingsRelations do
       expect(@hit_with_mapping.reload.mapping).to eq(@mapping)
     end
 
+    it "ignores paths with invalid encoding" do
+      expect(@hit_with_broken_path.reload.mapping).to be_nil
+    end
+
     it 'points the c14nable hit for which there is a path at the corresponding mapping' do
       expect(@c14n_hit_with_mapping.reload.mapping).to eq(@mapping)
     end
@@ -34,7 +39,7 @@ describe Transition::Import::HitsMappingsRelations do
     end
 
     it 'has a HostPath per uncanonicalized hit (all of them!)' do
-      expect(HostPath.all.size).to eq(4)
+      expect(HostPath.all.size).to eq(5)
     end
 
     it 'precomputes the total hits for mappings across all sites' do

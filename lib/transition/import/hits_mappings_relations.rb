@@ -60,7 +60,12 @@ module Transition
         host_paths.includes(:host).find_each do |host_path|
           site = host_path.host.site
 
-          canonical_path     = site.canonical_path(host_path.path)
+          begin
+            canonical_path = site.canonical_path(host_path.path)
+          rescue EncodingError
+            next
+          end
+
           mapping_id = Mapping.where(
             path: canonical_path, site_id: site.id).pluck(:id).first
 
