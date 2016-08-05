@@ -12,12 +12,20 @@
 
 <% unless @sites.empty? %>
   <h2>Sites</h2>
-  <table class="sites table table-hover table-striped table-bordered">
+  <table class="sites table table-hover table-striped table-bordered" data-module="filterable-table">
     <thead>
       <tr class="table-header">
         <th scope="col">Old site</th>
         <th scope="col">Transition status</th>
         <th scope="col">Transition date</th>
+      </tr>
+      <tr class="if-no-js-hide table-header-secondary">
+        <td colspan="3">
+          <form>
+            <label for="site-filter" class="rm">Filter sites</label>
+            <input id="site-filter" type="text" class="form-control normal js-filter-table-input" placeholder="Filter list of sites">
+          </form>
+        </td>
       </tr>
     </thead>
     <tbody>
