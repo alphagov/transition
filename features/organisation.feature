@@ -36,6 +36,19 @@ Feature: View organisation
     Then I should see the site that the organisation is trusted to edit
     And I should see the organisation's own site
 
+  @javascript
+  Scenario: Filter the list of sites
+    Given I have logged in as a GDS Editor
+    And there is a bis organisation named Companies House abbreviated companies-house with these sites:
+      | abbr             | homepage                                                    |
+      | companies        | https://www.gov.uk/government/organisations/companies-house |
+      | companies_welsh  | https://www.gov.uk/government/organisations/companies-house |
+    When I visit the path /organisations/companies-house
+    And I filter sites by "welsh"
+    Then I should see an sites table with 1 row
+    And I should see "companies_welsh.gov.uk"
+    But I should not see "companies.gov.uk"
+
   @allow-rescue
   Scenario: Visit the page of an non-existent organisation
     Given I have logged in as a GDS Editor
