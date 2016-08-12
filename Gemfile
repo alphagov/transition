@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.2.7.1'
-gem 'activerecord-session_store', '0.1.2'
+gem 'activerecord-session_store', '1.0.0'
 gem 'unicorn', '4.6.2'
 gem 'pg', '0.18.4'
 gem 'optic14n', '2.0.1'     # Ideally version should be synced with bouncer
