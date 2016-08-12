@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.6'
-gem 'activerecord-session_store', '0.1.2'
+gem 'rails', '4.2.7.1'
+gem 'activerecord-session_store', '1.0.0'
 gem 'unicorn', '4.6.2'
 gem 'pg', '0.18.4'
 gem 'optic14n', '2.0.1'     # Ideally version should be synced with bouncer
@@ -29,7 +29,7 @@ gem 'airbrake', '~> 4.3.0'
 gem 'logstasher', '0.6.5'
 
 gem 'sass', '3.4.14'
-gem 'sass-rails', '5.0.4'
+gem 'sass-rails', '5.0.6'
 gem 'uglifier', '2.7.2'
 
 group :development do
