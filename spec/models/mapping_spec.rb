@@ -418,6 +418,7 @@ describe Mapping do
   describe 'The paper trail', versioning: true do
     let(:alice) { create :user, name: 'Alice' }
     let(:bob)   { create :user, name: 'Bob' }
+    let(:lisa)   { create :user, name: 'Lisa' }
 
     context 'with the correct configuration' do
       subject(:mapping) { create :mapping, as_user: alice }
@@ -472,6 +473,35 @@ describe Mapping do
           describe '#event' do
             subject { super().event }
             it { is_expected.to eql 'update'}
+          end
+        end
+      end
+
+      context 'versioning for tag_list' do
+        subject(:mapping) { create :mapping, as_user: lisa }
+
+        describe 'an update from Lisa' do
+          before do
+            Transition::History.as_a_user(lisa) do
+              mapping.tag_list = ["cool_tag"]
+              mapping.save
+            end
+          end
+
+          it 'has 2 versions' do
+            expect(subject.versions.size).to eq(2)
+          end
+
+          describe 'the last version' do
+            subject { mapping.versions.last }
+
+            it "records an update event" do
+              expect(subject.event).to eq("update")
+            end
+
+            it "records the change to tag_list" do
+              expect(subject.changeset).to include("tag_list")
+            end
           end
         end
       end
