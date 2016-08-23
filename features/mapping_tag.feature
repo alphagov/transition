@@ -11,6 +11,8 @@ Scenario: Adding tags to a mapping
   And I save the mapping
   Then I should see "Mapping saved"
   And the mapping should have the tags "fee, fi, fo"
+  When I edit that mapping
+  Then I should see the tags "fee, fi, fo"
 
 Scenario: Adding tags when bulk adding mappings
   Given I have logged in as a GDS Editor

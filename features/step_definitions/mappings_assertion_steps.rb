@@ -158,9 +158,10 @@ end
 Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
   if @_javascript
     field = find(:xpath, '//input[contains(@class, "select2-offscreen")]')
-    expect(field.value).to eq(tag_list)
+    expect(field.value.split(',')).to match_array(tag_list.split(','))
   else
-    expect(page).to have_field('Tags', with: tag_list)
+    field = find_field('Tags')
+    expect(field.value.split(',')).to match_array(tag_list.split(','))
   end
 end
 
