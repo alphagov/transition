@@ -13,11 +13,11 @@ describe Hit do
   end
 
   describe 'attributes set before validation' do
-    subject { create :hit, hit_on: DateTime.new(2014, 12, 31, 23, 59, 59) }
+    subject { create :hit, hit_on: DateTime.new(2014, 12, 31, 23, 59, 59).in_time_zone }
 
     describe '#hit_on' do
       subject { super().hit_on }
-      it { is_expected.to eql(DateTime.new(2014, 12, 31, 0, 0, 0)) }
+      it { is_expected.to eql(Date.parse('2014-12-31')) }
     end
   end
 

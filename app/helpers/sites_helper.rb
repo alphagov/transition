@@ -8,7 +8,7 @@ module SitesHelper
       class: 'big-number'
     )
 
-    should_have_launched = Date.today > site.launch_date
+    should_have_launched = Time.zone.today > site.launch_date
     small_text = content_tag(
       :div,
       if site.transition_status == :live
