@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe HostsController do
   describe '#index' do
-    let(:site)   { create :site }
+    let(:site) { create :site }
 
     before do
       get :index

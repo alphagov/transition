@@ -15,6 +15,7 @@ module TrackMappingsProgress
   end
 
 protected
+
   def _find_site
     @site = Site.find_by_abbr!(params[:site_id])
   end

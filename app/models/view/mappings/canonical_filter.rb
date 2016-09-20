@@ -21,6 +21,7 @@ module View
       end
 
     private
+
       def canonicalized
         case
         when parseable_url? || path?

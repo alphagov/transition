@@ -37,7 +37,7 @@ describe User do
 
   describe 'gds_editor?' do
     context 'doesn\'t have permission' do
-      subject(:user) { create(:user, permissions: ["signin"])}
+      subject(:user) { create(:user, permissions: ["signin"]) }
 
       describe '#gds_editor?' do
         subject { super().gds_editor? }
@@ -111,8 +111,10 @@ describe User do
     context 'the site has extra organisations whose members can edit it' do
       let(:shoe_procurement_bureau) { create(:organisation) }
       let(:soulless_agency)         { create(:organisation) }
-      let(:site)                    { create(:site, organisation: agency_of_soul,
-                                             extra_organisations: [shoe_procurement_bureau, soulless_agency]) }
+      let(:site)                    {
+        create(:site, organisation: agency_of_soul,
+                      extra_organisations: [shoe_procurement_bureau, soulless_agency])
+      }
 
       context 'user is a member of an extra organisation' do
         subject(:user) { create(:user, organisation_content_id: shoe_procurement_bureau.content_id) }

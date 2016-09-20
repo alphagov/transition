@@ -12,7 +12,7 @@ describe FilterHelper do
 
     subject { helper.hidden_filter_fields_except(filter, :path_contains) }
 
-    it { is_expected.to be_an(ActiveSupport::SafeBuffer)}
+    it { is_expected.to be_an(ActiveSupport::SafeBuffer) }
 
     it 'includes links to all the fields except path_contains' do
       expect(subject).to     have_selector('input#type[name="type"][type="hidden"]')

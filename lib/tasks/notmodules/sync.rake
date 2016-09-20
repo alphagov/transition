@@ -7,21 +7,21 @@ require 'yaml'
 # (a file called .notmodules.yaml)
 #
 class NotModules
-  FILENAME = '.notmodules.yaml'
+  FILENAME = '.notmodules.yaml'.freeze
 
   include Singleton
 
   def yaml
-    @yaml ||= YAML.load(File.read(FILENAME)) or raise RuntimeError, "Couldn't load #{FILENAME}"
+    (@yaml ||= YAML.load(File.read(FILENAME))) || raise(RuntimeError, "Couldn't load #{FILENAME}")
   end
 
   def modules
     @modules ||= yaml.map { |m| Module.new(m['path'], m['url']) }
   end
 
-  class Module < Struct.new(:path, :url)
+  Module = Struct.new(:path, :url) do
     def exists?
-      Dir.exists?(path)
+      Dir.exist?(path)
     end
 
     def clone!
@@ -37,7 +37,7 @@ class NotModules
     end
 
     def rev
-      (`cd #{path} && git rev-parse HEAD`).chomp
+      `cd #{path} && git rev-parse HEAD`.chomp
     end
 
     def to_s
@@ -49,7 +49,7 @@ end
 namespace :notmodules do
   desc '`git pull` or `git clone` all notmodules as necessary'
   task :sync do
-    NotModules.instance.modules.each { |m| m.sync! }
+    NotModules.instance.modules.each(&:sync!)
   end
 
   desc 'list all things that definitely aren\'t git submodules'
@@ -58,4 +58,4 @@ namespace :notmodules do
   end
 end
 
-task :notmodules => 'notmodules:list'
+task notmodules: 'notmodules:list'

@@ -29,8 +29,8 @@ describe ImportBatchesController do
 
     context 'with valid parameters' do
       let!(:whitelisted_host) { create :whitelisted_host, hostname: 'example.com' }
-      let(:stem)              { "http://#{whitelisted_host.hostname}/"  }
-      let(:long_url)          { "#{stem}#{'x' * (2048 - stem.length) }" }
+      let(:stem)              { "http://#{whitelisted_host.hostname}/" }
+      let(:long_url)          { "#{stem}#{'x' * (2048 - stem.length)}" }
       before do
         post :create, site_id: site.abbr, import_batch: {
           raw_csv: "/a,TNA\n/b,#{long_url}",
@@ -59,7 +59,7 @@ describe ImportBatchesController do
 
         describe '#type' do
           subject { super().type }
-          it { is_expected.to eql('archive')}
+          it { is_expected.to eql('archive') }
         end
       end
 
@@ -73,12 +73,12 @@ describe ImportBatchesController do
 
         describe '#type' do
           subject { super().type }
-          it { is_expected.to eql('redirect')}
+          it { is_expected.to eql('redirect') }
         end
 
         describe '#new_url' do
           subject { super().new_url }
-          it { is_expected.to eql(long_url)}
+          it { is_expected.to eql(long_url) }
         end
       end
 

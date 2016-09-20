@@ -8,6 +8,7 @@ module CheckUserCanEditMappings
   end
 
 protected
+
   def check_user_can_edit_mappings
     unless current_user.can_edit_site?(@site)
       message = "You don't have permission to edit mappings for #{@site.default_host.hostname}"

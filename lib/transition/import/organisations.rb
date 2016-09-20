@@ -18,7 +18,7 @@ module Transition
 
       def create(whitehall_org)
         Organisation.where(content_id: whitehall_org['details']['content_id']).first_or_initialize.tap do |target|
-          target.whitehall_slug  = whitehall_org['details']['slug']
+          target.whitehall_slug = whitehall_org['details']['slug']
 
           target.whitehall_type = whitehall_org['format']
           target.title          = whitehall_org['title']
@@ -26,7 +26,8 @@ module Transition
           target.homepage       =
             "https://www.gov.uk#{Addressable::URI.parse(whitehall_org['web_url']).path}" if whitehall_org['web_url'].present?
 
-          if fudge_for_org = css_furl_fudge[whitehall_org['details']['slug']]
+          fudge_for_org = css_furl_fudge[whitehall_org['details']['slug']]
+          if fudge_for_org.present?
             target.css  = fudge_for_org[:css]
             target.furl = fudge_for_org[:furl]
           end

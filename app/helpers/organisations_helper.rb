@@ -1,6 +1,6 @@
 module OrganisationsHelper
   def date_or_not_yet(date)
-    date.nil? ? 'No date set' : (I18n.l date, :format => :govuk_date)
+    date.nil? ? 'No date set' : (I18n.l date, format: :govuk_date)
   end
 
   def add_indefinite_article(noun_phrase)

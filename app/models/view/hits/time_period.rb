@@ -17,11 +17,11 @@ module View
       end
 
       def self.slugize(title)
-        title.downcase.gsub(' ', '-')
+        title.downcase.tr(' ', '-')
       end
 
       DATE_RANGE = /[0-9]{8}(?:-[0-9]{8})?/
-      DEFAULT_SLUG = 'last-30-days'
+      DEFAULT_SLUG = 'last-30-days'.freeze
 
       PERIODS_BY_SLUG = {
         'Yesterday'       => lambda { Date.yesterday..Date.today },

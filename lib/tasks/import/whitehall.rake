@@ -4,7 +4,7 @@ require 'transition/import/whitehall/mappings'
 namespace :import do
   namespace :whitehall do
     desc "Import mappings from Whitehall. Set FILENAME to avoid downloading the huge file."
-    task :mappings => :environment do
+    task mappings: :environment do
       if ENV['FILENAME']
         options = { filename: ENV['FILENAME'] }
       else

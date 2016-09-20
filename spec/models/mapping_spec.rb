@@ -159,7 +159,7 @@ describe Mapping do
       end
 
       context 'Archive URL is not webarchive.nationalarchives.gov.uk' do
-        subject(:mapping) { build(:archived, archive_url: 'http://malicious.com/foo')}
+        subject(:mapping) { build(:archived, archive_url: 'http://malicious.com/foo') }
 
         it 'fails' do
           expect(mapping.errors[:archive_url]).to eq(['must be on the National Archives domain, webarchive.nationalarchives.gov.uk'])
@@ -323,7 +323,7 @@ describe Mapping do
   describe 'path canonicalization and relation to hits' do
     let(:uncanonicalized_path) { '/A/b/c?significant=1&really-significant=2&insignificant=2' }
     let(:canonicalized_path)   { '/a/b/c?really-significant=2&significant=1' }
-    let(:site)                 { create(:site, query_params: 'significant:really-significant')}
+    let(:site)                 { create(:site, query_params: 'significant:really-significant') }
 
     subject(:mapping) do
       create(:archived, path: uncanonicalized_path, site: site)
@@ -338,7 +338,7 @@ describe Mapping do
       let!(:hit_on_uncanonicalized) { create :hit, path: uncanonicalized_path, host: site.default_host }
       let!(:host_path_on_uncanonicalized) { create :host_path, path: uncanonicalized_path, host: site.default_host }
 
-      let!(:hit_on_canonicalized)   { create :hit, path: canonicalized_path, host: site.default_host }
+      let!(:hit_on_canonicalized) { create :hit, path: canonicalized_path, host: site.default_host }
       let!(:host_path_on_canonicalized) { create :host_path, path: canonicalized_path, host: site.default_host }
 
       let!(:unrelated_hit) { create :hit, path: '/just-zis-guy', host: site.default_host }
@@ -360,7 +360,6 @@ describe Mapping do
 
         it 'links the uncanonicalized host_path to the mapping' do
           expect(host_path_on_uncanonicalized.reload.mapping).to eq(mapping)
-
         end
 
         it 'link the canonicalized host_path to the mapping' do
@@ -418,7 +417,7 @@ describe Mapping do
   describe 'The paper trail', versioning: true do
     let(:alice) { create :user, name: 'Alice' }
     let(:bob)   { create :user, name: 'Bob' }
-    let(:lisa)   { create :user, name: 'Lisa' }
+    let(:lisa)  { create :user, name: 'Lisa' }
 
     context 'with the correct configuration' do
       subject(:mapping) { create :mapping, as_user: alice }
@@ -472,7 +471,7 @@ describe Mapping do
 
           describe '#event' do
             subject { super().event }
-            it { is_expected.to eql 'update'}
+            it { is_expected.to eql 'update' }
           end
         end
       end

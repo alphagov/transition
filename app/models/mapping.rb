@@ -9,7 +9,7 @@ class Mapping < ActiveRecord::Base
   # something else instead, without activating STI.
   self.inheritance_column = nil
 
-  SUPPORTED_TYPES = %w(redirect archive unresolved)
+  SUPPORTED_TYPES = %w(redirect archive unresolved).freeze
 
   acts_as_taggable
   has_paper_trail
@@ -20,9 +20,9 @@ class Mapping < ActiveRecord::Base
   validates :site, presence: true
   validates :path,
             length: { maximum: 2048 },
-            exclusion: { in: ['/'], message: I18n.t('mappings.not_possible_to_edit_homepage_mapping')},
+            exclusion: { in: ['/'], message: I18n.t('mappings.not_possible_to_edit_homepage_mapping') },
             is_path: true
-  validates :type, presence: true, inclusion: { :in => SUPPORTED_TYPES }
+  validates :type, presence: true, inclusion: { in: SUPPORTED_TYPES }
   validates :path, uniqueness: { scope: [:site_id], message: 'Mapping already exists for this site and path!' }
 
   before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path
@@ -42,14 +42,14 @@ class Mapping < ActiveRecord::Base
       joins('LEFT JOIN hits ON hits.mapping_id = mappings.id').
       group('mappings.id')
   }
-  scope :with_type, -> type { where(type: type) }
+  scope :with_type, -> (type) { where(type: type) }
   scope :redirects, -> { with_type('redirect') }
   scope :archives,  -> { with_type('archive') }
-  scope :unresolved, ->{ with_type('unresolved') }
-  scope :filtered_by_path, -> term do
+  scope :unresolved, -> { with_type('unresolved') }
+  scope :filtered_by_path, -> (term) do
     where(Mapping.arel_table[:path].matches("%#{term}%")).references(:mapping) if term.present?
   end
-  scope :filtered_by_new_url, -> term do
+  scope :filtered_by_new_url, -> (term) do
     where(Mapping.arel_table[:new_url].matches("%#{term}%")).references(:mapping) if term.present?
   end
 
@@ -120,13 +120,6 @@ class Mapping < ActiveRecord::Base
     site.hit_total_count.zero? ? 0 : (hit_count.to_f / site.hit_total_count) * 100
   end
 
-protected
-  def fill_in_scheme
-    self.new_url       = Mapping.ensure_url(new_url)
-    self.suggested_url = Mapping.ensure_url(suggested_url)
-    self.archive_url   = Mapping.ensure_url(archive_url)
-  end
-
   # uri can be a URL or something that is intended to be a URL,
   # eg www.gov.uk/foo is technically not a URL, but we can prepend https:// and
   # it becomes a URL.
@@ -141,6 +134,14 @@ protected
     end
   end
 
+protected
+
+  def fill_in_scheme
+    self.new_url       = Mapping.ensure_url(new_url)
+    self.suggested_url = Mapping.ensure_url(suggested_url)
+    self.archive_url   = Mapping.ensure_url(archive_url)
+  end
+
   def trim_scheme_host_and_port_from_path
     if path =~ %r{^https?:}
       url = Addressable::URI.parse(path)
@@ -148,10 +149,21 @@ protected
     end
   rescue Addressable::URI::InvalidURIError
     # The path isn't parseable, so leave it intact for validations to report
+    Rails.logger.warn("Unparseable URI #{path} in mapping")
   end
 
   def canonicalize_path
-    self.path = site.canonical_path(path) unless (site.nil? || path == '/' || path =~ /^[^\/]/)
+    return if site.nil?
+    self.path = site.canonical_path(path) if path_is_valid_for_canonicalization?
+  end
+
+  def path_is_valid_for_canonicalization?
+    # quickly check if the path would fail validations, and don't
+    # canonicalize it:
+    #   '/' is a homepage path and not valid for a mapping
+    #   a path that doesn't start with a '/' isn't a valid path
+    # full validation still needs to be run on the path
+    not(path == '/' || path =~ /^[^\/]/)
   end
 
   def tna_timestamp

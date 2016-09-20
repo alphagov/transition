@@ -14,6 +14,7 @@ class HostsPresenter
   end
 
 private
+
   def results
     @results ||= @hosts.map { |host| HostPresenter.new(host).as_hash }
   end

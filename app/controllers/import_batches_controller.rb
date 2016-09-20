@@ -46,6 +46,7 @@ class ImportBatchesController < ApplicationController
   end
 
 protected
+
   def batch_params
     params.require(:import_batch).permit(:tag_list, :raw_csv, :update_existing)
   end

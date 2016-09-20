@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
         own_organisation == site_to_edit.organisation ||
         site_to_edit.organisation.parent_organisations.include?(own_organisation) ||
         site_to_edit.extra_organisations.include?(own_organisation) &&
-        site_to_edit.global_type.blank?
+          site_to_edit.global_type.blank?
     end
   end
 

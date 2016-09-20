@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe View::Hits::TimePeriod do
   describe '.all' do
-
     context 'with no arguments' do
       subject(:all_periods) { View::Hits::TimePeriod.all }
 
@@ -226,7 +225,6 @@ describe View::Hits::TimePeriod do
         specify { expect { View::Hits::TimePeriod['99999999-99999999'] }.to raise_error(ArgumentError) }
         specify { expect { View::Hits::TimePeriod['20130101-20120101'] }.to raise_error(ArgumentError) }
       end
-
     end
   end
 end

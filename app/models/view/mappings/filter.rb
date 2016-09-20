@@ -6,7 +6,13 @@ module View
     # Take a site and params and apply the scopes required to
     # return a matching set of mappings.
     #
-    class Filter < Struct.new(:site, :params)
+    class Filter
+      attr_accessor :site, :params
+      def initialize(site, params)
+        @site = site
+        @params = params
+      end
+
       ##
       # Fields
       #
@@ -44,7 +50,7 @@ module View
       end
 
       def incompatible?
-        ['archive', 'unresolved'].include?(params[:type]) && new_url_contains.present?
+        %w(archive unresolved).include?(params[:type]) && new_url_contains.present?
       end
 
       def query
@@ -66,7 +72,7 @@ module View
       def unpaginated_mappings
         mappings = site.mappings
           .includes(:site)
-          .includes(:taggings => :tag)
+          .includes(taggings: :tag)
 
         mappings = mappings.redirects   if type == 'redirect'
         mappings = mappings.archives    if type == 'archive'
@@ -95,7 +101,7 @@ module View
             params.except(:page)
           else
             tagged << tag
-            params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
+            params.except(:page).merge(tagged: tagged.join(ActsAsTaggableOn.delimiter))
           end
         end
 
@@ -106,7 +112,7 @@ module View
           if tagged.empty?
             params.except(:page, :tagged)
           else
-            params.except(:page).merge(:tagged => tagged.join(ActsAsTaggableOn.delimiter))
+            params.except(:page).merge(tagged: tagged.join(ActsAsTaggableOn.delimiter))
           end
         end
 

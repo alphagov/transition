@@ -18,7 +18,7 @@ describe HostPath do
 
     describe '#canonical_path' do
       subject { super().canonical_path }
-      it { is_expected.to eql(canonicalized_path)   }
+      it { is_expected.to eql(canonicalized_path) }
     end
   end
 end

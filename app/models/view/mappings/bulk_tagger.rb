@@ -43,23 +43,24 @@ module View
       end
 
       def update!
-        @failure_ids = mappings.map do |m|
+        @failure_ids = mappings.map { |m|
           m.tag_list -= common_tags
           m.tag_list += tags_as_array
           m.save ? nil : m.id
-        end.compact
+        }.compact
       end
 
       def success_message
         successes = mappings.count - @failure_ids.length
         if tag_list.blank?
-          "Tags removed from #{successes} #{ 'mapping'.pluralize(successes) }"
+          "Tags removed from #{successes} #{'mapping'.pluralize(successes)}"
         else
-          "#{successes} #{ 'mapping'.pluralize(successes) } tagged “#{tag_list}”"
+          "#{successes} #{'mapping'.pluralize(successes)} tagged “#{tag_list}”"
         end
       end
 
     private
+
       def delimiter
         ActsAsTaggableOn.delimiter
       end

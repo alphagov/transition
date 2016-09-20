@@ -3,12 +3,14 @@ require 'transition/google/url_ingester'
 
 describe Transition::Google::UrlIngester do
   TOO_FEW = 9
-  let(:hostpath_rows) {[
-    ['dpm.gov.uk', '/path', 30],
-    ['dpm.gov.uk', '/path2', 20],
-    ['dpm.gov.uk', '/path3', TOO_FEW],
-    ['notdpm.gov.uk', '/path', 10]
-  ]}
+  let(:hostpath_rows) {
+    [
+      ['dpm.gov.uk', '/path', 30],
+      ['dpm.gov.uk', '/path2', 20],
+      ['dpm.gov.uk', '/path3', TOO_FEW],
+      ['notdpm.gov.uk', '/path', 10]
+    ]
+  }
 
   subject(:ingester) { Transition::Google::UrlIngester.new('dpm') }
 

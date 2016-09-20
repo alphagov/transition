@@ -1,0 +1,10 @@
+# We like using `render/redirect and return` in controllers, like
+# the rails guides suggest (see: http://guides.rubyonrails.org/layouts_and_rendering.html#avoiding-double-render-errors)
+# so enable this cop only for conditionals
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+# "FOO".casecmp("foo").zero? is not as readable as "foo".upcase == "FOO" so
+# we disable this cop entirely
+Performance/Casecmp:
+  Enabled: false

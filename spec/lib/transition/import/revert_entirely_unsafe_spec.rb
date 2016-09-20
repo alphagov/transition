@@ -92,6 +92,5 @@ describe Transition::Import::RevertEntirelyUnsafe::RevertSite do
         expect(@ago.extra_organisations.count).to eql(0)
       end
     end
-
   end
 end

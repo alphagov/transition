@@ -20,7 +20,7 @@ module Transition
       end
 
       def each(&block)
-        organisations.each &block
+        organisations.each(&block)
       end
 
       def by_id
@@ -30,7 +30,7 @@ module Transition
         end
       end
 
-      private
+    private
 
       def load_orgs
         if load_orgs_from_yaml?

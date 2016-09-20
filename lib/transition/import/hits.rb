@@ -9,24 +9,24 @@ module Transition
       extend ConsoleJobWrapper
       extend PostgreSQLSettings
 
-      TRUNCATE = <<-postgreSQL
+      TRUNCATE = <<-postgreSQL.freeze
         TRUNCATE hits_staging
       postgreSQL
 
-      LOAD_DATA = <<-postgreSQL
+      LOAD_DATA = <<-postgreSQL.freeze
         COPY hits_staging (hit_on, count, http_status, hostname, path)
         FROM STDIN
         WITH DELIMITER AS E'\t' QUOTE AS E'\b' CSV HEADER
       postgreSQL
 
-      INSERT_FROM_STAGING = <<-postgreSQL
+      INSERT_FROM_STAGING = <<-postgreSQL.freeze
         INSERT INTO hits (host_id, path, http_status, count, hit_on)
         SELECT h.id, st.path, st.http_status, st.count, st.hit_on
         FROM   hits_staging st
         INNER JOIN hosts h on h.hostname = st.hostname
         WHERE LENGTH(st.path) <= 2048
-          AND st.path NOT IN (#{ Ignore::PATHS.map { |path| "'" + path + "'" }.join(', ') })
-          AND st.path !~ '#{ Ignore::PATTERNS.join('|') }'
+          AND st.path NOT IN (#{Ignore::PATHS.map { |path| "'" + path + "'" }.join(', ')})
+          AND st.path !~ '#{Ignore::PATTERNS.join('|')}'
           AND NOT EXISTS (
             SELECT 1 FROM hits
             WHERE path        = st.path AND
@@ -36,7 +36,7 @@ module Transition
           );
       postgreSQL
 
-      UPDATE_FROM_STAGING = <<-postgreSQL
+      UPDATE_FROM_STAGING = <<-postgreSQL.freeze
         UPDATE hits
         SET count = st.count
         FROM hits_staging st
@@ -64,7 +64,7 @@ module Transition
 
           Hit.transaction do
             import_record = ImportedHitsFile.where(
-                filename: relative_filename).first_or_initialize
+              filename: relative_filename).first_or_initialize
 
             job.skip! and next if import_record.same_on_disk?
 
@@ -79,7 +79,8 @@ module Transition
       end
 
       def self.from_mask!(filemask)
-        done, unchanged = 0, 0
+        done = 0
+        unchanged = 0
 
         change_settings('work_mem' => '2GB') do
           Dir[File.expand_path(filemask)].each do |filename|

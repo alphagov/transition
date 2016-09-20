@@ -18,6 +18,7 @@ module Transition
     end
 
   private
+
     def redis
       @_redis ||= begin
         redis_config = YAML.load_file(File.join(Rails.root, "config", "redis.yml"))

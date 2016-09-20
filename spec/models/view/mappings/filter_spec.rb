@@ -8,36 +8,41 @@ module View
       subject(:filter) { Filter.new(site, params) }
 
       context 'no filter params are passed' do
-        let(:params) {{}}
-        it { is_expected.not_to be_active}
+        let(:params) { {} }
+        it { is_expected.not_to be_active }
       end
 
       context 'an incompatible params archive filter' do
-        let(:params) { {
-          type:             'archive',
-          new_url_contains: 'something'
-        } }
+        let(:params) {
+          {
+            type:             'archive',
+            new_url_contains: 'something'
+          }
+        }
 
         describe '#type' do
           subject { super().type }
           it { is_expected.to be_nil }
         end
-        it         { is_expected.to be_incompatible }
-        it         { is_expected.to be_active }
+
+        it { is_expected.to be_incompatible }
+        it { is_expected.to be_active }
       end
 
       context 'an incompatible params unresolved filter' do
-        let(:params) { {
-          type:             'unresolved',
-          new_url_contains: 'something'
-        } }
+        let(:params) {
+          {
+            type:             'unresolved',
+            new_url_contains: 'something'
+          }
+        }
 
         describe '#type' do
           subject { super().type }
           it { is_expected.to be_nil }
         end
-        it         { is_expected.to be_incompatible }
-        it         { is_expected.to be_active }
+        it { is_expected.to be_incompatible }
+        it { is_expected.to be_active }
       end
 
       context 'unrecognised types don\'t count' do
@@ -47,12 +52,12 @@ module View
           subject { super().type }
           it { is_expected.to be_nil }
         end
-        it           { is_expected.not_to be_active}
+        it { is_expected.not_to be_active }
       end
 
       context 'when just sorting' do
         let(:params) { { sort: 'by_hits' } }
-        it           { is_expected.to be_active }
+        it { is_expected.to be_active }
       end
 
       describe '#query' do
@@ -64,12 +69,12 @@ module View
 
             describe '#tags' do
               subject { super().tags }
-              it { is_expected.to     be_empty}
+              it { is_expected.to be_empty }
             end
           end
 
           context 'when there are tags present' do
-            let(:params)  { {tagged: 'one,two'}}
+            let(:params) { { tagged: 'one,two' } }
 
             describe '#tags' do
               subject { super().tags }
@@ -83,22 +88,22 @@ module View
 
               context 'no existing parameters' do
                 let(:params) { {} }
-                it { is_expected.to eql({ tagged: 'tag' }) }
+                it { is_expected.to eql(tagged: 'tag') }
               end
 
               context 'with a page parameter' do
                 let(:params) { { page: '2' } }
-                it { is_expected.to eql({ tagged: 'tag' }) }
+                it { is_expected.to eql(tagged: 'tag') }
               end
 
               context 'with existing tags' do
                 let(:params) { { tagged: 'a,b' } }
-                it { is_expected.to eql({ tagged: 'a,b,tag' }) }
+                it { is_expected.to eql(tagged: 'a,b,tag') }
               end
 
               context 'with tag already present' do
                 let(:params) { { tagged: 'a,tag' } }
-                it { is_expected.to eql({ tagged: 'a,tag' }) }
+                it { is_expected.to eql(tagged: 'a,tag') }
               end
             end
 
@@ -106,22 +111,22 @@ module View
               subject { filter.query.without_tag('tag') }
 
               context 'without any parameters' do
-                let(:params) {{}}
+                let(:params) { {} }
                 it { is_expected.to eql({}) }
               end
 
               context 'with a page parameter' do
-                let(:params) { {page: '2'} }
+                let(:params) { { page: '2' } }
                 it { is_expected.to eql({}) }
               end
 
               context 'with tag present' do
                 let(:params) { { tagged: 'a,tag' } }
-                it { is_expected.to eql({ tagged: 'a' }) }
+                it { is_expected.to eql(tagged: 'a') }
               end
 
               context 'with only tag' do
-                let(:params) { {tagged: 'tag'} }
+                let(:params) { { tagged: 'tag' } }
                 it { is_expected.to eql({}) }
               end
             end
@@ -133,22 +138,22 @@ module View
 
           context 'without any parameters' do
             let(:params) { {} }
-            it           { is_expected.to eql({ type: 'redirect' }) }
+            it { is_expected.to eql(type: 'redirect') }
           end
 
           context 'with a page parameter' do
             let(:params) { { page: '2' } }
-            it           { is_expected.to eql({type: 'redirect'}) }
+            it { is_expected.to eql(type: 'redirect') }
           end
 
           context 'with existing other parameters' do
             let(:params) { { tagged: 'a,b' } }
-            it           { is_expected.to eql({ tagged: 'a,b', type: 'redirect' }) }
+            it { is_expected.to eql(tagged: 'a,b', type: 'redirect') }
           end
 
           context 'with type already present' do
             let(:params) { { type: 'archive' } }
-            it           { is_expected.to eql({ type: 'redirect' }) }
+            it { is_expected.to eql(type: 'redirect') }
           end
         end
 
@@ -156,7 +161,7 @@ module View
           subject { filter.query.without_type }
 
           context 'without any parameters' do
-            let(:params) {{}}
+            let(:params) { {} }
             it { is_expected.to eql({}) }
           end
 
@@ -166,11 +171,10 @@ module View
           end
 
           context 'with existing other parameters' do
-            let(:params) { {tagged: 'a,b', type: 'redirect'} }
-            it           { is_expected.to eql({ tagged: 'a,b' }) }
+            let(:params) { { tagged: 'a,b', type: 'redirect' } }
+            it { is_expected.to eql(tagged: 'a,b') }
           end
         end
-
       end
 
       context 'params are fine and we\'d like to filter and sort by everything' do
@@ -190,16 +194,18 @@ module View
                  site:     site
         end
 
-        let(:params) { {
-          type:             'redirect',
-          new_url_contains: 'something',
-          path_contains:    'CanonicalIZED?q=1',
-          tagged:           'fee,fi,fo',
-          sort:             'by_hits'
-        } }
+        let(:params) {
+          {
+            type:             'redirect',
+            new_url_contains: 'something',
+            path_contains:    'CanonicalIZED?q=1',
+            tagged:           'fee,fi,fo',
+            sort:             'by_hits'
+          }
+        }
 
-        it                     { is_expected.not_to be_incompatible }
-        it                     { is_expected.to     be_active }
+        it { is_expected.not_to be_incompatible }
+        it { is_expected.to     be_active }
 
         describe '#type' do
           subject { super().type }
@@ -213,12 +219,12 @@ module View
 
         describe '#path_contains' do
           subject { super().path_contains }
-          it { is_expected.to eq('canonicalized')}
+          it { is_expected.to eq('canonicalized') }
         end
 
         describe '#tagged' do
           subject { super().tagged }
-          it { is_expected.to eq('fee,fi,fo')}
+          it { is_expected.to eq('fee,fi,fo') }
         end
 
         describe '#mappings' do

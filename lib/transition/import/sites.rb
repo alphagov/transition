@@ -11,7 +11,7 @@ module Transition
       end
 
       def import!
-        sites.each { |s| s.import! }
+        sites.each(&:import!)
       end
 
       def sites

@@ -51,9 +51,9 @@ module Transition
         # or:
         # global: =410
         if has_global_type?
-          case yaml['global'].split(' ')[0].gsub("=", "")
-            when '301' then 'redirect'
-            when '410' then 'archive'
+          case yaml['global'].split(' ')[0].delete("=")
+          when '301' then 'redirect'
+          when '410' then 'archive'
           end
         end
       end

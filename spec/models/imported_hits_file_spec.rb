@@ -36,5 +36,5 @@ describe ImportedHitsFile do
     end
   end
 
-  after { File.delete(test_file) if File.exists?(test_file) }
+  after { File.delete(test_file) if File.exist?(test_file) }
 end

@@ -15,7 +15,7 @@ module Transition
 
     describe '.set_user!' do
       it 'sets the controller_info' do
-        expect(PaperTrail.controller_info).to eql({ user_id: user.id })
+        expect(PaperTrail.controller_info).to eql(user_id: user.id)
       end
 
       it 'sets the whodunnit to the user\'s name' do
@@ -49,15 +49,15 @@ module Transition
       it 'sets the new user for the block' do
         Transition::History.as_a_user(user_who_does_stuff) do
           expect(PaperTrail.whodunnit).to eql(user_who_does_stuff.name)
-          expect(PaperTrail.controller_info).to eql({ user_id: user_who_does_stuff.id })
+          expect(PaperTrail.controller_info).to eql(user_id: user_who_does_stuff.id)
         end
       end
 
       it 'reverts to the original config afterwards' do
-        Transition::History.as_a_user(user_who_does_stuff) { }
+        Transition::History.as_a_user(user_who_does_stuff) {}
 
         expect(PaperTrail.whodunnit).to eql(original_user.name)
-        expect(PaperTrail.controller_info).to eql({ user_id: original_user.id })
+        expect(PaperTrail.controller_info).to eql(user_id: original_user.id)
       end
     end
 

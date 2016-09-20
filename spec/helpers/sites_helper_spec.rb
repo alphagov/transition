@@ -37,29 +37,29 @@ describe SitesHelper do
     context 'when launched yesterday' do
       let(:launch_date) { Date.new(2013, 10, 30) }
       let(:transition_status) { :live }
-      it { is_expected.to include('1 day')}
-      it { is_expected.to include('since transition')}
+      it { is_expected.to include('1 day') }
+      it { is_expected.to include('since transition') }
     end
 
     context 'when launching later today' do
       let(:launch_date) { Date.new(2013, 10, 31) }
       let(:transition_status) { :pre_transition }
-      it { is_expected.to include('0 days')}
-      it { is_expected.to include('until transition')}
+      it { is_expected.to include('0 days') }
+      it { is_expected.to include('until transition') }
     end
 
     context 'when launched earlier today' do
       let(:launch_date) { Date.new(2013, 10, 31) }
       let(:transition_status) { :live }
-      it { is_expected.to include('0 days')}
-      it { is_expected.to include('since transition')}
+      it { is_expected.to include('0 days') }
+      it { is_expected.to include('since transition') }
     end
 
     context 'when launching tomorrow' do
       let(:launch_date) { Date.new(2013, 11, 1) }
       let(:transition_status) { :pre_transition }
-      it { is_expected.to include('1 day')}
-      it { is_expected.to include('until transition')}
+      it { is_expected.to include('1 day') }
+      it { is_expected.to include('until transition') }
     end
 
     context 'the site was supposed to launch but its transition_status is pre-transition' do
@@ -80,8 +80,8 @@ describe SitesHelper do
       context 'when launched yesterday' do
         let(:launch_date) { Date.new(2013, 10, 30) }
         let(:transition_status) { :indeterminate }
-        it { is_expected.to include('1 day')}
-        it { is_expected.to include('since transition')}
+        it { is_expected.to include('1 day') }
+        it { is_expected.to include('since transition') }
       end
     end
   end

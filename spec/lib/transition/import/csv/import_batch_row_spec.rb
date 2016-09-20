@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 describe Transition::Import::CSV::ImportBatchRow do
-  def make_a_row(old_value, new_value=nil)
+  def make_a_row(old_value, new_value = nil)
     line_number = 1
     Transition::Import::CSV::ImportBatchRow.new(site, line_number, [old_value, new_value])
   end
 
-  def make_a_row_with_line_number(line_number, old_value, new_value=nil)
+  def make_a_row_with_line_number(line_number, old_value, new_value = nil)
     Transition::Import::CSV::ImportBatchRow.new(site, line_number, [old_value, new_value])
   end
 
@@ -173,7 +173,7 @@ describe Transition::Import::CSV::ImportBatchRow do
     context 'comparing rows for different paths' do
       it 'raises an error' do
         different_path = make_a_row('/different')
-        expect{ redirect > different_path }.to raise_error(ArgumentError)
+        expect { redirect > different_path }.to raise_error(ArgumentError)
       end
     end
 

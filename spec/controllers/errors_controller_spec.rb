@@ -49,7 +49,6 @@ describe ErrorsController do
         expect(response.status).to be(403)
       end
     end
-
   end
 
   describe '#error_404' do

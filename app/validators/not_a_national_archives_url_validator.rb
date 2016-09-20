@@ -1,5 +1,5 @@
 class NotANationalArchivesURLValidator < ActiveModel::EachValidator
-  NATIONAL_ARCHIVES_HOST = 'webarchive.nationalarchives.gov.uk'
+  NATIONAL_ARCHIVES_HOST = 'webarchive.nationalarchives.gov.uk'.freeze
 
   def validate_each(record, attribute, value)
     return if value.blank?
@@ -10,5 +10,5 @@ class NotANationalArchivesURLValidator < ActiveModel::EachValidator
       false
     end
     record.errors.add(attribute, options[:message]) unless valid_url
-   end
+  end
 end

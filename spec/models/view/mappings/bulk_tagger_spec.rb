@@ -1,20 +1,20 @@
 require 'rails_helper'
 
 describe View::Mappings::BulkTagger do
-  let!(:site)     { create(:site) }
-  let!(:mappings) { [
-    create(:mapping, site: site, tag_list: 'fee, fum, fox'),
-    create(:mapping, site: site, tag_list: 'fi, fum, fox'),
-    create(:mapping, site: site, tag_list: 'fo, fum, fox')
-  ] }
+  let!(:site) { create(:site) }
+  let!(:mappings) {
+    [
+      create(:mapping, site: site, tag_list: 'fee, fum, fox'),
+      create(:mapping, site: site, tag_list: 'fi, fum, fox'),
+      create(:mapping, site: site, tag_list: 'fo, fum, fox')
+    ]
+  }
   let(:tag_list) { 'fox, fiddle' }
   let(:bulk_tagger) {
     View::Mappings::BulkTagger.new(
       site,
-      {
-        mapping_ids: mappings.map(&:id),
-        tag_list:    tag_list
-      }
+      mapping_ids: mappings.map(&:id),
+      tag_list: tag_list
     )
   }
 

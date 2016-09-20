@@ -32,7 +32,7 @@ describe Postgres::MaterializedView do
   describe '.get_body' do
     it 'gets the body' do
       expect(Postgres::MaterializedView.get_body(
-        'pre_existing_view'
+               'pre_existing_view'
       )).to include('SELECT 1')
     end
   end

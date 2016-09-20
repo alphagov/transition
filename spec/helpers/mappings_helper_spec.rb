@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe MappingsHelper do
-  let(:site)    { build(:site) }
-  let(:hostname){ site.default_host.hostname }
+  let(:site) { build(:site) }
+  let(:hostname) { site.default_host.hostname }
   let(:mapping) { build :mapping, site: site }
 
   describe '#mapping_edit_tabs', versioning: true do
@@ -18,7 +18,7 @@ describe MappingsHelper do
 
   describe '#options_for_supported_types' do
     it 'provides an array of supported types in a form compatible with FormBuilder#select' do
-      expect(helper.options_for_supported_types).to eq([['Redirect', 'redirect'], ['Archive', 'archive'], ['Unresolved', 'unresolved']])
+      expect(helper.options_for_supported_types).to eq([%w(Redirect redirect), %w(Archive archive), %w(Unresolved unresolved)])
     end
   end
 

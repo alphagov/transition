@@ -19,7 +19,7 @@ describe Transition::Import::Revert::Sites do
     end
 
     context 'deleting sites which can be deleted' do
-      site_abbrs = ['ago', 'bis']
+      site_abbrs = %w(ago bis)
 
       before do
         Transition::Import::Revert::Sites.new(site_abbrs).revert_all!

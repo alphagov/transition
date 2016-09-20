@@ -16,7 +16,7 @@ class WhitelistedHost < ActiveRecord::Base
 
   def hostname_is_not_automatically_allowed_anyway
     return if hostname.nil?
-    if hostname.end_with?('.gov.uk') || hostname.end_with?('.mod.uk') || hostname.end_with?('.nhs.uk')
+    if hostname.end_with?('.gov.uk', '.mod.uk', '.nhs.uk')
       errors.add(:hostname, 'cannot end in .gov.uk, .mod.uk or .nhs.uk - these are automatically whitelisted')
     end
   end

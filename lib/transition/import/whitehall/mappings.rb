@@ -5,8 +5,8 @@ module Transition
   module Import
     module Whitehall
       class Mappings
-        WHITEHALL_URL = "#{Plek.current.find('whitehall-admin')}/government/mappings.csv"
-        AS_USER_EMAIL = 'whitehall-urls-robot@dummy.com'
+        WHITEHALL_URL = "#{Plek.current.find('whitehall-admin')}/government/mappings.csv".freeze
+        AS_USER_EMAIL = 'whitehall-urls-robot@dummy.com'.freeze
 
         def initialize(options = {})
           @filename = options[:filename]
@@ -19,18 +19,19 @@ module Transition
         end
 
         def call
-          if @filename
-            filename = @filename
-          else
-            filename = download
-          end
+          filename = if @filename
+                       @filename
+                     else
+                       download
+                     end
           process(filename)
         end
 
       private
+
         def as_user
           User.where(email: AS_USER_EMAIL).first_or_create! do |user|
-            user.name  = 'Whitehall URL Robot'
+            user.name = 'Whitehall URL Robot'
             user.is_robot = true
           end
         end

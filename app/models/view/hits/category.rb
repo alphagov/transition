@@ -2,16 +2,21 @@ module View
   module Hits
     ##
     # The categories for hits
-    class Category < Struct.new(:name, :color)
+    class Category
+      attr_accessor :name, :color, :hits
       attr_reader :points
-      attr_accessor :hits
+
+      def initialize(name, color)
+        @name = name
+        @color = color
+      end
 
       COLORS = {
         'all'       => '#333',
         'errors'    => '#e99',
         'archives'  => '#aaa',
         'redirects' => '#9e9'
-      }
+      }.freeze
 
       def self.all
         COLORS.map do |name, color|
@@ -33,8 +38,9 @@ module View
       # Requires at most one total row per day as input - if this assumption is violated,
       # data would be lost and the graph would mislead, so we check for it.
       def insert_zero_totals(totals)
-        compare_dates = lambda { |a,b| a.total_on <=> b.total_on }
-        max_date, min_date = totals.max(&compare_dates).try(:total_on), totals.min(&compare_dates).try(:total_on)
+        compare_dates = lambda { |a, b| a.total_on <=> b.total_on }
+        max_date = totals.max(&compare_dates).try(:total_on)
+        min_date = totals.min(&compare_dates).try(:total_on)
 
         return [] if max_date.nil?
 

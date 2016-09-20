@@ -5,7 +5,15 @@ module View
     ##
     # Load and process params specific to bulk editing, to avoid stuffing
     # controllers full of fields.
-    class BulkEditor < Struct.new(:site, :params, :site_mappings_path)
+    class BulkEditor
+      attr_accessor :site, :params, :site_mappings_path
+
+      def initialize(site, params, site_mappings_path = nil)
+        @site = site
+        @params = params
+        @site_mappings_path = site_mappings_path
+      end
+
       def type
         operation if Mapping::SUPPORTED_TYPES.include?(operation)
       end
@@ -39,10 +47,10 @@ module View
       end
 
       def update!
-        @failure_ids = mappings.map do |m|
+        @failure_ids = mappings.map { |m|
           # update_attributes validates before saving
           m.update_attributes(common_data) ? nil : m.id
-        end.compact
+        }.compact
       end
 
       def failures?
@@ -93,7 +101,6 @@ module View
                                         site: site,
                                         path: '/this/is/a/test/and/will/not/be/saved'
                                       }.merge(common_data))
-
       end
     end
   end

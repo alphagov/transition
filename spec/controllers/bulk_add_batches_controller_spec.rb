@@ -73,20 +73,25 @@ describe BulkAddBatchesController do
 
       context 'a small batch' do
         def make_request
-          post :import, site_id: site.abbr, update_existing: 'true',
-              id: batch.id
+          post :import,
+               site_id: site.abbr,
+               update_existing: 'true',
+               id: batch.id
         end
 
         include_examples 'it processes a small batch inline'
       end
 
       context 'a large batch' do
-        let(:large_batch) { create(:bulk_add_batch, site: site,
-                          paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21}) }
+        let(:large_batch) {
+          create(:bulk_add_batch,
+                 site: site,
+                 paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21})
+        }
 
         def make_request
           post :import, site_id: site.abbr, update_existing: 'true',
-                id: large_batch.id
+                        id: large_batch.id
         end
 
         include_examples 'it processes a large batch in the background'
@@ -102,8 +107,8 @@ describe BulkAddBatchesController do
 
       context 'a redirect batch containing long new_urls' do
         let!(:whitelisted_host) { create :whitelisted_host, hostname: 'example.com' }
-        let(:stem)              { "http://#{whitelisted_host.hostname}/"  }
-        let(:long_url)          { "#{stem}#{'x' * (2048 - stem.length) }" }
+        let(:stem)              { "http://#{whitelisted_host.hostname}/" }
+        let(:long_url)          { "#{stem}#{'x' * (2048 - stem.length)}" }
         let(:batch) do
           create(:bulk_add_batch,
                  site: site,
@@ -151,8 +156,10 @@ describe BulkAddBatchesController do
 
     context '#import' do
       it 'should redirect to mappings index' do
-        post :import, site_id: site.abbr, id: batch.id,
-               return_path: 'http://malicious.com'
+        post :import,
+             site_id: site.abbr,
+             id: batch.id,
+             return_path: 'http://malicious.com'
         expect(response).to redirect_to site_mappings_path(site)
       end
     end

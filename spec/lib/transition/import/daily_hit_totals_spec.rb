@@ -4,7 +4,6 @@ require 'transition/import/daily_hit_totals'
 describe Transition::Import::DailyHitTotals do
   describe '.from_hits!' do
     context 'a single import from a file with no suggested/archive URLs', testing_before_all: true do
-
       before :all do
         @halloween = Date.new(2013, 10, 31)
         @first_of_nov = Date.new(2013, 11, 1)

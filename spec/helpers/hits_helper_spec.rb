@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 describe HitsHelper do
-
   describe '#any_totals_for' do
-    let(:all_cats)  { View::Hits::Category.all }
-    let(:some_totals) { all_cats.map { |cat| cat.tap {|c| c.points = [build(:daily_hit_total)] } } }
-    let(:no_totals)   { all_cats.map { |cat| cat.tap {|c| c.points = [] } } }
+    let(:all_cats) { View::Hits::Category.all }
+    let(:some_totals) { all_cats.map { |cat| cat.tap { |c| c.points = [build(:daily_hit_total)] } } }
+    let(:no_totals)   { all_cats.map { |cat| cat.tap { |c| c.points = [] } } }
 
     context 'there are totals' do
       it 'is true' do
@@ -25,19 +24,25 @@ describe HitsHelper do
   end
 
   describe '#google_data_table' do
-    let(:archives) { [
-      build(:daily_hit_total, total_on: '2012-12-31', count: 3, http_status: 410),
-      build(:daily_hit_total, total_on: '2012-12-30', count: 1000, http_status: 410)
-    ] }
+    let(:archives) {
+      [
+        build(:daily_hit_total, total_on: '2012-12-31', count: 3, http_status: 410),
+        build(:daily_hit_total, total_on: '2012-12-30', count: 1000, http_status: 410)
+      ]
+    }
 
-    let(:errors) { [
-      build(:daily_hit_total, total_on: '2012-12-31', count: 3, http_status: 404),
-      build(:daily_hit_total, total_on: '2012-12-30', count: 4, http_status: 404)
-    ] }
+    let(:errors) {
+      [
+        build(:daily_hit_total, total_on: '2012-12-31', count: 3, http_status: 404),
+        build(:daily_hit_total, total_on: '2012-12-30', count: 4, http_status: 404)
+      ]
+    }
 
-    let(:redirects) { [
-      build(:daily_hit_total, total_on: '2012-12-30', count: 4, http_status: 301)
-    ] }
+    let(:redirects) {
+      [
+        build(:daily_hit_total, total_on: '2012-12-30', count: 4, http_status: 301)
+      ]
+    }
 
     let(:categories) {
       [
@@ -48,10 +53,10 @@ describe HitsHelper do
     }
 
     let(:live_site_that_transitioned_on_2012_12_30) do
-       site = build(:site, launch_date: Date.new(2012,12,30))
-       site.hosts << build(:host, cname: 'redirector-cdn.production.govuk.service.gov.uk')
-       site.save
-       site
+      site = build(:site, launch_date: Date.new(2012, 12, 30))
+      site.hosts << build(:host, cname: 'redirector-cdn.production.govuk.service.gov.uk')
+      site.save
+      site
     end
 
     subject(:array) { helper.google_data_table(categories, live_site_that_transitioned_on_2012_12_30) }
@@ -75,7 +80,7 @@ describe HitsHelper do
     let(:category)   { nil }
     let(:period)     { 'yesterday' }
 
-    let(:time_period){ double 'TimePeriod' }
+    let(:time_period) { double 'TimePeriod' }
 
     subject(:path) { helper.current_category_in_period_path(time_period) }
 
@@ -83,7 +88,7 @@ describe HitsHelper do
       allow(time_period).to receive(:query_slug).and_return(period)
 
       allow(helper).to receive(:action_name).and_return(action)
-      allow(helper).to receive(:params).and_return({ period: period, category: category })
+      allow(helper).to receive(:params).and_return(period: period, category: category)
 
       # stubs @site internal to helper
       helper.class_eval { attr_writer :site }

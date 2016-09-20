@@ -96,8 +96,10 @@ describe BulkAddBatch do
     let(:site) { create(:site, query_params: 'significant') }
     let!(:existing_mapping) { create(:mapping, site: site, path: '/a') }
 
-    subject(:mappings_batch) { create(:bulk_add_batch, site: site,
-                                      paths: ['/a?insignificant', '/a', '/b?significant']) }
+    subject(:mappings_batch) {
+      create(:bulk_add_batch, site: site,
+                              paths: ['/a?insignificant', '/a', '/b?significant'])
+    }
 
     it 'should create an entry for each canonicalised path' do
       expect(mappings_batch.entries.count).to eq(2)
@@ -106,7 +108,7 @@ describe BulkAddBatch do
     end
 
     it 'should relate the entry to the existing mapping' do
-      entry = mappings_batch.entries.detect { |entry| entry.path == existing_mapping.path }
+      entry = mappings_batch.entries.detect { |mapping_entry| mapping_entry.path == existing_mapping.path }
       expect(entry).not_to be_nil
       expect(entry.mapping).to eq(existing_mapping)
     end
@@ -122,8 +124,8 @@ describe BulkAddBatch do
 
     subject(:mappings_batch) do
       create(:bulk_add_batch, site: site,
-              paths: [path, '/b'],
-              type: 'redirect', new_url: new_url, tag_list: tag_list)
+                              paths: [path, '/b'],
+                              type: 'redirect', new_url: new_url, tag_list: tag_list)
     end
 
     let(:path) { '/a' }
@@ -138,8 +140,8 @@ describe BulkAddBatch do
     let(:site) { create(:site) }
     let(:mappings_batch) do
       create(:bulk_add_batch, site: site,
-              paths: ['/a'],
-              type: 'redirect', new_url: 'http://a.gov.uk', tag_list: '')
+                              paths: ['/a'],
+                              type: 'redirect', new_url: 'http://a.gov.uk', tag_list: '')
     end
 
     it 'should not record any change to the tag_list' do

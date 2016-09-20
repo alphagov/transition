@@ -1,7 +1,6 @@
 require 'postgres/materialized_view'
 
 class Site < ActiveRecord::Base
-
   belongs_to :organisation
 
   has_many :hosts
@@ -21,18 +20,19 @@ class Site < ActiveRecord::Base
   validates :homepage, presence: true, non_blank_url: true
   validates :abbr, uniqueness: true, presence: true, format: { with: /\A[a-zA-Z0-9_\-]+\z/, message: 'can only contain alphanumeric characters, underscores and dashes' }
   validates_inclusion_of :special_redirect_strategy, in: %w{ via_aka supplier }, allow_nil: true
-  validates :global_new_url, presence: { :if => :global_redirect? }
+  validates :global_new_url, presence: { if: :global_redirect? }
   validates :global_new_url, format: { without: /\?/,
                                        message: 'cannot contain a query when the path is appended',
-                                       :if => :global_redirect_append_path }
+                                       if: :global_redirect_append_path }
 
-  after_update :update_hits_relations, :if => :query_params_changed?
-  after_update :remove_all_hits_view,  :if => :should_remove_unused_view?
+  after_update :update_hits_relations, if: :query_params_changed?
+  after_update :remove_all_hits_view,  if: :should_remove_unused_view?
 
   scope :with_mapping_count, -> {
-        select('sites.*, COUNT(mappings.id) as mapping_count').
-          joins('LEFT JOIN mappings on mappings.site_id = sites.id').
-          group('sites.id') }
+    select('sites.*, COUNT(mappings.id) as mapping_count').
+      joins('LEFT JOIN mappings on mappings.site_id = sites.id').
+      group('sites.id')
+  }
 
   def mapping_count
     read_attribute(:mapping_count).to_i
@@ -57,20 +57,20 @@ class Site < ActiveRecord::Base
   def transition_status
     return :live          if hosts.excluding_aka.any?(&:redirected_by_gds?)
     return :indeterminate if special_redirect_strategy.present?
-           :pre_transition
+    :pre_transition
   end
 
   def canonical_path(path_or_url)
-    if Transition::PathOrURL.starts_with_http_scheme?(path_or_url)
-      url = path_or_url
-    elsif !path_or_url.starts_with?('/') &&
-        Transition::PathOrURL.starts_with_a_domain?(path_or_url)
-      url = 'http://' + path_or_url
-    else
-      # BLURI takes a full URL, but we only care about the path. There's no
-      # benefit in making an extra query to get a real hostname for the site.
-      url = File.join('http://www.example.com', path_or_url)
-    end
+    url = if Transition::PathOrURL.starts_with_http_scheme?(path_or_url)
+            path_or_url
+          elsif !path_or_url.starts_with?('/') &&
+              Transition::PathOrURL.starts_with_a_domain?(path_or_url)
+            'http://' + path_or_url
+          else
+            # BLURI takes a full URL, but we only care about the path. There's no
+            # benefit in making an extra query to get a real hostname for the site.
+            File.join('http://www.example.com', path_or_url)
+          end
 
     bluri = BLURI(url).canonicalize!(allow_query: query_params.split(":"))
     path = bluri.path
@@ -119,6 +119,7 @@ class Site < ActiveRecord::Base
   end
 
 private
+
   def should_remove_unused_view?
     precompute_all_hits_view_changed? && precompute_all_hits_view == false
   end
