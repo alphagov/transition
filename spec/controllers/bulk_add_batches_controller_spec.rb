@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 describe BulkAddBatchesController do
-  let(:site)    { create :site, abbr: 'moj' }
-  let(:batch)   { create(:bulk_add_batch, site: site) }
+  let(:site) { create :site, abbr: 'moj' }
+  let(:global_site) { create :site, global_type: 'archive' }
+  let(:batch) { create(:bulk_add_batch, site: site) }
   let(:gds_bob) { create(:gds_editor, name: 'Bob Terwhilliger') }
   let(:mapping) { create(:mapping, site: site, as_user: gds_bob) }
 
@@ -24,6 +25,14 @@ describe BulkAddBatchesController do
         get :new, site_id: site.abbr
         expect(response.status).to eql(200)
       end
+
+      context 'but the site is global' do
+        def make_request
+          post :create, site_id: global_site.abbr
+        end
+
+        it_behaves_like 'disallows editing of a global site'
+      end
     end
   end
 
@@ -34,6 +43,18 @@ describe BulkAddBatchesController do
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
+    end
+
+    context 'for a global site' do
+      before do
+        login_as gds_bob
+      end
+
+      def make_request
+        post :create, site_id: global_site.abbr
+      end
+
+      it_behaves_like 'disallows editing of a global site'
     end
   end
 
@@ -55,6 +76,14 @@ describe BulkAddBatchesController do
         expect(assigns(:bulk_add_cancel_destination)).to eq(site_mappings_path(site.abbr))
       end
     end
+
+    context 'for a global site' do
+      def make_request
+        post :create, site_id: global_site.abbr
+      end
+
+      it_behaves_like 'disallows editing of a global site'
+    end
   end
 
   describe '#import' do
@@ -69,6 +98,14 @@ describe BulkAddBatchesController do
     context 'when user can edit the site' do
       before do
         login_as gds_bob
+      end
+
+      context 'but it is global' do
+        def make_request
+          post :create, site_id: global_site.abbr
+        end
+
+        it_behaves_like 'disallows editing of a global site'
       end
 
       context 'a small batch' do

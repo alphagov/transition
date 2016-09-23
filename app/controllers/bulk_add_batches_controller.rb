@@ -2,8 +2,10 @@ require 'view/mappings/canonical_filter'
 
 class BulkAddBatchesController < ApplicationController
   include PaperTrail::Rails::Controller
+  include CheckSiteIsNotGlobal
 
   before_filter :find_site
+  check_site_is_not_global
   checks_user_can_edit
   before_filter :find_batch, only: [:preview, :import]
 

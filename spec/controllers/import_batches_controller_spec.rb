@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe ImportBatchesController do
-  let(:site)    { create :site, abbr: 'moj' }
+  let(:site) { create :site, abbr: 'moj' }
+  let(:global_site) { create :site, global_type: 'archive' }
   let(:gds_bob) { create(:gds_editor, name: 'Bob Terwhilliger') }
 
   describe '#new' do
@@ -12,11 +13,31 @@ describe ImportBatchesController do
 
       it_behaves_like 'disallows editing by unaffiliated user'
     end
+
+    context 'for a global site' do
+      before do
+        login_as gds_bob
+      end
+
+      def make_request
+        post :create, site_id: global_site.abbr
+      end
+
+      it_behaves_like 'disallows editing of a global site'
+    end
   end
 
   describe '#create' do
     before do
       login_as gds_bob
+    end
+
+    context 'for a global site' do
+      def make_request
+        post :create, site_id: global_site.abbr
+      end
+
+      it_behaves_like 'disallows editing of a global site'
     end
 
     context 'without permission to edit' do
@@ -112,12 +133,26 @@ describe ImportBatchesController do
     end
   end
 
-  describe '#preview without permission to edit' do
-    def make_request
-      get :preview, site_id: site.abbr, id: 1
+  describe '#preview' do
+    context 'without permission to edit' do
+      def make_request
+        get :preview, site_id: site.abbr, id: 1
+      end
+
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
-    it_behaves_like 'disallows editing by unaffiliated user'
+    context 'for a global site' do
+      before do
+        login_as gds_bob
+      end
+
+      def make_request
+        post :create, site_id: global_site.abbr
+      end
+
+      it_behaves_like 'disallows editing of a global site'
+    end
   end
 
   describe '#import' do
@@ -125,6 +160,22 @@ describe ImportBatchesController do
 
     before do
       login_as gds_bob
+    end
+
+    context 'for a global site' do
+      def make_request
+        post :create, site_id: global_site.abbr
+      end
+
+      it_behaves_like 'disallows editing of a global site'
+    end
+
+    context 'without permission to edit' do
+      def make_request
+        get :preview, site_id: site.abbr, id: 1
+      end
+
+      it_behaves_like 'disallows editing by unaffiliated user'
     end
 
     context 'a small batch' do

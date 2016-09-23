@@ -2,10 +2,11 @@ require 'view/mappings/canonical_filter'
 
 class MappingsController < ApplicationController
   include PaperTrail::Rails::Controller
+  include CheckSiteIsNotGlobal
 
   tracks_mappings_progress except: [:find_global]
 
-  before_filter :check_global_redirect_or_archive, except: [:find_global]
+  check_site_is_not_global except: [:find_global]
   checks_user_can_edit except: [:index, :find, :find_global]
 
   def index
@@ -162,17 +163,6 @@ private
       referer
     else
       site_mappings_path(@site)
-    end
-  end
-
-  def check_global_redirect_or_archive
-    if @site.global_type.present?
-      if @site.global_redirect?
-        message = "This site has been entirely redirected."
-      elsif @site.global_archive?
-        message = "This site has been entirely archived."
-      end
-      redirect_to site_path(@site), alert: "#{message} You can't edit its mappings."
     end
   end
 
