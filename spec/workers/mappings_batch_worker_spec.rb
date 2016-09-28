@@ -23,7 +23,7 @@ describe MappingsBatchWorker do
 
     context 'batch being deleted before processing' do
       it 'should not raise an error' do
-        expect{MappingsBatchWorker.new.perform(1234)}.to_not raise_error
+        expect { MappingsBatchWorker.new.perform(1234) }.to_not raise_error
       end
     end
   end

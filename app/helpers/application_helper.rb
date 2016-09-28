@@ -27,5 +27,4 @@ module ApplicationHelper
       org.title
     end
   end
-
 end

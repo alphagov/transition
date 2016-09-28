@@ -7,12 +7,12 @@ class ImportBatch < MappingsBatch
     dependent: :delete_all
 
   validates :raw_csv, presence: {
-    :if => :new_record?, # we only care about raw_csv at create-time
+    if: :new_record?, # we only care about raw_csv at create-time
     message: I18n.t('mappings.import.raw_csv_empty')
     }
   validates :old_urls, old_urls_are_for_site: true
   validates :canonical_paths, presence: {
-    :if => :new_record?,
+    if: :new_record?,
     message: I18n.t('mappings.paths_empty')
   }
   validates :new_urls, each_in_collection: {
@@ -75,6 +75,7 @@ class ImportBatch < MappingsBatch
   end
 
 private
+
   def deduplicated_csv_rows
     @_deduplicated_csv_rows ||= begin
       return [] if raw_csv.blank?

@@ -2,8 +2,10 @@ require 'view/mappings/canonical_filter'
 
 class BulkAddBatchesController < ApplicationController
   include PaperTrail::Rails::Controller
+  include CheckSiteIsNotGlobal
 
   before_filter :find_site
+  check_site_is_not_global
   checks_user_can_edit
   before_filter :find_batch, only: [:preview, :import]
 
@@ -28,11 +30,7 @@ class BulkAddBatchesController < ApplicationController
   end
 
   def preview
-    if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
-      @bulk_add_cancel_destination = params[:return_path]
-    else
-      @bulk_add_cancel_destination = site_mappings_path(@site)
-    end
+    @bulk_add_cancel_destination = preview_destination
   end
 
   def import
@@ -53,14 +51,19 @@ class BulkAddBatchesController < ApplicationController
       end
     end
 
-    if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
-      redirect_to params[:return_path]
-    else
-      redirect_to site_mappings_path(@site)
-    end
+    redirect_to preview_destination
   end
 
 private
+
+  def preview_destination
+    if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
+      params[:return_path]
+    else
+      site_mappings_path(@site)
+    end
+  end
+
   def batch_params
     params.permit(:type,
                   :paths,

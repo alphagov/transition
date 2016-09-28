@@ -27,10 +27,10 @@ module Postgres
       viewdef['pg_get_viewdef']
     end
 
-  private
-
     def self.drop_sql(name)
       %(DROP MATERIALIZED VIEW IF EXISTS "#{name}";)
     end
+
+    private_class_method :drop_sql
   end
 end

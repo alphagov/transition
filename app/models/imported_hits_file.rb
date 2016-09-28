@@ -7,7 +7,7 @@ class ImportedHitsFile < ActiveRecord::Base
   validates :content_hash, presence: true
 
   def same_on_disk?
-    if File.exists?(filename)
+    if File.exist?(filename)
       content_hash == Digest::SHA1.hexdigest(File.read(filename))
     else
       false
@@ -15,8 +15,9 @@ class ImportedHitsFile < ActiveRecord::Base
   end
 
 private
+
   def set_content_hash
-    filename && File.exists?(filename) && (
+    filename && File.exist?(filename) && (
       self.content_hash = Digest::SHA1.hexdigest(File.read(filename))
     )
   end

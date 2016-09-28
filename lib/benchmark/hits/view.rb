@@ -5,7 +5,7 @@ require 'benchmark'
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '../../../app')
 require 'controllers/application_controller'
 ApplicationController.class_eval do
-  def self.tracks_mappings_progress(*args); end
+  def self.tracks_mappings_progress(*_args); end
 end
 require 'controllers/hits_controller'
 
@@ -14,13 +14,7 @@ module Benchmark
     # Mock enough to make a HitsController instantiable outside
     # of a real request
     class DummyHitsController < HitsController
-      def params
-        @params
-      end
-
-      def params=(params)
-        @params = params
-      end
+      attr_accessor :params
 
       # Without this, lazy associations like @category.hits aren't loaded,
       # and this means that the expensive database hit is never made.
@@ -29,15 +23,15 @@ module Benchmark
       def fetch_associations(action)
         case action
         when :index, :category
-          @category.hits.each   {|_|}
-          @category.points.each {|_|}
+          @category.hits.each   { |_| }
+          @category.points.each { |_| }
         when :summary
-          @sections.each         { |category| category.hits.each   {|_|} }
-          @point_categories.each { |category| category.points.each {|_|} }
-                                                                 # /| |\
-                                                                 # || ||
-                                                                 # _| |_
-                                                                 # Last one to get enumerated is a cyberman
+          @sections.each         { |category| category.hits.each   { |_| } }
+          @point_categories.each { |category| category.points.each { |_| } }
+                                                                  # /| |\
+                                                                  # || ||
+                                                                  # _| |_
+                                                                  # Last one to get enumerated is a cyberman
         end
       end
 
@@ -55,16 +49,16 @@ module Benchmark
     end
 
     class View
-      DEFAULT_ABBR           = 'ofsted'
-      DEFAULT_AREA           = 'all'
+      DEFAULT_ABBR           = 'ofsted'.freeze
+      DEFAULT_AREA           = 'all'.freeze
       AREA_ACTION            = {
         'all'       => :index,
         'redirects' => :category,
         'archives'  => :category,
         'errors'    => :category,
         'summary'   => :summary
-      }
-      DEFAULT_PERIOD         = 'all-time'
+      }.freeze
+      DEFAULT_PERIOD         = 'all-time'.freeze
       DEFAULT_NUMBER_OF_RUNS = 5
 
       attr_accessor :abbr, :area, :period, :number_of_runs

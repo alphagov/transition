@@ -14,10 +14,10 @@ module Transition
       end
 
       def refresh!
-        start('Refreshing host paths'                                 ) { refresh_host_paths! }
+        start('Refreshing host paths') { refresh_host_paths! }
         start('Adding missing mapping_id/canonical_path to host paths') { connect_mappings_to_host_paths! }
-        start('Updating hits from host paths'                         ) { refresh_hits_from_host_paths! }
-        start('Precomputing mapping hit counts'                       ) { precompute_mapping_hit_counts! }
+        start('Updating hits from host paths') { refresh_hits_from_host_paths! }
+        start('Precomputing mapping hit counts') { precompute_mapping_hit_counts! }
       end
 
       def self.refresh!(site = nil)
@@ -25,14 +25,18 @@ module Transition
       end
 
     private
+
       def in_site_hosts
         host_ids = site.hosts.pluck(:id)
         " IN (#{host_ids.join(',')})"
       end
 
       def host_paths
-        site ? site.host_paths.where(mapping_id: nil) :
-                      HostPath.where(mapping_id: nil)
+        if site
+          site.host_paths.where(mapping_id: nil)
+        else
+          HostPath.where(mapping_id: nil)
+        end
       end
 
       def refresh_host_paths!
@@ -60,7 +64,7 @@ module Transition
         host_paths.includes(:host).find_each do |host_path|
           site = host_path.host.site
 
-          canonical_path     = site.canonical_path(host_path.path)
+          canonical_path = site.canonical_path(host_path.path)
           mapping_id = Mapping.where(
             path: canonical_path, site_id: site.id).pluck(:id).first
 

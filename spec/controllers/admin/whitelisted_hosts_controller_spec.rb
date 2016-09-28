@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Admin::WhitelistedHostsController do
   let(:normal_user) { create(:user, permissions: ['signin']) }
-  let(:admin_user) { create(:user, permissions: ['admin', 'signin'])}
+  let(:admin_user) { create(:user, permissions: %w(admin signin)) }
 
   shared_examples 'denies access if you are not an admin' do
     before do

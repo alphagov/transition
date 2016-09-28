@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :host do
-    sequence(:hostname) {|n| "www-#{n}.example.gov.uk" }
+    sequence(:hostname) { |n| "www-#{n}.example.gov.uk" }
     association :site
 
     trait :with_govuk_cname do

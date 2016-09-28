@@ -144,8 +144,8 @@ describe Transition::Import::Hits do
 
     context 'a second import' do
       let(:original_import_time) { Time.zone.parse '2014-08-15 14:59:59' }
-      let(:later_import_time   ) { Time.zone.parse '2014-08-15 15:59:59' }
-      let(:import_tsv_filename ) do
+      let(:later_import_time) { Time.zone.parse '2014-08-15 15:59:59' }
+      let(:import_tsv_filename) do
         'spec/fixtures/hits/tmp_changed_hits_file.tsv'.tap do |temporary_file|
           FileUtils.cp('spec/fixtures/hits/businesslink_2012-10-14.tsv', temporary_file)
         end

@@ -14,8 +14,6 @@ class MappingCSVPresenter
   def archive_url
     if @mapping.archive? || @mapping.unresolved?
       @mapping.archive_url
-    else
-      nil
     end
   end
 

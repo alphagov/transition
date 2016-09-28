@@ -31,7 +31,8 @@ module Transition
           @updated
         end
 
-        private
+      private
+
         def sites
           @site_abbrs.map { |abbr| find_site(abbr) }.compact
         end

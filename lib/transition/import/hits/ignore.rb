@@ -28,7 +28,7 @@ module Transition
           '//images/stories/iam.php',
           '//images/stories/itil.php',
           '//images/stories/jahat.php',
-        ]
+        ].freeze
 
         PATTERNS = [
           # Generic site furniture
@@ -79,7 +79,7 @@ module Transition
           '.*wp-admin.*',
           '.*wp-cron.*',
           '.*wp-login.*',
-        ]
+        ].freeze
       end
     end
   end

@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe View::Hits::TimePeriod do
   describe '.all' do
-
     context 'with no arguments' do
       subject(:all_periods) { View::Hits::TimePeriod.all }
 
@@ -82,7 +81,7 @@ describe View::Hits::TimePeriod do
 
       describe '#range' do
         subject { super().range }
-        it { is_expected.to eq(100.years.ago.to_date..Date.today) }
+        it { is_expected.to eq(100.years.ago.to_date..Time.zone.today) }
       end
 
       describe '#start_date' do
@@ -92,7 +91,7 @@ describe View::Hits::TimePeriod do
 
       describe '#end_date' do
         subject { super().end_date }
-        it { is_expected.to eq(Date.today) }
+        it { is_expected.to eq(Time.zone.today) }
       end
 
       describe '#no_content' do
@@ -102,7 +101,7 @@ describe View::Hits::TimePeriod do
 
       it 'calculates dates correctly even if, say, the server has been up a few decades' do
         Timecop.freeze(Date.new(2112, 10, 31)) do
-          expect(View::Hits::TimePeriod['all-time'].range).to eq(100.years.ago.to_date..Date.today)
+          expect(View::Hits::TimePeriod['all-time'].range).to eq(100.years.ago.to_date..Time.zone.today)
         end
       end
     end
@@ -117,7 +116,7 @@ describe View::Hits::TimePeriod do
 
       describe '#range' do
         subject { super().range }
-        it { is_expected.to eq(30.days.ago.to_date..Date.today) }
+        it { is_expected.to eq(30.days.ago.to_date..Time.zone.today) }
       end
 
       describe '#start_date' do
@@ -127,7 +126,7 @@ describe View::Hits::TimePeriod do
 
       describe '#end_date' do
         subject { super().end_date }
-        it { is_expected.to eq(Date.today) }
+        it { is_expected.to eq(Time.zone.today) }
       end
 
       describe '#no_content' do
@@ -137,7 +136,7 @@ describe View::Hits::TimePeriod do
 
       it 'calculates dates correctly even if, say, the server has been up a few decades' do
         Timecop.freeze(Date.new(2112, 10, 31)) do
-          expect(View::Hits::TimePeriod['last-30-days'].range).to eq(30.days.ago.to_date..Date.today)
+          expect(View::Hits::TimePeriod['last-30-days'].range).to eq(30.days.ago.to_date..Time.zone.today)
         end
       end
     end
@@ -226,7 +225,6 @@ describe View::Hits::TimePeriod do
         specify { expect { View::Hits::TimePeriod['99999999-99999999'] }.to raise_error(ArgumentError) }
         specify { expect { View::Hits::TimePeriod['20130101-20120101'] }.to raise_error(ArgumentError) }
       end
-
     end
   end
 end

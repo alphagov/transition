@@ -86,10 +86,11 @@ module Transition
         end
 
       private
+
         def new_url_is_a_national_archives_url?
           host = Addressable::URI.parse(new_value).host
           host == NationalArchivesURLValidator::NATIONAL_ARCHIVES_HOST
-        rescue Addressable::URI::InvalidURIError => e
+        rescue Addressable::URI::InvalidURIError
           false
         end
       end

@@ -2,10 +2,11 @@ require 'view/mappings/canonical_filter'
 
 class MappingsController < ApplicationController
   include PaperTrail::Rails::Controller
+  include CheckSiteIsNotGlobal
 
   tracks_mappings_progress except: [:find_global]
 
-  before_filter :check_global_redirect_or_archive, except: [:find_global]
+  check_site_is_not_global except: [:find_global]
   checks_user_can_edit except: [:index, :find, :find_global]
 
   def index
@@ -19,7 +20,7 @@ class MappingsController < ApplicationController
         if current_user.admin?
           @mappings = @filter.unpaginated_mappings
           data = MappingsCSVPresenter.new(@mappings).to_csv
-          timestamp = I18n.l(Time.zone.now, :format => :govuk_date)
+          timestamp = I18n.l(Time.zone.now, format: :govuk_date)
           filename = "#{@site.default_host.hostname} mappings at #{timestamp}.csv"
           send_data data, filename: filename
         else
@@ -51,7 +52,7 @@ class MappingsController < ApplicationController
   end
 
   def edit_multiple
-    redirect_to bulk_edit.return_path, notice: bulk_edit.params_errors and return if bulk_edit.params_invalid?
+    redirect_to(bulk_edit.return_path, notice: bulk_edit.params_errors) and return if bulk_edit.params_invalid?
 
     if request.xhr?
       render 'edit_multiple_modal', layout: nil
@@ -59,14 +60,14 @@ class MappingsController < ApplicationController
   end
 
   def update_multiple
-    redirect_to bulk_edit.return_path, notice: bulk_edit.params_errors and return if bulk_edit.params_invalid?
+    redirect_to(bulk_edit.return_path, notice: bulk_edit.params_errors) and return if bulk_edit.params_invalid?
 
     if bulk_edit.would_fail?
       if bulk_edit.would_fail_on_new_url?
-        render action: 'edit_multiple' and return
+        render(action: 'edit_multiple') and return
       else
         flash[:danger] = 'Validation failed'
-        return redirect_to bulk_edit.return_path
+        redirect_to(bulk_edit.return_path) and return
       end
     end
 
@@ -78,7 +79,7 @@ class MappingsController < ApplicationController
       render action: 'edit_multiple'
     else
       flash[:success] = bulk_edit.success_message
-      flash[:saved_mapping_ids] = bulk_edit.mappings.map {|m| m.id}
+      flash[:saved_mapping_ids] = bulk_edit.mappings.map(&:id)
       flash[:saved_operation] = bulk_edit.analytics_event_type
       redirect_to bulk_edit.return_path
     end
@@ -88,11 +89,11 @@ class MappingsController < ApplicationController
     # This allows finding a mapping without knowing the site first.
     render_error(400) and return unless params[:url].present?
 
-    if !Transition::PathOrURL.starts_with_http_scheme?(params[:url])
-      url = 'http://' + params[:url] # Add a dummy scheme
-    else
-      url = params[:url]
-    end
+    url = if !Transition::PathOrURL.starts_with_http_scheme?(params[:url])
+            'http://' + params[:url] # Add a dummy scheme
+          else
+            params[:url]
+          end
 
     begin
       url = Addressable::URI.parse(url)
@@ -135,6 +136,7 @@ class MappingsController < ApplicationController
   end
 
 private
+
   def mapping_params
     params.permit(mapping: [
                              :type,
@@ -164,18 +166,7 @@ private
     end
   end
 
-  def check_global_redirect_or_archive
-    if @site.global_type.present?
-      if @site.global_redirect?
-        message = "This site has been entirely redirected."
-      elsif @site.global_archive?
-        message = "This site has been entirely archived."
-      end
-      redirect_to site_path(@site), alert: "#{message} You can't edit its mappings."
-    end
-  end
-
-  def safely_redirect_to_start_point(redirect_to_options={})
+  def safely_redirect_to_start_point(redirect_to_options = {})
     if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
       redirect_to params[:return_path], redirect_to_options
     else

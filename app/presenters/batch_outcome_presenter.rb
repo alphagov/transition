@@ -36,7 +36,7 @@ class BatchOutcomePresenter
 
 private
 
-  def tagged_with(opts = {all: false, and: false})
+  def tagged_with(opts = { all: false, and: false })
     if @batch.tag_list.present?
       %(#{opts[:all] ? '. All ' : ''}#{opts[:and] ? ' and ' : ''}tagged with "#{@batch.tag_list}")
     end

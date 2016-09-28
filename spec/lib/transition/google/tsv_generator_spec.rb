@@ -2,12 +2,14 @@ require 'rails_helper'
 require 'transition/google/tsv_generator'
 
 describe Transition::Google::TSVGenerator do
-  let(:hostpath_rows) { [
-    ['host.gov.uk', '/path', 30],
-    ['host.gov.uk', '/path2', 20],
-    ['nohost.gov.uk', '/path', 10],
-    ['nohost.gov.uk', '/too-few', 9],
-  ]}
+  let(:hostpath_rows) {
+    [
+      ['host.gov.uk', '/path', 30],
+      ['host.gov.uk', '/path2', 20],
+      ['nohost.gov.uk', '/path', 10],
+      ['nohost.gov.uk', '/too-few', 9],
+    ]
+  }
 
   let(:results_pager) { hostpath_rows.each }
   let(:stdfile)       { double '$stdout' }

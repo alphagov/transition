@@ -5,7 +5,7 @@ module Transition
     class FOIResponse
       extend Transition::Import::ConsoleJobWrapper
 
-      EXPORT_SITES = <<-postgreSQL
+      EXPORT_SITES = <<-postgreSQL.freeze
         COPY (
           SELECT
             abbr AS "Abbreviation",
@@ -21,7 +21,7 @@ module Transition
         ) TO STDOUT WITH DELIMITER ',' CSV HEADER;
       postgreSQL
 
-      EXPORT_HOSTS = <<-postgreSQL
+      EXPORT_HOSTS = <<-postgreSQL.freeze
         COPY (
         SELECT
           sites.abbr AS "Site abbreviation",
@@ -33,7 +33,7 @@ module Transition
         ) TO STDOUT WITH DELIMITER ',' CSV HEADER;
       postgreSQL
 
-      EXPORT_MAPPINGS = <<-postgreSQL
+      EXPORT_MAPPINGS = <<-postgreSQL.freeze
         COPY (
           SELECT
             sites.abbr AS "Site abbreviation",
@@ -57,11 +57,11 @@ module Transition
       end
 
       def self.export_data(timestamp, table, sql)
-        start "Exporting #{table}" do |job|
+        start "Exporting #{table}" do |_job|
           File.open("tmp/#{table}-#{timestamp}.csv", 'w') do |f|
             ActiveRecord::Base.connection.raw_connection.tap do |raw_conn|
               raw_conn.copy_data(sql) do
-                while row = raw_conn.get_copy_data
+                while (row = raw_conn.get_copy_data)
                   f.write(row.force_encoding('UTF-8'))
                 end
               end
@@ -69,7 +69,6 @@ module Transition
           end
         end
       end
-
     end
   end
 end

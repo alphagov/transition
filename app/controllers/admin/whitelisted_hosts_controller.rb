@@ -19,8 +19,9 @@ class Admin::WhitelistedHostsController < Admin::AdminController
     end
   end
 
-  private
-    def whitelist_params
-      params.require(:whitelisted_host).permit(:hostname)
-    end
+private
+
+  def whitelist_params
+    params.require(:whitelisted_host).permit(:hostname)
+  end
 end

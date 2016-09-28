@@ -3,7 +3,6 @@ require 'transition/import/orgs_sites_hosts'
 
 describe Transition::Import::OrgsSitesHosts do
   describe '.from_yaml!' do
-
     context 'there are no valid yaml files' do
       it 'reports the lack' do
         expect {

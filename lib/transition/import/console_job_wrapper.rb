@@ -2,7 +2,7 @@ module Transition
   module Import
     module ConsoleJobWrapper
       class NullConsole
-        [:print, :puts].each { |sym| define_method(sym) {|*_|} }
+        [:print, :puts].each { |sym| define_method(sym) { |*_| } }
       end
 
       class Job
@@ -28,16 +28,16 @@ module Transition
       end
 
       def console_puts(*args)
-        console.puts *args
+        console.puts(*args)
       end
 
       def console_print(*args)
-        console.print *args
+        console.print(*args)
       end
 
       ##
       # Common idiom of doing a thing, then printing a done message on the same line
-      def start(message, options = {doing: '...', done: 'done', skipped: 'skipped'})
+      def start(message, options = { doing: '...', done: 'done', skipped: 'skipped' })
         return unless block_given?
 
         console_print "#{message} #{options[:doing]} "

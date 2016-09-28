@@ -3,18 +3,20 @@ require 'transition/google/results_pager'
 
 describe Transition::Google::ResultsPager do
   def api_result_with(body)
-    double(Google::APIClient::Result).tap {|result| allow(result).to receive(:body).and_return(body)}
+    double(Google::APIClient::Result).tap { |result| allow(result).to receive(:body).and_return(body) }
   end
 
   # Minimal set of params required to ask GA about hit count per host/path and use paging
-  let(:test_parameters) {{
-    'ids'         => 'ga:46600000',
-    'start-date'  => '2013-01-01',
-    'end-date'    => '2013-08-20',
-    'dimensions'  => 'ga:hostname,ga:pagePath',
-    'metrics'     => 'ga:pageViews',
-    'max-results' => 5
-  }}
+  let(:test_parameters) {
+    {
+      'ids'         => 'ga:46600000',
+      'start-date'  => '2013-01-01',
+      'end-date'    => '2013-08-20',
+      'dimensions'  => 'ga:hostname,ga:pagePath',
+      'metrics'     => 'ga:pageViews',
+      'max-results' => 5
+    }
+  }
 
   let(:analytics_api) { double('Analytics API').as_null_object }
   let(:test_client) do

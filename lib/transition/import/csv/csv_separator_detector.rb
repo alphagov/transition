@@ -2,8 +2,8 @@ module Transition
   module Import
     module CSV
       class CSVSeparatorDetector
-        COMMA = ','
-        TAB = "\t"
+        COMMA = ','.freeze
+        TAB = "\t".freeze
 
         def initialize(rows)
           @rows = rows.map(&:chomp)

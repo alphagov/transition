@@ -37,7 +37,7 @@ describe User do
 
   describe 'gds_editor?' do
     context 'doesn\'t have permission' do
-      subject(:user) { create(:user, permissions: ["signin"])}
+      subject(:user) { create(:user, permissions: ["signin"]) }
 
       describe '#gds_editor?' do
         subject { super().gds_editor? }
@@ -58,21 +58,29 @@ describe User do
   describe 'can_edit_site?' do
     let(:ministry_of_funk) { create(:organisation) }
     let(:agency_of_soul)   { create(:organisation, parent_organisations: [ministry_of_funk]) }
+    let(:generic_site) { create(:site) }
+    let(:global_site) { create(:site, global_type: 'archive') }
 
     context 'user is an gds_editor' do
-      let(:generic_site) { create(:site) }
       subject(:user)     { create(:gds_editor) }
 
       it 'lets them edit anything' do
         expect(user.can_edit_site?(generic_site)).to be_truthy
       end
+
+      it 'will not allow them to edit a global site' do
+        expect(user.can_edit_site?(global_site)).to be_falsey
+      end
     end
 
     context 'user is not a member of any organisation' do
-      let(:generic_site) { create(:site) }
       subject(:user)     { create(:user) }
 
       specify { expect(user.can_edit_site?(generic_site)).to be_falsey }
+
+      it 'will not allow them to edit a global site' do
+        expect(user.can_edit_site?(global_site)).to be_falsey
+      end
     end
 
     context 'an organisation is a primary owner of a site' do
@@ -81,6 +89,11 @@ describe User do
         subject(:user) { create(:user, organisation_content_id: ministry_of_funk.content_id) }
 
         specify { expect(user.can_edit_site?(site)).to be_truthy }
+
+        it 'will not allow them to edit a global site' do
+          site.global_type = 'archive'
+          expect(user.can_edit_site?(site)).to be_falsey
+        end
       end
 
       context 'user is a member of a parent organisation' do
@@ -88,6 +101,11 @@ describe User do
         subject(:user)      { create(:user, organisation_content_id: ministry_of_funk.content_id) }
 
         specify { expect(user.can_edit_site?(site_of_child)).to be_truthy }
+
+        it 'will not allow them to edit a global site' do
+          site_of_child.global_type = 'archive'
+          expect(user.can_edit_site?(site_of_child)).to be_falsey
+        end
       end
 
       context 'user is a member of a child organisation' do
@@ -95,6 +113,11 @@ describe User do
         subject(:user)       { create(:user, organisation_content_id: agency_of_soul.content_id) }
 
         specify { expect(user.can_edit_site?(site_of_parent)).to be_falsey }
+
+        it 'will not allow them to edit a global site' do
+          site_of_parent.global_type = 'archive'
+          expect(user.can_edit_site?(site_of_parent)).to be_falsey
+        end
       end
 
       context 'user is a member of one parent organisation and not a member of another parent' do
@@ -105,19 +128,31 @@ describe User do
         subject(:user)      { create(:user, organisation_content_id: ministry_of_funk.content_id) }
 
         specify { expect(user.can_edit_site?(site_of_child)).to be_truthy }
+
+        it 'will not allow them to edit a global site' do
+          site_of_child.global_type = 'archive'
+          expect(user.can_edit_site?(site_of_child)).to be_falsey
+        end
       end
     end
 
     context 'the site has extra organisations whose members can edit it' do
       let(:shoe_procurement_bureau) { create(:organisation) }
       let(:soulless_agency)         { create(:organisation) }
-      let(:site)                    { create(:site, organisation: agency_of_soul,
-                                             extra_organisations: [shoe_procurement_bureau, soulless_agency]) }
+      let(:site)                    {
+        create(:site, organisation: agency_of_soul,
+                      extra_organisations: [shoe_procurement_bureau, soulless_agency])
+      }
 
       context 'user is a member of an extra organisation' do
         subject(:user) { create(:user, organisation_content_id: shoe_procurement_bureau.content_id) }
 
         specify { expect(user.can_edit_site?(site)).to be_truthy }
+
+        it 'will not allow them to edit a global site' do
+          site.global_type = 'archive'
+          expect(user.can_edit_site?(site)).to be_falsey
+        end
       end
 
       context 'user is a member of an extra organisation\'s parent' do
@@ -125,6 +160,11 @@ describe User do
         subject(:user)                  { create(:user, organisation_content_id: ministry_of_silly_walks.content_id) }
 
         specify { expect(user.can_edit_site?(site)).to be_falsey }
+
+        it 'will not allow them to edit a global site' do
+          site.global_type = 'archive'
+          expect(user.can_edit_site?(site)).to be_falsey
+        end
       end
     end
   end

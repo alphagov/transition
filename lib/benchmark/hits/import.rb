@@ -6,7 +6,7 @@ require 'transition/import/console_job_wrapper'
 module Benchmark
   module Hits
     class Import
-      DEFAULT_ABBR           = 'ukti'
+      DEFAULT_ABBR           = 'ukti'.freeze
       DEFAULT_NUMBER_OF_RUNS = 5
 
       attr_accessor :abbr, :number_of_runs
@@ -34,12 +34,13 @@ module Benchmark
       end
 
     private
+
       def delete_hits_and_import_records
-        ImportedHitsFile.delete_all("filename LIKE '#{test_files_mask.gsub('*', '%')}'")
+        ImportedHitsFile.delete_all("filename LIKE '#{test_files_mask.tr('*', '%')}'")
         /(?<date_str>[0-9]{4}-[0-9]{2}-[0-9]{2})/ =~ Dir[test_files_mask].sort.last
         cutoff_date = Date.strptime(date_str)
 
-        Hit.joins(:host => :site)
+        Hit.joins(host: :site)
            .where('sites.abbr = ? AND hit_on <= ?', abbr, cutoff_date)
            .delete_all
       end

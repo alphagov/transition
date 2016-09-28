@@ -163,11 +163,12 @@ END
       end
 
       context 'CSV row without an Old URL' do
-        let(:csv) { StringIO.new(<<-END)
+        let(:csv) {
+          StringIO.new(<<-END)
 Old URL,New URL,Admin URL,State
 ,https://www.gov.uk/a-document,http://whitehall-admin/#{rand(1000)},published
 END
-}
+        }
 
         specify { expect(Mapping.count).to eq(0) }
       end
@@ -179,11 +180,12 @@ END
       end
 
       context 'Old URL is unparseable' do
-        let(:csv) { StringIO.new(<<-END)
+        let(:csv) {
+          StringIO.new(<<-END)
 Old URL,New URL,Admin URL,State
 http://_____/old,https://www.gov.uk/a-document,http://whitehall-admin/#{rand(1000)},published
 END
-}
+        }
 
         specify { expect(Mapping.all.count).to eq(0) }
       end

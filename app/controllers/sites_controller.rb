@@ -20,6 +20,7 @@ class SitesController < ApplicationController
   end
 
 private
+
   def find_site
     @site = Site.find_by_abbr!(params[:id])
   end

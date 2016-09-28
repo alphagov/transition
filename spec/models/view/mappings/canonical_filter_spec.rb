@@ -3,7 +3,7 @@ require 'rails_helper'
 module View
   module Mappings
     describe '.canonical_filter' do
-      let(:site)     { build :site }
+      let(:site) { build :site }
 
       subject(:filter) { View::Mappings.canonical_filter(site, user_input) }
 

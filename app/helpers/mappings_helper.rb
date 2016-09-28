@@ -1,5 +1,4 @@
 module MappingsHelper
-
   ##
   # Twitter bootstrap-flavour tabs.
   # Produce a <ul class="nav nav-tabs">
@@ -14,16 +13,21 @@ module MappingsHelper
   #    )
   def bootstrap_flavour_tabs(titles_to_links, options)
     content_tag :ul, class: 'nav nav-tabs' do
-      titles_to_links.inject('') do |result, title_link|
-        title, href       = title_link[0], title_link[1]
-        active            = options[:active] == title
-        html_opts         = {}
-        html_opts[:class] = 'active' if active
+      titles_to_links.inject('') { |result, title_link|
+        result << build_flavour_tab(title_link, options)
+      }.html_safe
+    end
+  end
 
-        result << content_tag(:li, html_opts) do
-          link_to(title, active ? '#' : href)
-        end
-      end.html_safe
+  def build_flavour_tab(title_link, options)
+    title = title_link[0]
+    href = title_link[1]
+    active            = options[:active] == title
+    html_opts         = {}
+    html_opts[:class] = 'active' if active
+
+    content_tag(:li, html_opts) do
+      link_to(title, active ? '#' : href)
     end
   end
 
@@ -47,7 +51,7 @@ module MappingsHelper
   # e.g. [['Redirect', 'redirect'], ['Archive', 'archive'], ['Unresolved', 'unresolved']]
   def options_for_supported_types
     Mapping::SUPPORTED_TYPES.map do |type|
-      ["#{type.titleize}", type]
+      [type.titleize.to_s, type]
     end
   end
 
@@ -63,7 +67,7 @@ module MappingsHelper
     if type == 'unresolved'
       "Add #{number_with_delimiter(count)} unresolved #{'path'.pluralize(count)}"
     else
-      "#{operation_name(type)} #{pluralize(number_with_delimiter(count), "path")}"
+      "#{operation_name(type)} #{pluralize(number_with_delimiter(count), 'path')}"
     end
   end
 
@@ -73,10 +77,10 @@ module MappingsHelper
 
   def friendly_hit_percentage(hit_percentage)
     case
-      when hit_percentage.zero?  then ''
-      when hit_percentage < 0.01 then '< 0.01%'
-      when hit_percentage < 10.0 then hit_percentage.round(2).to_s + '%'
-      else hit_percentage.round(1).to_s + '%'
+    when hit_percentage.zero?  then ''
+    when hit_percentage < 0.01 then '< 0.01%'
+    when hit_percentage < 10.0 then hit_percentage.round(2).to_s + '%'
+    else hit_percentage.round(1).to_s + '%'
     end
   end
 
@@ -86,10 +90,9 @@ module MappingsHelper
       @site.hosts.excluding_aka.none?(&:redirected_by_gds?)
   end
 
-  def side_by_side_url(site, mapping=nil)
+  def side_by_side_url(site, mapping = nil)
     url = "http://#{site.default_host.hostname}.side-by-side.alphagov.co.uk/__/#"
     url << mapping.path if mapping
     url
   end
-
 end

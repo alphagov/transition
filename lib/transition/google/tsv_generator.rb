@@ -13,7 +13,7 @@ module Transition
     #
     # This exists so we can reuse the TSV-based fast mySQL import of Hits
     class TSVGenerator
-      HEADER        = "date\tcount\tstatus\thost\tpath"
+      HEADER        = "date\tcount\tstatus\thost\tpath".freeze
       HIT_NEVER_STR = Hit::NEVER.strftime('%Y-%m-%d')
 
       attr_accessor :results_pager, :stdfile

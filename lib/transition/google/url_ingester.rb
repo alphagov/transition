@@ -17,7 +17,7 @@ module Transition
       def initialize(
         whitehall_slug,
         start_date = 6.months.ago,
-        end_date = Date.today.end_of_day
+        end_date = Time.zone.today.end_of_day
       )
         @whitehall_slug = whitehall_slug
 

@@ -96,7 +96,7 @@ describe Transition::Import::HitsMappingsRelations do
 
       @mapping_connected_previously = create :mapping, path: '/b3', site: @other_site
       create :host_path, path: '/b3', host: @other_host, mapping: @mapping_connected_previously
-      @hit_connected_previously     = create :hit, mapping: @mapping_connected_previously
+      @hit_connected_previously = create :hit, mapping: @mapping_connected_previously
 
       Transition::Import::HitsMappingsRelations.refresh!(@site)
     end

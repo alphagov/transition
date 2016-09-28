@@ -2,6 +2,7 @@ class Admin::AdminController < ApplicationController
   before_filter :check_user_is_admin
 
 protected
+
   def check_user_is_admin
     unless current_user.admin?
       message = 'Only admins can access that.'

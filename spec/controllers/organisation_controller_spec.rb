@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe OrganisationsController do
   describe '#index' do
-
     let!(:organisation_z) { create :organisation, :with_site, title: 'Zzzzzz' }
     let!(:organisation_a) { create :organisation, :with_site, title: 'Aaaaaa' }
 

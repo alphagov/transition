@@ -27,3 +27,17 @@ shared_examples 'disallows editing by non-GDS Editors' do
     expect(flash[:alert]).to eql('Only GDS Editors can access that.')
   end
 end
+
+shared_examples 'disallows editing of a global site' do
+  before do
+    make_request
+  end
+
+  it 'redirects to the index page' do
+    expect(response).to redirect_to site_path(global_site)
+  end
+
+  it 'sets a flash message' do
+    expect(flash[:alert]).to match(/This site has been entirely (redirect|archiv)ed/)
+  end
+end

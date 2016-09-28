@@ -51,7 +51,8 @@ class Hit < ActiveRecord::Base
     "http://#{host.site.default_host.hostname}#{path}"
   end
 
-  protected
+protected
+
   def normalize_hit_on
     self.hit_on = hit_on.beginning_of_day if hit_on_changed?
   end

@@ -2,16 +2,16 @@ class BulkAddBatch < MappingsBatch
   attr_accessor :paths # a virtual attribute to then use for creating entries
 
   validates :paths, presence: {
-    :if => :new_record?, # we only care about paths at create-time
+    if: :new_record?, # we only care about paths at create-time
     message: I18n.t('mappings.paths_empty')
   }
   validates :paths, old_urls_are_for_site: true
   validates :canonical_paths, presence: {
-    :if => :new_record?,
+    if: :new_record?,
     message: I18n.t('mappings.paths_empty')
   }
-  validates :type, inclusion: { :in => Mapping::SUPPORTED_TYPES }
-  with_options :if => :redirect? do |redirect|
+  validates :type, inclusion: { in: Mapping::SUPPORTED_TYPES }
+  with_options if: :redirect? do |redirect|
     redirect.validates :new_url, presence: { message: I18n.t('mappings.bulk.new_url_invalid') }
     redirect.validates :new_url, length: { maximum: 2048 }
     redirect.validates :new_url, non_blank_url: { message: I18n.t('mappings.bulk.new_url_invalid') }
@@ -53,6 +53,7 @@ class BulkAddBatch < MappingsBatch
   end
 
 private
+
   def canonical_paths
     @_canonical_paths ||= begin
       return [] if paths.blank?

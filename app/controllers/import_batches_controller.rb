@@ -1,7 +1,9 @@
 class ImportBatchesController < ApplicationController
   include PaperTrail::Rails::Controller
+  include CheckSiteIsNotGlobal
 
   before_filter :find_site
+  check_site_is_not_global
   checks_user_can_edit
   before_filter :find_batch, only: [:preview, :import]
 
@@ -46,6 +48,7 @@ class ImportBatchesController < ApplicationController
   end
 
 protected
+
   def batch_params
     params.require(:import_batch).permit(:tag_list, :raw_csv, :update_existing)
   end

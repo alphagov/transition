@@ -16,10 +16,10 @@ module Transition
         .org.uk
         .police.uk
         .tv
-      }
+      }.freeze
 
     def self.starts_with_http_scheme?(path_or_url)
-       path_or_url =~ STARTS_WITH_HTTP_SCHEME
+      path_or_url =~ STARTS_WITH_HTTP_SCHEME
     end
 
     def self.starts_with_a_domain?(path_or_url)

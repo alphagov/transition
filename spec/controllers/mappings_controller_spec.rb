@@ -5,7 +5,7 @@ describe MappingsController do
   let(:site)       { create :site, abbr: 'moj' }
   let(:batch)      { create(:bulk_add_batch, site: site) }
   let(:gds_bob)    { create(:gds_editor, name: 'Bob Terwhilliger') }
-  let(:admin_user) { create(:user, permissions: ['admin', 'signin'])}
+  let(:admin_user) { create(:user, permissions: %w(admin signin)) }
   let(:mapping)    { create(:mapping, site: site, as_user: gds_bob) }
 
   describe '#index' do
@@ -14,7 +14,7 @@ describe MappingsController do
     end
 
     describe 'sorting' do
-      let(:site)     { create :site, :with_mappings_and_hits }
+      let(:site) { create :site, :with_mappings_and_hits }
 
       context 'in the absence of a sort parameter' do
         it 'orders mappings by path' do
@@ -303,7 +303,7 @@ describe MappingsController do
       subject(:tags_as_strings) { mapping.reload.tags.map(&:to_s) }
 
       it 'has saved all tags as lowercase' do
-        expect(tags_as_strings).to match_array(['fee', 'fi', 'fo'])
+        expect(tags_as_strings).to match_array(%w(fee fi fo))
       end
     end
   end
@@ -319,7 +319,7 @@ describe MappingsController do
 
     context 'without permission to edit' do
       def make_request
-        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        mapping_ids = [mapping_a.id, mapping_b.id]
         post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
              type: 'archive', return_path: @mappings_index_with_filter
       end
@@ -359,7 +359,7 @@ describe MappingsController do
 
       context 'when coming from the mappings index with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
-          mapping_ids = [ mapping_a.id, mapping_b.id ]
+          mapping_ids = [mapping_a.id, mapping_b.id]
           post :edit_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
                type: 'bad', return_path: @mappings_index_with_filter
           expect(response).to redirect_to @mappings_index_with_filter
@@ -393,7 +393,7 @@ describe MappingsController do
 
     context 'without permission to edit' do
       def make_request
-        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        mapping_ids = [mapping_a.id, mapping_b.id]
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
              operation: 'redirect', new_url: 'http://a.gov.uk'
       end
@@ -411,7 +411,7 @@ describe MappingsController do
     context 'when valid data is posted', versioning: true do
       before do
         login_as gds_bob
-        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        mapping_ids = [mapping_a.id, mapping_b.id]
         @new_url = 'http://a.gov.uk'
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
              operation: 'redirect', new_url: @new_url,
@@ -475,7 +475,7 @@ describe MappingsController do
     context 'when the posted new_url is not a valid URL' do
       before do
         login_as gds_bob
-        mapping_ids = [ mapping_a.id, mapping_b.id ]
+        mapping_ids = [mapping_a.id, mapping_b.id]
         post :update_multiple, site_id: site.abbr, mapping_ids: mapping_ids,
              type: 'redirect', new_url: 'http://{'
       end
@@ -591,7 +591,6 @@ describe MappingsController do
   end
 
   describe 'mappings for sites with global http statuses' do
-
     before do
       login_as stub_user
       get :index, site_id: site.abbr
@@ -621,5 +620,4 @@ describe MappingsController do
       it_behaves_like 'it disallows the editing of mappings'
     end
   end
-
 end

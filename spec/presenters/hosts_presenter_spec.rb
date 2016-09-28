@@ -15,7 +15,7 @@ describe 'HostsPresenter' do
 
     describe '[:total]' do
       subject { super()[:total] }
-      it { is_expected.to     be(3) }
+      it { is_expected.to be(3) }
     end
 
     describe '[:_response_info]' do

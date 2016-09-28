@@ -10,7 +10,7 @@ module FilterHelper
     end
   end
 
-  def filter_remove_option_link(site, type, type_sym)
+  def filter_remove_option_link(_site, type, type_sym)
     link_to site_mappings_path(params.except(type_sym, :page).symbolize_keys), title: 'Remove filter', class: 'filter-option filter-selected' do
       "<span class=\"glyphicon glyphicon-remove\"></span><span class=\"rm\">Remove</span> #{type}".html_safe
     end

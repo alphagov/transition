@@ -23,6 +23,7 @@ module Transition
         end
 
       private
+
         def revert_safely!(abbr)
           Site.transaction do
             site = Site.find_by(abbr: abbr)
@@ -45,8 +46,8 @@ module Transition
 
         def destroy_site_and_associations(site)
           # We can ignore mappings batches - they're cleaned up overnight
-          site.hosts.each { |host| host.destroy }
-          site.destroy  # this also deletes the organisations_sites row
+          site.hosts.each(&:destroy)
+          site.destroy # this also deletes the organisations_sites row
         end
       end
     end

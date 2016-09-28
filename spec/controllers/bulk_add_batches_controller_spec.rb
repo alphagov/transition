@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 describe BulkAddBatchesController do
-  let(:site)    { create :site, abbr: 'moj' }
-  let(:batch)   { create(:bulk_add_batch, site: site) }
+  let(:site) { create :site, abbr: 'moj' }
+  let(:global_site) { create :site, global_type: 'archive' }
+  let(:batch) { create(:bulk_add_batch, site: site) }
   let(:gds_bob) { create(:gds_editor, name: 'Bob Terwhilliger') }
   let(:mapping) { create(:mapping, site: site, as_user: gds_bob) }
 
@@ -24,6 +25,14 @@ describe BulkAddBatchesController do
         get :new, site_id: site.abbr
         expect(response.status).to eql(200)
       end
+
+      context 'but the site is global' do
+        def make_request
+          post :create, site_id: global_site.abbr
+        end
+
+        it_behaves_like 'disallows editing of a global site'
+      end
     end
   end
 
@@ -34,6 +43,18 @@ describe BulkAddBatchesController do
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
+    end
+
+    context 'for a global site' do
+      before do
+        login_as gds_bob
+      end
+
+      def make_request
+        post :create, site_id: global_site.abbr
+      end
+
+      it_behaves_like 'disallows editing of a global site'
     end
   end
 
@@ -55,6 +76,14 @@ describe BulkAddBatchesController do
         expect(assigns(:bulk_add_cancel_destination)).to eq(site_mappings_path(site.abbr))
       end
     end
+
+    context 'for a global site' do
+      def make_request
+        post :create, site_id: global_site.abbr
+      end
+
+      it_behaves_like 'disallows editing of a global site'
+    end
   end
 
   describe '#import' do
@@ -71,22 +100,35 @@ describe BulkAddBatchesController do
         login_as gds_bob
       end
 
+      context 'but it is global' do
+        def make_request
+          post :create, site_id: global_site.abbr
+        end
+
+        it_behaves_like 'disallows editing of a global site'
+      end
+
       context 'a small batch' do
         def make_request
-          post :import, site_id: site.abbr, update_existing: 'true',
-              id: batch.id
+          post :import,
+               site_id: site.abbr,
+               update_existing: 'true',
+               id: batch.id
         end
 
         include_examples 'it processes a small batch inline'
       end
 
       context 'a large batch' do
-        let(:large_batch) { create(:bulk_add_batch, site: site,
-                          paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21}) }
+        let(:large_batch) {
+          create(:bulk_add_batch,
+                 site: site,
+                 paths: %w{/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21})
+        }
 
         def make_request
           post :import, site_id: site.abbr, update_existing: 'true',
-                id: large_batch.id
+                        id: large_batch.id
         end
 
         include_examples 'it processes a large batch in the background'
@@ -102,8 +144,8 @@ describe BulkAddBatchesController do
 
       context 'a redirect batch containing long new_urls' do
         let!(:whitelisted_host) { create :whitelisted_host, hostname: 'example.com' }
-        let(:stem)              { "http://#{whitelisted_host.hostname}/"  }
-        let(:long_url)          { "#{stem}#{'x' * (2048 - stem.length) }" }
+        let(:stem)              { "http://#{whitelisted_host.hostname}/" }
+        let(:long_url)          { "#{stem}#{'x' * (2048 - stem.length)}" }
         let(:batch) do
           create(:bulk_add_batch,
                  site: site,
@@ -151,8 +193,10 @@ describe BulkAddBatchesController do
 
     context '#import' do
       it 'should redirect to mappings index' do
-        post :import, site_id: site.abbr, id: batch.id,
-               return_path: 'http://malicious.com'
+        post :import,
+             site_id: site.abbr,
+             id: batch.id,
+             return_path: 'http://malicious.com'
         expect(response).to redirect_to site_mappings_path(site)
       end
     end

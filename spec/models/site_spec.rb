@@ -12,7 +12,7 @@ describe Site do
     it { is_expected.to validate_presence_of(:abbr) }
     it { is_expected.to validate_presence_of(:tna_timestamp) }
     it { is_expected.to validate_presence_of(:organisation) }
-    it { is_expected.to validate_inclusion_of(:special_redirect_strategy).in_array(['via_aka', 'supplier']) }
+    it { is_expected.to validate_inclusion_of(:special_redirect_strategy).in_array(%w(via_aka supplier)) }
     it { is_expected.to allow_value("org_site1-Modifier").for(:abbr) }
     it { is_expected.not_to allow_value("org_www.site").for(:abbr) }
 
@@ -91,8 +91,12 @@ describe Site do
   describe 'scopes' do
     let!(:site_with_mappings)    { create :site }
     let!(:site_without_mappings) { create :site }
-    let!(:mappings) { [create(:mapping, site: site_with_mappings),
-                       create(:mapping, site: site_with_mappings)] }
+    let!(:mappings) {
+      [
+        create(:mapping, site: site_with_mappings),
+        create(:mapping, site: site_with_mappings)
+      ]
+    }
 
 
     describe '.with_mapping_count' do
@@ -114,7 +118,7 @@ describe Site do
         # add some tags to the mappings
         mappings.first.tag_list = 'popular1,popular2,not-popular'
         mappings.last.tag_list  = 'popular1,popular2,still-not-popular'
-        mappings.each             { |m| m.save! }
+        mappings.each(&:save!)
 
         # add popular tagged mappings with a bigger count to the other site
         # to check we don't include tags from other sites
@@ -142,26 +146,26 @@ describe Site do
         create(:host, :with_third_party_cname, site: site)
       end
 
-      it     { is_expected.to eql(:live) }
+      it { is_expected.to eql(:live) }
     end
 
     context 'site is under supplier redirect' do
       before { site.special_redirect_strategy = 'supplier' }
-      it     { is_expected.to eql(:indeterminate) }
+      it { is_expected.to eql(:indeterminate) }
 
       context 'but it has a host with a live redirect' do
-        before { site.hosts << create(:host, :with_govuk_cname ) }
-        it     { is_expected.to eql(:live) }
+        before { site.hosts << create(:host, :with_govuk_cname) }
+        it { is_expected.to eql(:live) }
       end
     end
 
     context 'site is under aka redirect' do
       before { site.special_redirect_strategy = 'via_aka' }
-      it     { is_expected.to eql(:indeterminate) }
+      it { is_expected.to eql(:indeterminate) }
 
       context 'but it has a host with a live redirect' do
-        before { site.hosts << create(:host, :with_govuk_cname ) }
-        it     { is_expected.to eql(:live) }
+        before { site.hosts << create(:host, :with_govuk_cname) }
+        it { is_expected.to eql(:live) }
       end
     end
 
@@ -243,7 +247,7 @@ describe Site do
   describe '#hit_total_count' do
     let(:site) { create :site }
 
-    subject    { site.hit_total_count }
+    subject { site.hit_total_count }
 
     context 'the site has no hits at all' do
       it { is_expected.to be_zero }
@@ -252,8 +256,8 @@ describe Site do
     context 'the site has hits' do
       before do
         site.default_host.hits.concat [
-          create(:hit, path: '/1', hit_on: Date.today, count: 10),
-          create(:hit, path: '/2', hit_on: Date.yesterday, count: 20)
+          create(:hit, path: '/1', hit_on: Time.zone.today, count: 10),
+          create(:hit, path: '/2', hit_on: Time.zone.yesterday, count: 20)
         ]
 
         Transition::Import::DailyHitTotals.from_hits!

@@ -4,9 +4,11 @@ describe BatchOutcomePresenter do
   let!(:site) { create(:site) }
 
   describe '#success_message' do
-    let(:batch) { create(:bulk_add_batch, site: site, tag_list: 'fee, fi, fo',
-                          type: 'archive', update_existing: true,
-                          paths: ['/a', '/B', '/c?canonical=no', '/might-exist']) }
+    let(:batch) {
+      create(:bulk_add_batch, site: site, tag_list: 'fee, fi, fo',
+                              type: 'archive', update_existing: true,
+                              paths: ['/a', '/B', '/c?canonical=no', '/might-exist'])
+    }
 
     subject { BatchOutcomePresenter.new(batch).success_message }
 

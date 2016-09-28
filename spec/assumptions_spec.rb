@@ -1,12 +1,10 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Our assumptions' do
   let(:taggable_model_classes) do
-    Module.constants
-      .reject { |c| [:Config, :RAILS_CACHE].include?(c) }
-      .map    { |c| Module.const_get(c)}
-      .select { |const| const.try(:superclass) == ActiveRecord::Base &&
-                        const.respond_to?(:tagged_with) }
+    ActiveRecord::Base
+      .descendants
+      .select { |const| const.respond_to?(:tagged_with) }
   end
 
   # https://github.com/alphagov/transition/pull/301/files#r13339317

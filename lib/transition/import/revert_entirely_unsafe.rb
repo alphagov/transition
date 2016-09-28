@@ -21,6 +21,7 @@ module Transition
         end
 
       private
+
         def destroy_site_data
           destroy_all_versions
 
@@ -68,7 +69,6 @@ module Transition
           console_puts "Removing host paths for host: #{host.hostname}"
           host.host_paths.destroy_all
         end
-
       end
     end
   end

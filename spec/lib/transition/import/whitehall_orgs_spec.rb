@@ -18,13 +18,13 @@ describe Transition::Import::WhitehallOrgs do
         ]
       end
 
-      it                   { is_expected.to be_an(OpenStruct) }
-      specify              { expect(ago.format).to eq('Ministerial department') }
+      it      { is_expected.to be_a(Hash) }
+      specify { expect(ago['format']).to eq('Ministerial department') }
 
       describe '#details' do
-        subject { super().details }
+        subject { super()['details'] }
         describe '#slug' do
-          subject { super().slug }
+          subject { super()['slug'] }
           it { is_expected.to eq('attorney-generals-office') }
         end
       end

@@ -2,7 +2,6 @@
 # Lifted shamelessly from
 # http://devblog.avdi.org/2012/08/31/configuring-database_cleaner-with-rails-rspec-capybara-and-selenium/
 RSpec.configure do |config|
-
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
   end
@@ -16,12 +15,12 @@ RSpec.configure do |config|
   # want the implicit wrapped transaction around specs. Not using this
   # can result in the dreaded PG::InFailedTransaction, which may
   # bork a whole load of successive specs
-  config.before(:each, :truncate_everything => true) do
+  config.before(:each, truncate_everything: true) do
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean
   end
 
-  config.before(:each, :js => true) do
+  config.before(:each, js: true) do
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean
   end
@@ -29,11 +28,11 @@ RSpec.configure do |config|
   ##
   # Mark tests where you're going to use before(:all) for speed reasons
   # with the metadata +testing_before_all: true+
-  config.before(:all, :testing_before_all => true) do
+  config.before(:all, testing_before_all: true) do
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.after(:all, :testing_before_all => true) do
+  config.after(:all, testing_before_all: true) do
     DatabaseCleaner.clean_with(:truncation)
   end
 

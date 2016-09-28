@@ -33,8 +33,8 @@ module Transition
 
     def self.ensure_user!
       if PaperTrail.enabled? &&
-         PaperTrail.whodunnit.nil? &&
-         PaperTrail.controller_info.try(:[], :user_id).nil?
+          PaperTrail.whodunnit.nil? &&
+          PaperTrail.controller_info.try(:[], :user_id).nil?
         raise PaperTrailUserNotSetError
       end
     end

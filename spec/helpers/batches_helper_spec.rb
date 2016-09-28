@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe BatchesHelper do
   describe '#errors_for_raw_csv?' do
-    before { batch.valid? }  # We need to validate before checking for errors
+    before { batch.valid? } # We need to validate before checking for errors
 
     subject { helper.errors_for_raw_csv?(batch) }
 

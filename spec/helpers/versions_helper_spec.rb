@@ -19,23 +19,23 @@ describe VersionsHelper do
   end
 
   describe '#friendly_changeset_title' do
-    specify { expect(helper.friendly_changeset_title({'id' => 1})).to eq('Mapping created') }
+    specify { expect(helper.friendly_changeset_title('id' => 1)).to eq('Mapping created') }
 
-    specify { expect(helper.friendly_changeset_title({'archive_url' => 1})).to eq('Custom Archive URL updated') }
+    specify { expect(helper.friendly_changeset_title('archive_url' => 1)).to eq('Custom Archive URL updated') }
 
-    specify { expect(helper.friendly_changeset_title({'miscellaneous' => 1})).to eq('Miscellaneous updated') }
+    specify { expect(helper.friendly_changeset_title('miscellaneous' => 1)).to eq('Miscellaneous updated') }
 
-    specify { expect(helper.friendly_changeset_title({'archive_url' => 1, 'miscellaneous' => 1})).to eq('Multiple properties updated') }
+    specify { expect(helper.friendly_changeset_title('archive_url' => 1, 'miscellaneous' => 1)).to eq('Multiple properties updated') }
 
-    specify { expect(helper.friendly_changeset_title({'type' => ['redirect', 'archive']})).to eq('Switched mapping to an Archive') }
+    specify { expect(helper.friendly_changeset_title('type' => %w(redirect archive))).to eq('Switched mapping to an Archive') }
   end
 
   describe '#friendly_changeset_old_to_new' do
-    specify { expect(helper.friendly_changeset_old_to_new('misc', ['old', 'new'])).to eq('old → new') }
+    specify { expect(helper.friendly_changeset_old_to_new('misc', %w(old new))).to eq('old → new') }
 
     specify { expect(helper.friendly_changeset_old_to_new('misc', ['', 'new'])).to eq('<blank> → new') }
 
-    specify { expect(helper.friendly_changeset_old_to_new('type', ['archive', 'redirect'])).to eq('Archive → Redirect') }
+    specify { expect(helper.friendly_changeset_old_to_new('type', %w(archive redirect))).to eq('Archive → Redirect') }
 
     specify { expect(helper.friendly_changeset_old_to_new('type', ['', 'redirect'])).to eq('<blank> → Redirect') }
   end

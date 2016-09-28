@@ -62,7 +62,7 @@ describe HitsController do
         expect(sum_of_hit_counts).to eq(6)
       end
       it 'groups hits by path and status' do
-        results = category.hits.map {|r| [r.http_status, r.path, r.count]}
+        results = category.hits.map { |r| [r.http_status, r.path, r.count] }
         expect(results).to eq([
           ['410', '/article/123', 6]
         ])
@@ -82,7 +82,7 @@ describe HitsController do
     shared_examples 'it has hits and points whether or not we used a view' do
       it 'has paths once for each status ordered by descending count' do
         expect(paths).to eq([['410', '/article/123', 6],
-                         ['404', '/article/123', 2]])
+                             ['404', '/article/123', 2]])
       end
       it 'has four points' do
         expect(category.points.size).to eq(4)
@@ -128,6 +128,5 @@ describe HitsController do
         it_behaves_like 'it has hits and points whether or not we used a view'
       end
     end
-
   end
 end

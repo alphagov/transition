@@ -25,7 +25,7 @@ module Transition
 
       def self.user
         User.where(email: 'logs-mappings-robot@dummy.com').first_or_create! do |user|
-          user.name  = 'Logs mappings robot'
+          user.name = 'Logs mappings robot'
           user.is_robot = true
         end
       end

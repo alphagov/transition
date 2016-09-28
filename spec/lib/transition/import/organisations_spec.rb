@@ -27,7 +27,7 @@ describe Transition::Import::Organisations do
 
       describe '#content_id' do
         subject { super().content_id }
-        it { is_expected.to eql '8ded75c7-29ea-4831-958c-4f07fd73425d'}
+        it { is_expected.to eql '8ded75c7-29ea-4831-958c-4f07fd73425d' }
       end
 
       describe '#whitehall_slug' do
@@ -64,6 +64,5 @@ describe Transition::Import::Organisations do
         it { is_expected.to eql 'www.gov.uk/ago' }
       end
     end
-
   end
 end
