@@ -177,6 +177,14 @@ describe MappingsController do
           expect(response.status).to eq(404)
         end
       end
+
+      context 'when the URL starts or ends with whitespace' do
+        let!(:host) { create :host, hostname: "example.com" }
+        it 'strips both leading and trailing whitespace' do
+          get :find_global, url: " http://example.com/hello "
+          expect(response).to redirect_to site_mapping_find_url(host.site, path: "/hello")
+        end
+      end
     end
   end
 
