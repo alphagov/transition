@@ -45,7 +45,7 @@ Feature: View organisation
       | companies_welsh  | https://www.gov.uk/government/organisations/companies-house |
     When I visit the path /organisations/companies-house
     And I filter sites by "welsh"
-    Then I should see an sites table with 1 row
+    Then I should see a sites table with 1 row
     And I should see "companies_welsh.gov.uk"
     But I should not see "companies.gov.uk"
 
