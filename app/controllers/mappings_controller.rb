@@ -89,10 +89,13 @@ class MappingsController < ApplicationController
     # This allows finding a mapping without knowing the site first.
     render_error(400) and return unless params[:url].present?
 
-    url = if !Transition::PathOrURL.starts_with_http_scheme?(params[:url])
-            'http://' + params[:url] # Add a dummy scheme
+    # Strip leading and trailing whitespace before any processing.
+    stripped_url = params[:url].strip
+
+    url = if !Transition::PathOrURL.starts_with_http_scheme?(stripped_url)
+            'http://' + stripped_url # Add a dummy scheme
           else
-            params[:url]
+            stripped_url
           end
 
     begin
