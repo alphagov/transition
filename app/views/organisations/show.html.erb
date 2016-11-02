@@ -32,7 +32,7 @@
     <% @sites.each do |site| %>
       <tr>
         <td>
-          <%= link_to site.default_host.hostname, site_path(site), class: 'breakable' %>
+          <%= link_to site.default_host.hostname, site_path(site), class: 'breakable js-open-on-submit' %>
           <% if site.organisation != @organisation %>
             <br><span class="text-muted">owned by</span>
             <%= link_to site.organisation.title, site.organisation, class: 'link-muted' %>
