@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160314150053) do
+ActiveRecord::Schema.define(version: 20161111172455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,9 +105,9 @@ ActiveRecord::Schema.define(version: 20160314150053) do
     t.integer "mapping_id"
     t.boolean "processed",                      default: false
     t.string  "klass",             limit: 255
-    t.string  "new_url",           limit: 2048
+    t.text    "new_url"
     t.string  "type",              limit: 255
-    t.string  "archive_url",       limit: 255
+    t.text    "archive_url"
   end
 
   add_index "mappings_batch_entries", ["mappings_batch_id"], name: "index_mappings_batch_entries_on_mappings_batch_id", using: :btree
