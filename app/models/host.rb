@@ -17,8 +17,7 @@ class Host < ActiveRecord::Base
 
   FASTLY_ANYCAST_IPS = ['23.235.33.144', '23.235.37.144'].freeze # To be used for new root domains
   DYN_DNS_IPS        = ['216.146.46.10', '216.146.46.11'].freeze # Used for a few domains we control
-  AMAZON_LEGACY_IP   = ['46.137.92.159'].freeze                  # We're migrating domains off this
-  REDIRECTOR_IPS     = FASTLY_ANYCAST_IPS + DYN_DNS_IPS + AMAZON_LEGACY_IP
+  REDIRECTOR_IPS     = FASTLY_ANYCAST_IPS + DYN_DNS_IPS
 
   REDIRECTOR_CNAME = /^redirector-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/
 
