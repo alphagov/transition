@@ -148,15 +148,6 @@ describe Host do
       end
     end
 
-    context 'IP pointing at the redirector EC2 box' do
-      subject { build(:host, cname: nil, ip_address: '46.137.92.159') }
-
-      describe '#redirected_by_gds?' do
-        subject { super().redirected_by_gds? }
-        it { is_expected.to be_truthy }
-      end
-    end
-
     context 'external CNAME' do
       subject { build(:host, cname: 'bis-tms-101-L01.eduserv.org.uk') }
 
