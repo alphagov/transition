@@ -265,7 +265,7 @@ describe ImportBatch do
       end
 
       context 'with custom archive URL' do
-        let(:archive_url) { 'http://webarchive.nationalarchives.gov.uk/*/http://a.com' }
+        let(:archive_url) { 'http://webarchive.nationalarchives.gov.uk/20160701131101/http://blogs.bis.gov.uk/exportcontrol/open-licensing/httpblogs-bis-gov-ukexportcontroluncategorizednotice-to-exporters-201415-uk-suspends-all-licences-and-licence-applications-for-export-to-russian-military-that-could-be-used-against-ukraine/' }
         let(:raw_csv) {
           <<-CSV.strip_heredoc
             /old,#{archive_url}
