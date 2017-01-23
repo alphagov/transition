@@ -15,9 +15,10 @@ class Host < ActiveRecord::Base
 
   scope :excluding_aka, -> { where(canonical_host_id: nil) }
 
-  FASTLY_ANYCAST_IPS = ['23.235.33.144', '23.235.37.144'].freeze # To be used for new root domains
-  DYN_DNS_IPS        = ['216.146.46.10', '216.146.46.11'].freeze # Used for a few domains we control
-  REDIRECTOR_IPS     = FASTLY_ANYCAST_IPS + DYN_DNS_IPS
+  FASTLY_BOUNCER_SERVICE_MAP = %w(151.101.2.30 151.101.66.30 151.101.130.30 151.101.194.30).freeze # bouncer.gds.map.fastly.net.
+  FASTLY_ANYCAST_IPS = ['23.235.33.144', '23.235.37.144'].freeze # FIXME: These IPs are deprecated, Fastly would like to reallocate them
+  DYN_DNS_IPS        = ['216.146.46.10', '216.146.46.11'].freeze # FIXME: These IPs are Dyn's redirect service, replace them with Fastly
+  REDIRECTOR_IPS     = FASTLY_ANYCAST_IPS + FASTLY_BOUNCER_SERVICE_MAP + DYN_DNS_IPS
 
   REDIRECTOR_CNAME = /^redirector-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/
 
