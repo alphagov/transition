@@ -20,7 +20,7 @@ class Host < ActiveRecord::Base
   DYN_DNS_IPS        = ['216.146.46.10', '216.146.46.11'].freeze # FIXME: These IPs are Dyn's redirect service, replace them with Fastly
   REDIRECTOR_IPS     = FASTLY_ANYCAST_IPS + FASTLY_BOUNCER_SERVICE_MAP + DYN_DNS_IPS
 
-  REDIRECTOR_CNAME = /^redirector-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/
+  REDIRECTOR_CNAME = /^(redirector|bouncer)-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/
 
   def aka?
     hostname.start_with?('aka')
