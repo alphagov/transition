@@ -139,6 +139,15 @@ describe Host do
       end
     end
 
+    context 'alternate CDN CNAME' do
+      subject { build(:host, cname: 'bouncer-cdn.production.govuk.service.gov.uk') }
+
+      describe '#redirected_by_gds?' do
+        subject { super().redirected_by_gds? }
+        it { is_expected.to be_truthy }
+      end
+    end
+
     context 'businesslink events CDN CNAME' do
       subject { build(:host, cname: 'redirector-cdn-ssl-events-businesslink.production.govuk.service.gov.uk') }
 
