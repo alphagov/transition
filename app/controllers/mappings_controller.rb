@@ -1,4 +1,5 @@
 require 'view/mappings/canonical_filter'
+require './lib/transition/path_or_url.rb'
 
 class MappingsController < ApplicationController
   include PaperTrail::Rails::Controller
@@ -10,7 +11,7 @@ class MappingsController < ApplicationController
   checks_user_can_edit except: [:index, :find, :find_global]
 
   def index
-    @filter = View::Mappings::Filter.new(@site, params)
+    @filter = View::Mappings::Filter.new(@site, site_params)
     respond_to do |format|
       format.html do
         @mappings = @filter.mappings
@@ -92,7 +93,7 @@ class MappingsController < ApplicationController
     # Strip leading and trailing whitespace before any processing.
     stripped_url = params[:url].strip
 
-    url = if !Transition::PathOrURL.starts_with_http_scheme?(stripped_url)
+    url = if !::Transition::PathOrUrl.starts_with_http_scheme?(stripped_url)
             'http://' + stripped_url # Add a dummy scheme
           else
             stripped_url
@@ -147,13 +148,26 @@ private
                              :new_url,
                              :tag_list,
                              :suggested_url,
-                             :archive_url
+                             :archive_url,
                            ])
   end
 
+  def site_params
+    params.permit(
+      :controller,
+      :action,
+      :site_id,
+      :type,
+      :path_contains,
+      :new_url_contains,
+      :tagged,
+      :page,
+      :sort,
+      :format)
+  end
 
   def bulk_edit
-    @bulk_edit ||= bulk_editor_class.new(@site, params, site_mappings_path(@site))
+    @bulk_edit ||= bulk_editor_class.new(@site, params, site_mappings_path(site_id: @site))
   end
 
   def bulk_editor_class
@@ -165,7 +179,7 @@ private
     if referer && Addressable::URI.parse(referer).host == request.host
       referer
     else
-      site_mappings_path(@site)
+      site_mappings_path(site_id: @site)
     end
   end
 
@@ -173,7 +187,7 @@ private
     if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
       redirect_to params[:return_path], redirect_to_options
     else
-      redirect_to site_mappings_path(@site), redirect_to_options
+      redirect_to site_mappings_path(site_id: @site), redirect_to_options
     end
   end
 end

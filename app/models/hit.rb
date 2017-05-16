@@ -54,6 +54,6 @@ class Hit < ActiveRecord::Base
 protected
 
   def normalize_hit_on
-    self.hit_on = hit_on.beginning_of_day if hit_on_changed?
+    self.hit_on = hit_on.beginning_of_day if saved_change_to_hit_on?
   end
 end

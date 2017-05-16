@@ -3,7 +3,7 @@
     <div class="panel panel-default">
       <header class="panel-heading">
         <% if @filter.active? %>
-          <%= link_to site_mappings_path(@site), class: 'remove-filters inherit', title: 'Remove all filters' do %>
+          <%= link_to site_mappings_path(site_id: @site), class: 'remove-filters inherit', title: 'Remove all filters' do %>
             <span class="glyphicon glyphicon-remove"></span>
           <% end %>
         <% end %>
@@ -27,7 +27,7 @@
             </li>
           <% end %>
           <li class="if-js-hide">
-            <%= link_to 'Filter mappings', filter_site_mappings_path(@site) %>
+            <%= link_to 'Filter mappings', filter_site_mappings_path(site_id: @site) %>
           </li>
         </ul>
       </header>
@@ -39,12 +39,12 @@
       <% if @filter.path_contains.present? || @filter.new_url_contains.present? || @filter.tags.any? %>
         <div class="panel-body">
           <% if @filter.path_contains.present? %>
-            <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
+            <%= form_tag(site_mappings_path(site_id: @site), method: 'get', role: 'form', class: 'form active-filter') do %>
               <%= render partial: 'mappings/filter/by_path_field', locals: {single_filter_form: true, button_text: 'Update path'} %>
             <% end %>
           <% end %>
           <% if @filter.new_url_contains.present? %>
-            <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form active-filter') do %>
+            <%= form_tag(site_mappings_path(site_id: @site), method: 'get', role: 'form', class: 'form active-filter') do %>
               <%= render partial: 'mappings/filter/by_new_url_field', locals: {single_filter_form: true, button_text: 'Update URL'} %>
             <% end %>
           <% end %>

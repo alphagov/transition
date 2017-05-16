@@ -35,7 +35,7 @@ describe HitsController do
 
   describe '#category' do
     before do
-      get :category, site_id: site, category: test_category_name
+      get :category, params: { site_id: site, category: test_category_name }
     end
 
     subject(:category)      { assigns[:category] }
@@ -93,7 +93,7 @@ describe HitsController do
       before do
         expect(site).not_to receive(:precomputed_all_hits)
 
-        get :index, site_id: site, period: 'all-time'
+        get :index, params: { site_id: site, period: 'all-time' }
       end
 
       it_behaves_like 'it has hits and points whether or not we used a view'
@@ -108,7 +108,7 @@ describe HitsController do
 
           expect(site).to receive(:precomputed_all_hits).and_call_original
 
-          get :index, site_id: site, period: 'all-time'
+          get :index, params: { site_id: site, period: 'all-time' }
         end
 
         it_behaves_like 'it has hits and points whether or not we used a view'
@@ -122,7 +122,7 @@ describe HitsController do
 
           expect(site).not_to receive(:precomputed_all_hits)
 
-          get :index, site_id: site, period: 'all-time'
+          get :index, params: { site_id: site, period: 'all-time' }
         end
 
         it_behaves_like 'it has hits and points whether or not we used a view'

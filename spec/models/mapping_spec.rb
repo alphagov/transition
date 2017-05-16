@@ -344,7 +344,7 @@ describe Mapping do
       let!(:unrelated_hit) { create :hit, path: '/just-zis-guy', host: site.default_host }
       let!(:unrelated_host_path) { create :host_path, path: '/just-zis-guy', host: site.default_host }
 
-      context 'when creating a new mapping', need_mapping_callbacks: true do
+      context 'when creating a new mapping' do
         before do
           Transition::Import::HitsMappingsRelations.refresh!
           mapping.save!

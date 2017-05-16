@@ -4,7 +4,7 @@
   <% else %>
     <%= filter_option_link(@site, 'Path') %>
     <div class="dropdown-menu dropdown-text-input" role="dialog" id="filter-by-path">
-      <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
+      <%= form_tag(site_mappings_path(site_id: @site), method: 'get', role: 'form', class: 'form') do %>
         <%= render partial: 'mappings/filter/by_path_field', locals: {single_filter_form: true, button_text: 'Filter'} %>
       <% end %>
     </div>

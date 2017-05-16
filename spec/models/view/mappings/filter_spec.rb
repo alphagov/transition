@@ -238,7 +238,7 @@ module View
         end
 
         it 'has been sorted by hits (even though there aren\'t any)' do
-          expect(filter.mappings.first.hit_count).to be_nil
+          expect(filter.mappings.first.hit_count).to eql(0)
         end
       end
     end

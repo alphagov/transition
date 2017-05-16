@@ -3,7 +3,9 @@ require 'transition/google/results_pager'
 
 describe Transition::Google::ResultsPager do
   def api_result_with(body)
-    double(Google::APIClient::Result).tap { |result| allow(result).to receive(:body).and_return(body) }
+    double(Google::Apis::DriveV2::DriveService).tap do |result|
+      allow(result).to receive(:body).and_return(body)
+    end
   end
 
   # Minimal set of params required to ask GA about hit count per host/path and use paging
@@ -20,7 +22,9 @@ describe Transition::Google::ResultsPager do
 
   let(:analytics_api) { double('Analytics API').as_null_object }
   let(:test_client) do
-    double(Google::APIClient).tap { |client| allow(client).to receive(:discovered_api).and_return(analytics_api) }
+    double(Google::Apis::DriveV2::DriveService).tap do |client|
+      allow(client).to receive(:discovered_api).and_return(analytics_api)
+    end
   end
   let(:p1_json) { File.read('spec/fixtures/ga/page1.json') }
   let(:p2_json) { File.read('spec/fixtures/ga/page2.json') }

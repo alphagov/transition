@@ -81,7 +81,7 @@ describe BulkAddBatch do
       let(:site) { create(:site_without_host) }
 
       before do
-        site.hosts = [host]
+        site.hosts << host
       end
 
       subject(:mappings_batch) do

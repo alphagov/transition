@@ -50,7 +50,7 @@ describe Admin::WhitelistedHostsController do
 
   describe '#create' do
     def make_request
-      post :create, whitelisted_host: { hostname: 'a.com' }
+      post :create, params: { whitelisted_host: { hostname: 'a.com' } }
     end
 
     it_behaves_like 'denies access if you are not an admin'
@@ -75,7 +75,7 @@ describe Admin::WhitelistedHostsController do
 
       context 'with an invalid hostname' do
         def make_request
-          post :create, whitelisted_host: { hostname: 'a}b.com' }
+          post :create, params: { whitelisted_host: { hostname: 'a}b.com' } }
         end
 
         it 'should rerender the form' do

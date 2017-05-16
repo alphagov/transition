@@ -9,7 +9,7 @@
   </h1>
 </div>
 
-<%= form_tag update_multiple_site_mappings_path(@site) do %>
+<%= form_tag update_multiple_site_mappings_path(site_id: @site) do %>
   <%= render partial: 'edit_multiple_table',
              locals: { modal: false, mappings: @bulk_edit.mappings, site: @site } %>
   <%= render partial: 'edit_multiple_redirect',

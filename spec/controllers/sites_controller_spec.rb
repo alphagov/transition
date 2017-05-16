@@ -11,14 +11,14 @@ describe SitesController do
       end
 
       it 'displays the form' do
-        get :edit, id: site.abbr
+        get :edit, params: { id: site.abbr }
         expect(response.status).to eql(200)
       end
     end
 
     context 'when the user does not have permission' do
       def make_request
-        get :edit, id: site.abbr
+        get :edit, params: { id: site.abbr }
       end
 
       it_behaves_like 'disallows editing by non-GDS Editors'

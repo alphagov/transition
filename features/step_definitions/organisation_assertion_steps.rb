@@ -24,11 +24,9 @@ Then(/^I should see all the old homepages for the sites of the given organisatio
 end
 
 Then(/^I should see the site that the organisation is trusted to edit$/) do
-  expect(page).to have_selector(
-    '.sites tbody tr:first-child td:first-child', text: /bis\.gov\.uk.*owned by.*Biz/m)
+  expect(page).to have_content /bis\.gov\.uk.*owned by.*Biz/m
 end
 
 And(/^I should see the organisation's own site$/) do
-  expect(page).to have_selector(
-    '.sites tbody tr:last-child td:first-child', text: 'britishhallmarkingcouncil.gov.uk')
+  expect(page).to have_content 'britishhallmarkingcouncil.gov.uk'
 end

@@ -10,7 +10,7 @@ describe BulkAddBatchesController do
   describe '#new' do
     context 'without permission to edit' do
       def make_request
-        get :new, site_id: site.abbr
+        get :new, params: { site_id: site.abbr }
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -22,13 +22,13 @@ describe BulkAddBatchesController do
       end
 
       it 'displays the form' do
-        get :new, site_id: site.abbr
+        get :new, params: { site_id: site.abbr }
         expect(response.status).to eql(200)
       end
 
       context 'but the site is global' do
         def make_request
-          post :create, site_id: global_site.abbr
+          post :create, params: { site_id: global_site.abbr }
         end
 
         it_behaves_like 'disallows editing of a global site'
@@ -39,7 +39,7 @@ describe BulkAddBatchesController do
   describe '#create' do
     context 'without permission to edit' do
       def make_request
-        post :create, site_id: site.abbr
+        post :create, params: { site_id: site.abbr }
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -51,7 +51,7 @@ describe BulkAddBatchesController do
       end
 
       def make_request
-        post :create, site_id: global_site.abbr
+        post :create, params: { site_id: global_site.abbr }
       end
 
       it_behaves_like 'disallows editing of a global site'
@@ -65,21 +65,33 @@ describe BulkAddBatchesController do
 
     context 'when the return path is on site' do
       it 'returns to where it came from' do
-        get :preview, site_id: site.abbr, id: batch.id, return_path: '/donkey'
+        get :preview,
+          params: {
+            site_id: site.abbr,
+            id: batch.id,
+            return_path: '/donkey'
+          }
+
         expect(assigns(:bulk_add_cancel_destination)).to eq('/donkey')
       end
     end
 
     context 'when the return path is off site' do
       it 'returns to the site mappings path' do
-        get :preview, site_id: site.abbr, id: batch.id, return_path: 'http://google.com'
+        get :preview,
+          params: {
+            site_id: site.abbr,
+            id: batch.id,
+            return_path: 'http://google.com'
+          }
+
         expect(assigns(:bulk_add_cancel_destination)).to eq(site_mappings_path(site.abbr))
       end
     end
 
     context 'for a global site' do
       def make_request
-        post :create, site_id: global_site.abbr
+        post :create, params: { site_id: global_site.abbr }
       end
 
       it_behaves_like 'disallows editing of a global site'
@@ -89,7 +101,7 @@ describe BulkAddBatchesController do
   describe '#import' do
     context 'without permission to edit' do
       def make_request
-        post :import, site_id: site.abbr, id: batch.id
+        post :import, params: { site_id: site.abbr, id: batch.id }
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -102,7 +114,7 @@ describe BulkAddBatchesController do
 
       context 'but it is global' do
         def make_request
-          post :create, site_id: global_site.abbr
+          post :create, params: { site_id: global_site.abbr }
         end
 
         it_behaves_like 'disallows editing of a global site'
@@ -111,9 +123,11 @@ describe BulkAddBatchesController do
       context 'a small batch' do
         def make_request
           post :import,
-               site_id: site.abbr,
-               update_existing: 'true',
-               id: batch.id
+            params: {
+              site_id: site.abbr,
+              update_existing: 'true',
+              id: batch.id
+            }
         end
 
         include_examples 'it processes a small batch inline'
@@ -127,8 +141,12 @@ describe BulkAddBatchesController do
         }
 
         def make_request
-          post :import, site_id: site.abbr, update_existing: 'true',
-                        id: large_batch.id
+          post :import,
+            params: {
+              site_id: site.abbr,
+              update_existing: 'true',
+              id: large_batch.id
+            }
         end
 
         include_examples 'it processes a large batch in the background'
@@ -136,7 +154,7 @@ describe BulkAddBatchesController do
 
       context 'a batch which has been submitted already' do
         def make_request
-          post :import, site_id: site.abbr, id: batch.id
+          post :import, params: { site_id: site.abbr, id: batch.id }
         end
 
         include_examples 'it doesn\'t requeue a batch which has already been queued'
@@ -154,7 +172,7 @@ describe BulkAddBatchesController do
         end
 
         before do
-          post :import, site_id: site.abbr, id: batch.id
+          post :import, params: { site_id: site.abbr, id: batch.id }
         end
 
         it 'creates each mapping in the batch' do
@@ -181,7 +199,7 @@ describe BulkAddBatchesController do
       # ActionController::RequestForgeryProtection::ClassMethods to return false
       # in order to test our override of the verify_authenticity_token method
       allow(subject).to receive(:verified_request?).and_return(false)
-      post :import, site_id: mapping.site, id: batch.id
+      post :import, params: { site_id: mapping.site, id: batch.id }
       expect(response.status).to eql(403)
     end
   end
@@ -194,9 +212,11 @@ describe BulkAddBatchesController do
     context '#import' do
       it 'should redirect to mappings index' do
         post :import,
-             site_id: site.abbr,
-             id: batch.id,
-             return_path: 'http://malicious.com'
+          params: {
+            site_id: site.abbr,
+            id: batch.id,
+            return_path: 'http://malicious.com'
+          }
         expect(response).to redirect_to site_mappings_path(site)
       end
     end

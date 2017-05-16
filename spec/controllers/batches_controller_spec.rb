@@ -10,7 +10,7 @@ describe BatchesController do
 
       before do
         login_as(user)
-        get :show, site_id: site.abbr, id: mappings_batch.id
+        get :show, params: { site_id: site.abbr, id: mappings_batch.id }
         @parsed_response = JSON.parse(response.body)
       end
 
@@ -31,7 +31,7 @@ describe BatchesController do
     context 'when batch does not exist' do
       before do
         login_as(user)
-        get :show, site_id: site.abbr, id: 72
+        get :show, params: { site_id: site.abbr, id: 72 }
       end
 
       it 'responds with a 404 status code' do

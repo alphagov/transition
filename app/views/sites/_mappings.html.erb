@@ -6,7 +6,7 @@
     <div class="list-group add-big-bottom-margin">
       <div class="list-group-item add-vertical-padding">
         <h4 class="list-group-item-heading">
-          <%= link_to 'Mappings', site_mappings_path(@site), class: 'no-visit' %>
+          <%= link_to 'Mappings', site_mappings_path(site_id: @site), class: 'no-visit' %>
         </h4>
         <p class="list-group-item-text text-muted">
           <strong><%= pluralize(number_with_delimiter(@site.mappings.count), 'path') %></strong> &mdash;
@@ -16,7 +16,7 @@
       <% if @unresolved_mappings_count > 0 %>
         <div class="list-group-item">
           <h4 class="list-group-item-heading">
-            <%= link_to 'Paths needing a decision', site_mappings_path(@site, type: 'unresolved'), class: 'no-visit' %>
+            <%= link_to 'Paths needing a decision', site_mappings_path(site_id: @site, type: 'unresolved'), class: 'no-visit' %>
           </h4>
           <p class="list-group-item-text text-muted">
             <strong><%= pluralize(number_with_delimiter(@unresolved_mappings_count), 'path') %></strong>
@@ -43,7 +43,7 @@
             <ul class="tag-list remove-bottom-margin">
               <% @most_used_tags.each do |tag| %>
                 <li>
-                  <%= link_to tag, site_mappings_path(@site, tagged: tag), class: 'tag' %>
+                  <%= link_to tag, site_mappings_path(site_id: @site, tagged: tag), class: 'tag' %>
                 </li>
               <% end %>
             </ul>

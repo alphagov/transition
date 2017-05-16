@@ -3,7 +3,7 @@ module CheckSiteIsNotGlobal
 
   class_methods do
     def check_site_is_not_global(options = {})
-      before_filter :check_global_redirect_or_archive, options
+      before_action :check_global_redirect_or_archive, options
     end
   end
 

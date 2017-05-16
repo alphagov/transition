@@ -1,5 +1,5 @@
 class BatchesController < ApplicationController
-  before_filter :set_batch
+  before_action :set_batch
 
   def show
     body = {

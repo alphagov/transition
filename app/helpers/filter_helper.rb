@@ -11,7 +11,7 @@ module FilterHelper
   end
 
   def filter_remove_option_link(_site, type, type_sym)
-    link_to site_mappings_path(params.except(type_sym, :page).symbolize_keys), title: 'Remove filter', class: 'filter-option filter-selected' do
+    link_to site_mappings_path(permitted_params(params.except(type_sym, :page))), title: 'Remove filter', class: 'filter-option filter-selected' do
       "<span class=\"glyphicon glyphicon-remove\"></span><span class=\"rm\">Remove</span> #{type}".html_safe
     end
   end
@@ -25,5 +25,19 @@ module FilterHelper
       hidden_field_tag(name, value) unless value.blank?
     end
     hidden_fields.join("\n").html_safe
+  end
+
+  # receives params that have not been permitted (permited: false)
+  def permitted_params(unpermitted_params)
+    unpermitted_params.permit(
+      :controller,
+      :action,
+      :site_id,
+      :format,
+      :type,
+      :path_contains,
+      :new_url_contains,
+      :tagged,
+    )
   end
 end

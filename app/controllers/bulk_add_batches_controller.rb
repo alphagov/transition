@@ -4,10 +4,10 @@ class BulkAddBatchesController < ApplicationController
   include PaperTrail::Rails::Controller
   include CheckSiteIsNotGlobal
 
-  before_filter :find_site
+  before_action :find_site
   check_site_is_not_global
   checks_user_can_edit
-  before_filter :find_batch, only: [:preview, :import]
+  before_action :find_batch, only: [:preview, :import]
 
   def new
     paths = params[:paths].present? ? params[:paths].split(',') : []
@@ -60,7 +60,7 @@ private
     if Transition::OffSiteRedirectChecker.on_site?(params[:return_path])
       params[:return_path]
     else
-      site_mappings_path(@site)
+      site_mappings_path(site_id: @site)
     end
   end
 

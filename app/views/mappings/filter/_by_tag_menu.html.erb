@@ -18,7 +18,7 @@
       <hr />
       <h4>All tags</h4>
       <%= label_tag :tagged, 'Tag', class: 'rm' %>
-      <%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form') do %>
+      <%= form_tag(site_mappings_path(site_id: @site), method: 'get', role: 'form', class: 'form') do %>
         <%= hidden_filter_fields_except(@filter, :tagged) %>
         <div class="form-group">
           <label class="rm">Tag</label>
