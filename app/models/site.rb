@@ -1,4 +1,5 @@
 require 'postgres/materialized_view'
+require './lib/transition/path_or_url.rb'
 
 class Site < ActiveRecord::Base
   belongs_to :organisation
@@ -25,7 +26,7 @@ class Site < ActiveRecord::Base
                                        message: 'cannot contain a query when the path is appended',
                                        if: :global_redirect_append_path }
 
-  after_update :update_hits_relations, if: :query_params_changed?
+  after_update :update_hits_relations, if: :saved_change_to_query_params?
   after_update :remove_all_hits_view,  if: :should_remove_unused_view?
 
   scope :with_mapping_count, -> {
@@ -61,10 +62,10 @@ class Site < ActiveRecord::Base
   end
 
   def canonical_path(path_or_url)
-    url = if Transition::PathOrURL.starts_with_http_scheme?(path_or_url)
+    url = if ::Transition::PathOrUrl.starts_with_http_scheme?(path_or_url)
             path_or_url
           elsif !path_or_url.starts_with?('/') &&
-              Transition::PathOrURL.starts_with_a_domain?(path_or_url)
+              ::Transition::PathOrUrl.starts_with_a_domain?(path_or_url)
             'http://' + path_or_url
           else
             # BLURI takes a full URL, but we only care about the path. There's no
@@ -121,7 +122,7 @@ class Site < ActiveRecord::Base
 private
 
   def should_remove_unused_view?
-    precompute_all_hits_view_changed? && precompute_all_hits_view == false
+    saved_change_to_precompute_all_hits_view? && precompute_all_hits_view == false
   end
 
   def remove_all_hits_view

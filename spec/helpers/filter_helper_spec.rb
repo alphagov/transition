@@ -15,7 +15,7 @@ describe FilterHelper do
     it { is_expected.to be_an(ActiveSupport::SafeBuffer) }
 
     it 'includes links to all the fields except path_contains' do
-      expect(subject).to     have_selector('input#type[name="type"][type="hidden"]')
+      expect(subject).to     have_selector('input#type[name="type"][type="hidden"]', visible: false)
       expect(subject).not_to have_selector('input#path_contains[name="path_contains"][type="hidden"]')
     end
 

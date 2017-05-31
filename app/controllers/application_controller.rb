@@ -1,9 +1,9 @@
 class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
 
-  before_filter :require_signin_permission!
+  before_action :require_signin_permission!
 
-  before_filter :exclude_all_users_except_admins_during_maintenance
+  before_action :exclude_all_users_except_admins_during_maintenance
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.

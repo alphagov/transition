@@ -9,7 +9,7 @@ describe ImportBatch do
       let(:site) { create(:site_without_host) }
 
       before do
-        site.hosts = [host]
+        site.hosts << host
       end
 
       describe 'old_urls includes URLs for this site' do
@@ -118,7 +118,7 @@ describe ImportBatch do
 
         before { expect(mappings_batch).not_to be_valid }
         it 'should include the error message once per unique new URL' do
-          expect(mappings_batch.errors[:new_urls].size).to eql(2)
+          expect(mappings_batch.errors.details[:new_urls].size).to eql(2)
         end
       end
     end

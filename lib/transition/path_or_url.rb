@@ -1,5 +1,5 @@
 module Transition
-  class PathOrURL
+  class PathOrUrl
     STARTS_WITH_HTTP_SCHEME = %r{^https?://}
 
     # TLDs for Hosts in transition

@@ -11,7 +11,7 @@ class Host < ActiveRecord::Base
   validates :site, presence: true
   validate :canonical_host_id_xor_aka_present
 
-  after_update :update_hits_relations, if: :site_id_changed?
+  after_update :update_hits_relations, if: :saved_change_to_site_id?
 
   scope :excluding_aka, -> { where(canonical_host_id: nil) }
 

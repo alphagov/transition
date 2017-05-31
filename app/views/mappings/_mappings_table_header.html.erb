@@ -33,7 +33,7 @@
     </div>
     <div class="pull-right">
       <% if include_export && current_user.admin? %>
-        <%= link_to site_mappings_path(@site, params.merge(format: 'csv').symbolize_keys), class: 'btn btn-default', title: 'This may timeout for >~75,000 mappings' do %>
+        <%= link_to site_mappings_path(@site, permitted_params(params.merge(format: 'csv'))), class: 'btn btn-default', title: 'This may timeout for >~75,000 mappings' do %>
           Export CSV
         <% end %>
       <% end %>

@@ -8,7 +8,7 @@
   data-track-label="<%= @bulk_edit.analytics_event_type %>"
   data-track-value="<%= @bulk_edit.mappings.size %>"
 >
-  <%= form_tag update_multiple_site_mappings_path(@site), class: 'modal-dialog', role: 'form' do %>
+  <%= form_tag update_multiple_site_mappings_path(site_id: @site), class: 'modal-dialog', role: 'form' do %>
     <div class="modal-content">
       <header class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

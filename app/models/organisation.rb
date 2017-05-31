@@ -1,6 +1,4 @@
 class Organisation < ActiveRecord::Base
-  belongs_to :parent, class_name: Organisation, foreign_key: 'parent_id'
-
   has_many :child_organisational_relationships,
             foreign_key: :parent_organisation_id,
             class_name: "OrganisationalRelationship"

@@ -6,11 +6,11 @@ module TrackMappingsProgress
       unless _process_action_callbacks.any? { |c| c.kind == :before && c.filter == :find_site }
         # Make sure find_site is there in the call chain, we depend on it,
         # but don't overwrite if it's different
-        before_filter :_find_site, options
+        before_action :_find_site, options
       end
-      before_filter :set_saved_mappings, options
-      before_filter :set_background_batch_status_message, options
-      before_filter :prevent_caching, options
+      before_action :set_saved_mappings, options
+      before_action :set_background_batch_status_message, options
+      before_action :prevent_caching, options
     end
   end
 

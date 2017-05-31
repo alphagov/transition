@@ -127,7 +127,7 @@ describe Transition::Import::HitsMappingsRelations do
     end
 
     it 'does not precompute Mapping#hit_count for another site' do
-      expect(@mapping_connected_previously.reload.hit_count).to be_nil
+      expect(@mapping_connected_previously.reload.hit_count).to eql(0)
     end
   end
 end

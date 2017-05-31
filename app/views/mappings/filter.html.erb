@@ -6,7 +6,7 @@
   Filter mappings
 </h1>
 
-<%= form_tag(site_mappings_path(@site), method: 'get', role: 'form', class: 'form row') do %>
+<%= form_tag(site_mappings_path(site_id: @site), method: 'get', role: 'form', class: 'form row') do %>
   <div class="col-md-6">
     <fieldset>
       <legend class="legend-reset add-label-margin bold">Type</legend>

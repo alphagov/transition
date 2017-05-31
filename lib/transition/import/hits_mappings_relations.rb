@@ -27,7 +27,7 @@ module Transition
     private
 
       def in_site_hosts
-        host_ids = site.hosts.pluck(:id)
+        host_ids = site.reload.hosts.pluck(:id)
         " IN (#{host_ids.join(',')})"
       end
 

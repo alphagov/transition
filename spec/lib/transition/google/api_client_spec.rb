@@ -9,8 +9,8 @@ describe Transition::Google::APIClient do
   # These specs don't run by default. Remove `config.filter_run_excluding :external_api => true to run them.
   # Checks that a connection to GA is possible with key and secrets in config/ga
   describe '.analytics_client!', external_api: true do
-    it 'is a Google::APIClient' do
-      expect(@client).to be_a(Google::APIClient)
+    it 'is a Google::Apis::DriveV2::DriveService' do
+      expect(@client).to be_a(Google::Apis::DriveV2::DriveService)
     end
 
     it 'has a token that is a non-zero length string' do

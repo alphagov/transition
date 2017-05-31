@@ -1,5 +1,5 @@
 class HitsController < ApplicationController
-  before_filter :set_period
+  before_action :set_period
 
   tracks_mappings_progress except: [:universal_summary, :universal_category]
 
