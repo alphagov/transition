@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '5.1.1'
+gem 'govuk_app_config', '~> 0.2'
 gem 'activerecord-session_store'
 gem 'unicorn'
 gem 'pg'
@@ -21,11 +22,6 @@ gem 'select2-rails', '3.5.7'
 gem 'activerecord-import'
 gem 'sidekiq'
 gem 'redis-namespace'
-
-# We use Errbit for tracking exceptions, which needs the airbrake gem. Config
-# for Errbit is in alphagov-deployment.
-# https://docs.publishing.service.gov.uk/manual/upgrade-rails.html#airbrake
-gem 'airbrake', github: 'alphagov/airbrake', branch: 'silence-dep-warnings-for-rails-5'
 
 gem 'logstasher', '0.6.5'
 
