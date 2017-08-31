@@ -1,6 +1,6 @@
 class HostsController < ActionController::Base
   def index
-    @hosts = Host.all.order(:hostname)
+    @hosts = Host.with_cname_or_ip_address.order(:hostname)
 
     render json: HostsPresenter.new(@hosts).as_hash.to_json
   end
