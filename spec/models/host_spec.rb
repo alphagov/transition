@@ -84,6 +84,22 @@ describe Host do
       subject { site.hosts.excluding_aka.pluck(:hostname) }
       it { is_expected.to match_array(['www.foo.com', 'foo.com']) }
     end
+
+    describe 'with_cname_or_ip_address' do
+      before do
+        create(:host, cname: nil, ip_address: "192.168.0.1")
+        create(:host, cname: "foo.example.com", ip_address: nil)
+        create(:host, cname: nil, ip_address: nil)
+      end
+
+      subject { Host.with_cname_or_ip_address.pluck(:cname, :ip_address) }
+      it do
+        is_expected.to contain_exactly(
+          [nil, '192.168.0.1'],
+          ['foo.example.com', nil]
+        )
+      end
+    end
   end
 
   describe '#aka?' do
