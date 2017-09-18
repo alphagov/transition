@@ -20,8 +20,7 @@ gem 'gretel'
 gem 'acts-as-taggable-on'
 gem 'select2-rails', '3.5.7'
 gem 'activerecord-import'
-gem 'sidekiq'
-gem 'redis-namespace'
+gem 'govuk_sidekiq', '~> 2.0'
 
 gem 'logstasher', '0.6.5'
 

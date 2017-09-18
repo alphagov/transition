@@ -149,6 +149,12 @@ GEM
     govuk_app_config (0.2.0)
       sentry-raven (~> 2.6.3)
       statsd-ruby (~> 1.4.0)
+    govuk_sidekiq (2.0.0)
+      gds-api-adapters (>= 19.1.0)
+      redis-namespace (~> 1.5.2)
+      sidekiq (~> 4.2.8)
+      sidekiq-logging-json (~> 0.0)
+      sidekiq-statsd (~> 0.1)
     gretel (3.0.9)
       rails (>= 3.1.0)
     hashdiff (0.3.4)
@@ -348,11 +354,17 @@ GEM
       faraday (>= 0.7.6, < 1.0)
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
-    sidekiq (5.0.0)
+    sidekiq (4.2.10)
       concurrent-ruby (~> 1.0)
       connection_pool (~> 2.2, >= 2.2.0)
       rack-protection (>= 1.5.0)
-      redis (~> 3.3, >= 3.3.3)
+      redis (~> 3.2, >= 3.2.1)
+    sidekiq-logging-json (0.0.18)
+      sidekiq (>= 3)
+    sidekiq-statsd (0.1.5)
+      activesupport
+      sidekiq (>= 2.6)
+      statsd-ruby (>= 1.1.0)
     signet (0.7.3)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -421,6 +433,7 @@ DEPENDENCIES
   govuk-lint (~> 1.2.1)
   govuk_admin_template
   govuk_app_config (~> 0.2)
+  govuk_sidekiq (~> 2.0)
   gretel
   htmlentities
   jasmine
@@ -437,14 +450,12 @@ DEPENDENCIES
   pry
   rails (= 5.1.1)
   rails-controller-testing
-  redis-namespace
   rspec-collection_matchers
   rspec-rails
   sass
   sass-rails
   select2-rails (= 3.5.7)
   shoulda-matchers
-  sidekiq
   timecop
   uglifier
   unicorn
