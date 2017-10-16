@@ -1,22 +1,28 @@
-development:
+default: &default
   adapter: postgresql
-  database: transition_development
   template: template0
   encoding: utf8
+  url: <%= ENV["DATABASE_URL"] %>
   variables:
     work_mem: 10MB
     maintenance_work_mem: 128MB
+
+development:
+  <<: *default
+  database: transition_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test: &test
-  adapter: postgresql
+  <<: *default
   database: transition_test<%= ENV['TEST_ENV_NUMBER'] %>
-  template: template0
-  encoding: utf8
+  url: <%= ENV["DATABASE_URL"].try(:sub, /([-_]development)?$/, "_test#{ENV['TEST_ENV_NUMBER']}") %>
   variables:
     work_mem: 1MB
 
 cucumber:
   <<: *test
+
+production:
+  <<: *default
