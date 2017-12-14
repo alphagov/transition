@@ -51,5 +51,5 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rspec-collection_matchers'
   gem 'jasmine'
-  gem 'govuk-lint', '~> 1.2.1'
+  gem 'govuk-lint', '~> 3.4.0'
 end
