@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '5.1.4'
-gem 'govuk_app_config', '~> 0.2'
+gem 'govuk_app_config', '~> 1.1'
 gem 'activerecord-session_store'
 gem 'unicorn'
 gem 'pg'
