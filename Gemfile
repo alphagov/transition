@@ -22,7 +22,7 @@ gem 'select2-rails', '3.5.7'
 gem 'activerecord-import'
 gem 'govuk_sidekiq', '~> 2.0'
 
-gem 'logstasher', '0.6.5'
+gem 'logstasher', '1.2.2'
 
 gem 'sass'
 gem 'sass-rails'
