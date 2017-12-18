@@ -1,9 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'rails', '5.1.4'
-gem 'govuk_app_config', '~> 0.2'
+gem 'govuk_app_config', '~> 1.1'
 gem 'activerecord-session_store'
-gem 'unicorn'
 gem 'pg'
 gem 'optic14n' # Ideally version should be synced with bouncer
 gem 'gds-sso'
@@ -21,8 +20,6 @@ gem 'acts-as-taggable-on'
 gem 'select2-rails', '3.5.7'
 gem 'activerecord-import'
 gem 'govuk_sidekiq', '~> 2.0'
-
-gem 'logstasher', '1.2.2'
 
 gem 'sass'
 gem 'sass-rails'
