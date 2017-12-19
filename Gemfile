@@ -19,7 +19,7 @@ gem 'gretel'
 gem 'acts-as-taggable-on'
 gem 'select2-rails', '3.5.7'
 gem 'activerecord-import'
-gem 'govuk_sidekiq', '~> 2.0'
+gem 'govuk_sidekiq', '~> 3.0'
 
 gem 'sass'
 gem 'sass-rails'
