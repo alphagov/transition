@@ -148,7 +148,7 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
-    govuk-lint (3.5.0)
+    govuk-lint (3.6.0)
       rubocop (~> 0.51.0)
       rubocop-rspec (~> 1.19.0)
       scss_lint
@@ -457,7 +457,7 @@ DEPENDENCIES
   gds-api-adapters
   gds-sso
   google-api-client
-  govuk-lint (~> 3.5.0)
+  govuk-lint (~> 3.6.0)
   govuk_admin_template
   govuk_app_config (~> 1.2)
   govuk_sidekiq (~> 3.0)
