@@ -51,6 +51,8 @@ GEM
       activerecord (>= 4.2.8)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    archive-zip (0.11.0)
+      io-like (~> 0.3.0)
     arel (8.0.0)
     ast (2.4.0)
     autoprefixer-rails (7.2.5)
@@ -68,8 +70,12 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (>= 2.0, < 4.0)
+    childprocess (0.9.0)
+      ffi (~> 1.0, >= 1.0.11)
+    chromedriver-helper (1.2.0)
+      archive-zip (~> 0.10)
+      nokogiri (~> 1.8)
     chronic (0.10.2)
-    cliver (0.3.2)
     coderay (1.1.2)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.1)
@@ -168,6 +174,11 @@ GEM
       sidekiq (>= 5, < 6)
       sidekiq-logging-json (~> 0.0)
       sidekiq-statsd (~> 0.1)
+    govuk_test (0.1.0)
+      capybara
+      chromedriver-helper
+      puma
+      selenium-webdriver
     gretel (3.0.9)
       rails (>= 3.1.0)
     hashdiff (0.3.7)
@@ -178,6 +189,7 @@ GEM
     httpclient (2.8.3)
     i18n (0.9.3)
       concurrent-ruby (~> 1.0)
+    io-like (0.3.0)
     jasmine (2.9.0)
       jasmine-core (>= 2.9.0, < 3.0.0)
       phantomjs
@@ -268,15 +280,12 @@ GEM
     pg (0.21.0)
     phantomjs (2.1.1.0)
     plek (2.1.1)
-    poltergeist (1.17.0)
-      capybara (~> 2.1)
-      cliver (~> 0.3.1)
-      websocket-driver (>= 0.2.0)
     powerpack (0.1.1)
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.0.1)
+    puma (3.12.0)
     rack (2.0.4)
     rack-cache (1.7.1)
       rack (>= 0.4)
@@ -360,6 +369,7 @@ GEM
     rubocop-rspec (1.19.0)
       rubocop (>= 0.51.0)
     ruby-progressbar (1.9.0)
+    rubyzip (1.2.2)
     safe_yaml (1.0.4)
     sass (3.5.6)
       sass-listen (~> 4.0.0)
@@ -377,6 +387,9 @@ GEM
       sass (~> 3.5.5)
     select2-rails (3.5.7)
       thor (~> 0.14)
+    selenium-webdriver (3.14.0)
+      childprocess (~> 0.5)
+      rubyzip (~> 1.2)
     sentry-raven (2.7.1)
       faraday (>= 0.7.6, < 1.0)
     shoulda-matchers (3.1.2)
@@ -460,6 +473,7 @@ DEPENDENCIES
   govuk_admin_template
   govuk_app_config (~> 1.3)
   govuk_sidekiq (~> 3.0)
+  govuk_test
   gretel
   htmlentities
   jasmine
@@ -469,9 +483,7 @@ DEPENDENCIES
   optic14n
   paper_trail (= 4.1.0)
   pg
-  phantomjs
   plek
-  poltergeist
   pry
   rails (= 5.1.4)
   rails-controller-testing
@@ -488,4 +500,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
