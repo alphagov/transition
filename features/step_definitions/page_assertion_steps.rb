@@ -77,7 +77,6 @@ end
 # Status codes
 
 Then(/^I should see our custom 404 page$/) do
-  expect(page.status_code).to eql(404)
   steps %{
     Then I should see "Page could not be found"
     And I should see a link to "GOV.UK Transition"
