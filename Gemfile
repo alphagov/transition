@@ -30,17 +30,16 @@ group :development do
 end
 
 group :test do
-  gem 'poltergeist'
-  gem 'phantomjs'
-  gem 'launchy' # Primarily for save_and_open_page support in Capybara
-  gem 'timecop'
-  gem 'cucumber-rails', require: false
   gem 'capybara', require: false
-  gem 'factory_girl_rails'
-  gem 'shoulda-matchers'
+  gem 'cucumber-rails', require: false
   gem 'database_cleaner'
-  gem 'webmock', require: false
+  gem 'factory_girl_rails'
+  gem 'govuk_test'
+  gem 'launchy' # Primarily for save_and_open_page support in Capybara
   gem 'rails-controller-testing'
+  gem 'shoulda-matchers'
+  gem 'timecop'
+  gem 'webmock', require: false
 end
 
 group :development, :test do
