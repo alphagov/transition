@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :organisation do
     title 'Orgtastic'
 
@@ -8,7 +8,7 @@ FactoryGirl.define do
     content_id { SecureRandom.uuid }
 
     trait :with_site do
-      after(:create) { |o| o.sites = FactoryGirl.create_list(:site, 1) }
+      after(:create) { |o| o.sites = FactoryBot.create_list(:site, 1) }
     end
   end
 end

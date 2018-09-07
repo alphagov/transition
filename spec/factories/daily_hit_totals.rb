@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :daily_hit_total do
     http_status '301'
     count 10
