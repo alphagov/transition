@@ -462,7 +462,6 @@ DEPENDENCIES
   activerecord-import
   activerecord-session_store
   acts-as-taggable-on
-  capybara
   cucumber-rails
   database_cleaner
   factory_bot_rails
