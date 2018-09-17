@@ -33,7 +33,7 @@ group :test do
   gem 'capybara', require: false
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'govuk_test'
   gem 'launchy' # Primarily for save_and_open_page support in Capybara
   gem 'rails-controller-testing'

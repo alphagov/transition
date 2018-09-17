@@ -1,6 +1,6 @@
 require 'transition/history'
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :bulk_add_batch do
     type 'archive'
     paths ['/a', '/b']

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :host do
     sequence(:hostname) { |n| "www-#{n}.example.gov.uk" }
     association :site
