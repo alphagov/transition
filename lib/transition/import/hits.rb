@@ -13,6 +13,12 @@ module Transition
         TRUNCATE hits_staging
       postgreSQL
 
+      LOAD_CSV_DATA = <<-postgreSQL.freeze
+        COPY hits_staging (hit_on, count, http_status, hostname, path)
+        FROM STDIN
+        WITH CSV HEADER
+      postgreSQL
+
       LOAD_TSV_DATA = <<-postgreSQL.freeze
         COPY hits_staging (hit_on, count, http_status, hostname, path)
         FROM STDIN
@@ -73,20 +79,25 @@ module Transition
         end
       end
 
-      def self.from_tsv_stream!(filename, content_hash, stream)
-        self.from_stream!(LOAD_TSV_DATA, filename, content_hash, stream)
-      end
-
-      def self.from_tsv!(filename)
+      def self.from_file!(load_data_query, filename)
         absolute_filename = File.expand_path(filename, Rails.root)
         relative_filename = Pathname.new(absolute_filename).relative_path_from(Rails.root).to_s
         content_hash = Digest::SHA1.hexdigest(File.read(relative_filename))
 
-        self.from_tsv_stream!(
+        self.from_stream!(
+          load_data_query,
           relative_filename,
           content_hash,
           File.open(absolute_filename, 'r').read,
         )
+      end
+
+      def self.from_tsv!(filename)
+        self.from_file!(LOAD_TSV_DATA, filename)
+      end
+
+      def self.from_csv!(filename)
+        self.from_file!(LOAD_CSV_DATA, filename)
       end
 
       def self.from_mask!(filemask)
@@ -95,7 +106,10 @@ module Transition
 
         change_settings('work_mem' => '2GB') do
           Dir[File.expand_path(filemask)].each do |filename|
-            Hits.from_tsv!(filename) ? done += 1 : unchanged += 1
+            is_tsv = File.extname(filename) == '.tsv'
+            load_data_query = is_tsv ? LOAD_TSV_DATA : LOAD_CSV_DATA
+
+            Hits.from_file!(load_data_query, filename) ? done += 1 : unchanged += 1
           end
 
           console_puts "#{done} hits #{'file'.pluralize(done)} imported (#{unchanged} unchanged)."

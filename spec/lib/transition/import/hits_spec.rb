@@ -4,6 +4,11 @@ require 'transition/import/hits'
 describe Transition::Import::Hits do
   def create_test_hosts
     @businesslink_host = create :host, hostname: 'www.businesslink.gov.uk'
+    create :host, hostname: 'dstl.gov.uk'
+    create :host, hostname: 'education.gov.uk'
+    create :host, hostname: 'www.mhra.gov.uk'
+    create :host, hostname: 'hmrc.gov.uk'
+    create :host, hostname: 'justice.gov.uk'
   end
 
   describe '.from_tsv!' do
@@ -203,6 +208,23 @@ describe Transition::Import::Hits do
         it 'imports the new hits' do
           expect(Hit.where(path: '/altered-hits').first).not_to be_nil
         end
+      end
+    end
+  end
+
+  describe '.from_csv!' do
+    context 'a csv file produced by Amazon Athena' do
+      before :all do
+        create_test_hosts
+        Transition::Import::Hits.from_csv!('spec/fixtures/hits/athena_hits.csv')
+      end
+
+      it 'imports the data' do
+        expect(Hit.count).to eql(9)
+      end
+
+      it 'handles csv quoting' do
+        expect(Hit.where(path: '/contacts/hmcts/tribunals/residential-property.htm"').first).not_to be_nil
       end
     end
   end
