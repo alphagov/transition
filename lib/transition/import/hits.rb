@@ -9,23 +9,23 @@ module Transition
       extend ConsoleJobWrapper
       extend PostgreSQLSettings
 
-      TRUNCATE = <<-postgreSQL.freeze
+      TRUNCATE = <<-POSTGRESQL.freeze
         TRUNCATE hits_staging
-      postgreSQL
+      POSTGRESQL
 
-      LOAD_CSV_DATA = <<-postgreSQL.freeze
+      LOAD_CSV_DATA = <<-POSTGRESQL.freeze
         COPY hits_staging (hit_on, count, http_status, hostname, path)
         FROM STDIN
         WITH CSV HEADER
-      postgreSQL
+      POSTGRESQL
 
-      LOAD_TSV_DATA = <<-postgreSQL.freeze
+      LOAD_TSV_DATA = <<-POSTGRESQL.freeze
         COPY hits_staging (hit_on, count, http_status, hostname, path)
         FROM STDIN
         WITH DELIMITER AS E'\t' QUOTE AS E'\b' CSV HEADER
-      postgreSQL
+      POSTGRESQL
 
-      INSERT_FROM_STAGING = <<-postgreSQL.freeze
+      INSERT_FROM_STAGING = <<-POSTGRESQL.freeze
         INSERT INTO hits (host_id, path, http_status, count, hit_on)
         SELECT h.id, st.path, st.http_status, st.count, st.hit_on
         FROM   hits_staging st
@@ -40,9 +40,9 @@ module Transition
                   http_status = st.http_status AND
                   hit_on      = st.hit_on
           );
-      postgreSQL
+      POSTGRESQL
 
-      UPDATE_FROM_STAGING = <<-postgreSQL.freeze
+      UPDATE_FROM_STAGING = <<-POSTGRESQL.freeze
         UPDATE hits
         SET count = st.count
         FROM hits_staging st
@@ -53,7 +53,7 @@ module Transition
           hits.hit_on      = st.hit_on AND
           hits.host_id     = hosts.id AND
           hits.count       IS DISTINCT FROM st.count
-      postgreSQL
+      POSTGRESQL
 
       def self.from_stream!(load_data_query, filename, content_hash, stream)
         start "Importing #{filename}" do |job|
