@@ -49,14 +49,15 @@ module Transition
           hits.count       IS DISTINCT FROM st.count
       postgreSQL
 
-      def self.from_tsv_stream!(filename, stream)
+      def self.from_tsv_stream!(filename, content_hash, stream)
         start "Importing #{filename}" do |job|
           Hit.transaction do
             import_record = ImportedHitsFile
                               .where(filename: filename)
                               .first_or_initialize
 
-            job.skip! and next if import_record.same_on_disk?
+            job.skip! and next if import_record.content_hash == content_hash
+            import_record.content_hash = content_hash
 
             ActiveRecord::Base.connection.execute(TRUNCATE)
             ActiveRecord::Base.connection.raw_connection.tap do |raw|
@@ -75,9 +76,11 @@ module Transition
       def self.from_tsv!(filename)
         absolute_filename = File.expand_path(filename, Rails.root)
         relative_filename = Pathname.new(absolute_filename).relative_path_from(Rails.root).to_s
+        content_hash = Digest::SHA1.hexdigest(File.read(relative_filename))
 
         self.from_tsv_stream!(
           relative_filename,
+          content_hash,
           File.open(absolute_filename, 'r').read,
         )
       end
