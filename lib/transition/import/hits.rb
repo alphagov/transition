@@ -49,33 +49,37 @@ module Transition
           hits.count       IS DISTINCT FROM st.count
       postgreSQL
 
-      def self.copy_to_hits_staging(filename)
-        ActiveRecord::Base.connection.raw_connection.tap do |raw|
-          raw.copy_data(LOAD_DATA) do
-            raw.put_copy_data(File.open(filename, 'r').read)
-          end
-        end
-      end
-
-      def self.from_tsv!(filename)
+      def self.from_tsv_stream!(filename, stream)
         start "Importing #{filename}" do |job|
-          absolute_filename = File.expand_path(filename, Rails.root)
-          relative_filename = Pathname.new(absolute_filename).relative_path_from(Rails.root).to_s
-
           Hit.transaction do
-            import_record = ImportedHitsFile.where(
-              filename: relative_filename).first_or_initialize
+            import_record = ImportedHitsFile
+                              .where(filename: filename)
+                              .first_or_initialize
 
             job.skip! and next if import_record.same_on_disk?
 
             ActiveRecord::Base.connection.execute(TRUNCATE)
-            copy_to_hits_staging(absolute_filename)
+            ActiveRecord::Base.connection.raw_connection.tap do |raw|
+              raw.copy_data(LOAD_DATA) do
+                raw.put_copy_data(stream)
+              end
+            end
             ActiveRecord::Base.connection.execute(INSERT_FROM_STAGING)
             ActiveRecord::Base.connection.execute(UPDATE_FROM_STAGING)
 
             import_record.save!
           end
         end
+      end
+
+      def self.from_tsv!(filename)
+        absolute_filename = File.expand_path(filename, Rails.root)
+        relative_filename = Pathname.new(absolute_filename).relative_path_from(Rails.root).to_s
+
+        self.from_tsv_stream!(
+          relative_filename,
+          File.open(absolute_filename, 'r').read,
+        )
       end
 
       def self.from_mask!(filemask)
