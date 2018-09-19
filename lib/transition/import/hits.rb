@@ -13,7 +13,7 @@ module Transition
         TRUNCATE hits_staging
       postgreSQL
 
-      LOAD_DATA = <<-postgreSQL.freeze
+      LOAD_TSV_DATA = <<-postgreSQL.freeze
         COPY hits_staging (hit_on, count, http_status, hostname, path)
         FROM STDIN
         WITH DELIMITER AS E'\t' QUOTE AS E'\b' CSV HEADER
@@ -49,7 +49,7 @@ module Transition
           hits.count       IS DISTINCT FROM st.count
       postgreSQL
 
-      def self.from_tsv_stream!(filename, content_hash, stream)
+      def self.from_stream!(load_data_query, filename, content_hash, stream)
         start "Importing #{filename}" do |job|
           Hit.transaction do
             import_record = ImportedHitsFile
@@ -61,7 +61,7 @@ module Transition
 
             ActiveRecord::Base.connection.execute(TRUNCATE)
             ActiveRecord::Base.connection.raw_connection.tap do |raw|
-              raw.copy_data(LOAD_DATA) do
+              raw.copy_data(load_data_query) do
                 raw.put_copy_data(stream)
               end
             end
@@ -71,6 +71,10 @@ module Transition
             import_record.save!
           end
         end
+      end
+
+      def self.from_tsv_stream!(filename, content_hash, stream)
+        self.from_stream!(LOAD_TSV_DATA, filename, content_hash, stream)
       end
 
       def self.from_tsv!(filename)
