@@ -36,7 +36,7 @@ module Benchmark
     private
 
       def delete_hits_and_import_records
-        ImportedHitsFile.delete_all("filename LIKE '#{test_files_mask.tr('*', '%')}'")
+        ImportedHitsFile.delete_all('filename LIKE ?', test_files_mask.tr('*', '%'))
         /(?<date_str>[0-9]{4}-[0-9]{2}-[0-9]{2})/ =~ Dir[test_files_mask].sort.last
         cutoff_date = Date.strptime(date_str)
 
