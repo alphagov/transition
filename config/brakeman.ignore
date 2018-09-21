@@ -18,7 +18,7 @@
       },
       "user_input": "in_site_hosts",
       "confidence": "Medium",
-      "note": ""
+      "note": "Ultimately this is interpolating a list of integers into the SQL for a WHERE...IN check"
     },
     {
       "warning_type": "SQL Injection",
@@ -38,7 +38,7 @@
       },
       "user_input": "Rails.env",
       "confidence": "Weak",
-      "note": ""
+      "note": "This is only called with constant, safe, strings"
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -57,7 +57,7 @@
       },
       "user_input": "Mapping.where(:type => \"redirect\").first.old_url",
       "confidence": "Weak",
-      "note": ""
+      "note": "This is a valid URL (see app/models/mapping.rb)"
     },
     {
       "warning_type": "Cross-Site Request Forgery",
@@ -76,7 +76,7 @@
       },
       "user_input": null,
       "confidence": "High",
-      "note": ""
+      "note": "We decided to ignore CSRF issues because it's too hard to know that a fix won't break anything (as it did in whitehall)"
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -95,7 +95,7 @@
       },
       "user_input": "Mapping.find(params[:id]).old_url",
       "confidence": "Weak",
-      "note": ""
+      "note": "This is a valid URL (see app/models/mapping.rb)"
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -114,7 +114,7 @@
       },
       "user_input": "Site.find_by_abbr!(params[:site_id]).bulk_add_batches.find(params[:id]).new_url",
       "confidence": "Weak",
-      "note": ""
+      "note": "This is a valid URL (see app/models/mapping.rb)"
     },
     {
       "warning_type": "Redirect",
@@ -134,7 +134,7 @@
       },
       "user_input": "params[:return_path]",
       "confidence": "High",
-      "note": ""
+      "note": "This is valid on the previous line (see lib/transition/off_site_redirect_checker.rb)"
     },
     {
       "warning_type": "Cross-Site Request Forgery",
@@ -153,7 +153,7 @@
       },
       "user_input": null,
       "confidence": "High",
-      "note": ""
+      "note": "We decided to ignore CSRF issues because it's too hard to know that a fix won't break anything (as it did in whitehall)"
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -172,7 +172,7 @@
       },
       "user_input": "(Unresolved Model).new.old_url",
       "confidence": "Weak",
-      "note": ""
+      "note": "This is a valid URL (see app/models/mapping.rb)"
     },
     {
       "warning_type": "Cross-Site Request Forgery",
@@ -191,7 +191,7 @@
       },
       "user_input": null,
       "confidence": "Medium",
-      "note": ""
+      "note": "We decided to ignore CSRF issues because it's too hard to know that a fix won't break anything (as it did in whitehall)"
     },
     {
       "warning_type": "SQL Injection",
@@ -211,7 +211,7 @@
       },
       "user_input": "in_site_hosts",
       "confidence": "Medium",
-      "note": ""
+      "note": "Ultimately this is interpolating a list of integers into the SQL for a WHERE...IN check"
     },
     {
       "warning_type": "SQL Injection",
@@ -231,7 +231,7 @@
       },
       "user_input": "in_site_hosts",
       "confidence": "Medium",
-      "note": ""
+      "note": "Ultimately this is interpolating a list of integers into the SQL for a WHERE...IN check"
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -250,7 +250,7 @@
       },
       "user_input": "Mapping.where(:type => \"archive\").first.old_url",
       "confidence": "Weak",
-      "note": ""
+      "note": "This is a valid URL (see app/models/mapping.rb)"
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -269,7 +269,7 @@
       },
       "user_input": "Mapping.where(:type => \"redirect\").first.new_url",
       "confidence": "Weak",
-      "note": ""
+      "note": "The domain of redirect URLs is constrained (see app/models/mapping.rb)"
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -288,7 +288,7 @@
       },
       "user_input": "Mapping.find(params[:id]).national_archive_index_url",
       "confidence": "Weak",
-      "note": ""
+      "note": "This is a valid National Archives URL (see app/models/mapping.rb)"
     },
     {
       "warning_type": "SQL Injection",
@@ -308,7 +308,7 @@
       },
       "user_input": "name",
       "confidence": "Medium",
-      "note": ""
+      "note": "This is only called with constant, safe, strings"
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -327,7 +327,7 @@
       },
       "user_input": "Site.find_by_abbr!(params[:id]).homepage",
       "confidence": "Weak",
-      "note": ""
+      "note": "Homepages are defined in the Transition config, so we have no choice but to trust them"
     },
     {
       "warning_type": "SQL Injection",
@@ -347,7 +347,7 @@
       },
       "user_input": "name",
       "confidence": "Medium",
-      "note": ""
+      "note": "This is only called with constant, safe, strings"
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -366,7 +366,7 @@
       },
       "user_input": "Mapping.find(params[:id]).national_archive_url",
       "confidence": "Weak",
-      "note": ""
+      "note": "This is a valid National Archives URL (see app/models/mapping.rb)"
     }
   ],
   "updated": "2018-09-20 14:00:56 +0000",
