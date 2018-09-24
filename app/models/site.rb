@@ -108,7 +108,7 @@ class Site < ActiveRecord::Base
   end
 
   def precomputed_all_hits
-    Hit.select(%("#{precomputed_view_name}".*)).from(%("#{precomputed_view_name}"))
+    Hit.select('*').from(ActiveRecord::Base.connection.quote_table_name(precomputed_view_name))
   end
 
   def precomputed_view_name

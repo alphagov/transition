@@ -1,0 +1,374 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "05cf0137886d2f6fe6d2871f5fc273e9791590ab64526da1401e5a321256eca0",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "lib/transition/import/hits_mappings_relations.rb",
+      "line": 113,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"          UPDATE mappings\\n          SET hit_count = with_counts.hit_count\\n          FROM (\\n            SELECT hits.mapping_id, SUM(hits.count) AS hit_count\\n            FROM hits\\n            #{(\"WHERE host_id #{in_site_hosts}\" or \"\")}\\n            GROUP BY hits.mapping_id\\n          ) with_counts\\n          WHERE\\n            mappings.id = with_counts.mapping_id AND\\n            mappings.hit_count IS DISTINCT FROM with_counts.hit_count\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Transition::Import::HitsMappingsRelations",
+        "method": "precompute_mapping_hit_counts!"
+      },
+      "user_input": "in_site_hosts",
+      "confidence": "Medium",
+      "note": "Ultimately this is interpolating a list of integers into the SQL for a WHERE...IN check"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "08b73523fb7765e682b11e5d8a961f63577150388f8f7c191a440d1d963c8e64",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "lib/transition/distributed_lock.rb",
+      "line": 12,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Redis.current.lock(\"transition:#{Rails.env}:#{lock_name}\", :life => (LIFETIME))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Transition::DistributedLock",
+        "method": "lock"
+      },
+      "user_input": "Rails.env",
+      "confidence": "Weak",
+      "note": "This is only called with constant, safe, strings"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "38b7bf3af8733d01999c901c03369bf71414a355a3b6b12f84c68fb117365470",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in link_to href",
+      "file": "app/views/glossary/index.html.erb",
+      "line": 121,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Mapping.where(:type => \"redirect\").first.old_url, Mapping.where(:type => \"redirect\").first.old_url)",
+      "render_path": [{"type":"controller","class":"GlossaryController","method":"index","line":6,"file":"app/controllers/glossary_controller.rb"}],
+      "location": {
+        "type": "template",
+        "template": "glossary/index"
+      },
+      "user_input": "Mapping.where(:type => \"redirect\").first.old_url",
+      "confidence": "Weak",
+      "note": "This is a valid URL (see app/models/mapping.rb)"
+    },
+    {
+      "warning_type": "Cross-Site Request Forgery",
+      "warning_code": 7,
+      "fingerprint": "3bfc1315c7ae31a26c25849c985ceaae103923692c8e15e6875271761c2671f4",
+      "check_name": "ForgerySetting",
+      "message": "'protect_from_forgery' should be called in HostsController",
+      "file": "app/controllers/hosts_controller.rb",
+      "line": 1,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_request_forgery/",
+      "code": null,
+      "render_path": null,
+      "location": {
+        "type": "controller",
+        "controller": "HostsController"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "note": "We decided to ignore CSRF issues because it's too hard to know that a fix won't break anything (as it did in whitehall)"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "3fdaf6ede7ba5c6a4eb649900849b88fabab0d49681a98e89a3b34242f78cb36",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in link_to href",
+      "file": "app/views/mappings/_form.html.erb",
+      "line": 25,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Mapping.find(params[:id]).old_url, Mapping.find(params[:id]).old_url)",
+      "render_path": [{"type":"controller","class":"MappingsController","method":"edit","line":36,"file":"app/controllers/mappings_controller.rb"},{"type":"template","name":"mappings/edit","line":11,"file":"app/views/mappings/edit.html.erb"}],
+      "location": {
+        "type": "template",
+        "template": "mappings/_form"
+      },
+      "user_input": "Mapping.find(params[:id]).old_url",
+      "confidence": "Weak",
+      "note": "This is a valid URL (see app/models/mapping.rb)"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "45af7020da132b727df3167cf7d38c2f15d8ae17a77fccf65266a679f6e1324a",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in link_to href",
+      "file": "app/views/bulk_add_batches/preview.html.erb",
+      "line": 37,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Site.find_by_abbr!(params[:site_id]).bulk_add_batches.find(params[:id]).new_url, Site.find_by_abbr!(params[:site_id]).bulk_add_batches.find(params[:id]).new_url, :class => \"breakable\")",
+      "render_path": [{"type":"controller","class":"BulkAddBatchesController","method":"preview","line":34,"file":"app/controllers/bulk_add_batches_controller.rb"}],
+      "location": {
+        "type": "template",
+        "template": "bulk_add_batches/preview"
+      },
+      "user_input": "Site.find_by_abbr!(params[:site_id]).bulk_add_batches.find(params[:id]).new_url",
+      "confidence": "Weak",
+      "note": "This is a valid URL (see app/models/mapping.rb)"
+    },
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "533110565bf7c9e0b39c62ca6209a84c3bacb8a4d016183d56513927f785da80",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/mappings_controller.rb",
+      "line": 188,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to(params[:return_path], redirect_to_options)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "MappingsController",
+        "method": "safely_redirect_to_start_point"
+      },
+      "user_input": "params[:return_path]",
+      "confidence": "High",
+      "note": "This is valid on the previous line (see lib/transition/off_site_redirect_checker.rb)"
+    },
+    {
+      "warning_type": "Cross-Site Request Forgery",
+      "warning_code": 7,
+      "fingerprint": "81654be028fa219953df42b67b1eb44466ef3d69b9400695b411bec8755e5bff",
+      "check_name": "ForgerySetting",
+      "message": "'protect_from_forgery' should be called in ErrorsController",
+      "file": "app/controllers/errors_controller.rb",
+      "line": 3,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_request_forgery/",
+      "code": null,
+      "render_path": null,
+      "location": {
+        "type": "controller",
+        "controller": "ErrorsController"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "note": "We decided to ignore CSRF issues because it's too hard to know that a fix won't break anything (as it did in whitehall)"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "8c1fce5b2b7bdec13c7fa177e82b388aa05296dcd35bd7895d0957878ac03989",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in link_to href",
+      "file": "app/views/bulk_add_batches/preview.html.erb",
+      "line": 60,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to((Unresolved Model).new.path, (Unresolved Model).new.old_url, :class => \"breakable\")",
+      "render_path": [{"type":"controller","class":"BulkAddBatchesController","method":"preview","line":34,"file":"app/controllers/bulk_add_batches_controller.rb"}],
+      "location": {
+        "type": "template",
+        "template": "bulk_add_batches/preview"
+      },
+      "user_input": "(Unresolved Model).new.old_url",
+      "confidence": "Weak",
+      "note": "This is a valid URL (see app/models/mapping.rb)"
+    },
+    {
+      "warning_type": "Cross-Site Request Forgery",
+      "warning_code": 86,
+      "fingerprint": "9e450b4277235e592c083dc95e4902a07537932fa4f1bfb631d7b2438066564d",
+      "check_name": "ForgerySetting",
+      "message": "protect_from_forgery should be configured with 'with: :exception'",
+      "file": "app/controllers/application_controller.rb",
+      "line": 10,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_request_forgery/",
+      "code": "protect_from_forgery(:with => :null_session)",
+      "render_path": null,
+      "location": {
+        "type": "controller",
+        "controller": "ApplicationController"
+      },
+      "user_input": null,
+      "confidence": "Medium",
+      "note": "We decided to ignore CSRF issues because it's too hard to know that a fix won't break anything (as it did in whitehall)"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "ae397bc95456d159e5e3fe026e81a313481987243f22826877ab10248bb0a2ac",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "lib/transition/import/hits_mappings_relations.rb",
+      "line": 59,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"          INSERT INTO host_paths(host_id, path)\\n          SELECT hits.host_id, hits.path\\n          FROM   hits\\n          WHERE NOT EXISTS (\\n            SELECT 1 FROM host_paths\\n            WHERE\\n              host_paths.host_id   = hits.host_id AND\\n              host_paths.path      = hits.path\\n          )\\n          #{(\"AND hits.host_id #{in_site_hosts}\" or \"\")}\\n          GROUP  BY hits.host_id,\\n                    hits.path\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Transition::Import::HitsMappingsRelations",
+        "method": "refresh_host_paths!"
+      },
+      "user_input": "in_site_hosts",
+      "confidence": "Medium",
+      "note": "Ultimately this is interpolating a list of integers into the SQL for a WHERE...IN check"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "b6d10053540be2e7224fba9d6fc112a4111f522606d2877c9dbbe4ae7845399a",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "lib/transition/import/hits_mappings_relations.rb",
+      "line": 94,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"          UPDATE hits\\n          SET  mapping_id = host_paths.mapping_id\\n          FROM host_paths\\n          WHERE\\n            host_paths.host_id   = hits.host_id AND\\n            host_paths.path      = hits.path AND\\n            host_paths.mapping_id IS DISTINCT FROM hits.mapping_id\\n            #{(\"AND host_paths.host_id #{in_site_hosts}\" or \"\")}\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Transition::Import::HitsMappingsRelations",
+        "method": "refresh_hits_from_host_paths!"
+      },
+      "user_input": "in_site_hosts",
+      "confidence": "Medium",
+      "note": "Ultimately this is interpolating a list of integers into the SQL for a WHERE...IN check"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "e1e17c05d61774feca7f6e4312ee2767b42fc8f50e875db3a95425ed25ce07bc",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in link_to href",
+      "file": "app/views/glossary/index.html.erb",
+      "line": 56,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Mapping.where(:type => \"archive\").first.old_url, Mapping.where(:type => \"archive\").first.old_url)",
+      "render_path": [{"type":"controller","class":"GlossaryController","method":"index","line":6,"file":"app/controllers/glossary_controller.rb"}],
+      "location": {
+        "type": "template",
+        "template": "glossary/index"
+      },
+      "user_input": "Mapping.where(:type => \"archive\").first.old_url",
+      "confidence": "Weak",
+      "note": "This is a valid URL (see app/models/mapping.rb)"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "e559c0757414823db9d2a09c910ac6ce8d314a5e2860887955902d583fd3f2bd",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in link_to href",
+      "file": "app/views/glossary/index.html.erb",
+      "line": 123,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Mapping.where(:type => \"redirect\").first.new_url, Mapping.where(:type => \"redirect\").first.new_url)",
+      "render_path": [{"type":"controller","class":"GlossaryController","method":"index","line":6,"file":"app/controllers/glossary_controller.rb"}],
+      "location": {
+        "type": "template",
+        "template": "glossary/index"
+      },
+      "user_input": "Mapping.where(:type => \"redirect\").first.new_url",
+      "confidence": "Weak",
+      "note": "The domain of redirect URLs is constrained (see app/models/mapping.rb)"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "e768cb7d3f7cd24d68e901ca297dc767559a188a7de7753451ee59ab1a613ee3",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in link_to href",
+      "file": "app/views/mappings/_form.html.erb",
+      "line": 57,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(\"Find on the National Archives\", Mapping.find(params[:id]).national_archive_index_url)",
+      "render_path": [{"type":"controller","class":"MappingsController","method":"edit","line":36,"file":"app/controllers/mappings_controller.rb"},{"type":"template","name":"mappings/edit","line":11,"file":"app/views/mappings/edit.html.erb"}],
+      "location": {
+        "type": "template",
+        "template": "mappings/_form"
+      },
+      "user_input": "Mapping.find(params[:id]).national_archive_index_url",
+      "confidence": "Weak",
+      "note": "This is a valid National Archives URL (see app/models/mapping.rb)"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "e97c421e3ac5185b0a96a288b8eca72d4c3b8c74ce466944d122c9c990b9aae6",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "lib/transition/import/postgresql_settings.rb",
+      "line": 5,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"show #{name}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Transition::Import::PostgreSQLSettings",
+        "method": "get_setting"
+      },
+      "user_input": "name",
+      "confidence": "Medium",
+      "note": "This is only called with constant, safe, strings"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "f337bb04443306b92c48459727d22eddf2531615f8b19ab2244f0219d4e2ad2a",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in link_to href",
+      "file": "app/views/sites/_configuration.html.erb",
+      "line": 6,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Site.find_by_abbr!(params[:id]).homepage, Site.find_by_abbr!(params[:id]).homepage, :class => \"breakable\")",
+      "render_path": [{"type":"controller","class":"SitesController","method":"show","line":20,"file":"app/controllers/sites_controller.rb"},{"type":"template","name":"sites/show","line":15,"file":"app/views/sites/show.html.erb"}],
+      "location": {
+        "type": "template",
+        "template": "sites/_configuration"
+      },
+      "user_input": "Site.find_by_abbr!(params[:id]).homepage",
+      "confidence": "Weak",
+      "note": "Homepages are defined in the Transition config, so we have no choice but to trust them"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "f6e681aa03fa95daed53340016cd3c71d408e42039615df92af5d0ea7f618e66",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "lib/transition/import/postgresql_settings.rb",
+      "line": 10,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"set #{name}='#{value}'\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Transition::Import::PostgreSQLSettings",
+        "method": "set_setting"
+      },
+      "user_input": "name",
+      "confidence": "Medium",
+      "note": "This is only called with constant, safe, strings"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "fc1b85ee291a773b9faac48b766ceabe3ad349538b228e0a20b6e9eb58498e20",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in link_to href",
+      "file": "app/views/mappings/_form.html.erb",
+      "line": 51,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Mapping.find(params[:id]).national_archive_url, Mapping.find(params[:id]).national_archive_url)",
+      "render_path": [{"type":"controller","class":"MappingsController","method":"edit","line":36,"file":"app/controllers/mappings_controller.rb"},{"type":"template","name":"mappings/edit","line":11,"file":"app/views/mappings/edit.html.erb"}],
+      "location": {
+        "type": "template",
+        "template": "mappings/_form"
+      },
+      "user_input": "Mapping.find(params[:id]).national_archive_url",
+      "confidence": "Weak",
+      "note": "This is a valid National Archives URL (see app/models/mapping.rb)"
+    }
+  ],
+  "updated": "2018-09-20 14:00:56 +0000",
+  "brakeman_version": "4.3.1"
+}
