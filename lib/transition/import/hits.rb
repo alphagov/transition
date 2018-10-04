@@ -9,17 +9,23 @@ module Transition
       extend ConsoleJobWrapper
       extend PostgreSQLSettings
 
-      TRUNCATE = <<-postgreSQL.freeze
+      TRUNCATE = <<-POSTGRESQL.freeze
         TRUNCATE hits_staging
-      postgreSQL
+      POSTGRESQL
 
-      LOAD_DATA = <<-postgreSQL.freeze
+      LOAD_CSV_DATA = <<-POSTGRESQL.freeze
+        COPY hits_staging (hit_on, count, http_status, hostname, path)
+        FROM STDIN
+        WITH CSV HEADER
+      POSTGRESQL
+
+      LOAD_TSV_DATA = <<-POSTGRESQL.freeze
         COPY hits_staging (hit_on, count, http_status, hostname, path)
         FROM STDIN
         WITH DELIMITER AS E'\t' QUOTE AS E'\b' CSV HEADER
-      postgreSQL
+      POSTGRESQL
 
-      INSERT_FROM_STAGING = <<-postgreSQL.freeze
+      INSERT_FROM_STAGING = <<-POSTGRESQL.freeze
         INSERT INTO hits (host_id, path, http_status, count, hit_on)
         SELECT h.id, st.path, st.http_status, st.count, st.hit_on
         FROM   hits_staging st
@@ -34,9 +40,9 @@ module Transition
                   http_status = st.http_status AND
                   hit_on      = st.hit_on
           );
-      postgreSQL
+      POSTGRESQL
 
-      UPDATE_FROM_STAGING = <<-postgreSQL.freeze
+      UPDATE_FROM_STAGING = <<-POSTGRESQL.freeze
         UPDATE hits
         SET count = st.count
         FROM hits_staging st
@@ -47,35 +53,77 @@ module Transition
           hits.hit_on      = st.hit_on AND
           hits.host_id     = hosts.id AND
           hits.count       IS DISTINCT FROM st.count
-      postgreSQL
+      POSTGRESQL
 
-      def self.copy_to_hits_staging(filename)
-        ActiveRecord::Base.connection.raw_connection.tap do |raw|
-          raw.copy_data(LOAD_DATA) do
-            raw.put_copy_data(File.open(filename, 'r').read)
+      def self.find_import_record(filename)
+        ImportedHitsFile.where(filename: filename).first_or_initialize
+      end
+
+      def self.from_stream!(load_data_query, import_record, content_hash, stream)
+        Hit.transaction do
+          import_record.content_hash = content_hash
+
+          ActiveRecord::Base.connection.execute(TRUNCATE)
+          ActiveRecord::Base.connection.raw_connection.tap do |raw|
+            raw.copy_data(load_data_query) do
+              raw.put_copy_data(stream)
+            end
+          end
+          ActiveRecord::Base.connection.execute(INSERT_FROM_STAGING)
+          ActiveRecord::Base.connection.execute(UPDATE_FROM_STAGING)
+
+          import_record.save!
+        end
+      end
+
+      def self.from_s3!(bucket)
+        Services.s3.list_objects(bucket: bucket).each do |resp|
+          resp.contents.each do |object|
+            start "Importing #{object.key}" do |job|
+              job.skip! and next if object.key.end_with? '.csv.metadata'
+
+              import_record = self.find_import_record(object.key)
+              job.skip! and next if import_record.content_hash == object.etag
+
+              is_tsv = object.key.end_with? '.tsv'
+              load_data_query = is_tsv ? LOAD_TSV_DATA : LOAD_CSV_DATA
+
+              resp = Services.s3.get_object(bucket: bucket, key: object.key)
+              self.from_stream!(
+                load_data_query,
+                import_record,
+                object.etag,
+                resp.body.read,
+              )
+            end
           end
         end
       end
 
-      def self.from_tsv!(filename)
+      def self.from_file!(load_data_query, filename)
         start "Importing #{filename}" do |job|
           absolute_filename = File.expand_path(filename, Rails.root)
           relative_filename = Pathname.new(absolute_filename).relative_path_from(Rails.root).to_s
+          content_hash = Digest::SHA1.hexdigest(File.read(relative_filename))
 
-          Hit.transaction do
-            import_record = ImportedHitsFile.where(
-              filename: relative_filename).first_or_initialize
+          import_record = self.find_import_record(relative_filename)
+          job.skip! and next if import_record.content_hash == content_hash
 
-            job.skip! and next if import_record.same_on_disk?
-
-            ActiveRecord::Base.connection.execute(TRUNCATE)
-            copy_to_hits_staging(absolute_filename)
-            ActiveRecord::Base.connection.execute(INSERT_FROM_STAGING)
-            ActiveRecord::Base.connection.execute(UPDATE_FROM_STAGING)
-
-            import_record.save!
-          end
+          self.from_stream!(
+            load_data_query,
+            import_record,
+            content_hash,
+            File.open(absolute_filename, 'r').read,
+          )
         end
+      end
+
+      def self.from_tsv!(filename)
+        self.from_file!(LOAD_TSV_DATA, filename)
+      end
+
+      def self.from_csv!(filename)
+        self.from_file!(LOAD_CSV_DATA, filename)
       end
 
       def self.from_mask!(filemask)
@@ -84,7 +132,10 @@ module Transition
 
         change_settings('work_mem' => '2GB') do
           Dir[File.expand_path(filemask)].each do |filename|
-            Hits.from_tsv!(filename) ? done += 1 : unchanged += 1
+            is_tsv = File.extname(filename) == '.tsv'
+            load_data_query = is_tsv ? LOAD_TSV_DATA : LOAD_CSV_DATA
+
+            Hits.from_file!(load_data_query, filename) ? done += 1 : unchanged += 1
           end
 
           console_puts "#{done} hits #{'file'.pluralize(done)} imported (#{unchanged} unchanged)."

@@ -2,14 +2,18 @@ require 'rails_helper'
 require 'transition/import/hits'
 
 describe Transition::Import::Hits do
-  def create_test_hosts
+  before do
     @businesslink_host = create :host, hostname: 'www.businesslink.gov.uk'
+    create :host, hostname: 'dstl.gov.uk'
+    create :host, hostname: 'education.gov.uk'
+    create :host, hostname: 'www.mhra.gov.uk'
+    create :host, hostname: 'hmrc.gov.uk'
+    create :host, hostname: 'justice.gov.uk'
   end
 
   describe '.from_tsv!' do
     context 'a single import from a file with no suggested/archive URLs', testing_before_all: true do
-      before :all do
-        create_test_hosts
+      before do
         @import_tsv_filename = 'spec/fixtures/hits/businesslink_2012-10-14.tsv'
         Transition::Import::Hits.from_tsv!(@import_tsv_filename)
       end
@@ -71,8 +75,7 @@ describe Transition::Import::Hits do
     end
 
     context 'a single import from a file with bouncer-related paths', testing_before_all: true do
-      before :all do
-        create_test_hosts
+      before do
         Transition::Import::Hits.from_tsv!('spec/fixtures/hits/bouncer_paths.tsv')
       end
 
@@ -82,8 +85,7 @@ describe Transition::Import::Hits do
     end
 
     context 'import from a file with furniture asset paths', testing_before_all: true do
-      before :all do
-        create_test_hosts
+      before do
         Transition::Import::Hits.from_tsv!('spec/fixtures/hits/furniture_paths.tsv')
       end
 
@@ -93,8 +95,7 @@ describe Transition::Import::Hits do
     end
 
     context 'import from a file with spam paths', testing_before_all: true do
-      before :all do
-        create_test_hosts
+      before do
         Transition::Import::Hits.from_tsv!('spec/fixtures/hits/spam_paths.tsv')
       end
 
@@ -104,8 +105,7 @@ describe Transition::Import::Hits do
     end
 
     context 'import from a file with cruft paths', testing_before_all: true do
-      before :all do
-        create_test_hosts
+      before do
         Transition::Import::Hits.from_tsv!('spec/fixtures/hits/cruft_paths.tsv')
       end
 
@@ -115,8 +115,7 @@ describe Transition::Import::Hits do
     end
 
     context 'import from a file with way-too-long paths', testing_before_all: true do
-      before :all do
-        create_test_hosts
+      before do
         Transition::Import::Hits.from_tsv!('spec/fixtures/hits/too_long_paths.tsv')
       end
 
@@ -126,8 +125,7 @@ describe Transition::Import::Hits do
     end
 
     context 'a hits row already exists with a different count', testing_before_all: true do
-      before :all do
-        create_test_hosts
+      before do
         date = Time.utc(2012, 10, 15)
         create(:hit, host: @businesslink_host, path: '/', count: 10, http_status: '301', hit_on: date)
         Transition::Import::Hits.from_tsv!('spec/fixtures/hits/businesslink_2012-10-15.tsv')
@@ -153,8 +151,6 @@ describe Transition::Import::Hits do
       let(:one_and_only_import) { ImportedHitsFile.first }
 
       before do
-        Host.delete_all; create_test_hosts
-        # first import to fresh DB
         Timecop.freeze(original_import_time)
         Transition::Import::Hits.from_tsv!(import_tsv_filename)
       end
@@ -207,9 +203,111 @@ describe Transition::Import::Hits do
     end
   end
 
+  describe '.from_csv!' do
+    context 'a csv file produced by Amazon Athena' do
+      before do
+        Transition::Import::Hits.from_csv!('spec/fixtures/hits/athena_hits.csv')
+      end
+
+      it 'imports the data' do
+        expect(Hit.count).to eql(9)
+      end
+
+      it 'handles csv quoting' do
+        expect(Hit.where(path: '/contacts/hmcts/tribunals/residential-property.htm"').first).not_to be_nil
+      end
+    end
+  end
+
+  describe '.from_s3!' do
+    let(:bucket) { 'bucket' }
+    let(:s3) { Aws::S3::Client.new(stub_responses: true) }
+
+    before do
+      allow(Services).to receive(:s3).and_return(s3)
+    end
+
+    context 'with csv files in s3' do
+      it 'loads a csv file' do
+        mock_s3_response("results.csv" => 'athena_hits.csv')
+        expect { Transition::Import::Hits.from_s3!(bucket) }.to change(Hit, :count).by(9)
+      end
+
+      it 'loads multiple csv files' do
+        mock_s3_response(
+          "results1.csv" => 'athena_hits.csv',
+          "results2.csv" => 'athena_hits_more.csv',
+        )
+        expect { Transition::Import::Hits.from_s3!(bucket) }.to change(Hit, :count).by(21)
+      end
+
+      it 'loads a changed a csv file' do
+        mock_s3_response("results.csv" => 'athena_hits.csv')
+        expect { Transition::Import::Hits.from_s3!(bucket) }.to change(Hit, :count).by(9)
+        mock_s3_response("results.csv" => 'athena_hits_more.csv')
+        expect { Transition::Import::Hits.from_s3!(bucket) }.to change(Hit, :count).by(12)
+      end
+
+      it 'does not load an unchanged a csv file' do
+        key = "results.csv"
+        file = 'athena_hits.csv'
+
+        s3.stub_responses(:list_objects, contents: [{ key: key, etag: file }])
+        s3.stub_responses(:get_object, body: File.open("spec/fixtures/hits/#{file}"))
+
+        expect(s3).to receive(:list_objects).with(bucket: bucket).twice.and_call_original
+        expect(s3).to receive(:get_object).with(bucket: bucket, key: key).and_call_original
+        expect { Transition::Import::Hits.from_s3!(bucket) }.to change(Hit, :count).by(9)
+        expect(s3).to_not receive(:get_object).with(bucket: bucket, key: key)
+        expect { Transition::Import::Hits.from_s3!(bucket) }.to_not change(Hit, :count)
+      end
+
+      it 'does not load a metadata file' do
+        key = "results.csv.metadata"
+
+        s3.stub_responses(:list_objects, contents: [{ key: key, etag: 'x' }])
+
+        expect(s3).to receive(:list_objects).with(bucket: bucket).and_call_original
+        expect(s3).to_not receive(:get_object).with(bucket: bucket, key: key)
+
+        expect { Transition::Import::Hits.from_s3!(bucket) }.to_not change(Hit, :count)
+      end
+    end
+
+    context 'with csv and tsv files in s3' do
+      it 'loads each type of file' do
+        mock_s3_response(
+          "results1.csv" => 'athena_hits.csv',
+          "results2.tsv" => 'businesslink_2012-10-14.tsv',
+        )
+        expect { Transition::Import::Hits.from_s3!(bucket) }.to change(Hit, :count).by(12)
+      end
+    end
+
+    def mock_s3_response(contents)
+      key_list = contents.map do |key, file|
+        { key: key, etag: file }
+      end
+
+      s3.stub_responses(:list_objects, contents: key_list)
+      s3.stub_responses(
+        :get_object,
+        ->(context) do
+          key = context.params[:key]
+          file = contents[key]
+          return { body: File.open("spec/fixtures/hits/#{file}") }
+        end,
+      )
+
+      expect(s3).to receive(:list_objects).with(bucket: bucket).and_call_original
+      contents.each_key do |key|
+        expect(s3).to receive(:get_object).with(bucket: bucket, key: key).and_call_original
+      end
+    end
+  end
+
   describe '.from_mask!', testing_before_all: true do
-    before :all do
-      create_test_hosts
+    before do
       Transition::Import::Hits.from_mask!('spec/fixtures/hits/businesslink_*.tsv')
     end
 
