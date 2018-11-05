@@ -49,7 +49,7 @@ module Transition
       end
 
       def load_orgs_from_api
-        api = GdsApi::Organisations.new(Plek.current.find('whitehall-admin'))
+        api = GdsApi::Organisations.new('https://www.gov.uk:443')
         api.organisations.with_subsequent_pages.to_a
       end
     end
