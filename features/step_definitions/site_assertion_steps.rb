@@ -17,7 +17,7 @@ end
 Then(/^I should be able to view the site's analytics$/) do
   within '.performance' do
     expect(page).to have_selector('.list-group-item-heading', text: 'Analytics')
-    expect(page).to have_link('a', site_hits_path(@site))
+    expect(page).to have_link('a', href: summary_site_hits_path(@site))
   end
 end
 
