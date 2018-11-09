@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '5.1.4'
 gem 'govuk_app_config', '~> 1.3'
 gem 'activerecord-session_store'
-gem 'pg'
+gem 'pg', '~> 0.18'
 gem 'optic14n' # Ideally version should be synced with bouncer
 gem 'gds-sso'
 gem 'govuk_admin_template'
