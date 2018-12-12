@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :site_without_host, class: Site do
     sequence(:abbr) { |n| "site-#{n}" }
-    homepage 'https://www.gov.uk/government/organisations/example-org'
-    query_params ''
+    homepage { 'https://www.gov.uk/government/organisations/example-org' }
+    query_params { '' }
     launch_date { 1.month.ago }
-    tna_timestamp '2012-08-16 22:40:15'
+    tna_timestamp { '2012-08-16 22:40:15' }
 
     association :organisation
 
