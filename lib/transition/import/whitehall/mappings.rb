@@ -19,12 +19,12 @@ module Transition
         end
 
         def call
-          filename = if @filename
-                       @filename
-                     else
-                       download
-                     end
-          process(filename)
+          if @filename
+            process(@filename)
+          else
+            filename = download
+            process(filename, delete_after: true)
+          end
         end
 
       private
@@ -51,12 +51,14 @@ module Transition
           filename
         end
 
-        def process(filename)
+        def process(filename, delete_after: false)
           Rails.logger.info('Processing...')
 
           File.open(filename, 'r') { |file|
             Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(file)
           }
+
+          FileUtils.rm(filename) if delete_after
         end
       end
     end
