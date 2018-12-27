@@ -27,8 +27,11 @@ describe HitsController do
     ]
   end
 
+  around(:all) do |example|
+    Timecop.freeze(Date.new(2013, 1, 1)) { example.run }
+  end
+
   before do
-    Timecop.freeze(Date.new(2013, 01, 01))
     login_as_stub_user
     Transition::Import::DailyHitTotals.from_hits!
   end
