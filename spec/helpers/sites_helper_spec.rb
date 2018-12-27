@@ -5,8 +5,11 @@ describe SitesHelper do
     let(:site)      { double('site') }
     let(:halloween) { Date.new(2013, 10, 31) }
 
+    around(:all) do |example|
+      Timecop.freeze(halloween) { example.run }
+    end
+
     before do
-      Timecop.freeze(halloween)
       allow(site).to receive(:launch_date).and_return(launch_date)
       allow(site).to receive(:transition_status).and_return(transition_status)
     end
