@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby File.read(".ruby-version").chomp
+
 gem 'rails', '5.1.6.1'
 gem 'govuk_app_config', '~> 1.11'
 gem 'activerecord-session_store'
