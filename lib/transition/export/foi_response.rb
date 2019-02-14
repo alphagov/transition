@@ -5,7 +5,7 @@ module Transition
     class FOIResponse
       extend Transition::Import::ConsoleJobWrapper
 
-      EXPORT_SITES = <<-postgreSQL.freeze
+      EXPORT_SITES = <<-POSTGRESQL.freeze
         COPY (
           SELECT
             abbr AS "Abbreviation",
@@ -19,9 +19,9 @@ module Transition
             FROM sites
             ORDER BY abbr
         ) TO STDOUT WITH DELIMITER ',' CSV HEADER;
-      postgreSQL
+      POSTGRESQL
 
-      EXPORT_HOSTS = <<-postgreSQL.freeze
+      EXPORT_HOSTS = <<-POSTGRESQL.freeze
         COPY (
         SELECT
           sites.abbr AS "Site abbreviation",
@@ -31,9 +31,9 @@ module Transition
           WHERE canonical_host_id IS NULL
           ORDER BY sites.abbr, hostname
         ) TO STDOUT WITH DELIMITER ',' CSV HEADER;
-      postgreSQL
+      POSTGRESQL
 
-      EXPORT_MAPPINGS = <<-postgreSQL.freeze
+      EXPORT_MAPPINGS = <<-POSTGRESQL.freeze
         COPY (
           SELECT
             sites.abbr AS "Site abbreviation",
@@ -47,7 +47,7 @@ module Transition
             WHERE sites.global_type IS NULL
             ORDER BY sites.abbr, path
         ) TO STDOUT WITH DELIMITER ',' CSV HEADER;
-      postgreSQL
+      POSTGRESQL
 
       def self.export!
         timestamp = Time.zone.now.iso8601

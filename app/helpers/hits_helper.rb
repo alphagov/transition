@@ -4,7 +4,7 @@ module HitsHelper
   end
 
   def no_hits_for_any?(sections)
-    sections.all? { |section| !section.hits.any? }
+    sections.all? { |section| section.hits.none? }
   end
 
   ##

@@ -23,7 +23,7 @@ class Host < ActiveRecord::Base
   FASTLY_ANYCAST_IPS = ['23.235.33.144', '23.235.37.144'].freeze # FIXME: These IPs are deprecated, Fastly would like to reallocate them
   REDIRECTOR_IPS     = FASTLY_ANYCAST_IPS + FASTLY_BOUNCER_SERVICE_MAP
 
-  REDIRECTOR_CNAME = /^(redirector|bouncer)-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/
+  REDIRECTOR_CNAME = /^(redirector|bouncer)-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/.freeze
 
   def aka?
     hostname.start_with?('aka')

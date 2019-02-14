@@ -7,7 +7,7 @@ module Transition
         extend Transition::Import::ConsoleJobWrapper
 
         def self.all_hits_all_time(site)
-          <<-postgreSQL
+          <<-POSTGRESQL
             SELECT
               hits.path, sum(hits.count) as count, hits.http_status,
               MIN(hits.mapping_id) AS mapping_id, MIN(hits.host_id) AS host_id
@@ -16,7 +16,7 @@ module Transition
             WHERE "hosts"."site_id" = #{site.id}
             GROUP BY path, http_status
             ORDER BY count DESC;
-          postgreSQL
+          POSTGRESQL
         end
 
         def self.replace!
@@ -27,7 +27,8 @@ module Transition
 
             console_puts "#{doing} #{view_name}"
             Postgres::MaterializedView.create(
-              view_name, all_hits_all_time(site), replace: true)
+              view_name, all_hits_all_time(site), replace: true
+)
           end
         end
       end

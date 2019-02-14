@@ -1,7 +1,7 @@
 class HitsController < ApplicationController
   before_action :set_period
 
-  tracks_mappings_progress except: [:universal_summary, :universal_category]
+  tracks_mappings_progress except: %i[universal_summary universal_category]
 
   def index
     @category = View::Hits::Category['all'].tap do |c|
@@ -26,7 +26,7 @@ class HitsController < ApplicationController
     unless @period.single_day?
       @point_categories = View::Hits::Category.all.map do |category|
         category.tap do |c|
-          c.points = ((c.name == 'all') ? totals_in_period : totals_in_period.send(category.to_sym))
+          c.points = (c.name == 'all' ? totals_in_period : totals_in_period.send(category.to_sym))
         end
       end
     end

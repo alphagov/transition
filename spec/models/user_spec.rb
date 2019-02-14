@@ -37,7 +37,7 @@ describe User do
 
   describe 'gds_editor?' do
     context 'doesn\'t have permission' do
-      subject(:user) { create(:user, permissions: ["signin"]) }
+      subject(:user) { create(:user, permissions: %w[signin]) }
 
       describe '#gds_editor?' do
         subject { super().gds_editor? }

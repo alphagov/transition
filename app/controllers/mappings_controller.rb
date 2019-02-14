@@ -8,7 +8,7 @@ class MappingsController < ApplicationController
   tracks_mappings_progress except: [:find_global]
 
   check_site_is_not_global except: [:find_global]
-  checks_user_can_edit except: [:index, :find, :find_global]
+  checks_user_can_edit except: %i[index find find_global]
 
   def index
     @filter = View::Mappings::Filter.new(@site, site_params)
@@ -116,7 +116,7 @@ class MappingsController < ApplicationController
 
     # Only redirect to the mapping if the original URL had a path,
     # otherwise this errors because / is not editable.
-    if url.request_uri =~ /^\/.+/
+    if /^\/.+/.match?(url.request_uri)
       redirect_to site_mapping_find_url(site, path: url.request_uri)
     else
       redirect_to site_url(site)
@@ -142,13 +142,13 @@ class MappingsController < ApplicationController
 private
 
   def mapping_params
-    params.permit(mapping: [
-                             :type,
-                             :path,
-                             :new_url,
-                             :tag_list,
-                             :suggested_url,
-                             :archive_url,
+    params.permit(mapping: %i[
+                             type
+                             path
+                             new_url
+                             tag_list
+                             suggested_url
+                             archive_url
                            ])
   end
 
@@ -163,7 +163,8 @@ private
       :tagged,
       :page,
       :sort,
-      :format)
+      :format
+)
   end
 
   def bulk_edit

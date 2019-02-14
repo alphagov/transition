@@ -7,7 +7,7 @@ module Transition
       extend ConsoleJobWrapper
       extend PostgreSQLSettings
 
-      INSERT_TOTALS_FROM_HITS = <<-postgreSQL.freeze
+      INSERT_TOTALS_FROM_HITS = <<-POSTGRESQL.freeze
         INSERT INTO daily_hit_totals (host_id, http_status, count, total_on)
           SELECT host_id, http_status, SUM(count) as count, hit_on
           FROM hits
@@ -19,9 +19,9 @@ module Transition
               total_on    = hits.hit_on
           )
           GROUP BY host_id, http_status, hit_on
-      postgreSQL
+      POSTGRESQL
 
-      UPDATE_TOTALS_FROM_HITS = <<-postgreSQL.freeze
+      UPDATE_TOTALS_FROM_HITS = <<-POSTGRESQL.freeze
         UPDATE daily_hit_totals totals SET count = sums.count
         FROM (
           SELECT host_id, http_status, SUM(count) AS count, hit_on
@@ -33,7 +33,7 @@ module Transition
           totals.http_status = sums.http_status AND
           totals.total_on    = sums.hit_on AND
           totals.count IS DISTINCT FROM sums.count
-      postgreSQL
+      POSTGRESQL
 
       def self.from_hits!
         start 'Refreshing daily hit totals from hits' do

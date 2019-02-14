@@ -10,7 +10,8 @@ describe Transition::Import::PostgreSQLSettings do
   describe '#get_setting' do
     it 'raises an error for missing settings' do
       expect { object.get_setting('mrs_tiggywinkle') }.to raise_error(
-        ActiveRecord::StatementInvalid, /unrecognized configuration parameter "mrs_tiggywinkle"/)
+        ActiveRecord::StatementInvalid, /unrecognized configuration parameter "mrs_tiggywinkle"/
+)
     end
 
     it 'gets values for existing settings' do
@@ -21,7 +22,8 @@ describe Transition::Import::PostgreSQLSettings do
   describe '#set_setting' do
     it 'raises an error for missing settings' do
       expect { object.set_setting('mrs_tiggywinkle', 'prickly') }.to raise_error(
-        ActiveRecord::StatementInvalid, /unrecognized configuration parameter "mrs_tiggywinkle"/)
+        ActiveRecord::StatementInvalid, /unrecognized configuration parameter "mrs_tiggywinkle"/
+)
     end
 
     it 'sets values for existing settings' do

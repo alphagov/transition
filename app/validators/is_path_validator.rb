@@ -1,17 +1,23 @@
 class IsPathValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    record.errors.add(attribute,
-      "can't be blank") and return if value.blank?
-    record.errors.add(attribute,
-      'must start with a forward slash "/"') and return if value =~ /^[^\/]/
+    if value.blank?
+      record.errors.add(attribute,
+        "can't be blank") and return
+    end
+    if /^[^\/]/.match?(value)
+      record.errors.add(attribute,
+        'must start with a forward slash "/"') and return
+    end
 
     valid_path = begin
       Addressable::URI.parse(value).relative?
-    rescue Addressable::URI::InvalidURIError
-      false
+                 rescue Addressable::URI::InvalidURIError
+                   false
     end
 
-    record.errors.add attribute,
-      'contains invalid or unsafe characters (e.g. "<")' unless valid_path
+    unless valid_path
+      record.errors.add attribute,
+        'contains invalid or unsafe characters (e.g. "<")'
+    end
   end
 end

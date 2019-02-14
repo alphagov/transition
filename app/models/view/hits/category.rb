@@ -53,6 +53,7 @@ module View
           if date_totals[total.total_on]
             raise ArgumentError, "expects one total row per day, first duplicate at #{total.total_on}"
           end
+
           date_totals[total.total_on] = total
         end
 

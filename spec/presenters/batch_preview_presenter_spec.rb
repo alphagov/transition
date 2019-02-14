@@ -26,7 +26,7 @@ describe BatchPreviewPresenter, testing_before_all: true do
                         /19
                         /20
                         /21
-                      CSV
+    CSV
              )
     @preview = BatchPreviewPresenter.new(batch)
   end

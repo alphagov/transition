@@ -51,7 +51,7 @@ module Transition
         end
 
         def hosts_by_hostname
-          @_hosts ||= Host.all.inject({}) { |accumulator, host| accumulator.merge(host.hostname => host) }
+          @hosts_by_hostname ||= Host.all.inject({}) { |accumulator, host| accumulator.merge(host.hostname => host) }
         end
       end
     end

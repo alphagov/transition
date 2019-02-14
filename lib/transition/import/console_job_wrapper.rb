@@ -2,7 +2,7 @@ module Transition
   module Import
     module ConsoleJobWrapper
       class NullConsole
-        [:print, :puts].each { |sym| define_method(sym) { |*_| } }
+        %i[print puts].each { |sym| define_method(sym) { |*_| } }
       end
 
       class Job

@@ -1,9 +1,8 @@
 class SitesController < ApplicationController
   before_action :find_site
-  before_action :check_user_is_gds_editor, only: [:edit, :update]
+  before_action :check_user_is_gds_editor, only: %i[edit update]
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @site.update(site_params)

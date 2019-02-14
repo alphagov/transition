@@ -5,13 +5,13 @@ namespace :import do
     begin
       Transition::Import::OrgsSitesHosts.from_yaml!(args.filename_or_mask)
     rescue Transition::Import::Sites::NoYamlFound
-      $stderr.puts <<-TEXT
-Warning: no sites YAML found at #{args.filename_or_mask}
+      warn <<~TEXT
+        Warning: no sites YAML found at #{args.filename_or_mask}
 
-You may need to run the following before seeding again:
+        You may need to run the following before seeding again:
 
-rake notmodules:sync
-    TEXT
+        rake notmodules:sync
+      TEXT
     end
   end
 end

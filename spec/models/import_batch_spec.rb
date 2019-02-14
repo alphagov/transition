@@ -17,7 +17,7 @@ describe ImportBatch do
           build(:import_batch, site: site, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               http://a.com/old,
-            CSV
+          CSV
           )
         end
 
@@ -29,7 +29,7 @@ describe ImportBatch do
           build(:import_batch, site: site, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               http://other.com/old,
-            CSV
+          CSV
           )
         end
 
@@ -45,7 +45,7 @@ describe ImportBatch do
           build(:import_batch, site: site, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               old,
-            CSV
+          CSV
           )
         end
 
@@ -63,7 +63,7 @@ describe ImportBatch do
           build(:import_batch, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               /old,#{too_long_url}
-            CSV
+          CSV
           )
         end
 
@@ -78,7 +78,7 @@ describe ImportBatch do
           build(:import_batch, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               /old,www.gov.uk
-            CSV
+          CSV
           )
         end
 
@@ -93,7 +93,7 @@ describe ImportBatch do
           build(:import_batch, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               /old,http://evil.com
-            CSV
+          CSV
           )
         end
 
@@ -112,7 +112,7 @@ describe ImportBatch do
               /old-4,http://evil.com
               /old-5,http://evil.com
               /old-6,http://also-bad.com
-            CSV
+          CSV
           )
         end
 
@@ -130,7 +130,7 @@ describe ImportBatch do
           build(:import_batch, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               /old,#{too_long_url}
-            CSV
+          CSV
           )
         end
 
@@ -403,7 +403,7 @@ describe ImportBatch do
         raw_csv: <<-CSV.strip_heredoc
                    #{path_to_be_redirected},#{new_url}
                    #{path_to_be_archived},#{archive_url}
-                 CSV
+        CSV
       )
     end
 

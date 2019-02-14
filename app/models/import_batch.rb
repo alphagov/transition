@@ -77,7 +77,7 @@ class ImportBatch < MappingsBatch
 private
 
   def deduplicated_csv_rows
-    @_deduplicated_csv_rows ||= begin
+    @deduplicated_csv_rows ||= begin
       return [] if raw_csv.blank?
 
       separator = Transition::Import::CSV::CSVSeparatorDetector.new(raw_csv.lines.to_a[0..5]).separator

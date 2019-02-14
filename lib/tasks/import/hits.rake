@@ -6,7 +6,7 @@ namespace :import do
   task :hits, [:filename_or_mask] => :environment do |_, args|
     filename_or_mask = args[:filename_or_mask]
     done = Transition::Import::Hits.from_mask!(filename_or_mask)
-    if done > 0
+    if done.positive?
       Transition::Import::DailyHitTotals.from_hits!
       Transition::Import::HitsMappingsRelations.refresh!
     end

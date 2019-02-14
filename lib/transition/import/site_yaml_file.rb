@@ -107,7 +107,7 @@ module Transition
       end
 
       def self.load(yaml_filename)
-        SiteYamlFile.new(YAML.load(File.read(yaml_filename)))
+        SiteYamlFile.new(YAML.safe_load(File.read(yaml_filename)))
       end
     end
   end

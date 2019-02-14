@@ -3,10 +3,10 @@ require 'transition/import/whitehall/mappings_csv'
 
 describe Transition::Import::Whitehall::MappingsCSV do
   def csv_for(old_path, govuk_path, whitehall_state = 'published')
-    StringIO.new(<<-END)
-Old URL,New URL,Admin URL,State
-http://dft.gov.uk#{old_path},https://www.gov.uk#{govuk_path},http://whitehall-admin/#{rand(1000)},#{whitehall_state}
-END
+    StringIO.new(<<~CSV)
+      Old URL,New URL,Admin URL,State
+      http://dft.gov.uk#{old_path},https://www.gov.uk#{govuk_path},http://whitehall-admin/#{rand(1000)},#{whitehall_state}
+    CSV
   end
 
   describe 'from_csv' do
@@ -164,10 +164,10 @@ END
 
       context 'CSV row without an Old URL' do
         let(:csv) {
-          StringIO.new(<<-END)
-Old URL,New URL,Admin URL,State
-,https://www.gov.uk/a-document,http://whitehall-admin/#{rand(1000)},published
-END
+          StringIO.new(<<~CSV)
+            Old URL,New URL,Admin URL,State
+            ,https://www.gov.uk/a-document,http://whitehall-admin/#{rand(1000)},published
+          CSV
         }
 
         specify { expect(Mapping.count).to eq(0) }
@@ -181,10 +181,10 @@ END
 
       context 'Old URL is unparseable' do
         let(:csv) {
-          StringIO.new(<<-END)
-Old URL,New URL,Admin URL,State
-http://_____/old,https://www.gov.uk/a-document,http://whitehall-admin/#{rand(1000)},published
-END
+          StringIO.new(<<~CSV)
+            Old URL,New URL,Admin URL,State
+            http://_____/old,https://www.gov.uk/a-document,http://whitehall-admin/#{rand(1000)},published
+          CSV
         }
 
         specify { expect(Mapping.all.count).to eq(0) }

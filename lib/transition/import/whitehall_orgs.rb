@@ -45,7 +45,7 @@ module Transition
       end
 
       def load_orgs_from_yaml
-        YAML.load(File.read(@org_yaml_path))
+        YAML.safe_load(File.read(@org_yaml_path))
       end
 
       def load_orgs_from_api

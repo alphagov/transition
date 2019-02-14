@@ -13,7 +13,7 @@ module Transition
       end
 
       def css_furl_fudge
-        @css_furl_fudge ||= YAML.load(File.read('db/seeds/css-furl-fudge.yml'))
+        @css_furl_fudge ||= YAML.safe_load(File.read('db/seeds/css-furl-fudge.yml'), [Symbol])
       end
 
       def create(whitehall_org)
@@ -23,8 +23,10 @@ module Transition
           target.whitehall_type = whitehall_org['format']
           target.title          = whitehall_org['title']
           target.abbreviation   = whitehall_org['details']['abbreviation']
-          target.homepage       =
-            "https://www.gov.uk#{Addressable::URI.parse(whitehall_org['web_url']).path}" if whitehall_org['web_url'].present?
+          if whitehall_org['web_url'].present?
+            target.homepage =
+              "https://www.gov.uk#{Addressable::URI.parse(whitehall_org['web_url']).path}"
+          end
 
           fudge_for_org = css_furl_fudge[whitehall_org['details']['slug']]
           if fudge_for_org.present?

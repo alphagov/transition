@@ -35,7 +35,7 @@ module Transition
             mappings_count = site.mappings.count
             hits_count = site.hits.count
             # checking hits also accounts for host_paths and daily_hit_totals
-            if mappings_count == 0 && hits_count == 0
+            if mappings_count.zero? && hits_count.zero?
               destroy_site_and_associations(site)
               console_puts "Deleted site #{abbr}"
             else

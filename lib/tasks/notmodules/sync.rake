@@ -12,7 +12,7 @@ class NotModules
   include Singleton
 
   def yaml
-    (@yaml ||= YAML.load(File.read(FILENAME))) || raise(RuntimeError, "Couldn't load #{FILENAME}")
+    (@yaml ||= YAML.safe_load(File.read(FILENAME))) || raise(RuntimeError, "Couldn't load #{FILENAME}")
   end
 
   def modules

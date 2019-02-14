@@ -24,8 +24,10 @@ class User < ActiveRecord::Base
   end
 
   def own_organisation
-    @_own_organisation ||=
-      Organisation.find_by_content_id(organisation_content_id) if organisation_content_id
+    if organisation_content_id
+      @_own_organisation ||=
+        Organisation.find_by(content_id: organisation_content_id)
+    end
   end
 
   def is_human?
