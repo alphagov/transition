@@ -55,8 +55,9 @@ class BulkAddBatch < MappingsBatch
 private
 
   def canonical_paths
-    @_canonical_paths ||= begin
+    @canonical_paths ||= begin
       return [] if paths.blank?
+
       paths.map { |p| site.canonical_path(p) }.select(&:present?).uniq
     end
   end

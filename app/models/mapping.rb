@@ -42,14 +42,14 @@ class Mapping < ActiveRecord::Base
       joins('LEFT JOIN hits ON hits.mapping_id = mappings.id').
       group('mappings.id')
   }
-  scope :with_type, -> (type) { where(type: type) }
+  scope :with_type, ->(type) { where(type: type) }
   scope :redirects, -> { with_type('redirect') }
   scope :archives,  -> { with_type('archive') }
   scope :unresolved, -> { with_type('unresolved') }
-  scope :filtered_by_path, -> (term) do
+  scope :filtered_by_path, ->(term) do
     where(Mapping.arel_table[:path].matches("%#{term}%")).references(:mapping) if term.present?
   end
-  scope :filtered_by_new_url, -> (term) do
+  scope :filtered_by_new_url, ->(term) do
     where(Mapping.arel_table[:new_url].matches("%#{term}%")).references(:mapping) if term.present?
   end
 
@@ -124,10 +124,9 @@ class Mapping < ActiveRecord::Base
   # eg www.gov.uk/foo is technically not a URL, but we can prepend https:// and
   # it becomes a URL.
   def self.ensure_url(uri)
-    case
-    when uri.blank? || uri =~ %r{^https?:}
+    if uri.blank? || uri =~ %r{^https?:}
       uri
-    when uri =~ %r{^www.gov.uk}
+    elsif %r{^www.gov.uk}.match?(uri)
       'https://' + uri
     else
       'http://' + uri
@@ -143,7 +142,7 @@ protected
   end
 
   def trim_scheme_host_and_port_from_path
-    if path =~ %r{^https?:}
+    if %r{^https?:}.match?(path)
       url = Addressable::URI.parse(path)
       self.path = url.request_uri
     end
@@ -154,6 +153,7 @@ protected
 
   def canonicalize_path
     return if site.nil?
+
     self.path = site.canonical_path(path) if path_is_valid_for_canonicalization?
   end
 

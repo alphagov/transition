@@ -42,6 +42,7 @@ class MappingsBatch < ActiveRecord::Base
         mapping = site.mappings.where(path: entry.path).first_or_initialize
 
         next if !update_existing && mapping.persisted?
+
         mapping.path = entry.path
         mapping.type = entry.type
         mapping.new_url = entry.new_url
@@ -58,7 +59,7 @@ class MappingsBatch < ActiveRecord::Base
     update_column(:state, 'processing')
     yield
     update_column(:state, 'succeeded')
-  rescue
+  rescue StandardError
     update_column(:state, 'failed')
     raise
   end

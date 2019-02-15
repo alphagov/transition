@@ -14,6 +14,7 @@ FactoryBot.define do
     trait :with_its_aka_host do
       after(:create) do |host|
         raise ArgumentError, 'This host is an aka itself' if host.aka?
+
         create(:host, hostname: host.aka_hostname, site: host.site, canonical_host_id: host.id)
       end
     end

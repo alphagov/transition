@@ -115,7 +115,7 @@ describe MappingsController do
         end
 
         describe 'with more mappings than appear on one page' do
-          let!(:mappings) { (1..101).each { create(:mapping, site: site) } }
+          let!(:mappings) { 101.times { create(:mapping, site: site) } }
 
           it 'includes all mappings, not just the current page' do
             get :index, params: { site_id: site.abbr, format: 'csv' }

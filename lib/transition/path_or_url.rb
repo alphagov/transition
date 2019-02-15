@@ -1,6 +1,6 @@
 module Transition
   class PathOrUrl
-    STARTS_WITH_HTTP_SCHEME = %r{^https?://}
+    STARTS_WITH_HTTP_SCHEME = %r{^https?://}.freeze
 
     # TLDs for Hosts in transition
     TLDS = %w{

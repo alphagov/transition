@@ -23,10 +23,9 @@ module View
     private
 
       def canonicalized
-        case
-        when parseable_url? || path?
+        if parseable_url? || path?
           @site.canonical_path(@filter)
-        when url? # and not parseable
+        elsif url? # and not parseable
           @filter
         else
           canonical_substring

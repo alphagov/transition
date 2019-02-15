@@ -91,7 +91,7 @@ describe Mapping do
     it 'constrains the length of all URL fields' do
       too_long_url = 'http://'.ljust(2049, 'x')
 
-      [:new_url, :suggested_url, :archive_url].each do |url_attr|
+      %i[new_url suggested_url archive_url].each do |url_attr|
         mapping = build(:mapping, url_attr => too_long_url)
         expect(mapping).not_to be_valid
         expect(mapping.errors[url_attr]).to include('is too long (maximum is 2048 characters)')
@@ -482,7 +482,7 @@ describe Mapping do
         describe 'an update from Lisa' do
           before do
             Transition::History.as_a_user(lisa) do
-              mapping.tag_list = ["cool_tag"]
+              mapping.tag_list = %w[cool_tag]
               mapping.save
             end
           end

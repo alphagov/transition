@@ -20,7 +20,7 @@ module View
         title.downcase.tr(' ', '-')
       end
 
-      DATE_RANGE = /[0-9]{8}(?:-[0-9]{8})?/
+      DATE_RANGE = /[0-9]{8}(?:-[0-9]{8})?/.freeze
       DEFAULT_SLUG = 'last-30-days'.freeze
 
       PERIODS_BY_SLUG = {
@@ -56,13 +56,14 @@ module View
       end
 
       def self.[](slug)
-        slug =~ DATE_RANGE ?  TimePeriod.parse(slug) : PERIODS_BY_SLUG[slug]
+        DATE_RANGE.match?(slug) ? TimePeriod.parse(slug) : PERIODS_BY_SLUG[slug]
       end
 
       def self.parse(range_str)
         dates = range_str.split('-')[0..1].map { |s| Date.parse(s) }
         dates[1] ||= dates[0]
         raise ArgumentError, 'Invalid range, start date should be less than end date' if dates.first > dates.last
+
         TimePeriod.new(range_str, nil, lambda { Range.new(dates.first, dates.last) })
       end
 

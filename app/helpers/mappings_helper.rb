@@ -41,7 +41,8 @@ module MappingsHelper
             'Edit'    => edit_site_mapping_path(@mapping.site, @mapping),
             'History' => site_mapping_versions_path(@mapping.site, @mapping)
           },
-          options)
+          options
+)
       end
     end
   end
@@ -55,7 +56,7 @@ module MappingsHelper
     end
   end
 
-  SUPPORTED_OPERATIONS = ['tag'] + Mapping::SUPPORTED_TYPES
+  SUPPORTED_OPERATIONS = %w[tag] + Mapping::SUPPORTED_TYPES
   ##
   # Convert 'redirect'/'archive'/'tag' into 'Redirect'/'Archive'/'Tag'
   # to use in title and heading for edit_multiple
@@ -76,10 +77,9 @@ module MappingsHelper
   end
 
   def friendly_hit_percentage(hit_percentage)
-    case
-    when hit_percentage.zero?  then ''
-    when hit_percentage < 0.01 then '< 0.01%'
-    when hit_percentage < 10.0 then hit_percentage.round(2).to_s + '%'
+    if hit_percentage.zero? then ''
+    elsif hit_percentage < 0.01 then '< 0.01%'
+    elsif hit_percentage < 10.0 then hit_percentage.round(2).to_s + '%'
     else hit_percentage.round(1).to_s + '%'
     end
   end

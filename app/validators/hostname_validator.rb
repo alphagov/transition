@@ -4,8 +4,8 @@ class HostnameValidator < ActiveModel::EachValidator
 
     valid = begin
       Addressable::URI.parse("http://#{value}").host == value
-    rescue Addressable::URI::InvalidURIError
-      false
+            rescue Addressable::URI::InvalidURIError
+              false
     end
 
     unless valid

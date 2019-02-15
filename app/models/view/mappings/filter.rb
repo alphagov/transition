@@ -18,7 +18,7 @@ module View
       #
 
       def self.fields
-        [:path_contains, :new_url_contains, :tagged, :type, :sort]
+        %i[path_contains new_url_contains tagged type sort]
       end
 
       def path_contains

@@ -41,7 +41,7 @@ module Transition
 
       def refresh_host_paths!
         and_host_is_in_site = site ? "AND hits.host_id #{in_site_hosts}" : ''
-        sql = <<-postgreSQL
+        sql = <<-POSTGRESQL
           INSERT INTO host_paths(host_id, path)
           SELECT hits.host_id, hits.path
           FROM   hits
@@ -54,7 +54,7 @@ module Transition
           #{and_host_is_in_site}
           GROUP  BY hits.host_id,
                     hits.path
-        postgreSQL
+        POSTGRESQL
         change_settings('work_mem' => '256MB') do
           ActiveRecord::Base.connection.execute(sql)
         end
@@ -66,12 +66,14 @@ module Transition
 
           canonical_path = site.canonical_path(host_path.path)
           mapping_id = Mapping.where(
-            path: canonical_path, site_id: site.id).pluck(:id).first
+            path: canonical_path, site_id: site.id
+).pluck(:id).first
 
           if host_path.mapping_id != mapping_id || host_path.canonical_path != canonical_path
             host_path.update_columns(
               mapping_id: mapping_id,
-              canonical_path: canonical_path)
+              canonical_path: canonical_path
+)
           end
         end
       end
@@ -81,7 +83,7 @@ module Transition
 
         # IS DISTINCT FROM is effectively <> - see
         # https://gist.github.com/rgarner/7cccbc504de7c8d56702
-        sql = <<-postgreSQL
+        sql = <<-POSTGRESQL
           UPDATE hits
           SET  mapping_id = host_paths.mapping_id
           FROM host_paths
@@ -90,13 +92,13 @@ module Transition
             host_paths.path      = hits.path AND
             host_paths.mapping_id IS DISTINCT FROM hits.mapping_id
             #{and_host_is_in_site}
-        postgreSQL
+        POSTGRESQL
         ActiveRecord::Base.connection.execute(sql)
       end
 
       def precompute_mapping_hit_counts!
         where_host_is_in_site = site ? "WHERE host_id #{in_site_hosts}" : ''
-        sql = <<-postgreSQL
+        sql = <<-POSTGRESQL
           UPDATE mappings
           SET hit_count = with_counts.hit_count
           FROM (
@@ -108,7 +110,7 @@ module Transition
           WHERE
             mappings.id = with_counts.mapping_id AND
             mappings.hit_count IS DISTINCT FROM with_counts.hit_count
-        postgreSQL
+        POSTGRESQL
 
         ActiveRecord::Base.connection.execute(sql)
       end

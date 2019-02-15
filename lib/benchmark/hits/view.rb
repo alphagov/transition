@@ -87,7 +87,7 @@ module Benchmark
       end
 
       def hits_controller
-        @_controller ||= DummyHitsController.create(abbr, params)
+        @hits_controller ||= DummyHitsController.create(abbr, params)
       end
 
       def run

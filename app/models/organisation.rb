@@ -48,17 +48,17 @@ class Organisation < ActiveRecord::Base
   # all their sites.
   scope :leaderboard, -> {
     select(
-      <<-postgreSQL
+      <<-POSTGRESQL
         organisations.title,
         organisations.whitehall_slug,
         COUNT(*)                                     AS site_count,
         SUM(site_mapping_counts.mapping_count)       AS mappings_across_sites,
         SUM(unresolved_mapping_counts.mapping_count) AS unresolved_mapping_count,
         SUM(error_counts.error_count)                AS error_count
-      postgreSQL
+      POSTGRESQL
     ).
     joins(
-      <<-postgreSQL
+      <<-POSTGRESQL
         INNER JOIN sites
                ON sites.organisation_id = organisations.id
         LEFT JOIN (SELECT sites.id AS site_id,
@@ -82,7 +82,7 @@ class Organisation < ActiveRecord::Base
                    WHERE  daily_hit_totals.http_status = '404'
                    AND daily_hit_totals.total_on >= (current_date - 30)
                    GROUP BY site_id) AS error_counts ON error_counts.site_id = sites.id
-      postgreSQL
+      POSTGRESQL
     ).
     group('organisations.id').
     order('error_count DESC NULLS LAST')

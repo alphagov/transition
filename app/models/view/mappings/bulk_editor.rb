@@ -40,9 +40,8 @@ module View
       end
 
       def params_errors
-        case
-        when mappings.empty? then I18n.t('mappings.bulk.edit.mappings_empty')
-        when type.blank?     then I18n.t('mappings.bulk.type_invalid')
+        if mappings.empty? then I18n.t('mappings.bulk.edit.mappings_empty')
+        elsif type.blank? then I18n.t('mappings.bulk.type_invalid')
         end
       end
 

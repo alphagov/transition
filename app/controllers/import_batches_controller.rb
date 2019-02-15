@@ -5,7 +5,7 @@ class ImportBatchesController < ApplicationController
   before_action :find_site
   check_site_is_not_global
   checks_user_can_edit
-  before_action :find_batch, only: [:preview, :import]
+  before_action :find_batch, only: %i[preview import]
 
   def new
     @batch = ImportBatch.new

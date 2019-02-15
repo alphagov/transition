@@ -5,11 +5,11 @@ module Postgres
     def self.create(name, body, options = {})
       ActiveRecord::Base.transaction do
         execute(
-          <<-postgreSQL
+          <<-POSTGRESQL
             #{drop_sql(name) if options[:replace]}
             CREATE MATERIALIZED VIEW "#{name}" AS
             #{body}
-          postgreSQL
+          POSTGRESQL
         )
       end
     end

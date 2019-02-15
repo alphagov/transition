@@ -44,15 +44,15 @@ module Transition
         end
 
         def inform_about_refresh
-          console_puts <<TEXT
-\nIf you want to feel the benefit immediately, you should now run
+          console_puts <<~TEXT
+            \nIf you want to feel the benefit immediately, you should now run
 
-  rake import:hits:refresh_materialized\n
-TEXT
+              rake import:hits:refresh_materialized\n
+          TEXT
         end
 
         def display_refresh_info?
-          @new_precompute_value && @updated > 0
+          @new_precompute_value && @updated.positive?
         end
       end
     end

@@ -22,15 +22,14 @@ module Transition
         end
 
         def type
-          @_type ||= case
-                     when new_value && ((new_value.upcase == 'TNA') || new_url_is_a_national_archives_url?) then 'archive'
-                     when new_value then 'redirect'
-                     else 'unresolved'
-                     end
+          @type ||= if new_value && ((new_value.upcase == 'TNA') || new_url_is_a_national_archives_url?) then 'archive'
+                    elsif new_value then 'redirect'
+                    else 'unresolved'
+                    end
         end
 
         def path
-          @_path ||= @site.canonical_path(old_value)
+          @path ||= @site.canonical_path(old_value)
         end
 
         def homepage?
