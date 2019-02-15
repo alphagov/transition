@@ -209,12 +209,12 @@ GEM
       concurrent-ruby (~> 1.0)
     io-like (0.3.0)
     jaro_winkler (1.5.2)
-    jasmine (2.9.0)
-      jasmine-core (>= 2.9.0, < 3.0.0)
+    jasmine (3.3.0)
+      jasmine-core (~> 3.3.0)
       phantomjs
       rack (>= 1.2.1)
       rake
-    jasmine-core (2.9.0)
+    jasmine-core (3.3.0)
     jmespath (1.4.0)
     jquery-rails (4.3.3)
       rails-dom-testing (>= 1, < 3)
