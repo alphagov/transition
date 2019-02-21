@@ -48,7 +48,7 @@ GEM
       tzinfo (~> 1.1)
     acts-as-taggable-on (5.0.0)
       activerecord (>= 4.2.8)
-    addressable (2.5.2)
+    addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     archive-zip (0.11.0)
       io-like (~> 0.3.0)
@@ -137,7 +137,7 @@ GEM
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.25)
-    gds-api-adapters (54.1.2)
+    gds-api-adapters (57.4.1)
       addressable
       link_header
       null_logger
@@ -482,7 +482,7 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   factory_bot_rails
-  gds-api-adapters (~> 54.0)
+  gds-api-adapters (~> 57.4)
   gds-sso
   google-api-client
   govuk-lint (~> 3.11.0)
