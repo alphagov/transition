@@ -20,7 +20,7 @@ gem 'acts-as-taggable-on'
 gem 'select2-rails', '3.5.7'
 gem 'activerecord-import'
 gem 'govuk_sidekiq', '~> 3.0'
-gem 'aws-sdk-s3', '~> 1.23'
+gem 'aws-sdk-s3', '~> 1.34'
 
 gem 'sass'
 gem 'sass-rails'

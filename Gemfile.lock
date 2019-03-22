@@ -56,21 +56,22 @@ GEM
     ast (2.4.0)
     autoprefixer-rails (9.3.1)
       execjs
-    aws-eventstream (1.0.1)
-    aws-partitions (1.107.0)
-    aws-sdk-core (3.36.0)
-      aws-eventstream (~> 1.0)
+    aws-eventstream (1.0.2)
+    aws-partitions (1.145.0)
+    aws-sdk-core (3.48.2)
+      aws-eventstream (~> 1.0, >= 1.0.2)
       aws-partitions (~> 1.0)
-      aws-sigv4 (~> 1.0)
+      aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
-    aws-sdk-kms (1.11.0)
-      aws-sdk-core (~> 3, >= 3.26.0)
-      aws-sigv4 (~> 1.0)
-    aws-sdk-s3 (1.23.1)
-      aws-sdk-core (~> 3, >= 3.26.0)
+    aws-sdk-kms (1.16.0)
+      aws-sdk-core (~> 3, >= 3.48.2)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-s3 (1.34.0)
+      aws-sdk-core (~> 3, >= 3.48.2)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
-    aws-sigv4 (1.0.3)
+    aws-sigv4 (1.1.0)
+      aws-eventstream (~> 1.0, >= 1.0.2)
     aws-xray-sdk (0.10.2)
       oj (~> 3.0)
     backports (3.11.4)
@@ -478,7 +479,7 @@ DEPENDENCIES
   activerecord-import
   activerecord-session_store
   acts-as-taggable-on
-  aws-sdk-s3 (~> 1.23)
+  aws-sdk-s3 (~> 1.34)
   cucumber-rails
   database_cleaner
   factory_bot_rails
