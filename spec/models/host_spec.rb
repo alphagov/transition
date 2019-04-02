@@ -199,6 +199,15 @@ describe Host do
         it { is_expected.to be_falsey }
       end
     end
+
+    context 'IP pointing at Bouncer' do
+      subject { build(:host, cname: nil, ip_address: '151.101.0.204') }
+
+      describe '#redirected_by_gds?' do
+        subject { super().redirected_by_gds? }
+        it { is_expected.to be_truthy }
+      end
+    end
   end
 
   describe 'moving to a different site' do
