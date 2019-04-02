@@ -182,8 +182,8 @@ describe Host do
       end
     end
 
-    context 'no CNAME (A-record only)' do
-      subject { build(:host, cname: nil) }
+    context 'no CNAME or A records' do
+      subject { build(:host, cname: nil, ip_address: nil) }
 
       describe '#redirected_by_gds?' do
         subject { super().redirected_by_gds? }
