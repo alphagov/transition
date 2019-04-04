@@ -182,8 +182,8 @@ describe Host do
       end
     end
 
-    context 'no CNAME (A-record only)' do
-      subject { build(:host, cname: nil) }
+    context 'no CNAME or A records' do
+      subject { build(:host, cname: nil, ip_address: nil) }
 
       describe '#redirected_by_gds?' do
         subject { super().redirected_by_gds? }
@@ -197,6 +197,15 @@ describe Host do
       describe '#redirected_by_gds?' do
         subject { super().redirected_by_gds? }
         it { is_expected.to be_falsey }
+      end
+    end
+
+    context 'IP pointing at Bouncer' do
+      subject { build(:host, cname: nil, ip_address: '151.101.0.204') }
+
+      describe '#redirected_by_gds?' do
+        subject { super().redirected_by_gds? }
+        it { is_expected.to be_truthy }
       end
     end
   end
