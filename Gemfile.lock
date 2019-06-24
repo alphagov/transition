@@ -188,10 +188,10 @@ GEM
       sidekiq (>= 5, < 6)
       sidekiq-logging-json (~> 0.0)
       sidekiq-statsd (~> 0.1)
-    govuk_test (0.5.0)
+    govuk_test (1.0.0)
       capybara
       puma
-      selenium-webdriver
+      selenium-webdriver (>= 3.142)
       webdrivers
     gretel (3.0.9)
       rails (>= 3.1.0)
@@ -490,7 +490,7 @@ DEPENDENCIES
   govuk_admin_template
   govuk_app_config (~> 1.19)
   govuk_sidekiq (~> 3.0)
-  govuk_test (~> 0.5.0)
+  govuk_test (~> 1.0.0)
   gretel
   htmlentities
   jasmine
