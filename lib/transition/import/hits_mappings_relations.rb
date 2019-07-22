@@ -62,18 +62,23 @@ module Transition
 
       def connect_mappings_to_host_paths!
         host_paths.includes(:host).find_each do |host_path|
-          site = host_path.host.site
+          site = host_path.host&.site
+
+          unless site
+            warn "#{host_path} not associated with a site"
+            next
+          end
 
           canonical_path = site.canonical_path(host_path.path)
           mapping_id = Mapping.where(
             path: canonical_path, site_id: site.id
-).pluck(:id).first
+          ).pluck(:id).first
 
           if host_path.mapping_id != mapping_id || host_path.canonical_path != canonical_path
             host_path.update_columns(
               mapping_id: mapping_id,
               canonical_path: canonical_path
-)
+            )
           end
         end
       end
