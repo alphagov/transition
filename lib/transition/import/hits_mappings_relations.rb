@@ -62,7 +62,12 @@ module Transition
 
       def connect_mappings_to_host_paths!
         host_paths.includes(:host).find_each do |host_path|
-          site = host_path.host.site
+          site = host_path.host&.site
+
+          unless site
+            warn "#{host_path} not associated with a site"
+            next
+          end
 
           canonical_path = site.canonical_path(host_path.path)
           mapping_id = Mapping.where(
