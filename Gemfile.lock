@@ -281,9 +281,8 @@ GEM
     optic14n (2.0.1)
       addressable (~> 2.3)
     os (1.0.1)
-    paper_trail (4.1.0)
-      activerecord (>= 3.0, < 6.0)
-      activesupport (>= 3.0, < 6.0)
+    paper_trail (10.3.0)
+      activerecord (>= 4.2, < 6.1)
       request_store (~> 1.1)
     parallel (1.17.0)
     parser (2.6.3.0)
@@ -502,7 +501,7 @@ DEPENDENCIES
   launchy
   mlanett-redis-lock
   optic14n
-  paper_trail (= 4.1.0)
+  paper_trail (= 10.3.0)
   pg
   plek
   pry
