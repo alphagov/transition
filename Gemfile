@@ -6,6 +6,7 @@ gem 'activerecord-session_store'
 gem 'pg'
 gem 'optic14n' # Ideally version should be synced with bouncer
 gem 'govuk_admin_template'
+gem 'bootstrap-sass', '3.4.1'
 gem 'plek'
 gem 'htmlentities'
 gem 'kaminari'
