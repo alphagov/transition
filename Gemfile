@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '5.1.6.2'
-gem 'govuk_app_config', '~> 1.20'
+gem 'govuk_app_config', '~> 2.0'
 gem 'activerecord-session_store'
 gem 'pg'
 gem 'optic14n' # Ideally version should be synced with bouncer
