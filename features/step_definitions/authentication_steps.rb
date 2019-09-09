@@ -1,9 +1,13 @@
+include Warden::Test::Helpers
+
 Given(/^I have logged in as a GDS Editor$/) do
-  GDS::SSO.test_user = create(:gds_editor)
+  user = create(:gds_editor)
+  login_as(user)
 end
 
 Given(/^I have logged in as an admin$/) do
-  GDS::SSO.test_user = create(:admin)
+  user = create(:admin)
+  login_as(user)
 end
 
 Given(/^I have logged in as a member of DCLG$/) do
@@ -12,17 +16,21 @@ Given(/^I have logged in as a member of DCLG$/) do
                 abbreviation:   'DCLG',
                 whitehall_slug: 'department-for-communities-and-local-government')
 
-  GDS::SSO.test_user = create(:user, organisation_content_id: dclg.content_id)
+  user = create(:user, organisation_content_id: dclg.content_id)
+  login_as(user)
 end
 
 Given(/^I log in as a SIRO$/) do
-  GDS::SSO.test_user = create(:gds_editor)
+  user = create(:gds_editor)
+  login_as(user)
 end
 
 Given(/^I have logged in as a GDS Editor called "([^"]*)"$/) do |name|
-  GDS::SSO.test_user = create(:gds_editor, name: name)
+  user = create(:gds_editor, name: name)
+  login_as(user)
 end
 
 Given(/^I have logged in as a member of another organisation$/) do
-  GDS::SSO.test_user = create(:user, organisation_content_id: SecureRandom.uuid)
+  user = create(:user, organisation_content_id: SecureRandom.uuid)
+  login_as(user)
 end

@@ -1,9 +1,6 @@
 require 'rails_helper'
-require 'gds-sso/lint/user_spec'
 
 describe User do
-  it_behaves_like "a gds-sso user class"
-
   describe 'organisation' do
     context 'user has no organisation set' do
       subject(:user) { create(:user, organisation_content_id: nil) }
@@ -166,6 +163,14 @@ describe User do
           expect(user.can_edit_site?(site)).to be_falsey
         end
       end
+    end
+  end
+
+  describe 'authenticated?' do
+    subject(:user) { create(:gds_editor) }
+
+    it 'returns true' do
+      expect(user.authenticated?).to eql(true)
     end
   end
 end

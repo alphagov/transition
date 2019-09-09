@@ -5,7 +5,6 @@ gem 'govuk_app_config', '~> 2.0'
 gem 'activerecord-session_store'
 gem 'pg'
 gem 'optic14n' # Ideally version should be synced with bouncer
-gem 'gds-sso'
 gem 'govuk_admin_template'
 gem 'plek'
 gem 'htmlentities'
@@ -21,6 +20,11 @@ gem 'select2-rails', '3.5.7'
 gem 'activerecord-import'
 gem 'govuk_sidekiq', '~> 3.0'
 gem 'aws-sdk-s3', '~> 1.48'
+gem 'rails_warden', '0.6.0'
+
+# Custom authentication...
+gem 'omniauth', '1.3.1'
+gem 'omniauth-zendesk-oauth2', '0.1'
 
 gem 'sass'
 gem 'sass-rails'

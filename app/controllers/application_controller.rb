@@ -1,9 +1,21 @@
 class ApplicationController < ActionController::Base
-  include GDS::SSO::ControllerMethods
-
-  before_action :authenticate_user!
 
   before_action :exclude_all_users_except_admins_during_maintenance
+  before_action :authenticate
+
+  private def authenticate
+    warden.authenticate!
+  end
+
+  helper_method :current_user
+  def current_user
+    warden.user || NilUser.new
+  end
+
+  helper_method :user_signed_in?
+  def user_signed_in?
+    current_user.authenticated?
+  end
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
