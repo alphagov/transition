@@ -1,0 +1,49 @@
+<% if @organisation.errors.any? %>
+<div class="page-title-with-border">
+  <ul>
+    <% @organisation.errors.messages.keys.each do |field| %>
+      <li><%= field.to_s %>: <%= @organisation.errors.messages[field].join(' ') %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<%= form_for @organisation, html: { role: 'form' } do |f| %>
+  <%= render 'shared/error_messages', error_messages: f.object.errors.full_messages %>
+  <fieldset class="form-group row">
+    <div class="col-md-6">
+      <%= f.label :title %>
+      <%= f.text_field :title, :class => 'form-control' %>
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group row">
+    <div class="col-md-6">
+      <%= f.label :homepage %>
+      <%= f.text_field :homepage, :class => 'form-control' %>
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group row">
+    <div class="col-md-6">
+      <%= f.label :whitehall_slug, 'Slug' %>
+      <%= f.text_field :whitehall_slug, :class => 'form-control' %>
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group row">
+    <div class="col-md-6">
+      <%= f.label :whitehall_type, 'Type' %>
+      <%= f.text_field :whitehall_type, :class => 'form-control' %>
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group row">
+    <div class="col-md-6">
+      <%= f.label :abbreviation %>
+      <%= f.text_field :abbreviation, :class => 'form-control' %>
+    </div>
+  </fieldset>
+
+  <%= f.button 'Save Organisation', type: 'submit', class: 'add-top-margin btn btn-success' %>
+<% end %>

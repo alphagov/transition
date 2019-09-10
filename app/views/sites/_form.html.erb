@@ -1,0 +1,84 @@
+<% if @site.errors.any? %>
+<div class="page-title-with-border">
+  <ul>
+    <% @site.errors.messages.keys.each do |field| %>
+      <li><%= field.to_s %>: <%= @site.errors.messages[field].join(' ') %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<%= form_for @site, html: { role: 'form' } do |f| %>
+  <div class="form-group row">
+    <div class="col-md-8">
+
+      <fieldset class="form-group row">
+        <div class="col-md-6">
+          <%= f.label :abbr, 'Abbreviation' %>
+          <%= f.text_field :abbr, :class => 'form-control' %>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group row">
+        <div class="col-md-6">
+          <%= f.label :query_params %>
+          <%= f.text_field :query_params, :class => 'form-control' %>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group row">
+        <div class="col-md-6">
+          <%= f.label :homepage %>
+          <%= f.text_field :homepage, :class => 'form-control' %>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group row">
+        <div class="col-md-6">
+          <%= f.label :launch_date, 'New transition date' %>
+          <%= f.text_field :launch_date, :class => 'form-control' %>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group row">
+        <div class="col-md-6">
+          <%= f.label :global_new_url %>
+          <%= f.date_select(:launch_date,
+                              { order: [:day, :month, :year]},
+                              { class: 'form-control date' }) %>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group row">
+        <div class="col-md-6">
+          <%= f.label :global_redirect_append_path %>
+          <%= f.check_box :global_redirect_append_path, :class => 'form-control' %>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group row">
+        <div class="col-md-6">
+          <%= f.label :homepage_title %>
+          <%= f.text_field :homepage_title, :class => 'form-control' %>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group row">
+        <div class="col-md-6">
+          <%= f.label :homepage_furl %>
+          <%= f.text_field :homepage_furl, :class => 'form-control' %>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group row">
+        <div class="col-md-6">
+          <%= f.label 'host_names' %> (comma separated)
+          <%= text_area_tag 'host_names', @site.hosts.collect(&:hostname).join(','), :class => 'form-control' %>
+        </div>
+      </fieldset>
+
+      <%= f.hidden_field :organisation_id %>
+      <%= f.submit 'Save', class: 'add-top-margin btn btn-success' %>
+    </div>
+  </div>
+<% end %>

@@ -9,6 +9,9 @@
   <p class="if-no-js-hide lead text-muted normal">
     Use a URL to <a href="#" class="link-muted" data-module="mousetrap-trigger" data-keys="g m">jump to a site or mapping</a> or find your organisation below.
   </p>
+  <p>
+    You can also create a <%= link_to 'new organisation', new_organisation_path %>.
+  </p>
 </div>
 
 <table class="organisations table table-striped table-bordered" data-module="filterable-table">
@@ -42,7 +45,7 @@
         <%= link_to org.title, organisation_path(org), class: 'js-open-on-submit' %>
       </td>
       <td>
-        <%= pluralize(org.site_count, 'site') %>
+        <%= pluralize(org.sites.count, 'site') %>
       </td>
     </tr>
   <% end %>

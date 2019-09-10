@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   resources :hosts, only: [:index]
 
-  resources :organisations, only: [:show, :index]
+  resources :organisations, except: [:destroy]
 
   get 'mappings/find_global', to: 'mappings#find_global'
   get 'hits', to: 'hits#universal_summary'
@@ -25,7 +25,7 @@ Rails.application.routes.draw do
 
   get 'leaderboard', to: 'leaderboard#index'
 
-  resources :sites, only: [:edit, :update, :show] do
+  resources :sites, except: [:destroy] do
 
     get 'mappings/find', as: 'mapping_find'
     resources :mappings, only: [:index, :edit, :update] do

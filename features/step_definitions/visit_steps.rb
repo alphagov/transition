@@ -1,5 +1,5 @@
 When(/^I visit the home page$/) do
-  visit '/'
+  visit '/organisations'
 end
 
 When(/^I visit the path (.*)$/) do |path|

@@ -120,7 +120,7 @@ Scenario: Editing a site's transition date as a GDS Editor
   And I visit this site page
   When I edit this site's transition date
   Then I should be redirected to the site dashboard
-  And I should see "Transition date updated"
+  And I should see "Site updated successfully"
   And I should see "20 September 2014"
 
 Scenario: Editing a site's transition date as a non-GDS Editor
