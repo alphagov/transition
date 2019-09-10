@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   get 'login', to: 'authentication#new'
   get 'auth/zendesk/callback', to: 'authentication#create'
-  get 'logout', to: 'authentication#destroy'
+  get '/auth/gds/sign_out', to: 'authentication#destroy'
 
   resources :hosts, only: [:index]
 
