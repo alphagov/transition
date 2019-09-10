@@ -252,7 +252,7 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.1.1)
     netrc (0.11.0)
-    nio4r (2.4.0)
+    nio4r (2.5.1)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     null_logger (0.0.1)
@@ -274,10 +274,11 @@ GEM
     optic14n (2.0.1)
       addressable (~> 2.3)
     os (1.0.1)
-    paper_trail (4.1.0)
-      activerecord (>= 3.0, < 6.0)
-      activesupport (>= 3.0, < 6.0)
+    paper_trail (9.2.0)
+      activerecord (>= 4.2, < 5.3)
+      paper_trail-association_tracking (< 2)
       request_store (~> 1.1)
+    paper_trail-association_tracking (1.1.1)
     parallel (1.17.0)
     parser (2.6.3.0)
       ast (~> 2.4.0)
@@ -500,7 +501,7 @@ DEPENDENCIES
   omniauth (= 1.9.0)
   omniauth-zendesk-oauth2 (= 0.1)
   optic14n
-  paper_trail (= 4.1.0)
+  paper_trail (~> 9.0)
   pg
   plek
   pry

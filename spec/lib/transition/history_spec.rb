@@ -8,33 +8,33 @@ module Transition
     let(:user) { create :user }
 
     before do
-      PaperTrail.whodunnit = nil
-      PaperTrail.controller_info = nil
+      PaperTrail.request.whodunnit = nil
+      PaperTrail.request.controller_info = nil
       Transition::History.set_user!(user)
     end
 
     describe '.set_user!' do
       it 'sets the controller_info' do
-        expect(PaperTrail.controller_info).to eql(user_id: user.id)
+        expect(PaperTrail.request.controller_info).to eql(user_id: user.id)
       end
 
       it 'sets the whodunnit to the user\'s name' do
-        expect(PaperTrail.whodunnit).to eql(user.name)
+        expect(PaperTrail.request.whodunnit).to eql(user.name)
       end
     end
 
     describe '.clear_user!' do
       before do
-        expect(PaperTrail.whodunnit).to eql(user.name)
+        expect(PaperTrail.request.whodunnit).to eql(user.name)
         Transition::History.clear_user!
       end
 
       it 'clears the controller_info' do
-        expect(PaperTrail.controller_info).to be_nil
+        expect(PaperTrail.request.controller_info).to be_nil
       end
 
       it 'clears the whodunnit' do
-        expect(PaperTrail.whodunnit).to be_nil
+        expect(PaperTrail.request.whodunnit).to be_nil
       end
     end
 
@@ -48,16 +48,16 @@ module Transition
 
       it 'sets the new user for the block' do
         Transition::History.as_a_user(user_who_does_stuff) do
-          expect(PaperTrail.whodunnit).to eql(user_who_does_stuff.name)
-          expect(PaperTrail.controller_info).to eql(user_id: user_who_does_stuff.id)
+          expect(PaperTrail.request.whodunnit).to eql(user_who_does_stuff.name)
+          expect(PaperTrail.request.controller_info).to eql(user_id: user_who_does_stuff.id)
         end
       end
 
       it 'reverts to the original config afterwards' do
         Transition::History.as_a_user(user_who_does_stuff) {}
 
-        expect(PaperTrail.whodunnit).to eql(original_user.name)
-        expect(PaperTrail.controller_info).to eql(user_id: original_user.id)
+        expect(PaperTrail.request.whodunnit).to eql(original_user.name)
+        expect(PaperTrail.request.controller_info).to eql(user_id: original_user.id)
       end
     end
 
