@@ -40,5 +40,5 @@ RUN \
   GOVUK_APP_DOMAIN=localhost:3000 \
   bin/rails DATABASE_URL=postgresql:does_not_exist assets:precompile
 
-EXPOSE 9292
-CMD ["rails", "server", "-p", "9292"]
+EXPOSE 3000
+CMD ["rails", "server"]
