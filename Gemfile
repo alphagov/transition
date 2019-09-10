@@ -23,7 +23,7 @@ gem 'aws-sdk-s3', '~> 1.48'
 gem 'rails_warden', '0.6.0'
 
 # Custom authentication...
-gem 'omniauth', '1.3.1'
+gem 'omniauth', '1.9.0'
 gem 'omniauth-zendesk-oauth2', '0.1'
 
 gem 'sass'
