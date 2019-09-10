@@ -9,6 +9,20 @@ of mappings for use with [Bouncer](https://github.com/alphagov/bouncer).
 * PostgreSQL 9.3+ (the app uses materialized views, which were introduced in 9.3).
   This is included in the Trusty dev VM, which is now the default.
 
+## Set up the database
+
+```sh
+bundle exec rake db:setup
+```
+
+## Seed the database
+
+FactoryBot will seed some dummy data to get started with.
+
+```sh
+bundle exec rake db:seed
+```
+
 ## Running the app
 
 The web application itself is run like any other Rails app, for example:
