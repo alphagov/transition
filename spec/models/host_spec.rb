@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Host do
   describe 'relationships' do
+    subject { build(:host) }
     it { is_expected.to belong_to(:site) }
   end
 
