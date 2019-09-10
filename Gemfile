@@ -23,6 +23,7 @@ gem 'redis-namespace'
 gem 'aws-sdk-s3', '~> 1.48'
 gem 'rails_warden', '0.6.0'
 gem 'puma', '~> 4.1'
+gem 'rollbar', '~> 2.22'
 
 # Custom authentication...
 gem 'omniauth', '1.9.0'
