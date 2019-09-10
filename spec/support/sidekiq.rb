@@ -1,4 +1,4 @@
-require 'govuk_sidekiq/testing'
+require 'sidekiq/testing'
 
 # https://github.com/mperham/sidekiq/wiki/Testing#testing-worker-queueing-fake
 Sidekiq::Testing.fake!
