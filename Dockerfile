@@ -33,11 +33,14 @@ RUN \
 
 COPY . $INSTALL_PATH
 
+# Plek (GDS path finder gem) raises an error when initialized with production
+# Since we don't intend on using it, we can set a dummy value.
+ARG GOVUK_APP_DOMAIN
+ENV GOVUK_APP_DOMAIN=${GOVUK_APP_DOMAIN:-localhost}
+
 # precompile assets for production
 RUN \
   RAILS_ENV=production \
-  SECRET_KEY_BASE=`rake secret` \
-  GOVUK_APP_DOMAIN=localhost:3000 \
   bin/rails DATABASE_URL=postgresql:does_not_exist assets:precompile
 
 EXPOSE 3000
