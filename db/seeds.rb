@@ -1,7 +1,6 @@
-require 'factory_bot'
-FactoryBot.find_definitions
-
 if Rails.env.development?
+  require 'factory_bot'
+  FactoryBot.find_definitions
   unless User.find_by_email("test@example.com")
     u             = User.new
     u.email       = "test@example.com"
