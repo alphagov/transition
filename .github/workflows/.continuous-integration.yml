@@ -23,9 +23,7 @@ jobs:
     - name: Set up the test database
       run: |
         RAILS_ENV=test \
-        DATABASE_URL=postgres://postgres@transition:5432/transition_test \
         bundle exec rake db:setup
     - name: Run the tests
       run: |
-        DATABASE_URL=postgres://postgres@transition:5432/transition_test \
         bundle exec rake

@@ -9,15 +9,18 @@ default: &default
 
 development:
   <<: *default
-  database: transition_development
+  url: <%= ENV["DATABASE_URL"] %>
+  host: localhost
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test: &test
   <<: *default
-  database: transition_test<%= ENV['TEST_ENV_NUMBER'] %>
-  url: <%= ENV["DATABASE_URL"].try(:sub, /([-_]development)?$/, "_test#{ENV['TEST_ENV_NUMBER']}") %>
+  url: <%= ENV["DATABASE_URL"] %>
+  host: localhost
+  username: transition
+  database: transition_test
   variables:
     work_mem: 1MB
 
