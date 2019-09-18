@@ -99,5 +99,5 @@ Dir[File.expand_path('../app/workers/**/*_worker.rb', File.dirname(__FILE__))].e
 end
 
 ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../config/environment", __FILE__)
+require File.expand_path('../config/environment', __dir__)
 require 'rspec/rails'

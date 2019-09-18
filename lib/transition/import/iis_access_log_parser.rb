@@ -9,11 +9,11 @@ module Transition
   module Import
     class IISAccessLogParser
       def self.fields
-        @fields || [:date, :server_ip, :method, :url, :query, :port, :username, :client_ip, :user_agent, :user_referer, :host, :status, :substatus, :win32_status, :time_taken, :other, :unspecified]
+        @fields || %i[date server_ip method url query port username client_ip user_agent user_referer host status substatus win32_status time_taken other unspecified]
       end
 
       def self.field=(fields)
-        @fields=fields
+        @fields = fields
       end
 
     #Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) cs-host sc-status sc-substatus sc-win32-status time-taken
@@ -26,14 +26,14 @@ module Transition
           #      x, date, server_ip, method, url, query, port, username, client_ip, user_agent, user_referer status, substatus, win32_status, time_taken, y, other = *line.match(/^([^ ]* [^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*)($| )(.*)/)
 
           mapping = {}
-          x=nil
-          line.split(/^([^ ]* [^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*)($| )(.*)/).each_with_index do |value,i|
-            mapping[IISAccessLogParser.fields[i-1]] = value unless i == 0
-            x = value if i == 0
+          x = nil
+          line.split(/^([^ ]* [^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*)($| )(.*)/).each_with_index do |value, i|
+            mapping[IISAccessLogParser.fields[i - 1]] = value unless i.zero?
+            x = value if i.zero?
           end
           raise ArgumentError, "bad format: '#{line}'" unless x
 
-          mapping[:date] = Time.parse(mapping[:date] + ' UTC') unless mapping[:date] == nil
+          mapping[:date] = Time.zone.parse(mapping[:date] + ' UTC') unless mapping[:date] == nil
           mapping[:server_ip] = IP.new(mapping[:server_ip]) unless mapping[:server_ip] == nil
           mapping[:client_ip] = IP.new(mapping[:client_ip]) unless mapping[:client_ip] == nil
 
@@ -66,7 +66,8 @@ module Transition
 
       def initialize(io)
         io.each_line do |line|
-          next if line[0,1] == '#'
+          next if line[0, 1] == '#'
+
           yield Entry.from_string(line)
         end
       end
