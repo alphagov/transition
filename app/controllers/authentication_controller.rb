@@ -2,8 +2,7 @@ class AuthenticationController < ApplicationController
   # we don't need to authenticate these requests, they create the authentication
   skip_before_action :authenticate
 
-  def index
-  end
+  def index; end
 
   def new
     logger.info('OAuth Initiating to ZenDesk')

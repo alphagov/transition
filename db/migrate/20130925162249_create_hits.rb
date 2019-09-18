@@ -11,9 +11,9 @@ class CreateHits < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :hits, [:host_id, :path_hash, :hit_on, :http_status], unique: true
+    add_index :hits, %i[host_id path_hash hit_on http_status], unique: true
     add_index :hits, [:host_id]
-    add_index :hits, [:host_id, :hit_on]
-    add_index :hits, [:host_id, :http_status]
+    add_index :hits, %i[host_id hit_on]
+    add_index :hits, %i[host_id http_status]
   end
 end

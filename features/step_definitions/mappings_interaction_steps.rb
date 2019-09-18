@@ -63,7 +63,7 @@ When(/^I open the "(.*)" filter$/) do |filter_type|
 end
 
 When(/^I open the "(.*)" filter and filter by "(.*)"$/) do |filter_type, value|
-  within ".filters#{ ' .filter-by-path' if filter_type == 'Path' }" do
+  within ".filters#{' .filter-by-path' if filter_type == 'Path'}" do
     click_link filter_type
     fill_in filter_type, with: value
     click_button 'Filter'
@@ -93,7 +93,7 @@ When(/^I filter the path by ([^"]*)$/) do |path_contains|
 end
 
 When(/^I remove the filter "(.*?)"$/) do |filter_type|
-  within ".filters#{ ' .filter-by-path' if filter_type == 'Path' }" do
+  within ".filters#{' .filter-by-path' if filter_type == 'Path'}" do
     click_link filter_type
   end
 end

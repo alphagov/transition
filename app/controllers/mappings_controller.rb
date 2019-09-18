@@ -109,8 +109,8 @@ class MappingsController < ApplicationController
     site = Host.where(hostname: url.host).first.try(:site)
     unless site
       render_error(404,
-          header: 'Unknown site',
-          body:  "#{url.host} isn't configured in Transition yet. To add this site to Transition, please contact your Proposition Manager.")
+                   header: 'Unknown site',
+                   body:  "#{url.host} isn't configured in Transition yet. To add this site to Transition, please contact your Proposition Manager.")
       return
     end
 

@@ -11,11 +11,11 @@ class PopulateHostPathsCanonicalPath < ActiveRecord::Migration
     start_time = Time.zone.now
 
     host_paths = HostPath.all
-      .joins(:host => :site)
-      .includes(:host => :site)
+      .joins(host: :site)
+      .includes(host: :site)
       .where(canonical_path: nil)
 
-    $stderr.puts "Populating canonical paths on #{total_records} records"
+    warn "Populating canonical paths on #{total_records} records"
     host_paths.find_in_batches(batch_size: batch_size) do |host_paths|
       host_paths.each do |host_path|
         site = host_path.host.site
@@ -26,7 +26,7 @@ class PopulateHostPathsCanonicalPath < ActiveRecord::Migration
       elapsed_time = Time.zone.now - start_time
 
       time_remaining = elapsed_time * (total_records - record_offset) / record_offset
-      $stderr.puts "Updated #{record_offset} / #{total_records} (#{distance_of_time_in_words(time_remaining)} remaining)"
+      warn "Updated #{record_offset} / #{total_records} (#{distance_of_time_in_words(time_remaining)} remaining)"
     end
   end
 

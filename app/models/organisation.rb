@@ -1,19 +1,19 @@
 class Organisation < ActiveRecord::Base
   has_many :child_organisational_relationships,
-            foreign_key: :parent_organisation_id,
-            class_name: "OrganisationalRelationship"
+           foreign_key: :parent_organisation_id,
+           class_name: "OrganisationalRelationship"
   has_many :parent_organisational_relationships,
-            foreign_key: :child_organisation_id,
-            class_name: "OrganisationalRelationship",
-            dependent: :destroy
+           foreign_key: :child_organisation_id,
+           class_name: "OrganisationalRelationship",
+           dependent: :destroy
   has_many :child_organisations,
-            through: :child_organisational_relationships
+           through: :child_organisational_relationships
   has_many :parent_organisations,
-            through: :parent_organisational_relationships
+           through: :parent_organisational_relationships
 
   has_and_belongs_to_many :extra_sites,
-                           join_table: 'organisations_sites',
-                           class_name: 'Site'
+                          join_table: 'organisations_sites',
+                          class_name: 'Site'
 
   has_many :sites
   has_many :hosts, through: :sites

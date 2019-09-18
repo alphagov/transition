@@ -10,13 +10,11 @@ class Warden::SessionSerializer
 
   def deserialize(keys)
     klass, id = keys
-    klass.find(:first, :conditions => { :id => id })
+    klass.find(:first, conditions: { id: id })
   end
 end
 
-Warden::Manager.serialize_into_session do |user|
-  user.id
-end
+Warden::Manager.serialize_into_session(&:id)
 
 Warden::Manager.serialize_from_session do |id|
   User.find(id)

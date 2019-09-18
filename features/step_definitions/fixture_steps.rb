@@ -53,12 +53,11 @@ Given(/^there is a site called (.*) belonging to an organisation (.*) with these
 
   site.mappings = mappings_table.rows.map do |type, path, new_url, tags|
     create(:mapping,
-      site: site,
-      type: type,
-      path: path,
-      new_url: new_url == '' ? nil : new_url,
-      tag_list: tags
-    )
+           site: site,
+           type: type,
+           path: path,
+           new_url: new_url == '' ? nil : new_url,
+           tag_list: tags)
   end
 end
 
@@ -71,7 +70,7 @@ Given (/^a(?:n) (\w+) mapping exists for the site with the path (.*)$/) do |type
   @site.mappings << create(:mapping, type: type, path: path)
 end
 
-Given(/^there is an organisation with the whitehall_slug "(.*?)"$/) do |abbr|
+Given(/^there is an organisation with the whitehall_slug "(.*?)"$/) do |_abbr|
   @organisation = create(:organisation, whitehall_slug: "ukaea")
 end
 

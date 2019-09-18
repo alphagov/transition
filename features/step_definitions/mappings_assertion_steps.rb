@@ -156,20 +156,20 @@ Then(/^I should see the canonicalized paths "(.*?)"$/) do |paths|
 end
 
 Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
-  if @_javascript
-    field = find(:xpath, '//input[contains(@class, "select2-offscreen")]')
-  else
-    field = find_field('Tags')
-  end
+  field = if @_javascript
+            find(:xpath, '//input[contains(@class, "select2-offscreen")]')
+          else
+            find_field('Tags')
+          end
 
   expected_values = tag_list.split(/\s*,\s*/)
-  field_values  = field.value.split(/\s*,\s*/)
+  field_values = field.value.split(/\s*,\s*/)
 
   expect(field_values).to match_array(expected_values)
 end
 
 Then(/^I should see that all were tagged "([^"]*)"$/) do |tag_list|
-  within '.alert-success', :match => :first do
+  within '.alert-success', match: :first do
     expect(page).to have_content(
       %(3 mappings updated and tagged with "#{tag_list}")
     )
@@ -197,7 +197,7 @@ Then(/^the mappings should all have the tags "([^"]*)"$/) do |tag_list|
 end
 
 Then(/^I should see that (\d+) were tagged "([^"]*)"$/) do |n, tag_list|
-  within '.alert-success', :match => :first do
+  within '.alert-success', match: :first do
     expect(page).to have_content(
       %(#{n} mappings tagged “#{tag_list}”)
     )
@@ -217,7 +217,7 @@ end
 Then(/^mapping (\d+) should have the tags "([^"]*)"$/) do |nth, tag_list|
   within ".mappings-index tbody tr:nth-child(#{nth}) .tag-list" do
     tag_list.split(',').map(&:strip).each do |tag|
-      expect(page).to have_selector('.tag', text:tag)
+      expect(page).to have_selector('.tag', text: tag)
     end
   end
 end
@@ -225,7 +225,7 @@ end
 Then(/^mapping (\d+) should have the tags "([^"]*)" but not "([^"]*)"$/) do |nth, tag_list, without_tag_list|
   within ".mappings-index tbody tr:nth-child(#{nth}) .tag-list" do
     tag_list.split(',').map(&:strip).each do |tag|
-      expect(page).to have_selector('.tag', text:tag)
+      expect(page).to have_selector('.tag', text: tag)
     end
     without_tag_list.split(',').map(&:strip).each do |without_tag|
       expect(page).not_to have_selector('.tag', text: without_tag)
@@ -242,13 +242,13 @@ But(/^I should not see "([^"]*)" available for selection$/) do |tag|
 end
 
 But(/^I should not see "([^"]*)" available for selection as it's already selected$/) do |tag|
-  step %Q{I should not see "#{tag}" available for selection}
+  step %{I should not see "#{tag}" available for selection}
 end
 
 Then(/^I should see the highlighted tags? "([^"]*)"$/) do |tag_list|
   within ".mappings tbody tr:first-child .tag-list" do
     tag_list.split(',').map(&:strip).each do |tag|
-      expect(page).to have_selector('.tag-active', text:tag)
+      expect(page).to have_selector('.tag-active', text: tag)
     end
   end
 end
@@ -256,7 +256,7 @@ end
 Then(/^I should see a link to remove the tags? "([^"]*)"$/) do |tag_list|
   within ".filtered-tags" do
     tag_list.split(',').map(&:strip).each do |tag|
-      expect(page).to have_selector('.tag', text:tag)
+      expect(page).to have_selector('.tag', text: tag)
     end
   end
 end

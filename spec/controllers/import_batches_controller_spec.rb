@@ -54,13 +54,13 @@ describe ImportBatchesController do
       let(:long_url)          { "#{stem}#{'x' * (2048 - stem.length)}" }
       before do
         post :create,
-          params: {
-            site_id: site.abbr,
-            import_batch: {
-              raw_csv: "/a,TNA\n/b,#{long_url}",
-              tag_list: ''
-            }
-          }
+             params: {
+               site_id: site.abbr,
+               import_batch: {
+                 raw_csv: "/a,TNA\n/b,#{long_url}",
+                 tag_list: ''
+               }
+             }
       end
 
       it 'creates a batch for the site' do
@@ -115,12 +115,12 @@ describe ImportBatchesController do
     context 'with invalid parameters' do
       before do
         post :create,
-          params: {
-            site_id: site.abbr,
-            import_batch: {
-              raw_csv: 'a,', tag_list: ''
-            }
-          }
+             params: {
+               site_id: site.abbr,
+               import_batch: {
+                 raw_csv: 'a,', tag_list: ''
+               }
+             }
       end
 
       it 'does not create a batch for the site' do
@@ -189,11 +189,11 @@ describe ImportBatchesController do
     context 'a small batch' do
       def make_request
         post :import,
-          params: {
-            site_id: site.abbr,
-            import_batch: { update_existing: 'true' },
-            id: batch.id
-          }
+             params: {
+               site_id: site.abbr,
+               import_batch: { update_existing: 'true' },
+               id: batch.id
+             }
       end
 
       include_examples 'it processes a small batch inline'
@@ -204,11 +204,11 @@ describe ImportBatchesController do
 
       def make_request
         post :import,
-          params: {
-            site_id: site.abbr,
-            import_batch: { update_existing: 'true' },
-            id: large_batch.id
-          }
+             params: {
+               site_id: site.abbr,
+               import_batch: { update_existing: 'true' },
+               id: large_batch.id
+             }
       end
 
       include_examples 'it processes a large batch in the background'

@@ -66,11 +66,11 @@ describe BulkAddBatchesController do
     context 'when the return path is on site' do
       it 'returns to where it came from' do
         get :preview,
-          params: {
-            site_id: site.abbr,
-            id: batch.id,
-            return_path: '/donkey'
-          }
+            params: {
+              site_id: site.abbr,
+              id: batch.id,
+              return_path: '/donkey'
+            }
 
         expect(assigns(:bulk_add_cancel_destination)).to eq('/donkey')
       end
@@ -79,11 +79,11 @@ describe BulkAddBatchesController do
     context 'when the return path is off site' do
       it 'returns to the site mappings path' do
         get :preview,
-          params: {
-            site_id: site.abbr,
-            id: batch.id,
-            return_path: 'http://google.com'
-          }
+            params: {
+              site_id: site.abbr,
+              id: batch.id,
+              return_path: 'http://google.com'
+            }
 
         expect(assigns(:bulk_add_cancel_destination)).to eq(site_mappings_path(site.abbr))
       end
@@ -123,11 +123,11 @@ describe BulkAddBatchesController do
       context 'a small batch' do
         def make_request
           post :import,
-            params: {
-              site_id: site.abbr,
-              update_existing: 'true',
-              id: batch.id
-            }
+               params: {
+                 site_id: site.abbr,
+                 update_existing: 'true',
+                 id: batch.id
+               }
         end
 
         include_examples 'it processes a small batch inline'
@@ -142,11 +142,11 @@ describe BulkAddBatchesController do
 
         def make_request
           post :import,
-            params: {
-              site_id: site.abbr,
-              update_existing: 'true',
-              id: large_batch.id
-            }
+               params: {
+                 site_id: site.abbr,
+                 update_existing: 'true',
+                 id: large_batch.id
+               }
         end
 
         include_examples 'it processes a large batch in the background'
@@ -212,11 +212,11 @@ describe BulkAddBatchesController do
     context '#import' do
       it 'should redirect to mappings index' do
         post :import,
-          params: {
-            site_id: site.abbr,
-            id: batch.id,
-            return_path: 'http://malicious.com'
-          }
+             params: {
+               site_id: site.abbr,
+               id: batch.id,
+               return_path: 'http://malicious.com'
+             }
         expect(response).to redirect_to site_mappings_path(site)
       end
     end

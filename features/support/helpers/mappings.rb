@@ -12,6 +12,7 @@ module Helpers
 
     def i_type_letters_into_tags(letters)
       raise 'Only relevant to JavaScript tests' unless @_javascript
+
       find('input.select2-input').set(letters)
     end
 
@@ -47,7 +48,7 @@ module Helpers
                             /19
                             /20
                             /21
-                          CSV
+      CSV
       fill_in 'import_batch_raw_csv', with: raw_csv
       click_button 'Continue'
     end

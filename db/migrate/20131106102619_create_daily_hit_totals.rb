@@ -7,6 +7,6 @@ class CreateDailyHitTotals < ActiveRecord::Migration
       t.date :total_on, null: false
     end
 
-    add_index :daily_hit_totals, [:host_id, :total_on, :http_status], unique: true
+    add_index :daily_hit_totals, %i[host_id total_on http_status], unique: true
   end
 end

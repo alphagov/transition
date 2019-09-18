@@ -1,7 +1,9 @@
 RSpec::Matchers.define :have_sorted_bar_rows do |count|
   match do |page|
-    raise RuntimeError,
-          '.for_status expected. Call like expect(page).to have_sorted_bar_rows(11).for_status(401)' unless @_status
+    unless @_status
+      raise RuntimeError,
+            '.for_status expected. Call like expect(page).to have_sorted_bar_rows(11).for_status(401)'
+    end
 
     expect(page).to have_selector('tbody tr', count: count)
     expect(page).to have_selector(".bar-chart-row-#{@_status}", count: count)

@@ -11,7 +11,7 @@ When(/^I click the first (?:link|tab)(?: called)? "([^"]+)"$/) do |link_title|
 end
 
 When(/^I click the first tag(?: called)? "([^"]+)"$/) do |tag|
-  page.find('a.tag', text: tag, :match => :first).click
+  page.find('a.tag', text: tag, match: :first).click
 end
 
 When(/^I save my changes$/) do

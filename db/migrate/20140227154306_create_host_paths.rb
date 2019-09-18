@@ -9,8 +9,8 @@ class CreateHostPaths < ActiveRecord::Migration
       t.references :mapping
     end
 
-    add_index :host_paths, [:host_id, :path_hash], unique: true # Used only for uniqueness inserting
-    add_index :host_paths, :c14n_path_hash                      # Used for lookup when creating/editing mappings
+    add_index :host_paths, %i[host_id path_hash], unique: true # Used only for uniqueness inserting
+    add_index :host_paths, :c14n_path_hash # Used for lookup when creating/editing mappings
     add_index :host_paths, :mapping_id
   end
 end
