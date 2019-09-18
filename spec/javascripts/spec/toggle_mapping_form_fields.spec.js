@@ -77,8 +77,8 @@ describe('A mappings module', function() {
 
         toggle.start(form);
         expect(form.find('.js-for-redirect:visible').length).toBe(1);
-        expect(form.find('.js-for-archive:visible').length).toBe(1);
-        expect(form.find('.js-for-unresolved:visible').length).toBe(1);
+        expect(form.find('.js-for-archive:visible').length).toBe(0);
+        expect(form.find('.js-for-unresolved:visible').length).toBe(0);
 
         form.find('.js-type').val('redirect').trigger('change');
         expect(form.find('.js-for-redirect:visible').length).toBe(1);
