@@ -18,7 +18,6 @@ Given(/^a site "([^"]*)" exists with mappings with lots of tags$/) do |site_abbr
       mapping.tag_list = (1..tag_count.to_i).to_a.join(', ')
     end
   end
-
 end
 
 Given(/^a site "([^"]*)" exists with these tagged mappings:$/) do |site_abbr, tagged_paths|

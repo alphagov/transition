@@ -1,5 +1,5 @@
 class SitesController < ApplicationController
-  before_action :find_site, only: [:edit, :update, :show]
+  before_action :find_site, only: %i[edit update show]
   before_action :check_user_is_gds_editor, only: %i[edit update]
 
   def new

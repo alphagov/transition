@@ -271,14 +271,14 @@ describe MappingsController do
         before do
           login_as gds_bob
           post :update,
-            params: {
-              site_id: mapping.site,
-              id: mapping.id,
-              mapping: {
-                path: '/Needs/Canonicalization?has=some&query=parts',
-                new_url: 'http://a.gov.uk'
-              }
-            }
+               params: {
+                 site_id: mapping.site,
+                 id: mapping.id,
+                 mapping: {
+                   path: '/Needs/Canonicalization?has=some&query=parts',
+                   new_url: 'http://a.gov.uk'
+                 }
+               }
         end
 
         it 'canonicalizes the path' do
@@ -305,15 +305,15 @@ describe MappingsController do
       before do
         login_as gds_bob
         post :update,
-          params: {
-            site_id: mapping.site,
-            id: mapping.id,
-            mapping: {
-              path: '/Needs/Canonicalization?has=some&query=parts',
-              new_url: 'http://somewhere.gov.uk',
-              tag_list: 'fEE, fI, fO'
-             }
-           }
+             params: {
+               site_id: mapping.site,
+               id: mapping.id,
+               mapping: {
+                 path: '/Needs/Canonicalization?has=some&query=parts',
+                 new_url: 'http://somewhere.gov.uk',
+                 tag_list: 'fEE, fI, fO'
+                }
+              }
       end
 
       subject(:tags_as_strings) { mapping.reload.tags.map(&:to_s) }
@@ -337,12 +337,12 @@ describe MappingsController do
       def make_request
         mapping_ids = [mapping_a.id, mapping_b.id]
         post :edit_multiple,
-          params: {
-            site_id: site.abbr,
-            mapping_ids: mapping_ids,
-            type: 'archive',
-            return_path: @mappings_index_with_filter
-          }
+             params: {
+               site_id: site.abbr,
+               mapping_ids: mapping_ids,
+               type: 'archive',
+               return_path: @mappings_index_with_filter
+             }
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -358,11 +358,11 @@ describe MappingsController do
       context 'when the mappings index has not been visited' do
         it 'redirects to the mappings index page' do
           post :edit_multiple,
-            params: {
-              site_id: site.abbr,
-              mapping_ids: [other_mapping.id],
-              type: 'archive'
-            }
+               params: {
+                 site_id: site.abbr,
+                 mapping_ids: [other_mapping.id],
+                 type: 'archive'
+               }
 
           expect(response).to redirect_to site_mappings_path(site)
         end
@@ -371,12 +371,12 @@ describe MappingsController do
       context 'when coming from the mappings index with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
           post :edit_multiple,
-            params: {
-              site_id: site.abbr,
-              mapping_ids: [other_mapping.id],
-              type: 'archive',
-              return_path: @mappings_index_with_filter
-            }
+               params: {
+                 site_id: site.abbr,
+                 mapping_ids: [other_mapping.id],
+                 type: 'archive',
+                 return_path: @mappings_index_with_filter
+               }
 
           expect(response).to redirect_to @mappings_index_with_filter
         end
@@ -392,12 +392,12 @@ describe MappingsController do
         it 'redirects back to the last-visited mappings index page' do
           mapping_ids = [mapping_a.id, mapping_b.id]
           post :edit_multiple,
-            params: {
-              site_id: site.abbr,
-              mapping_ids: mapping_ids,
-              type: 'bad',
-              return_path: @mappings_index_with_filter
-            }
+               params: {
+                 site_id: site.abbr,
+                 mapping_ids: mapping_ids,
+                 type: 'bad',
+                 return_path: @mappings_index_with_filter
+               }
 
           expect(response).to redirect_to @mappings_index_with_filter
         end
@@ -410,12 +410,12 @@ describe MappingsController do
       before do
         login_as gds_bob
         post :edit_multiple,
-          params: {
-            site_id: site.abbr,
-            mapping_ids: mapping_ids,
-            operation: 'tag',
-            return_path: 'should_not_return'
-          }
+             params: {
+               site_id: site.abbr,
+               mapping_ids: mapping_ids,
+               operation: 'tag',
+               return_path: 'should_not_return'
+             }
       end
 
       it 'shows the tagging page' do
@@ -437,12 +437,12 @@ describe MappingsController do
       def make_request
         mapping_ids = [mapping_a.id, mapping_b.id]
         post :update_multiple,
-          params: {
-            site_id: site.abbr,
-            mapping_ids: mapping_ids,
-            operation: 'redirect',
-            new_url: 'http://a.gov.uk'
-          }
+             params: {
+               site_id: site.abbr,
+               mapping_ids: mapping_ids,
+               operation: 'redirect',
+               new_url: 'http://a.gov.uk'
+             }
       end
 
       it_behaves_like 'disallows editing by unaffiliated user'
@@ -461,13 +461,13 @@ describe MappingsController do
         mapping_ids = [mapping_a.id, mapping_b.id]
         @new_url = 'http://a.gov.uk'
         post :update_multiple,
-          params: {
-            site_id: site.abbr,
-            mapping_ids: mapping_ids,
-            operation: 'redirect',
-            new_url: @new_url,
-            return_path: @mappings_index_with_filter
-          }
+             params: {
+               site_id: site.abbr,
+               mapping_ids: mapping_ids,
+               operation: 'redirect',
+               new_url: @new_url,
+               return_path: @mappings_index_with_filter
+             }
       end
 
       it 'updates the mappings correctly' do
@@ -507,12 +507,12 @@ describe MappingsController do
       context 'when the mappings index has not been visited' do
         it 'redirects to the mappings index page' do
           post :update_multiple,
-            params: {
-              site_id: site.abbr,
-              mapping_ids: [other_mapping.id],
-              type: 'redirect',
-              new_url: 'http://a.gov.uk'
-            }
+               params: {
+                 site_id: site.abbr,
+                 mapping_ids: [other_mapping.id],
+                 type: 'redirect',
+                 new_url: 'http://a.gov.uk'
+               }
 
           expect(response).to redirect_to site_mappings_path(site)
         end
@@ -521,13 +521,13 @@ describe MappingsController do
       context 'when the mappings index was last visited with a path filter' do
         it 'redirects back to the last-visited mappings index page' do
           post :update_multiple,
-            params: {
-              site_id: site.abbr,
-              mapping_ids: [other_mapping.id],
-              type: 'redirect',
-              new_url: 'http://a.gov.uk',
-              return_path: @mappings_index_with_filter
-            }
+               params: {
+                 site_id: site.abbr,
+                 mapping_ids: [other_mapping.id],
+                 type: 'redirect',
+                 new_url: 'http://a.gov.uk',
+                 return_path: @mappings_index_with_filter
+               }
 
           expect(response).to redirect_to @mappings_index_with_filter
         end
@@ -539,12 +539,12 @@ describe MappingsController do
         login_as gds_bob
         mapping_ids = [mapping_a.id, mapping_b.id]
         post :update_multiple,
-          params: {
-            site_id: site.abbr,
-            mapping_ids: mapping_ids,
-            type: 'redirect',
-            new_url: 'http://{'
-          }
+             params: {
+               site_id: site.abbr,
+               mapping_ids: mapping_ids,
+               type: 'redirect',
+               new_url: 'http://{'
+             }
       end
 
       it 'does not update any mappings' do
@@ -620,11 +620,11 @@ describe MappingsController do
       # in order to test our override of the verify_authenticity_token method
       allow(subject).to receive(:verified_request?).and_return(false)
       post :update,
-        params: {
-          site_id: mapping.site,
-          id: mapping.id,
-          mapping: { path: '/foo' }
-        }
+           params: {
+             site_id: mapping.site,
+             id: mapping.id,
+             mapping: { path: '/foo' }
+           }
 
       expect(response.status).to eql(403)
     end
@@ -638,15 +638,15 @@ describe MappingsController do
     context 'update' do
       it 'should redirect to mappings index' do
         post :update,
-          params: {
-            site_id: mapping.site,
-            id: mapping.id,
-            mapping: {
-              path: '/Needs/Canonicalization?has=some&query=parts',
-              new_url: 'http://a.gov.uk'
-            },
-            return_path: 'http://malicious.com'
-          }
+             params: {
+               site_id: mapping.site,
+               id: mapping.id,
+               mapping: {
+                 path: '/Needs/Canonicalization?has=some&query=parts',
+                 new_url: 'http://a.gov.uk'
+               },
+               return_path: 'http://malicious.com'
+             }
 
         expect(response).to redirect_to site_mappings_path(site)
       end
@@ -657,13 +657,13 @@ describe MappingsController do
 
       it 'should redirect to mappings index' do
         post :update_multiple,
-          params: {
-            site_id: site.abbr,
-            mapping_ids: [mapping.id],
-            operation: 'redirect',
-            new_url: 'http://a.gov.uk',
-            return_path: 'http://malicious.com'
-          }
+             params: {
+               site_id: site.abbr,
+               mapping_ids: [mapping.id],
+               operation: 'redirect',
+               new_url: 'http://a.gov.uk',
+               return_path: 'http://malicious.com'
+             }
 
         expect(response).to redirect_to site_mappings_path(site)
       end

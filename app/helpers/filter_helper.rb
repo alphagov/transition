@@ -3,9 +3,9 @@ module FilterHelper
     selected = options[:selected]
 
     link_to filter_site_mappings_path(site),
-        'class'         => "filter-option #{'filter-selected' if selected}",
-        'data-toggle'   => 'dropdown',
-        'role'          => 'button' do
+            'class'         => "filter-option #{'filter-selected' if selected}",
+            'data-toggle'   => 'dropdown',
+            'role'          => 'button' do
       "#{type} <span class=\"glyphicon glyphicon-chevron-down\"></span>".html_safe
     end
   end

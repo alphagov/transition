@@ -1,5 +1,5 @@
 class OrganisationsController < ApplicationController
-  before_action :set_organisation, only: [:show, :update, :edit]
+  before_action :set_organisation, only: %i[show update edit]
 
   def index
     @organisations = Organisation.with_sites.order(:title)
@@ -26,8 +26,7 @@ class OrganisationsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     @organisation.update!(organisation_params)

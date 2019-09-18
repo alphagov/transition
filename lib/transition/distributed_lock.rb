@@ -18,7 +18,7 @@ module Transition
     end
   end
 
-  private
+private
 
   def redis
     @_redis ||= begin

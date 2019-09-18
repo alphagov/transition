@@ -9,7 +9,7 @@ class CreateMappingsBatchTables < ActiveRecord::Migration
       t.references :site
       t.timestamps
     end
-    add_index :mappings_batches, [:user_id, :site_id]
+    add_index :mappings_batches, %i[user_id site_id]
 
     create_table :mappings_batch_entries do |t|
       t.string :path, limit: 2048

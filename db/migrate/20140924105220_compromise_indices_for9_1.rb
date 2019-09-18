@@ -20,14 +20,14 @@ class CompromiseIndicesFor91 < ActiveRecord::Migration
   end
 
   def up
-    remove_index_if_exists  :hits, [:host_id, :hit_on, :http_status]
-    add_index_unless_exists :hits, [:host_id, :hit_on]
-    add_index_unless_exists :hits, [:host_id, :http_status]
+    remove_index_if_exists  :hits, %i[host_id hit_on http_status]
+    add_index_unless_exists :hits, %i[host_id hit_on]
+    add_index_unless_exists :hits, %i[host_id http_status]
   end
 
   def down
-    remove_index_if_exists :hits,  [:host_id, :hit_on]
-    remove_index_if_exists :hits,  [:host_id, :http_status]
-    add_index_unless_exists :hits, [:host_id, :hit_on, :http_status]
+    remove_index_if_exists :hits,  %i[host_id hit_on]
+    remove_index_if_exists :hits,  %i[host_id http_status]
+    add_index_unless_exists :hits, %i[host_id hit_on http_status]
   end
 end

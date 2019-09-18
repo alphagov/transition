@@ -1,6 +1,6 @@
 class CreateWhitelistedHosts < ActiveRecord::Migration
   def change
-    create_table 'whitelisted_hosts', :force => true do |t|
+    create_table 'whitelisted_hosts', force: true do |t|
       t.string   'hostname', null: false
       t.timestamps
     end

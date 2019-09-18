@@ -3,8 +3,10 @@ RSpec::Matchers.define :have_hit_counts do |counts|
   include MappingsHelper
 
   match do |page|
-    raise ArgumentError,
-          "counts should be an array (got a #{counts.class})" unless counts.is_a?(Array)
+    unless counts.is_a?(Array)
+      raise ArgumentError,
+            "counts should be an array (got a #{counts.class})"
+    end
 
     within 'table.mappings tbody' do
       expect(page).to have_selector('tr', count: counts.length)

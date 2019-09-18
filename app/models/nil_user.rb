@@ -23,7 +23,7 @@ class NilUser
     {}
   end
 
-  def can_edit_site?(site_to_edit)
+  def can_edit_site?(_site_to_edit)
     false
   end
 

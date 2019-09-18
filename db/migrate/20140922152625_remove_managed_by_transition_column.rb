@@ -4,6 +4,6 @@ class RemoveManagedByTransitionColumn < ActiveRecord::Migration
   end
 
   def down
-    add_column :sites, :managed_by_transition, :boolean, :null => false, :default => true
+    add_column :sites, :managed_by_transition, :boolean, null: false, default: true
   end
 end

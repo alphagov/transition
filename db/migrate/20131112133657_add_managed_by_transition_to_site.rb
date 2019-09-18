@@ -1,8 +1,8 @@
 class AddManagedByTransitionToSite < ActiveRecord::Migration
   def up
-    add_column :sites, :managed_by_transition, :boolean, :null => false, :default => true
+    add_column :sites, :managed_by_transition, :boolean, null: false, default: true
 
-    Site.update_all :managed_by_transition => false
+    Site.update_all managed_by_transition: false
   end
 
   def down

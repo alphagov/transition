@@ -50,7 +50,6 @@ Then(/^I should see a section for the most common (\w+)$/) do |category|
 end
 
 Then(/^it should show(?: only the top) (\d+) (\w+) in descending count order$/) do |count, category|
-
   case category
   when 'errors'
     status = 404
@@ -84,7 +83,6 @@ Then(/^I should see a trend for all hits, errors, archives and redirects$/) do
 end
 
 Then(/^I should see hits from the last 30 days with a[n]? (\w+) status, in descending count order$/) do |category|
-
   case category
   when 'error'
     status = 404
@@ -100,7 +98,6 @@ Then(/^I should see hits from the last 30 days with a[n]? (\w+) status, in desce
 end
 
 Then(/^I should see all hits with a[n]? (\w+) status, in descending count order$/) do |category|
-
   case category
   when 'error'
     status = 404
@@ -145,15 +142,14 @@ Then(/^the top hit's canonicalized path should already be in the form$/) do
 end
 
 Then(/^I should see a[n]? (\w+) graph showing a (\w+) trend line(?: with )?([0-9]*)?(?: points)?$/) do |category, color, points|
-
-  case color
-  when 'red'
-    color = '#ee9999'
-  when 'green'
-    color = '#99ee99'
-  else
-    color = '#aaaaaa'
-  end
+  color = case color
+          when 'red'
+            '#ee9999'
+          when 'green'
+            '#99ee99'
+          else
+            '#aaaaaa'
+          end
 
   expect(page).to have_selector('.hits-graph svg text', text: category.titleize)
   expect(page).to have_selector(".hits-graph svg path[stroke='#{color}']")

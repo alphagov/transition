@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-
   before_action :exclude_all_users_except_admins_during_maintenance
   before_action :authenticate
 

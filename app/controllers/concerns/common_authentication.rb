@@ -2,7 +2,6 @@
 # Split out of GDS-SSO: https://github.com/alphagov/gds-sso/blob/master/lib/gds-sso/controller_methods.rb
 # repurposed to use OmniAuth and ZenDesk
 module CommonAuthentication
-
   class PermissionDeniedException < StandardError
   end
 
@@ -13,7 +12,6 @@ module CommonAuthentication
     base.helper_method :user_signed_in?
     base.helper_method :current_user
   end
-
 
   def authorise_user!(permission)
     # Ensure that we're authenticated (and by extension that current_user is set).

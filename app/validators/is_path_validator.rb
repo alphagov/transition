@@ -2,11 +2,11 @@ class IsPathValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     if value.blank?
       record.errors.add(attribute,
-        "can't be blank") and return
+                        "can't be blank") and return
     end
     if /^[^\/]/.match?(value)
       record.errors.add(attribute,
-        'must start with a forward slash "/"') and return
+                        'must start with a forward slash "/"') and return
     end
 
     valid_path = begin
@@ -17,7 +17,7 @@ class IsPathValidator < ActiveModel::EachValidator
 
     unless valid_path
       record.errors.add attribute,
-        'contains invalid or unsafe characters (e.g. "<")'
+                        'contains invalid or unsafe characters (e.g. "<")'
     end
   end
 end

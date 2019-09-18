@@ -15,7 +15,7 @@ namespace :import do
   desc 'Copy filenames and etags for all old stats files from s3'
   task :update_legacy_from_s3, [:bucket] => :environment do |_, args|
     bucket = args[:bucket]
-    ['transition-stats', 'pre-transition-stats'].each do |prefix|
+    %w[transition-stats pre-transition-stats].each do |prefix|
       Services.s3.list_objects(bucket: bucket, prefix: prefix).each do |resp|
         resp.contents.each do |object|
           begin

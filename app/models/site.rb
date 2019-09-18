@@ -13,8 +13,8 @@ class Site < ActiveRecord::Base
   has_many :bulk_add_batches
   has_many :import_batches
   has_and_belongs_to_many :extra_organisations,
-                           join_table: 'organisations_sites',
-                           class_name: 'Organisation'
+                          join_table: 'organisations_sites',
+                          class_name: 'Organisation'
 
   validates_presence_of :tna_timestamp
   validates_presence_of :organisation
