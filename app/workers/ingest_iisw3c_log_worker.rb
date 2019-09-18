@@ -26,8 +26,8 @@ class IngestW3cLogWorker
 
         Transition::Import::Hits.from_iis_w3c!(file_path)
 
-        # Transition::Import::DailyHitTotals.from_hits!
-        # Transition::Import::HitsMappingsRelations.refresh!
+        Transition::Import::DailyHitTotals.from_hits!
+        Transition::Import::HitsMappingsRelations.refresh!
 
         File.delete(file_path)
         puts "Finished ingesting #{object.key}" unless Rails.env.test?
