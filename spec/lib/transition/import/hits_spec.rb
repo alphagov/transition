@@ -242,8 +242,21 @@ describe Transition::Import::Hits do
         expect(Hit.count).to eql(0)
       end
     end
-  end
 
+    context 'when the file is unexpected' do
+      it 'does not create a hit record' do
+        Transition::Import::Hits.from_iis_w3c!('spec/fixtures/hits/unexpected_log_format.log')
+        expect(Hit.count).to eql(0)
+      end
+    end
+
+    context 'when the file is not parseable' do
+      it 'does not create a hit record' do
+        Transition::Import::Hits.from_iis_w3c!('spec/fixtures/hits/unknown_log_format.log')
+        expect(Hit.count).to eql(0)
+      end
+    end
+  end
 
   describe '.from_s3!' do
     let(:bucket) { 'bucket' }
