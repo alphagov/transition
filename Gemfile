@@ -42,7 +42,11 @@ group :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'factory_bot_rails'
-  gem 'govuk_test', '~> 1.0.0'
+  gem 'poltergeist'
+  gem 'cuprite'
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'webdrivers'
   gem 'launchy' # Primarily for save_and_open_page support in Capybara
   gem 'rails-controller-testing'
   gem 'shoulda-matchers'

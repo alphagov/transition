@@ -10,20 +10,26 @@ jobs:
     - uses: actions/setup-ruby@v1
       with:
         ruby-version: '2.6.3'
-    - name: Install Postgres dependencies
-      run: |
-        sudo apt-get install libpq-dev
+    - name: Set up Docker
+      run: docker network create test
     - name: Set up Postgres
+      run: docker run -d --name pg --network test -e POSTGRES_USER=transition -p 5432:5432 postgres:11
+    - name: Set up Redis
+      run: docker run -d --name redis --network test -p 6379:6379 redis
+    - name: Build a new Docker image
+      run: docker build . --build-arg RAILS_ENV=test -t transition:test
+    - name: Set up a new container for testing
       run: |
-        docker run -d --name postgres -e POSTGRES_USER=transition -p 5432:5432 postgres:11
-    - name: Install dependencies
-      run: |
-        gem install bundler
-        bundle install --jobs 4 --retry 3
+        docker run -d --name test-container \
+          --network test \
+          -e RAILS_ENV=test \
+          -e GOVUK_TEST_USE_SYSTEM_CHROMEDRIVER=true \
+          -e DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL=true \
+          -e DATABASE_URL=postgres://transition@pg:5432/transition_test \
+          -e REDIS_URL=redis://redis:6379 \
+          -e GOVUK_APP_DOMAIN=dev.gov.uk \
+          transition:test /bin/bash -c "tail -f /dev/null"
     - name: Set up the test database
-      run: |
-        RAILS_ENV=test \
-        bundle exec rake db:setup
+      run: docker exec test-container rake db:setup
     - name: Run the tests
-      run: |
-        bundle exec rake
+      run: docker exec test-container rake

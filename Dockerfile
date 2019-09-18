@@ -6,6 +6,25 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
+# Set up the Chrome PPA
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+RUN echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+
+RUN apt-get update -y \
+    && apt-get install -y google-chrome-stable
+
+# Set up Chromedriver Environment variables
+ENV CHROMEDRIVER_VERSION 2.19
+ENV CHROMEDRIVER_DIR /chromedriver
+RUN mkdir $CHROMEDRIVER_DIR
+
+# Download and install Chromedriver
+RUN wget -q --continue -P $CHROMEDRIVER_DIR "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+RUN unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR
+
+# Put Chromedriver into the PATH
+ENV PATH $CHROMEDRIVER_DIR:$PATH
+
 ENV INSTALL_PATH /usr/local/transition
 RUN mkdir -p $INSTALL_PATH
 
@@ -19,7 +38,7 @@ ENV RACK_ENV=${RAILS_ENV:-production}
 COPY Gemfile $INSTALL_PATH/Gemfile
 COPY Gemfile.lock $INSTALL_PATH/Gemfile.lock
 
-RUN gem update --system
+RUN gem update --system --quiet
 RUN gem install bundler
 
 # bundle ruby gems based on the current environment, default to production
@@ -36,7 +55,7 @@ COPY . $INSTALL_PATH
 # Plek (GDS path finder gem) raises an error when initialized with production
 # Since we don't intend on using it, we can set a dummy value.
 ARG GOVUK_APP_DOMAIN
-ENV GOVUK_APP_DOMAIN=${GOVUK_APP_DOMAIN:-localhost}
+ENV GOVUK_APP_DOMAIN=${GOVUK_APP_DOMAIN:-dev.gov.uk}
 
 # precompile assets for production
 RUN \
