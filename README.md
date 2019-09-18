@@ -64,3 +64,20 @@ The way to deploy new containers is manual and involves downtime:
 1. Select all tasks running for the app in the intended environment
 1. Click 'stop'
 1. Those containers will restart and pull the new version of the containers
+
+
+## Access the console
+
+To access a Rails console or run a rake task on a live environment:
+
+1. Within AWS select the dxw-dalmation-1 role
+1. Visit the Systems Manager service
+1. Select 'Session Manager'
+1. Click 'Start session'
+1. Select a running node for the intended environment
+1. Once the session has started enter `sudo su`
+1. Enter `docker ps`
+1. Copy the intended container ID from a container of the right application (be careful other containers are running here)
+1. Enter `docker exec -ti <container-id> /bin/bash`
+1. Enter `eval $(AWS_ENV_PATH=/ukri-transition-0-staging/$SSM_PATH_SUFFIX/ AWS_REGION=eu-west-2 ./aws-env)` to load the environment variables
+1. Enter `rails c` or `rake` as normal
