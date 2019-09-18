@@ -2,6 +2,9 @@ require 'pathname'
 require 'transition/import/console_job_wrapper'
 require 'transition/import/postgresql_settings'
 require 'transition/import/hits/ignore'
+require 'transition/import/iis_access_log_parser'
+require 'apache_log/parser'
+require 'csv'
 
 module Transition
   module Import
@@ -126,6 +129,22 @@ module Transition
         self.from_file!(LOAD_CSV_DATA, filename)
       end
 
+      def self.from_iis_w3c!(filename)
+        parsed_log_lines = self.parse_iis_w3c_log_file(filename: filename)
+
+        # Create a temporary CSV file from the parsed CLF log lines
+        new_csv_filename = 'data/temp_clf_conversion.csv'
+        ::CSV.open(new_csv_filename, 'wb', force_quotes: true) do |csv|
+          csv << %w[date count status host url]
+          parsed_log_lines.each do |parsed_log_line|
+            csv << parsed_log_line
+          end
+        end
+
+        # Send to the existing ingest process
+        self.from_file!(LOAD_CSV_DATA, new_csv_filename)
+      end
+
       def self.from_mask!(filemask)
         done = 0
         unchanged = 0
@@ -142,6 +161,33 @@ module Transition
         end
 
         done
+      end
+
+      def self.parse_iis_w3c_log_file(filename:)
+        absolute_filename = File.expand_path(filename, Rails.root)
+
+        parsed_log_lines = []
+        File.open(absolute_filename, 'r') do |file|
+          file.each_line do |combined_log_line|
+            log = IISAccessLogParser::Entry.from_string(combined_log_line)
+
+            parsed_log_lines << [
+              log.date.to_date.to_s,
+              nil, # Set this position in the array for updating the count later
+              log.status,
+              log.host,
+              log.url
+            ]
+          end
+        end
+
+        grouped_log_lines = parsed_log_lines.inject(Hash.new(0)) { |h, e| h[e] += 1; h }
+        counted_log_lines = grouped_log_lines.map do |log, counter|
+          log[1] = counter.to_s
+          log
+        end
+
+        counted_log_lines
       end
     end
   end

@@ -50,6 +50,7 @@ GEM
       activerecord (~> 5.0)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    apache_log-parser (3.1.2)
     arel (8.0.0)
     ast (2.4.0)
     autoprefixer-rails (9.5.1)
@@ -130,6 +131,8 @@ GEM
       dotenv (= 2.7.5)
       railties (>= 3.2, < 6.1)
     erubi (1.8.0)
+    et-orbi (1.2.2)
+      tzinfo
     execjs (2.7.0)
     factory_bot (5.0.2)
       activesupport (>= 4.2.0)
@@ -144,6 +147,9 @@ GEM
       concurrent-ruby (~> 1.1)
       websocket-driver (>= 0.6, < 0.8)
     ffi (1.11.1)
+    fugit (1.3.3)
+      et-orbi (~> 1.1, >= 1.1.8)
+      raabro (~> 1.1)
     gds-api-adapters (60.0.0)
       addressable
       link_header
@@ -292,6 +298,7 @@ GEM
     public_suffix (4.0.1)
     puma (4.1.1)
       nio4r (~> 2.0)
+    raabro (1.1.6)
     rack (2.0.7)
     rack-cache (1.9.0)
       rack (>= 0.4)
@@ -369,6 +376,9 @@ GEM
       rspec-expectations (~> 3.8.0)
       rspec-mocks (~> 3.8.0)
       rspec-support (~> 3.8.0)
+    rspec-sidekiq (3.0.3)
+      rspec-core (~> 3.0, >= 3.0.0)
+      sidekiq (>= 2.4.0)
     rspec-support (3.8.0)
     rubocop (0.72.0)
       jaro_winkler (~> 1.5.1)
@@ -382,6 +392,7 @@ GEM
       rubocop (>= 0.72.0)
     rubocop-rspec (1.33.0)
       rubocop (>= 0.60.0)
+    ruby-ip (0.9.3)
     ruby-progressbar (1.10.1)
     rubyzip (1.2.4)
     safe_yaml (1.0.5)
@@ -418,6 +429,9 @@ GEM
       rack (>= 1.5.0)
       rack-protection (>= 1.5.0)
       redis (>= 3.3.5, < 5)
+    sidekiq-cron (1.1.0)
+      fugit (~> 1.1)
+      sidekiq (>= 4.2.1)
     signet (0.11.0)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -477,6 +491,7 @@ DEPENDENCIES
   activerecord-import
   activerecord-session_store
   acts-as-taggable-on
+  apache_log-parser
   aws-sdk-s3 (~> 1.48)
   bootstrap-sass (= 3.4.1)
   capybara
@@ -512,12 +527,15 @@ DEPENDENCIES
   rollbar (~> 2.22)
   rspec-collection_matchers
   rspec-rails
+  rspec-sidekiq
+  ruby-ip
   sass
   sass-rails
   select2-rails (= 3.5.7)
   selenium-webdriver
   shoulda-matchers
   sidekiq (~> 5.2)
+  sidekiq-cron (~> 1.1)
   timecop
   uglifier
   web-console

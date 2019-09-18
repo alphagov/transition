@@ -1,0 +1,5 @@
+daily_ingest_of_ukri_clf_logs:
+  cron: "0 8 * * *"
+  class: "IngestW3cLogWorker"
+  args: ukri-transition-hippers-test
+  description: Ingest UKRI log hits every day at 8AM. UKRI are uploading log files to this bucket in combined log format. This task ingests them into hit records.
