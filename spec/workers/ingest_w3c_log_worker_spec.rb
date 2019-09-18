@@ -45,6 +45,15 @@ describe IngestW3cLogWorker, type: :worker do
       expect(Sidekiq::Queues['ingest'].size).to eq(1)
     end
 
+    it 'refreshes the analytics' do
+      bucket = 'bucket-name'
+
+      expect(Transition::Import::DailyHitTotals).to receive(:from_hits!)
+      expect(Transition::Import::HitsMappingsRelations).to receive(:refresh!)
+
+      subject.perform(bucket)
+    end
+
     context 'when that file has already been ingested' do
       it 'does not ingest those logs again' do
         bucket = 'bucket-name'
