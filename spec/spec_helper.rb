@@ -91,3 +91,13 @@ RSpec.configure do |config|
   config.profile_examples = 10
 =end
 end
+
+require 'pry'
+require 'sidekiq/testing'
+Dir[File.expand_path('../app/workers/**/*_worker.rb', File.dirname(__FILE__))].each do |file|
+  require file
+end
+
+ENV["RAILS_ENV"] ||= 'test'
+require File.expand_path("../../config/environment", __FILE__)
+require 'rspec/rails'

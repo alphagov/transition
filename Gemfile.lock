@@ -370,6 +370,9 @@ GEM
       rspec-expectations (~> 3.8.0)
       rspec-mocks (~> 3.8.0)
       rspec-support (~> 3.8.0)
+    rspec-sidekiq (3.0.3)
+      rspec-core (~> 3.0, >= 3.0.0)
+      sidekiq (>= 2.4.0)
     rspec-support (3.8.0)
     rubocop (0.72.0)
       jaro_winkler (~> 1.5.1)
@@ -515,6 +518,7 @@ DEPENDENCIES
   rollbar (~> 2.22)
   rspec-collection_matchers
   rspec-rails
+  rspec-sidekiq
   ruby-ip
   sass
   sass-rails

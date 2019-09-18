@@ -49,6 +49,7 @@ group :test do
   gem 'launchy' # Primarily for save_and_open_page support in Capybara
   gem 'poltergeist'
   gem 'rails-controller-testing'
+  gem 'rspec-sidekiq'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'timecop'
