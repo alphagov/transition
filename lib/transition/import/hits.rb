@@ -171,13 +171,15 @@ module Transition
           file.each_line do |combined_log_line|
             log = IISAccessLogParser::Entry.from_string(combined_log_line)
 
-            parsed_log_lines << [
-              log.date.to_date.to_s,
-              nil, # Set this position in the array for updating the count later
+            parsed_log_line = [
+              log.date&.to_date&.to_s,
+              0, # Set this position in the array for updating the count later
               log.status,
               log.host,
               log.url
             ]
+
+            parsed_log_lines << parsed_log_line unless parsed_log_line.any?(nil)
           end
         end
 
