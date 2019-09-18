@@ -36,16 +36,16 @@
       <fieldset class="form-group row">
         <div class="col-md-6">
           <%= f.label :launch_date, 'New transition date' %>
-          <%= f.text_field :launch_date, :class => 'form-control' %>
+          <%= f.date_select(:launch_date,
+                              { order: [:day, :month, :year]},
+                              { class: 'form-control date' }) %>
         </div>
       </fieldset>
 
       <fieldset class="form-group row">
         <div class="col-md-6">
           <%= f.label :global_new_url %>
-          <%= f.date_select(:launch_date,
-                              { order: [:day, :month, :year]},
-                              { class: 'form-control date' }) %>
+          <%= f.text_field :global_new_url, :class => 'form-control' %>
         </div>
       </fieldset>
 
