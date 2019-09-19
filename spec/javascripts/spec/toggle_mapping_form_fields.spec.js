@@ -9,21 +9,21 @@ describe('A mappings module', function() {
     beforeEach(function() {
 
       form = $('<form>\
-        <div class="form-group row ">
-          <legend class="legend-reset add-label-margin bold">Type</legend>
-          <label class="radio-inline">
-            <input checked="checked" class="js-type" id="type_redirect" name="type" type="radio" value="redirect" />
-            Redirect
-          </label>
-          <label class="radio-inline">
-            <input class="js-type" id="type_archive" name="type" type="radio" value="archive" />
-            Archive
-          </label>
-          <label class="radio-inline">
-            <input class="js-type" id="type_unresolved" name="type" type="radio" value="unresolved" />
-            Unresolved
-          </label>
-        </div>
+        <div class="form-group row ">\
+          <legend class="legend-reset add-label-margin bold">Type</legend>\
+          <label class="radio-inline">\
+            <input checked="checked" class="js-type" id="type_redirect" name="type" type="radio" value="redirect" />\
+            Redirect\
+          </label>\
+          <label class="radio-inline">\
+            <input class="js-type" id="type_archive" name="type" type="radio" value="archive" />\
+            Archive\
+          </label>\
+          <label class="radio-inline">\
+            <input class="js-type" id="type_unresolved" name="type" type="radio" value="unresolved" />\
+            Unresolved\
+          </label>\
+        </div>\
         <div class="js-for-redirect"></div>\
         <div class="js-for-archive"></div>\
         <div class="js-for-unresolved"></div>\
@@ -77,8 +77,8 @@ describe('A mappings module', function() {
 
         toggle.start(form);
         expect(form.find('.js-for-redirect:visible').length).toBe(1);
-        expect(form.find('.js-for-archive:visible').length).toBe(1);
-        expect(form.find('.js-for-unresolved:visible').length).toBe(1);
+        expect(form.find('.js-for-archive:visible').length).toBe(0);
+        expect(form.find('.js-for-unresolved:visible').length).toBe(0);
 
         form.find('.js-type').val('redirect').trigger('change');
         expect(form.find('.js-for-redirect:visible').length).toBe(1);
