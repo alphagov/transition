@@ -8,3 +8,10 @@ Style/AndOr:
 # we disable this cop entirely
 Performance/Casecmp:
   Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'config/routes.rb'
+    - 'lib/tasks/**/*.rake'
+    - 'spec/**/*.rb'
+    - 'db/migrate/*.rb'
