@@ -89,7 +89,7 @@ describe Transition::Import::HitsMappingsRelations do
 
       @other_site_hit = create :hit, path: "/b", host: @other_host
 
-      @mapping        = create :mapping, path: "/a", site: @site
+      @mapping = create :mapping, path: "/a", site: @site
 
       @other_mapping_with_host_path = create :mapping, path: "/b2", site: @other_site
       create :host_path, path: "/b2", host: @other_host

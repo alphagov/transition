@@ -22,8 +22,8 @@ module MappingsHelper
   def build_flavour_tab(title_link, options)
     title = title_link[0]
     href = title_link[1]
-    active            = options[:active] == title
-    html_opts         = {}
+    active = options[:active] == title
+    html_opts = {}
     html_opts[:class] = "active" if active
 
     content_tag(:li, html_opts) do
