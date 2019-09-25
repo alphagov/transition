@@ -163,7 +163,7 @@ private
       :tagged,
       :page,
       :sort,
-      :format
+      :format,
 )
   end
 

@@ -12,7 +12,7 @@ namespace :benchmark do
         args[:site_abbr],
         args[:hits_area],
         args[:period],
-        args[:number_of_runs]
+        args[:number_of_runs],
       ).run
     end
   end

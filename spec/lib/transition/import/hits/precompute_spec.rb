@@ -23,10 +23,10 @@ describe Transition::Import::Hits::Precompute do
 
       it "updates nothing and warns about what it could not find" do
         expect(precompute_setter.console).to receive(:puts).with(
-          "WARN: skipping site with abbr 'foobar' - not found"
+          "WARN: skipping site with abbr 'foobar' - not found",
 )
         expect(precompute_setter.console).to receive(:puts).with(
-          "WARN: skipping site with abbr 'baz' - not found"
+          "WARN: skipping site with abbr 'baz' - not found",
 )
 
         expect(precompute_setter.update!).to be_zero
@@ -45,10 +45,10 @@ describe Transition::Import::Hits::Precompute do
 
       it "updates two, warns about the others, and reminds us to refresh" do
         expect(precompute_setter.console).to receive(:puts).with(
-          "WARN: skipping site with abbr 'throat_wobbler_mangrove' - not found"
+          "WARN: skipping site with abbr 'throat_wobbler_mangrove' - not found",
 )
         expect(precompute_setter.console).to receive(:puts).with(
-          "WARN: skipping site with abbr 'already_set' - already set to true"
+          "WARN: skipping site with abbr 'already_set' - already set to true",
 )
         expect(precompute_setter).to receive(:inform_about_refresh)
         expect(precompute_setter.update!).to eq(2)

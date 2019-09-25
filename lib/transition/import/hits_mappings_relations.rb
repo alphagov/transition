@@ -71,13 +71,13 @@ module Transition
 
           canonical_path = site.canonical_path(host_path.path)
           mapping_id = Mapping.where(
-            path: canonical_path, site_id: site.id
+            path: canonical_path, site_id: site.id,
           ).pluck(:id).first
 
           if host_path.mapping_id != mapping_id || host_path.canonical_path != canonical_path
             host_path.update_columns(
               mapping_id: mapping_id,
-              canonical_path: canonical_path
+              canonical_path: canonical_path,
             )
           end
         end

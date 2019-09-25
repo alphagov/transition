@@ -9,7 +9,7 @@ describe Postgres::MaterializedView do
   before do
     # All tests start with an unmodified pre_existing_view
     execute(
-      <<-POSTGRESQL
+      <<-POSTGRESQL,
         DROP MATERIALIZED VIEW IF EXISTS pre_existing_view;
 
         CREATE MATERIALIZED VIEW pre_existing_view
@@ -32,7 +32,7 @@ describe Postgres::MaterializedView do
   describe ".get_body" do
     it "gets the body" do
       expect(Postgres::MaterializedView.get_body(
-               "pre_existing_view"
+               "pre_existing_view",
       )).to include("SELECT 1")
     end
   end
@@ -47,7 +47,7 @@ describe Postgres::MaterializedView do
           expect {
             Postgres::MaterializedView.create(
               "pre_existing_view",
-              "SELECT 3 as doomed_attempt"
+              "SELECT 3 as doomed_attempt",
             )
           }.to raise_error(ActiveRecord::StatementInvalid, /PG::DuplicateTable/)
         end
@@ -57,7 +57,7 @@ describe Postgres::MaterializedView do
         it "creates new views" do
           Postgres::MaterializedView.create(
             "totally_new-view",
-            "SELECT 1"
+            "SELECT 1",
           )
 
           expect(Postgres::MaterializedView).to exist("totally_new-view")
@@ -70,7 +70,7 @@ describe Postgres::MaterializedView do
         Postgres::MaterializedView.create(
           "pre_existing_view",
           "SELECT 2 AS modified;",
-          replace: true
+          replace: true,
         )
         body = Postgres::MaterializedView.get_body("pre_existing_view")
         expect(body).to include("SELECT 2 AS modified")
@@ -88,7 +88,7 @@ describe Postgres::MaterializedView do
   describe ".refresh" do
     def view_row_count
       ActiveRecord::Base.connection.execute(
-        "SELECT COUNT(*) FROM refreshable_orgs"
+        "SELECT COUNT(*) FROM refreshable_orgs",
       ).first["count"].to_i
     end
 
@@ -96,7 +96,7 @@ describe Postgres::MaterializedView do
       create :organisation
 
       execute(
-        <<-POSTGRESQL
+        <<-POSTGRESQL,
           DROP MATERIALIZED VIEW IF EXISTS refreshable_orgs;
 
           CREATE MATERIALIZED VIEW refreshable_orgs

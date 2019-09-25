@@ -6,7 +6,7 @@ describe Transition::Import::Organisations do
   describe ".from_whitehall!", testing_before_all: true do
     before :all do
       Transition::Import::Organisations.from_whitehall!(
-        Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml")
+        Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml"),
       )
     end
 

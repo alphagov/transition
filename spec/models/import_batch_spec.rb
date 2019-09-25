@@ -400,7 +400,7 @@ describe ImportBatch do
         :import_batch,
         site: site,
         tag_list: tag_list,
-        raw_csv: <<-CSV.strip_heredoc
+        raw_csv: <<-CSV.strip_heredoc,
                    #{path_to_be_redirected},#{new_url}
                    #{path_to_be_archived},#{archive_url}
         CSV

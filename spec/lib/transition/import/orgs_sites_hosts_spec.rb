@@ -8,7 +8,7 @@ describe Transition::Import::OrgsSitesHosts do
         expect {
           Transition::Import::OrgsSitesHosts.from_yaml!(
             "spec/fixtures/sites/noyaml/*.yml",
-            Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml")
+            Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml"),
           )
         }.to raise_error(Transition::Import::Sites::NoYamlFound)
       end
@@ -18,7 +18,7 @@ describe Transition::Import::OrgsSitesHosts do
       before :all do
         Transition::Import::OrgsSitesHosts.from_yaml!(
           "spec/fixtures/sites/someyaml/**/*.yml",
-          Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml")
+          Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml"),
         )
         @ukti = Site.find_by_abbr("ukti")
       end
@@ -64,7 +64,7 @@ describe Transition::Import::OrgsSitesHosts do
         before :all do
           Transition::Import::OrgsSitesHosts.from_yaml!(
             "spec/fixtures/sites/someyaml/*.yml",
-            Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml")
+            Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml"),
           )
         end
 

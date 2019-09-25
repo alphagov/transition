@@ -48,7 +48,7 @@ class Organisation < ActiveRecord::Base
   # all their sites.
   scope :leaderboard, -> {
     select(
-      <<-POSTGRESQL
+      <<-POSTGRESQL,
         organisations.title,
         organisations.whitehall_slug,
         COUNT(*)                                     AS site_count,
@@ -58,7 +58,7 @@ class Organisation < ActiveRecord::Base
       POSTGRESQL
     ).
     joins(
-      <<-POSTGRESQL
+      <<-POSTGRESQL,
         INNER JOIN sites
                ON sites.organisation_id = organisations.id
         LEFT JOIN (SELECT sites.id AS site_id,

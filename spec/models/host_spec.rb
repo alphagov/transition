@@ -96,7 +96,7 @@ describe Host do
       it do
         is_expected.to contain_exactly(
           [nil, "192.168.0.1"],
-          ["foo.example.com", nil]
+          ["foo.example.com", nil],
         )
       end
     end

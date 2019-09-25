@@ -41,7 +41,7 @@ module MappingsHelper
             "Edit"    => edit_site_mapping_path(@mapping.site, @mapping),
             "History" => site_mapping_versions_path(@mapping.site, @mapping),
           },
-          options
+          options,
 )
       end
     end

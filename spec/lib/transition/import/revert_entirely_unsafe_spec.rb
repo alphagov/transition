@@ -8,7 +8,7 @@ describe Transition::Import::RevertEntirelyUnsafe::RevertSite do
       @treasury_office = create :organisation, whitehall_slug: "treasury-solicitor-s-office"
       Transition::Import::OrgsSitesHosts.from_yaml!(
         "spec/fixtures/sites/someyaml/**/*.yml",
-        Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml")
+        Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml"),
       )
 
       @site_abbr = "ago"

@@ -7,7 +7,7 @@ describe Transition::Import::Revert::Sites do
       @bona_vacantia = create :organisation, whitehall_slug: "bona-vacantia"
       Transition::Import::OrgsSitesHosts.from_yaml!(
         "spec/fixtures/sites/someyaml/**/*.yml",
-        Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml")
+        Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml"),
       )
 
       @original_site_count = 8

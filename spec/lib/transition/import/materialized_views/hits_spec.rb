@@ -11,7 +11,7 @@ describe Transition::Import::MaterializedViews::Hits do
       ]
       @sites.each do |site|
         ActiveRecord::Base.connection.execute(
-          <<-POSTGRESQL
+          <<-POSTGRESQL,
             DROP MATERIALIZED VIEW IF EXISTS #{site.abbr}_all_hits
           POSTGRESQL
         )

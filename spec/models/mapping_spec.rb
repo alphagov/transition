@@ -76,7 +76,7 @@ describe Mapping do
       before { expect(homepage_mapping).not_to be_valid }
       it "disallows homepages" do
         expect(homepage_mapping.errors[:path]).to eq(
-          ["It’s not currently possible to edit the mapping for a site’s homepage."]
+          ["It’s not currently possible to edit the mapping for a site’s homepage."],
         )
       end
     end

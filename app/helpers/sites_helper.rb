@@ -7,7 +7,7 @@ module SitesHelper
     big_day_span = content_tag(
       :div,
       pluralize(days_before_or_after_launch(site), "day"),
-      class: "big-number"
+      class: "big-number",
     )
 
     should_have_launched = Time.zone.today > site.launch_date
@@ -22,7 +22,7 @@ module SitesHelper
         end
       else
         "until transition"
-      end
+      end,
     )
 
     big_day_span + " " + small_text

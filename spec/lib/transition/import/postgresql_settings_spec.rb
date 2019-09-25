@@ -44,7 +44,7 @@ describe Transition::Import::PostgreSQLSettings do
 
       object.change_settings(
         "work_mem" => "3MB",
-        "maintenance_work_mem" => "4MB"
+        "maintenance_work_mem" => "4MB",
       ) do
         expect(object.get_setting("work_mem")).to eql("3MB")
         expect(object.get_setting("maintenance_work_mem")).to eql("4MB")

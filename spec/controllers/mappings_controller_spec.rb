@@ -31,7 +31,7 @@ describe MappingsController do
           get :index, params: { site_id: site.abbr, sort: "by_hits" }
 
           expect(assigns(:mappings).to_a).to eq(
-            site.mappings.order("hit_count DESC").to_a
+            site.mappings.order("hit_count DESC").to_a,
           )
         end
       end

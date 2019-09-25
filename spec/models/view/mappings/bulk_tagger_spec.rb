@@ -14,7 +14,7 @@ describe View::Mappings::BulkTagger do
     View::Mappings::BulkTagger.new(
       site,
       mapping_ids: mappings.map(&:id),
-      tag_list: tag_list
+      tag_list: tag_list,
     )
   }
 
