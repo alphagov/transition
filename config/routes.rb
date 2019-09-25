@@ -5,15 +5,15 @@ Rails.application.routes.draw do
   resources :style, only: [:index]
   resources :glossary, only: [:index]
 
-  match "/400" => "errors#error_400", via: [:get, :post]
-  match "/403" => "errors#error_403", via: [:get, :post]
-  match "/404" => "errors#error_404", via: [:get, :post]
-  match "/422" => "errors#error_422", via: [:get, :post]
-  match "/500" => "errors#error_500", via: [:get, :post]
+  match "/400" => "errors#error_400", via: %i[get post]
+  match "/403" => "errors#error_403", via: %i[get post]
+  match "/404" => "errors#error_404", via: %i[get post]
+  match "/422" => "errors#error_422", via: %i[get post]
+  match "/500" => "errors#error_500", via: %i[get post]
 
   resources :hosts, only: [:index]
 
-  resources :organisations, only: [:show, :index]
+  resources :organisations, only: %i[show index]
 
   get "mappings/find_global", to: "mappings#find_global"
   get "hits", to: "hits#universal_summary"
@@ -21,10 +21,10 @@ Rails.application.routes.draw do
 
   get "leaderboard", to: "leaderboard#index"
 
-  resources :sites, only: [:edit, :update, :show] do
+  resources :sites, only: %i[edit update show] do
 
     get "mappings/find", as: "mapping_find"
-    resources :mappings, only: [:index, :edit, :update] do
+    resources :mappings, only: %i[index edit update] do
       resources :versions, only: [:index]
 
       collection do
@@ -33,14 +33,14 @@ Rails.application.routes.draw do
 
         get "filter"
 
-        resources :bulk_add_batches, only: [:new, :create] do
+        resources :bulk_add_batches, only: %i[new create] do
           member do
             get "preview"
             post "import"
           end
         end
 
-        resources :import_batches, only: [:new, :create] do
+        resources :import_batches, only: %i[new create] do
           member do
             get "preview"
             post "import"
@@ -60,6 +60,6 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :whitelisted_hosts, only: [:index, :new, :create]
+    resources :whitelisted_hosts, only: %i[index new create]
   end
 end
