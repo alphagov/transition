@@ -16,14 +16,14 @@ describe HitsController do
   let!(:errors) do
     [
       create(:hit, host: host, hit_on: "2012-12-28", count: 1, http_status: "404"),
-      create(:hit, host: host, hit_on: "2012-12-31", count: 1, http_status: "404")
+      create(:hit, host: host, hit_on: "2012-12-31", count: 1, http_status: "404"),
     ]
   end
   let!(:archives) do
     [
       create(:hit, host: host, hit_on: "2012-12-28", count: 2, http_status: "410"),
       create(:hit, host: host, hit_on: "2012-12-31", count: 2, http_status: "410"),
-      create(:hit, host: host_alias, hit_on: "2012-12-31", count: 2, http_status: "410")
+      create(:hit, host: host_alias, hit_on: "2012-12-31", count: 2, http_status: "410"),
     ]
   end
 
@@ -67,7 +67,7 @@ describe HitsController do
       it "groups hits by path and status" do
         results = category.hits.map { |r| [r.http_status, r.path, r.count] }
         expect(results).to eq([
-          ["410", "/article/123", 6]
+          ["410", "/article/123", 6],
         ])
         expect(category.hits.length).to eq(1)
       end

@@ -27,20 +27,20 @@ describe HitsHelper do
     let(:archives) {
       [
         build(:daily_hit_total, total_on: "2012-12-31", count: 3, http_status: 410),
-        build(:daily_hit_total, total_on: "2012-12-30", count: 1000, http_status: 410)
+        build(:daily_hit_total, total_on: "2012-12-30", count: 1000, http_status: 410),
       ]
     }
 
     let(:errors) {
       [
         build(:daily_hit_total, total_on: "2012-12-31", count: 3, http_status: 404),
-        build(:daily_hit_total, total_on: "2012-12-30", count: 4, http_status: 404)
+        build(:daily_hit_total, total_on: "2012-12-30", count: 4, http_status: 404),
       ]
     }
 
     let(:redirects) {
       [
-        build(:daily_hit_total, total_on: "2012-12-30", count: 4, http_status: 301)
+        build(:daily_hit_total, total_on: "2012-12-30", count: 4, http_status: 301),
       ]
     }
 
@@ -48,7 +48,7 @@ describe HitsHelper do
       [
         View::Hits::Category["archives"].tap { |c| c.points = archives },
         View::Hits::Category["errors"].tap { |c| c.points = errors },
-        View::Hits::Category["redirects"].tap { |c| c.points = redirects }
+        View::Hits::Category["redirects"].tap { |c| c.points = redirects },
       ]
     }
 

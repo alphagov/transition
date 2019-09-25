@@ -67,7 +67,7 @@ describe View::Hits::Category do
           let(:errors) do
             [
               build(:daily_hit_total, total_on: "2012-12-28", count: 1000, http_status: 404),
-              build(:daily_hit_total, total_on: "2012-12-31", count: 3, http_status: 404)
+              build(:daily_hit_total, total_on: "2012-12-31", count: 3, http_status: 404),
             ]
           end
 
@@ -112,7 +112,7 @@ describe View::Hits::Category do
           let(:errors) do
             [
               build(:daily_hit_total, total_on: "2012-12-28", count: 1000, http_status: 200),
-              build(:daily_hit_total, total_on: "2012-12-28", count: 3, http_status: 200)
+              build(:daily_hit_total, total_on: "2012-12-28", count: 3, http_status: 200),
             ]
           end
 

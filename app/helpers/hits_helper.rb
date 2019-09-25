@@ -36,7 +36,7 @@ module HitsHelper
     dates = {}
     cols  = [
         { label: "Date", type: "date" },
-        { label: "Transition date line", type: "string", p: { role: "annotation" } }
+        { label: "Transition date line", type: "string", p: { role: "annotation" } },
       ]
 
     categories.each do |category|
@@ -57,7 +57,7 @@ module HitsHelper
              *categories.map do |c|
                count_for_category = category_counts[c.name] || 0
                { v: count_for_category, f: number_with_delimiter(count_for_category) }
-             end
+             end,
            ],
       }
     end

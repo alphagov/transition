@@ -94,7 +94,7 @@ describe Site do
     let!(:mappings) {
       [
         create(:mapping, site: site_with_mappings),
-        create(:mapping, site: site_with_mappings)
+        create(:mapping, site: site_with_mappings),
       ]
     }
 
@@ -257,7 +257,7 @@ describe Site do
       before do
         site.default_host.hits.concat [
           create(:hit, path: "/1", hit_on: Time.zone.today, count: 10),
-          create(:hit, path: "/2", hit_on: Time.zone.yesterday, count: 20)
+          create(:hit, path: "/2", hit_on: Time.zone.yesterday, count: 20),
         ]
 
         Transition::Import::DailyHitTotals.from_hits!

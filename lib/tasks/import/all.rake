@@ -7,7 +7,7 @@ namespace :import do
   task :all, [:bucket] => [
     "import:all:orgs_sites_hosts",
     "import:all:hits",
-    "import:dns_details"
+    "import:dns_details",
   ]
 
   namespace :all do

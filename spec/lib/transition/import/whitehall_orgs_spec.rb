@@ -57,7 +57,7 @@ describe Transition::Import::WhitehallOrgs do
           "ministry-of-funk-4", "department-of-soul-4", "hm-rock-and-roll-4",
           "ministry-of-funk-5", "department-of-soul-5", "hm-rock-and-roll-5",
           "ministry-of-funk-6", "department-of-soul-6", "hm-rock-and-roll-6",
-          "ministry-of-funk-7", "department-of-soul-7", "hm-rock-and-roll-7",
+          "ministry-of-funk-7", "department-of-soul-7", "hm-rock-and-roll-7"
         ]
       end
 

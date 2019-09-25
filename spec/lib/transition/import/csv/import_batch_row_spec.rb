@@ -36,7 +36,7 @@ describe Transition::Import::CSV::ImportBatchRow do
         make_a_row("old URL", "new URL"),
         make_a_row("random", "sentence"),
         make_a_row("oops/missed/a/slash", nil),
-        make_a_row("http://homepage.com", nil)
+        make_a_row("http://homepage.com", nil),
       ].each do |row|
         expect(row.ignorable?).to be_truthy
       end

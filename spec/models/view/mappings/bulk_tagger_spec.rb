@@ -6,7 +6,7 @@ describe View::Mappings::BulkTagger do
     [
       create(:mapping, site: site, tag_list: "fee, fum, fox"),
       create(:mapping, site: site, tag_list: "fi, fum, fox"),
-      create(:mapping, site: site, tag_list: "fo, fum, fox")
+      create(:mapping, site: site, tag_list: "fo, fum, fox"),
     ]
   }
   let(:tag_list) { "fox, fiddle" }

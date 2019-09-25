@@ -7,7 +7,7 @@ describe Transition::Import::MaterializedViews::Hits do
       @sites = [
         create(:site, abbr: "cabinet_office"),
         create(:site, abbr: "hmrc",         precompute_all_hits_view: true),
-        create(:site, abbr: "ofsted",       precompute_all_hits_view: true)
+        create(:site, abbr: "ofsted",       precompute_all_hits_view: true),
       ]
       @sites.each do |site|
         ActiveRecord::Base.connection.execute(
