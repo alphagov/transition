@@ -1,4 +1,4 @@
-require 'view/mappings/canonical_filter'
+require "view/mappings/canonical_filter"
 
 class BulkAddBatchesController < ApplicationController
   include PaperTrail::Rails::Controller
@@ -10,7 +10,7 @@ class BulkAddBatchesController < ApplicationController
   before_action :find_batch, only: %i[preview import]
 
   def new
-    paths = params[:paths].present? ? params[:paths].split(',') : []
+    paths = params[:paths].present? ? params[:paths].split(",") : []
     @batch = BulkAddBatch.new(paths: paths)
   end
 
@@ -25,7 +25,7 @@ class BulkAddBatchesController < ApplicationController
     if @batch.save
       redirect_to preview_site_bulk_add_batch_path(@site, @batch, return_path: params[:return_path])
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 
@@ -34,8 +34,8 @@ class BulkAddBatchesController < ApplicationController
   end
 
   def import
-    if @batch.state == 'unqueued'
-      @batch.update_attributes!(batch_params.merge(state: 'queued'))
+    if @batch.state == "unqueued"
+      @batch.update_attributes!(batch_params.merge(state: "queued"))
 
       if @batch.entries_to_process.count > 20
         MappingsBatchWorker.perform_async(@batch.id)

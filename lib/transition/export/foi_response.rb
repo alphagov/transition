@@ -1,4 +1,4 @@
-require 'transition/import/console_job_wrapper'
+require "transition/import/console_job_wrapper"
 
 module Transition
   module Export
@@ -51,18 +51,18 @@ module Transition
 
       def self.export!
         timestamp = Time.zone.now.iso8601
-        self.export_data(timestamp, 'sites', EXPORT_SITES)
-        self.export_data(timestamp, 'hosts', EXPORT_HOSTS)
-        self.export_data(timestamp, 'mappings', EXPORT_MAPPINGS)
+        self.export_data(timestamp, "sites", EXPORT_SITES)
+        self.export_data(timestamp, "hosts", EXPORT_HOSTS)
+        self.export_data(timestamp, "mappings", EXPORT_MAPPINGS)
       end
 
       def self.export_data(timestamp, table, sql)
         start "Exporting #{table}" do |_job|
-          File.open("tmp/#{table}-#{timestamp}.csv", 'w') do |f|
+          File.open("tmp/#{table}-#{timestamp}.csv", "w") do |f|
             ActiveRecord::Base.connection.raw_connection.tap do |raw_conn|
               raw_conn.copy_data(sql) do
                 while (row = raw_conn.get_copy_data)
-                  f.write(row.force_encoding('UTF-8'))
+                  f.write(row.force_encoding("UTF-8"))
                 end
               end
             end

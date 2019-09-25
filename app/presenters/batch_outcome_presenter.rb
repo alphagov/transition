@@ -5,15 +5,15 @@ class BatchOutcomePresenter
 
   def success_message
     if updated_count.zero?
-      I18n.t('mappings.success.all_created',
+      I18n.t("mappings.success.all_created",
              created: mappings_created,
              tagged_with: tagged_with(and: true))
     elsif created_count.zero?
-      I18n.t('mappings.success.all_updated',
+      I18n.t("mappings.success.all_updated",
              updated: mappings_updated,
              tagged_with: tagged_with(and: true))
     else
-      I18n.t('mappings.success.some_updated',
+      I18n.t("mappings.success.some_updated",
              created: mappings_created,
              updated: mappings_updated,
              tagged_with: tagged_with(all: true))
@@ -21,7 +21,7 @@ class BatchOutcomePresenter
   end
 
   def analytics_event_type
-    update_type = @batch.update_existing? ? 'overwrite' : 'ignore'
+    update_type = @batch.update_existing? ? "overwrite" : "ignore"
     if @batch.is_a?(BulkAddBatch)
       "bulk-add-#{@batch.type}-#{update_type}-existing"
     else

@@ -1,5 +1,5 @@
-require 'postgres/materialized_view'
-require './lib/transition/path_or_url.rb'
+require "postgres/materialized_view"
+require "./lib/transition/path_or_url.rb"
 
 class Site < ActiveRecord::Base
   belongs_to :organisation
@@ -13,26 +13,26 @@ class Site < ActiveRecord::Base
   has_many :bulk_add_batches
   has_many :import_batches
   has_and_belongs_to_many :extra_organisations,
-                           join_table: 'organisations_sites',
-                           class_name: 'Organisation'
+                          join_table: "organisations_sites",
+                          class_name: "Organisation"
 
   validates_presence_of :tna_timestamp
   validates_presence_of :organisation
   validates :homepage, presence: true, non_blank_url: true
-  validates :abbr, uniqueness: true, presence: true, format: { with: /\A[a-zA-Z0-9_\-]+\z/, message: 'can only contain alphanumeric characters, underscores and dashes' }
+  validates :abbr, uniqueness: true, presence: true, format: { with: /\A[a-zA-Z0-9_\-]+\z/, message: "can only contain alphanumeric characters, underscores and dashes" }
   validates_inclusion_of :special_redirect_strategy, in: %w{via_aka supplier}, allow_nil: true
   validates :global_new_url, presence: { if: :global_redirect? }
   validates :global_new_url, format: { without: /\?/,
-                                       message: 'cannot contain a query when the path is appended',
+                                       message: "cannot contain a query when the path is appended",
                                        if: :global_redirect_append_path }
 
   after_update :update_hits_relations, if: :saved_change_to_query_params?
   after_update :remove_all_hits_view,  if: :should_remove_unused_view?
 
   scope :with_mapping_count, -> {
-    select('sites.*, COUNT(mappings.id) as mapping_count').
-      joins('LEFT JOIN mappings on mappings.site_id = sites.id').
-      group('sites.id')
+    select("sites.*, COUNT(mappings.id) as mapping_count").
+      joins("LEFT JOIN mappings on mappings.site_id = sites.id").
+      group("sites.id")
   }
 
   def mapping_count
@@ -44,11 +44,11 @@ class Site < ActiveRecord::Base
   end
 
   def global_redirect?
-    global_type == 'redirect'
+    global_type == "redirect"
   end
 
   def global_archive?
-    global_type == 'archive'
+    global_type == "archive"
   end
 
   def default_host
@@ -65,18 +65,18 @@ class Site < ActiveRecord::Base
   def canonical_path(path_or_url)
     url = if ::Transition::PathOrUrl.starts_with_http_scheme?(path_or_url)
             path_or_url
-          elsif !path_or_url.starts_with?('/') &&
+          elsif !path_or_url.starts_with?("/") &&
               ::Transition::PathOrUrl.starts_with_a_domain?(path_or_url)
-            'http://' + path_or_url
+            "http://" + path_or_url
           else
             # BLURI takes a full URL, but we only care about the path. There's no
             # benefit in making an extra query to get a real hostname for the site.
-            File.join('http://www.example.com', path_or_url)
+            File.join("http://www.example.com", path_or_url)
           end
 
     bluri = BLURI(url).canonicalize!(allow_query: query_params.split(":"))
     path = bluri.path
-    bluri.query ? (path + '?' + bluri.query) : path
+    bluri.query ? (path + "?" + bluri.query) : path
   end
 
   def hit_total_count
@@ -98,18 +98,18 @@ class Site < ActiveRecord::Base
     # we need to tag anything else. This replaces ActsAsTaggableOn's
     # generic (but slow) Model.tag_counts_on for our limited use case.
     ActsAsTaggableOn::Tag
-      .select('tags.name, COUNT(*) AS count')
+      .select("tags.name, COUNT(*) AS count")
       .joins(:taggings)
-      .joins('INNER JOIN mappings ON mappings.id = taggings.taggable_id')
-      .where('mappings.site_id = ?', id)
-      .group('tags.name')
-      .order('count DESC, tags.name')
+      .joins("INNER JOIN mappings ON mappings.id = taggings.taggable_id")
+      .where("mappings.site_id = ?", id)
+      .group("tags.name")
+      .order("count DESC, tags.name")
       .limit(limit)
       .map(&:name)
   end
 
   def precomputed_all_hits
-    Hit.select('*').from(ActiveRecord::Base.connection.quote_table_name(precomputed_view_name))
+    Hit.select("*").from(ActiveRecord::Base.connection.quote_table_name(precomputed_view_name))
   end
 
   def precomputed_view_name

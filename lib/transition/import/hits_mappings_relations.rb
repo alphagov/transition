@@ -1,6 +1,6 @@
-require 'optic14n'
-require 'transition/import/console_job_wrapper'
-require 'transition/import/postgresql_settings'
+require "optic14n"
+require "transition/import/console_job_wrapper"
+require "transition/import/postgresql_settings"
 
 module Transition
   module Import
@@ -14,10 +14,10 @@ module Transition
       end
 
       def refresh!
-        start('Refreshing host paths') { refresh_host_paths! }
-        start('Adding missing mapping_id/canonical_path to host paths') { connect_mappings_to_host_paths! }
-        start('Updating hits from host paths') { refresh_hits_from_host_paths! }
-        start('Precomputing mapping hit counts') { precompute_mapping_hit_counts! }
+        start("Refreshing host paths") { refresh_host_paths! }
+        start("Adding missing mapping_id/canonical_path to host paths") { connect_mappings_to_host_paths! }
+        start("Updating hits from host paths") { refresh_hits_from_host_paths! }
+        start("Precomputing mapping hit counts") { precompute_mapping_hit_counts! }
       end
 
       def self.refresh!(site = nil)
@@ -40,7 +40,7 @@ module Transition
       end
 
       def refresh_host_paths!
-        and_host_is_in_site = site ? "AND hits.host_id #{in_site_hosts}" : ''
+        and_host_is_in_site = site ? "AND hits.host_id #{in_site_hosts}" : ""
         sql = <<-POSTGRESQL
           INSERT INTO host_paths(host_id, path)
           SELECT hits.host_id, hits.path
@@ -55,7 +55,7 @@ module Transition
           GROUP  BY hits.host_id,
                     hits.path
         POSTGRESQL
-        change_settings('work_mem' => '256MB') do
+        change_settings("work_mem" => "256MB") do
           ActiveRecord::Base.connection.execute(sql)
         end
       end
@@ -71,20 +71,20 @@ module Transition
 
           canonical_path = site.canonical_path(host_path.path)
           mapping_id = Mapping.where(
-            path: canonical_path, site_id: site.id
+            path: canonical_path, site_id: site.id,
           ).pluck(:id).first
 
           if host_path.mapping_id != mapping_id || host_path.canonical_path != canonical_path
             host_path.update_columns(
               mapping_id: mapping_id,
-              canonical_path: canonical_path
+              canonical_path: canonical_path,
             )
           end
         end
       end
 
       def refresh_hits_from_host_paths!
-        and_host_is_in_site = site ? "AND host_paths.host_id #{in_site_hosts}" : ''
+        and_host_is_in_site = site ? "AND host_paths.host_id #{in_site_hosts}" : ""
 
         # IS DISTINCT FROM is effectively <> - see
         # https://gist.github.com/rgarner/7cccbc504de7c8d56702
@@ -102,7 +102,7 @@ module Transition
       end
 
       def precompute_mapping_hit_counts!
-        where_host_is_in_site = site ? "WHERE host_id #{in_site_hosts}" : ''
+        where_host_is_in_site = site ? "WHERE host_id #{in_site_hosts}" : ""
         sql = <<-POSTGRESQL
           UPDATE mappings
           SET hit_count = with_counts.hit_count

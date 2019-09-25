@@ -19,8 +19,8 @@ ActiveSupport::Inflector.inflections do |inflect|
   # Careful with this - it changes all conventions around fields
   # like :archive_url or :http_status, meaning things like validators
   # have to be renamed, e.g. NonBlankUrlValidator -> NonBlankURLValidator
-  inflect.acronym 'HTTP'
-  inflect.acronym 'URL'
-  inflect.acronym 'URLs'
-  inflect.uncountable 'unresolved'
+  inflect.acronym "HTTP"
+  inflect.acronym "URL"
+  inflect.acronym "URLs"
+  inflect.uncountable "unresolved"
 end

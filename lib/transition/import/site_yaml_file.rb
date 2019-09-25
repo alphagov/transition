@@ -1,4 +1,4 @@
-require 'htmlentities'
+require "htmlentities"
 
 module Transition
   module Import
@@ -15,33 +15,33 @@ module Transition
       end
 
       def abbr
-        yaml['site']
+        yaml["site"]
       end
 
       def aliases
-        yaml['aliases'] && yaml['aliases'].map(&:downcase)
+        yaml["aliases"] && yaml["aliases"].map(&:downcase)
       end
 
       def extra_organisation_slugs
-        yaml['extra_organisation_slugs']
+        yaml["extra_organisation_slugs"]
       end
 
       def host
-        yaml['host'].downcase
+        yaml["host"].downcase
       end
 
       def whitehall_slug
-        yaml['whitehall_slug']
+        yaml["whitehall_slug"]
       end
 
       def title
-        HTMLEntities.new.decode(yaml['title'])
+        HTMLEntities.new.decode(yaml["title"])
       end
 
       def has_global_type?
         # cdn.hm-treasury.gov.uk has a regex in the global value, which Bouncer
         # implements as a "rule", so we can ignore it.
-        yaml['global'] && (host != 'cdn.hm-treasury.gov.uk')
+        yaml["global"] && (host != "cdn.hm-treasury.gov.uk")
       end
 
       def global_type
@@ -51,19 +51,19 @@ module Transition
         # or:
         # global: =410
         if has_global_type?
-          case yaml['global'].split(' ')[0].delete("=")
-          when '301' then 'redirect'
-          when '410' then 'archive'
+          case yaml["global"].split(" ")[0].delete("=")
+          when "301" then "redirect"
+          when "410" then "archive"
           end
         end
       end
 
       def global_new_url
-        yaml['global'].split(' ')[1] if has_global_type?
+        yaml["global"].split(" ")[1] if has_global_type?
       end
 
       def global_redirect_append_path
-        !! yaml['global_redirect_append_path']
+        !! yaml["global_redirect_append_path"]
       end
 
 
@@ -76,15 +76,15 @@ module Transition
           # in transition-config.
           site.organisation          = Organisation.find_by_whitehall_slug(whitehall_slug)
 
-          site.tna_timestamp         = DateTime.strptime(yaml['tna_timestamp'].to_s, '%Y%m%d%H%M%S')
-          site.query_params          = yaml['options'] ? yaml['options'].sub(/^.*--query-string /, '') : ''
+          site.tna_timestamp         = DateTime.strptime(yaml["tna_timestamp"].to_s, "%Y%m%d%H%M%S")
+          site.query_params          = yaml["options"] ? yaml["options"].sub(/^.*--query-string /, "") : ""
           site.global_type           = global_type
           site.global_new_url        = global_new_url
           site.global_redirect_append_path = global_redirect_append_path
-          site.homepage              = yaml['homepage']
-          site.homepage_title        = yaml['homepage_title']
-          site.homepage_furl         = yaml['homepage_furl']
-          site.special_redirect_strategy = yaml['special_redirect_strategy']
+          site.homepage              = yaml["homepage"]
+          site.homepage_title        = yaml["homepage_title"]
+          site.homepage_furl         = yaml["homepage_furl"]
+          site.special_redirect_strategy = yaml["special_redirect_strategy"]
 
           site.save!
         end

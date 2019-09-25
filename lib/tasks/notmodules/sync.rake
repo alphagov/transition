@@ -1,4 +1,4 @@
-require 'yaml'
+require "yaml"
 
 ##
 # Git submodules. Yuck.
@@ -7,7 +7,7 @@ require 'yaml'
 # (a file called .notmodules.yaml)
 #
 class NotModules
-  FILENAME = '.notmodules.yaml'.freeze
+  FILENAME = ".notmodules.yaml".freeze
 
   include Singleton
 
@@ -16,7 +16,7 @@ class NotModules
   end
 
   def modules
-    @modules ||= yaml.map { |m| Module.new(m['path'], m['url']) }
+    @modules ||= yaml.map { |m| Module.new(m["path"], m["url"]) }
   end
 
   Module = Struct.new(:path, :url) do
@@ -47,15 +47,15 @@ class NotModules
 end
 
 namespace :notmodules do
-  desc '`git pull` or `git clone` all notmodules as necessary'
+  desc "`git pull` or `git clone` all notmodules as necessary"
   task :sync do
     NotModules.instance.modules.each(&:sync!)
   end
 
-  desc 'list all things that definitely aren\'t git submodules'
+  desc "list all things that definitely aren't git submodules"
   task :list do
     NotModules.instance.modules.each { |m| puts m }
   end
 end
 
-task notmodules: 'notmodules:list'
+task notmodules: "notmodules:list"

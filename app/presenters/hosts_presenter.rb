@@ -8,7 +8,7 @@ class HostsPresenter
       results: results,
       total: results.count,
       _response_info: {
-        status: "ok"
+        status: "ok",
       },
     }
   end

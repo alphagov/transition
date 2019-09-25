@@ -7,17 +7,17 @@ module View
     class CanonicalFilter
       def initialize(site, filter)
         @site     = site
-        @filter   = filter || ''
+        @filter   = filter || ""
       end
 
       def to_s
         # Canonicalisation removes trailing slashes, which in this case
         # can be an important part of the search string. Put them back.
-        @canonicalized ||= if @filter.ends_with?('/')
-                             canonicalized + '/'
-                           else
-                             canonicalized
-                           end
+        @to_s ||= if @filter.ends_with?("/")
+                    canonicalized + "/"
+                  else
+                    canonicalized
+                  end
       end
 
     private
@@ -33,7 +33,7 @@ module View
       end
 
       def canonical_substring
-        if @filter.starts_with?('/')
+        if @filter.starts_with?("/")
           @site.canonical_path(@filter)
         else
           # Pretend that this string is a well-formed path so it can be
@@ -41,12 +41,12 @@ module View
           # Otherwise we would be assuming that the filter value was meant to
           # have a leading slash, which may not be the case - the user might
           # have meant to supply a fragment of a directory name.
-          @site.canonical_path('/' + @filter)[1..-1]
+          @site.canonical_path("/" + @filter)[1..-1]
         end
       end
 
       def path?
-        @filter.starts_with?('/')
+        @filter.starts_with?("/")
       end
 
       def url?

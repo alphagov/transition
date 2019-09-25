@@ -6,7 +6,7 @@ class SitesController < ApplicationController
 
   def update
     if @site.update(site_params)
-      redirect_to site_path(@site), flash: { success: 'Transition date updated' }
+      redirect_to site_path(@site), flash: { success: "Transition date updated" }
     else
       redirect_to edit_site_path(@site), flash: { alert: "We couldn't save your change" }
     end
@@ -30,7 +30,7 @@ private
 
   def check_user_is_gds_editor
     unless current_user.gds_editor?
-      message = 'Only GDS Editors can access that.'
+      message = "Only GDS Editors can access that."
       redirect_to site_path(@site), alert: message
     end
   end

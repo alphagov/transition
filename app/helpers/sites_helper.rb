@@ -6,26 +6,26 @@ module SitesHelper
 
     big_day_span = content_tag(
       :div,
-      pluralize(days_before_or_after_launch(site), 'day'),
-      class: 'big-number'
+      pluralize(days_before_or_after_launch(site), "day"),
+      class: "big-number",
     )
 
     should_have_launched = Time.zone.today > site.launch_date
     small_text = content_tag(
       :div,
       if site.transition_status == :live
-        'since transition'
+        "since transition"
       elsif should_have_launched
         case site.transition_status
-        when :indeterminate  then 'since transition'
-        when :pre_transition then 'overdue'
+        when :indeterminate  then "since transition"
+        when :pre_transition then "overdue"
         end
       else
-        'until transition'
-      end
+        "until transition"
+      end,
     )
 
-    big_day_span + ' ' + small_text
+    big_day_span + " " + small_text
   end
 
   def days_before_or_after_launch(site)
@@ -33,28 +33,28 @@ module SitesHelper
   end
 
   def site_redirects_link(site)
-    link_to pluralize(number_with_delimiter(site.mappings.redirects.count), 'redirect'),
-      site_mappings_path(site_id: site, type: 'redirect'),
-      class: 'link-muted'
+    link_to pluralize(number_with_delimiter(site.mappings.redirects.count), "redirect"),
+            site_mappings_path(site_id: site, type: "redirect"),
+            class: "link-muted"
   end
 
   def site_archives_link(site)
-    link_to pluralize(number_with_delimiter(site.mappings.archives.count), 'archive'),
-      site_mappings_path(site_id: site, type: 'archive'),
-      class: 'link-muted'
+    link_to pluralize(number_with_delimiter(site.mappings.archives.count), "archive"),
+            site_mappings_path(site_id: site, type: "archive"),
+            class: "link-muted"
   end
 
   def site_unresolved_link(site)
     link_to "#{number_with_delimiter(site.mappings.unresolved.count)} unresolved",
-      site_mappings_path(site_id: site, type: 'unresolved'),
-      class: 'link-muted'
+            site_mappings_path(site_id: site, type: "unresolved"),
+            class: "link-muted"
   end
 
   def site_unresolved_mappings_percentage(site)
     if site.mappings.unresolved.count.positive? && site.mappings.count.positive?
       friendly_hit_percentage((site.mappings.unresolved.count.to_f / site.mappings.count) * 100)
     else
-      '0%'
+      "0%"
     end
   end
 end

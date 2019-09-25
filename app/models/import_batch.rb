@@ -1,37 +1,37 @@
-require 'csv'
+require "csv"
 
 class ImportBatch < MappingsBatch
   attr_accessor :raw_csv
 
-  has_many :entries, foreign_key: :mappings_batch_id, class_name: 'ImportBatchEntry',
+  has_many :entries, foreign_key: :mappings_batch_id, class_name: "ImportBatchEntry",
     dependent: :delete_all
 
   validates :raw_csv, presence: {
     if: :new_record?, # we only care about raw_csv at create-time
-    message: I18n.t('mappings.import.raw_csv_empty')
+    message: I18n.t("mappings.import.raw_csv_empty"),
     }
   validates :old_urls, old_urls_are_for_site: true
   validates :canonical_paths, presence: {
     if: :new_record?,
-    message: I18n.t('mappings.paths_empty')
+    message: I18n.t("mappings.paths_empty"),
   }
   validates :new_urls, each_in_collection: {
     validator: LengthValidator,
     maximum: (64.kilobytes - 1),
-    message: I18n.t('mappings.new_url_too_long')
+    message: I18n.t("mappings.new_url_too_long"),
   }
   validates :new_urls, each_in_collection: {
     validator: NonBlankURLValidator,
-    message: I18n.t('mappings.import.new_url_invalid')
+    message: I18n.t("mappings.import.new_url_invalid"),
   }
   validates :new_urls, each_in_collection: {
     validator: HostInWhitelistValidator,
-    message: I18n.t('mappings.bulk.new_url_must_be_on_whitelist')
+    message: I18n.t("mappings.bulk.new_url_must_be_on_whitelist"),
   }
   validates :archive_urls, each_in_collection: {
     validator: LengthValidator,
     maximum: (64.kilobytes - 1),
-    message: I18n.t('mappings.new_url_too_long')
+    message: I18n.t("mappings.new_url_too_long"),
   }
 
   after_create :create_entries
@@ -71,7 +71,7 @@ class ImportBatch < MappingsBatch
   end
 
   def verb
-    'import'
+    "import"
   end
 
 private

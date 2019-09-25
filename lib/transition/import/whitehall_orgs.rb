@@ -1,4 +1,4 @@
-require 'gds_api/organisations'
+require "gds_api/organisations"
 
 module Transition
   module Import
@@ -25,7 +25,7 @@ module Transition
 
       def by_id
         @by_id ||= organisations.inject({}) do |hash, org|
-          hash[org['id']] = org
+          hash[org["id"]] = org
           hash
         end
       end

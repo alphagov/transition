@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe HostsController do
-  describe '#index' do
+  describe "#index" do
     let(:site) { create :site }
 
     before do
@@ -9,11 +9,11 @@ describe HostsController do
       @parsed_response = JSON.parse(response.body)
     end
 
-    it 'does not require authentication' do
+    it "does not require authentication" do
       expect(response.status).to be(200)
     end
 
-    it 'contains results, total and response info' do
+    it "contains results, total and response info" do
       %w(results total _response_info).each do |key|
         expect(@parsed_response).to have_key(key)
       end

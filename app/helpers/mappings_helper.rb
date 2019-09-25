@@ -12,8 +12,8 @@ module MappingsHelper
   #      }, active: 'Edit'
   #    )
   def bootstrap_flavour_tabs(titles_to_links, options)
-    content_tag :ul, class: 'nav nav-tabs' do
-      titles_to_links.inject('') { |result, title_link|
+    content_tag :ul, class: "nav nav-tabs" do
+      titles_to_links.inject("") { |result, title_link|
         result << build_flavour_tab(title_link, options)
       }.html_safe
     end
@@ -22,12 +22,12 @@ module MappingsHelper
   def build_flavour_tab(title_link, options)
     title = title_link[0]
     href = title_link[1]
-    active            = options[:active] == title
-    html_opts         = {}
-    html_opts[:class] = 'active' if active
+    active = options[:active] == title
+    html_opts = {}
+    html_opts[:class] = "active" if active
 
     content_tag(:li, html_opts) do
-      link_to(title, active ? '#' : href)
+      link_to(title, active ? "#" : href)
     end
   end
 
@@ -35,13 +35,13 @@ module MappingsHelper
   # Tabs for mapping editing
   def mapping_edit_tabs(options = {})
     if @mapping.versions.any?
-      content_tag :div, class: 'add-bottom-margin' do
+      content_tag :div, class: "add-bottom-margin" do
         bootstrap_flavour_tabs(
           {
-            'Edit'    => edit_site_mapping_path(@mapping.site, @mapping),
-            'History' => site_mapping_versions_path(@mapping.site, @mapping)
+            "Edit"    => edit_site_mapping_path(@mapping.site, @mapping),
+            "History" => site_mapping_versions_path(@mapping.site, @mapping),
           },
-          options
+          options,
 )
       end
     end
@@ -65,7 +65,7 @@ module MappingsHelper
   end
 
   def new_confirmation_heading(type, count)
-    if type == 'unresolved'
+    if type == "unresolved"
       "Add #{number_with_delimiter(count)} unresolved #{'path'.pluralize(count)}"
     else
       "#{operation_name(type)} #{pluralize(number_with_delimiter(count), 'path')}"
@@ -73,14 +73,14 @@ module MappingsHelper
   end
 
   def friendly_hit_count(hit_count)
-    hit_count ? number_with_delimiter(hit_count) : '0'
+    hit_count ? number_with_delimiter(hit_count) : "0"
   end
 
   def friendly_hit_percentage(hit_percentage)
-    if hit_percentage.zero? then ''
-    elsif hit_percentage < 0.01 then '< 0.01%'
-    elsif hit_percentage < 10.0 then hit_percentage.round(2).to_s + '%'
-    else hit_percentage.round(1).to_s + '%'
+    if hit_percentage.zero? then ""
+    elsif hit_percentage < 0.01 then "< 0.01%"
+    elsif hit_percentage < 10.0 then hit_percentage.round(2).to_s + "%"
+    else hit_percentage.round(1).to_s + "%"
     end
   end
 

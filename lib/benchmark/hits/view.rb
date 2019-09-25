@@ -1,13 +1,13 @@
-require 'date'
-require 'benchmark'
+require "date"
+require "benchmark"
 
 # Hacky hacky hack hack
-$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '../../../app')
-require 'controllers/application_controller'
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), "../../../app")
+require "controllers/application_controller"
 ApplicationController.class_eval do
   def self.tracks_mappings_progress(*_args); end
 end
-require 'controllers/hits_controller'
+require "controllers/hits_controller"
 
 module Benchmark
   module Hits
@@ -49,16 +49,16 @@ module Benchmark
     end
 
     class View
-      DEFAULT_ABBR           = 'ofsted'.freeze
-      DEFAULT_AREA           = 'all'.freeze
+      DEFAULT_ABBR           = "ofsted".freeze
+      DEFAULT_AREA           = "all".freeze
       AREA_ACTION            = {
-        'all'       => :index,
-        'redirects' => :category,
-        'archives'  => :category,
-        'errors'    => :category,
-        'summary'   => :summary
+        "all"       => :index,
+        "redirects" => :category,
+        "archives"  => :category,
+        "errors"    => :category,
+        "summary"   => :summary,
       }.freeze
-      DEFAULT_PERIOD         = 'all-time'.freeze
+      DEFAULT_PERIOD         = "all-time".freeze
       DEFAULT_NUMBER_OF_RUNS = 5
 
       attr_accessor :abbr, :area, :period, :number_of_runs

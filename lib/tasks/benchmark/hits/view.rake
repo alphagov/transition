@@ -1,4 +1,4 @@
-require 'benchmark/hits/view'
+require "benchmark/hits/view"
 
 namespace :benchmark do
   namespace :hits do
@@ -12,7 +12,7 @@ namespace :benchmark do
         args[:site_abbr],
         args[:hits_area],
         args[:period],
-        args[:number_of_runs]
+        args[:number_of_runs],
       ).run
     end
   end

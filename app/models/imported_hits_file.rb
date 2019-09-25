@@ -1,4 +1,4 @@
-require 'digest'
+require "digest"
 
 class ImportedHitsFile < ActiveRecord::Base
   validates :filename,     presence: true, uniqueness: true

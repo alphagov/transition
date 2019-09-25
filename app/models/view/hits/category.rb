@@ -12,10 +12,10 @@ module View
       end
 
       COLORS = {
-        'all'       => '#333',
-        'errors'    => '#e99',
-        'archives'  => '#aaa',
-        'redirects' => '#9e9'
+        "all"       => "#333",
+        "errors"    => "#e99",
+        "archives"  => "#aaa",
+        "redirects" => "#9e9",
       }.freeze
 
       def self.all
@@ -72,11 +72,11 @@ module View
       end
 
       def title
-        name == 'all' ? 'All hits' : name.capitalize
+        name == "all" ? "All hits" : name.capitalize
       end
 
       def plural
-        name == 'all' ? 'hits' : name.pluralize
+        name == "all" ? "hits" : name.pluralize
       end
     end
   end

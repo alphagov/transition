@@ -1,7 +1,7 @@
-require 'transition/import/orgs_sites_hosts'
+require "transition/import/orgs_sites_hosts"
 
 namespace :import do
-  desc 'Import all Organisations, and Sites and Hosts from the given filename or mask'
+  desc "Import all Organisations, and Sites and Hosts from the given filename or mask"
   task :orgs_sites_hosts, [:filename_or_mask] => :environment do |_, args|
     begin
       Transition::Import::OrgsSitesHosts.from_yaml!(args.filename_or_mask)

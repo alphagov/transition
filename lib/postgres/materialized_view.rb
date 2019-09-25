@@ -1,11 +1,11 @@
-require 'postgres/relation'
+require "postgres/relation"
 
 module Postgres
   class MaterializedView < Relation
     def self.create(name, body, options = {})
       ActiveRecord::Base.transaction do
         execute(
-          <<-POSTGRESQL
+          <<-POSTGRESQL,
             #{drop_sql(name) if options[:replace]}
             CREATE MATERIALIZED VIEW "#{name}" AS
             #{body}
@@ -24,7 +24,7 @@ module Postgres
 
     def self.get_body(name)
       viewdef = execute("select pg_get_viewdef('#{name}', true)").first
-      viewdef['pg_get_viewdef']
+      viewdef["pg_get_viewdef"]
     end
 
     def self.drop_sql(name)

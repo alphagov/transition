@@ -1,11 +1,11 @@
-require 'resolv'
+require "resolv"
 
 module Transition
   module Import
     ##
     # Augments Host models with real DNS info
     class DnsDetails
-      NAMESERVERS = ['8.8.8.8', '8.8.4.4'].freeze
+      NAMESERVERS = ["8.8.8.8", "8.8.4.4"].freeze
 
       attr_accessor :hosts, :resolver
 
@@ -16,7 +16,7 @@ module Transition
 
       def import!
         hosts.each do |host|
-          $stderr.print '.'
+          $stderr.print "."
 
           add_cname_record_details(host) || add_a_record_details(host)
 

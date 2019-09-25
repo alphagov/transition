@@ -1,5 +1,5 @@
-require 'transition/history'
-require 'paper_trail/frameworks/rspec'
+require "transition/history"
+require "paper_trail/frameworks/rspec"
 
 RSpec.configure do |config|
   config.before :each do

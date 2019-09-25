@@ -1,4 +1,4 @@
-require 'transition/off_site_redirect_checker'
+require "transition/off_site_redirect_checker"
 
 module View
   module Mappings
@@ -40,8 +40,8 @@ module View
       end
 
       def params_errors
-        if mappings.empty? then I18n.t('mappings.bulk.edit.mappings_empty')
-        elsif type.blank? then I18n.t('mappings.bulk.type_invalid')
+        if mappings.empty? then I18n.t("mappings.bulk.edit.mappings_empty")
+        elsif type.blank? then I18n.t("mappings.bulk.type_invalid")
         end
       end
 
@@ -61,7 +61,7 @@ module View
       end
 
       def success_message
-        'Mappings updated successfully'
+        "Mappings updated successfully"
       end
 
       def new_url
@@ -70,7 +70,7 @@ module View
 
       def common_data
         @common_data ||= { type: type }.tap do |common_data|
-          common_data[:new_url] = new_url if type == 'redirect'
+          common_data[:new_url] = new_url if type == "redirect"
         end
       end
 
@@ -98,7 +98,7 @@ module View
         # the submitted data to see if it validates:
         @test_mapping ||= Mapping.new({
                                         site: site,
-                                        path: '/this/is/a/test/and/will/not/be/saved'
+                                        path: "/this/is/a/test/and/will/not/be/saved",
                                       }.merge(common_data))
       end
     end

@@ -18,7 +18,7 @@ class ImportBatchesController < ApplicationController
     if @batch.save
       redirect_to preview_site_import_batch_path(@site, @batch)
     else
-      render 'new'
+      render "new"
     end
   end
 
@@ -27,8 +27,8 @@ class ImportBatchesController < ApplicationController
   end
 
   def import
-    if @batch.state == 'unqueued'
-      @batch.update_attributes!(batch_params.merge(state: 'queued'))
+    if @batch.state == "unqueued"
+      @batch.update_attributes!(batch_params.merge(state: "queued"))
 
       if @batch.entries_to_process.count > 20
         MappingsBatchWorker.perform_async(@batch.id)

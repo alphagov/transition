@@ -1,17 +1,17 @@
-require 'transition/history'
+require "transition/history"
 
 FactoryBot.define do
   factory :bulk_add_batch do
-    type { 'archive' }
-    paths { ['/a', '/b'] }
-    state { 'unqueued' }
+    type { "archive" }
+    paths { ["/a", "/b"] }
+    state { "unqueued" }
 
     association :site, strategy: :build
     association :user, strategy: :build
   end
 
   factory :import_batch do
-    state { 'unqueued' }
+    state { "unqueued" }
 
     raw_csv do
       <<-CSV.strip_heredoc

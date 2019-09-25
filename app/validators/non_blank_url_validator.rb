@@ -8,6 +8,6 @@ class NonBlankURLValidator < ActiveModel::EachValidator
                 rescue Addressable::URI::InvalidURIError
                   false
     end
-    record.errors.add attribute, (options[:message] || 'is not a URL') unless valid_url
+    record.errors.add attribute, (options[:message] || "is not a URL") unless valid_url
   end
 end

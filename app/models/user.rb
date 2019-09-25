@@ -8,11 +8,11 @@ class User < ActiveRecord::Base
   serialize :permissions, Array
 
   def admin?
-    permissions.include?('admin')
+    permissions.include?("admin")
   end
 
   def gds_editor?
-    permissions.include?('GDS Editor')
+    permissions.include?("GDS Editor")
   end
 
   def can_edit_sites

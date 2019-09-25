@@ -1,17 +1,17 @@
-require 'rails_helper'
-require 'transition/import/revert_entirely_unsafe'
+require "rails_helper"
+require "transition/import/revert_entirely_unsafe"
 
 describe Transition::Import::RevertEntirelyUnsafe::RevertSite do
-  describe '#revert_all_data!' do
+  describe "#revert_all_data!" do
     before do
-      @bona_vacantia = create :organisation, whitehall_slug: 'bona-vacantia'
-      @treasury_office = create :organisation, whitehall_slug: 'treasury-solicitor-s-office'
+      @bona_vacantia = create :organisation, whitehall_slug: "bona-vacantia"
+      @treasury_office = create :organisation, whitehall_slug: "treasury-solicitor-s-office"
       Transition::Import::OrgsSitesHosts.from_yaml!(
-        'spec/fixtures/sites/someyaml/**/*.yml',
-        Transition::Import::WhitehallOrgs.new('spec/fixtures/whitehall/orgs_abridged.yml')
+        "spec/fixtures/sites/someyaml/**/*.yml",
+        Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml"),
       )
 
-      @site_abbr = 'ago'
+      @site_abbr = "ago"
       @ago = Site.find_by(abbr: @site_abbr)
       create :mapping, site: @ago
 
@@ -48,47 +48,47 @@ describe Transition::Import::RevertEntirelyUnsafe::RevertSite do
       )
     end
 
-    context 'delete the site and all data' do
+    context "delete the site and all data" do
       before do
         Transition::Import::RevertEntirelyUnsafe::RevertSite.new(@ago).revert_all_data!
       end
 
-      it 'should only have deleted the site passed in' do
+      it "should only have deleted the site passed in" do
         expect(Site.count).to eql(7)
         expect(Site.where(abbr: @site_abbr)).to be_empty
-        expect(Site.where(abbr: 'bis')).to exist
+        expect(Site.where(abbr: "bis")).to exist
       end
 
-      it 'should have deleted the hosts' do
+      it "should have deleted the hosts" do
         expect(Host.count).to eql(16)
         @host_names.each do |host|
           expect(Host.find_by(hostname: host)).to be_nil
         end
       end
 
-      it 'should have deleted the mappings' do
+      it "should have deleted the mappings" do
         expect(@ago.mappings.count).to eql(0)
       end
 
-      it 'should have deleted all the hits' do
+      it "should have deleted all the hits" do
         @ago.hosts.each do |host|
           expect(host.hits.count).to eql(0)
         end
       end
 
-      it 'should have deleted all the host_paths' do
+      it "should have deleted all the host_paths" do
         @ago.hosts.each do |host|
           expect(host.host_paths.count).to eql(0)
         end
       end
 
-      it 'should have deleted all the daily_hit_totals' do
+      it "should have deleted all the daily_hit_totals" do
         @ago.hosts.each do |host|
           expect(host.daily_hit_totals).to eql(0)
         end
       end
 
-      it 'should have deleted the sites\' links to extra organisations' do
+      it "should have deleted the sites' links to extra organisations" do
         expect(@ago.extra_organisations.count).to eql(0)
       end
     end

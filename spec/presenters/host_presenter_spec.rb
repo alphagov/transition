@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
-describe 'HostPresenter' do
-  describe '#as_hash' do
+describe "HostPresenter" do
+  describe "#as_hash" do
     let(:site) { create(:site) }
     let(:host) { site.default_host }
 
@@ -9,7 +9,7 @@ describe 'HostPresenter' do
 
     it { is_expected.to have_key(:hostname) }
 
-    describe '[:hostname]' do
+    describe "[:hostname]" do
       subject { super()[:hostname] }
       it { is_expected.to eql(host.hostname) }
     end

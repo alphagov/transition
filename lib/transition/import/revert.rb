@@ -1,4 +1,4 @@
-require 'transition/import/console_job_wrapper'
+require "transition/import/console_job_wrapper"
 
 module Transition
   module Import
@@ -19,7 +19,7 @@ module Transition
 
           @site_abbrs.each { |abbr| revert_safely!(abbr) }
 
-          console_puts 'Ensure that the deleted sites have also been deleted from the transition-config repo; otherwise they will be re-imported.'
+          console_puts "Ensure that the deleted sites have also been deleted from the transition-config repo; otherwise they will be re-imported."
         end
 
       private

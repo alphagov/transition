@@ -18,13 +18,13 @@ module Transition
         end
 
         def data_row?
-          @old_value.starts_with?('/') || ::Transition::PathOrUrl.starts_with_http_scheme?(@old_value)
+          @old_value.starts_with?("/") || ::Transition::PathOrUrl.starts_with_http_scheme?(@old_value)
         end
 
         def type
-          @type ||= if new_value && ((new_value.upcase == 'TNA') || new_url_is_a_national_archives_url?) then 'archive'
-                    elsif new_value then 'redirect'
-                    else 'unresolved'
+          @type ||= if new_value && ((new_value.upcase == "TNA") || new_url_is_a_national_archives_url?) then "archive"
+                    elsif new_value then "redirect"
+                    else "unresolved"
                     end
         end
 
@@ -33,7 +33,7 @@ module Transition
         end
 
         def homepage?
-          path == ''
+          path == ""
         end
 
         def new_url
@@ -45,7 +45,7 @@ module Transition
         end
 
         def archive?
-          type == 'archive'
+          type == "archive"
         end
 
         def archive_with_custom_url?
@@ -57,7 +57,7 @@ module Transition
         end
 
         def redirect?
-          type == 'redirect'
+          type == "redirect"
         end
 
         def <=>(other)
