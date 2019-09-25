@@ -46,6 +46,7 @@ class Organisation < ActiveRecord::Base
 
   # Returns organisations ordered by descending error count across
   # all their sites.
+  # rubocop:disable Metrics/BlockLength
   scope :leaderboard, -> {
     select(
       <<-POSTGRESQL,
@@ -87,6 +88,7 @@ class Organisation < ActiveRecord::Base
     group("organisations.id").
     order("error_count DESC NULLS LAST")
   }
+  # rubocop:enable Metrics/BlockLength
 
   def to_param
     whitehall_slug
