@@ -22,7 +22,6 @@ Rails.application.routes.draw do
   get "leaderboard", to: "leaderboard#index"
 
   resources :sites, only: %i[edit update show] do
-
     get "mappings/find", as: "mapping_find"
     resources :mappings, only: %i[index edit update] do
       resources :versions, only: [:index]
