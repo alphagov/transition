@@ -40,6 +40,7 @@ module Transition
           "tmp/#{Time.zone.now.to_i}-whitehall_mappings.csv"
         end
 
+        # rubocop:disable Security/Open
         def download(filename = default_filename)
           Rails.logger.info("Downloading 30+ MB CSV to #{filename}")
           # Have to force the encoding because it isn't set on the response, so
@@ -50,6 +51,7 @@ module Transition
           end
           filename
         end
+        # rubocop:enable Security/Open
 
         def process(filename, delete_after: false)
           Rails.logger.info("Processing...")
