@@ -58,8 +58,8 @@ describe ImportBatchesController do
             site_id: site.abbr,
             import_batch: {
               raw_csv: "/a,TNA\n/b,#{long_url}",
-              tag_list: ""
-            }
+              tag_list: "",
+            },
           }
       end
 
@@ -119,7 +119,7 @@ describe ImportBatchesController do
             site_id: site.abbr,
             import_batch: {
               raw_csv: "a,", tag_list: ""
-            }
+            },
           }
       end
 
@@ -192,7 +192,7 @@ describe ImportBatchesController do
           params: {
             site_id: site.abbr,
             import_batch: { update_existing: "true" },
-            id: batch.id
+            id: batch.id,
           }
       end
 
@@ -207,7 +207,7 @@ describe ImportBatchesController do
           params: {
             site_id: site.abbr,
             import_batch: { update_existing: "true" },
-            id: large_batch.id
+            id: large_batch.id,
           }
       end
 

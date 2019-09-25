@@ -276,8 +276,8 @@ describe MappingsController do
               id: mapping.id,
               mapping: {
                 path: "/Needs/Canonicalization?has=some&query=parts",
-                new_url: "http://a.gov.uk"
-              }
+                new_url: "http://a.gov.uk",
+              },
             }
         end
 
@@ -311,8 +311,8 @@ describe MappingsController do
             mapping: {
               path: "/Needs/Canonicalization?has=some&query=parts",
               new_url: "http://somewhere.gov.uk",
-              tag_list: "fEE, fI, fO"
-             }
+              tag_list: "fEE, fI, fO",
+             },
            }
       end
 
@@ -341,7 +341,7 @@ describe MappingsController do
             site_id: site.abbr,
             mapping_ids: mapping_ids,
             type: "archive",
-            return_path: @mappings_index_with_filter
+            return_path: @mappings_index_with_filter,
           }
       end
 
@@ -361,7 +361,7 @@ describe MappingsController do
             params: {
               site_id: site.abbr,
               mapping_ids: [other_mapping.id],
-              type: "archive"
+              type: "archive",
             }
 
           expect(response).to redirect_to site_mappings_path(site)
@@ -375,7 +375,7 @@ describe MappingsController do
               site_id: site.abbr,
               mapping_ids: [other_mapping.id],
               type: "archive",
-              return_path: @mappings_index_with_filter
+              return_path: @mappings_index_with_filter,
             }
 
           expect(response).to redirect_to @mappings_index_with_filter
@@ -396,7 +396,7 @@ describe MappingsController do
               site_id: site.abbr,
               mapping_ids: mapping_ids,
               type: "bad",
-              return_path: @mappings_index_with_filter
+              return_path: @mappings_index_with_filter,
             }
 
           expect(response).to redirect_to @mappings_index_with_filter
@@ -414,7 +414,7 @@ describe MappingsController do
             site_id: site.abbr,
             mapping_ids: mapping_ids,
             operation: "tag",
-            return_path: "should_not_return"
+            return_path: "should_not_return",
           }
       end
 
@@ -441,7 +441,7 @@ describe MappingsController do
             site_id: site.abbr,
             mapping_ids: mapping_ids,
             operation: "redirect",
-            new_url: "http://a.gov.uk"
+            new_url: "http://a.gov.uk",
           }
       end
 
@@ -466,7 +466,7 @@ describe MappingsController do
             mapping_ids: mapping_ids,
             operation: "redirect",
             new_url: @new_url,
-            return_path: @mappings_index_with_filter
+            return_path: @mappings_index_with_filter,
           }
       end
 
@@ -511,7 +511,7 @@ describe MappingsController do
               site_id: site.abbr,
               mapping_ids: [other_mapping.id],
               type: "redirect",
-              new_url: "http://a.gov.uk"
+              new_url: "http://a.gov.uk",
             }
 
           expect(response).to redirect_to site_mappings_path(site)
@@ -526,7 +526,7 @@ describe MappingsController do
               mapping_ids: [other_mapping.id],
               type: "redirect",
               new_url: "http://a.gov.uk",
-              return_path: @mappings_index_with_filter
+              return_path: @mappings_index_with_filter,
             }
 
           expect(response).to redirect_to @mappings_index_with_filter
@@ -543,7 +543,7 @@ describe MappingsController do
             site_id: site.abbr,
             mapping_ids: mapping_ids,
             type: "redirect",
-            new_url: "http://{"
+            new_url: "http://{",
           }
       end
 
@@ -623,7 +623,7 @@ describe MappingsController do
         params: {
           site_id: mapping.site,
           id: mapping.id,
-          mapping: { path: "/foo" }
+          mapping: { path: "/foo" },
         }
 
       expect(response.status).to eql(403)
@@ -643,9 +643,9 @@ describe MappingsController do
             id: mapping.id,
             mapping: {
               path: "/Needs/Canonicalization?has=some&query=parts",
-              new_url: "http://a.gov.uk"
+              new_url: "http://a.gov.uk",
             },
-            return_path: "http://malicious.com"
+            return_path: "http://malicious.com",
           }
 
         expect(response).to redirect_to site_mappings_path(site)
@@ -662,7 +662,7 @@ describe MappingsController do
             mapping_ids: [mapping.id],
             operation: "redirect",
             new_url: "http://a.gov.uk",
-            return_path: "http://malicious.com"
+            return_path: "http://malicious.com",
           }
 
         expect(response).to redirect_to site_mappings_path(site)

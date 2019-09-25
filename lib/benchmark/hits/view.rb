@@ -56,7 +56,7 @@ module Benchmark
         "redirects" => :category,
         "archives"  => :category,
         "errors"    => :category,
-        "summary"   => :summary
+        "summary"   => :summary,
       }.freeze
       DEFAULT_PERIOD         = "all-time".freeze
       DEFAULT_NUMBER_OF_RUNS = 5

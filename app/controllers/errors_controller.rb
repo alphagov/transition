@@ -33,7 +33,7 @@ private
     {
       _response_info: {
         status: "error",
-        message: message
+        message: message,
       },
     }
   end

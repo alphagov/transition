@@ -39,7 +39,7 @@ module MappingsHelper
         bootstrap_flavour_tabs(
           {
             "Edit"    => edit_site_mapping_path(@mapping.site, @mapping),
-            "History" => site_mapping_versions_path(@mapping.site, @mapping)
+            "History" => site_mapping_versions_path(@mapping.site, @mapping),
           },
           options
 )

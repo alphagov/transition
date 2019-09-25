@@ -69,7 +69,7 @@ describe BulkAddBatchesController do
           params: {
             site_id: site.abbr,
             id: batch.id,
-            return_path: "/donkey"
+            return_path: "/donkey",
           }
 
         expect(assigns(:bulk_add_cancel_destination)).to eq("/donkey")
@@ -82,7 +82,7 @@ describe BulkAddBatchesController do
           params: {
             site_id: site.abbr,
             id: batch.id,
-            return_path: "http://google.com"
+            return_path: "http://google.com",
           }
 
         expect(assigns(:bulk_add_cancel_destination)).to eq(site_mappings_path(site.abbr))
@@ -126,7 +126,7 @@ describe BulkAddBatchesController do
             params: {
               site_id: site.abbr,
               update_existing: "true",
-              id: batch.id
+              id: batch.id,
             }
         end
 
@@ -145,7 +145,7 @@ describe BulkAddBatchesController do
             params: {
               site_id: site.abbr,
               update_existing: "true",
-              id: large_batch.id
+              id: large_batch.id,
             }
         end
 
@@ -215,7 +215,7 @@ describe BulkAddBatchesController do
           params: {
             site_id: site.abbr,
             id: batch.id,
-            return_path: "http://malicious.com"
+            return_path: "http://malicious.com",
           }
         expect(response).to redirect_to site_mappings_path(site)
       end

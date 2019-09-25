@@ -58,7 +58,7 @@ module HitsHelper
                count_for_category = category_counts[c.name] || 0
                { v: count_for_category, f: number_with_delimiter(count_for_category) }
              end
-           ]
+           ],
       }
     end
 

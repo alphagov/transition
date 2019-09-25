@@ -15,7 +15,7 @@ module View
         "all"       => "#333",
         "errors"    => "#e99",
         "archives"  => "#aaa",
-        "redirects" => "#9e9"
+        "redirects" => "#9e9",
       }.freeze
 
       def self.all

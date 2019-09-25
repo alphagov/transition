@@ -22,7 +22,7 @@ describe BatchesController do
         expected = {
           "done" => 0,
           "total" => 2,
-          "past_participle" => "added"
+          "past_participle" => "added",
         }
         expect(@parsed_response).to eq(expected)
       end

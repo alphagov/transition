@@ -16,7 +16,7 @@ module View
         let(:params) {
           {
             type:             "archive",
-            new_url_contains: "something"
+            new_url_contains: "something",
           }
         }
 
@@ -33,7 +33,7 @@ module View
         let(:params) {
           {
             type:             "unresolved",
-            new_url_contains: "something"
+            new_url_contains: "something",
           }
         }
 
@@ -200,7 +200,7 @@ module View
             new_url_contains: "something",
             path_contains:    "CanonicalIZED?q=1",
             tagged:           "fee,fi,fo",
-            sort:             "by_hits"
+            sort:             "by_hits",
           }
         }
 
