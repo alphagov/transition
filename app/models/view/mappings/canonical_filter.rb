@@ -13,11 +13,11 @@ module View
       def to_s
         # Canonicalisation removes trailing slashes, which in this case
         # can be an important part of the search string. Put them back.
-        @canonicalized ||= if @filter.ends_with?("/")
-                             canonicalized + "/"
-                           else
-                             canonicalized
-                           end
+        @to_s ||= if @filter.ends_with?("/")
+                    canonicalized + "/"
+                  else
+                    canonicalized
+                  end
       end
 
     private
