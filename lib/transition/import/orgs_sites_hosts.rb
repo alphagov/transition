@@ -1,5 +1,5 @@
-require 'transition/import/sites'
-require 'transition/import/organisations'
+require "transition/import/sites"
+require "transition/import/organisations"
 
 module Transition
   module Import

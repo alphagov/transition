@@ -12,8 +12,8 @@ class Organisation < ActiveRecord::Base
             through: :parent_organisational_relationships
 
   has_and_belongs_to_many :extra_sites,
-                           join_table: 'organisations_sites',
-                           class_name: 'Site'
+                           join_table: "organisations_sites",
+                           class_name: "Site"
 
   has_many :sites
   has_many :hosts, through: :sites
@@ -31,7 +31,7 @@ class Organisation < ActiveRecord::Base
   # UNION these two ways in an INNER JOIN to pretend that the FK relationship
   # is in fact a row in organisations_sites.
   scope :with_sites, -> {
-    select('organisations.*, COUNT(*) as site_count').
+    select("organisations.*, COUNT(*) as site_count").
     joins('
       INNER JOIN (
         SELECT organisation_id, site_id FROM organisations_sites
@@ -39,9 +39,9 @@ class Organisation < ActiveRecord::Base
         SELECT s.organisation_id, s.id FROM sites s
       ) AS organisations_sites ON organisations_sites.organisation_id = organisations.id
     ').
-    joins('INNER JOIN sites ON sites.id = organisations_sites.site_id').
-    group('organisations.id'). # Postgres will accept a group by primary key
-    having('COUNT(*) > 0')
+    joins("INNER JOIN sites ON sites.id = organisations_sites.site_id").
+    group("organisations.id"). # Postgres will accept a group by primary key
+    having("COUNT(*) > 0")
   }
 
   # Returns organisations ordered by descending error count across
@@ -84,8 +84,8 @@ class Organisation < ActiveRecord::Base
                    GROUP BY site_id) AS error_counts ON error_counts.site_id = sites.id
       POSTGRESQL
     ).
-    group('organisations.id').
-    order('error_count DESC NULLS LAST')
+    group("organisations.id").
+    order("error_count DESC NULLS LAST")
   }
 
   def to_param

@@ -1,4 +1,4 @@
-require 'transition/import/console_job_wrapper'
+require "transition/import/console_job_wrapper"
 
 module Transition
   module Import

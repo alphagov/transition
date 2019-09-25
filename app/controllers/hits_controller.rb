@@ -4,20 +4,20 @@ class HitsController < ApplicationController
   tracks_mappings_progress except: %i[universal_summary universal_category]
 
   def index
-    @category = View::Hits::Category['all'].tap do |c|
+    @category = View::Hits::Category["all"].tap do |c|
       c.points = totals_in_period
 
-      c.hits = if @period.slug == 'all-time' && @site.able_to_use_view?
+      c.hits = if @period.slug == "all-time" && @site.able_to_use_view?
                  @site.precomputed_all_hits
                    .includes(:mapping, host: :site).page(params[:page])
                else
-                 hits_in_period.by_path_and_status.page(params[:page]).order('count DESC')
+                 hits_in_period.by_path_and_status.page(params[:page]).order("count DESC")
                end
     end
   end
 
   def summary
-    @sections = View::Hits::Category.all.reject { |c| c.name == 'all' }.map do |category|
+    @sections = View::Hits::Category.all.reject { |c| c.name == "all" }.map do |category|
       category.tap do |c|
         c.hits = hits_in_period.by_path_and_status.send(category.to_sym).top_ten.to_a
       end
@@ -26,7 +26,7 @@ class HitsController < ApplicationController
     unless @period.single_day?
       @point_categories = View::Hits::Category.all.map do |category|
         category.tap do |c|
-          c.points = (c.name == 'all' ? totals_in_period : totals_in_period.send(category.to_sym))
+          c.points = (c.name == "all" ? totals_in_period : totals_in_period.send(category.to_sym))
         end
       end
     end
@@ -34,13 +34,13 @@ class HitsController < ApplicationController
 
   def category
     @category = View::Hits::Category[params[:category]].tap do |c|
-      c.hits   = hits_in_period.by_path_and_status.send(c.to_sym).page(params[:page]).order('count DESC')
+      c.hits   = hits_in_period.by_path_and_status.send(c.to_sym).page(params[:page]).order("count DESC")
       c.points = totals_in_period.by_date_and_status.send(c.to_sym)
     end
   end
 
   def universal_summary
-    @sections = View::Hits::Category.all.reject { |c| c.name == 'all' }.map do |category|
+    @sections = View::Hits::Category.all.reject { |c| c.name == "all" }.map do |category|
       category.tap do |c|
         c.hits = hits_in_period.by_host_and_path_and_status.send(category.to_sym).top_ten.to_a
       end
@@ -50,7 +50,7 @@ class HitsController < ApplicationController
   def universal_category
     # Category - one of %w(archives redirect errors) (see routes.rb)
     @category = View::Hits::Category[params[:category]].tap do |c|
-      c.hits = hits_in_period.by_host_and_path_and_status.send(c.to_sym).page(params[:page]).order('count DESC')
+      c.hits = hits_in_period.by_host_and_path_and_status.send(c.to_sym).page(params[:page]).order("count DESC")
     end
   end
 

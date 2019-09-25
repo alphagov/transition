@@ -1,5 +1,5 @@
-require 'csv'
-require 'transition/history'
+require "csv"
+require "transition/history"
 
 module Transition
   module Import
@@ -18,11 +18,11 @@ module Transition
             # Rows are like:
             # Old URL,New URL,Admin URL,State
             ::CSV.new(urls_io, headers: true).each do |row|
-              next if row['Old URL'].blank?
-              next unless row['State'] == 'published'
+              next if row["Old URL"].blank?
+              next unless row["State"] == "published"
 
               begin
-                old_uri = Addressable::URI.parse(row['Old URL'])
+                old_uri = Addressable::URI.parse(row["Old URL"])
               rescue Addressable::URI::InvalidURIError
                 Rails.logger.warn("Skipping mapping for unparseable Old URL in Whitehall URL CSV: #{row['Old URL']}")
                 next
@@ -33,17 +33,17 @@ module Transition
               if host.nil?
                 Rails.logger.warn("Skipping mapping for unknown host in Whitehall URL CSV: '#{old_uri.host}'")
               else
-                canonical_path = host.site.canonical_path(row['Old URL'])
+                canonical_path = host.site.canonical_path(row["Old URL"])
                 existing_mapping = host.site.mappings.where(path: canonical_path).first
 
                 if existing_mapping
-                  if existing_mapping.type == 'archive' ||
-                      existing_mapping.type == 'unresolved' ||
+                  if existing_mapping.type == "archive" ||
+                      existing_mapping.type == "unresolved" ||
                       ! existing_mapping.edited_by_human?
-                    existing_mapping.update_attributes(new_url: row['New URL'], type: 'redirect')
+                    existing_mapping.update_attributes(new_url: row["New URL"], type: "redirect")
                   end
                 else
-                  host.site.mappings.create(path: canonical_path, new_url: row['New URL'], type: 'redirect')
+                  host.site.mappings.create(path: canonical_path, new_url: row["New URL"], type: "redirect")
                 end
               end
             end

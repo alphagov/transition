@@ -1,4 +1,4 @@
-require 'transition/import/site_yaml_file'
+require "transition/import/site_yaml_file"
 
 module Transition
   module Import

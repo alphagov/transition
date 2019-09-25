@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe TagsHelper do
-  describe '#most_used_tags_json' do
+  describe "#most_used_tags_json" do
     let!(:site) { create(:site) }
     let!(:mappings) {
       [
@@ -13,19 +13,19 @@ describe TagsHelper do
     }
 
     subject(:tags_as_array) do
-      helper.most_used_tags_json(site, options).gsub(/[\[\]"]/, '').split(',')
+      helper.most_used_tags_json(site, options).gsub(/[\[\]"]/, "").split(",")
     end
 
-    context 'when no limit is set' do
+    context "when no limit is set" do
       let(:options) { {} }
-      it 'returns all the tags for all the mappings' do
+      it "returns all the tags for all the mappings" do
         expect(tags_as_array).to match_array(%w(tag1 tag2 tag3 tag4 tag5 tag6))
       end
     end
 
-    context 'when a limit of 3 is set' do
+    context "when a limit of 3 is set" do
       let(:options) { { limit: 3 } }
-      it 'includes only the most-used tags' do
+      it "includes only the most-used tags" do
         expect(tags_as_array).to match_array(%w(tag1 tag3 tag4))
       end
     end

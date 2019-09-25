@@ -1,5 +1,5 @@
 crumb :root do
-  link 'Organisations', organisations_path
+  link "Organisations", organisations_path
 end
 
 crumb :organisation do |organisation|
@@ -13,57 +13,57 @@ crumb :site do |site|
 end
 
 crumb :hits do |site|
-  link 'Analytics', site_mappings_path(site)
+  link "Analytics", site_mappings_path(site)
   parent :site, site
 end
 
 crumb :universal_hits do
-  link 'Universal analytics', hits_path
+  link "Universal analytics", hits_path
   parent :root
 end
 
 crumb :mappings do |site|
-  link 'Mappings', site_mappings_path(site)
+  link "Mappings", site_mappings_path(site)
   parent :site, site
 end
 
 crumb :filter_mappings do |site|
-  link 'Filter mappings', site_mappings_path(site)
+  link "Filter mappings", site_mappings_path(site)
   parent :mappings, site
 end
 
 crumb :filtered_mappings do |site|
-  link 'Filtered mappings', site_mappings_path(site)
+  link "Filtered mappings", site_mappings_path(site)
   parent :mappings, site
 end
 
 crumb :new_mappings do |site|
-  link 'Add mappings', new_site_bulk_add_batch_path(site)
+  link "Add mappings", new_site_bulk_add_batch_path(site)
   parent :mappings, site
 end
 
 crumb :new_mappings_confirmation do |site|
-  link 'Confirm new mappings'
+  link "Confirm new mappings"
   parent :new_mappings, site
 end
 
 crumb :edit_mapping do |mapping|
-  link 'Edit mapping', edit_site_mapping_path(mapping.site, mapping)
+  link "Edit mapping", edit_site_mapping_path(mapping.site, mapping)
   parent :mappings, mapping.site
 end
 
 crumb :edit_site do |site|
-  link 'Edit site', edit_site_path(site)
+  link "Edit site", edit_site_path(site)
   parent :site, site
 end
 
 crumb :history do |mapping|
-  link 'History', site_mapping_versions_path(mapping.site, mapping)
+  link "History", site_mapping_versions_path(mapping.site, mapping)
   parent :edit_mapping, mapping
 end
 
 crumb :edit_multiple_mappings do |site|
-  link 'Edit multiple mappings', edit_multiple_site_mappings_path(site)
+  link "Edit multiple mappings", edit_multiple_site_mappings_path(site)
   parent :mappings, site
 end
 

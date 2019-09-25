@@ -1,8 +1,8 @@
 namespace :import do
-  desc 'Deletes a site and all associated data'
+  desc "Deletes a site and all associated data"
   task :revert_entirely_unsafe, [:site_abbr] => :environment do |_, args|
     if args[:site_abbr].nil?
-      puts 'Usage: rake import:revert_entirely_unsafe[site_abbr]'
+      puts "Usage: rake import:revert_entirely_unsafe[site_abbr]"
       abort
     end
 

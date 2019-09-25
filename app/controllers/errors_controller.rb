@@ -32,7 +32,7 @@ private
   def json_error(message)
     {
       _response_info: {
-        status: 'error',
+        status: "error",
         message: message
       },
     }

@@ -1,5 +1,5 @@
-require 'transition/import/console_job_wrapper'
-require 'transition/import/postgresql_settings'
+require "transition/import/console_job_wrapper"
+require "transition/import/postgresql_settings"
 
 module Transition
   module Import
@@ -36,8 +36,8 @@ module Transition
       POSTGRESQL
 
       def self.from_hits!
-        start 'Refreshing daily hit totals from hits' do
-          change_settings('work_mem' => '256MB') do
+        start "Refreshing daily hit totals from hits" do
+          change_settings("work_mem" => "256MB") do
             ActiveRecord::Base.connection.execute(UPDATE_TOTALS_FROM_HITS)
             ActiveRecord::Base.connection.execute(INSERT_TOTALS_FROM_HITS)
           end

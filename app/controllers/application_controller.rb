@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   def render_error(status, options = {})
     @custom_header = options[:header]
     @custom_body = options[:body]
-    render "errors/error_#{status}", status: status, layout: 'error_page'
+    render "errors/error_#{status}", status: status, layout: "error_page"
   end
 
 private

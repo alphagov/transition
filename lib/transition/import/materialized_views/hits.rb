@@ -1,4 +1,4 @@
-require 'transition/import/console_job_wrapper'
+require "transition/import/console_job_wrapper"
 
 module Transition
   module Import
@@ -23,7 +23,7 @@ module Transition
           Site.where(precompute_all_hits_view: true).each do |site|
             view_name = "#{site.abbr}_all_hits"
 
-            doing = Postgres::MaterializedView.exists?(view_name) ? 'Refreshing' : 'Creating'
+            doing = Postgres::MaterializedView.exists?(view_name) ? "Refreshing" : "Creating"
 
             console_puts "#{doing} #{view_name}"
             Postgres::MaterializedView.create(

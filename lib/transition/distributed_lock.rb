@@ -1,5 +1,5 @@
-require 'redis'
-require 'redis-lock'
+require "redis"
+require "redis-lock"
 module Transition
   class DistributedLock
     LIFETIME = (5 * 60) # seconds
@@ -10,7 +10,7 @@ module Transition
 
     def lock
       Redis.current.lock("transition:#{Rails.env}:#{@lock_name}", life: LIFETIME) do
-        Rails.logger.debug('Successfully got a lock. Running...')
+        Rails.logger.debug("Successfully got a lock. Running...")
         yield
       end
     rescue Redis::Lock::LockNotAcquired => e

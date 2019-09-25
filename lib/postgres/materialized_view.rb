@@ -1,4 +1,4 @@
-require 'postgres/relation'
+require "postgres/relation"
 
 module Postgres
   class MaterializedView < Relation
@@ -24,7 +24,7 @@ module Postgres
 
     def self.get_body(name)
       viewdef = execute("select pg_get_viewdef('#{name}', true)").first
-      viewdef['pg_get_viewdef']
+      viewdef["pg_get_viewdef"]
     end
 
     def self.drop_sql(name)

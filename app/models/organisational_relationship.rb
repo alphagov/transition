@@ -5,7 +5,7 @@ class OrganisationalRelationship < ActiveRecord::Base
 
   def org_cannot_be_its_own_parent
     if self.parent_organisation_id == self.child_organisation_id
-      errors[:base] << 'An organisation cannot be its own parent.'
+      errors[:base] << "An organisation cannot be its own parent."
     end
   end
 end

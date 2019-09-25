@@ -2,7 +2,7 @@ module Transition
   module Import
     module CSV
       class CSVSeparatorDetector
-        COMMA = ','.freeze
+        COMMA = ",".freeze
         TAB = "\t".freeze
 
         def initialize(rows)

@@ -9,7 +9,7 @@ class HostnameValidator < ActiveModel::EachValidator
     end
 
     unless valid
-      record.errors[attribute] << 'is an invalid hostname'
+      record.errors[attribute] << "is an invalid hostname"
     end
   end
 end

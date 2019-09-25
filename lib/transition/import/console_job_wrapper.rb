@@ -37,7 +37,7 @@ module Transition
 
       ##
       # Common idiom of doing a thing, then printing a done message on the same line
-      def start(message, options = { doing: '...', done: 'done', skipped: 'skipped' })
+      def start(message, options = { doing: "...", done: "done", skipped: "skipped" })
         return unless block_given?
 
         console_print "#{message} #{options[:doing]} "

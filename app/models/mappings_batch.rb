@@ -8,7 +8,7 @@ class MappingsBatch < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :site
-  has_many :entries, foreign_key: :mappings_batch_id, class_name: 'MappingsBatchEntry', dependent: :delete_all
+  has_many :entries, foreign_key: :mappings_batch_id, class_name: "MappingsBatchEntry", dependent: :delete_all
 
   validates :user, presence: true
   validates :site, presence: true
@@ -29,11 +29,11 @@ class MappingsBatch < ActiveRecord::Base
   end
 
   def succeeded?
-    state == 'succeeded'
+    state == "succeeded"
   end
 
   def failed?
-    state == 'failed'
+    state == "failed"
   end
 
   def process
@@ -47,7 +47,7 @@ class MappingsBatch < ActiveRecord::Base
         mapping.type = entry.type
         mapping.new_url = entry.new_url
         mapping.archive_url = entry.archive_url
-        mapping.tag_list = [mapping.tag_list, tag_list].join(',')
+        mapping.tag_list = [mapping.tag_list, tag_list].join(",")
         mapping.save
 
         entry.update_column(:processed, true)
@@ -56,11 +56,11 @@ class MappingsBatch < ActiveRecord::Base
   end
 
   def with_state_tracking
-    update_column(:state, 'processing')
+    update_column(:state, "processing")
     yield
-    update_column(:state, 'succeeded')
+    update_column(:state, "succeeded")
   rescue StandardError
-    update_column(:state, 'failed')
+    update_column(:state, "failed")
     raise
   end
 end

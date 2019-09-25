@@ -1,7 +1,7 @@
-require 'pathname'
-require 'transition/import/console_job_wrapper'
-require 'transition/import/postgresql_settings'
-require 'transition/import/hits/ignore'
+require "pathname"
+require "transition/import/console_job_wrapper"
+require "transition/import/postgresql_settings"
+require "transition/import/hits/ignore"
 
 module Transition
   module Import
@@ -80,12 +80,12 @@ module Transition
         Services.s3.list_objects(bucket: bucket).each do |resp|
           resp.contents.each do |object|
             start "Importing #{object.key}" do |job|
-              job.skip! and next if object.key.end_with? '.csv.metadata'
+              job.skip! and next if object.key.end_with? ".csv.metadata"
 
               import_record = self.find_import_record(object.key)
               job.skip! and next if import_record.content_hash == object.etag
 
-              is_tsv = object.key.end_with? '.tsv'
+              is_tsv = object.key.end_with? ".tsv"
               load_data_query = is_tsv ? LOAD_TSV_DATA : LOAD_CSV_DATA
 
               resp = Services.s3.get_object(bucket: bucket, key: object.key)
@@ -113,7 +113,7 @@ module Transition
             load_data_query,
             import_record,
             content_hash,
-            File.open(absolute_filename, 'r').read,
+            File.open(absolute_filename, "r").read,
           )
         end
       end
@@ -130,9 +130,9 @@ module Transition
         done = 0
         unchanged = 0
 
-        change_settings('work_mem' => '2GB') do
+        change_settings("work_mem" => "2GB") do
           Dir[File.expand_path(filemask)].each do |filename|
-            is_tsv = File.extname(filename) == '.tsv'
+            is_tsv = File.extname(filename) == ".tsv"
             load_data_query = is_tsv ? LOAD_TSV_DATA : LOAD_CSV_DATA
 
             Hits.from_file!(load_data_query, filename) ? done += 1 : unchanged += 1

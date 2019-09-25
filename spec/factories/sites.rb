@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :site_without_host, class: Site do
     sequence(:abbr) { |n| "site-#{n}" }
-    homepage { 'https://www.gov.uk/government/organisations/example-org' }
-    query_params { '' }
+    homepage { "https://www.gov.uk/government/organisations/example-org" }
+    query_params { "" }
     launch_date { 1.month.ago }
-    tna_timestamp { '2012-08-16 22:40:15' }
+    tna_timestamp { "2012-08-16 22:40:15" }
 
     association :organisation
 
@@ -26,7 +26,7 @@ FactoryBot.define do
           create :hit, :error, host: site.default_host, path: mapping.path, count: 40 * n
           create :hit, :redirect, host: site.default_host, path: mapping.path, count: 30 * n
         end
-        create :hit, :redirect, host: site.default_host, path: '/no-mapping', count: 17
+        create :hit, :redirect, host: site.default_host, path: "/no-mapping", count: 17
 
         Transition::Import::HitsMappingsRelations.refresh!
       end

@@ -1,4 +1,4 @@
-require 'benchmark/hits/view'
+require "benchmark/hits/view"
 
 namespace :benchmark do
   namespace :hits do

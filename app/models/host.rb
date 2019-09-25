@@ -3,8 +3,8 @@ class Host < ActiveRecord::Base
   has_many :hits
   has_many :host_paths
   has_many :daily_hit_totals
-  has_one :aka_host, class_name: 'Host', foreign_key: 'canonical_host_id'
-  belongs_to :canonical_host, class_name: 'Host'
+  has_one :aka_host, class_name: "Host", foreign_key: "canonical_host_id"
+  belongs_to :canonical_host, class_name: "Host"
 
   validates :hostname, presence: true
   validates :hostname, hostname: true
@@ -16,18 +16,18 @@ class Host < ActiveRecord::Base
   scope :excluding_aka, -> { where(canonical_host_id: nil) }
 
   scope :with_cname_or_ip_address, -> {
-    where('(cname IS NOT NULL) OR (ip_address IS NOT NULL)')
+    where("(cname IS NOT NULL) OR (ip_address IS NOT NULL)")
   }
 
   FASTLY_BOUNCER_SERVICE_MAP = %w(151.101.2.30 151.101.66.30 151.101.130.30 151.101.194.30).freeze # bouncer.gds.map.fastly.net.
   FASTLY_NEW_BOUNCER_IPS = %w(151.101.0.204 151.101.64.204 151.101.128.204 151.101.192.204).freeze
-  FASTLY_ANYCAST_IPS = ['23.235.33.144', '23.235.37.144'].freeze # FIXME: These IPs are deprecated, Fastly would like to reallocate them
+  FASTLY_ANYCAST_IPS = ["23.235.33.144", "23.235.37.144"].freeze # FIXME: These IPs are deprecated, Fastly would like to reallocate them
   REDIRECTOR_IPS     = FASTLY_ANYCAST_IPS + FASTLY_BOUNCER_SERVICE_MAP + FASTLY_NEW_BOUNCER_IPS
 
   REDIRECTOR_CNAME = /^(redirector|bouncer)-cdn[^.]*\.production\.govuk\.service\.gov\.uk$/.freeze
 
   def aka?
-    hostname.start_with?('aka')
+    hostname.start_with?("aka")
   end
 
   def aka_hostname
@@ -37,15 +37,15 @@ class Host < ActiveRecord::Base
   def self.aka_hostname(hostname)
     # This does the reverse of Bouncer's aka handling:
     #     hostname.sub(/^aka-/, '').sub(/^aka\./, 'www.')
-    if hostname.start_with?('www.')
-      hostname.sub(/^www\./, 'aka.')
+    if hostname.start_with?("www.")
+      hostname.sub(/^www\./, "aka.")
     else
-      'aka-' + hostname
+      "aka-" + hostname
     end
   end
 
   def self.canonical_hostname(hostname)
-    hostname.sub(/^aka-/, '').sub(/^aka\./, 'www.')
+    hostname.sub(/^aka-/, "").sub(/^aka\./, "www.")
   end
 
   def redirected_by_gds?
@@ -56,10 +56,10 @@ class Host < ActiveRecord::Base
   def canonical_host_id_xor_aka_present
     # exclusive or: one and only one of canonical_host_id and aka? is required
     if !aka? && canonical_host_id.present?
-      errors[:canonical_host_id] << 'must be blank for a non-aka host'
+      errors[:canonical_host_id] << "must be blank for a non-aka host"
     end
     if aka? && canonical_host_id.blank?
-      errors[:canonical_host_id] << 'can\'t be blank for an aka host'
+      errors[:canonical_host_id] << "can't be blank for an aka host"
     end
   end
 

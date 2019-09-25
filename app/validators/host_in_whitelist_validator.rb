@@ -12,7 +12,7 @@ class HostInWhitelistValidator < ActiveModel::EachValidator
     uri = Addressable::URI.parse(url)
     return false if uri.host.nil?
 
-    uri.host.end_with?('.gov.uk', '.mod.uk', '.nhs.uk') || WhitelistedHost.exists?(hostname: uri.host)
+    uri.host.end_with?(".gov.uk", ".mod.uk", ".nhs.uk") || WhitelistedHost.exists?(hostname: uri.host)
   rescue Addressable::URI::InvalidURIError
     false
   end

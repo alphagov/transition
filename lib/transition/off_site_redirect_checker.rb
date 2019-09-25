@@ -11,7 +11,7 @@ module Transition
 
       return false if location.blank?
 
-      location.start_with?('/') && ! location.start_with?('//')
+      location.start_with?("/") && ! location.start_with?("//")
     end
   end
 end

@@ -1,4 +1,4 @@
-require 'transition/history'
+require "transition/history"
 
 class Mapping < ActiveRecord::Base
   include Concerns::NilifyBlanks
@@ -20,10 +20,10 @@ class Mapping < ActiveRecord::Base
   validates :site, presence: true
   validates :path,
             length: { maximum: 2048 },
-            exclusion: { in: ['/'], message: I18n.t('mappings.not_possible_to_edit_homepage_mapping') },
+            exclusion: { in: ["/"], message: I18n.t("mappings.not_possible_to_edit_homepage_mapping") },
             is_path: true
   validates :type, presence: true, inclusion: { in: SUPPORTED_TYPES }
-  validates :path, uniqueness: { scope: [:site_id], message: 'Mapping already exists for this site and path!' }
+  validates :path, uniqueness: { scope: [:site_id], message: "Mapping already exists for this site and path!" }
 
   before_validation :trim_scheme_host_and_port_from_path, :fill_in_scheme, :canonicalize_path
 
@@ -32,20 +32,20 @@ class Mapping < ActiveRecord::Base
   after_create :update_hit_relations
 
   validates :new_url, :suggested_url, :archive_url, length: { maximum: 2048 }, non_blank_url: true
-  validates :new_url, presence: { if: :redirect?, message: 'is required' }
+  validates :new_url, presence: { if: :redirect?, message: "is required" }
   validates :new_url, host_in_whitelist: { if: :redirect? }
-  validates :new_url, not_a_national_archives_url: { if: :redirect?, message: 'must not be to the National Archives. Use an archive mapping for that.' }
+  validates :new_url, not_a_national_archives_url: { if: :redirect?, message: "must not be to the National Archives. Use an archive mapping for that." }
   validates :archive_url, national_archives_url: true
 
   scope :with_hit_count, -> {
-    select('mappings.*, SUM(hits.count) as hit_count').
-      joins('LEFT JOIN hits ON hits.mapping_id = mappings.id').
-      group('mappings.id')
+    select("mappings.*, SUM(hits.count) as hit_count").
+      joins("LEFT JOIN hits ON hits.mapping_id = mappings.id").
+      group("mappings.id")
   }
   scope :with_type, ->(type) { where(type: type) }
-  scope :redirects, -> { with_type('redirect') }
-  scope :archives,  -> { with_type('archive') }
-  scope :unresolved, -> { with_type('unresolved') }
+  scope :redirects, -> { with_type("redirect") }
+  scope :archives,  -> { with_type("archive") }
+  scope :unresolved, -> { with_type("unresolved") }
   scope :filtered_by_path, ->(term) do
     where(Mapping.arel_table[:path].matches("%#{term}%")).references(:mapping) if term.present?
   end
@@ -54,15 +54,15 @@ class Mapping < ActiveRecord::Base
   end
 
   def redirect?
-    type == 'redirect'
+    type == "redirect"
   end
 
   def archive?
-    type == 'archive'
+    type == "archive"
   end
 
   def unresolved?
-    type == 'unresolved'
+    type == "unresolved"
   end
 
   ##
@@ -127,9 +127,9 @@ class Mapping < ActiveRecord::Base
     if uri.blank? || uri =~ %r{^https?:}
       uri
     elsif %r{^www.gov.uk}.match?(uri)
-      'https://' + uri
+      "https://" + uri
     else
-      'http://' + uri
+      "http://" + uri
     end
   end
 
@@ -163,7 +163,7 @@ protected
     #   '/' is a homepage path and not valid for a mapping
     #   a path that doesn't start with a '/' isn't a valid path
     # full validation still needs to be run on the path
-    not(path == '/' || path =~ /^[^\/]/)
+    not(path == "/" || path =~ /^[^\/]/)
   end
 
   def tna_timestamp
@@ -181,6 +181,6 @@ protected
     site.hits.where(path: new_hits_paths).update_all(mapping_id: self.id)
     host_paths.update_all(mapping_id: self.id)
 
-    self.update_column(:hit_count, hits.sum('count'))
+    self.update_column(:hit_count, hits.sum("count"))
   end
 end

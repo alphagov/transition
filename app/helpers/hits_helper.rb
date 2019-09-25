@@ -35,12 +35,12 @@ module HitsHelper
     transition_date = site && site.transition_status == :live ? site.launch_date : nil
     dates = {}
     cols  = [
-        { label: 'Date', type: 'date' },
-        { label: 'Transition date line', type: 'string', p: { role: 'annotation' } }
+        { label: "Date", type: "date" },
+        { label: "Transition date line", type: "string", p: { role: "annotation" } }
       ]
 
     categories.each do |category|
-      cols << { label: category.title, type: 'number' }
+      cols << { label: category.title, type: "number" }
 
       category.points.each do |total|
         date                = dates[total.total_on] || (dates[total.total_on] = {})
@@ -53,7 +53,7 @@ module HitsHelper
       rows << {
         c: [
              { v: "Date(#{date.year}, #{date.month - 1}, #{date.day})" },
-             { v: date == transition_date ? 'Transition' : nil },
+             { v: date == transition_date ? "Transition" : nil },
              *categories.map do |c|
                count_for_category = category_counts[c.name] || 0
                { v: count_for_category, f: number_with_delimiter(count_for_category) }
@@ -71,9 +71,9 @@ module HitsHelper
 
   def http_status_for(mapping)
     if mapping.redirect?
-      '301'
+      "301"
     elsif mapping.archive? || mapping.unresolved?
-      '410'
+      "410"
     end
   end
 
@@ -84,9 +84,9 @@ module HitsHelper
 
   def hit_is_now(hit)
     if hit.archive? && hit.mapping.redirect?
-      'was archived, now redirecting'
+      "was archived, now redirecting"
     elsif hit.redirect? && hit.mapping.archive?
-      'was redirecting, now archived'
+      "was redirecting, now archived"
     elsif hit.error? && hit.mapping.redirect?
       '<span class="middle-grey">Error fixed</span> &mdash; now redirecting'.html_safe
     elsif hit.error? && hit.mapping.archive?
@@ -109,7 +109,7 @@ module HitsHelper
   end
 
   def viewing_all_hits?
-    action_name == 'index'
+    action_name == "index"
   end
 
 private
