@@ -4,11 +4,6 @@
 Style/AndOr:
   EnforcedStyle: conditionals
 
-# "FOO".casecmp("foo").zero? is not as readable as "foo".upcase == "FOO" so
-# we disable this cop entirely
-Performance/Casecmp:
-  Enabled: false
-
 Metrics/BlockLength:
   Exclude:
     - 'config/routes.rb'
