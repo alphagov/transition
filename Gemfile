@@ -24,6 +24,7 @@ gem "whenever"
 
 gem "sass"
 gem "sass-rails"
+gem "sprockets", "~> 3"
 gem "uglifier"
 
 group :development do
