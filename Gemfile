@@ -15,7 +15,7 @@ gem "htmlentities"
 gem "kaminari"
 gem "mlanett-redis-lock"
 gem "optic14n" # Ideally version should be synced with bouncer
-gem "paper_trail", "4.1.0"
+gem "paper_trail", "10.3.1"
 gem "pg"
 gem "plek"
 gem "rails", "5.1.6.2"
