@@ -20,7 +20,7 @@ FactoryBot.define do
     end
 
     before(:create) do |_, evaluator|
-      if PaperTrail.enabled? && PaperTrail.whodunnit.nil? && evaluator.as_user
+      if PaperTrail.enabled? && PaperTrail.request.whodunnit.nil? && evaluator.as_user
         Transition::History.set_user!(evaluator.as_user)
       end
     end

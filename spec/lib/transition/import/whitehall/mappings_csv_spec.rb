@@ -208,7 +208,7 @@ describe Transition::Import::Whitehall::MappingsCSV do
       end
 
       specify "reverts the whodunnit user" do
-        expect(::PaperTrail.whodunnit).to be_nil
+        expect(::PaperTrail.request.whodunnit).to be_nil
       end
     end
 
