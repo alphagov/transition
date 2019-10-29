@@ -22,3 +22,13 @@ Sidekiq.configure_client do |config|
 end
 
 Sidekiq::Logging.logger.level = Logger::WARN if Rails.env.production?
+
+Sidekiq::Cron::Job.load_from_hash(
+  {
+    'daily_ingest_of_ukri_clf_logs' => {
+      'class' => 'IngestW3cLogWorker',
+      'cron'  => '0 8 * * *',
+      'args'  => ENV["LOG_BUCKET_NAME"]
+    }
+  }
+)
