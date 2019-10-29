@@ -31,4 +31,4 @@ Sidekiq::Cron::Job.load_from_hash(
       'args'  => ENV["LOG_BUCKET_NAME"]
     }
   }
-)
+) if ENV['REDIS_URL'].present?
