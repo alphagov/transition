@@ -37,7 +37,7 @@
       <tr <% if flash[:hostname] == host.hostname %>class="selected-row"<% end %>>
         <td><%= host.hostname %></td>
         <td><%= I18n.l host.created_at, :format => :govuk_date %></td>
-        <td><%= host.originator %></td>
+        <td><%= host.paper_trail.originator %></td>
       </tr>
     <% end %>
   </tbody>
