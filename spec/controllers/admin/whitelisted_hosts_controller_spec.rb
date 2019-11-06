@@ -19,19 +19,29 @@ describe Admin::WhitelistedHostsController do
     end
   end
 
-  describe "#index" do
+  describe "#index", versioning: true do
+    specify { expect(PaperTrail).to be_enabled }
+
     def make_request
       get :index
     end
+
+    render_views
 
     it_behaves_like "denies access if you are not an admin"
 
     context "logged in as admin" do
       before do
         login_as(admin_user)
+        PaperTrail.request.whodunnit = admin_user.name
         create(:whitelisted_host, hostname: "a")
         create(:whitelisted_host, hostname: "b")
         make_request
+      end
+
+      it "should display whodunnit in the table" do
+        originator = assigns(:whitelisted_hosts).first.paper_trail.originator
+        expect(response.body).to match(/#{originator}/im)
       end
 
       it "lists the whitelisted_hosts" do
