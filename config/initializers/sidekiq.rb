@@ -21,7 +21,7 @@ Sidekiq.configure_client do |config|
   }
 end
 
-Sidekiq::Logging.logger.level = Logger::WARN if Rails.env.production?
+Sidekiq.logger.level = Logger::WARN if Rails.env.production?
 
 Sidekiq::Cron::Job.load_from_hash(
   {
