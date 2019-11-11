@@ -1,3 +1,7 @@
+inherit_gem:
+  rubocop-govuk:
+    - config/default.yml
+
 # We like using `render/redirect and return` in controllers, like
 # the rails guides suggest (see: http://guides.rubyonrails.org/layouts_and_rendering.html#avoiding-double-render-errors)
 # so enable this cop only for conditionals
