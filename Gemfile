@@ -25,7 +25,7 @@ gem 'redis-namespace'
 gem 'rollbar', '~> 2.22'
 gem 'ruby-ip'
 gem 'select2-rails', '3.5.7'
-gem 'sidekiq', '~> 5.2'
+gem 'sidekiq', '~> 6.0'
 gem 'sidekiq-cron', '~> 1.1'
 gem 'whenever'
 
