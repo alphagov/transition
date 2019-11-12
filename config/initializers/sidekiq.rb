@@ -27,7 +27,7 @@ Sidekiq::Cron::Job.load_from_hash(
   {
     'daily_ingest_of_ukri_clf_logs' => {
       'class' => 'IngestW3cLogWorker',
-      'cron'  => '0 8 * * *',
+      'cron'  => '0 * * * *',
       'args'  => ENV["LOG_BUCKET_NAME"]
     }
   }
