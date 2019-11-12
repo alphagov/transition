@@ -44,9 +44,9 @@ group :test do
 end
 
 group :development, :test do
-  gem "govuk-lint", "~> 4.2.0"
   gem "jasmine"
   gem "pry"
   gem "rspec-collection_matchers"
   gem "rspec-rails"
+  gem "rubocop-govuk"
 end
