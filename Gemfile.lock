@@ -68,7 +68,7 @@ GEM
     aws-sdk-kms (1.25.0)
       aws-sdk-core (~> 3, >= 3.71.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.55.0)
+    aws-sdk-s3 (1.56.0)
       aws-sdk-core (~> 3, >= 3.77.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.1)
@@ -488,7 +488,7 @@ DEPENDENCIES
   activerecord-import
   activerecord-session_store
   acts-as-taggable-on
-  aws-sdk-s3 (~> 1.55)
+  aws-sdk-s3 (~> 1.56)
   cucumber-rails
   database_cleaner
   factory_bot_rails
