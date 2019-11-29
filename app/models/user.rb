@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include GDS::SSO::User
 
   has_many :mappings_batches

@@ -1,4 +1,4 @@
-class MappingsBatch < ActiveRecord::Base
+class MappingsBatch < ApplicationRecord
   self.inheritance_column = :klass
 
   FINISHED_STATES = %w(succeeded failed).freeze

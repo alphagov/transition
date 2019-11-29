@@ -1,4 +1,4 @@
-class WhitelistedHost < ActiveRecord::Base
+class WhitelistedHost < ApplicationRecord
   has_paper_trail
 
   before_save :ensure_papertrail_user_config

@@ -102,7 +102,7 @@ describe Transition::Import::HitsMappingsRelations do
     end
 
     it "creates host_paths for this site" do
-      expect(@site.host_paths.find_by_path(@hit.path)).to be_a(HostPath)
+      expect(@site.host_paths.find_by(path: @hit.path)).to be_a(HostPath)
     end
 
     it "connects mappings to hits for this site" do
@@ -110,12 +110,12 @@ describe Transition::Import::HitsMappingsRelations do
     end
 
     it "does not create host_paths for another site" do
-      expect(@other_site.host_paths.find_by_path(@other_site_hit.path)).to be_nil
+      expect(@other_site.host_paths.find_by(path: @other_site_hit.path)).to be_nil
     end
 
     it "does not connect mappings and pre-existing host_paths for another site" do
       path = @other_mapping_with_host_path.path
-      expect(@other_site.host_paths.find_by_path(path).mapping).to be_nil
+      expect(@other_site.host_paths.find_by(path: path).mapping).to be_nil
     end
 
     it "does not connect mappings and hits for another site" do

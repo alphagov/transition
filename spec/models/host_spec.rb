@@ -237,7 +237,7 @@ describe Host do
 
           expect(hit.reload.mapping).to eql(nil)
 
-          host_path = runaway_host.host_paths.find_by_path(hit.path)
+          host_path = runaway_host.host_paths.find_by(path: hit.path)
           expect(host_path.mapping).to eql(nil)
         end
       end
@@ -258,7 +258,7 @@ describe Host do
         it "creates relationships which should now exist" do
           expect(hit.reload.mapping).to eql(other_mapping)
 
-          host_path = runaway_host.host_paths.find_by_path(hit.path)
+          host_path = runaway_host.host_paths.find_by(path: hit.path)
           expect(host_path.mapping).to eql(other_mapping)
           expect(host_path.canonical_path).not_to be_nil
         end

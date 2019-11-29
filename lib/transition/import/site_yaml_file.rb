@@ -74,7 +74,7 @@ module Transition
           # content_ids are user-unfriendly and add complexity. We think it will
           # be very infrequent that an organisation with a slug change will be
           # in transition-config.
-          site.organisation          = Organisation.find_by_whitehall_slug(whitehall_slug)
+          site.organisation          = Organisation.find_by(whitehall_slug: whitehall_slug)
 
           site.tna_timestamp         = DateTime.strptime(yaml["tna_timestamp"].to_s, "%Y%m%d%H%M%S")
           site.query_params          = yaml["options"] ? yaml["options"].sub(/^.*--query-string /, "") : ""

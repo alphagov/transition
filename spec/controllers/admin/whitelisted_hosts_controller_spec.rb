@@ -80,7 +80,7 @@ describe Admin::WhitelistedHostsController do
       end
 
       it "should create the host" do
-        expect(WhitelistedHost.find_by_hostname("a.com")).not_to be_nil
+        expect(WhitelistedHost.find_by(hostname: "a.com")).not_to be_nil
       end
 
       context "with an invalid hostname" do

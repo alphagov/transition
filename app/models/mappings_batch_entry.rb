@@ -1,4 +1,4 @@
-class MappingsBatchEntry < ActiveRecord::Base
+class MappingsBatchEntry < ApplicationRecord
   self.inheritance_column = :klass
 
   belongs_to :mappings_batch

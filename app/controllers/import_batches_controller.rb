@@ -28,7 +28,7 @@ class ImportBatchesController < ApplicationController
 
   def import
     if @batch.state == "unqueued"
-      @batch.update_attributes!(batch_params.merge(state: "queued"))
+      @batch.update!(batch_params.merge(state: "queued"))
 
       if @batch.entries_to_process.count > 20
         MappingsBatchWorker.perform_async(@batch.id)
@@ -54,7 +54,7 @@ protected
   end
 
   def find_site
-    @site = Site.find_by_abbr!(params[:site_id])
+    @site = Site.find_by!(abbr: params[:site_id])
   end
 
   def find_batch

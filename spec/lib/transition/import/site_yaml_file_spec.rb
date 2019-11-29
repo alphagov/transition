@@ -28,12 +28,12 @@ describe Transition::Import::SiteYamlFile do
       let(:tsol) { build :organisation, whitehall_slug: "treasury-solicitor-s-office" }
 
       before do
-        allow(Organisation).to receive(:find_by_whitehall_slug).and_return(ago)
+        allow(Organisation).to receive(:find_by).and_return(ago)
         allow(Organisation).to receive(:where).and_return([bv, tsol])
         yaml_file.import!
       end
 
-      subject(:site) { Site.find_by_abbr("ago") }
+      subject(:site) { Site.find_by(abbr: "ago") }
 
       describe "#tna_timestamp" do
         subject { super().tna_timestamp }
@@ -98,11 +98,11 @@ describe Transition::Import::SiteYamlFile do
         let(:directgov)  { build :organisation, whitehall_slug: "directgov" }
 
         before do
-          allow(Organisation).to receive(:find_by_whitehall_slug).and_return(directgov)
+          allow(Organisation).to receive(:find_by).and_return(directgov)
           Transition::Import::SiteYamlFile.load("spec/fixtures/sites/someyaml/directgov_uppercase.yml").import!
         end
 
-        let(:site) { Site.find_by_abbr("directgov_uppercase") }
+        let(:site) { Site.find_by(abbr: "directgov_uppercase") }
 
         it "imports the hosts as lowercase" do
           expect(site.hosts.pluck(:hostname)).not_to include("www.DIRECT.gov.uk")
@@ -114,11 +114,11 @@ describe Transition::Import::SiteYamlFile do
         let(:directgov) { build :organisation, whitehall_slug: "directgov" }
 
         before do
-          allow(Organisation).to receive(:find_by_whitehall_slug).and_return(directgov)
+          allow(Organisation).to receive(:find_by).and_return(directgov)
           Transition::Import::SiteYamlFile.load("spec/fixtures/sites/someyaml/directgov_uppercase.yml").import!
         end
 
-        let(:site) { Site.find_by_abbr("directgov_uppercase") }
+        let(:site) { Site.find_by(abbr: "directgov_uppercase") }
 
         it "imports the aliases as lowercase" do
           expect(site.hosts.pluck(:hostname)).not_to include("MOBILE.DIRECT.gov.uk")
@@ -176,7 +176,7 @@ describe Transition::Import::SiteYamlFile do
 
         it "should move the host and the aka host to the new site" do
           expect(site.hosts.pluck(:hostname)).not_to include("www.lslo.gov.uk")
-          ago_lslo = Site.find_by_abbr("ago_lslo")
+          ago_lslo = Site.find_by(abbr: "ago_lslo")
           expect(ago_lslo.hosts.pluck(:hostname)).to match_array(["www.lslo.gov.uk", "aka.lslo.gov.uk"])
         end
       end

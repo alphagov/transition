@@ -24,7 +24,7 @@ namespace :import do
             old_filename = object.key.sub("#{prefix}/", "data/#{prefix}/hits/")
             ImportedHitsFile
               .find_by(filename: old_filename)
-              .update_attributes!(
+              .update!(
                 filename: object.key,
                 content_hash: object.etag,
               )

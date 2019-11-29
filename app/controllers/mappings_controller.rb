@@ -88,7 +88,7 @@ class MappingsController < ApplicationController
 
   def find_global
     # This allows finding a mapping without knowing the site first.
-    render_error(400) and return unless params[:url].present?
+    render_error(400) and return if params[:url].blank?
 
     # Strip leading and trailing whitespace before any processing.
     stripped_url = params[:url].strip
@@ -131,7 +131,7 @@ class MappingsController < ApplicationController
       return redirect_to back_or_mappings_index, notice: notice
     end
 
-    mapping = @site.mappings.find_by_path(path)
+    mapping = @site.mappings.find_by(path: path)
     if mapping.present?
       redirect_to edit_site_mapping_path(@site, mapping, return_path: params[:return_path])
     else

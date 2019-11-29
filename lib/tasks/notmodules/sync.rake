@@ -48,12 +48,12 @@ end
 
 namespace :notmodules do
   desc "`git pull` or `git clone` all notmodules as necessary"
-  task :sync do
+  task sync: :environment do
     NotModules.instance.modules.each(&:sync!)
   end
 
   desc "list all things that definitely aren't git submodules"
-  task :list do
+  task list: :environment do
     NotModules.instance.modules.each { |m| puts m }
   end
 end

@@ -1,6 +1,7 @@
 inherit_gem:
   rubocop-govuk:
     - config/default.yml
+    - config/rails.yml
 
 # We like using `render/redirect and return` in controllers, like
 # the rails guides suggest (see: http://guides.rubyonrails.org/layouts_and_rendering.html#avoiding-double-render-errors)
@@ -14,3 +15,12 @@ Metrics/BlockLength:
     - 'lib/tasks/**/*.rake'
     - 'spec/**/*.rb'
     - 'db/migrate/*.rb'
+
+Rails/OutputSafety:
+  Enabled: false
+Rails/HelperInstanceVariable:
+  Enabled: false
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+Rails/InverseOf:
+  Enabled: false

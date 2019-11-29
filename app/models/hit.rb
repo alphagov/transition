@@ -1,6 +1,6 @@
 require "kaminari"
 
-class Hit < ActiveRecord::Base
+class Hit < ApplicationRecord
   NEVER = Date.new(1970, 1, 1)
 
   belongs_to :host

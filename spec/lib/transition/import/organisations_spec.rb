@@ -15,10 +15,10 @@ describe Transition::Import::Organisations do
     end
 
     describe "an organisation with multiple parents" do
-      let(:bis) { Organisation.find_by_whitehall_slug("department-for-business-innovation-skills") }
-      let(:fco) { Organisation.find_by_whitehall_slug("foreign-commonwealth-office") }
+      let(:bis) { Organisation.find_by(whitehall_slug: "department-for-business-innovation-skills") }
+      let(:fco) { Organisation.find_by(whitehall_slug: "foreign-commonwealth-office") }
 
-      subject(:ukti) { Organisation.find_by_whitehall_slug("uk-trade-investment") }
+      subject(:ukti) { Organisation.find_by(whitehall_slug: "uk-trade-investment") }
 
       describe "#abbreviation" do
         subject { super().abbreviation }
@@ -52,7 +52,7 @@ describe Transition::Import::Organisations do
     end
 
     describe "fudged CSS/URL details" do
-      subject(:ago) { Organisation.find_by_whitehall_slug("attorney-generals-office") }
+      subject(:ago) { Organisation.find_by(whitehall_slug: "attorney-generals-office") }
 
       describe "#css" do
         subject { super().css }
