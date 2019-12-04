@@ -1,0 +1,6 @@
+---
+version: "1"
+rules:
+  - base: develop
+    upstream: alphagov:master
+    mergeMethod: merge
