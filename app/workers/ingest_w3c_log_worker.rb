@@ -19,17 +19,18 @@ class IngestW3cLogWorker
           next
         end
 
-        file_path = "data/#{object.key}"
-        ::Services.s3.get_object(
-          bucket: bucket, key: object.key, response_target: file_path
-        )
-
-        Transition::Import::Hits.from_iis_w3c!(file_path)
-
+        begin
+          tempfile = Tempfile.new('ingest')
+          ::Services.s3.get_object(
+            bucket: bucket, key: object.key, response_target: tempfile.path
+          )
+          Transition::Import::Hits.from_iis_w3c!(tempfile.path)
+        ensure
+          tempfile.unlink
+        end
         Transition::Import::DailyHitTotals.from_hits!
         Transition::Import::HitsMappingsRelations.refresh!
 
-        File.delete(file_path)
         puts "Finished ingesting #{object.key}" unless Rails.env.test?
       end
     end
