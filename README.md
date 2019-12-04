@@ -44,19 +44,19 @@ styles and any custom styles needed to fill in the gaps.
 
 ## Deployments
 
-This service is hosted on dxw's container platform called Dalmation.
+This service is hosted on dxw's container platform called Dalmatian.
 
-Deployments from this applications point of view are done by merging new code into either the develop branch for staging or the master branch for production. Once pushed [DockerHub](https://cloud.docker.com/u/thedxw/repository/docker/thedxw/transition) will build and a new Docker Image.
+Deployments from this application's point of view are done by merging new code into either the develop branch for staging or the master branch for production. Once pushed [DockerHub](https://cloud.docker.com/u/thedxw/repository/docker/thedxw/transition) will build a new Docker Image.
 
 ### Dalmation
 
-Once complete. The deployment process to provision this new container hands over to Dalmation.
+Once complete, the deployment process to provision this new container hands over to Dalmatian.
 
 This application has a [separate private GitHub repository](https://github.com/dxw/ukri-transition-dalmatian-config) that is responsible for provisioning the required infrastructure. This includes the [Bouncer service](https://github.com/dxw/bouncer) and is done using Terraform.
 
 The way to deploy new containers is manual and involves downtime:
 
-1. Within AWS select the dxw-dalmation-1 role
+1. Within AWS select the dxw-dalmatian-1 role
 1. Visit the ECS service
 1. Select the intended cluster (be careful as this cluster is shared)
 1. Click 'Tasks'
@@ -70,7 +70,7 @@ The way to deploy new containers is manual and involves downtime:
 
 To access a Rails console or run a rake task on a live environment:
 
-1. Within AWS select the dxw-dalmation-1 role
+1. Within AWS select the dxw-dalmatian-1 role
 1. Visit the Systems Manager service
 1. Select 'Session Manager'
 1. Click 'Start session'
