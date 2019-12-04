@@ -12,7 +12,12 @@ end
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   # provider :developer unless Rails.env.production?
-  provider :zendesk, ENV['ZD_CLIENT'], ENV['ZD_SECRET'], client_options: {
-    site: ENV['ZD_HOST']
-  }, scope: 'read'
+  provider :auth0,
+    ENV['AUTH0_CLIENT_ID'],
+    ENV['AUTH0_CLIENT_SECRET'],
+    ENV['AUTH0_DOMAIN'],
+    callback_path: '/auth/auth0/callback',
+    authorize_params: {
+      scope: 'openid email'
+    }
 end

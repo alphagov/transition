@@ -5,8 +5,8 @@ class AuthenticationController < ApplicationController
   def index; end
 
   def new
-    logger.info('OAuth Initiating to ZenDesk')
-    redirect_to '/auth/zendesk'
+    logger.info('OAuth Initiating to Auth0')
+    redirect_to '/auth/auth0'
   end
 
   def create

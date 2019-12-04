@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   match '/500' => 'errors#error_500', via: %i[get post]
 
   get 'login', to: 'authentication#new'
-  get 'auth/zendesk/callback', to: 'authentication#create'
+  get 'auth/auth0/callback', to: 'authentication#create'
   get '/auth/gds/sign_out', to: 'authentication#destroy'
 
   resources :hosts, only: [:index]
