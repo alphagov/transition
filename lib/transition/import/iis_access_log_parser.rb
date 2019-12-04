@@ -27,7 +27,7 @@ module Transition
 
           mapping = {}
           x = nil
-          line.split(/^([^ ]* [^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*)($| )(.*)/).each_with_index do |value, i|
+          line.split(/^(\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*)($| )(.*)/).each_with_index do |value, i|
             mapping[IISAccessLogParser.fields[i - 1]] = value unless i.zero?
             x = value if i.zero?
           end
