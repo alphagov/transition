@@ -26,7 +26,7 @@ describe IngestW3cLogWorker, type: :worker do
         s3.stub_responses(:get_object, body: File.open("spec/fixtures/hits/#{file}"))
 
         expect(s3).to receive(:list_objects).with(bucket: bucket).and_call_original
-        expect(s3).to receive(:get_object).with(bucket: bucket, key: key, response_target: "data/#{key}").and_call_original
+        expect(s3).to receive(:get_object).with(bucket: bucket, key: key, response_target: /ingest/).and_call_original
 
         subject.perform(bucket)
       end
