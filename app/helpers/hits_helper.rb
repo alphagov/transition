@@ -1,6 +1,6 @@
 module HitsHelper
   def any_totals_for?(points_categories)
-    points_categories && points_categories.find { |c| c.points && !c.points.empty? }
+    points_categories && points_categories.find { |c| c.points.present? }
   end
 
   def no_hits_for_any?(sections)

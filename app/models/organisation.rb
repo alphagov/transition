@@ -1,4 +1,4 @@
-class Organisation < ActiveRecord::Base
+class Organisation < ApplicationRecord
   has_many :child_organisational_relationships,
            foreign_key: :parent_organisation_id,
            class_name: "OrganisationalRelationship"

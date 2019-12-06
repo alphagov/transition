@@ -12,7 +12,7 @@ namespace :import do
 
   namespace :all do
     desc "Import all Organisations, Sites and Hosts"
-    task :orgs_sites_hosts do
+    task orgs_sites_hosts: :environment do
       patterns = [
         "data/transition-config/data/transition-sites/*.yml",
       ]

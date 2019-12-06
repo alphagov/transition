@@ -3,7 +3,7 @@ require "transition/import/mappings_from_host_paths"
 namespace :import do
   desc "Create mappings from HostPaths for a site"
   task :mappings_from_host_paths, [:site_abbr] => :environment do |_, args|
-    site = Site.find_by_abbr(args[:site_abbr])
+    site = Site.find_by(abbr: args[:site_abbr])
     raise "No site found for #{args[:site_abbr]}" unless site
 
     if site.global_type

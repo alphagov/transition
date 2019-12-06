@@ -1,7 +1,7 @@
 require "postgres/materialized_view"
 require "./lib/transition/path_or_url.rb"
 
-class Site < ActiveRecord::Base
+class Site < ApplicationRecord
   belongs_to :organisation
 
   has_many :hosts

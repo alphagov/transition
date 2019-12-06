@@ -4,7 +4,7 @@ class NonBlankURLValidator < ActiveModel::EachValidator
 
     valid_url = begin
       uri = Addressable::URI.parse(value)
-      !uri.scheme.blank? && !uri.host.blank? && uri.host.include?(".")
+      uri.scheme.present? && uri.host.present? && uri.host.include?(".")
                 rescue Addressable::URI::InvalidURIError
                   false
     end

@@ -100,19 +100,19 @@
     {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
-      "fingerprint": "45af7020da132b727df3167cf7d38c2f15d8ae17a77fccf65266a679f6e1324a",
+      "fingerprint": "d36f2b3cd37435a8c5bcddde9ebdd53e21b569bb817a329f2927c794e2c8d9b6",
       "check_name": "LinkToHref",
-      "message": "Potentially unsafe model attribute in link_to href",
+      "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/bulk_add_batches/preview.html.erb",
       "line": 37,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
-      "code": "link_to(Site.find_by_abbr!(params[:site_id]).bulk_add_batches.find(params[:id]).new_url, Site.find_by_abbr!(params[:site_id]).bulk_add_batches.find(params[:id]).new_url, :class => \"breakable\")",
-      "render_path": [{"type":"controller","class":"BulkAddBatchesController","method":"preview","line":34,"file":"app/controllers/bulk_add_batches_controller.rb"}],
+      "code": "link_to(Site.find_by!(:abbr => params[:site_id]).bulk_add_batches.find(params[:id]).new_url, Site.find_by!(:abbr => params[:site_id]).bulk_add_batches.find(params[:id]).new_url, :class => \"breakable\")",
+      "render_path": [{"type":"controller","class":"BulkAddBatchesController","method":"preview","line":34,"file":"app/controllers/bulk_add_batches_controller.rb","rendered":{"name":"bulk_add_batches/preview","file":"app/views/bulk_add_batches/preview.html.erb"}}],
       "location": {
         "type": "template",
         "template": "bulk_add_batches/preview"
       },
-      "user_input": "Site.find_by_abbr!(params[:site_id]).bulk_add_batches.find(params[:id]).new_url",
+      "user_input": "Site.find_by!(:abbr => params[:site_id]).bulk_add_batches.find(params[:id]).new_url",
       "confidence": "Weak",
       "note": "This is a valid URL (see app/models/mapping.rb)"
     },
@@ -369,6 +369,6 @@
       "note": "This is a valid National Archives URL (see app/models/mapping.rb)"
     }
   ],
-  "updated": "2018-09-20 14:00:56 +0000",
-  "brakeman_version": "4.3.1"
+  "updated": "2019-12-03 14:27:21 +0000",
+  "brakeman_version": "4.7.2"
 }

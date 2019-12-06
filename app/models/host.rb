@@ -1,4 +1,4 @@
-class Host < ActiveRecord::Base
+class Host < ApplicationRecord
   belongs_to :site
   has_many :hits
   has_many :host_paths

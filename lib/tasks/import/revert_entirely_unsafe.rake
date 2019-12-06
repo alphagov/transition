@@ -6,7 +6,7 @@ namespace :import do
       abort
     end
 
-    site = Site.find_by_abbr(args[:site_abbr])
+    site = Site.find_by(abbr: args[:site_abbr])
     raise "No site found for #{args[:site_abbr]}" unless site
 
     STDOUT.flush

@@ -1,5 +1,6 @@
 #encoding: utf-8
 
+# rubocop:disable Rails/ApplicationController
 class ErrorsController < ActionController::Base
   layout "error_page"
 
@@ -46,3 +47,4 @@ private
     end
   end
 end
+# rubocop:enable Rails/ApplicationController

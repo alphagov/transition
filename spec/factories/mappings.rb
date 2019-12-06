@@ -27,7 +27,7 @@ FactoryBot.define do
 
     trait :with_versions do
       # Will create a new version only within specs with metadata versioning: true
-      after(:create) { |mapping| mapping.update_attributes(new_url: "http://somewhere.new") }
+      after(:create) { |mapping| mapping.update(new_url: "http://somewhere.new") }
       after(:create) { |mapping| create(:host, site: mapping.site) }
     end
   end

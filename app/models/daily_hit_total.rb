@@ -1,7 +1,7 @@
 ##
 # A daily host hit total per HTTP status
 #
-class DailyHitTotal < ActiveRecord::Base
+class DailyHitTotal < ApplicationRecord
   belongs_to :host
 
   scope :in_range, ->(start_date, end_date) { where("(total_on >= ?) AND (total_on <= ?)", start_date, end_date) }

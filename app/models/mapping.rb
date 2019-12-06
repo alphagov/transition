@@ -1,6 +1,6 @@
 require "transition/history"
 
-class Mapping < ActiveRecord::Base
+class Mapping < ApplicationRecord
   include Concerns::NilifyBlanks
 
   # ActiveRecord uses a column named 'type' for Single Table Inheritance, and
@@ -112,7 +112,7 @@ class Mapping < ActiveRecord::Base
     # This will return nil if the mapping was imported from redirector and has
     # not been edited since.
     if versions.present? && versions.last.user_id.present?
-      User.find_by_id(versions.last.user_id)
+      User.find_by(id: versions.last.user_id)
     end
   end
 

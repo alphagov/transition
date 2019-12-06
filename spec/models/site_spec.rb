@@ -73,14 +73,14 @@ describe Site do
         # because they contain what is now an extra significant query param
         # ('added_later=2')
 
-        host_path = HostPath.find_by_path(hit.path)
+        host_path = HostPath.find_by(path: hit.path)
         expect(host_path.mapping).to eql(nil)
 
         expect(hit.reload.mapping).to eql(nil)
       end
 
       it "should keep relationships which still exist" do
-        other_host_path = HostPath.find_by_path(other_hit.path)
+        other_host_path = HostPath.find_by(path: other_hit.path)
         expect(other_host_path.mapping).to eql(other_mapping)
 
         expect(other_hit.reload.mapping).to eql(other_mapping)

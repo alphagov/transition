@@ -20,7 +20,7 @@ describe Transition::Import::OrgsSitesHosts do
           "spec/fixtures/sites/someyaml/**/*.yml",
           Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml"),
         )
-        @ukti = Site.find_by_abbr("ukti")
+        @ukti = Site.find_by(abbr: "ukti")
       end
 
       it "has imported orgs" do
@@ -36,9 +36,9 @@ describe Transition::Import::OrgsSitesHosts do
       end
 
       describe "a child organisation with its own hosted site" do
-        let(:bis) { Organisation.find_by_whitehall_slug! "department-for-business-innovation-skills" }
+        let(:bis) { Organisation.find_by! whitehall_slug: "department-for-business-innovation-skills" }
 
-        subject { Organisation.find_by_whitehall_slug! "uk-atomic-energy-authority" }
+        subject { Organisation.find_by! whitehall_slug: "uk-atomic-energy-authority" }
 
         it "has 1 site" do
           expect(subject.sites.size).to eq(1)
@@ -69,9 +69,9 @@ describe Transition::Import::OrgsSitesHosts do
         end
 
         describe "a pre-existing parent-child relationship is not duplicated" do
-          let(:bis) { Organisation.find_by_whitehall_slug! "department-for-business-innovation-skills" }
+          let(:bis) { Organisation.find_by! whitehall_slug: "department-for-business-innovation-skills" }
 
-          subject { Organisation.find_by_whitehall_slug! "uk-atomic-energy-authority" }
+          subject { Organisation.find_by! whitehall_slug: "uk-atomic-energy-authority" }
 
           describe "#parent_organisations" do
             subject { super().parent_organisations }

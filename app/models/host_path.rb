@@ -5,7 +5,7 @@
 #
 # It also holds a canonical_path, which lets us update hits
 # when we update mappings.
-class HostPath < ActiveRecord::Base
+class HostPath < ApplicationRecord
   belongs_to :host
   belongs_to :mapping
 

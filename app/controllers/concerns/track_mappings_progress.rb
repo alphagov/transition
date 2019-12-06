@@ -17,7 +17,7 @@ module TrackMappingsProgress
 protected
 
   def _find_site
-    @site = Site.find_by_abbr!(params[:site_id])
+    @site = Site.find_by!(abbr: params[:site_id])
   end
 
   def set_saved_mappings

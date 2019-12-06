@@ -22,7 +22,7 @@ module FilterHelper
   def hidden_filter_fields_except(filter, field)
     hidden_fields = (View::Mappings::Filter.fields - [field]).map do |name|
       value = filter.try(name)
-      hidden_field_tag(name, value) unless value.blank?
+      hidden_field_tag(name, value) if value.present?
     end
     hidden_fields.join("\n").html_safe
   end

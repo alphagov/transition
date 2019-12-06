@@ -2,7 +2,7 @@
 
 module VersionsHelper
   def value_or_blank(value)
-    value.blank? ? "<blank>" : value
+    value.presence || "<blank>"
   end
 
   def friendly_changeset_title_for_type(value)
@@ -46,8 +46,8 @@ module VersionsHelper
     new_value = value_or_blank(change[1])
 
     if field == "type"
-      old_value = change[0].titleize unless change[0].blank?
-      new_value = change[1].titleize unless change[1].blank?
+      old_value = change[0].titleize if change[0].present?
+      new_value = change[1].titleize if change[1].present?
     end
 
     "#{old_value} → #{new_value}"

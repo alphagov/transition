@@ -448,7 +448,7 @@ describe Mapping do
       describe "an update from Bob" do
         before do
           Transition::History.as_a_user(bob) do
-            mapping.update_attributes(new_url: "http://updated.gov.uk")
+            mapping.update(new_url: "http://updated.gov.uk")
           end
         end
 
@@ -571,8 +571,8 @@ describe Mapping do
         let(:other_user) { create :user }
         before do
           Transition::History.as_a_user(other_user) do
-            mapping.update_attributes(type: "redirect", new_url: "http://updated.gov.uk")
-            mapping.update_attributes(type: "redirect", new_url: "http://new.gov.uk")
+            mapping.update(type: "redirect", new_url: "http://updated.gov.uk")
+            mapping.update(type: "redirect", new_url: "http://new.gov.uk")
           end
         end
 
