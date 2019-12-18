@@ -268,12 +268,14 @@ GEM
     omniauth (1.9.0)
       hashie (>= 3.4.6, < 3.7.0)
       rack (>= 1.6.2, < 3)
+    omniauth-auth0 (2.2.0)
+      omniauth-oauth2 (~> 1.5)
     omniauth-oauth2 (1.5.0)
       oauth2 (~> 1.1)
       omniauth (~> 1.2)
-    omniauth-zendesk-oauth2 (0.1)
-      omniauth (~> 1.0)
-      omniauth-oauth2 (~> 1.1)
+    omniauth-rails_csrf_protection (0.1.2)
+      actionpack (>= 4.2)
+      omniauth (>= 1.3.1)
     optic14n (2.0.1)
       addressable (~> 2.3)
     os (1.0.1)
@@ -512,7 +514,8 @@ DEPENDENCIES
   launchy
   mlanett-redis-lock
   omniauth (= 1.9.0)
-  omniauth-zendesk-oauth2 (= 0.1)
+  omniauth-auth0 (~> 2.2)
+  omniauth-rails_csrf_protection (~> 0.1)
   optic14n
   paper_trail (~> 9.0)
   pg
