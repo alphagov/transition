@@ -11,7 +11,6 @@ Rails.application.routes.draw do
   match '/422' => 'errors#error_422', via: %i[get post]
   match '/500' => 'errors#error_500', via: %i[get post]
 
-  get 'login', to: 'authentication#new'
   get 'auth/auth0/callback', to: 'authentication#create'
   get '/auth/gds/sign_out', to: 'authentication#destroy'
 
