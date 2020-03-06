@@ -47,6 +47,6 @@ group :development, :test do
   gem "jasmine"
   gem "pry"
   gem "rspec-collection_matchers"
-  gem "rspec-rails"
+  gem "rspec-rails", "4.0.0.beta4"
   gem "rubocop-govuk"
 end
