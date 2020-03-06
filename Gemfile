@@ -18,7 +18,7 @@ gem "optic14n" # Ideally version should be synced with bouncer
 gem "paper_trail", "10.3.1"
 gem "pg"
 gem "plek"
-gem "rails", "5.2.3"
+gem "rails", "6.0.2.1"
 gem "select2-rails", "3.5.7"
 gem "whenever"
 
