@@ -15,7 +15,7 @@ Before('@allow-rescue') do
   Rails.application.env_config['action_dispatch.show_detailed_exceptions'] = false
 end
 
-Before('~@allow-rescue') do
+Before('not @allow-rescue') do
   # Turn on the default debug exceptions app for local requests
   Rails.application.config.consider_all_requests_local = true
   Rails.application.config.action_dispatch.show_exceptions = false

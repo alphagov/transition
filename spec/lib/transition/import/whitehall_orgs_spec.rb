@@ -39,7 +39,7 @@ describe Transition::Import::WhitehallOrgs do
 
     context "when there are some organisations in the API" do
       before do
-        organisations_api_has_organisations %w[ministry-of-funk department-of-soul hm-rock-and-roll]
+        stub_organisations_api_has_organisations %w[ministry-of-funk department-of-soul hm-rock-and-roll]
       end
 
       it "extracts all the organisations from the API" do
@@ -50,7 +50,7 @@ describe Transition::Import::WhitehallOrgs do
     context "when there are so many organisations in the API that it paginates" do
       before do
         # The default pagination is 20, so make 21 to trigger this
-        organisations_api_has_organisations %w[
+        stub_organisations_api_has_organisations %w[
           ministry-of-funk-1 department-of-soul-1 hm-rock-and-roll-1
           ministry-of-funk-2 department-of-soul-2 hm-rock-and-roll-2
           ministry-of-funk-3 department-of-soul-3 hm-rock-and-roll-3
