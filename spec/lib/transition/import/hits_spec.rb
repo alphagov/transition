@@ -1,5 +1,6 @@
 require "rails_helper"
 require "transition/import/hits"
+require "services"
 
 describe Transition::Import::Hits do
   before do

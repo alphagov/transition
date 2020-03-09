@@ -1,4 +1,6 @@
 require "csv"
+require "transition/import/csv/import_batch_row"
+require "transition/import/csv/csv_separator_detector"
 
 class ImportBatch < MappingsBatch
   attr_accessor :raw_csv

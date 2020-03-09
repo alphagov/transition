@@ -1,4 +1,5 @@
 require "view/mappings/canonical_filter"
+require "transition/off_site_redirect_checker"
 
 class BulkAddBatchesController < ApplicationController
   include PaperTrail::Rails::Controller

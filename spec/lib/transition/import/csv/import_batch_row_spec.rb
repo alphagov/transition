@@ -1,4 +1,5 @@
 require "rails_helper"
+require "transition/import/csv/import_batch_row"
 
 describe Transition::Import::CSV::ImportBatchRow do
   def make_a_row(old_value, new_value = nil)

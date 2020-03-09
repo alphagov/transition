@@ -1,3 +1,5 @@
+require "transition/import/hits_mappings_relations"
+
 class Host < ApplicationRecord
   belongs_to :site
   has_many :hits
