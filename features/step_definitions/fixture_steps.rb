@@ -36,10 +36,10 @@ end
 
 Given(/^there is a working AKA domain for "(.*?)"$/) do |canonical_hostname|
   canonical_host = Host.find_by(hostname: canonical_hostname)
-  host = create(:host, :with_govuk_cname,
-                hostname: canonical_host.aka_hostname,
-                canonical_host: canonical_host,
-                site: @site)
+  create(:host, :with_govuk_cname,
+         hostname: canonical_host.aka_hostname,
+         canonical_host: canonical_host,
+         site: @site)
 end
 
 Given(/^that the first host's site does not exist$/) do
@@ -61,12 +61,12 @@ Given(/^there is a site called (.*) belonging to an organisation (.*) with these
   end
 end
 
-Given (/^a(?:n) (\w+) mapping exists for the (.+) site with the path (.*)$/) do |type, site_abbr, path|
+Given(/^a(?:n) (\w+) mapping exists for the (.+) site with the path (.*)$/) do |type, site_abbr, path|
   site = create :site, abbr: site_abbr
   site.mappings << create(:mapping, type: type, path: path)
 end
 
-Given (/^a(?:n) (\w+) mapping exists for the site with the path (.*)$/) do |type, path|
+Given(/^a(?:n) (\w+) mapping exists for the site with the path (.*)$/) do |type, path|
   @site.mappings << create(:mapping, type: type, path: path)
 end
 

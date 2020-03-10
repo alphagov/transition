@@ -24,7 +24,7 @@ Then(/^I should see all the old homepages for the sites of the given organisatio
 end
 
 Then(/^I should see the site that the organisation is trusted to edit$/) do
-  expect(page).to have_content /bis\.gov\.uk.*owned by.*Biz/m
+  expect(page).to have_content(/bis\.gov\.uk.*owned by.*Biz/m)
 end
 
 And(/^I should see the organisation's own site$/) do
