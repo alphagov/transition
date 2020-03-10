@@ -4,6 +4,5 @@ class DeleteAbsoluteFilenameImportedHitsFiles < ActiveRecord::Migration
     ActiveRecord::Base.connection.execute(command)
   end
 
-  def down
-  end
+  def down; end
 end

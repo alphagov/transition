@@ -1,5 +1,5 @@
 Given(/^a mapping exists for the site ukba$/) do
-  @site = create :site, abbr: 'ukba'
+  @site = create :site, abbr: "ukba"
   @mapping = create(:mapping)
   @site.mappings = [@mapping]
 end
@@ -15,10 +15,9 @@ Given(/^a site "([^"]*)" exists with mappings with lots of tags$/) do |site_abbr
     #   a mapping with tags:        1, 2, 3, ... 9, 10
     #   a second mapping with tags: 1, 2, 3, ... 9, 10, 11
     @site.mappings << create(:archived).tap do |mapping|
-      mapping.tag_list = (1..tag_count.to_i).to_a.join(', ')
+      mapping.tag_list = (1..tag_count.to_i).to_a.join(", ")
     end
   end
-
 end
 
 Given(/^a site "([^"]*)" exists with these tagged mappings:$/) do |site_abbr, tagged_paths|

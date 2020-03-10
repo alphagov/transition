@@ -5,6 +5,5 @@ class FixCollationWoes < ActiveRecord::Migration
     # have a migration record in the database without a matching file.
   end
 
-  def down
-  end
+  def down; end
 end

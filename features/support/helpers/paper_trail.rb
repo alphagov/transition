@@ -1,4 +1,4 @@
-require 'transition/history'
+require "transition/history"
 
 Before do
   Transition::History.clear_user!

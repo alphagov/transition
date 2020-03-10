@@ -3,5 +3,4 @@ class AddHitCountToMappings < ActiveRecord::Migration
     add_column :mappings, :hit_count, :integer
     add_index :mappings, :hit_count
   end
-
 end

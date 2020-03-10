@@ -1,7 +1,7 @@
-Before('@javascript') do
+Before("@javascript") do
   @_javascript = true
 end
 
-Before('not @javascript') do
+Before("not @javascript") do
   @_javascript = false
 end

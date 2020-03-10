@@ -1,14 +1,15 @@
 class RemoveFakeOrganisations < ActiveRecord::Migration
-  class Site < ActiveRecord::Base
+  class Site < ApplicationRecord
   end
 
-  class Organisation < ActiveRecord::Base
+  class Organisation < ApplicationRecord
     has_many :sites
   end
 
   def up
-    Organisation.where(whitehall_slug: ['directgov', 'business-link']).each do |organisation|
+    Organisation.where(whitehall_slug: %w[directgov business-link]).each do |organisation|
       raise "Won't delete organisation with sites" if organisation.sites.any?
+
       organisation.delete
     end
   end

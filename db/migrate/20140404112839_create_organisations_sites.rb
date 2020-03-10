@@ -5,6 +5,6 @@ class CreateOrganisationsSites < ActiveRecord::Migration
       t.references :organisation, null: false
     end
 
-    add_index :organisations_sites, [:site_id, :organisation_id], unique: true
+    add_index :organisations_sites, %i[site_id organisation_id], unique: true
   end
 end

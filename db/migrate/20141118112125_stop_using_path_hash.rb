@@ -5,8 +5,8 @@
 # * drop NOT NULL constraints on all `path_hash` fields
 class StopUsingPathHash < ActiveRecord::Migration
   def up
-    remove_index :host_paths, column: [:host_id, :path_hash]
-    add_index :host_paths, [:host_id, :path], unique: true
+    remove_index :host_paths, column: %i[host_id path_hash]
+    add_index :host_paths, %i[host_id path], unique: true
 
     # Make the mappings and hits path hashes unimportant to our new code,
     # but still present to any extant processes needing access
@@ -24,7 +24,7 @@ class StopUsingPathHash < ActiveRecord::Migration
   #
   # As a result, +raise ActiveRecord::IrreversibleMigration+ or convert this
   # SQL to Ruby following initial deploy.
-  BACKFILL_PATH_HASH_NULLS = <<-postgreSQL
+  BACKFILL_PATH_HASH_NULLS = <<-postgreSQL.freeze
     UPDATE hits
     SET    path_hash = (encode(digest(hits.path, 'sha1'), 'hex'))
     WHERE  hits.path_hash IS NULL;
@@ -35,8 +35,8 @@ class StopUsingPathHash < ActiveRecord::Migration
   postgreSQL
 
   def down
-    remove_index :host_paths, column: [:host_id, :path]
-    add_index :host_paths, [:host_id, :path_hash], unique: true
+    remove_index :host_paths, column: %i[host_id path]
+    add_index :host_paths, %i[host_id path_hash], unique: true
 
     # Fill in any blanks in hits/mappings that can't be NULL
     execute(BACKFILL_PATH_HASH_NULLS)

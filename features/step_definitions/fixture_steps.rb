@@ -23,8 +23,8 @@ Given(/^there are these organisations without sites:$/) do |org_table|
 end
 
 Given(/^(.*) is an extra organisation of (.*)$/) do |slug, hostname|
-  organisation = Organisation.find_by_whitehall_slug(slug)
-  site = Host.find_by_hostname(hostname).site
+  organisation = Organisation.find_by(whitehall_slug: slug)
+  site = Host.find_by(hostname: hostname).site
   site.extra_organisations = [organisation]
 end
 
@@ -35,7 +35,7 @@ Given(/^there are (\d+) sites with hosts$/) do |site_count|
 end
 
 Given(/^there is a working AKA domain for "(.*?)"$/) do |canonical_hostname|
-  canonical_host = Host.find_by_hostname(canonical_hostname)
+  canonical_host = Host.find_by(hostname: canonical_hostname)
   host = create(:host, :with_govuk_cname,
                 hostname: canonical_host.aka_hostname,
                 canonical_host: canonical_host,
@@ -53,12 +53,11 @@ Given(/^there is a site called (.*) belonging to an organisation (.*) with these
 
   site.mappings = mappings_table.rows.map do |type, path, new_url, tags|
     create(:mapping,
-      site: site,
-      type: type,
-      path: path,
-      new_url: new_url == '' ? nil : new_url,
-      tag_list: tags
-    )
+           site: site,
+           type: type,
+           path: path,
+           new_url: new_url == "" ? nil : new_url,
+           tag_list: tags)
   end
 end
 
@@ -71,7 +70,7 @@ Given (/^a(?:n) (\w+) mapping exists for the site with the path (.*)$/) do |type
   @site.mappings << create(:mapping, type: type, path: path)
 end
 
-Given(/^there is an organisation with the whitehall_slug "(.*?)"$/) do |abbr|
+Given(/^there is an organisation with the whitehall_slug "(.*?)"$/) do |_abbr|
   @organisation = create(:organisation, whitehall_slug: "ukaea")
 end
 
@@ -100,29 +99,29 @@ Given(/^a site (.*) exists$/) do |site_abbr|
 end
 
 Given(/^the site is globally archived$/) do
-  @site.update_attribute(:global_type, 'archive')
+  @site.update_attribute(:global_type, "archive")
 end
 
 Given(/^the site is globally redirected$/) do
-  @site.update_attribute(:global_type, 'redirect')
+  @site.update_attribute(:global_type, "redirect")
 end
 
 Given(/^the site is globally redirected with the path appended$/) do
-  @site.update_attribute(:global_type, 'redirect')
+  @site.update_attribute(:global_type, "redirect")
   @site.update_attribute(:global_redirect_append_path, true)
 end
 
 Given(/^these hits exist for the Attorney General's office site:$/) do |table|
-  @site = create :site, abbr: 'ago'
+  @site = create :site, abbr: "ago"
   # table is a | 410         | /    | 16/10/12 | 100   |
   table.rows.map do |status, path, hit_on, count|
     create :hit, host: @site.default_host,
                  http_status: status,
                  path: path,
-                 hit_on: DateTime.strptime(hit_on, '%d/%m/%y'),
+                 hit_on: DateTime.strptime(hit_on, "%d/%m/%y"),
                  count: count
   end
-  require 'transition/import/daily_hit_totals'
+  require "transition/import/daily_hit_totals"
   Transition::Import::DailyHitTotals.from_hits!
 
   @expected_yesterdays_count = 9
@@ -131,12 +130,12 @@ Given(/^these hits exist for the Attorney General's office site:$/) do |table|
 end
 
 Given(/^some hits exist for the Cabinet Office site$/) do
-  site = create :site, abbr: 'cabinetoffice'
-  create :hit, http_status: '410', count: 20, host: site.hosts.first, path: '/cabinetofficehit'
+  site = create :site, abbr: "cabinetoffice"
+  create :hit, http_status: "410", count: 20, host: site.hosts.first, path: "/cabinetofficehit"
 end
 
 Given(/^no hits exist for the Attorney General's office site$/) do
-  @site ||= create(:site, abbr: 'ago')
+  @site ||= create(:site, abbr: "ago")
   Hit.delete_all
   DailyHitTotal.delete_all
 end
@@ -151,19 +150,19 @@ Given(/^there are at least two pages of error hits$/) do
 
   ((page_size + 1) - hits_count).times do
     create :hit, host: @site.default_host,
-                 http_status: '404',
+                 http_status: "404",
                  count: 1
   end
 end
 
 And(/^an organisation is trusted to edit the mappings of another organisation's site$/) do
-  @trusting_organisation = create :organisation, whitehall_slug: 'bis', title: 'Biz, Innovation and Stuff'
-  bis_site = create(:site, abbr: 'bis', organisation: @trusting_organisation)
+  @trusting_organisation = create :organisation, whitehall_slug: "bis", title: "Biz, Innovation and Stuff"
+  bis_site = create(:site, abbr: "bis", organisation: @trusting_organisation)
 
-  @organisation = create :organisation, whitehall_slug: 'bhc'
+  @organisation = create :organisation, whitehall_slug: "bhc"
   @organisation.extra_sites = [bis_site]
 end
 
 And(/^that organisation also has its own site$/) do
-  @organisation.sites = [create(:site, abbr: 'britishhallmarkingcouncil')]
+  @organisation.sites = [create(:site, abbr: "britishhallmarkingcouncil")]
 end

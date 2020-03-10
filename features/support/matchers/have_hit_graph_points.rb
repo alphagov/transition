@@ -1,10 +1,10 @@
 RSpec::Matchers.define :have_hit_graph_points do |count|
   def last_data_table(page)
-    page.evaluate_script('GOVUK.Hits.lastDataTable()')
+    page.evaluate_script("GOVUK.Hits.lastDataTable()")
   end
 
   match do |page|
-    expect(last_data_table(page)['rows'].length).to eql(count)
+    expect(last_data_table(page)["rows"].length).to eql(count)
   end
 
   failure_message do |page|
