@@ -15,5 +15,11 @@ module Transition
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # TODO: this is no longer an encouraged pattern for dynamic error pages
+    # as it has many edgecases (See: https://github.com/rails/rails/pull/17815)
+    # We should consider changing how we do this.
+    # Route exceptions to our custom error pages.
+    config.exceptions_app = self.routes
   end
 end
