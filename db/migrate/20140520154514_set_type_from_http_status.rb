@@ -1,5 +1,5 @@
 class SetTypeFromHTTPStatus < ActiveRecord::Migration
-  SET_MAPPING_TYPE_FROM_HTTP_STATUS = <<-mySQL
+  SET_MAPPING_TYPE_FROM_HTTP_STATUS = <<-mySQL.freeze
     UPDATE mappings
     SET    type = (CASE http_status
                    WHEN '301' THEN 'redirect'
@@ -8,7 +8,7 @@ class SetTypeFromHTTPStatus < ActiveRecord::Migration
                    END)
   mySQL
 
-  SET_MAPPING_BATCH_TYPE_FROM_HTTP_STATUS = <<-mySQL
+  SET_MAPPING_BATCH_TYPE_FROM_HTTP_STATUS = <<-mySQL.freeze
     UPDATE mappings_batches
     SET    type = (CASE http_status
                    WHEN '301' THEN 'redirect'
@@ -21,7 +21,7 @@ class SetTypeFromHTTPStatus < ActiveRecord::Migration
     ActiveRecord::Base.connection.execute(SET_MAPPING_BATCH_TYPE_FROM_HTTP_STATUS)
   end
 
-  SET_MAPPING_HTTP_STATUS_FROM_TYPE = <<-mySQL
+  SET_MAPPING_HTTP_STATUS_FROM_TYPE = <<-mySQL.freeze
     UPDATE mappings
     SET    http_status = (CASE type
                           WHEN 'redirect' THEN '301'
@@ -30,7 +30,7 @@ class SetTypeFromHTTPStatus < ActiveRecord::Migration
                           END)
   mySQL
 
-  SET_MAPPING_BATCH_HTTP_STATUS_FROM_TYPE = <<-mySQL
+  SET_MAPPING_BATCH_HTTP_STATUS_FROM_TYPE = <<-mySQL.freeze
     UPDATE mappings_batches
     SET    http_status = (CASE type
                           WHEN 'redirect' THEN '301'

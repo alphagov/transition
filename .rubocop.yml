@@ -3,11 +3,20 @@ inherit_gem:
     - config/default.yml
     - config/rails.yml
 
+inherit_mode:
+  merge:
+    - Exclude
+
 # We like using `render/redirect and return` in controllers, like
 # the rails guides suggest (see: http://guides.rubyonrails.org/layouts_and_rendering.html#avoiding-double-render-errors)
 # so enable this cop only for conditionals
 Style/AndOr:
   EnforcedStyle: conditionals
+
+AllCops:
+  Exclude:
+    - db/migrate/201*.rb
+    - db/schema.rb
 
 Metrics/BlockLength:
   Exclude:

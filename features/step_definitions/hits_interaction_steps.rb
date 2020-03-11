@@ -1,9 +1,9 @@
 When(/^I click on the link to check the mapping for the top hit/) do
-  click_link '', href: site_mapping_find_path(@site, path: '/A', return_path: site_hits_path(@site))
+  click_link "", href: site_mapping_find_path(@site, path: "/A", return_path: site_hits_path(@site))
 end
 
 When(/^I filter by the date period "([^"]*)"$/) do |period_title|
-  within '.hits-time-period' do
+  within ".hits-time-period" do
     click_link(period_title)
   end
 end

@@ -15,6 +15,6 @@ class DropPathHash < ActiveRecord::Migration
     add_column :host_paths, :path_hash,      :string
     add_column :host_paths, :c14n_path_hash, :string
 
-    add_index :mappings, [:site_id, :path_hash]
+    add_index :mappings, %i[site_id path_hash]
   end
 end

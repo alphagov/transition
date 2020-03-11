@@ -4,6 +4,6 @@ class RemoveGlobalHTTPStatusColumn < ActiveRecord::Migration
   end
 
   def down
-    add_column :sites, :global_http_status, :string, :limit => 3
+    add_column :sites, :global_http_status, :string, limit: 3
   end
 end

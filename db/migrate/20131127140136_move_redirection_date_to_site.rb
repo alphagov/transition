@@ -1,8 +1,8 @@
 class MoveRedirectionDateToSite < ActiveRecord::Migration
-  class Organisation < ActiveRecord::Base
+  class Organisation < ApplicationRecord
   end
 
-  class Site < ActiveRecord::Base
+  class Site < ApplicationRecord
     belongs_to :organisation
   end
 

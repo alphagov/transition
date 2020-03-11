@@ -4,7 +4,7 @@ RSpec::Matchers.define :be_sorted do
   end
 
   chain :descending do
-    @sort_block = ->(x,y) { y <=> x }
+    @sort_block = ->(x, y) { y <=> x }
   end
 
   failure_message do |array|

@@ -11,22 +11,22 @@ Then(/^there should be a tooltip which includes "([^"]*)"$/) do |text|
 end
 
 Then(/^I should see a flash message "(.*?)"$/) do |text|
-  expect(page).to have_selector('div.alert', text: text)
+  expect(page).to have_selector("div.alert", text: text)
 end
 
 # Modals
 
 Then(/^I should see an open modal window$/) do
-  expect(page).to have_selector('.modal-backdrop')
-  expect(page).to have_selector('.modal')
+  expect(page).to have_selector(".modal-backdrop")
+  expect(page).to have_selector(".modal")
 end
 
 Then(/^I should see "([^"]*)" in (?:a|the) modal window$/) do |text|
-  expect(page).to have_selector('.modal', text: text)
+  expect(page).to have_selector(".modal", text: text)
 end
 
 Then(/^I should not see a modal window$/) do
-  expect(page).to_not have_selector('.modal')
+  expect(page).to_not have_selector(".modal")
 end
 
 # Title
@@ -48,20 +48,21 @@ Then(/^I should see links top and bottom to page ([0-9]+)$/) do |page_number|
 end
 
 Then(/^I should see (\d+) as the current page$/) do |page_number|
-  expect(page).to have_selector('span.page.current', text: page_number)
+  expect(page).to have_selector("span.page.current", text: page_number)
 end
 
 # Google analytics tracking
 
 Then(/^an automatic analytics event with "([^"]*)" will fire$/) do |contents|
   expect(page).to have_selector(
-    "[data-module='auto-track-event'][data-track-label*='#{contents}']")
+    "[data-module='auto-track-event'][data-track-label*='#{contents}']",
+)
 end
 
 # HTML structure
 
 Then(/^I should see the header "([^"]*)"$/) do |header_text|
-  expect(page).to have_selector('h1,h2,h3,h4,h5,h6', text: header_text)
+  expect(page).to have_selector("h1,h2,h3,h4,h5,h6", text: header_text)
 end
 
 Then(/^I should see an? ([^ ]*) table with (\d+) rows?$/) do |type, row_count|
@@ -94,5 +95,5 @@ end
 # Content-Type
 
 Then(/^I should see JSON$/) do
-  expect(page.response_headers['Content-Type']).to include('application/json')
+  expect(page.response_headers["Content-Type"]).to include("application/json")
 end

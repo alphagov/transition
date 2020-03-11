@@ -1,9 +1,9 @@
 class RemoveOrphanedOrganisations < ActiveRecord::Migration
-  class Site < ActiveRecord::Base
+  class Site < ApplicationRecord
     belongs_to :organisation
   end
 
-  class Organisation < ActiveRecord::Base
+  class Organisation < ApplicationRecord
     has_many :sites
   end
 
