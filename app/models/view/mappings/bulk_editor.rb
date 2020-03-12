@@ -47,7 +47,6 @@ module View
 
       def update!
         @failure_ids = mappings.map { |m|
-          # update_attributes validates before saving
           m.update(common_data) ? nil : m.id
         }.compact
       end

@@ -1,4 +1,5 @@
 require "rails_helper"
+require "transition/off_site_redirect_checker"
 
 describe Transition::OffSiteRedirectChecker do
   describe "on_site?" do

@@ -8,7 +8,7 @@ describe ErrorsController do
 
   shared_examples "a JSON error" do
     it "responds with JSON" do
-      expect(response.content_type.to_s).to eql("application/json")
+      expect(response.media_type.to_s).to eql("application/json")
     end
 
     it 'has a status of "error" in the body' do
