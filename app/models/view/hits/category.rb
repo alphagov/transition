@@ -57,7 +57,7 @@ module View
           date_totals[total.total_on] = total
         end
 
-        date_totals.keys.each do |date|
+        date_totals.each_key do |date|
           date_totals[date] ||= DailyHitTotal.new do |h|
             h.total_on = date
             h.count = 0
