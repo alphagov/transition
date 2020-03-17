@@ -1,4 +1,5 @@
 require "pathname"
+require "services"
 require "transition/import/console_job_wrapper"
 require "transition/import/postgresql_settings"
 require "transition/import/hits/ignore"
