@@ -58,4 +58,5 @@ namespace :notmodules do
   end
 end
 
+desc "Alias for 'notmodules:list'"
 task notmodules: "notmodules:list"
