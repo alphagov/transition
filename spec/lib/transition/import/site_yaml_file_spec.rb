@@ -81,7 +81,7 @@ describe Transition::Import::SiteYamlFile do
       end
 
       it "should get hosts including aka hosts" do
-        hosts = %w{
+        hosts = %w[
           www.attorneygeneral.gov.uk
           aka.attorneygeneral.gov.uk
           www.attorney-general.gov.uk
@@ -90,7 +90,7 @@ describe Transition::Import::SiteYamlFile do
           aka.ago.gov.uk
           www.lslo.gov.uk
           aka.lslo.gov.uk
-        }
+        ]
         expect(site.hosts.pluck(:hostname).sort).to eql(hosts.sort)
       end
 

@@ -5,7 +5,7 @@ describe MappingsController do
   let(:site)       { create :site, abbr: "moj" }
   let(:batch)      { create(:bulk_add_batch, site: site) }
   let(:gds_bob)    { create(:gds_editor, name: "Bob Terwhilliger") }
-  let(:admin_user) { create(:user, permissions: %w(admin signin)) }
+  let(:admin_user) { create(:user, permissions: %w[admin signin]) }
   let(:mapping)    { create(:mapping, site: site, as_user: gds_bob) }
 
   describe "#index" do
@@ -319,7 +319,7 @@ describe MappingsController do
       subject(:tags_as_strings) { mapping.reload.tags.map(&:to_s) }
 
       it "has saved all tags as lowercase" do
-        expect(tags_as_strings).to match_array(%w(fee fi fo))
+        expect(tags_as_strings).to match_array(%w[fee fi fo])
       end
     end
   end

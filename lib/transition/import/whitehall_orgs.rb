@@ -24,9 +24,8 @@ module Transition
       end
 
       def by_id
-        @by_id ||= organisations.inject({}) do |hash, org|
-          hash[org["id"]] = org
-          hash
+        @by_id ||= organisations.index_by do |org|
+          org["id"]
         end
       end
 

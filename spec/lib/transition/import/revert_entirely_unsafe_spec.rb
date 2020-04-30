@@ -36,7 +36,7 @@ describe Transition::Import::RevertEntirelyUnsafe::RevertSite do
         expect(ago_host.daily_hit_totals.count).to eql(1)
       end
 
-      @host_names = %w(
+      @host_names = %w[
         www.attorneygeneral.gov.uk
         aka.attorneygeneral.gov.uk
         www.attorney-general.gov.uk
@@ -45,7 +45,7 @@ describe Transition::Import::RevertEntirelyUnsafe::RevertSite do
         aka.ago.gov.uk
         www.lslo.gov.uk
         aka.lslo.gov.uk
-      )
+      ]
     end
 
     context "delete the site and all data" do

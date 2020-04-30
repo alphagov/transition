@@ -40,7 +40,7 @@ module Transition
                 if existing_mapping
                   if existing_mapping.type == "archive" ||
                       existing_mapping.type == "unresolved" ||
-                      ! existing_mapping.edited_by_human?
+                      !existing_mapping.edited_by_human?
                     existing_mapping.update(new_url: row["New URL"], type: "redirect")
                   end
                 else

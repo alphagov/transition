@@ -31,7 +31,7 @@ class User < ApplicationRecord
   end
 
   def is_human?
-    ! is_robot?
+    !is_robot?
   end
 
 private

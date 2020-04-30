@@ -9,7 +9,7 @@ class Mapping < ApplicationRecord
   # something else instead, without activating STI.
   self.inheritance_column = nil
 
-  SUPPORTED_TYPES = %w(redirect archive unresolved).freeze
+  SUPPORTED_TYPES = %w[redirect archive unresolved].freeze
 
   acts_as_taggable
   has_paper_trail
@@ -38,9 +38,9 @@ class Mapping < ApplicationRecord
   validates :archive_url, national_archives_url: true
 
   scope :with_hit_count, -> {
-    select("mappings.*, SUM(hits.count) as hit_count").
-      joins("LEFT JOIN hits ON hits.mapping_id = mappings.id").
-      group("mappings.id")
+    select("mappings.*, SUM(hits.count) as hit_count")
+      .joins("LEFT JOIN hits ON hits.mapping_id = mappings.id")
+      .group("mappings.id")
   }
   scope :with_type, ->(type) { where(type: type) }
   scope :redirects, -> { with_type("redirect") }
@@ -69,25 +69,25 @@ class Mapping < ApplicationRecord
   # Return the occasional bit-part attribute +hit_count+ as a number.
   # Preserve the possible +nil+ value.
   def hit_count
-    read_attribute(:hit_count) && read_attribute(:hit_count).to_i
+    self[:hit_count] && self[:hit_count].to_i
   end
 
   ##
   # Reconstruct old URL based on path and default site hostname
   def old_url
-    "http://#{self.site.default_host.hostname}#{self.path}"
+    "http://#{site.default_host.hostname}#{path}"
   end
 
   ##
   # Generate national archive index URL
   def national_archive_index_url
-    "http://webarchive.nationalarchives.gov.uk/*/#{self.old_url}"
+    "http://webarchive.nationalarchives.gov.uk/*/#{old_url}"
   end
 
   ##
   # Generate national archive URL
   def national_archive_url
-    "http://webarchive.nationalarchives.gov.uk/#{self.tna_timestamp}/#{self.old_url}"
+    "http://webarchive.nationalarchives.gov.uk/#{tna_timestamp}/#{old_url}"
   end
 
   def edited_by_human?
@@ -163,11 +163,11 @@ protected
     #   '/' is a homepage path and not valid for a mapping
     #   a path that doesn't start with a '/' isn't a valid path
     # full validation still needs to be run on the path
-    not(path == "/" || path =~ /^[^\/]/)
+    !((path == "/" || path =~ /^[^\/]/))
   end
 
   def tna_timestamp
-    self.site.tna_timestamp.to_formatted_s(:number)
+    site.tna_timestamp.to_formatted_s(:number)
   end
 
   def ensure_papertrail_user_config
@@ -178,9 +178,9 @@ protected
     host_paths = site.host_paths.where(canonical_path: path)
     new_hits_paths = host_paths.pluck(:path)
 
-    site.hits.where(path: new_hits_paths).update_all(mapping_id: self.id)
-    host_paths.update_all(mapping_id: self.id)
+    site.hits.where(path: new_hits_paths).update_all(mapping_id: id)
+    host_paths.update_all(mapping_id: id)
 
-    self.update_column(:hit_count, hits.sum("count"))
+    update_column(:hit_count, hits.sum("count"))
   end
 end

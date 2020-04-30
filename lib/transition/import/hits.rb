@@ -83,14 +83,14 @@ module Transition
             start "Importing #{object.key}" do |job|
               job.skip! and next if object.key.end_with? ".csv.metadata"
 
-              import_record = self.find_import_record(object.key)
+              import_record = find_import_record(object.key)
               job.skip! and next if import_record.content_hash == object.etag
 
               is_tsv = object.key.end_with? ".tsv"
               load_data_query = is_tsv ? LOAD_TSV_DATA : LOAD_CSV_DATA
 
               resp = Services.s3.get_object(bucket: bucket, key: object.key)
-              self.from_stream!(
+              from_stream!(
                 load_data_query,
                 import_record,
                 object.etag,
@@ -107,10 +107,10 @@ module Transition
           relative_filename = Pathname.new(absolute_filename).relative_path_from(Rails.root).to_s
           content_hash = Digest::SHA1.hexdigest(File.read(relative_filename))
 
-          import_record = self.find_import_record(relative_filename)
+          import_record = find_import_record(relative_filename)
           job.skip! and next if import_record.content_hash == content_hash
 
-          self.from_stream!(
+          from_stream!(
             load_data_query,
             import_record,
             content_hash,
@@ -120,11 +120,11 @@ module Transition
       end
 
       def self.from_tsv!(filename)
-        self.from_file!(LOAD_TSV_DATA, filename)
+        from_file!(LOAD_TSV_DATA, filename)
       end
 
       def self.from_csv!(filename)
-        self.from_file!(LOAD_CSV_DATA, filename)
+        from_file!(LOAD_CSV_DATA, filename)
       end
 
       def self.from_mask!(filemask)

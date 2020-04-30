@@ -13,7 +13,7 @@ namespace :import do
     STDOUT.puts "WAIT! This will delete all data that is associated with this site. \nAre you sure? (y/N)"
     input = STDIN.gets.chomp
 
-    unless %w(y yes).include?(input)
+    unless %w[y yes].include?(input)
       abort("Aborting deletion of site: #{args[:site_abbr]}.")
     end
 

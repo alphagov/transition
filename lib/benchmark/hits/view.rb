@@ -28,10 +28,10 @@ module Benchmark
         when :summary
           @sections.each         { |category| category.hits.each   { |_| } }
           @point_categories.each { |category| category.points.each { |_| } }
-                                                                  # /| |\
-                                                                  # || ||
-                                                                  # _| |_
-                                                                  # Last one to get enumerated is a cyberman
+          # /| |\
+          # || ||
+          # _| |_
+          # Last one to get enumerated is a cyberman
         end
       end
 
@@ -52,11 +52,11 @@ module Benchmark
       DEFAULT_ABBR           = "ofsted".freeze
       DEFAULT_AREA           = "all".freeze
       AREA_ACTION            = {
-        "all"       => :index,
+        "all" => :index,
         "redirects" => :category,
-        "archives"  => :category,
-        "errors"    => :category,
-        "summary"   => :summary,
+        "archives" => :category,
+        "errors" => :category,
+        "summary" => :summary,
       }.freeze
       DEFAULT_PERIOD         = "all-time".freeze
       DEFAULT_NUMBER_OF_RUNS = 5
@@ -75,7 +75,7 @@ module Benchmark
       end
 
       def category
-        area if %w(redirects errors archives).include?(area)
+        area if %w[redirects errors archives].include?(area)
       end
 
       def params

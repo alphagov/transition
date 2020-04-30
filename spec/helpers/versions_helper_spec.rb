@@ -1,4 +1,4 @@
-#encoding: utf-8
+# encoding: utf-8
 
 require "rails_helper"
 
@@ -28,15 +28,15 @@ describe VersionsHelper do
 
     specify { expect(helper.friendly_changeset_title("archive_url" => 1, "miscellaneous" => 1)).to eq("Multiple properties updated") }
 
-    specify { expect(helper.friendly_changeset_title("type" => %w(redirect archive))).to eq("Switched mapping to an Archive") }
+    specify { expect(helper.friendly_changeset_title("type" => %w[redirect archive])).to eq("Switched mapping to an Archive") }
   end
 
   describe "#friendly_changeset_old_to_new" do
-    specify { expect(helper.friendly_changeset_old_to_new("misc", %w(old new))).to eq("old → new") }
+    specify { expect(helper.friendly_changeset_old_to_new("misc", %w[old new])).to eq("old → new") }
 
     specify { expect(helper.friendly_changeset_old_to_new("misc", ["", "new"])).to eq("<blank> → new") }
 
-    specify { expect(helper.friendly_changeset_old_to_new("type", %w(archive redirect))).to eq("Archive → Redirect") }
+    specify { expect(helper.friendly_changeset_old_to_new("type", %w[archive redirect])).to eq("Archive → Redirect") }
 
     specify { expect(helper.friendly_changeset_old_to_new("type", ["", "redirect"])).to eq("<blank> → Redirect") }
   end

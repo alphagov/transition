@@ -19,7 +19,7 @@ describe View::Mappings::BulkTagger do
   }
 
   it "has common tags from the mappings" do
-    expect(bulk_tagger.common_tags).to match_array(%w(fum fox))
+    expect(bulk_tagger.common_tags).to match_array(%w[fum fox])
   end
 
   describe "#tag_list" do
@@ -49,13 +49,13 @@ describe View::Mappings::BulkTagger do
         expect(bulk_tagger.failures).to be_empty
       end
       it "has updated mapping 1" do
-        expect(mappings.first.reload.tag_list).to match_array(%w(fee fiddle fox))
+        expect(mappings.first.reload.tag_list).to match_array(%w[fee fiddle fox])
       end
       it "has updated mapping 2" do
-        expect(mappings.second.reload.tag_list).to match_array(%w(fi fiddle fox))
+        expect(mappings.second.reload.tag_list).to match_array(%w[fi fiddle fox])
       end
       it "has updated mapping 3" do
-        expect(mappings.third.reload.tag_list).to match_array(%w(fo fiddle fox))
+        expect(mappings.third.reload.tag_list).to match_array(%w[fo fiddle fox])
       end
     end
 
@@ -66,13 +66,13 @@ describe View::Mappings::BulkTagger do
         expect(bulk_tagger.failures).to be_empty
       end
       it "has updated mapping 1" do
-        expect(mappings.first.reload.tag_list).to match_array(%w(fee))
+        expect(mappings.first.reload.tag_list).to match_array(%w[fee])
       end
       it "has updated mapping 2" do
-        expect(mappings.second.reload.tag_list).to match_array(%w(fi))
+        expect(mappings.second.reload.tag_list).to match_array(%w[fi])
       end
       it "has updated mapping 3" do
-        expect(mappings.third.reload.tag_list).to match_array(%w(fo))
+        expect(mappings.third.reload.tag_list).to match_array(%w[fo])
       end
     end
   end

@@ -12,9 +12,9 @@ module View
       end
 
       COLORS = {
-        "all"       => "#333",
-        "errors"    => "#e99",
-        "archives"  => "#aaa",
+        "all" => "#333",
+        "errors" => "#e99",
+        "archives" => "#aaa",
         "redirects" => "#9e9",
       }.freeze
 
@@ -44,9 +44,8 @@ module View
 
         return [] if max_date.nil?
 
-        date_totals = (min_date..max_date).inject({}) do |hash, date|
-          hash[date] = nil
-          hash
+        date_totals = (min_date..max_date).index_with do |_date|
+          nil
         end
 
         totals.each do |total|
@@ -67,9 +66,7 @@ module View
         date_totals.values
       end
 
-      def to_sym
-        name.to_sym
-      end
+      delegate :to_sym, to: :name
 
       def title
         name == "all" ? "All hits" : name.capitalize

@@ -37,7 +37,6 @@ Then(/^I should not be able to edit the site's mappings$/) do
   end
 end
 
-
 Then(/^I should see the site's configuration including all host aliases$/) do
   within ".configuration" do
     expected_definitions = {
@@ -51,7 +50,7 @@ Then(/^I should see the site's configuration including all host aliases$/) do
       expect(page).to have_selector("dd", text: dd)
     end
 
-    %w(www.attorney-general.gov.uk www.ago.gov.uk www.lslo.gov.uk).each do |hostname|
+    %w[www.attorney-general.gov.uk www.ago.gov.uk www.lslo.gov.uk].each do |hostname|
       expect(page).to have_selector(".host-aliases td", text: hostname)
     end
   end
@@ -60,7 +59,6 @@ end
 Then(/^I should see the date of the site's transition$/) do
   expect(page).to have_content("13 December 2012")
 end
-
 
 Then(/^I should be able to view the site's mappings$/) do
   within ".mappings" do

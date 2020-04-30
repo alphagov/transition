@@ -18,7 +18,7 @@ describe MappingsHelper do
 
   describe "#options_for_supported_types" do
     it "provides an array of supported types in a form compatible with FormBuilder#select" do
-      expect(helper.options_for_supported_types).to eq([%w(Redirect redirect), %w(Archive archive), %w(Unresolved unresolved)])
+      expect(helper.options_for_supported_types).to eq([%w[Redirect redirect], %w[Archive archive], %w[Unresolved unresolved]])
     end
   end
 

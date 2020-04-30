@@ -12,7 +12,7 @@ describe Site do
     it { is_expected.to validate_presence_of(:abbr) }
     it { is_expected.to validate_presence_of(:tna_timestamp) }
     it { is_expected.to validate_presence_of(:organisation) }
-    it { is_expected.to validate_inclusion_of(:special_redirect_strategy).in_array(%w(via_aka supplier)) }
+    it { is_expected.to validate_inclusion_of(:special_redirect_strategy).in_array(%w[via_aka supplier]) }
     it { is_expected.to allow_value("org_site1-Modifier").for(:abbr) }
     it { is_expected.not_to allow_value("org_www.site").for(:abbr) }
 
@@ -98,7 +98,6 @@ describe Site do
       ]
     }
 
-
     describe ".with_mapping_count" do
       subject(:site_list) { Site.with_mapping_count }
 
@@ -130,7 +129,7 @@ describe Site do
       subject(:tag_strings) { site_with_mappings.most_used_tags(2) }
 
       it "includes the top two tags, but not the less popular tags" do
-        expect(tag_strings).to match_array(%w(popular1 popular2))
+        expect(tag_strings).to match_array(%w[popular1 popular2])
       end
     end
   end
@@ -173,7 +172,7 @@ describe Site do
       before do
         host = create(:host, :with_third_party_cname, hostname: "foo.com", site: site)
         create(:host, :with_govuk_cname, hostname: "aka-foo.com", site: site,
-                      canonical_host_id: host.id)
+                                         canonical_host_id: host.id)
       end
 
       it { is_expected.to eql(:pre_transition) }

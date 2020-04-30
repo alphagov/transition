@@ -1,8 +1,8 @@
 class MappingsBatch < ApplicationRecord
   self.inheritance_column = :klass
 
-  FINISHED_STATES = %w(succeeded failed).freeze
-  PROCESSING_STATES = %w(unqueued queued processing) + FINISHED_STATES
+  FINISHED_STATES = %w[succeeded failed].freeze
+  PROCESSING_STATES = %w[unqueued queued processing] + FINISHED_STATES
 
   attr_accessor :paths # a virtual attribute to then use for creating entries
 

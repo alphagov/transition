@@ -54,11 +54,9 @@ module View
       end
 
       def parseable_url?
-        begin
-          url? && Addressable::URI.parse(@filter)
-        rescue Addressable::URI::InvalidURIError
-          false
-        end
+        url? && Addressable::URI.parse(@filter)
+      rescue Addressable::URI::InvalidURIError
+        false
       end
     end
 

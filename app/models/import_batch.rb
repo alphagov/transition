@@ -6,7 +6,7 @@ class ImportBatch < MappingsBatch
   attr_accessor :raw_csv
 
   has_many :entries, foreign_key: :mappings_batch_id, class_name: "ImportBatchEntry",
-    dependent: :delete_all
+                     dependent: :delete_all
 
   validates :raw_csv, presence: {
     if: :new_record?, # we only care about raw_csv at create-time
@@ -86,7 +86,7 @@ private
 
       rows_by_path = {}
       CSV.parse(raw_csv, col_sep: separator).each.with_index(1) do |csv_row, line_number|
-        # Blank lines are parsed as []. Rows with just a separator are parsed as [nil, nil]
+        #  Blank lines are parsed as []. Rows with just a separator are parsed as [nil, nil]
         next unless csv_row.present? && csv_row[0].present?
 
         row = Transition::Import::CSV::ImportBatchRow.new(site, line_number, csv_row)

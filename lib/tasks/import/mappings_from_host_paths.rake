@@ -10,7 +10,7 @@ namespace :import do
       STDOUT.flush
       STDOUT.puts "WARNING: This site has a global_type, so Bouncer will not use any mappings you create.\nDo you want to continue? (y/N)"
       input = STDIN.gets.chomp
-      unless %w(y yes).include?(input)
+      unless %w[y yes].include?(input)
         abort("Not creating mappings for site #{args[:site_abbr]} with global_type.")
       end
     end

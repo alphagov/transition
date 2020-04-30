@@ -51,9 +51,9 @@ module Transition
 
       def self.export!
         timestamp = Time.zone.now.iso8601
-        self.export_data(timestamp, "sites", EXPORT_SITES)
-        self.export_data(timestamp, "hosts", EXPORT_HOSTS)
-        self.export_data(timestamp, "mappings", EXPORT_MAPPINGS)
+        export_data(timestamp, "sites", EXPORT_SITES)
+        export_data(timestamp, "hosts", EXPORT_HOSTS)
+        export_data(timestamp, "mappings", EXPORT_MAPPINGS)
       end
 
       def self.export_data(timestamp, table, sql)
