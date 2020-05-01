@@ -21,8 +21,8 @@ class Host < ApplicationRecord
     where("(cname IS NOT NULL) OR (ip_address IS NOT NULL)")
   }
 
-  FASTLY_BOUNCER_SERVICE_MAP = %w(151.101.2.30 151.101.66.30 151.101.130.30 151.101.194.30).freeze # bouncer.gds.map.fastly.net.
-  FASTLY_NEW_BOUNCER_IPS = %w(151.101.0.204 151.101.64.204 151.101.128.204 151.101.192.204).freeze
+  FASTLY_BOUNCER_SERVICE_MAP = %w[151.101.2.30 151.101.66.30 151.101.130.30 151.101.194.30].freeze # bouncer.gds.map.fastly.net.
+  FASTLY_NEW_BOUNCER_IPS = %w[151.101.0.204 151.101.64.204 151.101.128.204 151.101.192.204].freeze
   FASTLY_ANYCAST_IPS = ["23.235.33.144", "23.235.37.144"].freeze # FIXME: These IPs are deprecated, Fastly would like to reallocate them
   REDIRECTOR_IPS     = FASTLY_ANYCAST_IPS + FASTLY_BOUNCER_SERVICE_MAP + FASTLY_NEW_BOUNCER_IPS
 
@@ -68,6 +68,6 @@ class Host < ApplicationRecord
   def update_hits_relations
     host_paths.update_all(mapping_id: nil, canonical_path: nil)
     hits.update_all(mapping_id: nil)
-    Transition::Import::HitsMappingsRelations.refresh!(self.site)
+    Transition::Import::HitsMappingsRelations.refresh!(site)
   end
 end

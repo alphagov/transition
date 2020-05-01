@@ -63,9 +63,8 @@ module Transition
       end
 
       def global_redirect_append_path
-        !! yaml["global_redirect_append_path"]
+        !!yaml["global_redirect_append_path"]
       end
-
 
       attr_reader :site
       def import_site!

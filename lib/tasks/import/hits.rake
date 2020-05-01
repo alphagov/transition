@@ -18,20 +18,18 @@ namespace :import do
     %w[transition-stats pre-transition-stats].each do |prefix|
       Services.s3.list_objects(bucket: bucket, prefix: prefix).each do |resp|
         resp.contents.each do |object|
-          begin
-            # when the legacy data was uploaded to s3, the paths were
-            # changed
-            old_filename = object.key.sub("#{prefix}/", "data/#{prefix}/hits/")
-            ImportedHitsFile
-              .find_by(filename: old_filename)
-              .update!(
-                filename: object.key,
-                content_hash: object.etag,
-              )
-            puts "#{object.key} - updated"
-          rescue ActiveRecord::RecordNotFound
-            puts "#{object.key} - skipped"
-          end
+          # when the legacy data was uploaded to s3, the paths were
+          # changed
+          old_filename = object.key.sub("#{prefix}/", "data/#{prefix}/hits/")
+          ImportedHitsFile
+            .find_by(filename: old_filename)
+            .update!(
+              filename: object.key,
+              content_hash: object.etag,
+            )
+          puts "#{object.key} - updated"
+        rescue ActiveRecord::RecordNotFound
+          puts "#{object.key} - skipped"
         end
       end
     end

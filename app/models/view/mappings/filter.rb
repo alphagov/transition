@@ -22,7 +22,7 @@ module View
       end
 
       def path_contains
-        @path_contains ||= View::Mappings::canonical_filter(site, params[:path_contains])
+        @path_contains ||= View::Mappings.canonical_filter(site, params[:path_contains])
       end
 
       def new_url_contains
@@ -50,7 +50,7 @@ module View
       end
 
       def incompatible?
-        %w(archive unresolved).include?(params[:type]) && new_url_contains.present?
+        %w[archive unresolved].include?(params[:type]) && new_url_contains.present?
       end
 
       def query

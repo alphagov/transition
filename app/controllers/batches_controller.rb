@@ -3,7 +3,7 @@ class BatchesController < ApplicationController
 
   def show
     body = {
-      done:  @batch.entries.processed.count,
+      done: @batch.entries.processed.count,
       total: @batch.entries_to_process.count,
       past_participle: "#{@batch.verb}ed",
     }

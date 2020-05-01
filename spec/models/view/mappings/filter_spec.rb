@@ -15,7 +15,7 @@ module View
       context "an incompatible params archive filter" do
         let(:params) {
           {
-            type:             "archive",
+            type: "archive",
             new_url_contains: "something",
           }
         }
@@ -32,7 +32,7 @@ module View
       context "an incompatible params unresolved filter" do
         let(:params) {
           {
-            type:             "unresolved",
+            type: "unresolved",
             new_url_contains: "something",
           }
         }
@@ -78,7 +78,7 @@ module View
 
             describe "#tags" do
               subject { super().tags }
-              it { is_expected.to eq(%w(one two)) }
+              it { is_expected.to eq(%w[one two]) }
             end
           end
 
@@ -181,26 +181,26 @@ module View
         let(:site) { create :site }
         let!(:mapping_where_everything_matches) do
           create :mapping,
-                 type:     "redirect",
-                 new_url:  "http://something.gov.uk/",
-                 path:     "/CanonicalIZED?q=1",
-                 tag_list:  %w(fee fi fo),
-                 site:     site
+                 type: "redirect",
+                 new_url: "http://something.gov.uk/",
+                 path: "/CanonicalIZED?q=1",
+                 tag_list: %w[fee fi fo],
+                 site: site
         end
         let!(:control_mapping) do
           create :mapping,
-                 type:     "archive",
-                 path:     "/somewhere_else",
-                 site:     site
+                 type: "archive",
+                 path: "/somewhere_else",
+                 site: site
         end
 
         let(:params) {
           {
-            type:             "redirect",
+            type: "redirect",
             new_url_contains: "something",
-            path_contains:    "CanonicalIZED?q=1",
-            tagged:           "fee,fi,fo",
-            sort:             "by_hits",
+            path_contains: "CanonicalIZED?q=1",
+            tagged: "fee,fi,fo",
+            sort: "by_hits",
           }
         }
 

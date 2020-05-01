@@ -22,7 +22,7 @@ module Transition
     def self.as_a_user(user)
       original_whodunnit = ::PaperTrail.request.whodunnit
       original_controller_info = ::PaperTrail.request.controller_info
-      self.set_user!(user)
+      set_user!(user)
       begin
         yield
       ensure

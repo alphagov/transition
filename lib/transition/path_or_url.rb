@@ -3,7 +3,7 @@ module Transition
     STARTS_WITH_HTTP_SCHEME = %r{^https?://}.freeze
 
     # TLDs for Hosts in transition
-    TLDS = %w{
+    TLDS = %w[
         .co.uk
         .com
         .gov.uk
@@ -16,7 +16,7 @@ module Transition
         .org.uk
         .police.uk
         .tv
-      }.freeze
+      ].freeze
 
     def self.starts_with_http_scheme?(path_or_url)
       path_or_url =~ STARTS_WITH_HTTP_SCHEME

@@ -20,6 +20,6 @@ module Transition
     # as it has many edgecases (See: https://github.com/rails/rails/pull/17815)
     # We should consider changing how we do this.
     # Route exceptions to our custom error pages.
-    config.exceptions_app = self.routes
+    config.exceptions_app = routes
   end
 end

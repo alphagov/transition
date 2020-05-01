@@ -56,7 +56,7 @@ end
 Then(/^an automatic analytics event with "([^"]*)" will fire$/) do |contents|
   expect(page).to have_selector(
     "[data-module='auto-track-event'][data-track-label*='#{contents}']",
-)
+  )
 end
 
 # HTML structure
@@ -78,18 +78,18 @@ end
 # Status codes
 
 Then(/^I should see our custom 404 page$/) do
-  steps %{
+  steps %(
     Then I should see "Page could not be found"
     And I should see a link to "GOV.UK Transition"
-  }
+  )
 end
 
 Then(/^I should see our custom 500 page$/) do
   page.status_code.should eql(500)
-  steps %{
+  steps %(
     Then I should see "sorry, something went wrong"
     And I should see a link to "GOV.UK Transition"
-  }
+  )
 end
 
 # Content-Type

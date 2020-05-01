@@ -1,7 +1,7 @@
 When(/^I go to create some mappings$/) do
-  steps %{
+  steps %(
     And I click the first link called "Add mappings"
-  }
+  )
 end
 
 When(/^I visit the site\'s mappings$/) do
@@ -143,7 +143,6 @@ When(/^I associate the tags "([^"]*)" with the mappings?$/) do |comma_separated_
   i_tag_the_mappings(comma_separated_tags)
 end
 
-
 When(/^I add multiple paths with tags "([^"]*)" and continue$/) do |tag_list|
   visit new_site_bulk_add_batch_path(@site)
 
@@ -193,7 +192,7 @@ end
 When(/^I sort the mappings by hits$/) do
   if @_javascript
     within ".sort-by" do
-      click_link "Path" # this is the default, selected, option
+      click_link "Path" #  this is the default, selected, option
       click_link "Hits"
     end
   else

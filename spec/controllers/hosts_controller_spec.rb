@@ -14,7 +14,7 @@ describe HostsController do
     end
 
     it "contains results, total and response info" do
-      %w(results total _response_info).each do |key|
+      %w[results total _response_info].each do |key|
         expect(@parsed_response).to have_key(key)
       end
     end

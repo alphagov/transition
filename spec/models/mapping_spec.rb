@@ -1,4 +1,4 @@
-#encoding: utf-8
+# encoding: utf-8
 
 require "rails_helper"
 require "transition/import/hits_mappings_relations"
@@ -257,7 +257,7 @@ describe Mapping do
       end
       context "there are blanks" do
         let(:test_input) { %(,     ,    hello, hi    , ho) }
-        it { is_expected.to eql(%w(hello hi ho)) }
+        it { is_expected.to eql(%w[hello hi ho]) }
       end
       context "there are only blanks" do
         let(:test_input) { %(,     ,       , ,   ) }
@@ -394,8 +394,8 @@ describe Mapping do
 
   it "should rewrite the URLs to ensure they have a scheme before validation" do
     mapping = build(:archived, suggested_url: "www.example.com",
-                                                  archive_url: "webarchive.nationalarchives.gov.uk",
-                                                  new_url: "www.gov.uk")
+                               archive_url: "webarchive.nationalarchives.gov.uk",
+                               new_url: "www.gov.uk")
 
     mapping.valid? # trigger before_validation hooks
 

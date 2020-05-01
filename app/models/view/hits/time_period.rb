@@ -24,15 +24,14 @@ module View
       DEFAULT_SLUG = "last-30-days".freeze
 
       PERIODS_BY_SLUG = {
-        "Yesterday"       => lambda { Time.zone.yesterday..Time.zone.today },
+        "Yesterday" => lambda { Time.zone.yesterday..Time.zone.today },
         "Last seven days" => lambda { 7.days.ago.to_date..Time.zone.today },
-        "Last 30 days"    => lambda { 30.days.ago.to_date..Time.zone.today },
-        "All time"        => lambda { 100.years.ago.to_date..Time.zone.today },
-      }.inject({}) do |hash, arr|
+        "Last 30 days" => lambda { 30.days.ago.to_date..Time.zone.today },
+        "All time" => lambda { 100.years.ago.to_date..Time.zone.today },
+      }.each_with_object({}) do |arr, hash|
         title, range_proc = *arr
         slug = TimePeriod.slugize(title)
         hash[slug] = TimePeriod.new(slug, title, range_proc)
-        hash
       end
 
       def title

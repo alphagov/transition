@@ -28,7 +28,7 @@ module Transition
             console_puts "#{doing} #{view_name}"
             Postgres::MaterializedView.create(
               view_name, all_hits_all_time(site), replace: true
-)
+            )
           end
         end
       end

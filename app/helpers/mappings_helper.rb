@@ -38,11 +38,11 @@ module MappingsHelper
       content_tag :div, class: "add-bottom-margin" do
         bootstrap_flavour_tabs(
           {
-            "Edit"    => edit_site_mapping_path(@mapping.site, @mapping),
+            "Edit" => edit_site_mapping_path(@mapping.site, @mapping),
             "History" => site_mapping_versions_path(@mapping.site, @mapping),
           },
           options,
-)
+        )
       end
     end
   end

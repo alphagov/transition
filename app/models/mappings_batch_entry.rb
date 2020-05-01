@@ -9,7 +9,7 @@ class MappingsBatchEntry < ApplicationRecord
   scope :processed, -> { where(processed: true) }
 
   def old_url
-    "http://#{mappings_batch.site.default_host.hostname}#{self.path}"
+    "http://#{mappings_batch.site.default_host.hostname}#{path}"
   end
 
   def tags

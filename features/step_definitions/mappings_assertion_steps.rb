@@ -1,4 +1,4 @@
-#encoding: UTF-8
+# encoding: UTF-8
 
 Then(/^I should still be editing a mapping$/) do
   step 'I should see "Edit mapping"'
@@ -30,7 +30,7 @@ end
 Then(/^I should see the most popular tags for this site$/) do
   within ".filters .dropdown-menu" do
     expect(page).to have_selector("a.tag", count: 10)
-    should_have_links_to_tags(%w(fiddle fum archive dead di do dying fee fi fo))
+    should_have_links_to_tags(%w[fiddle fum archive dead di do dying fee fi fo])
   end
 end
 
@@ -97,18 +97,18 @@ But(/^I should see help for the unresolved status$/) do
 end
 
 Then(/^I should see a form that contains my selection$/) do
-  steps %{
+  steps %(
     And I should see "/a"
     And I should see "/about/branding"
     But I should not see "/about/corporate"
-  }
+  )
 end
 
 Then(/^I should see a form that contains my selection within the modal$/) do
-  steps %{
+  steps %(
     And I should see "/a" in the modal window
     And I should see "/about/branding" in the modal window
-  }
+  )
   modal_should_not_contain("/about/corporate")
 end
 
@@ -242,7 +242,7 @@ But(/^I should not see "([^"]*)" available for selection$/) do |tag|
 end
 
 But(/^I should not see "([^"]*)" available for selection as it's already selected$/) do |tag|
-  step %{I should not see "#{tag}" available for selection}
+  step %(I should not see "#{tag}" available for selection)
 end
 
 Then(/^I should see the highlighted tags? "([^"]*)"$/) do |tag_list|
@@ -262,25 +262,25 @@ Then(/^I should see a link to remove the tags? "([^"]*)"$/) do |tag_list|
 end
 
 Then(/^I should see mappings tagged with "fum"$/) do
-  steps %{
+  steps %(
     And I should see "/about/corporate"
     And I should see "/about/branding"
     But I should not see "/another"
-  }
+  )
 end
 
 Then(/^I should see mappings tagged with "fum" and "fiddle"$/) do
-  steps %{
+  steps %(
     And I should see "/about/corporate"
     But I should not see "/about/branding"
     And I should not see "/another"
-  }
+  )
 end
 
 Then(/^I should see mappings tagged with "gone"$/) do
-  steps %{
+  steps %(
     And I should see "/dead_link"
-  }
+  )
 end
 
 Then(/^I should be redirected to the site dashboard$/) do

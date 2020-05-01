@@ -1,4 +1,4 @@
-#encoding: utf-8
+# encoding: utf-8
 
 Then(/^I should see all hits for the Attorney General's office in descending count order$/) do
   within ".hits" do
@@ -177,21 +177,21 @@ And(/^I should see that I can add mappings where they are missing$/) do
 end
 
 But(/^I should see all redirects and archives, even those that have since changed type$/) do
-  steps %{
+  steps %(
     Then I should see "/was_archive_now_redirect"
     And I should see "/always_an_archive"
     And I should see "/always_a_redirect"
     And I should see "/was_redirect_now_archive"
-  }
+  )
 end
 
 And(/^I should see an indication that they have since changed$/) do
-  steps %{
+  steps %(
     Then I should see "was archived, now redirecting"
     And I should see "was redirecting, now archived"
     And I should see "Error fixed — now redirecting"
     And I should see "Error fixed — now archived"
-  }
+  )
 end
 
 And(/^I should see that I can edit redirects and archives$/) do
@@ -204,11 +204,11 @@ And(/^I should see that I can edit redirects and archives$/) do
 end
 
 Then(/^I should see sections for the most common errors, archives and redirects$/) do
-  steps %{
+  steps %(
     And I should see a section for the most common errors
     And I should see a section for the most common archives
     And I should see a section for the most common redirects
-  }
+  )
 end
 
 Then(/^there should be no "All time" link$/) do

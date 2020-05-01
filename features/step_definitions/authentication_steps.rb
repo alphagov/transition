@@ -8,8 +8,8 @@ end
 
 Given(/^I have logged in as a member of DCLG$/) do
   dclg = create(:organisation,
-                title:          "Department for Communities and Local Government",
-                abbreviation:   "DCLG",
+                title: "Department for Communities and Local Government",
+                abbreviation: "DCLG",
                 whitehall_slug: "department-for-communities-and-local-government")
 
   GDS::SSO.test_user = create(:user, organisation_content_id: dclg.content_id)
