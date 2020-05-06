@@ -312,8 +312,8 @@ describe MappingsController do
                  path: "/Needs/Canonicalization?has=some&query=parts",
                  new_url: "http://somewhere.gov.uk",
                  tag_list: "fEE, fI, fO",
-                },
-              }
+               },
+             }
       end
 
       subject(:tags_as_strings) { mapping.reload.tags.map(&:to_s) }

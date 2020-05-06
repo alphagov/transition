@@ -35,9 +35,9 @@ module HitsHelper
     transition_date = site && site.transition_status == :live ? site.launch_date : nil
     dates = {}
     cols  = [
-        { label: "Date", type: "date" },
-        { label: "Transition date line", type: "string", p: { role: "annotation" } },
-      ]
+      { label: "Date", type: "date" },
+      { label: "Transition date line", type: "string", p: { role: "annotation" } },
+    ]
 
     categories.each do |category|
       cols << { label: category.title, type: "number" }
@@ -52,13 +52,13 @@ module HitsHelper
     dates.each_pair do |date, category_counts|
       rows << {
         c: [
-             { v: "Date(#{date.year}, #{date.month - 1}, #{date.day})" },
-             { v: date == transition_date ? "Transition" : nil },
-             *categories.map do |c|
-               count_for_category = category_counts[c.name] || 0
-               { v: count_for_category, f: number_with_delimiter(count_for_category) }
-             end,
-           ],
+          { v: "Date(#{date.year}, #{date.month - 1}, #{date.day})" },
+          { v: date == transition_date ? "Transition" : nil },
+          *categories.map do |c|
+            count_for_category = category_counts[c.name] || 0
+            { v: count_for_category, f: number_with_delimiter(count_for_category) }
+          end,
+        ],
       }
     end
 

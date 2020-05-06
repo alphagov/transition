@@ -143,13 +143,13 @@ private
 
   def mapping_params
     params.permit(mapping: %i[
-                             type
-                             path
-                             new_url
-                             tag_list
-                             suggested_url
-                             archive_url
-                           ])
+      type
+      path
+      new_url
+      tag_list
+      suggested_url
+      archive_url
+    ])
   end
 
   def site_params

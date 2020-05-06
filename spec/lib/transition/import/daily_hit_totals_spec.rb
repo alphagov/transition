@@ -9,12 +9,12 @@ describe Transition::Import::DailyHitTotals do
         @first_of_nov = Date.new(2013, 11, 1)
         @host = create(:host)
         @hits = [
-                  create(:hit, host: @host, path: "/1", count: 10, http_status: "404", hit_on: @halloween),
-                  create(:hit, host: @host, path: "/2", count: 10, http_status: "404", hit_on: @halloween),
-                  create(:hit, host: @host, path: "/3", count: 10, http_status: "404", hit_on: @halloween),
-                  create(:hit, host: @host, path: "/1", count: 10, http_status: "301", hit_on: @first_of_nov),
-                  create(:hit, host: @host, path: "/1", count: 10, http_status: "404", hit_on: @first_of_nov),
-                ]
+          create(:hit, host: @host, path: "/1", count: 10, http_status: "404", hit_on: @halloween),
+          create(:hit, host: @host, path: "/2", count: 10, http_status: "404", hit_on: @halloween),
+          create(:hit, host: @host, path: "/3", count: 10, http_status: "404", hit_on: @halloween),
+          create(:hit, host: @host, path: "/1", count: 10, http_status: "301", hit_on: @first_of_nov),
+          create(:hit, host: @host, path: "/1", count: 10, http_status: "404", hit_on: @first_of_nov),
+        ]
         @previous_total = create(:daily_hit_total, host: @host,
                                                    http_status: "404", total_on: @halloween,
                                                    count: 13)
