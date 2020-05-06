@@ -96,9 +96,9 @@ module View
         # Before trying to update any real mappings, construct a test mapping using
         # the submitted data to see if it validates:
         @test_mapping ||= Mapping.new({
-                                        site: site,
-                                        path: "/this/is/a/test/and/will/not/be/saved",
-                                      }.merge(common_data))
+          site: site,
+          path: "/this/is/a/test/and/will/not/be/saved",
+        }.merge(common_data))
       end
     end
   end

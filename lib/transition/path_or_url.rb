@@ -4,19 +4,19 @@ module Transition
 
     # TLDs for Hosts in transition
     TLDS = %w[
-        .co.uk
-        .com
-        .gov.uk
-        .ie
-        .info
-        .mod.uk
-        .net
-        .nhs.uk
-        .org
-        .org.uk
-        .police.uk
-        .tv
-      ].freeze
+      .co.uk
+      .com
+      .gov.uk
+      .ie
+      .info
+      .mod.uk
+      .net
+      .nhs.uk
+      .org
+      .org.uk
+      .police.uk
+      .tv
+    ].freeze
 
     def self.starts_with_http_scheme?(path_or_url)
       path_or_url =~ STARTS_WITH_HTTP_SCHEME

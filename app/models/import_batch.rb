@@ -11,7 +11,7 @@ class ImportBatch < MappingsBatch
   validates :raw_csv, presence: {
     if: :new_record?, # we only care about raw_csv at create-time
     message: I18n.t("mappings.import.raw_csv_empty"),
-    }
+  }
   validates :old_urls, old_urls_are_for_site: true
   validates :canonical_paths, presence: {
     if: :new_record?,
