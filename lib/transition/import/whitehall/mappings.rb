@@ -56,9 +56,9 @@ module Transition
         def process(filename, delete_after: false)
           Rails.logger.info("Processing...")
 
-          File.open(filename, "r") { |file|
+          File.open(filename, "r") do |file|
             Transition::Import::Whitehall::MappingsCSV.new(as_user).from_csv(file)
-          }
+          end
 
           FileUtils.rm(filename) if delete_after
         end

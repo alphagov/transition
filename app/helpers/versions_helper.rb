@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 module VersionsHelper
   def value_or_blank(value)
     value.presence || "<blank>"

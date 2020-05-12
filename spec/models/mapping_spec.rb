@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require "rails_helper"
 require "transition/import/hits_mappings_relations"
 require "transition/history"

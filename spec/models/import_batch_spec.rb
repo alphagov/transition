@@ -144,16 +144,16 @@ describe ImportBatch do
 
   describe "creating entries" do
     let(:site) { create(:site, query_params: "significant") }
-    let!(:mappings_batch) {
+    let!(:mappings_batch) do
       create(:import_batch, site: site,
                             raw_csv: raw_csv)
-    }
+    end
     context "rosy case" do
-      let(:raw_csv) {
+      let(:raw_csv) do
         <<-CSV.strip_heredoc
           /old,https://www.gov.uk/new
         CSV
-      }
+      end
 
       it "should create an entry for each data row" do
         expect(mappings_batch.entries.count).to eq(1)
@@ -183,13 +183,13 @@ describe ImportBatch do
     end
 
     context "with headers" do
-      let(:raw_csv) {
+      let(:raw_csv) do
         <<-CSV.strip_heredoc
           old url,new url
           /old,https://www.gov.uk/new
           old_url, new_url
         CSV
-      }
+      end
 
       it "should ignore headers" do
         expect(mappings_batch.entries.count).to eq(1)
@@ -199,12 +199,12 @@ describe ImportBatch do
     end
 
     context "with blank lines" do
-      let(:raw_csv) {
+      let(:raw_csv) do
         <<-CSV.strip_heredoc
           /old,https://www.gov.uk/new
 
         CSV
-      }
+      end
 
       it "should ignore blank lines" do
         expect(mappings_batch.entries.count).to eq(1)
@@ -214,12 +214,12 @@ describe ImportBatch do
     end
 
     context "with lines containing only a separator" do
-      let(:raw_csv) {
+      let(:raw_csv) do
         <<-CSV.strip_heredoc
           /old,https://www.gov.uk/new
           ,
         CSV
-      }
+      end
 
       it "should ignore those lines" do
         expect(mappings_batch.entries.count).to eq(1)
@@ -230,11 +230,11 @@ describe ImportBatch do
 
     context "archives" do
       context "without a custom archive URL" do
-        let(:raw_csv) {
+        let(:raw_csv) do
           <<-CSV.strip_heredoc
             /old,TNA
           CSV
-        }
+        end
         it "should create an entry for each data row" do
           expect(mappings_batch.entries.count).to eq(1)
         end
@@ -266,11 +266,11 @@ describe ImportBatch do
 
       context "with custom archive URL" do
         let(:archive_url) { "http://webarchive.nationalarchives.gov.uk/20160701131101/http://blogs.bis.gov.uk/exportcontrol/open-licensing/httpblogs-bis-gov-ukexportcontroluncategorizednotice-to-exporters-201415-uk-suspends-all-licences-and-licence-applications-for-export-to-russian-military-that-could-be-used-against-ukraine/" }
-        let(:raw_csv) {
+        let(:raw_csv) do
           <<-CSV.strip_heredoc
             /old,#{archive_url}
           CSV
-        }
+        end
         it "should create an entry for each data row" do
           expect(mappings_batch.entries.count).to eq(1)
         end
@@ -302,11 +302,11 @@ describe ImportBatch do
     end
 
     context "unresolved" do
-      let(:raw_csv) {
+      let(:raw_csv) do
         <<-CSV.strip_heredoc
           /old
         CSV
-      }
+      end
       it "should create an entry for each data row" do
         expect(mappings_batch.entries.count).to eq(1)
       end
@@ -332,11 +332,11 @@ describe ImportBatch do
     end
 
     context "the old URL is an absolute URL, not a path" do
-      let(:raw_csv) {
+      let(:raw_csv) do
         <<-CSV.strip_heredoc
           http://#{site.default_host.hostname}/old
         CSV
-      }
+      end
 
       it "sets the path to be only the path" do
         expect(mappings_batch.entries.first.path).to eql("/old")
@@ -344,12 +344,12 @@ describe ImportBatch do
     end
 
     context "the old URL canonicalizes to a homepage path" do
-      let(:raw_csv) {
+      let(:raw_csv) do
         <<-CSV.strip_heredoc
           /?foo
           /a
         CSV
-      }
+      end
 
       it "does not create an entry for the homepage row" do
         expect(mappings_batch.entries.pluck(:path)).to eql(["/a"])
@@ -357,14 +357,14 @@ describe ImportBatch do
     end
 
     context "deduplicating rows" do
-      let(:raw_csv) {
+      let(:raw_csv) do
         <<-CSV.strip_heredoc
           /old,
           /old?insignificant,TNA
           /OLD,http://a.gov.uk/new
           /old,http://a.gov.uk/ignore-later-redirects
         CSV
-      }
+      end
 
       it "should canonicalize and deduplicate before creating entries" do
         expect(mappings_batch.entries.count).to eq(1)
@@ -378,11 +378,11 @@ describe ImportBatch do
 
     context "existing mappings" do
       let(:existing_mapping) { create(:mapping, site: site, path: "/old") }
-      let(:raw_csv) {
+      let(:raw_csv) do
         <<-CSV.strip_heredoc
           #{existing_mapping.path}
         CSV
-      }
+      end
 
       it "should relate the entry to the existing mapping" do
         entry = mappings_batch.entries.detect { |mapping_entry| mapping_entry.path == existing_mapping.path }

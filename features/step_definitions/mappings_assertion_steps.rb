@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 Then(/^I should still be editing a mapping$/) do
   step 'I should see "Edit mapping"'
 end

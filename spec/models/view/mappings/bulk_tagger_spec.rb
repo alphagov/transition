@@ -2,21 +2,21 @@ require "rails_helper"
 
 describe View::Mappings::BulkTagger do
   let!(:site) { create(:site) }
-  let!(:mappings) {
+  let!(:mappings) do
     [
       create(:mapping, site: site, tag_list: "fee, fum, fox"),
       create(:mapping, site: site, tag_list: "fi, fum, fox"),
       create(:mapping, site: site, tag_list: "fo, fum, fox"),
     ]
-  }
+  end
   let(:tag_list) { "fox, fiddle" }
-  let(:bulk_tagger) {
+  let(:bulk_tagger) do
     View::Mappings::BulkTagger.new(
       site,
       mapping_ids: mappings.map(&:id),
       tag_list: tag_list,
     )
-  }
+  end
 
   it "has common tags from the mappings" do
     expect(bulk_tagger.common_tags).to match_array(%w[fum fox])

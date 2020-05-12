@@ -121,9 +121,9 @@ describe User do
       end
 
       context "user is a member of one parent organisation and not a member of another parent" do
-        let!(:department_of_disco) {
+        let!(:department_of_disco) do
           create(:organisation, child_organisations: [agency_of_soul])
-        }
+        end
         let(:site_of_child) { create(:site, organisation: agency_of_soul) }
         subject(:user)      { create(:user, organisation_content_id: ministry_of_funk.content_id) }
 
@@ -139,10 +139,10 @@ describe User do
     context "the site has extra organisations whose members can edit it" do
       let(:shoe_procurement_bureau) { create(:organisation) }
       let(:soulless_agency)         { create(:organisation) }
-      let(:site)                    {
+      let(:site)                    do
         create(:site, organisation: agency_of_soul,
                       extra_organisations: [shoe_procurement_bureau, soulless_agency])
-      }
+      end
 
       context "user is a member of an extra organisation" do
         subject(:user) { create(:user, organisation_content_id: shoe_procurement_bureau.content_id) }

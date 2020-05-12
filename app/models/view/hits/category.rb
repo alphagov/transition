@@ -38,7 +38,7 @@ module View
       # Requires at most one total row per day as input - if this assumption is violated,
       # data would be lost and the graph would mislead, so we check for it.
       def insert_zero_totals(totals)
-        compare_dates = lambda { |a, b| a.total_on <=> b.total_on }
+        compare_dates = ->(a, b) { a.total_on <=> b.total_on }
         max_date = totals.max(&compare_dates).try(:total_on)
         min_date = totals.min(&compare_dates).try(:total_on)
 

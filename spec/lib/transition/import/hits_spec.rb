@@ -293,7 +293,7 @@ describe Transition::Import::Hits do
       s3.stub_responses(:list_objects, contents: key_list)
       s3.stub_responses(
         :get_object,
-        ->(context) do
+        lambda do |context|
           key = context.params[:key]
           file = contents[key]
           return { body: File.open("spec/fixtures/hits/#{file}") }

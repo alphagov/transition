@@ -91,12 +91,12 @@ describe Site do
   describe "scopes" do
     let!(:site_with_mappings)    { create :site }
     let!(:site_without_mappings) { create :site }
-    let!(:mappings) {
+    let!(:mappings) do
       [
         create(:mapping, site: site_with_mappings),
         create(:mapping, site: site_with_mappings),
       ]
-    }
+    end
 
     describe ".with_mapping_count" do
       subject(:site_list) { Site.with_mapping_count }

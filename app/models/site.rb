@@ -29,7 +29,7 @@ class Site < ApplicationRecord
   after_update :update_hits_relations, if: :saved_change_to_query_params?
   after_update :remove_all_hits_view,  if: :should_remove_unused_view?
 
-  scope :with_mapping_count, -> {
+  scope :with_mapping_count, lambda {
     select("sites.*, COUNT(mappings.id) as mapping_count")
       .joins("LEFT JOIN mappings on mappings.site_id = sites.id")
       .group("sites.id")

@@ -97,7 +97,7 @@ private
         # the hash.
         # The second expression here calls the `<=>` method on ImportBatchRow,
         # which knows which of two mappings is 'better'
-        if !rows_by_path.has_key?(row.path) || row > rows_by_path[row.path]
+        if !rows_by_path.key?(row.path) || row > rows_by_path[row.path]
           rows_by_path[row.path] = row
         end
       end

@@ -105,10 +105,10 @@ describe Transition::Import::Whitehall::MappingsCSV do
       end
 
       context "existing redirect mapping edited by a human" do
-        let(:csv) {
+        let(:csv) do
           create(:redirect, from_redirector: true, site: site, path: "/oldurl", new_url: "https://www.gov.uk/curated")
           csv_for("/oldurl", "/automated")
-        }
+        end
 
         subject(:mapping) { Mapping.first }
 
@@ -121,10 +121,10 @@ describe Transition::Import::Whitehall::MappingsCSV do
       end
 
       context "existing archive mapping edited by a human" do
-        let(:csv) {
+        let(:csv) do
           create(:archived, from_redirector: true, site: site, path: "/oldurl")
           csv_for("/oldurl", "/automated")
-        }
+        end
 
         subject(:mapping) { Mapping.first }
 
@@ -142,10 +142,10 @@ describe Transition::Import::Whitehall::MappingsCSV do
       end
 
       context "existing unresolved mapping edited by a human" do
-        let(:csv) {
+        let(:csv) do
           create(:unresolved, from_redirector: true, site: site, path: "/oldurl")
           csv_for("/oldurl", "/automated")
-        }
+        end
 
         subject(:mapping) { Mapping.first }
 
@@ -163,12 +163,12 @@ describe Transition::Import::Whitehall::MappingsCSV do
       end
 
       context "CSV row without an Old URL" do
-        let(:csv) {
+        let(:csv) do
           StringIO.new(<<~CSV)
             Old URL,New URL,Admin URL,State
             ,https://www.gov.uk/a-document,http://whitehall-admin/#{rand(1000)},published
           CSV
-        }
+        end
 
         specify { expect(Mapping.count).to eq(0) }
       end
@@ -180,12 +180,12 @@ describe Transition::Import::Whitehall::MappingsCSV do
       end
 
       context "Old URL is unparseable" do
-        let(:csv) {
+        let(:csv) do
           StringIO.new(<<~CSV)
             Old URL,New URL,Admin URL,State
             http://_____/old,https://www.gov.uk/a-document,http://whitehall-admin/#{rand(1000)},published
           CSV
-        }
+        end
 
         specify { expect(Mapping.all.count).to eq(0) }
       end
