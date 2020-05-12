@@ -192,7 +192,7 @@ end
 When(/^I sort the mappings by hits$/) do
   if @_javascript
     within ".sort-by" do
-      click_link "Path" #  this is the default, selected, option
+      click_link "Path" # this is the default, selected, option
       click_link "Hits"
     end
   else

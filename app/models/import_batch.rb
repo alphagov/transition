@@ -86,7 +86,7 @@ private
 
       rows_by_path = {}
       CSV.parse(raw_csv, col_sep: separator).each.with_index(1) do |csv_row, line_number|
-        #  Blank lines are parsed as []. Rows with just a separator are parsed as [nil, nil]
+        # Blank lines are parsed as []. Rows with just a separator are parsed as [nil, nil]
         next unless csv_row.present? && csv_row[0].present?
 
         row = Transition::Import::CSV::ImportBatchRow.new(site, line_number, csv_row)
