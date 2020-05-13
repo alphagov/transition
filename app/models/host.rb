@@ -17,7 +17,7 @@ class Host < ApplicationRecord
 
   scope :excluding_aka, -> { where(canonical_host_id: nil) }
 
-  scope :with_cname_or_ip_address, -> {
+  scope :with_cname_or_ip_address, lambda {
     where("(cname IS NOT NULL) OR (ip_address IS NOT NULL)")
   }
 

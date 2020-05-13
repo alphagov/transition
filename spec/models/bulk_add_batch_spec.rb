@@ -96,10 +96,10 @@ describe BulkAddBatch do
     let(:site) { create(:site, query_params: "significant") }
     let!(:existing_mapping) { create(:mapping, site: site, path: "/a") }
 
-    subject(:mappings_batch) {
+    subject(:mappings_batch) do
       create(:bulk_add_batch, site: site,
                               paths: ["/a?insignificant", "/a", "/b?significant"])
-    }
+    end
 
     it "should create an entry for each canonicalised path" do
       expect(mappings_batch.entries.count).to eq(2)

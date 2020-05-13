@@ -10,7 +10,6 @@ module Transition
         end
 
         def from_csv(urls_io)
-          # rubocop:disable Metrics/BlockLength
           Transition::History.as_a_user(@user) do
             # Includes a row for each Old URL associated with a Document or
             # Attachment. Uses the current edition for a Document, whether it
@@ -50,7 +49,6 @@ module Transition
             end
           end
         end
-        # rubocop:enable Metrics/BlockLength
 
         def hosts_by_hostname
           @hosts_by_hostname ||= Host.all.inject({}) { |accumulator, host| accumulator.merge(host.hostname => host) }

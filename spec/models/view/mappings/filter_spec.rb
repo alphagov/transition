@@ -13,12 +13,12 @@ module View
       end
 
       context "an incompatible params archive filter" do
-        let(:params) {
+        let(:params) do
           {
             type: "archive",
             new_url_contains: "something",
           }
-        }
+        end
 
         describe "#type" do
           subject { super().type }
@@ -30,12 +30,12 @@ module View
       end
 
       context "an incompatible params unresolved filter" do
-        let(:params) {
+        let(:params) do
           {
             type: "unresolved",
             new_url_contains: "something",
           }
-        }
+        end
 
         describe "#type" do
           subject { super().type }
@@ -194,7 +194,7 @@ module View
                  site: site
         end
 
-        let(:params) {
+        let(:params) do
           {
             type: "redirect",
             new_url_contains: "something",
@@ -202,7 +202,7 @@ module View
             tagged: "fee,fi,fo",
             sort: "by_hits",
           }
-        }
+        end
 
         it { is_expected.not_to be_incompatible }
         it { is_expected.to     be_active }

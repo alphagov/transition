@@ -24,33 +24,33 @@ describe HitsHelper do
   end
 
   describe "#google_data_table" do
-    let(:archives) {
+    let(:archives) do
       [
         build(:daily_hit_total, total_on: "2012-12-31", count: 3, http_status: 410),
         build(:daily_hit_total, total_on: "2012-12-30", count: 1000, http_status: 410),
       ]
-    }
+    end
 
-    let(:errors) {
+    let(:errors) do
       [
         build(:daily_hit_total, total_on: "2012-12-31", count: 3, http_status: 404),
         build(:daily_hit_total, total_on: "2012-12-30", count: 4, http_status: 404),
       ]
-    }
+    end
 
-    let(:redirects) {
+    let(:redirects) do
       [
         build(:daily_hit_total, total_on: "2012-12-30", count: 4, http_status: 301),
       ]
-    }
+    end
 
-    let(:categories) {
+    let(:categories) do
       [
         View::Hits::Category["archives"].tap { |c| c.points = archives },
         View::Hits::Category["errors"].tap { |c| c.points = errors },
         View::Hits::Category["redirects"].tap { |c| c.points = redirects },
       ]
-    }
+    end
 
     let(:live_site_that_transitioned_on_2012_12_30) do
       site = build(:site, launch_date: Date.new(2012, 12, 30))

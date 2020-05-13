@@ -30,7 +30,7 @@ class Organisation < ApplicationRecord
   #
   # UNION these two ways in an INNER JOIN to pretend that the FK relationship
   # is in fact a row in organisations_sites.
-  scope :with_sites, -> {
+  scope :with_sites, lambda {
     select("organisations.*, COUNT(*) as site_count")
     .joins('
       INNER JOIN (
@@ -46,8 +46,7 @@ class Organisation < ApplicationRecord
 
   # Returns organisations ordered by descending error count across
   # all their sites.
-  # rubocop:disable Metrics/BlockLength
-  scope :leaderboard, -> {
+  scope :leaderboard, lambda {
     select(
       <<-POSTGRESQL,
         organisations.title,
@@ -88,7 +87,6 @@ class Organisation < ApplicationRecord
     .group("organisations.id")
     .order("error_count DESC NULLS LAST")
   }
-  # rubocop:enable Metrics/BlockLength
 
   def to_param
     whitehall_slug

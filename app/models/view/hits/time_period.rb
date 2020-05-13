@@ -24,10 +24,10 @@ module View
       DEFAULT_SLUG = "last-30-days".freeze
 
       PERIODS_BY_SLUG = {
-        "Yesterday" => lambda { Time.zone.yesterday..Time.zone.today },
-        "Last seven days" => lambda { 7.days.ago.to_date..Time.zone.today },
-        "Last 30 days" => lambda { 30.days.ago.to_date..Time.zone.today },
-        "All time" => lambda { 100.years.ago.to_date..Time.zone.today },
+        "Yesterday" => -> { Time.zone.yesterday..Time.zone.today },
+        "Last seven days" => -> { 7.days.ago.to_date..Time.zone.today },
+        "Last 30 days" => -> { 30.days.ago.to_date..Time.zone.today },
+        "All time" => -> { 100.years.ago.to_date..Time.zone.today },
       }.each_with_object({}) do |arr, hash|
         title, range_proc = *arr
         slug = TimePeriod.slugize(title)
@@ -63,7 +63,7 @@ module View
         dates[1] ||= dates[0]
         raise ArgumentError, "Invalid range, start date should be less than end date" if dates.first > dates.last
 
-        TimePeriod.new(range_str, nil, lambda { Range.new(dates.first, dates.last) })
+        TimePeriod.new(range_str, nil, -> { Range.new(dates.first, dates.last) })
       end
 
       def query_slug

@@ -3,14 +3,14 @@ require "rails_helper"
 describe TagsHelper do
   describe "#most_used_tags_json" do
     let!(:site) { create(:site) }
-    let!(:mappings) {
+    let!(:mappings) do
       [
         create(:mapping, tag_list: %w[tag1 tag2 tag3], site: site),
         create(:mapping, tag_list: %w[tag4 tag3 tag1], site: site),
         create(:mapping, tag_list: %w[tag5 tag4 tag1], site: site),
         create(:mapping, tag_list: %w[tag6 tag1 tag3], site: site),
       ]
-    }
+    end
 
     subject(:tags_as_array) do
       helper.most_used_tags_json(site, options).gsub(/[\[\]"]/, "").split(",")
