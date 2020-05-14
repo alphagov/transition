@@ -19,8 +19,10 @@ RSpec::Matchers.define :have_hit_counts do |counts|
           expected = number_with_delimiter(count.to_s)
           span_class = "hit-count"
         end
-        expect(page).to have_selector("tr:nth-child(#{index + 1}) td.mapping-hits-column span.#{span_class}",
-                                      text: Regexp.new("^#{expected}$"))
+        expect(page).to have_selector(
+          "tr:nth-child(#{index + 1}) td.mapping-hits-column span.#{span_class}",
+          text: Regexp.new("^#{expected}$"),
+        )
       end
     end
   end

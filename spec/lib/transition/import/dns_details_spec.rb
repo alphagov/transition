@@ -29,7 +29,7 @@ describe Transition::Import::DnsDetails do
 
       describe "#ttl" do
         subject { super().ttl }
-        it { is_expected.to be_between(1, 999999) }
+        it { is_expected.to be_between(1, 999_999) }
       end
     end
 

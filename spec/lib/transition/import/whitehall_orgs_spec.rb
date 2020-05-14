@@ -51,13 +51,27 @@ describe Transition::Import::WhitehallOrgs do
       before do
         # The default pagination is 20, so make 21 to trigger this
         stub_organisations_api_has_organisations %w[
-          ministry-of-funk-1 department-of-soul-1 hm-rock-and-roll-1
-          ministry-of-funk-2 department-of-soul-2 hm-rock-and-roll-2
-          ministry-of-funk-3 department-of-soul-3 hm-rock-and-roll-3
-          ministry-of-funk-4 department-of-soul-4 hm-rock-and-roll-4
-          ministry-of-funk-5 department-of-soul-5 hm-rock-and-roll-5
-          ministry-of-funk-6 department-of-soul-6 hm-rock-and-roll-6
-          ministry-of-funk-7 department-of-soul-7 hm-rock-and-roll-7
+          ministry-of-funk-1
+          department-of-soul-1
+          hm-rock-and-roll-1
+          ministry-of-funk-2
+          department-of-soul-2
+          hm-rock-and-roll-2
+          ministry-of-funk-3
+          department-of-soul-3
+          hm-rock-and-roll-3
+          ministry-of-funk-4
+          department-of-soul-4
+          hm-rock-and-roll-4
+          ministry-of-funk-5
+          department-of-soul-5
+          hm-rock-and-roll-5
+          ministry-of-funk-6
+          department-of-soul-6
+          hm-rock-and-roll-6
+          ministry-of-funk-7
+          department-of-soul-7
+          hm-rock-and-roll-7
         ]
       end
 

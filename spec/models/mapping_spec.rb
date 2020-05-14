@@ -391,9 +391,12 @@ describe Mapping do
   end
 
   it "should rewrite the URLs to ensure they have a scheme before validation" do
-    mapping = build(:archived, suggested_url: "www.example.com",
-                               archive_url: "webarchive.nationalarchives.gov.uk",
-                               new_url: "www.gov.uk")
+    mapping = build(
+      :archived,
+      suggested_url: "www.example.com",
+      archive_url: "webarchive.nationalarchives.gov.uk",
+      new_url: "www.gov.uk",
+    )
 
     mapping.valid? # trigger before_validation hooks
 

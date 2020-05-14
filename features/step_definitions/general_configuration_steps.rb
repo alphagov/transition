@@ -3,9 +3,7 @@
 Given(/^the (.*) page size is ([0-9]+)$/) do |class_name, page_size|
   klass = Object.const_get(class_name.singularize.capitalize)
   if @klass_old_page_sizes && @klass_old_page_sizes[klass]
-    raise ArgumentError.new(
-      "Page size has already been set for #{klass} in current Scenario",
-    )
+    raise ArgumentError, "Page size has already been set for #{klass} in current Scenario"
   end
 
   klass_old_page_sizes = @klass_old_page_sizes || {}

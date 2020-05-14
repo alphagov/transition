@@ -140,8 +140,11 @@ describe User do
       let(:shoe_procurement_bureau) { create(:organisation) }
       let(:soulless_agency)         { create(:organisation) }
       let(:site)                    do
-        create(:site, organisation: agency_of_soul,
-                      extra_organisations: [shoe_procurement_bureau, soulless_agency])
+        create(
+          :site,
+          organisation: agency_of_soul,
+          extra_organisations: [shoe_procurement_bureau, soulless_agency],
+        )
       end
 
       context "user is a member of an extra organisation" do
