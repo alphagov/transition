@@ -36,10 +36,13 @@ end
 
 Given(/^there is a working AKA domain for "(.*?)"$/) do |canonical_hostname|
   canonical_host = Host.find_by(hostname: canonical_hostname)
-  create(:host, :with_govuk_cname,
-         hostname: canonical_host.aka_hostname,
-         canonical_host: canonical_host,
-         site: @site)
+  create(
+    :host,
+    :with_govuk_cname,
+    hostname: canonical_host.aka_hostname,
+    canonical_host: canonical_host,
+    site: @site,
+  )
 end
 
 Given(/^that the first host's site does not exist$/) do
@@ -52,12 +55,14 @@ Given(/^there is a site called (.*) belonging to an organisation (.*) with these
   site = create(:site, organisation: org, abbr: site_abbr)
 
   site.mappings = mappings_table.rows.map do |type, path, new_url, tags|
-    create(:mapping,
-           site: site,
-           type: type,
-           path: path,
-           new_url: new_url == "" ? nil : new_url,
-           tag_list: tags)
+    create(
+      :mapping,
+      site: site,
+      type: type,
+      path: path,
+      new_url: new_url == "" ? nil : new_url,
+      tag_list: tags,
+    )
   end
 end
 
@@ -115,11 +120,12 @@ Given(/^these hits exist for the Attorney General's office site:$/) do |table|
   @site = create :site, abbr: "ago"
   # table is a | 410         | /    | 16/10/12 | 100   |
   table.rows.map do |status, path, hit_on, count|
-    create :hit, host: @site.default_host,
-                 http_status: status,
-                 path: path,
-                 hit_on: DateTime.strptime(hit_on, "%d/%m/%y"),
-                 count: count
+    create :hit,
+           host: @site.default_host,
+           http_status: status,
+           path: path,
+           hit_on: DateTime.strptime(hit_on, "%d/%m/%y"),
+           count: count
   end
   require "transition/import/daily_hit_totals"
   Transition::Import::DailyHitTotals.from_hits!
@@ -149,9 +155,10 @@ Given(/^there are at least two pages of error hits$/) do
   page_size = Hit.default_per_page
 
   ((page_size + 1) - hits_count).times do
-    create :hit, host: @site.default_host,
-                 http_status: "404",
-                 count: 1
+    create :hit,
+           host: @site.default_host,
+           http_status: "404",
+           count: 1
   end
 end
 

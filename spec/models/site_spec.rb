@@ -171,8 +171,13 @@ describe Site do
     context "site is not redirected yet, but has aka set up (for testing)" do
       before do
         host = create(:host, :with_third_party_cname, hostname: "foo.com", site: site)
-        create(:host, :with_govuk_cname, hostname: "aka-foo.com", site: site,
-                                         canonical_host_id: host.id)
+        create(
+          :host,
+          :with_govuk_cname,
+          hostname: "aka-foo.com",
+          site: site,
+          canonical_host_id: host.id,
+        )
       end
 
       it { is_expected.to eql(:pre_transition) }

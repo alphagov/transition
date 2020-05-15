@@ -97,8 +97,11 @@ describe BulkAddBatch do
     let!(:existing_mapping) { create(:mapping, site: site, path: "/a") }
 
     subject(:mappings_batch) do
-      create(:bulk_add_batch, site: site,
-                              paths: ["/a?insignificant", "/a", "/b?significant"])
+      create(
+        :bulk_add_batch,
+        site: site,
+        paths: ["/a?insignificant", "/a", "/b?significant"],
+      )
     end
 
     it "should create an entry for each canonicalised path" do
@@ -123,9 +126,14 @@ describe BulkAddBatch do
     let(:site) { create(:site) }
 
     subject(:mappings_batch) do
-      create(:bulk_add_batch, site: site,
-                              paths: [path, "/b"],
-                              type: "redirect", new_url: new_url, tag_list: tag_list)
+      create(
+        :bulk_add_batch,
+        site: site,
+        paths: [path, "/b"],
+        type: "redirect",
+        new_url: new_url,
+        tag_list: tag_list,
+      )
     end
 
     let(:path) { "/a" }
@@ -139,9 +147,14 @@ describe BulkAddBatch do
   describe "recording history", versioning: true do
     let(:site) { create(:site) }
     let(:mappings_batch) do
-      create(:bulk_add_batch, site: site,
-                              paths: ["/a"],
-                              type: "redirect", new_url: "http://a.gov.uk", tag_list: "")
+      create(
+        :bulk_add_batch,
+        site: site,
+        paths: ["/a"],
+        type: "redirect",
+        new_url: "http://a.gov.uk",
+        tag_list: "",
+      )
     end
 
     it "should not record any change to the tag_list" do

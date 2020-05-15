@@ -11,8 +11,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   rescue_from ActionController::InvalidAuthenticityToken do
-    render_error(403,
-                 body: "Invalid authenticity token")
+    render_error(
+      403,
+      body: "Invalid authenticity token",
+    )
   end
 
   def user_for_paper_trail

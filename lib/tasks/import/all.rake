@@ -4,11 +4,12 @@ end
 
 namespace :import do
   desc "Import Organisations, Sites, Hosts, Hits and update DNS details"
-  task :all, [:bucket] => [
-    "import:all:orgs_sites_hosts",
-    "import:all:hits",
-    "import:dns_details",
-  ]
+  task :all,
+       [:bucket] => [
+         "import:all:orgs_sites_hosts",
+         "import:all:hits",
+         "import:dns_details",
+       ]
 
   namespace :all do
     desc "Import all Organisations, Sites and Hosts"

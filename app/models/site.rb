@@ -22,18 +22,20 @@ class Site < ApplicationRecord
   validates :abbr, uniqueness: true, presence: true, format: { with: /\A[a-zA-Z0-9_\-]+\z/, message: "can only contain alphanumeric characters, underscores and dashes" }
   validates :special_redirect_strategy, inclusion: { in: %w[via_aka supplier], allow_nil: true }
   validates :global_new_url, presence: { if: :global_redirect? }
-  validates :global_new_url, format: { without: /\?/,
-                                       message: "cannot contain a query when the path is appended",
-                                       if: :global_redirect_append_path }
+  validates :global_new_url,
+            format: { without: /\?/,
+                      message: "cannot contain a query when the path is appended",
+                      if: :global_redirect_append_path }
 
   after_update :update_hits_relations, if: :saved_change_to_query_params?
   after_update :remove_all_hits_view,  if: :should_remove_unused_view?
 
-  scope :with_mapping_count, lambda {
-    select("sites.*, COUNT(mappings.id) as mapping_count")
-      .joins("LEFT JOIN mappings on mappings.site_id = sites.id")
-      .group("sites.id")
-  }
+  scope :with_mapping_count,
+        lambda {
+          select("sites.*, COUNT(mappings.id) as mapping_count")
+            .joins("LEFT JOIN mappings on mappings.site_id = sites.id")
+            .group("sites.id")
+        }
 
   def mapping_count
     self[:mapping_count].to_i

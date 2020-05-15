@@ -5,18 +5,24 @@ class BatchOutcomePresenter
 
   def success_message
     if updated_count.zero?
-      I18n.t("mappings.success.all_created",
-             created: mappings_created,
-             tagged_with: tagged_with(and: true))
+      I18n.t(
+        "mappings.success.all_created",
+        created: mappings_created,
+        tagged_with: tagged_with(and: true),
+      )
     elsif created_count.zero?
-      I18n.t("mappings.success.all_updated",
-             updated: mappings_updated,
-             tagged_with: tagged_with(and: true))
+      I18n.t(
+        "mappings.success.all_updated",
+        updated: mappings_updated,
+        tagged_with: tagged_with(and: true),
+      )
     else
-      I18n.t("mappings.success.some_updated",
-             created: mappings_created,
-             updated: mappings_updated,
-             tagged_with: tagged_with(all: true))
+      I18n.t(
+        "mappings.success.some_updated",
+        created: mappings_created,
+        updated: mappings_updated,
+        tagged_with: tagged_with(all: true),
+      )
     end
   end
 

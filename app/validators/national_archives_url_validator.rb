@@ -11,8 +11,9 @@ class NationalArchivesURLValidator < ActiveModel::EachValidator
                   false
     end
     unless valid_url
-      record.errors.add attribute, (options[:message] || \
-        "must be on the National Archives domain, #{NATIONAL_ARCHIVES_HOST}")
+      record.errors.add attribute,
+                        (options[:message] || \
+                                "must be on the National Archives domain, #{NATIONAL_ARCHIVES_HOST}")
     end
   end
 end

@@ -1,6 +1,6 @@
 class LeaderboardController < ApplicationController
   def index
-    if !current_user.gds_editor?
+    unless current_user.gds_editor?
       redirect_to root_path, flash: { notice: "Only GDS Editors can access the leaderboard." }
     end
 

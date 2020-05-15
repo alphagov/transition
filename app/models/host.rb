@@ -17,9 +17,10 @@ class Host < ApplicationRecord
 
   scope :excluding_aka, -> { where(canonical_host_id: nil) }
 
-  scope :with_cname_or_ip_address, lambda {
-    where("(cname IS NOT NULL) OR (ip_address IS NOT NULL)")
-  }
+  scope :with_cname_or_ip_address,
+        lambda {
+          where("(cname IS NOT NULL) OR (ip_address IS NOT NULL)")
+        }
 
   FASTLY_BOUNCER_SERVICE_MAP = %w[151.101.2.30 151.101.66.30 151.101.130.30 151.101.194.30].freeze # bouncer.gds.map.fastly.net.
   FASTLY_NEW_BOUNCER_IPS = %w[151.101.0.204 151.101.64.204 151.101.128.204 151.101.192.204].freeze

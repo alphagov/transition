@@ -58,7 +58,7 @@ describe ImportBatch do
 
     describe "new URLs" do
       describe "validating all new URLs for length" do
-        let(:too_long_url) { "http://a.gov.uk".ljust(65536, "x") }
+        let(:too_long_url) { "http://a.gov.uk".ljust(65_536, "x") }
         subject(:mappings_batch) do
           build(:import_batch, raw_csv: <<-CSV.strip_heredoc
               old url,new url
@@ -125,7 +125,7 @@ describe ImportBatch do
 
     describe "archive URLs" do
       describe "validating all archive URLs for length" do
-        let(:too_long_url) { "http://webarchive.nationalarchives.gov.uk/*/http://a.com".ljust(65536, "x") }
+        let(:too_long_url) { "http://webarchive.nationalarchives.gov.uk/*/http://a.com".ljust(65_536, "x") }
         subject(:mappings_batch) do
           build(:import_batch, raw_csv: <<-CSV.strip_heredoc
               old url,new url
@@ -145,8 +145,11 @@ describe ImportBatch do
   describe "creating entries" do
     let(:site) { create(:site, query_params: "significant") }
     let!(:mappings_batch) do
-      create(:import_batch, site: site,
-                            raw_csv: raw_csv)
+      create(
+        :import_batch,
+        site: site,
+        raw_csv: raw_csv,
+      )
     end
     context "rosy case" do
       let(:raw_csv) do

@@ -16,10 +16,12 @@ class BulkAddBatchesController < ApplicationController
   end
 
   def create
-    @batch = BulkAddBatch.new(type: batch_params[:type],
-                              new_url: batch_params[:new_url],
-                              tag_list: batch_params[:tag_list],
-                              paths: batch_params[:paths].split(/\r?\n|\r/).map(&:strip))
+    @batch = BulkAddBatch.new(
+      type: batch_params[:type],
+      new_url: batch_params[:new_url],
+      tag_list: batch_params[:tag_list],
+      paths: batch_params[:paths].split(/\r?\n|\r/).map(&:strip),
+    )
     @batch.user = current_user
     @batch.site = @site
 
@@ -66,11 +68,13 @@ private
   end
 
   def batch_params
-    params.permit(:type,
-                  :paths,
-                  :new_url,
-                  :tag_list,
-                  :update_existing)
+    params.permit(
+      :type,
+      :paths,
+      :new_url,
+      :tag_list,
+      :update_existing,
+    )
   end
 
   def find_site
