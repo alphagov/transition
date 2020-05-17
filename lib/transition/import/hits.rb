@@ -81,10 +81,10 @@ module Transition
         Services.s3.list_objects(bucket: bucket).each do |resp|
           resp.contents.each do |object|
             start "Importing #{object.key}" do |job|
-              job.skip! and next if object.key.end_with? ".csv.metadata"
+              job.skip! && next if object.key.end_with? ".csv.metadata"
 
               import_record = find_import_record(object.key)
-              job.skip! and next if import_record.content_hash == object.etag
+              job.skip! && next if import_record.content_hash == object.etag
 
               is_tsv = object.key.end_with? ".tsv"
               load_data_query = is_tsv ? LOAD_TSV_DATA : LOAD_CSV_DATA
@@ -108,7 +108,7 @@ module Transition
           content_hash = Digest::SHA1.hexdigest(File.read(relative_filename))
 
           import_record = find_import_record(relative_filename)
-          job.skip! and next if import_record.content_hash == content_hash
+          job.skip! && next if import_record.content_hash == content_hash
 
           from_stream!(
             load_data_query,

@@ -4,13 +4,13 @@ class IsPathValidator < ActiveModel::EachValidator
       record.errors.add(
         attribute,
         "can't be blank",
-      ) and return
+      ) && return
     end
     if /^[^\/]/.match?(value)
       record.errors.add(
         attribute,
         'must start with a forward slash "/"',
-      ) and return
+      ) && return
     end
 
     valid_path = begin
