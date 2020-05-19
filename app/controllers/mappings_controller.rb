@@ -53,7 +53,7 @@ class MappingsController < ApplicationController
   end
 
   def edit_multiple
-    redirect_to(bulk_edit.return_path, notice: bulk_edit.params_errors) and return if bulk_edit.params_invalid?
+    redirect_to(bulk_edit.return_path, notice: bulk_edit.params_errors) && return if bulk_edit.params_invalid?
 
     if request.xhr?
       render "edit_multiple_modal", layout: nil
@@ -61,14 +61,14 @@ class MappingsController < ApplicationController
   end
 
   def update_multiple
-    redirect_to(bulk_edit.return_path, notice: bulk_edit.params_errors) and return if bulk_edit.params_invalid?
+    redirect_to(bulk_edit.return_path, notice: bulk_edit.params_errors) && return if bulk_edit.params_invalid?
 
     if bulk_edit.would_fail?
       if bulk_edit.would_fail_on_new_url?
-        render(action: "edit_multiple") and return
+        render(action: "edit_multiple") && return
       else
         flash[:danger] = "Validation failed"
-        redirect_to(bulk_edit.return_path) and return
+        redirect_to(bulk_edit.return_path) && return
       end
     end
 
@@ -88,7 +88,7 @@ class MappingsController < ApplicationController
 
   def find_global
     # This allows finding a mapping without knowing the site first.
-    render_error(400) and return if params[:url].blank?
+    render_error(400) && return if params[:url].blank?
 
     # Strip leading and trailing whitespace before any processing.
     stripped_url = params[:url].strip
@@ -102,7 +102,7 @@ class MappingsController < ApplicationController
     begin
       url = Addressable::URI.parse(url)
     rescue Addressable::URI::InvalidURIError
-      render_error(400) and return
+      render_error(400) && (return)
     end
 
     url.host = Host.canonical_hostname(url.host)
