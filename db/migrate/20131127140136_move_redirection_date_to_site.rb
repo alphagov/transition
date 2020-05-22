@@ -9,7 +9,7 @@ class MoveRedirectionDateToSite < ActiveRecord::Migration
   def up
     add_column :sites, :launch_date, :date
     Site.all.each do |site|
-      site.update_attribute(:launch_date, site.organisation.launch_date)
+      site.update(launch_date: site.organisation.launch_date)
     end
     remove_column :organisations, :launch_date
   end
@@ -17,7 +17,7 @@ class MoveRedirectionDateToSite < ActiveRecord::Migration
   def down
     add_column :organisations, :launch_date, :date
     Organisation.all.each do |organisation|
-      organisation.update_attribute(:launch_date, organisation.sites.first.launch_date)
+      organisation.update(launch_date: organisation.sites.first.launch_date)
     end
     remove_column :sites, :launch_date
   end
