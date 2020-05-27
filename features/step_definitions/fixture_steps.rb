@@ -104,16 +104,18 @@ Given(/^a site (.*) exists$/) do |site_abbr|
 end
 
 Given(/^the site is globally archived$/) do
-  @site.update_attribute(:global_type, "archive")
+  @site.update(global_type: "archive")
 end
 
 Given(/^the site is globally redirected$/) do
-  @site.update_attribute(:global_type, "redirect")
+  @site.global_type = "redirect"
+  @site.save(validate: false)
 end
 
 Given(/^the site is globally redirected with the path appended$/) do
-  @site.update_attribute(:global_type, "redirect")
-  @site.update_attribute(:global_redirect_append_path, true)
+  @site.global_type = "redirect"
+  @site.global_redirect_append_path = true
+  @site.save(validate: false)
 end
 
 Given(/^these hits exist for the Attorney General's office site:$/) do |table|

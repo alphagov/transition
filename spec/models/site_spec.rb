@@ -65,7 +65,7 @@ describe Site do
         # Connect everything with the old query_params
         Transition::Import::HitsMappingsRelations.refresh!
 
-        site.update_attribute(:query_params, "added_later:initial")
+        site.update(query_params: "added_later:initial")
       end
 
       it "clears relationships which no longer exist" do
@@ -312,7 +312,7 @@ describe Site do
 
         it "drops the view" do
           # testing the should_receive expectation in the before block
-          site.update_attribute(:precompute_all_hits_view, false)
+          site.update(precompute_all_hits_view: false)
         end
       end
     end
