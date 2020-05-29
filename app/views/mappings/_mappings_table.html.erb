@@ -4,7 +4,7 @@
 <% include_bulk_add ||= false %>
 <% fix_header ||= false %>
 <% sort_by_hits ||= false %>
-<% show_preview_links = show_preview_links? %>
+<% show_preview_links = show_preview_links?(@site) %>
 
 <% if current_user.can_edit_site?(site) %>
   <div data-module="selectable-table">
@@ -27,7 +27,7 @@
         <th class="mapping-hits-column" scope="col">Hits</th>
       <% end %>
       <% if current_user.can_edit_site?(site) %>
-        <% if show_preview_links? %>
+        <% if show_preview_links?(@site) %>
           <th class="mapping-edit-and-preview-column"></th>
         <% else %>
           <th class="mapping-edit-column"></th>

@@ -100,9 +100,9 @@ module HitsHelper
 
   ##
   # Send the correct routing message for the current category and period
-  def current_category_in_period_path(period)
-    if @site
-      current_category_of_hits_for_specific_site(period)
+  def current_category_in_period_path(site, period)
+    if site
+      current_category_of_hits_for_specific_site(site, period)
     else
       current_category_of_hits_for_universal_analytics(period)
     end
@@ -114,14 +114,14 @@ module HitsHelper
 
 private
 
-  def current_category_of_hits_for_specific_site(period)
+  def current_category_of_hits_for_specific_site(site, period)
     # Hits for a specific site
     if params[:category]
-      category_site_hits_path(@site, category: params[:category], period: period.query_slug)
+      category_site_hits_path(site, category: params[:category], period: period.query_slug)
     elsif viewing_all_hits?
-      site_hits_path(@site, period: period.query_slug)
+      site_hits_path(site, period: period.query_slug)
     else
-      summary_site_hits_path(@site, period: period.query_slug)
+      summary_site_hits_path(site, period: period.query_slug)
     end
   end
 

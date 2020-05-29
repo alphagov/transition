@@ -7,13 +7,12 @@ describe MappingsHelper do
 
   describe "#mapping_edit_tabs", versioning: true do
     let!(:mapping) { create :mapping, :with_versions, site: site }
-    before         { @mapping = mapping }
 
-    subject { helper.mapping_edit_tabs active: "Edit" }
+    subject { helper.mapping_edit_tabs(mapping, active: "Edit") }
 
     it { is_expected.to include('<ul class="nav nav-tabs">') }
     it { is_expected.to include('<li class="active"><a href="#"') }
-    it { is_expected.to include(%(<li><a href="#{site_mapping_versions_path(@mapping.site, @mapping)}")) }
+    it { is_expected.to include(%(<li><a href="#{site_mapping_versions_path(mapping.site, mapping)}")) }
   end
 
   describe "#options_for_supported_types" do

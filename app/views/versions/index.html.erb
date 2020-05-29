@@ -4,7 +4,7 @@
 
 <h1>History</h1>
 
-<%= mapping_edit_tabs active: 'History' %>
+<%= mapping_edit_tabs(@mapping, active: 'History') %>
 
 <div class="versions">
   <%= render partial: 'mappings/versions', locals: { detailed: true } %>
