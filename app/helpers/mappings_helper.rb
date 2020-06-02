@@ -33,13 +33,13 @@ module MappingsHelper
 
   ##
   # Tabs for mapping editing
-  def mapping_edit_tabs(options = {})
-    if @mapping.versions.any?
+  def mapping_edit_tabs(mapping, options = {})
+    if mapping.versions.any?
       content_tag :div, class: "add-bottom-margin" do
         bootstrap_flavour_tabs(
           {
-            "Edit" => edit_site_mapping_path(@mapping.site, @mapping),
-            "History" => site_mapping_versions_path(@mapping.site, @mapping),
+            "Edit" => edit_site_mapping_path(mapping.site, mapping),
+            "History" => site_mapping_versions_path(mapping.site, mapping),
           },
           options,
         )
@@ -84,10 +84,10 @@ module MappingsHelper
     end
   end
 
-  def show_preview_links?
-    @site.default_host.aka_host &&
-      @site.default_host.aka_host.redirected_by_gds? &&
-      @site.hosts.excluding_aka.none?(&:redirected_by_gds?)
+  def show_preview_links?(site)
+    site.default_host.aka_host &&
+      site.default_host.aka_host.redirected_by_gds? &&
+      site.hosts.excluding_aka.none?(&:redirected_by_gds?)
   end
 
   def side_by_side_url(site, mapping = nil)

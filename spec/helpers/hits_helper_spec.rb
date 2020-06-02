@@ -82,17 +82,13 @@ describe HitsHelper do
 
     let(:time_period) { double "TimePeriod" }
 
-    subject(:path) { helper.current_category_in_period_path(time_period) }
+    subject(:path) { helper.current_category_in_period_path(site, time_period) }
 
     before do
       allow(time_period).to receive(:query_slug).and_return(period)
 
       allow(helper).to receive(:action_name).and_return(action)
       allow(helper).to receive(:params).and_return(period: period, category: category)
-
-      # stubs @site internal to helper
-      helper.class_eval { attr_writer :site }
-      helper.site = site
     end
 
     context "when a site is present" do
