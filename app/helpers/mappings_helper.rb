@@ -12,7 +12,7 @@ module MappingsHelper
   #      }, active: 'Edit'
   #    )
   def bootstrap_flavour_tabs(titles_to_links, options)
-    content_tag :ul, class: "nav nav-tabs" do
+    tag.ul class: "nav nav-tabs" do
       titles_to_links.inject("") { |result, title_link|
         result << build_flavour_tab(title_link, options)
       }.html_safe
@@ -26,7 +26,7 @@ module MappingsHelper
     html_opts = {}
     html_opts[:class] = "active" if active
 
-    content_tag(:li, html_opts) do
+    tag.li(html_opts) do
       link_to(title, active ? "#" : href)
     end
   end
@@ -35,7 +35,7 @@ module MappingsHelper
   # Tabs for mapping editing
   def mapping_edit_tabs(mapping, options = {})
     if mapping.versions.any?
-      content_tag :div, class: "add-bottom-margin" do
+      tag.div class: "add-bottom-margin" do
         bootstrap_flavour_tabs(
           {
             "Edit" => edit_site_mapping_path(mapping.site, mapping),
