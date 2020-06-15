@@ -4,15 +4,13 @@ module SitesHelper
   def big_launch_days_number(site)
     return nil if site.launch_date.nil?
 
-    big_day_span = content_tag(
-      :div,
+    big_day_span = tag.div(
       pluralize(days_before_or_after_launch(site), "day"),
       class: "big-number",
     )
 
     should_have_launched = Time.zone.today > site.launch_date
-    small_text = content_tag(
-      :div,
+    small_text = tag.div(
       if site.transition_status == :live
         "since transition"
       elsif should_have_launched

@@ -8,7 +8,7 @@ class MappingsBatch < ApplicationRecord
 
   belongs_to :user
   belongs_to :site
-  has_many :entries, foreign_key: :mappings_batch_id, class_name: "MappingsBatchEntry", dependent: :delete_all
+  has_many :entries, class_name: "MappingsBatchEntry", dependent: :delete_all
 
   validates :user, presence: true
   validates :site, presence: true
