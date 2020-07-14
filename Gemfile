@@ -19,7 +19,7 @@ gem "paper_trail", "10.3.1"
 gem "pg"
 gem "plek"
 gem "rails", "6.0.3.2"
-gem "select2-rails", "3.5.7"
+gem "select2-rails", "4.0.13"
 gem "whenever"
 
 gem "sass"
