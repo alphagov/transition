@@ -47,7 +47,7 @@ module Transition
         def destroy_site_and_associations(site)
           # We can ignore mappings batches - they're cleaned up overnight
           site.hosts.each(&:destroy)
-          site.destroy # this also deletes the organisations_sites row
+          site.destroy! # this also deletes the organisations_sites row
         end
       end
     end

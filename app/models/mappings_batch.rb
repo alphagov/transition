@@ -48,7 +48,7 @@ class MappingsBatch < ApplicationRecord
         mapping.new_url = entry.new_url
         mapping.archive_url = entry.archive_url
         mapping.tag_list = [mapping.tag_list, tag_list].join(",")
-        mapping.save
+        mapping.save!
 
         entry.update_column(:processed, true)
       end

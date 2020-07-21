@@ -4,7 +4,7 @@ Given(/^some hits for the Attorney General's site have mappings and some don't:$
   @site ||= create(:site, abbr: "ago")
   table.rows.map do |path, status_when_hit, mapping_is_now_type|
     factory_name = { "redirect" => :redirect, "archive" => :archived }[mapping_is_now_type]
-    mapping = mapping_is_now_type.present? ? create(factory_name) : nil
+    mapping = mapping_is_now_type.present? ? create!(factory_name) : nil
 
     create :hit,
            host: @site.default_host,

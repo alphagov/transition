@@ -109,13 +109,13 @@ end
 
 Given(/^the site is globally redirected$/) do
   @site.global_type = "redirect"
-  @site.save(validate: false)
+  @site.save!(validate: false)
 end
 
 Given(/^the site is globally redirected with the path appended$/) do
   @site.global_type = "redirect"
   @site.global_redirect_append_path = true
-  @site.save(validate: false)
+  @site.save!(validate: false)
 end
 
 Given(/^these hits exist for the Attorney General's office site:$/) do |table|

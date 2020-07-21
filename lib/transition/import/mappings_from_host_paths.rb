@@ -15,7 +15,7 @@ module Transition
             site_paths.each do |uncanonicalized_path|
               # Try to create them (there may be duplicates in the set and they may
               # already exist).
-              if site.mappings.create(path: uncanonicalized_path, type: "unresolved")
+              if site.mappings.create!(path: uncanonicalized_path, type: "unresolved")
                 console_print "."
               end
             end

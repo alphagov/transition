@@ -55,7 +55,7 @@ describe HitsHelper do
     let(:live_site_that_transitioned_on_2012_12_30) do
       site = build(:site, launch_date: Date.new(2012, 12, 30))
       site.hosts << build(:host, cname: "redirector-cdn.production.govuk.service.gov.uk")
-      site.save
+      site.save!
       site
     end
 
