@@ -148,12 +148,11 @@ GEM
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.11.1)
-    gds-api-adapters (67.0.0)
+    gds-api-adapters (67.0.1)
       addressable
       link_header
       null_logger
       plek (>= 1.9.0)
-      rack-cache
       rest-client (~> 2.0)
     gds-sso (15.0.0)
       multi_json (~> 1.0)
@@ -309,8 +308,6 @@ GEM
     puma (4.3.5)
       nio4r (~> 2.0)
     rack (2.2.3)
-    rack-cache (1.11.1)
-      rack (>= 0.4)
     rack-protection (2.0.8.1)
       rack
     rack-test (1.1.0)
