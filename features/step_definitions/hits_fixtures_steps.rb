@@ -23,7 +23,7 @@ Given(/^some hits exist for the Attorney General, Cabinet Office and FCO sites:$
              host: site.default_host,
              http_status: status,
              path: path,
-             hit_on: DateTime.strptime(hit_on, "%d/%m/%y"),
+             hit_on: Time.strptime(hit_on, "%d/%m/%y"),
              count: count
     end
   end
