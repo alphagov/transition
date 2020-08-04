@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+gem "rails", "6.0.3.2"
+
 gem "activerecord-import"
 gem "activerecord-session_store"
 gem "acts-as-taggable-on"
@@ -18,7 +20,6 @@ gem "optic14n" # Ideally version should be synced with bouncer
 gem "paper_trail"
 gem "pg"
 gem "plek"
-gem "rails", "6.0.3.2"
 gem "select2-rails"
 gem "whenever"
 
