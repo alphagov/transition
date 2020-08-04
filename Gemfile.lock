@@ -508,17 +508,17 @@ DEPENDENCIES
   activerecord-import
   activerecord-session_store
   acts-as-taggable-on
-  aws-sdk-s3 (~> 1.74)
+  aws-sdk-s3
   cucumber-rails
   database_cleaner
   factory_bot_rails
-  gds-api-adapters (~> 67.0)
+  gds-api-adapters
   gds-sso
   google-api-client
   govuk_admin_template
-  govuk_app_config (~> 2.2)
-  govuk_sidekiq (~> 4.0)
-  govuk_test (~> 1.0.3)
+  govuk_app_config
+  govuk_sidekiq
+  govuk_test
   gretel
   htmlentities
   jasmine
@@ -526,20 +526,20 @@ DEPENDENCIES
   launchy
   mlanett-redis-lock
   optic14n
-  paper_trail (= 10.3.1)
+  paper_trail
   pg
   plek
   pry
   rails (= 6.0.3.2)
   rails-controller-testing
   rspec-collection_matchers
-  rspec-rails (= 4.0.1)
+  rspec-rails
   rubocop-govuk
   sass
   sass-rails
-  select2-rails (= 3.5.7)
+  select2-rails
   shoulda-matchers
-  sprockets (~> 3)
+  sprockets
   timecop
   uglifier
   web-console
