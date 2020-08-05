@@ -75,7 +75,7 @@ module Transition
           # in transition-config.
           site.organisation          = Organisation.find_by(whitehall_slug: whitehall_slug)
 
-          site.tna_timestamp         = DateTime.strptime(yaml["tna_timestamp"].to_s, "%Y%m%d%H%M%S")
+          site.tna_timestamp         = Time.strptime(yaml["tna_timestamp"].to_s, "%Y%m%d%H%M%S")
           site.query_params          = yaml["options"] ? yaml["options"].sub(/^.*--query-string /, "") : ""
           site.global_type           = global_type
           site.global_new_url        = global_new_url

@@ -29,7 +29,7 @@ module Transition
 
           destroy_all_hosts
 
-          @site.destroy
+          @site.destroy!
 
           console_puts "Deleted site: #{@site.abbr}"
         end

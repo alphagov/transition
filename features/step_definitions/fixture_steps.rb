@@ -109,13 +109,13 @@ end
 
 Given(/^the site is globally redirected$/) do
   @site.global_type = "redirect"
-  @site.save(validate: false)
+  @site.save!(validate: false)
 end
 
 Given(/^the site is globally redirected with the path appended$/) do
   @site.global_type = "redirect"
   @site.global_redirect_append_path = true
-  @site.save(validate: false)
+  @site.save!(validate: false)
 end
 
 Given(/^these hits exist for the Attorney General's office site:$/) do |table|
@@ -126,7 +126,7 @@ Given(/^these hits exist for the Attorney General's office site:$/) do |table|
            host: @site.default_host,
            http_status: status,
            path: path,
-           hit_on: DateTime.strptime(hit_on, "%d/%m/%y"),
+           hit_on: Time.strptime(hit_on, "%d/%m/%y"),
            count: count
   end
   require "transition/import/daily_hit_totals"

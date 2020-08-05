@@ -203,7 +203,7 @@ describe Mapping do
 
           it { is_expected.to be_valid }
           it "still saves the value that would be invalid if it was a redirect" do
-            mapping.save
+            mapping.save!
             expect(mapping.reload.new_url).to eq("http://evil.com")
           end
         end
@@ -484,7 +484,7 @@ describe Mapping do
           before do
             Transition::History.as_a_user(lisa) do
               mapping.tag_list = %w[cool_tag]
-              mapping.save
+              mapping.save!
             end
           end
 
@@ -572,8 +572,8 @@ describe Mapping do
         let(:other_user) { create :user }
         before do
           Transition::History.as_a_user(other_user) do
-            mapping.update(type: "redirect", new_url: "http://updated.gov.uk")
-            mapping.update(type: "redirect", new_url: "http://new.gov.uk")
+            mapping.update!(type: "redirect", new_url: "http://updated.gov.uk")
+            mapping.update!(type: "redirect", new_url: "http://new.gov.uk")
           end
         end
 

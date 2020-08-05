@@ -9,6 +9,6 @@ if Rails.env.development?
     u.name        = "Test User"
     u.permissions = %w[signin admin]
     u.organisation_content_id = cabinet_office_content_id
-    u.save
+    u.save!
   end
 end
