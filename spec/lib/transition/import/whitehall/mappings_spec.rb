@@ -28,7 +28,7 @@ describe Transition::Import::Whitehall::Mappings do
 
   context "when downloading the file from whitehall" do
     before do
-      stub_request(:get, "http://whitehall-admin.dev.gov.uk/government/mappings.csv")
+      stub_request(:get, "http://whitehall-admin.dev.gov.uk/assets/mappings.csv")
         .to_return(body: "some,mappings,csv")
     end
 

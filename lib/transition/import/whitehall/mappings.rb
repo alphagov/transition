@@ -5,7 +5,7 @@ module Transition
   module Import
     module Whitehall
       class Mappings
-        WHITEHALL_URL = "#{Plek.current.find('whitehall-admin')}/government/mappings.csv".freeze
+        WHITEHALL_URL = "#{Plek.current.find('whitehall-admin')}/assets/mappings.csv".freeze
         AS_USER_EMAIL = "whitehall-urls-robot@dummy.com".freeze
 
         def initialize(options = {})
