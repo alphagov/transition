@@ -1,7 +1,7 @@
 require "transition/history"
 
 class Mapping < ApplicationRecord
-  include Concerns::NilifyBlanks
+  include NilifyBlanks
 
   # ActiveRecord uses a column named 'type' for Single Table Inheritance, and
   # by default activates STI if a 'type' column is present. Setting the column

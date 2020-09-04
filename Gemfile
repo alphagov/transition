@@ -1,30 +1,31 @@
 source "https://rubygems.org"
 
+gem "rails", "6.0.3.2"
+
 gem "activerecord-import"
 gem "activerecord-session_store"
 gem "acts-as-taggable-on"
-gem "aws-sdk-s3", "~> 1.74"
-gem "gds-api-adapters", "~> 67.0"
+gem "aws-sdk-s3"
+gem "gds-api-adapters"
 gem "gds-sso"
 gem "google-api-client"
 gem "govuk_admin_template"
-gem "govuk_app_config", "~> 2.2"
-gem "govuk_sidekiq", "~> 4.0"
+gem "govuk_app_config"
+gem "govuk_sidekiq"
 gem "gretel"
 gem "htmlentities"
 gem "kaminari"
 gem "mlanett-redis-lock"
 gem "optic14n" # Ideally version should be synced with bouncer
-gem "paper_trail", "10.3.1"
+gem "paper_trail"
 gem "pg"
 gem "plek"
-gem "rails", "6.0.3.2"
-gem "select2-rails", "3.5.7"
+gem "select2-rails"
 gem "whenever"
 
 gem "sass"
 gem "sass-rails"
-gem "sprockets", "~> 3"
+gem "sprockets"
 gem "uglifier"
 
 group :development do
@@ -35,7 +36,7 @@ group :test do
   gem "cucumber-rails", require: false
   gem "database_cleaner"
   gem "factory_bot_rails"
-  gem "govuk_test", "~> 1.0.3"
+  gem "govuk_test"
   gem "launchy" # Primarily for save_and_open_page support in Capybara
   gem "rails-controller-testing"
   gem "shoulda-matchers"
@@ -47,6 +48,6 @@ group :development, :test do
   gem "jasmine"
   gem "pry"
   gem "rspec-collection_matchers"
-  gem "rspec-rails", "4.0.1"
+  gem "rspec-rails"
   gem "rubocop-govuk"
 end
