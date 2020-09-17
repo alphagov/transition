@@ -41,11 +41,13 @@ group :test do
   gem "rails-controller-testing"
   gem "shoulda-matchers"
   gem "timecop"
+  gem "webdrivers"
   gem "webmock", require: false
 end
 
 group :development, :test do
   gem "jasmine"
+  gem "jasmine_selenium_runner", require: false
   gem "pry"
   gem "rspec-collection_matchers"
   gem "rspec-rails"
