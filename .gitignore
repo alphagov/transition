@@ -18,6 +18,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+/coverage
 
 # Ignore structure.sql (since we've returned to schema.rb)
 # in case anyone runs db:schema:dump and checks in the result

@@ -40,6 +40,7 @@ group :test do
   gem "launchy" # Primarily for save_and_open_page support in Capybara
   gem "rails-controller-testing"
   gem "shoulda-matchers"
+  gem "simplecov"
   gem "timecop"
   gem "webdrivers"
   gem "webmock", require: false
