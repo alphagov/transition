@@ -2,6 +2,12 @@ require "rails_helper"
 
 describe Host do
   describe "relationships" do
+    # Similar to below (line 15), this test now also performs validation before
+    # checking the association
+    before do
+      allow(subject).to receive(:aka?).and_return(false)
+    end
+
     it { is_expected.to belong_to(:site) }
   end
 

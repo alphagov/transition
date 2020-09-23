@@ -3,7 +3,7 @@ module ApplicationHelper
     options = {}
     options[:class] = "active" if active
 
-    tag.li nil, options do
+    tag.li nil, **options do
       active ? title : link_to(title, path)
     end
   end

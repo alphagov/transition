@@ -45,7 +45,7 @@ module Transition
           Rails.logger.info("Downloading 30+ MB CSV to #{filename}")
           # Have to force the encoding because it isn't set on the response, so
           # Ruby defaults to BINARY
-          urls_io = open(WHITEHALL_URL, "r:utf-8", http_basic_authentication: [@username, @password])
+          urls_io = URI.open(WHITEHALL_URL, "r:utf-8", http_basic_authentication: [@username, @password])
           open(filename, "w") do |file|
             file.write(urls_io.read)
           end

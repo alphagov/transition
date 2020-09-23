@@ -26,7 +26,7 @@ module MappingsHelper
     html_opts = {}
     html_opts[:class] = "active" if active
 
-    tag.li(html_opts) do
+    tag.li(**html_opts) do
       link_to(title, active ? "#" : href)
     end
   end
