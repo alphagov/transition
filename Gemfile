@@ -36,7 +36,6 @@ group :test do
   gem "cucumber-rails", require: false
   gem "database_cleaner"
   gem "factory_bot_rails"
-  gem "govuk_test"
   gem "launchy" # Primarily for save_and_open_page support in Capybara
   gem "rails-controller-testing"
   gem "shoulda-matchers"
@@ -46,8 +45,9 @@ group :test do
 end
 
 group :development, :test do
+  gem "govuk_test"
   gem "jasmine"
-  gem "jasmine_selenium_runner", require: false
+  gem "jasmine_selenium_runner"
   gem "pry"
   gem "rspec-collection_matchers"
   gem "rspec-rails"
