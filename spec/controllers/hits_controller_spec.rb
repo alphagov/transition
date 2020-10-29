@@ -27,7 +27,7 @@ describe HitsController do
     ]
   end
 
-  around(:all) do |example|
+  around(:example) do |example|
     Timecop.freeze(Date.new(2013, 1, 1)) { example.run }
   end
 
