@@ -5,7 +5,7 @@ describe SitesHelper do
     let(:site)      { double("site") }
     let(:halloween) { Date.new(2013, 10, 31) }
 
-    around(:all) do |example|
+    around(:example) do |example|
       Timecop.freeze(halloween) { example.run }
     end
 
