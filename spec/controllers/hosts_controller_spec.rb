@@ -18,5 +18,9 @@ describe HostsController do
         expect(@parsed_response).to have_key(key)
       end
     end
+
+    it "will not be cached" do
+      expect(response.headers["Cache-Control"]).to eq("no-cache")
+    end
   end
 end
