@@ -3,8 +3,5 @@
 library("govuk")
 
 node {
-  govuk.buildProject(
-    sassLint: false,
-    rubyLintDiff: false
-  )
+  govuk.buildProject()
 }
