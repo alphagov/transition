@@ -27,3 +27,7 @@ bundle exec sidekiq -C config/sidekiq.yml
 
 Available at /style, the guide documents how transition is using bootstrap, where the app has diverged from default
 styles and any custom styles needed to fill in the gaps.
+
+## Adding data to the transition app
+
+You can add new URLs and update existing configurations for sites and organisations within the Transition app using the [Transition config](https://github.com/alphagov/transition-config) repo.
