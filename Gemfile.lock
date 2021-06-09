@@ -92,7 +92,7 @@ GEM
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
-    brakeman (4.10.1)
+    brakeman (5.0.4)
     builder (3.2.4)
     capybara (3.35.3)
       addressable
@@ -210,8 +210,8 @@ GEM
       sidekiq (>= 5, < 6)
       sidekiq-logging-json (~> 0.0)
       sidekiq-statsd (>= 2.1)
-    govuk_test (2.2.0)
-      brakeman (~> 4.6)
+    govuk_test (2.3.0)
+      brakeman (>= 5.0.2)
       capybara
       puma
       selenium-webdriver (>= 3.142)
@@ -273,7 +273,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2021.0225)
     mini_mime (1.1.0)
-    mini_portile2 (2.5.1)
+    mini_portile2 (2.5.3)
     minitest (5.14.4)
     mlanett-redis-lock (0.2.7)
       redis
@@ -283,7 +283,7 @@ GEM
     multipart-post (2.1.1)
     netrc (0.11.0)
     nio4r (2.5.7)
-    nokogiri (1.11.4)
+    nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     null_logger (0.0.1)
@@ -318,7 +318,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (4.0.6)
-    puma (5.3.1)
+    puma (5.3.2)
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
