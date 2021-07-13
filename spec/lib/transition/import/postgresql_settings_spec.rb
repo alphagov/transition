@@ -2,10 +2,11 @@ require "rails_helper"
 require "transition/import/postgresql_settings"
 
 describe Transition::Import::PostgreSQLSettings do
-  class PGWrapperUsingClass
-    include Transition::Import::PostgreSQLSettings
+  let(:object) do
+    settings_module = described_class
+    klass = Class.new { include settings_module }
+    klass.new
   end
-  let(:object) { PGWrapperUsingClass.new }
 
   describe "#get_setting" do
     it "raises an error for missing settings" do
@@ -55,15 +56,15 @@ describe Transition::Import::PostgreSQLSettings do
     end
 
     it "changes settings back despite any errors in the block" do
-      class ThisTestErrorOnly < StandardError; end
+      custom_error_class = Class.new(StandardError)
 
       old_work_mem = object.get_setting("work_mem")
 
       begin
         object.change_settings("work_mem" => "5MB") do
-          raise ThisTestErrorOnly, "Oh no! I hope they coded this defensively."
+          raise custom_error_class, "Oh no! I hope they coded this defensively."
         end
-      rescue ThisTestErrorOnly
+      rescue custom_error_class
         expect(object.get_setting("work_mem")).to eql(old_work_mem)
       end
     end
