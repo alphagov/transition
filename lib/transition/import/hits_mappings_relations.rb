@@ -9,6 +9,7 @@ module Transition
       include Transition::Import::PostgreSQLSettings
 
       attr_accessor :site
+
       def initialize(site = nil)
         self.site = site
       end

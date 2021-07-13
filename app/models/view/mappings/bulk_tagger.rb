@@ -64,7 +64,7 @@ module View
       end
 
       def glue
-        delimiter + " "
+        "#{delimiter} "
       end
     end
   end

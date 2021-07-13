@@ -15,8 +15,8 @@ class IsPathValidator < ActiveModel::EachValidator
 
     valid_path = begin
       Addressable::URI.parse(value).relative?
-                 rescue Addressable::URI::InvalidURIError
-                   false
+    rescue Addressable::URI::InvalidURIError
+      false
     end
 
     unless valid_path

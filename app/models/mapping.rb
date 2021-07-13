@@ -130,9 +130,9 @@ class Mapping < ApplicationRecord
     if uri.blank? || uri =~ %r{^https?:}
       uri
     elsif %r{^www.gov.uk}.match?(uri)
-      "https://" + uri
+      "https://#{uri}"
     else
-      "http://" + uri
+      "http://#{uri}"
     end
   end
 

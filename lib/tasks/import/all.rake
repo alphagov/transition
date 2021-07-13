@@ -1,5 +1,5 @@
 def glob_from_array(array)
-  "{" + array.join(",") + "}"
+  "{#{array.join(',')}}"
 end
 
 namespace :import do

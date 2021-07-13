@@ -14,7 +14,7 @@ module View
         # Canonicalisation removes trailing slashes, which in this case
         # can be an important part of the search string. Put them back.
         @to_s ||= if @filter.ends_with?("/")
-                    canonicalized + "/"
+                    "#{canonicalized}/"
                   else
                     canonicalized
                   end
@@ -41,7 +41,7 @@ module View
           # Otherwise we would be assuming that the filter value was meant to
           # have a leading slash, which may not be the case - the user might
           # have meant to supply a fragment of a directory name.
-          @site.canonical_path("/" + @filter)[1..-1]
+          @site.canonical_path("/#{@filter}")[1..]
         end
       end
 

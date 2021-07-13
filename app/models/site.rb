@@ -1,5 +1,5 @@
 require "postgres/materialized_view"
-require "./lib/transition/path_or_url.rb"
+require "./lib/transition/path_or_url"
 
 class Site < ApplicationRecord
   belongs_to :organisation
@@ -69,7 +69,7 @@ class Site < ApplicationRecord
             path_or_url
           elsif !path_or_url.starts_with?("/") &&
               ::Transition::PathOrUrl.starts_with_a_domain?(path_or_url)
-            "http://" + path_or_url
+            "http://#{path_or_url}"
           else
             # BLURI takes a full URL, but we only care about the path. There's no
             # benefit in making an extra query to get a real hostname for the site.
@@ -78,7 +78,7 @@ class Site < ApplicationRecord
 
     bluri = BLURI(url).canonicalize!(allow_query: query_params.split(":"))
     path = bluri.path
-    bluri.query ? (path + "?" + bluri.query) : path
+    bluri.query ? "#{path}?#{bluri.query}" : path
   end
 
   def hit_total_count

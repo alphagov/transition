@@ -11,7 +11,7 @@ namespace :db do
     desc "Dump DB schema with auto-increment corrections"
     task dump: :environment do
       path = Rails.root.join("db/structure.sql")
-      File.write path, File.read(path).gsub(/ AUTO_INCREMENT=\d*/, "") + "\n"
+      File.write path, "#{File.read(path).gsub(/ AUTO_INCREMENT=\d*/, '')}\n"
     end
   end
 end

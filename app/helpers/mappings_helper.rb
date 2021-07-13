@@ -79,8 +79,8 @@ module MappingsHelper
   def friendly_hit_percentage(hit_percentage)
     if hit_percentage.zero? then ""
     elsif hit_percentage < 0.01 then "< 0.01%"
-    elsif hit_percentage < 10.0 then hit_percentage.round(2).to_s + "%"
-    else hit_percentage.round(1).to_s + "%"
+    elsif hit_percentage < 10.0 then "#{hit_percentage.round(2)}%"
+    else "#{hit_percentage.round(1)}%"
     end
   end
 

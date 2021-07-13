@@ -43,7 +43,7 @@ class Host < ApplicationRecord
     if hostname.start_with?("www.")
       hostname.sub(/^www\./, "aka.")
     else
-      "aka-" + hostname
+      "aka-#{hostname}"
     end
   end
 
