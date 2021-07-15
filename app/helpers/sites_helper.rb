@@ -23,7 +23,7 @@ module SitesHelper
       end,
     )
 
-    "#{big_day_span} #{small_text}"
+    safe_join([big_day_span, small_text], " ")
   end
 
   def days_before_or_after_launch(site)
