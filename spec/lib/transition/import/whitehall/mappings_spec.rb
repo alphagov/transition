@@ -2,7 +2,7 @@ require "rails_helper"
 require "transition/import/whitehall/mappings"
 
 describe Transition::Import::Whitehall::Mappings do
-  let(:tmpdir) { Rails.root + "tmp/" }
+  let(:tmpdir) { Rails.root.join("tmp") }
 
   before do
     tmpdir.mkdir unless tmpdir.exist?
@@ -47,7 +47,7 @@ describe Transition::Import::Whitehall::Mappings do
   end
 
   context "when using a file off disk" do
-    let(:filename) { tmpdir + "test_filename.csv" }
+    let(:filename) { tmpdir.join("test_filename.csv") }
 
     before do
       filename.write("some,mappings,csv")

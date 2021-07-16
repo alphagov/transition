@@ -330,7 +330,7 @@ describe MappingsController do
     let!(:mapping_c) { create :mapping, path: "/c", site: site }
 
     before do
-      @mappings_index_with_filter = site_mappings_path(site) + "?contains=%2Fa"
+      @mappings_index_with_filter = "#{site_mappings_path(site)}?contains=%2Fa"
     end
 
     context "without permission to edit" do
@@ -430,7 +430,7 @@ describe MappingsController do
     let!(:mapping_c) { create :mapping, path: "/c", site: site, tag_list: "fum", as_user: gds_bob }
 
     before do
-      @mappings_index_with_filter = site_mappings_path(site) + "?contains=%2Fa"
+      @mappings_index_with_filter = "#{site_mappings_path(site)}?contains=%2Fa"
     end
 
     context "without permission to edit" do

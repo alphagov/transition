@@ -32,7 +32,7 @@ module Transition
         FROM   hits_staging st
         INNER JOIN hosts h on h.hostname = st.hostname
         WHERE LENGTH(st.path) <= 2048
-          AND st.path NOT IN (#{Ignore::PATHS.map { |path| "'" + path + "'" }.join(', ')})
+          AND st.path NOT IN (#{Ignore::PATHS.map { |path| "'#{path}'" }.join(', ')})
           AND st.path !~ '#{Ignore::PATTERNS.join('|')}'
           AND NOT EXISTS (
             SELECT 1 FROM hits

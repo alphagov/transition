@@ -80,7 +80,7 @@ Then(/^I should see a trend for all hits, errors, archives and redirects$/) do
   end
 end
 
-Then(/^I should see hits from the last 30 days with a[n]? (\w+) status, in descending count order$/) do |category|
+Then(/^I should see hits from the last 30 days with an? (\w+) status, in descending count order$/) do |category|
   case category
   when "error"
     status = 404
@@ -95,7 +95,7 @@ Then(/^I should see hits from the last 30 days with a[n]? (\w+) status, in desce
   end
 end
 
-Then(/^I should see all hits with a[n]? (\w+) status, in descending count order$/) do |category|
+Then(/^I should see all hits with an? (\w+) status, in descending count order$/) do |category|
   case category
   when "error"
     status = 404
@@ -139,7 +139,7 @@ Then(/^the top hit's canonicalized path should already be in the form$/) do
   expect(find_field("Old URLs").value).to eql("/a")
 end
 
-Then(/^I should see a[n]? (\w+) graph showing a (\w+) trend line(?: with )?([0-9]*)?(?: points)?$/) do |category, color, points|
+Then(/^I should see an? (\w+) graph showing a (\w+) trend line(?: with )?([0-9]*)?(?: points)?$/) do |category, color, points|
   color = case color
           when "red"
             "#ee9999"

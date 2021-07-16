@@ -4,7 +4,7 @@ When(/^I go to create some mappings$/) do
   )
 end
 
-When(/^I visit the site\'s mappings$/) do
+When(/^I visit the site's mappings$/) do
   visit site_mappings_path(@site)
 end
 

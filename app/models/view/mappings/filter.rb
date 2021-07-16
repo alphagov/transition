@@ -8,6 +8,7 @@ module View
     #
     class Filter
       attr_accessor :site, :params
+
       def initialize(site, params)
         @site = site
         @params = params

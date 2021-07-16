@@ -9,9 +9,9 @@ namespace :import do
     site = Site.find_by(abbr: args[:site_abbr])
     raise "No site found for #{args[:site_abbr]}" unless site
 
-    STDOUT.flush
-    STDOUT.puts "WAIT! This will delete all data that is associated with this site. \nAre you sure? (y/N)"
-    input = STDIN.gets.chomp
+    $stdout.flush
+    $stdout.puts "WAIT! This will delete all data that is associated with this site. \nAre you sure? (y/N)"
+    input = $stdin.gets.chomp
 
     unless %w[y yes].include?(input)
       abort("Aborting deletion of site: #{args[:site_abbr]}.")

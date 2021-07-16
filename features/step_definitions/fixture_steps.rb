@@ -84,7 +84,7 @@ Given(/^the organisation has a site with a host with a GOV\.UK cname$/) do
   create(:host, :with_govuk_cname, site: site)
 end
 
-Given(/^the organisation has a site with a host with a third\-party cname$/) do
+Given(/^the organisation has a site with a host with a third-party cname$/) do
   site = create(:site, organisation: @organisation)
   create(:host, :with_third_party_cname, site: site)
 end

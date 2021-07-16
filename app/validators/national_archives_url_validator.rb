@@ -7,8 +7,8 @@ class NationalArchivesURLValidator < ActiveModel::EachValidator
     valid_url = begin
       uri = Addressable::URI.parse(value)
       uri.host == NATIONAL_ARCHIVES_HOST
-                rescue Addressable::URI::InvalidURIError
-                  false
+    rescue Addressable::URI::InvalidURIError
+      false
     end
     unless valid_url
       record.errors.add attribute,

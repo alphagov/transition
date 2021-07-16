@@ -67,6 +67,7 @@ module Transition
       end
 
       attr_reader :site
+
       def import_site!
         @site = Site.where(abbr: abbr).first_or_initialize.tap do |site|
           # transition-config uses slugs to identify organisations because

@@ -1,5 +1,5 @@
 require "view/mappings/canonical_filter"
-require "./lib/transition/path_or_url.rb"
+require "./lib/transition/path_or_url"
 
 class MappingsController < ApplicationController
   include PaperTrail::Rails::Controller
@@ -94,7 +94,7 @@ class MappingsController < ApplicationController
     stripped_url = params[:url].strip
 
     url = if !::Transition::PathOrUrl.starts_with_http_scheme?(stripped_url)
-            "http://" + stripped_url # Add a dummy scheme
+            "http://#{stripped_url}" # Add a dummy scheme
           else
             stripped_url
           end
