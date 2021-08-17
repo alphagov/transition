@@ -33,6 +33,7 @@ group :development do
 end
 
 group :test do
+  gem "capybara-select-2"
   gem "cucumber-rails", require: false
   gem "database_cleaner"
   gem "factory_bot_rails"
