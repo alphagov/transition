@@ -155,7 +155,7 @@ end
 
 Then(/^I should see the tags "([^"]*)"$/) do |tag_list|
   field = if @_javascript
-            find(:xpath, '//input[contains(@class, "select2-offscreen")]')
+            find(:xpath, '//*[contains(@class, "select2-container")]/../input', visible: :all)
           else
             find_field("Tags")
           end
