@@ -30,3 +30,6 @@ updates:
         dependency-type: direct
       - dependency-name: rspec-rails
         dependency-type: direct
+      # Other gems
+      - dependency-name: acts-as-taggable-on
+        dependency-type: direct
