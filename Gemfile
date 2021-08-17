@@ -20,7 +20,7 @@ gem "optic14n" # Ideally version should be synced with bouncer
 gem "paper_trail"
 gem "pg"
 gem "plek"
-gem "select2-rails"
+gem "select2-rails", "~> 3.5.11" # Version 4 changes CSS classes considerably
 gem "whenever"
 
 gem "sass"
