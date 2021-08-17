@@ -20,7 +20,7 @@ gem "optic14n" # Ideally version should be synced with bouncer
 gem "paper_trail"
 gem "pg"
 gem "plek"
-gem "select2-rails"
+gem "select2-rails", "~> 3.5.11" # Version 4 changes CSS classes considerably
 gem "whenever"
 
 gem "sass"
@@ -33,6 +33,7 @@ group :development do
 end
 
 group :test do
+  gem "capybara-select-2"
   gem "cucumber-rails", require: false
   gem "database_cleaner"
   gem "factory_bot_rails"

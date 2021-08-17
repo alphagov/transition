@@ -18,7 +18,9 @@ module Helpers
 
     def i_tag_the_mappings(tag_list)
       if @_javascript
-        find(:xpath, '//input[contains(@class, "select2-offscreen")]').set(tag_list)
+        select2_clear css: ".select2-container"
+        tags = tag_list.split(",")
+        select2(*tags, css: ".select2-container", search: true)
       else
         fill_in "Tags", with: tag_list
       end

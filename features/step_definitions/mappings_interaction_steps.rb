@@ -83,7 +83,7 @@ When(/^I open the tag filter and click the tag "(.*)"$/) do |tag|
 end
 
 When(/^I search for a tag named (.*)$/) do |tag_name|
-  fill_in "tagged", with: tag_name
+  select2 tag_name, css: "#s2id_tagged"
   click_button "Filter"
 end
 
