@@ -9,7 +9,7 @@
 </div>
 
 <% if @batch.errors %>
-  <%= render 'shared/error_messages', error_messages: @batch.errors.values.flatten(1) %>
+  <%= render 'shared/error_messages', error_messages: @batch.errors.map { |error| error.message } %>
 <% end %>
 
 <p class="lead normal add-bottom-margin">
