@@ -69,7 +69,7 @@ protected
     # avoid confusing users who hit the back button.
     if anything_to_display?
       # http://stackoverflow.com/questions/711418/how-to-prevent-browser-page-caching-in-rails
-      response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+      response.headers["Cache-Control"] = "no-store"
       response.headers["Pragma"] = "no-cache"
       response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
     end

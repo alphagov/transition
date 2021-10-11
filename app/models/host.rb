@@ -59,10 +59,10 @@ class Host < ApplicationRecord
   def canonical_host_id_xor_aka_present
     # exclusive or: one and only one of canonical_host_id and aka? is required
     if !aka? && canonical_host_id.present?
-      errors[:canonical_host_id] << "must be blank for a non-aka host"
+      errors.add(:canonical_host_id, message: "must be blank for a non-aka host")
     end
     if aka? && canonical_host_id.blank?
-      errors[:canonical_host_id] << "can't be blank for an aka host"
+      errors.add(:canonical_host_id, message: "can't be blank for an aka host")
     end
   end
 
