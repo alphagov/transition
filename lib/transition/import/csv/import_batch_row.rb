@@ -24,7 +24,8 @@ module Transition
         def type
           @type ||= if new_value && ((new_value.upcase == "TNA") || new_url_is_a_national_archives_url?) then "archive"
                     elsif new_value then "redirect"
-                    else "unresolved"
+                    else
+                      "unresolved"
                     end
         end
 
