@@ -80,7 +80,8 @@ module MappingsHelper
     if hit_percentage.zero? then ""
     elsif hit_percentage < 0.01 then "< 0.01%"
     elsif hit_percentage < 10.0 then "#{hit_percentage.round(2)}%"
-    else "#{hit_percentage.round(1)}%"
+    else
+      "#{hit_percentage.round(1)}%"
     end
   end
 
