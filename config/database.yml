@@ -17,7 +17,7 @@ development:
 test: &test
   <<: *default
   database: transition_test<%= ENV['TEST_ENV_NUMBER'] %>
-  url: <%= ENV["DATABASE_URL"].try(:sub, /([-_]development)?$/, "_test#{ENV['TEST_ENV_NUMBER']}") %>
+  url: <%= ENV["TEST_DATABASE_URL"] %>
   variables:
     work_mem: 1MB
 
