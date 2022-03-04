@@ -244,16 +244,6 @@ GEM
     httpclient (2.8.3)
     i18n (1.9.1)
       concurrent-ruby (~> 1.0)
-    jasmine (3.99.0)
-      jasmine-core (= 3.99.0)
-      phantomjs
-      rack (>= 2.1.4)
-      rake
-      webrick
-    jasmine-core (3.99.0)
-    jasmine_selenium_runner (3.0.0)
-      jasmine (~> 3.0)
-      selenium-webdriver (~> 3.8)
     jmespath (1.4.0)
     jquery-rails (4.3.5)
       rails-dom-testing (>= 1, < 3)
@@ -536,7 +526,6 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webrick (1.7.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -567,8 +556,6 @@ DEPENDENCIES
   govuk_test
   gretel
   htmlentities
-  jasmine
-  jasmine_selenium_runner
   kaminari
   launchy
   mlanett-redis-lock

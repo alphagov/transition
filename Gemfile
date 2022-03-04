@@ -48,8 +48,6 @@ end
 
 group :development, :test do
   gem "govuk_test"
-  gem "jasmine"
-  gem "jasmine_selenium_runner"
   gem "pry"
   gem "rspec-collection_matchers"
   gem "rspec-rails"
