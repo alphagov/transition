@@ -29,3 +29,9 @@
 
 # Ignore spec/examples.txt for re-running
 /spec/examples.txt
+
+# Ignore JavaScript dependencies
+/node_modules
+
+# Ignore compiled assets
+/public/assets

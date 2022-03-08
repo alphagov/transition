@@ -22,8 +22,6 @@ updates:
       # Framework gems
       - dependency-name: factory_bot_rails
         dependency-type: direct
-      - dependency-name: jasmine
-        dependency-type: direct
       - dependency-name: pg
         dependency-type: direct
       - dependency-name: rails
@@ -32,4 +30,15 @@ updates:
         dependency-type: direct
       # Other gems
       - dependency-name: acts-as-taggable-on
+        dependency-type: direct
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily
+    allow:
+      # Framework packages
+      - dependency-name: jasmine-browser-runner
+        dependency-type: direct
+      - dependency-name: jasmine-core
         dependency-type: direct
