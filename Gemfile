@@ -42,7 +42,6 @@ group :test do
   gem "shoulda-matchers"
   gem "simplecov"
   gem "timecop"
-  gem "webdrivers"
   gem "webmock", require: false
 end
 
