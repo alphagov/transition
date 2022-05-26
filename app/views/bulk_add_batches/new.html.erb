@@ -11,7 +11,7 @@
 <%= form_tag site_bulk_add_batches_path(@site), role: 'form', 'data-module' => 'toggle-mapping-form-fields' do %>
 
   <% if @batch.errors %>
-    <%= render 'shared/error_messages', error_messages: @batch.errors.values.flatten(1) %>
+    <%= render 'shared/error_messages', error_messages: @batch.errors.map(&:message).flatten(1) %>
   <% end %>
 
   <% if params[:return_path].present? %>
