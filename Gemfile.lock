@@ -233,7 +233,7 @@ GEM
       jquery-rails (~> 4.3)
       plek (>= 2.1)
       rails (>= 6)
-    govuk_app_config (4.6.2)
+    govuk_app_config (4.6.3)
       logstasher (~> 2.1)
       prometheus_exporter (~> 2.0)
       puma (~> 5.6)
@@ -304,7 +304,7 @@ GEM
     mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.16.0)
+    minitest (5.16.1)
     mlanett-redis-lock (0.2.7)
       redis
     multi_json (1.15.0)
@@ -369,8 +369,8 @@ GEM
     rack (2.2.3.1)
     rack-protection (2.2.0)
       rack
-    rack-test (1.1.0)
-      rack (>= 1.0, < 3)
+    rack-test (2.0.1)
+      rack (>= 1.3)
     rails (7.0.3)
       actioncable (= 7.0.3)
       actionmailbox (= 7.0.3)
