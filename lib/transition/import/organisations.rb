@@ -46,6 +46,7 @@ module Transition
 
       def import!
         whitehall_orgs.organisations.each do |whitehall_org|
+          puts whitehall_org
           create(whitehall_org)
         end
       end
