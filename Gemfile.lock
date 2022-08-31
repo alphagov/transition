@@ -491,7 +491,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    select2-rails (3.5.11)
+    select2-rails (4.0.13)
     selenium-webdriver (4.1.0)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
@@ -615,7 +615,7 @@ DEPENDENCIES
   rubocop-govuk
   sass
   sass-rails
-  select2-rails (~> 3.5.11)
+  select2-rails (~> 4.0.13)
   sentry-sidekiq
   shoulda-matchers
   simplecov
