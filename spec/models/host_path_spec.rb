@@ -8,7 +8,7 @@ describe HostPath do
     let(:host)                 { site.hosts.first }
 
     subject do
-      create(:host_path, path: uncanonicalized_path, host: host)
+      create(:host_path, path: uncanonicalized_path, host:)
     end
 
     describe "#path" do

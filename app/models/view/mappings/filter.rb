@@ -118,7 +118,7 @@ module View
         end
 
         def with_type(type)
-          params.except(:page).merge(type: type)
+          params.except(:page).merge(type:)
         end
 
         def without_type

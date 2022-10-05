@@ -7,7 +7,7 @@ describe BatchOutcomePresenter do
     let(:batch) do
       create(
         :bulk_add_batch,
-        site: site,
+        site:,
         tag_list: "fee, fi, fo",
         type: "archive",
         update_existing: true,
@@ -18,7 +18,7 @@ describe BatchOutcomePresenter do
     subject { BatchOutcomePresenter.new(batch).success_message }
 
     context "when updating at least one existing mapping" do
-      let!(:existing_mapping) { create(:archived, site: site, path: "/might-exist") }
+      let!(:existing_mapping) { create(:archived, site:, path: "/might-exist") }
 
       before { batch.process }
 
@@ -27,10 +27,10 @@ describe BatchOutcomePresenter do
 
     context "when updating only existing mappings" do
       let!(:existing_mappings) do
-        create(:archived, site: site, path: "/might-exist")
-        create(:archived, site: site, path: "/a")
-        create(:archived, site: site, path: "/b")
-        create(:archived, site: site, path: "/c")
+        create(:archived, site:, path: "/might-exist")
+        create(:archived, site:, path: "/a")
+        create(:archived, site:, path: "/b")
+        create(:archived, site:, path: "/c")
       end
 
       before { batch.process }

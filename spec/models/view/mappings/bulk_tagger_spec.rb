@@ -4,9 +4,9 @@ describe View::Mappings::BulkTagger do
   let!(:site) { create(:site) }
   let!(:mappings) do
     [
-      create(:mapping, site: site, tag_list: "fee, fum, fox"),
-      create(:mapping, site: site, tag_list: "fi, fum, fox"),
-      create(:mapping, site: site, tag_list: "fo, fum, fox"),
+      create(:mapping, site:, tag_list: "fee, fum, fox"),
+      create(:mapping, site:, tag_list: "fi, fum, fox"),
+      create(:mapping, site:, tag_list: "fo, fum, fox"),
     ]
   end
   let(:tag_list) { "fox, fiddle" }
@@ -14,7 +14,7 @@ describe View::Mappings::BulkTagger do
     View::Mappings::BulkTagger.new(
       site,
       mapping_ids: mappings.map(&:id),
-      tag_list: tag_list,
+      tag_list:,
     )
   end
 

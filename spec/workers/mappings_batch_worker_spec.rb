@@ -4,7 +4,7 @@ describe MappingsBatchWorker do
   describe "perform" do
     describe "recording history", versioning: true do
       let(:user) { create(:user, name: "Bob") }
-      let(:mappings_batch) { create(:bulk_add_batch, user: user) }
+      let(:mappings_batch) { create(:bulk_add_batch, user:) }
 
       before { MappingsBatchWorker.new.perform(mappings_batch.id) }
 

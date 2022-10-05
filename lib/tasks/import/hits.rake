@@ -16,7 +16,7 @@ namespace :import do
   task :update_legacy_from_s3, [:bucket] => :environment do |_, args|
     bucket = args[:bucket]
     %w[transition-stats pre-transition-stats].each do |prefix|
-      Services.s3.list_objects(bucket: bucket, prefix: prefix).each do |resp|
+      Services.s3.list_objects(bucket:, prefix:).each do |resp|
         resp.contents.each do |object|
           # when the legacy data was uploaded to s3, the paths were
           # changed

@@ -78,7 +78,7 @@ end
 Then(/^I should see the top (\d+) most used tags$/) do |count|
   expected_tags = (1..count.to_i).to_a.map(&:to_s)
   within(".tag-list") do
-    expect(page).to have_selector(".tag", count: count)
+    expect(page).to have_selector(".tag", count:)
     expected_tags.each do |tag|
       expect(page).to have_selector(".tag", text: tag)
     end
@@ -88,7 +88,7 @@ end
 Then(/^I should see the top (\d+) most used tags "([^"]*)"$/) do |count, tag_list|
   expected_tags = tag_list.split(",").map(&:strip)
   within(".tag-list") do
-    expect(page).to have_selector(".tag", count: count)
+    expect(page).to have_selector(".tag", count:)
     expected_tags.each do |tag|
       expect(page).to have_selector(".tag", text: tag)
     end

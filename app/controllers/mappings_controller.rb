@@ -23,7 +23,7 @@ class MappingsController < ApplicationController
           data = MappingsCSVPresenter.new(@mappings).to_csv
           timestamp = I18n.l(Time.zone.now, format: :govuk_date)
           filename = "#{@site.default_host.hostname} mappings at #{timestamp}.csv"
-          send_data data, filename: filename
+          send_data data, filename:
         else
           safely_redirect_to_start_point(notice: "Only admin users can access the CSV export")
         end
@@ -130,10 +130,10 @@ class MappingsController < ApplicationController
 
     if path.empty?
       notice = t("mappings.not_possible_to_edit_homepage_mapping")
-      return redirect_to back_or_mappings_index, notice: notice
+      return redirect_to back_or_mappings_index, notice:
     end
 
-    mapping = @site.mappings.find_by(path: path)
+    mapping = @site.mappings.find_by(path:)
     if mapping.present?
       redirect_to edit_site_mapping_path(@site, mapping, return_path: params[:return_path])
     else

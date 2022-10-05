@@ -9,7 +9,7 @@ module ApplicationHelper
   end
 
   def anchor(text, name)
-    tag.a text, id: name, name: name
+    tag.a text, id: name, name:
   end
 
   def past_first_page?

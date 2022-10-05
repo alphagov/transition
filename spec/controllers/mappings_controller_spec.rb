@@ -3,10 +3,10 @@ require "csv"
 
 describe MappingsController do
   let(:site)       { create :site, abbr: "moj" }
-  let(:batch)      { create(:bulk_add_batch, site: site) }
+  let(:batch)      { create(:bulk_add_batch, site:) }
   let(:gds_bob)    { create(:gds_editor, name: "Bob Terwhilliger") }
   let(:admin_user) { create(:user, permissions: %w[admin signin]) }
-  let(:mapping)    { create(:mapping, site: site, as_user: gds_bob) }
+  let(:mapping)    { create(:mapping, site:, as_user: gds_bob) }
 
   describe "#index" do
     before do
@@ -19,7 +19,7 @@ describe MappingsController do
       context "in the absence of a sort parameter" do
         it "orders mappings by path" do
           # this would be last in insertion order, but first alphabetically
-          create(:mapping, site: site, path: "/..")
+          create(:mapping, site:, path: "/..")
           get :index, params: { site_id: site.abbr }
 
           expect(assigns(:mappings).to_a).to eq(site.mappings.order(:path).to_a)
@@ -38,9 +38,9 @@ describe MappingsController do
     end
 
     describe "filtering" do
-      let!(:mapping_a) { create :redirect, path: "/a", new_url: "http://f.gov.uk/1", site: site }
-      let!(:mapping_b) { create :redirect, path: "/b", new_url: "http://f.gov.uk/2", site: site }
-      let!(:mapping_c) { create :redirect, path: "/c", new_url: "http://f.gov.uk/3", site: site }
+      let!(:mapping_a) { create :redirect, path: "/a", new_url: "http://f.gov.uk/1", site: }
+      let!(:mapping_b) { create :redirect, path: "/b", new_url: "http://f.gov.uk/2", site: }
+      let!(:mapping_c) { create :redirect, path: "/c", new_url: "http://f.gov.uk/3", site: }
 
       it "filters mappings by path" do
         get :index, params: { site_id: site.abbr, path_contains: "a" }
@@ -102,7 +102,7 @@ describe MappingsController do
         end
 
         describe "with one mapping" do
-          let!(:mappings) { create(:redirect, path: "/a", new_url: "http://f.gov.uk/1", site: site) }
+          let!(:mappings) { create(:redirect, path: "/a", new_url: "http://f.gov.uk/1", site:) }
 
           it "produces a CSV" do
             get :index, params: { site_id: site.abbr, format: "csv" }
@@ -115,7 +115,7 @@ describe MappingsController do
         end
 
         describe "with more mappings than appear on one page" do
-          let!(:mappings) { 101.times { create(:mapping, site: site) } }
+          let!(:mappings) { 101.times { create(:mapping, site:) } }
 
           it "includes all mappings, not just the current page" do
             get :index, params: { site_id: site.abbr, format: "csv" }
@@ -206,7 +206,7 @@ describe MappingsController do
 
     context "when a mapping exists for the canonicalized path" do
       it "redirects to the edit mapping form" do
-        mapping = create(:mapping, site: site, path: canonicalized_path)
+        mapping = create(:mapping, site:, path: canonicalized_path)
 
         get :find, params: { site_id: site.abbr, path: raw_path }
 
@@ -325,9 +325,9 @@ describe MappingsController do
   end
 
   describe "#edit_multiple" do
-    let!(:mapping_a) { create :mapping, path: "/a", site: site }
-    let!(:mapping_b) { create :mapping, path: "/b", site: site }
-    let!(:mapping_c) { create :mapping, path: "/c", site: site }
+    let!(:mapping_a) { create :mapping, path: "/a", site: }
+    let!(:mapping_b) { create :mapping, path: "/b", site: }
+    let!(:mapping_c) { create :mapping, path: "/c", site: }
 
     before do
       @mappings_index_with_filter = "#{site_mappings_path(site)}?contains=%2Fa"
@@ -339,7 +339,7 @@ describe MappingsController do
         post :edit_multiple,
              params: {
                site_id: site.abbr,
-               mapping_ids: mapping_ids,
+               mapping_ids:,
                type: "archive",
                return_path: @mappings_index_with_filter,
              }
@@ -394,7 +394,7 @@ describe MappingsController do
           post :edit_multiple,
                params: {
                  site_id: site.abbr,
-                 mapping_ids: mapping_ids,
+                 mapping_ids:,
                  type: "bad",
                  return_path: @mappings_index_with_filter,
                }
@@ -412,7 +412,7 @@ describe MappingsController do
         post :edit_multiple,
              params: {
                site_id: site.abbr,
-               mapping_ids: mapping_ids,
+               mapping_ids:,
                operation: "tag",
                return_path: "should_not_return",
              }
@@ -425,9 +425,9 @@ describe MappingsController do
   end
 
   describe "#update_multiple" do
-    let!(:mapping_a) { create :mapping, path: "/a", site: site, tag_list: "fum", as_user: gds_bob }
-    let!(:mapping_b) { create :mapping, path: "/b", site: site, tag_list: "fum", as_user: gds_bob }
-    let!(:mapping_c) { create :mapping, path: "/c", site: site, tag_list: "fum", as_user: gds_bob }
+    let!(:mapping_a) { create :mapping, path: "/a", site:, tag_list: "fum", as_user: gds_bob }
+    let!(:mapping_b) { create :mapping, path: "/b", site:, tag_list: "fum", as_user: gds_bob }
+    let!(:mapping_c) { create :mapping, path: "/c", site:, tag_list: "fum", as_user: gds_bob }
 
     before do
       @mappings_index_with_filter = "#{site_mappings_path(site)}?contains=%2Fa"
@@ -439,7 +439,7 @@ describe MappingsController do
         post :update_multiple,
              params: {
                site_id: site.abbr,
-               mapping_ids: mapping_ids,
+               mapping_ids:,
                operation: "redirect",
                new_url: "http://a.gov.uk",
              }
@@ -463,7 +463,7 @@ describe MappingsController do
         post :update_multiple,
              params: {
                site_id: site.abbr,
-               mapping_ids: mapping_ids,
+               mapping_ids:,
                operation: "redirect",
                new_url: @new_url,
                return_path: @mappings_index_with_filter,
@@ -541,7 +541,7 @@ describe MappingsController do
         post :update_multiple,
              params: {
                site_id: site.abbr,
-               mapping_ids: mapping_ids,
+               mapping_ids:,
                type: "redirect",
                new_url: "http://{",
              }
@@ -555,7 +555,7 @@ describe MappingsController do
 
   describe "displaying background bulk add status" do
     context "outcome hasn't been seen yet" do
-      let!(:mappings_batch) { create(:bulk_add_batch, site: site, user: gds_bob, state: "succeeded") }
+      let!(:mappings_batch) { create(:bulk_add_batch, site:, user: gds_bob, state: "succeeded") }
       before do
         login_as(gds_bob)
         get :index, params: { site_id: site }
@@ -578,7 +578,7 @@ describe MappingsController do
     end
 
     context "outcome has been seen" do
-      let!(:mappings_batch) { create(:bulk_add_batch, site: site, user: gds_bob, state: "succeeded", seen_outcome: true) }
+      let!(:mappings_batch) { create(:bulk_add_batch, site:, user: gds_bob, state: "succeeded", seen_outcome: true) }
       before do
         login_as(gds_bob)
         get :index, params: { site_id: site }
@@ -653,7 +653,7 @@ describe MappingsController do
     end
 
     context "#update_multiple" do
-      let(:mapping) { create :mapping, path: "/a", site: site }
+      let(:mapping) { create :mapping, path: "/a", site: }
 
       it "should redirect to mappings index" do
         post :update_multiple,

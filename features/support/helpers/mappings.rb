@@ -1,7 +1,7 @@
 module Helpers
   module Mappings
     def modal_should_not_contain(text)
-      expect(page).not_to have_selector(".modal", text: text)
+      expect(page).not_to have_selector(".modal", text:)
     end
 
     def should_have_links_to_tags(expected_tags)

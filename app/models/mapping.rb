@@ -43,7 +43,7 @@ class Mapping < ApplicationRecord
             .joins("LEFT JOIN hits ON hits.mapping_id = mappings.id")
             .group("mappings.id")
         }
-  scope :with_type, ->(type) { where(type: type) }
+  scope :with_type, ->(type) { where(type:) }
   scope :redirects, -> { with_type("redirect") }
   scope :archives,  -> { with_type("archive") }
   scope :unresolved, -> { with_type("unresolved") }

@@ -185,13 +185,13 @@ module View
                  new_url: "http://something.gov.uk/",
                  path: "/CanonicalIZED?q=1",
                  tag_list: %w[fee fi fo],
-                 site: site
+                 site:
         end
         let!(:control_mapping) do
           create :mapping,
                  type: "archive",
                  path: "/somewhere_else",
-                 site: site
+                 site:
         end
 
         let(:params) do

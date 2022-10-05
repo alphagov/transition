@@ -26,7 +26,7 @@ module Transition
 
         def revert_safely!(abbr)
           Site.transaction do
-            site = Site.find_by(abbr: abbr)
+            site = Site.find_by(abbr:)
             unless site
               console_puts "Site #{abbr} doesn't exist; skipping"
               return

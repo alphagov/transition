@@ -253,23 +253,23 @@ describe Transition::Import::Hits do
         key = "results.csv"
         file = "athena_hits.csv"
 
-        s3.stub_responses(:list_objects, contents: [{ key: key, etag: file }])
+        s3.stub_responses(:list_objects, contents: [{ key:, etag: file }])
         s3.stub_responses(:get_object, body: File.open("spec/fixtures/hits/#{file}"))
 
-        expect(s3).to receive(:list_objects).with(bucket: bucket).twice.and_call_original
-        expect(s3).to receive(:get_object).with(bucket: bucket, key: key).and_call_original
+        expect(s3).to receive(:list_objects).with(bucket:).twice.and_call_original
+        expect(s3).to receive(:get_object).with(bucket:, key:).and_call_original
         expect { Transition::Import::Hits.from_s3!(bucket) }.to change(Hit, :count).by(9)
-        expect(s3).to_not receive(:get_object).with(bucket: bucket, key: key)
+        expect(s3).to_not receive(:get_object).with(bucket:, key:)
         expect { Transition::Import::Hits.from_s3!(bucket) }.to_not change(Hit, :count)
       end
 
       it "does not load a metadata file" do
         key = "results.csv.metadata"
 
-        s3.stub_responses(:list_objects, contents: [{ key: key, etag: "x" }])
+        s3.stub_responses(:list_objects, contents: [{ key:, etag: "x" }])
 
-        expect(s3).to receive(:list_objects).with(bucket: bucket).and_call_original
-        expect(s3).to_not receive(:get_object).with(bucket: bucket, key: key)
+        expect(s3).to receive(:list_objects).with(bucket:).and_call_original
+        expect(s3).to_not receive(:get_object).with(bucket:, key:)
 
         expect { Transition::Import::Hits.from_s3!(bucket) }.to_not change(Hit, :count)
       end
@@ -287,7 +287,7 @@ describe Transition::Import::Hits do
 
     def mock_s3_response(contents)
       key_list = contents.map do |key, file|
-        { key: key, etag: file }
+        { key:, etag: file }
       end
 
       s3.stub_responses(:list_objects, contents: key_list)
@@ -300,9 +300,9 @@ describe Transition::Import::Hits do
         end,
       )
 
-      expect(s3).to receive(:list_objects).with(bucket: bucket).and_call_original
+      expect(s3).to receive(:list_objects).with(bucket:).and_call_original
       contents.each_key do |key|
-        expect(s3).to receive(:get_object).with(bucket: bucket, key: key).and_call_original
+        expect(s3).to receive(:get_object).with(bucket:, key:).and_call_original
       end
     end
   end

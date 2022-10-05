@@ -10,14 +10,14 @@ FactoryBot.define do
 
     factory :site do # default site comes with a host {abbr}.gov.uk
       after(:build) do |site|
-        site.hosts << FactoryBot.build(:host, hostname: "#{site.abbr}.gov.uk", site: site)
+        site.hosts << FactoryBot.build(:host, hostname: "#{site.abbr}.gov.uk", site:)
       end
     end
 
     trait :with_mappings_and_hits do
       after(:build) do |site|
         if site.hosts.none?
-          site.hosts << FactoryBot.build(:host, hostname: "#{site.abbr}.gov.uk", site: site)
+          site.hosts << FactoryBot.build(:host, hostname: "#{site.abbr}.gov.uk", site:)
         end
 
         3.times do |n|

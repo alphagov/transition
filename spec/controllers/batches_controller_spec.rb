@@ -6,7 +6,7 @@ describe BatchesController do
     let(:site) { create(:site) }
 
     context "when batch exists" do
-      let(:mappings_batch) { create(:bulk_add_batch, site: site, user: user) }
+      let(:mappings_batch) { create(:bulk_add_batch, site:, user:) }
 
       before do
         login_as(user)

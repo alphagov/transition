@@ -3,9 +3,9 @@ require "rails_helper"
 describe BulkAddBatchesController do
   let(:site) { create :site, abbr: "moj" }
   let(:global_site) { create :site, global_type: "archive" }
-  let(:batch) { create(:bulk_add_batch, site: site) }
+  let(:batch) { create(:bulk_add_batch, site:) }
   let(:gds_bob) { create(:gds_editor, name: "Bob Terwhilliger") }
-  let(:mapping) { create(:mapping, site: site, as_user: gds_bob) }
+  let(:mapping) { create(:mapping, site:, as_user: gds_bob) }
 
   describe "#new" do
     context "without permission to edit" do
@@ -137,7 +137,7 @@ describe BulkAddBatchesController do
         let(:large_batch) do
           create(
             :bulk_add_batch,
-            site: site,
+            site:,
             paths: %w[/1 /2 /3 /4 /5 /6 /7 /8 /9 /10 /11 /12 /13 /14 /15 /16 /17 /18 /19 /20 /21],
           )
         end
@@ -169,7 +169,7 @@ describe BulkAddBatchesController do
         let(:batch) do
           create(
             :bulk_add_batch,
-            site: site,
+            site:,
             type: "redirect",
             new_url: long_url,
           )

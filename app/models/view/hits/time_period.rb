@@ -20,7 +20,7 @@ module View
         title.downcase.tr(" ", "-")
       end
 
-      DATE_RANGE = /[0-9]{8}(?:-[0-9]{8})?/.freeze
+      DATE_RANGE = /[0-9]{8}(?:-[0-9]{8})?/
       DEFAULT_SLUG = "last-30-days".freeze
 
       PERIODS_BY_SLUG = {

@@ -85,7 +85,7 @@ describe BulkAddBatch do
       end
 
       subject(:mappings_batch) do
-        build(:bulk_add_batch, site: site, paths: ["http://a.com/a", "http://a.com/a"])
+        build(:bulk_add_batch, site:, paths: ["http://a.com/a", "http://a.com/a"])
       end
 
       it { is_expected.to be_valid }
@@ -94,12 +94,12 @@ describe BulkAddBatch do
 
   describe "creating entries" do
     let(:site) { create(:site, query_params: "significant") }
-    let!(:existing_mapping) { create(:mapping, site: site, path: "/a") }
+    let!(:existing_mapping) { create(:mapping, site:, path: "/a") }
 
     subject(:mappings_batch) do
       create(
         :bulk_add_batch,
-        site: site,
+        site:,
         paths: ["/a?insignificant", "/a", "/b?significant"],
       )
     end
@@ -128,11 +128,11 @@ describe BulkAddBatch do
     subject(:mappings_batch) do
       create(
         :bulk_add_batch,
-        site: site,
+        site:,
         paths: [path, "/b"],
         type: "redirect",
-        new_url: new_url,
-        tag_list: tag_list,
+        new_url:,
+        tag_list:,
       )
     end
 
@@ -149,7 +149,7 @@ describe BulkAddBatch do
     let(:mappings_batch) do
       create(
         :bulk_add_batch,
-        site: site,
+        site:,
         paths: ["/a"],
         type: "redirect",
         new_url: "http://a.gov.uk",
