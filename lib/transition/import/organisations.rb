@@ -13,7 +13,7 @@ module Transition
       end
 
       def css_furl_fudge
-        @css_furl_fudge ||= YAML.safe_load(File.read("db/seeds/css-furl-fudge.yml"), [Symbol])
+        @css_furl_fudge ||= YAML.safe_load(File.read("db/seeds/css-furl-fudge.yml"), permitted_classes: [Symbol])
       end
 
       def create(whitehall_org)
