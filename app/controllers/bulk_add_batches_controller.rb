@@ -12,7 +12,7 @@ class BulkAddBatchesController < ApplicationController
 
   def new
     paths = params[:paths].present? ? params[:paths].split(",") : []
-    @batch = BulkAddBatch.new(paths: paths)
+    @batch = BulkAddBatch.new(paths:)
   end
 
   def create

@@ -55,11 +55,11 @@ describe Site do
     context "there are related mappings, host_paths and hits" do
       let!(:host)          { create(:host, site: create(:site, query_params: "initial")) }
       let!(:site)          { host.site }
-      let!(:hit)           { create(:hit, path: "/this/Exists?added_later=2&initial=1", host: host) }
-      let!(:mapping)       { create(:mapping, path: hit.path, site: site) }
+      let!(:hit)           { create(:hit, path: "/this/Exists?added_later=2&initial=1", host:) }
+      let!(:mapping)       { create(:mapping, path: hit.path, site:) }
 
-      let!(:other_hit)     { create(:hit, path: "/something", host: host) }
-      let!(:other_mapping) { create(:mapping, path: other_hit.path, site: site) }
+      let!(:other_hit)     { create(:hit, path: "/something", host:) }
+      let!(:other_mapping) { create(:mapping, path: other_hit.path, site:) }
 
       before do
         # Connect everything with the old query_params
@@ -141,8 +141,8 @@ describe Site do
 
     context "site has any host redirected by GDS" do
       before do
-        create(:host, :with_govuk_cname, site: site)
-        create(:host, :with_third_party_cname, site: site)
+        create(:host, :with_govuk_cname, site:)
+        create(:host, :with_third_party_cname, site:)
       end
 
       it { is_expected.to eql(:live) }
@@ -170,12 +170,12 @@ describe Site do
 
     context "site is not redirected yet, but has aka set up (for testing)" do
       before do
-        host = create(:host, :with_third_party_cname, hostname: "foo.com", site: site)
+        host = create(:host, :with_third_party_cname, hostname: "foo.com", site:)
         create(
           :host,
           :with_govuk_cname,
           hostname: "aka-foo.com",
-          site: site,
+          site:,
           canonical_host_id: host.id,
         )
       end
@@ -193,7 +193,7 @@ describe Site do
     let(:site) { create :site_without_host }
 
     before do
-      create(:host, :with_its_aka_host, hostname: "www.f.com", site: site)
+      create(:host, :with_its_aka_host, hostname: "www.f.com", site:)
     end
 
     subject(:default_host) do

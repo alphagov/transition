@@ -22,7 +22,7 @@ Given(/^I log in as a SIRO$/) do
 end
 
 Given(/^I have logged in as a GDS Editor called "([^"]*)"$/) do |name|
-  GDS::SSO.test_user = create(:gds_editor, name: name)
+  GDS::SSO.test_user = create(:gds_editor, name:)
 end
 
 Given(/^I have logged in as a member of another organisation$/) do

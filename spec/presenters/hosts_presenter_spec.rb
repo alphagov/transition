@@ -2,8 +2,8 @@ require "rails_helper"
 
 describe "HostsPresenter" do
   let!(:site)   { create :site }
-  let!(:host_b) { create :host, site: site }
-  let!(:host_c) { create :host, site: site }
+  let!(:host_b) { create :host, site: }
+  let!(:host_c) { create :host, site: }
 
   describe "#as_hash" do
     subject(:presented_hosts) { HostsPresenter.new(Host.includes(:site)).as_hash }

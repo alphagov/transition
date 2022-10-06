@@ -14,7 +14,7 @@ describe ImportBatch do
 
       describe "old_urls includes URLs for this site" do
         subject(:mappings_batch) do
-          build(:import_batch, site: site, raw_csv: <<-CSV.strip_heredoc
+          build(:import_batch, site:, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               http://a.com/old,
           CSV
@@ -26,7 +26,7 @@ describe ImportBatch do
 
       describe "old_urls includes URLs which are not for this site" do
         subject(:mappings_batch) do
-          build(:import_batch, site: site, raw_csv: <<-CSV.strip_heredoc
+          build(:import_batch, site:, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               http://other.com/old,
           CSV
@@ -42,7 +42,7 @@ describe ImportBatch do
 
       describe "old URLs would be empty after canonicalisation" do
         subject(:mappings_batch) do
-          build(:import_batch, site: site, raw_csv: <<-CSV.strip_heredoc
+          build(:import_batch, site:, raw_csv: <<-CSV.strip_heredoc
               old url,new url
               old,
           CSV
@@ -128,8 +128,8 @@ describe ImportBatch do
     let!(:mappings_batch) do
       create(
         :import_batch,
-        site: site,
-        raw_csv: raw_csv,
+        site:,
+        raw_csv:,
       )
     end
     context "rosy case" do
@@ -361,7 +361,7 @@ describe ImportBatch do
     end
 
     context "existing mappings" do
-      let(:existing_mapping) { create(:mapping, site: site, path: "/old") }
+      let(:existing_mapping) { create(:mapping, site:, path: "/old") }
       let(:raw_csv) do
         <<-CSV.strip_heredoc
           #{existing_mapping.path}
@@ -382,8 +382,8 @@ describe ImportBatch do
     subject(:mappings_batch) do
       create(
         :import_batch,
-        site: site,
-        tag_list: tag_list,
+        site:,
+        tag_list:,
         raw_csv: <<-CSV.strip_heredoc,
                    #{path_to_be_redirected},#{new_url}
                    #{path_to_be_archived},#{archive_url}

@@ -24,7 +24,7 @@ describe Transition::Import::MappingsFromHostPaths do
   context "a HostPath without a matching mapping" do
     before do
       path = "/foo?insignificant=1"
-      @host_path = create(:host_path, path: path, host: @host)
+      @host_path = create(:host_path, path:, host: @host)
       Transition::Import::MappingsFromHostPaths.refresh!(@site)
     end
 
@@ -84,8 +84,8 @@ describe Transition::Import::MappingsFromHostPaths do
   context "a HostPath with a matching mapping" do
     before do
       path = "/foo?insignificant=1"
-      create(:host_path, path: path, host: @host)
-      @mapping = create(:redirect, path: path, site: @site)
+      create(:host_path, path:, host: @host)
+      @mapping = create(:redirect, path:, site: @site)
       Transition::Import::MappingsFromHostPaths.refresh!(@site)
     end
 
@@ -108,7 +108,7 @@ describe Transition::Import::MappingsFromHostPaths do
       @site.hosts << @second_host = build(:host)
       @site.hosts.each do |host|
         path = "/foo-on-#{host.hostname}"
-        create(:host_path, path: path, host: host)
+        create(:host_path, path:, host:)
       end
       Transition::Import::MappingsFromHostPaths.refresh!(@site)
     end
@@ -123,7 +123,7 @@ describe Transition::Import::MappingsFromHostPaths do
       @site.hosts << @second_host = build(:host)
       path = "/foo"
       @site.hosts.each do |host|
-        create(:host_path, path: path, host: host)
+        create(:host_path, path:, host:)
       end
       Transition::Import::MappingsFromHostPaths.refresh!(@site)
     end

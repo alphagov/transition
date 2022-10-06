@@ -11,7 +11,7 @@ Then(/^there should be a tooltip which includes "([^"]*)"$/) do |text|
 end
 
 Then(/^I should see a flash message "(.*?)"$/) do |text|
-  expect(page).to have_selector("div.alert", text: text)
+  expect(page).to have_selector("div.alert", text:)
 end
 
 # Modals
@@ -22,7 +22,7 @@ Then(/^I should see an open modal window$/) do
 end
 
 Then(/^I should see "([^"]*)" in (?:a|the) modal window$/) do |text|
-  expect(page).to have_selector(".modal", text: text)
+  expect(page).to have_selector(".modal", text:)
 end
 
 Then(/^I should not see a modal window$/) do

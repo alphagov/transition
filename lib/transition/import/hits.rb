@@ -57,7 +57,7 @@ module Transition
       POSTGRESQL
 
       def self.find_import_record(filename)
-        ImportedHitsFile.where(filename: filename).first_or_initialize
+        ImportedHitsFile.where(filename:).first_or_initialize
       end
 
       def self.from_stream!(load_data_query, import_record, content_hash, stream)
@@ -78,7 +78,7 @@ module Transition
       end
 
       def self.from_s3!(bucket)
-        Services.s3.list_objects(bucket: bucket).each do |resp|
+        Services.s3.list_objects(bucket:).each do |resp|
           resp.contents.each do |object|
             start "Importing #{object.key}" do |job|
               job.skip! && next if object.key.end_with? ".csv.metadata"
@@ -89,7 +89,7 @@ module Transition
               is_tsv = object.key.end_with? ".tsv"
               load_data_query = is_tsv ? LOAD_TSV_DATA : LOAD_CSV_DATA
 
-              resp = Services.s3.get_object(bucket: bucket, key: object.key)
+              resp = Services.s3.get_object(bucket:, key: object.key)
               from_stream!(
                 load_data_query,
                 import_record,

@@ -77,8 +77,8 @@ module Transition
 
           if host_path.mapping_id != mapping_id || host_path.canonical_path != canonical_path
             host_path.update_columns(
-              mapping_id: mapping_id,
-              canonical_path: canonical_path,
+              mapping_id:,
+              canonical_path:,
             )
           end
         end

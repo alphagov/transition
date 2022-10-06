@@ -83,8 +83,8 @@ describe Host do
       let(:site) { create(:site_without_host) }
 
       before do
-        create(:host, :with_its_aka_host, site: site, hostname: "www.foo.com")
-        create(:host, :with_its_aka_host, site: site, hostname: "foo.com")
+        create(:host, :with_its_aka_host, site:, hostname: "www.foo.com")
+        create(:host, :with_its_aka_host, site:, hostname: "foo.com")
       end
 
       subject { site.hosts.excluding_aka.pluck(:hostname) }
@@ -220,11 +220,11 @@ describe Host do
     context "there are related mappings, host_paths and hits" do
       let!(:site)          { create(:site, query_params: "significant_on_first_site") }
       let!(:other_site)    { create(:site) }
-      let!(:runaway_host)  { create(:host, site: site) }
+      let!(:runaway_host)  { create(:host, site:) }
 
       context "mappings only on original site" do
         let!(:hit)           { create(:hit, path: "/some-path?significant_on_first_site=1", host: runaway_host) }
-        let!(:mapping)       { create(:mapping, path: hit.path, site: site) }
+        let!(:mapping)       { create(:mapping, path: hit.path, site:) }
 
         before do
           # Connect everything with the old hosts
@@ -250,7 +250,7 @@ describe Host do
 
       context "mappings for the same paths exist on the new site" do
         let!(:hit)           { create(:hit, path: "/common-path", host: runaway_host) }
-        let!(:mapping)       { create(:mapping, path: hit.path, site: site) }
+        let!(:mapping)       { create(:mapping, path: hit.path, site:) }
         let!(:other_mapping) { create(:mapping, path: hit.path, site: other_site) }
 
         before do

@@ -2,7 +2,7 @@ shared_examples "creates redirect mapping" do
   context "some context" do
     before { mappings_batch.process }
 
-    let(:mapping) { site.mappings.where(path: path).first }
+    let(:mapping) { site.mappings.where(path:).first }
 
     it "should populate the fields on the new mapping" do
       expect(mapping.path).to eq(path)
@@ -17,7 +17,7 @@ shared_examples "creates custom archive URL mapping" do
   context "some context" do
     before { mappings_batch.process }
 
-    let(:mapping) { site.mappings.where(path: path).first }
+    let(:mapping) { site.mappings.where(path:).first }
 
     it "should populate the fields on the new mapping" do
       expect(mapping.path).to eq(path)
@@ -44,7 +44,7 @@ shared_examples "creates mappings" do
   end
 
   context "existing mappings" do
-    let!(:existing_mapping) { create(:archived, site: site, path: "/a", tag_list: ["existing tag"]) }
+    let!(:existing_mapping) { create(:archived, site:, path: "/a", tag_list: ["existing tag"]) }
 
     context "default" do
       it "should ignore them" do

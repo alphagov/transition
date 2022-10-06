@@ -82,8 +82,8 @@ describe Mapping do
     it { is_expected.to validate_length_of(:path).is_at_most(2048) }
     it "ensures paths are unique to a site" do
       site = create(:site)
-      create(:archived, path: "/foo", site: site)
-      expect { build(:archived, path: "/foo", site: site).save! }.to raise_error(ActiveRecord::RecordInvalid)
+      create(:archived, path: "/foo", site:)
+      expect { build(:archived, path: "/foo", site:).save! }.to raise_error(ActiveRecord::RecordInvalid)
     end
 
     it "constrains the length of all URL fields" do
@@ -269,7 +269,7 @@ describe Mapping do
       before do
         site = create :site
         ["/a", "/about", "/about/branding", "/other"].each do |path|
-          create :mapping, path: path, site: site
+          create :mapping, path:, site:
         end
       end
 
@@ -295,7 +295,7 @@ describe Mapping do
       before do
         site = create :site
         ["/a", "/about", "/about/branding", "/other"].each do |new_path|
-          create :mapping, new_url: "http://f.gov.uk#{new_path}", site: site
+          create :mapping, new_url: "http://f.gov.uk#{new_path}", site:
         end
       end
 
@@ -324,7 +324,7 @@ describe Mapping do
     let(:site)                 { create(:site, query_params: "significant:really-significant") }
 
     subject(:mapping) do
-      create(:archived, path: uncanonicalized_path, site: site)
+      create(:archived, path: uncanonicalized_path, site:)
     end
 
     describe "#path" do
@@ -407,7 +407,7 @@ describe Mapping do
 
   it "converts URLs supplied for path into a path, including query" do
     site = create(:site, query_params: "q")
-    mapping = create(:mapping, path: "http://www.example.com/foobar?q=1", site: site)
+    mapping = create(:mapping, path: "http://www.example.com/foobar?q=1", site:)
     expect(mapping.path).to eq("/foobar?q=1")
   end
 

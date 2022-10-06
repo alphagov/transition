@@ -5,7 +5,7 @@ class HostsPresenter
 
   def as_hash
     {
-      results: results,
+      results:,
       total: results.count,
       _response_info: {
         status: "ok",

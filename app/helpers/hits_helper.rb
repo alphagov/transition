@@ -62,7 +62,7 @@ module HitsHelper
       }
     end
 
-    { cols: cols, rows: rows }.to_json.html_safe
+    { cols:, rows: }.to_json.html_safe
   end
 
   def colors(point_categories)

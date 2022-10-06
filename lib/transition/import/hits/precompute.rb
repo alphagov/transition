@@ -38,7 +38,7 @@ module Transition
         end
 
         def find_site(abbr)
-          Site.find_by(abbr: abbr).tap do |site|
+          Site.find_by(abbr:).tap do |site|
             console_puts "WARN: skipping site with abbr '#{abbr}' - not found" if site.nil?
           end
         end

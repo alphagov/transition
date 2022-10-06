@@ -5,7 +5,7 @@ require "postgres/materialized_view"
 describe HitsController do
   let(:site) do
     create :site, precompute_all_hits_view: precompute_all_hits_view do |site|
-      site.hosts << create(:host, hostname: "alias.gov.uk", site: site)
+      site.hosts << create(:host, hostname: "alias.gov.uk", site:)
     end
   end
 
@@ -15,14 +15,14 @@ describe HitsController do
 
   let!(:errors) do
     [
-      create(:hit, host: host, hit_on: "2012-12-28", count: 1, http_status: "404"),
-      create(:hit, host: host, hit_on: "2012-12-31", count: 1, http_status: "404"),
+      create(:hit, host:, hit_on: "2012-12-28", count: 1, http_status: "404"),
+      create(:hit, host:, hit_on: "2012-12-31", count: 1, http_status: "404"),
     ]
   end
   let!(:archives) do
     [
-      create(:hit, host: host, hit_on: "2012-12-28", count: 2, http_status: "410"),
-      create(:hit, host: host, hit_on: "2012-12-31", count: 2, http_status: "410"),
+      create(:hit, host:, hit_on: "2012-12-28", count: 2, http_status: "410"),
+      create(:hit, host:, hit_on: "2012-12-31", count: 2, http_status: "410"),
       create(:hit, host: host_alias, hit_on: "2012-12-31", count: 2, http_status: "410"),
     ]
   end

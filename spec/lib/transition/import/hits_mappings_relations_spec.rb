@@ -115,7 +115,7 @@ describe Transition::Import::HitsMappingsRelations do
 
     it "does not connect mappings and pre-existing host_paths for another site" do
       path = @other_mapping_with_host_path.path
-      expect(@other_site.host_paths.find_by(path: path).mapping).to be_nil
+      expect(@other_site.host_paths.find_by(path:).mapping).to be_nil
     end
 
     it "does not connect mappings and hits for another site" do

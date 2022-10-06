@@ -68,7 +68,7 @@ module View
       end
 
       def common_data
-        @common_data ||= { type: type }.tap do |common_data|
+        @common_data ||= { type: }.tap do |common_data|
           common_data[:new_url] = new_url if type == "redirect"
         end
       end
@@ -96,7 +96,7 @@ module View
         # Before trying to update any real mappings, construct a test mapping using
         # the submitted data to see if it validates:
         @test_mapping ||= Mapping.new({
-          site: site,
+          site:,
           path: "/this/is/a/test/and/will/not/be/saved",
         }.merge(common_data))
       end

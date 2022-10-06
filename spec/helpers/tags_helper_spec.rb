@@ -5,10 +5,10 @@ describe TagsHelper do
     let!(:site) { create(:site) }
     let!(:mappings) do
       [
-        create(:mapping, tag_list: %w[tag1 tag2 tag3], site: site),
-        create(:mapping, tag_list: %w[tag4 tag3 tag1], site: site),
-        create(:mapping, tag_list: %w[tag5 tag4 tag1], site: site),
-        create(:mapping, tag_list: %w[tag6 tag1 tag3], site: site),
+        create(:mapping, tag_list: %w[tag1 tag2 tag3], site:),
+        create(:mapping, tag_list: %w[tag4 tag3 tag1], site:),
+        create(:mapping, tag_list: %w[tag5 tag4 tag1], site:),
+        create(:mapping, tag_list: %w[tag6 tag1 tag3], site:),
       ]
     end
 

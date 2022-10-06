@@ -36,7 +36,7 @@ module Benchmark
       end
 
       def set_site(abbr)
-        @site = Site.find_by!(abbr: abbr)
+        @site = Site.find_by!(abbr:)
       end
 
       def self.create(abbr, params)
@@ -81,7 +81,7 @@ module Benchmark
       def params
         # Check we really can see the provided slug
         ::View::Hits::TimePeriod::PERIODS_BY_SLUG.fetch(period)
-        { period: period }.tap do |hash|
+        { period: }.tap do |hash|
           hash[:category] = category if category
         end
       end

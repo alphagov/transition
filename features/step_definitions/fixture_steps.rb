@@ -3,14 +3,14 @@ Given(/^there is a (.*) organisation named (.*) abbreviated (.*) with these site
   @parent             = create(:organisation, whitehall_slug: parent)
   @organisation       = create(:organisation, title: name, whitehall_slug: abbr, parent_organisations: [@parent])
   @organisation.sites = site_table.rows.map do |site_abbr, homepage|
-    create(:site, abbr: site_abbr, homepage: homepage, organisation: @organisation)
+    create(:site, abbr: site_abbr, homepage:, organisation: @organisation)
   end
 end
 
 Given(/^there are these organisations with sites:$/) do |org_table|
   # org_table is like | whitehall_slug | Title |
   org_table.rows.each do |slug, title|
-    org = create(:organisation, whitehall_slug: slug, title: title)
+    org = create(:organisation, whitehall_slug: slug, title:)
     create(:site, organisation: org, abbr: slug)
   end
 end
@@ -18,13 +18,13 @@ end
 Given(/^there are these organisations without sites:$/) do |org_table|
   # org_table is like | whitehall_slug | Title |
   org_table.rows.each do |slug, title|
-    create(:organisation, whitehall_slug: slug, title: title)
+    create(:organisation, whitehall_slug: slug, title:)
   end
 end
 
 Given(/^(.*) is an extra organisation of (.*)$/) do |slug, hostname|
   organisation = Organisation.find_by(whitehall_slug: slug)
-  site = Host.find_by(hostname: hostname).site
+  site = Host.find_by(hostname:).site
   site.extra_organisations = [organisation]
 end
 
@@ -40,7 +40,7 @@ Given(/^there is a working AKA domain for "(.*?)"$/) do |canonical_hostname|
     :host,
     :with_govuk_cname,
     hostname: canonical_host.aka_hostname,
-    canonical_host: canonical_host,
+    canonical_host:,
     site: @site,
   )
 end
@@ -57,9 +57,9 @@ Given(/^there is a site called (.*) belonging to an organisation (.*) with these
   site.mappings = mappings_table.rows.map do |type, path, new_url, tags|
     create(
       :mapping,
-      site: site,
-      type: type,
-      path: path,
+      site:,
+      type:,
+      path:,
       new_url: new_url == "" ? nil : new_url,
       tag_list: tags,
     )
@@ -68,11 +68,11 @@ end
 
 Given(/^a(?:n) (\w+) mapping exists for the (.+) site with the path (.*)$/) do |type, site_abbr, path|
   site = create :site, abbr: site_abbr
-  site.mappings << create(:mapping, type: type, path: path)
+  site.mappings << create(:mapping, type:, path:)
 end
 
 Given(/^a(?:n) (\w+) mapping exists for the site with the path (.*)$/) do |type, path|
-  @site.mappings << create(:mapping, type: type, path: path)
+  @site.mappings << create(:mapping, type:, path:)
 end
 
 Given(/^there is an organisation with the whitehall_slug "(.*?)"$/) do |_abbr|
@@ -81,16 +81,16 @@ end
 
 Given(/^the organisation has a site with a host with a GOV\.UK cname$/) do
   site = create(:site, organisation: @organisation)
-  create(:host, :with_govuk_cname, site: site)
+  create(:host, :with_govuk_cname, site:)
 end
 
 Given(/^the organisation has a site with a host with a third-party cname$/) do
   site = create(:site, organisation: @organisation)
-  create(:host, :with_third_party_cname, site: site)
+  create(:host, :with_third_party_cname, site:)
 end
 
 Given(/^the organisation has a site with a special redirect strategy of "(.*?)"$/) do |special_redirect_strategy|
-  create(:site, special_redirect_strategy: special_redirect_strategy, organisation: @organisation)
+  create(:site, special_redirect_strategy:, organisation: @organisation)
 end
 
 Given(/^there is a mapping that has no history$/) do
@@ -125,9 +125,9 @@ Given(/^these hits exist for the Attorney General's office site:$/) do |table|
     create :hit,
            host: @site.default_host,
            http_status: status,
-           path: path,
+           path:,
            hit_on: Time.strptime(hit_on, "%d/%m/%y"),
-           count: count
+           count:
   end
   require "transition/import/daily_hit_totals"
   Transition::Import::DailyHitTotals.from_hits!

@@ -88,7 +88,7 @@ describe HitsHelper do
       allow(time_period).to receive(:query_slug).and_return(period)
 
       allow(helper).to receive(:action_name).and_return(action)
-      allow(helper).to receive(:params).and_return(period: period, category: category)
+      allow(helper).to receive(:params).and_return(period:, category:)
     end
 
     context "when a site is present" do

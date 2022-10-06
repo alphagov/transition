@@ -3,10 +3,10 @@ require "rails_helper"
 describe MappingsHelper do
   let(:site) { build(:site) }
   let(:hostname) { site.default_host.hostname }
-  let(:mapping) { build :mapping, site: site }
+  let(:mapping) { build :mapping, site: }
 
   describe "#mapping_edit_tabs", versioning: true do
-    let!(:mapping) { create :mapping, :with_versions, site: site }
+    let!(:mapping) { create :mapping, :with_versions, site: }
 
     subject { helper.mapping_edit_tabs(mapping, active: "Edit") }
 

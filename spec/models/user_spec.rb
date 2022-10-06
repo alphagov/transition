@@ -16,7 +16,7 @@ describe User do
 
     context "user has an organisation slug set" do
       content_id = SecureRandom.uuid
-      let(:ministry_of_funk) { create(:organisation, content_id: content_id) }
+      let(:ministry_of_funk) { create(:organisation, content_id:) }
       subject(:user) { create(:user, organisation_content_id: ministry_of_funk.content_id) }
 
       describe "#own_organisation" do

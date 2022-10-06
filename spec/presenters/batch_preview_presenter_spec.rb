@@ -3,8 +3,8 @@ require "rails_helper"
 describe BatchPreviewPresenter, testing_before_all: true do
   before :all do
     site = create(:site)
-    create(:mapping, site: site, path: "/3")
-    batch = create(:import_batch, site: site, raw_csv: <<-CSV.strip_heredoc
+    create(:mapping, site:, path: "/3")
+    batch = create(:import_batch, site:, raw_csv: <<-CSV.strip_heredoc
                         /1,TNA
                         /2,TNA
                         /3,https://www.gov.uk/has-existing-mapping

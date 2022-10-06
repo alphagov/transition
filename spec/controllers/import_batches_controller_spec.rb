@@ -164,7 +164,7 @@ describe ImportBatchesController do
   end
 
   describe "#import" do
-    let(:batch) { create(:import_batch, site: site) }
+    let(:batch) { create(:import_batch, site:) }
 
     before do
       login_as gds_bob
@@ -200,7 +200,7 @@ describe ImportBatchesController do
     end
 
     context "a large batch" do
-      let(:large_batch) { create(:large_import_batch, site: site) }
+      let(:large_batch) { create(:large_import_batch, site:) }
 
       def make_request
         post :import,
