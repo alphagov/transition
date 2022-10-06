@@ -23,13 +23,13 @@
     {
       "warning_type": "SQL Injection",
       "warning_code": 0,
-      "fingerprint": "08b73523fb7765e682b11e5d8a961f63577150388f8f7c191a440d1d963c8e64",
+      "fingerprint": "94f3e2aaf38a3b488ead3bf57d58874602d71ddf785008e1431ab5b63bef08fe",
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "lib/transition/distributed_lock.rb",
       "line": 12,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Redis.current.lock(\"transition:#{Rails.env}:#{lock_name}\", :life => (LIFETIME))",
+      "code": "Redis.new.lock(\"transition:#{Rails.env}:#{lock_name}\", :life => (LIFETIME))",
       "render_path": null,
       "location": {
         "type": "method",
