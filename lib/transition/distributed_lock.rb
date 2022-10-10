@@ -9,7 +9,7 @@ module Transition
     end
 
     def lock
-      Redis.current.lock("transition:#{Rails.env}:#{@lock_name}", life: LIFETIME) do
+      Redis.new.lock("transition:#{Rails.env}:#{@lock_name}", life: LIFETIME) do
         Rails.logger.debug("Successfully got a lock. Running...")
         yield
       end
