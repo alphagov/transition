@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2016_11_11_172455) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_20_085112) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -36,7 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2016_11_11_172455) do
   end
 
   create_table "hits_staging", id: false, force: :cascade do |t|
-    t.string "hostname", limit: 255
+    t.text "hostname"
     t.text "path"
     t.string "http_status", limit: 3
     t.integer "count"
@@ -55,7 +55,7 @@ ActiveRecord::Schema[7.0].define(version: 2016_11_11_172455) do
 
   create_table "hosts", force: :cascade do |t|
     t.integer "site_id", null: false
-    t.string "hostname", limit: 255, null: false
+    t.text "hostname", null: false
     t.integer "ttl"
     t.string "cname", limit: 255
     t.string "live_cname", limit: 255
@@ -223,7 +223,7 @@ ActiveRecord::Schema[7.0].define(version: 2016_11_11_172455) do
   end
 
   create_table "whitelisted_hosts", force: :cascade do |t|
-    t.string "hostname", limit: 255, null: false
+    t.text "hostname", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["hostname"], name: "index_whitelisted_hosts_on_hostname", unique: true
