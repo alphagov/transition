@@ -69,14 +69,6 @@ module HitsHelper
     point_categories.map(&:color).to_s.html_safe
   end
 
-  def http_status_for(mapping)
-    if mapping.redirect?
-      "301"
-    elsif mapping.archive? || mapping.unresolved?
-      "410"
-    end
-  end
-
   def show_hit_has_become?(hit)
     ((hit.archive? || hit.error?) && hit.mapping.redirect?) ||
       ((hit.redirect? || hit.error?) && hit.mapping.archive?)
