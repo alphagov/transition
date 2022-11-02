@@ -28,10 +28,6 @@ module Benchmark
         when :summary
           @sections.each         { |category| category.hits.each   { |_| } }
           @point_categories.each { |category| category.points.each { |_| } }
-          # /| |\
-          # || ||
-          # _| |_
-          # Last one to get enumerated is a cyberman
         end
       end
 
