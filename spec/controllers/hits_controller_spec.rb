@@ -1,5 +1,6 @@
 require "rails_helper"
 require "transition/import/daily_hit_totals"
+require "transition/import/materialized_views/hits"
 require "postgres/materialized_view"
 
 describe HitsController do
@@ -34,6 +35,22 @@ describe HitsController do
   before do
     login_as_stub_user
     Transition::Import::DailyHitTotals.from_hits!
+  end
+
+  describe "#summary" do
+    render_views
+
+    before do
+      get :summary, params: { site_id: site }
+    end
+
+    it "shows the 404 responses" do
+      expect(response.body).to include("1 Error")
+    end
+
+    it "shows the 410 responses" do
+      expect(response.body).to include("1 Archive")
+    end
   end
 
   describe "#category" do
