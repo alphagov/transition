@@ -4,13 +4,11 @@ describe GlossaryController do
   describe "#index" do
     render_views
 
-    before(:all) do
+    before do
       site = create(:site, abbr: "cabinetoffice")
       create(:archived, site:)
       create(:redirect, site:, path: "/interesting-news-story", new_url: "https://www.gov.uk/new-url-for-interesting-news-story")
-    end
 
-    before do
       login_as_stub_user
       get :index
     end
