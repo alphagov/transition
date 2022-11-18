@@ -84,16 +84,4 @@ module MappingsHelper
       "#{hit_percentage.round(1)}%"
     end
   end
-
-  def show_preview_links?(site)
-    site.default_host.aka_host &&
-      site.default_host.aka_host.redirected_by_gds? &&
-      site.hosts.excluding_aka.none?(&:redirected_by_gds?)
-  end
-
-  def side_by_side_url(site, mapping = nil)
-    url = "http://#{site.default_host.hostname}.side-by-side.alphagov.co.uk/__/#"
-    url << mapping.path if mapping
-    url
-  end
 end

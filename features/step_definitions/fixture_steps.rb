@@ -34,17 +34,6 @@ Given(/^there are (\d+) sites with hosts$/) do |site_count|
   end
 end
 
-Given(/^there is a working AKA domain for "(.*?)"$/) do |canonical_hostname|
-  canonical_host = Host.find_by(hostname: canonical_hostname)
-  create(
-    :host,
-    :with_govuk_cname,
-    hostname: canonical_host.aka_hostname,
-    canonical_host:,
-    site: @site,
-  )
-end
-
 Given(/^that the first host's site does not exist$/) do
   Host.first.site.delete
 end

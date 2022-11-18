@@ -67,14 +67,6 @@ Then(/^I should be able to view the site's mappings$/) do
   end
 end
 
-Then(/^I should see a link to the side by side browser$/) do
-  expect(page).to have_selector('a[href*="www.attorney-general.gov.uk.side-by-side"]')
-end
-
-Then(/^I should not see a link to the side by side browser$/) do
-  expect(page).to_not have_selector('a[href*="www.attorney-general.gov.uk.side-by-side"]')
-end
-
 Then(/^I should see the top (\d+) most used tags$/) do |count|
   expected_tags = (1..count.to_i).to_a.map(&:to_s)
   within(".tag-list") do
