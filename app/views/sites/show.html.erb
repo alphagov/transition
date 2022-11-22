@@ -30,9 +30,5 @@
         <span class="small"><%= link_to 'Edit date', edit_site_path(@site), class: 'link-inherit' %></span>
       <% end %>
     </div>
-
-    <% unless @site.transition_status == :live %>
-      <%= render partial: 'tools', locals: {site: @site } %>
-    <% end %>
   </div>
 </div>
