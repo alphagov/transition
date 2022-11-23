@@ -48,7 +48,7 @@ module Transition
       end
 
       def load_orgs_from_api
-        api = GdsApi::Organisations.new(Plek.new.website_root)
+        api = GdsApi::Organisations.new(Plek.website_root)
         api.organisations.with_subsequent_pages.to_a
       end
     end
