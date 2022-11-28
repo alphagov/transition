@@ -19,7 +19,7 @@ class Site < ApplicationRecord
   validates :tna_timestamp, presence: true
   validates :organisation, presence: true
   validates :homepage, presence: true, non_blank_url: true
-  validates :abbr, uniqueness: true, presence: true, format: { with: /\A[a-zA-Z0-9_\-]+\z/, message: "can only contain alphanumeric characters, underscores and dashes" }
+  validates :abbr, uniqueness: true, presence: true, format: { with: /\A[a-zA-Z0-9_-]+\z/, message: "can only contain alphanumeric characters, underscores and dashes" }
   validates :special_redirect_strategy, inclusion: { in: %w[via_aka supplier], allow_nil: true }
   validates :global_new_url, presence: { if: :global_redirect? }
   validates :global_new_url,
