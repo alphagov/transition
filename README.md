@@ -37,3 +37,7 @@ To import locally, clone the config repo into `data/` and then run:
 ```
 bundle exec rake import:all:orgs_sites_hosts
 ```
+
+## Licence
+
+[MIT License](LICENCE)
