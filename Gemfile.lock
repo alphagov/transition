@@ -360,7 +360,7 @@ GEM
       nio4r (~> 2.0)
     racc (1.6.1)
     rack (2.2.4)
-    rack-protection (3.0.3)
+    rack-protection (3.0.5)
       rack
     rack-proxy (0.7.4)
       rack
@@ -487,13 +487,13 @@ GEM
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
-    sentry-rails (5.6.0)
+    sentry-rails (5.7.0)
       railties (>= 5.0)
-      sentry-ruby (~> 5.6.0)
-    sentry-ruby (5.6.0)
+      sentry-ruby (~> 5.7.0)
+    sentry-ruby (5.7.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sentry-sidekiq (5.6.0)
-      sentry-ruby (~> 5.6.0)
+    sentry-sidekiq (5.7.0)
+      sentry-ruby (~> 5.7.0)
       sidekiq (>= 3.0)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
@@ -600,7 +600,7 @@ DEPENDENCIES
   launchy
   mlanett-redis-lock
   optic14n
-  paper_trail
+  paper_trail (~> 12)
   pg
   plek
   pry
