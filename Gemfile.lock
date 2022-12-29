@@ -279,8 +279,6 @@ GEM
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
     kgio (2.11.4)
-    launchy (2.5.2)
-      addressable (~> 2.8)
     link_header (0.0.8)
     logstasher (2.1.5)
       activesupport (>= 5.2)
@@ -597,7 +595,6 @@ DEPENDENCIES
   gretel
   htmlentities
   kaminari
-  launchy
   mlanett-redis-lock
   optic14n
   paper_trail (~> 12)
