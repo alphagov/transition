@@ -4,6 +4,12 @@
 .github
 Dockerfile
 Jenkinsfile
+Procfile
 README.md
+coverage
 docs
+features
+log
+node_modules
+spec
 tmp
