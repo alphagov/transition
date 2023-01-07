@@ -6,6 +6,7 @@ gem "activerecord-import"
 gem "activerecord-session_store"
 gem "acts-as-taggable-on"
 gem "aws-sdk-s3"
+gem "bootsnap", require: false
 gem "gds-api-adapters"
 gem "gds-sso"
 gem "google-api-client"
