@@ -98,6 +98,8 @@ GEM
     aws-sigv4 (1.5.2)
       aws-eventstream (~> 1, >= 1.0.2)
     bindex (0.8.1)
+    bootsnap (1.15.0)
+      msgpack (~> 1.2)
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
@@ -300,6 +302,7 @@ GEM
     minitest (5.17.0)
     mlanett-redis-lock (0.2.7)
       redis
+    msgpack (1.6.0)
     multi_json (1.15.0)
     multi_test (1.1.0)
     multi_xml (0.6.0)
@@ -581,6 +584,7 @@ DEPENDENCIES
   activerecord-session_store
   acts-as-taggable-on
   aws-sdk-s3
+  bootsnap
   capybara-select-2
   cucumber-rails
   database_cleaner

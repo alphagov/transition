@@ -39,6 +39,10 @@ module Transition
     # Disable origin-checking CSRF mitigation.
     config.action_controller.forgery_protection_origin_check = false
 
+    # Set asset path to be application specific so that we can put all GOV.UK
+    # assets into an S3 bucket and distinguish app by path.
+    config.assets.prefix = "/assets/transition"
+
     # TODO: this is no longer an encouraged pattern for dynamic error pages
     # as it has many edgecases (See: https://github.com/rails/rails/pull/17815)
     # We should consider changing how we do this.
