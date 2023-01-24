@@ -1,8 +1,5 @@
 ---
 :verbose: true
 :concurrency: 5
-<% if ENV.key?('SIDEKIQ_LOGFILE') %>
-:logfile: <%= ENV['SIDEKIQ_LOGFILE'] %>
-<% end %>
 :queues:
   - default
