@@ -61,7 +61,7 @@ describe MappingsController do
         # We don't blank new_url if a redirect is changed to an archive. It would
         # be confusing to return archive mappings when filtering by new_url.
 
-        create :archived, new_url: "http://f.gov.uk/1", site: site
+        create(:archived, new_url: "http://f.gov.uk/1", site:)
 
         get :index, params: { site_id: site.abbr, new_url_contains: "f.gov.uk/1" }
         expect(assigns(:mappings)).to eq([mapping_a])

@@ -19,7 +19,7 @@ describe Organisation do
     describe "each organisation", testing_before_all: true do
       before :all do
         organisation = create :organisation, :with_site
-        other_site = create :site, organisation: organisation
+        other_site = create(:site, organisation:)
         create :mapping, site: organisation.sites.first, type: "unresolved"
         create :mapping, site: organisation.sites.first
         create :mapping, site: other_site
