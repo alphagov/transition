@@ -5,7 +5,7 @@ require "postgres/materialized_view"
 
 describe HitsController do
   let(:site) do
-    create :site, precompute_all_hits_view: precompute_all_hits_view do |site|
+    create(:site, precompute_all_hits_view:) do |site|
       site.hosts << create(:host, hostname: "alias.gov.uk", site:)
     end
   end
