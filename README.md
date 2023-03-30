@@ -38,6 +38,16 @@ To import locally, clone the config repo into `data/` and then run:
 bundle exec rake import:all:orgs_sites_hosts
 ```
 
+## Example application URLs
+
+* https://transition.staging.publishing.service.gov.uk/
+* https://transition.staging.publishing.service.gov.uk/organisations/air-accidents-investigation-branch
+* https://transition.staging.publishing.service.gov.uk/sites/aaib
+* https://transition.staging.publishing.service.gov.uk/sites/aaib/mappings/939694/edit
+* https://transition.staging.publishing.service.gov.uk/sites/aaib/mappings/bulk_add_batches/new
+* https://transition.staging.publishing.service.gov.uk/sites/aaib/mappings/import_batches/new
+* https://transition.staging.publishing.service.gov.uk/sites/aaib/hits/summary
+
 ## Licence
 
 [MIT License](LICENCE)
