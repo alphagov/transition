@@ -60,25 +60,6 @@
       "note": "This is a valid URL (see app/models/mapping.rb)"
     },
     {
-      "warning_type": "Cross-Site Request Forgery",
-      "warning_code": 7,
-      "fingerprint": "3bfc1315c7ae31a26c25849c985ceaae103923692c8e15e6875271761c2671f4",
-      "check_name": "ForgerySetting",
-      "message": "'protect_from_forgery' should be called in HostsController",
-      "file": "app/controllers/hosts_controller.rb",
-      "line": 1,
-      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_request_forgery/",
-      "code": null,
-      "render_path": null,
-      "location": {
-        "type": "controller",
-        "controller": "HostsController"
-      },
-      "user_input": null,
-      "confidence": "High",
-      "note": "We decided to ignore CSRF issues because it's too hard to know that a fix won't break anything (as it did in whitehall)"
-    },
-    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
       "fingerprint": "3fdaf6ede7ba5c6a4eb649900849b88fabab0d49681a98e89a3b34242f78cb36",
@@ -137,25 +118,6 @@
       "note": "This is valid on the previous line (see lib/transition/off_site_redirect_checker.rb)"
     },
     {
-      "warning_type": "Cross-Site Request Forgery",
-      "warning_code": 7,
-      "fingerprint": "81654be028fa219953df42b67b1eb44466ef3d69b9400695b411bec8755e5bff",
-      "check_name": "ForgerySetting",
-      "message": "'protect_from_forgery' should be called in ErrorsController",
-      "file": "app/controllers/errors_controller.rb",
-      "line": 3,
-      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_request_forgery/",
-      "code": null,
-      "render_path": null,
-      "location": {
-        "type": "controller",
-        "controller": "ErrorsController"
-      },
-      "user_input": null,
-      "confidence": "High",
-      "note": "We decided to ignore CSRF issues because it's too hard to know that a fix won't break anything (as it did in whitehall)"
-    },
-    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
       "fingerprint": "8c1fce5b2b7bdec13c7fa177e82b388aa05296dcd35bd7895d0957878ac03989",
@@ -173,25 +135,6 @@
       "user_input": "(Unresolved Model).new.old_url",
       "confidence": "Weak",
       "note": "This is a valid URL (see app/models/mapping.rb)"
-    },
-    {
-      "warning_type": "Cross-Site Request Forgery",
-      "warning_code": 86,
-      "fingerprint": "9e450b4277235e592c083dc95e4902a07537932fa4f1bfb631d7b2438066564d",
-      "check_name": "ForgerySetting",
-      "message": "protect_from_forgery should be configured with 'with: :exception'",
-      "file": "app/controllers/application_controller.rb",
-      "line": 10,
-      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_request_forgery/",
-      "code": "protect_from_forgery(:with => :null_session)",
-      "render_path": null,
-      "location": {
-        "type": "controller",
-        "controller": "ApplicationController"
-      },
-      "user_input": null,
-      "confidence": "Medium",
-      "note": "We decided to ignore CSRF issues because it's too hard to know that a fix won't break anything (as it did in whitehall)"
     },
     {
       "warning_type": "SQL Injection",
@@ -309,25 +252,6 @@
       "user_input": "name",
       "confidence": "Medium",
       "note": "This is only called with constant, safe, strings"
-    },
-    {
-      "warning_type": "Cross-Site Scripting",
-      "warning_code": 4,
-      "fingerprint": "f337bb04443306b92c48459727d22eddf2531615f8b19ab2244f0219d4e2ad2a",
-      "check_name": "LinkToHref",
-      "message": "Potentially unsafe model attribute in link_to href",
-      "file": "app/views/sites/_configuration.html.erb",
-      "line": 6,
-      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
-      "code": "link_to(Site.find_by_abbr!(params[:id]).homepage, Site.find_by_abbr!(params[:id]).homepage, :class => \"breakable\")",
-      "render_path": [{"type":"controller","class":"SitesController","method":"show","line":20,"file":"app/controllers/sites_controller.rb"},{"type":"template","name":"sites/show","line":15,"file":"app/views/sites/show.html.erb"}],
-      "location": {
-        "type": "template",
-        "template": "sites/_configuration"
-      },
-      "user_input": "Site.find_by_abbr!(params[:id]).homepage",
-      "confidence": "Weak",
-      "note": "Homepages are defined in the Transition config, so we have no choice but to trust them"
     },
     {
       "warning_type": "SQL Injection",
