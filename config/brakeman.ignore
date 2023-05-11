@@ -21,26 +21,6 @@
       "note": "Ultimately this is interpolating a list of integers into the SQL for a WHERE...IN check"
     },
     {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "94f3e2aaf38a3b488ead3bf57d58874602d71ddf785008e1431ab5b63bef08fe",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "lib/transition/distributed_lock.rb",
-      "line": 12,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Redis.new.lock(\"transition:#{Rails.env}:#{lock_name}\", :life => (LIFETIME))",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Transition::DistributedLock",
-        "method": "lock"
-      },
-      "user_input": "Rails.env",
-      "confidence": "Weak",
-      "note": "This is only called with constant, safe, strings"
-    },
-    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
       "fingerprint": "38b7bf3af8733d01999c901c03369bf71414a355a3b6b12f84c68fb117365470",
