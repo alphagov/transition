@@ -399,19 +399,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jasmine-browser-runner@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "jasmine-browser-runner@npm:1.2.0"
+"jasmine-browser-runner@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "jasmine-browser-runner@npm:1.4.0"
   dependencies:
     ejs: ^3.1.6
     express: ^4.16.4
     glob: ^7.1.7
-    selenium-webdriver: ^4.1.0
+    selenium-webdriver: ">=4.1.0 <4.8.0"
   peerDependencies:
     jasmine-core: ^4.0.0
   bin:
     jasmine-browser-runner: bin/jasmine-browser-runner
-  checksum: ca71b678cd8cfeeb44b8151311e441a3d1e5fb8a94279358365716f4ace1adba1c3914e5e09a95427e90d06cf34137055b1c9d2014219af9e383a1566813bb74
+  checksum: 8d70da23654d8aa3cf4d472023ae2c53efcfe1650b632daaec1706fd1eacf5c91caeb9d5fad665e999c241d7f9ce70664585520230eb0e89fc53bad6eb506c34
   languageName: node
   linkType: hard
 
@@ -422,7 +422,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jszip@npm:^3.6.0":
+"jszip@npm:^3.10.0":
   version: 3.10.1
   resolution: "jszip@npm:3.10.1"
   dependencies:
@@ -664,14 +664,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"selenium-webdriver@npm:^4.1.0":
-  version: 4.1.1
-  resolution: "selenium-webdriver@npm:4.1.1"
+"selenium-webdriver@npm:>=4.1.0 <4.8.0":
+  version: 4.7.1
+  resolution: "selenium-webdriver@npm:4.7.1"
   dependencies:
-    jszip: ^3.6.0
+    jszip: ^3.10.0
     tmp: ^0.2.1
-    ws: ">=7.4.6"
-  checksum: dfe8e7e43c55f1c3fb1284f5420c7498c2694a3d0a7d2ef87064605de7ce7c7f240a686948f1187bac45c45d29b44b5250298b15a7d050f6011d18af64a6b32e
+    ws: ">=8.7.0"
+  checksum: e308903fd9fc715a49edea073ef11e023a99f138024777e9ec59c12520abe8669fd1fd9e42c4c49984dd4a6a69a2945018430afda04df51a89cdeff74c7e3158
   languageName: node
   linkType: hard
 
@@ -767,7 +767,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "transition@workspace:."
   dependencies:
-    jasmine-browser-runner: ^1.2.0
+    jasmine-browser-runner: ^1.4.0
     jasmine-core: ^4.6.0
   languageName: unknown
   linkType: soft
@@ -817,17 +817,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:>=7.4.6":
-  version: 8.5.0
-  resolution: "ws@npm:8.5.0"
+"ws@npm:>=8.7.0":
+  version: 8.13.0
+  resolution: "ws@npm:8.13.0"
   peerDependencies:
     bufferutil: ^4.0.1
-    utf-8-validate: ^5.0.2
+    utf-8-validate: ">=5.0.2"
   peerDependenciesMeta:
     bufferutil:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: 76f2f90e40344bf18fd544194e7067812fb1372b2a37865678d8f12afe4b478ff2ebc0c7c0aff82cd5e6b66fc43d889eec0f1865c2365d8f7a66d92da7744a77
+  checksum: 53e991bbf928faf5dc6efac9b8eb9ab6497c69feeb94f963d648b7a3530a720b19ec2e0ec037344257e05a4f35bd9ad04d9de6f289615ffb133282031b18c61c
   languageName: node
   linkType: hard
