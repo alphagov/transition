@@ -66,4 +66,24 @@ describe SitesController do
       it_behaves_like "disallows editing by non-GDS Editors"
     end
   end
+
+  describe "#confirm_destroy" do
+    context "when the user does have permission" do
+      before { login_as site_manager }
+
+      it "displays the form" do
+        get :confirm_destroy, params: { id: site.abbr }
+        expect(response.status).to eql(200)
+      end
+    end
+
+    context "when the user does not have permission" do
+      before { login_as stub_user }
+
+      it "disallows deleting by non-Site Managers" do
+        get :confirm_destroy, params: { id: site.abbr }
+        expect(response.status).to eql(302)
+      end
+    end
+  end
 end

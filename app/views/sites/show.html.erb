@@ -30,5 +30,11 @@
         <span class="small"><%= link_to 'Edit date', edit_site_path(@site), class: 'link-inherit' %></span>
       <% end %>
     </div>
+
+    <% if current_user.site_manager? %>
+      <div class="highlight callout-danger">
+        <%= link_to 'Delete', confirm_destroy_site_path(@site) %>
+      </div>
+    <% end %>
   </div>
 </div>
