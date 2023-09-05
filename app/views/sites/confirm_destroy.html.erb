@@ -13,7 +13,17 @@
     WAIT!
   </div>
   <div class="callout-body">
-    This will delete all data that is associated with this site.
+    <p>
+      This will delete the site <strong><%= @site.abbr %></strong> and all the data that is associated with it:
+    </p>
+    <ul>
+      <li><%= t("site.confirm_destroy.hosts", count: @site.hosts.count) %></li>
+      <li><%= t("site.confirm_destroy.mappings", count: @site.mappings.count) %></li>
+    </ul>
+    <p>Redirects will stop working.</p>
+    <p>
+      Restoring this site would require readding the site, the host(s), and all the mappings. The hits cannot be restored.
+    </p>
   </div>
 </div>
 
@@ -23,14 +33,14 @@
       <div class="input-group">
         <dl>
           <dt>
-            <%= label_tag :confirm_destroy, 'Please enter the site slug to confirm that you want to delete this site and all its data.' %>
+            <%= label_tag :confirm_destroy, "Please enter the site slug, #{@site.abbr}, to confirm that you want to delete this site and all its data." %>
           </dt>
           <dd>
             <%= text_field_tag(:confirm_destroy, {}, { class: 'form-control input' }) %>
           </dd>
         </dl>
       </div>
-      <%= f.submit 'Delete', class: 'add-top-margin btn btn-danger' %>
+      <%= f.submit t("site.confirm_destroy.confirm"), class: 'add-top-margin btn btn-danger' %>
     </div>
   </div>
 <% end %>
