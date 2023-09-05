@@ -75,6 +75,18 @@ describe Host do
           expect(host.errors_on(:hostname)).to include("is an invalid hostname")
         end
       end
+
+      context "is downcased" do
+        subject(:host) { build :host, hostname: "AB.com" }
+
+        describe "#valid?" do
+          subject { super().valid? }
+          it { is_expected.to be_falsey }
+        end
+        it "should have an error for invalid hostname" do
+          expect(host.errors_on(:hostname)).to include("must be lowercase")
+        end
+      end
     end
   end
 
