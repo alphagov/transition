@@ -3,7 +3,7 @@ require "rails_helper"
 describe "Site creation" do
   render_views
 
-  let!(:gds_bob) { create(:gds_editor, name: "Bob Terwhilliger") }
+  let!(:site_manager) { create(:site_manager) }
   let(:organisation) { create(:organisation, whitehall_slug: "air-accidents-investigation-branch") }
   let(:params) { attributes_for :site_form, :with_optional_fields, :with_aliases, organisation_slug: "air-accidents-investigation-branch" }
 

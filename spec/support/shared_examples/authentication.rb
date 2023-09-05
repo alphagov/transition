@@ -28,6 +28,21 @@ shared_examples "disallows editing by non-GDS Editors" do
   end
 end
 
+shared_examples "disallows editing by non-Site managers" do
+  before do
+    login_as stub_user
+    make_request
+  end
+
+  it "redirects to the organisation page" do
+    expect(response).to redirect_to organisation_path(organisation)
+  end
+
+  it "sets a flash message" do
+    expect(flash[:alert]).to eql("Only Site Managers can access that.")
+  end
+end
+
 shared_examples "disallows editing of a global site" do
   before do
     make_request

@@ -10,7 +10,9 @@
   <%= render 'in_conjunction_with' %>
 </header>
 
-<%= link_to "Add a transition site", new_organisation_site_path(@organisation), class: "btn btn-default" %>
+<% if current_user.site_manager? %>
+  <%= link_to "Add a transition site", new_organisation_site_path(@organisation), class: "btn btn-default" %>
+<% end %>
 
 <% unless @sites.empty? %>
   <h2>Sites</h2>

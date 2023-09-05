@@ -2,6 +2,7 @@ class SitesController < ApplicationController
   before_action :find_site, only: %i[edit update show]
   before_action :find_organisation, only: %i[new create]
   before_action :check_user_is_gds_editor, only: %i[edit update]
+  before_action :check_user_is_site_manager, only: %i[new create]
 
   def new
     @site_form = SiteForm.new(organisation_slug: @organisation.whitehall_slug)
@@ -70,6 +71,13 @@ private
     unless current_user.gds_editor?
       message = "Only GDS Editors can access that."
       redirect_to site_path(@site), alert: message
+    end
+  end
+
+  def check_user_is_site_manager
+    unless current_user.site_manager?
+      message = "Only Site Managers can access that."
+      redirect_to organisation_path(@organisation), alert: message
     end
   end
 end

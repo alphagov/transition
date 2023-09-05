@@ -103,7 +103,7 @@ Scenario: Jumping to a non-existent site
   Then I should see the header "Unknown site"
 
 Scenario: Creating a site
-  Given I have logged in as a GDS Editor
+  Given I have logged in as a Site Manager
   And there are these organisations without sites:
     | whitehall_slug  | title                         |
     | ukti            | UK Trade & Industry           |
