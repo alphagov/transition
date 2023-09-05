@@ -32,7 +32,7 @@
     </div>
 
     <% if current_user.site_manager? %>
-      <div class="highlight callout-danger">
+      <div class="highlight highlight-danger">
         <%= link_to 'Delete', confirm_destroy_site_path(@site) %>
       </div>
     <% end %>
