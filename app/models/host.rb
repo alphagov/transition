@@ -11,7 +11,7 @@ class Host < ApplicationRecord
   validates :hostname, presence: true
   validates :hostname, hostname: true
   validates :site, presence: true
-  validate :canonical_host_id_xor_aka_present
+  validate :canonical_host_id_xor_aka_present, if: -> { hostname.present? }
 
   after_update :update_hits_relations, if: :saved_change_to_site_id?
 
