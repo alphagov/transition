@@ -11,5 +11,9 @@ FactoryBot.define do
     factory :admin do
       permissions { ["signin", "GDS Editor", "admin"] }
     end
+
+    factory :site_manager do
+      permissions { ["signin", "Site Manager"] }
+    end
   end
 end

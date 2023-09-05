@@ -15,6 +15,10 @@ class User < ApplicationRecord
     permissions.include?("GDS Editor")
   end
 
+  def site_manager?
+    permissions.include?("Site Manager")
+  end
+
   def can_edit_sites
     @can_edit_sites ||= {}
   end
