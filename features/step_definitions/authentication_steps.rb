@@ -28,3 +28,7 @@ end
 Given(/^I have logged in as a member of another organisation$/) do
   GDS::SSO.test_user = create(:user, organisation_content_id: SecureRandom.uuid)
 end
+
+Given(/^I have logged in as a Site Manager$/) do
+  GDS::SSO.test_user = create(:site_manager)
+end
