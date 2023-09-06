@@ -41,6 +41,15 @@ describe Site do
       end
     end
 
+    context "global archive" do
+      subject(:site) { build(:site, global_type: "archive", global_new_url: "http://a.com/") }
+
+      before { expect(site).not_to be_valid }
+      it "should validate absence of global_new_url" do
+        expect(site.errors[:global_new_url]).to eq(["must be blank"])
+      end
+    end
+
     context "global redirect with path appended" do
       subject(:site) { build(:site, global_type: "redirect", global_redirect_append_path: true, global_new_url: "http://a.com/?") }
 
