@@ -57,8 +57,13 @@
         <%= form.collection_radio_buttons :global_type,
                                           Site::GLOBAL_TYPES,
                                           :to_s,
-                                          :humanize
-        %>
+                                          :humanize do |button| %>
+          <div class="radio">
+            <%= button.label do %>
+              <%= button.radio_button + button.text %>
+            <% end %>
+          </div>
+        <% end %>
       </div>
 
       <div class="form-group">
@@ -81,8 +86,13 @@
         <%= form.collection_radio_buttons :special_redirect_strategy,
                                           Site::SPECIAL_REDIRECT_STRATEGY_TYPES,
                                           :to_s,
-                                          :humanize
-        %>
+                                          :humanize do |button| %>
+          <div class="radio">
+            <%= button.label do %>
+              <%= button.radio_button + button.text %>
+            <% end %>
+          </div>
+        <% end %>
       </div>
 
       <div class="form-group">
