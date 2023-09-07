@@ -5,9 +5,9 @@ FactoryBot.define do
     homepage { "https://www.gov.uk/government/organisations/air-accidents-investigation-branch" }
     tna_timestamp { "20141104112824" }
     hostname { "www.aaib.gov.uk" }
-    homepage_title { "Air accidents investigation branch" }
 
     trait :with_optional_fields do
+      homepage_title { "Air accidents investigation branch" }
       homepage_furl { "www.gov.uk/aaib" }
       global_type { "redirect" }
       global_new_url { "https://www.gov.uk/government/organisations/air-accidents-investigation-branch/about" }

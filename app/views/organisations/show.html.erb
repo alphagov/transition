@@ -10,6 +10,8 @@
   <%= render 'in_conjunction_with' %>
 </header>
 
+<%= link_to "Add a transition site", new_organisation_site_path(@organisation), class: "btn btn-default" %>
+
 <% unless @sites.empty? %>
   <h2>Sites</h2>
   <table class="sites table table-hover table-striped table-bordered" data-module="filterable-table">

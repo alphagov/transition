@@ -102,6 +102,19 @@ Scenario: Jumping to a non-existent site
   And I jump to the site or mapping "http://not-a-site.gov.uk"
   Then I should see the header "Unknown site"
 
+Scenario: Creating a site
+  Given I have logged in as a GDS Editor
+  And there are these organisations without sites:
+    | whitehall_slug  | title                         |
+    | ukti            | UK Trade & Industry           |
+    | go-science      | Government Office for Science |
+  When I visit the page for the UK Trade & Industry organisation
+  And I click the link "Add a transition site"
+  Then I should be on the new transition site page for the UK Trade & Industry organisation
+  When I fill in the new transition site fields
+  And I save my changes
+  Then I should be redirected to the new site
+
 Scenario: Editing a site's transition date as a GDS Editor
   Given I have logged in as a GDS Editor
   And the date is 29/11/19

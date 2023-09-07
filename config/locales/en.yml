@@ -16,6 +16,23 @@ en:
         new_url: 'The URL to redirect to'
       mappings_batch:
         paths: Old URLs
+  activemodel:
+    attributes:
+      site_form:
+        abbr: Abbreviated name
+        host: Host
+        tna_timestamp: TNA timestamp
+        homepage: Homepage
+        homepage_title: Homepage title (Optional)
+        global_type: Global type (Optional)
+        global_new_url: Global new URL (Optional)
+        extra_organisations: Extra organisations (Optional)
+        homepage_furl: Homepage full URL (Optional)
+        options: Options (Optional)
+        global_redirect_append_path: Global redirect append path (Optional)
+        query_params: Query params (Optional)
+        special_redirect_strategy: Special redirect strategy (Optional)
+        aliases: Aliases (Optional)
   mappings:
     success:
       all_created: '%{created}%{tagged_with}'
