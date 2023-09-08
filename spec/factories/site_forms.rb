@@ -16,6 +16,16 @@ FactoryBot.define do
       special_redirect_strategy { "via_aka" }
     end
 
+    trait :with_blank_optional_fields do
+      homepage_title { "" }
+      homepage_furl { "" }
+      global_type { "" }
+      global_new_url { "" }
+      query_params { "" }
+      global_redirect_append_path { false }
+      special_redirect_strategy { "" }
+    end
+
     trait :with_aliases do
       aliases { "aaib.gov.uk,aaib.com" }
     end

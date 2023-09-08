@@ -61,4 +61,28 @@ describe "Site creation" do
       expect(Site.last.extra_organisations.where(title: "Government digital service")).to exist
     end
   end
+
+  context "with blank optional fields" do
+    let(:params) { attributes_for(:site_form, :with_blank_optional_fields) }
+
+    it "nullifies blanks when creating the new site" do
+      post organisation_sites_path(organisation), params: { site_form: params }
+
+      attributes = {
+        abbr: "aaib",
+        homepage: "https://www.gov.uk/government/organisations/air-accidents-investigation-branch",
+        tna_timestamp: Time.strptime("20141104112824", "%Y%m%d%H%M%S"),
+        global_redirect_append_path: false,
+        global_new_url: nil,
+        special_redirect_strategy: nil,
+        global_type: nil,
+        homepage_title: nil,
+        homepage_furl: nil,
+        query_params: "",
+      }
+
+      expect(Site.last.attributes.with_indifferent_access).to include attributes
+      expect(Site.last.organisation).to eq organisation
+    end
+  end
 end

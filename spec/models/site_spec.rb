@@ -143,6 +143,40 @@ describe Site do
     end
   end
 
+  describe "nillifying blanks before validation" do
+    let(:site) { create :site, homepage_furl: "" }
+
+    subject { site.homepage_furl }
+
+    it { is_expected.to be_nil }
+
+    context "attributes not nilified" do
+      describe "#global_redirect_append_path" do
+        let(:site) { create :site, global_redirect_append_path: false }
+
+        subject { site.global_redirect_append_path }
+
+        it { is_expected.to be false }
+      end
+
+      describe "#global_redirect_append_path" do
+        let(:site) { create :site, query_params: "" }
+
+        subject { site.query_params }
+
+        it { is_expected.to eq "" }
+      end
+
+      describe "#precompute_all_hits_view" do
+        let(:site) { create :site, precompute_all_hits_view: false }
+
+        subject { site.precompute_all_hits_view }
+
+        it { is_expected.to be false }
+      end
+    end
+  end
+
   describe "#transition_status" do
     let!(:site) { create :site_without_host }
 
