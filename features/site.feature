@@ -133,3 +133,25 @@ Scenario: Editing a site's transition date as a non-GDS Editor
   When I visit the path /sites/dclg/edit
   Then I should be redirected to the site dashboard
   And I should see "Only GDS Editors can access that."
+
+Scenario: Deleting a site as a Site Manager
+  Given I have logged in as a Site Manager
+  And a site bis exists
+  And I visit this site page
+  When I delete this site
+  Then I should be prompted to confirm the deletion
+  When I fail to confirm the deletion
+  Then I should see "The confirmation did not match"
+  And I should be prompted to confirm the deletion
+  When I confirm the deletion
+  Then I should be redirected to the organisation dashboard
+  And I should see the deletion confirmation message
+
+Scenario: Deleting a site as a non-Site Manager
+  Given I have logged in as a member of DCLG
+  And a site dclg exists
+  And I visit this site page
+  Then I should not see "Delete"
+  When I visit the path /sites/dclg/confirm_destroy
+  Then I should be redirected to the site dashboard
+  And I should see "Only Site Managers can access that."

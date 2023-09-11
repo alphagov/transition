@@ -7,7 +7,7 @@ if Rails.env.development?
     u             = User.new
     u.email       = "test@example.com"
     u.name        = "Test User"
-    u.permissions = ["signin", "admin", "GDS Editor"]
+    u.permissions = ["signin", "admin", "GDS Editor", "Site Manager"]
     u.organisation_content_id = cabinet_office_content_id
     u.save!
   end

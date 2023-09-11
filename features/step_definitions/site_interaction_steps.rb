@@ -39,3 +39,17 @@ end
 Then(/^I should be redirected to the new site$/) do
   i_should_be_on_the_path site_path(Site.last)
 end
+
+When(/^I delete this site$/) do
+  click_link "Delete"
+end
+
+When(/^I confirm the deletion$/) do
+  fill_in :confirm_destroy, with: @site.abbr
+  click_button I18n.t("site.confirm_destroy.confirm")
+end
+
+When(/^I fail to confirm the deletion$/) do
+  fill_in :confirm_destroy, with: "bogus"
+  click_button I18n.t("site.confirm_destroy.confirm")
+end

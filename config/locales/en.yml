@@ -48,6 +48,15 @@ en:
         global_redirect_append_path: Should the path the user supplied be appended to the URL for the global redirect?
         special_redirect_strategy: When the transition is partial, some tools or content will be left behind and managed by the previous supplier. If "Via aka", the supplier is redirecting some paths to our aka domain. If "supplier", the supplier is managing redirects to gov.uk. No traffic comes through Bouncer for this site.
         aliases: This is a list of alias domains. Enter as a comma-separated list.
+  site:
+    confirm_destroy:
+      confirm: I understand the consequences, delete this site
+      hosts:
+        one: '%{count} host and its associated host paths, daily hit counts, and hits'
+        other: '%{count} hosts and their associated host paths, daily hit counts, and hits'
+      mappings:
+        one: '%{count} mappings and all its versions'
+        other: '%{count} mappings and all their versions'
   mappings:
     success:
       all_created: '%{created}%{tagged_with}'

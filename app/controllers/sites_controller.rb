@@ -1,8 +1,10 @@
+require "./lib/transition/import/revert_entirely_unsafe"
+
 class SitesController < ApplicationController
-  before_action :find_site, only: %i[edit update show]
+  before_action :find_site, only: %i[edit update show confirm_destroy destroy]
   before_action :find_organisation, only: %i[new create]
   before_action :check_user_is_gds_editor, only: %i[edit update]
-  before_action :check_user_is_site_manager, only: %i[new create]
+  before_action :check_user_is_site_manager, only: %i[new create confirm_destroy destroy]
 
   def new
     @site_form = SiteForm.new(organisation_slug: @organisation.whitehall_slug)
@@ -32,6 +34,17 @@ class SitesController < ApplicationController
     @most_used_tags = @site.most_used_tags(10)
     @hosts = @site.hosts.excluding_aka.includes(:aka_host)
     @unresolved_mappings_count = @site.mappings.unresolved.count
+  end
+
+  def confirm_destroy; end
+
+  def destroy
+    if params[:confirm_destroy] == @site.abbr
+      Transition::Import::RevertEntirelyUnsafe::RevertSite.new(@site).revert_all_data!
+      redirect_to organisation_path(@site.organisation), flash: { success: "The site and all its data have been successfully deleted" }
+    else
+      redirect_to confirm_destroy_site_path(@site), flash: { alert: "The confirmation did not match" }
+    end
   end
 
 private
@@ -77,7 +90,15 @@ private
   def check_user_is_site_manager
     unless current_user.site_manager?
       message = "Only Site Managers can access that."
-      redirect_to organisation_path(@organisation), alert: message
+      redirect_to redirect_path, alert: message
+    end
+  end
+
+  def redirect_path
+    if @site
+      site_path(@site)
+    else
+      organisation_path(@organisation)
     end
   end
 end

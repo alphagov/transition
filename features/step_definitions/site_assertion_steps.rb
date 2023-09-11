@@ -86,3 +86,15 @@ Then(/^I should see the top (\d+) most used tags "([^"]*)"$/) do |count, tag_lis
     end
   end
 end
+
+Then(/^I should be prompted to confirm the deletion$/) do
+  expect(page).to have_content("confirm that you want to delete this site and all its data")
+end
+
+Then(/^I should see the deletion confirmation message$/) do
+  expect(page).to have_content("The site and all its data have been successfully deleted")
+end
+
+Then(/^I should be redirected to the organisation dashboard$/) do
+  i_should_be_on_the_path organisation_path(@site.organisation)
+end
