@@ -7,6 +7,11 @@ crumb :organisation do |organisation|
   parent :root
 end
 
+crumb :new_site do |organisation|
+  link "New transition site"
+  parent :organisation, organisation
+end
+
 crumb :site do |site|
   link site.default_host.hostname, site_path(site)
   parent :organisation, site.organisation

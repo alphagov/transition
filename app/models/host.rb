@@ -11,7 +11,8 @@ class Host < ApplicationRecord
   validates :hostname, presence: true
   validates :hostname, hostname: true
   validates :site, presence: true
-  validate :canonical_host_id_xor_aka_present
+  validate :canonical_host_id_xor_aka_present, if: -> { hostname.present? }
+  validate :hostname_is_downcased, if: -> { hostname.present? }
 
   after_update :update_hits_relations, if: :saved_change_to_site_id?
 
@@ -70,5 +71,11 @@ class Host < ApplicationRecord
     host_paths.update_all(mapping_id: nil, canonical_path: nil)
     hits.update_all(mapping_id: nil)
     Transition::Import::HitsMappingsRelations.refresh!(site)
+  end
+
+  def hostname_is_downcased
+    if hostname != hostname.downcase
+      errors.add(:hostname, "must be lowercase")
+    end
   end
 end

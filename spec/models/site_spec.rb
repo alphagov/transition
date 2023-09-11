@@ -41,6 +41,15 @@ describe Site do
       end
     end
 
+    context "global archive" do
+      subject(:site) { build(:site, global_type: "archive", global_new_url: "http://a.com/") }
+
+      before { expect(site).not_to be_valid }
+      it "should validate absence of global_new_url" do
+        expect(site.errors[:global_new_url]).to eq(["must be blank"])
+      end
+    end
+
     context "global redirect with path appended" do
       subject(:site) { build(:site, global_type: "redirect", global_redirect_append_path: true, global_new_url: "http://a.com/?") }
 
@@ -130,6 +139,40 @@ describe Site do
 
       it "includes the top two tags, but not the less popular tags" do
         expect(tag_strings).to match_array(%w[popular1 popular2])
+      end
+    end
+  end
+
+  describe "nillifying blanks before validation" do
+    let(:site) { create :site, homepage_furl: "" }
+
+    subject { site.homepage_furl }
+
+    it { is_expected.to be_nil }
+
+    context "attributes not nilified" do
+      describe "#global_redirect_append_path" do
+        let(:site) { create :site, global_redirect_append_path: false }
+
+        subject { site.global_redirect_append_path }
+
+        it { is_expected.to be false }
+      end
+
+      describe "#global_redirect_append_path" do
+        let(:site) { create :site, query_params: "" }
+
+        subject { site.query_params }
+
+        it { is_expected.to eq "" }
+      end
+
+      describe "#precompute_all_hits_view" do
+        let(:site) { create :site, precompute_all_hits_view: false }
+
+        subject { site.precompute_all_hits_view }
+
+        it { is_expected.to be false }
       end
     end
   end

@@ -19,7 +19,9 @@ Rails.application.routes.draw do
 
   resources :hosts, only: [:index]
 
-  resources :organisations, only: %i[show index]
+  resources :organisations, only: %i[show index] do
+    resources :sites, only: %i[new create], controller: :sites
+  end
 
   get "mappings/find_global", to: "mappings#find_global"
   get "hits", to: "hits#universal_summary"

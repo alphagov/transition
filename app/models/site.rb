@@ -2,6 +2,11 @@ require "postgres/materialized_view"
 require "./lib/transition/path_or_url"
 
 class Site < ApplicationRecord
+  include NilifyBlanks
+
+  GLOBAL_TYPES = %w[redirect archive].freeze
+  SPECIAL_REDIRECT_STRATEGY_TYPES = %w[via_aka supplier].freeze
+
   belongs_to :organisation
 
   has_many :hosts
@@ -20,8 +25,9 @@ class Site < ApplicationRecord
   validates :organisation, presence: true
   validates :homepage, presence: true, non_blank_url: true
   validates :abbr, uniqueness: true, presence: true, format: { with: /\A[a-zA-Z0-9_-]+\z/, message: "can only contain alphanumeric characters, underscores and dashes" }
-  validates :special_redirect_strategy, inclusion: { in: %w[via_aka supplier], allow_nil: true }
+  validates :special_redirect_strategy, inclusion: { in: SPECIAL_REDIRECT_STRATEGY_TYPES, allow_blank: true }
   validates :global_new_url, presence: { if: :global_redirect? }
+  validates :global_new_url, absence: { if: :global_archive? }
   validates :global_new_url,
             format: { without: /\?/,
                       message: "cannot contain a query when the path is appended",
@@ -130,5 +136,9 @@ private
 
   def remove_all_hits_view
     Postgres::MaterializedView.drop(precomputed_view_name)
+  end
+
+  def nilify_except
+    %i[global_redirect_append_path query_params precompute_all_hits_view]
   end
 end

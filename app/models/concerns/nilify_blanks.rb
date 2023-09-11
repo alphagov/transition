@@ -7,7 +7,15 @@ module NilifyBlanks
 
   def nilify_blanks
     attributes.each do |column, value|
+      next if nilify_except.include?(column.to_sym)
+
       self[column] = nil if value.blank?
     end
+  end
+
+private
+
+  def nilify_except
+    []
   end
 end
