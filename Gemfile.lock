@@ -248,6 +248,17 @@ GEM
       sentry-rails (~> 5.3)
       sentry-ruby (~> 5.3)
       statsd-ruby (~> 1.5)
+    govuk_personalisation (0.13.0)
+      plek (>= 1.9.0)
+      rails (>= 6, < 8)
+    govuk_publishing_components (35.10.0)
+      govuk_app_config
+      govuk_personalisation (>= 0.7.0)
+      kramdown
+      plek
+      rails (>= 6)
+      rouge
+      sprockets (>= 3)
     govuk_sidekiq (7.1.1)
       gds-api-adapters (>= 19.1.0)
       govuk_app_config (>= 1.1)
@@ -289,6 +300,8 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
+    kramdown (2.4.0)
+      rexml
     language_server-protocol (3.17.0.3)
     link_header (0.0.8)
     logstasher (2.1.5)
@@ -628,6 +641,7 @@ GEM
       netrc (~> 0.8)
     retriable (3.1.2)
     rexml (3.2.6)
+    rouge (4.1.2)
     rspec-collection_matchers (1.2.0)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.12.2)
@@ -800,6 +814,7 @@ DEPENDENCIES
   google-api-client
   govuk_admin_template
   govuk_app_config
+  govuk_publishing_components
   govuk_sidekiq
   govuk_test
   gretel
