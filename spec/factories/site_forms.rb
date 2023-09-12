@@ -29,9 +29,5 @@ FactoryBot.define do
     trait :with_aliases do
       aliases { "aaib.gov.uk,aaib.com" }
     end
-
-    trait :with_extra_organisations do
-      extra_organisations { ["The adjudicator's office", "Government digital service"] }
-    end
   end
 end

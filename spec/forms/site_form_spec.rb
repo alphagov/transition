@@ -126,7 +126,7 @@ describe SiteForm do
       let!(:extra_organisation_2) { create(:organisation, whitehall_slug: "government-digital-service", title: "Government digital service") }
 
       it "creates extra organisations" do
-        site_form = build(:site_form, :with_extra_organisations)
+        site_form = build(:site_form, extra_organisations: [extra_organisation.id, extra_organisation_2.id])
 
         site = site_form.save
 
