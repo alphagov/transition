@@ -2,7 +2,8 @@
   "srcDir": "public/assets/transition",
   "srcFiles": [
     "govuk-admin-template-*.js",
-    "application-*.js"
+    "application-*.js",
+    "legacy_layout-*.js"
   ],
   "cssFiles": [
     "application-*.css"
