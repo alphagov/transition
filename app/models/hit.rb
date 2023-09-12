@@ -3,6 +3,8 @@ require "kaminari"
 class Hit < ApplicationRecord
   NEVER = Date.new(1970, 1, 1)
 
+  has_paper_trail
+
   belongs_to :host
   belongs_to :mapping
 
