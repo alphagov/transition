@@ -46,7 +46,7 @@ private
       tna_timestamp:,
       homepage:,
       organisation: Organisation.find_by(whitehall_slug: organisation_slug),
-      extra_organisations: Organisation.where(title: extra_organisations),
+      extra_organisations: Organisation.where(id: extra_organisations),
       homepage_title:,
       homepage_furl:,
       global_type:,

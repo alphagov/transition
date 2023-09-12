@@ -51,7 +51,7 @@ describe "Site creation" do
   context "with extra organisations" do
     let!(:extra_organisation) { create(:organisation, whitehall_slug: "the-adjudicator-s-office", title: "The adjudicator's office") }
     let!(:extra_organisation_2) { create(:organisation, whitehall_slug: "government-digital-service", title: "Government digital service") }
-    let(:params) { attributes_for(:site_form, :with_extra_organisations) }
+    let(:params) { attributes_for(:site_form, extra_organisations: [extra_organisation.id, extra_organisation_2.id]) }
 
     it "creates extra organisations" do
       post organisation_sites_path(organisation), params: { site_form: params }
