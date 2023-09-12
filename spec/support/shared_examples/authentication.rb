@@ -56,3 +56,18 @@ shared_examples "disallows editing of a global site" do
     expect(flash[:alert]).to match(/This site has been entirely (redirect|archiv)ed/)
   end
 end
+
+shared_examples "disallows deleting by non-Site managers" do
+  before do
+    login_as stub_user
+    make_request
+  end
+
+  it "redirects to the site page" do
+    expect(response).to redirect_to site_path(site)
+  end
+
+  it "sets a flash message" do
+    expect(flash[:alert]).to eql("Only Site Managers can access that.")
+  end
+end

@@ -3,7 +3,7 @@ require "rails_helper"
 describe SitesController do
   let(:site)    { create :site, abbr: "moj" }
   let(:gds_bob) { create(:gds_editor, name: "Bob Terwhilliger") }
-  let(:site_manager) { create(:site_manager) }
+  let(:site_manager) { create(:site_manager, name: "Boss McSitemanagery") }
 
   describe "#new" do
     let(:organisation) { create(:organisation) }
@@ -37,6 +37,18 @@ describe SitesController do
       expect(response.status).to eql(200)
     end
 
+    context "with versioning", versioning: true do
+      it "records the user who created the site" do
+        post :create, params: { organisation_id: organisation.whitehall_slug, site_form: params }
+
+        last_version = site.versions.last
+
+        expect(last_version.event).to eql("create")
+        expect(last_version.whodunnit).to eql("Boss McSitemanagery")
+        expect(last_version.user_id).to eql(site_manager.id)
+      end
+    end
+
     context "when the user does not have permission" do
       def make_request
         post :create, params: { organisation_id: organisation.whitehall_slug, site_form: params }
@@ -67,6 +79,37 @@ describe SitesController do
     end
   end
 
+  describe "#update" do
+    def make_request
+      post :update, params: {
+        id: site.abbr,
+        site: {
+          "launch_date(3i)" => 15,
+          "launch_date(2i)" => 8,
+          "launch_date(1i)" => 2023,
+        },
+      }
+    end
+
+    context "with versioning", versioning: true do
+      before { login_as gds_bob }
+
+      it "records the user who updated the site" do
+        make_request
+
+        last_version = site.versions.last
+
+        expect(last_version.event).to eql("update")
+        expect(last_version.whodunnit).to eql("Bob Terwhilliger")
+        expect(last_version.user_id).to eql(gds_bob.id)
+      end
+    end
+
+    context "when the user does not have permission" do
+      it_behaves_like "disallows editing by non-GDS Editors"
+    end
+  end
+
   describe "#confirm_destroy" do
     context "when the user does have permission" do
       before { login_as site_manager }
@@ -78,12 +121,37 @@ describe SitesController do
     end
 
     context "when the user does not have permission" do
-      before { login_as stub_user }
-
-      it "disallows deleting by non-Site Managers" do
+      def make_request
         get :confirm_destroy, params: { id: site.abbr }
-        expect(response.status).to eql(302)
       end
+
+      it_behaves_like "disallows deleting by non-Site managers"
+    end
+  end
+
+  describe "#destroy" do
+    def make_request
+      post :destroy, params: { id: site.abbr, delete_site_form: { abbr_confirmation: site.abbr } }
+    end
+
+    context "when the user does have permission" do
+      before { login_as site_manager }
+
+      context "with versioning", versioning: true do
+        it "records the user who updated the site" do
+          make_request
+
+          last_version = site.versions.last
+
+          expect(last_version.event).to eql("destroy")
+          expect(last_version.whodunnit).to eql("Boss McSitemanagery")
+          expect(last_version.user_id).to eql(site_manager.id)
+        end
+      end
+    end
+
+    context "when the user does not have permission" do
+      it_behaves_like "disallows deleting by non-Site managers"
     end
   end
 end

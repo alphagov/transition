@@ -1,6 +1,8 @@
 class SitesController < ApplicationController
   layout "admin_layout", only: %w[new create confirm_destroy destroy]
 
+  include PaperTrail::Rails::Controller
+
   before_action :find_site, only: %i[edit update show confirm_destroy destroy]
   before_action :find_organisation, only: %i[new create]
   before_action :check_user_is_gds_editor, only: %i[edit update]

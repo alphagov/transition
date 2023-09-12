@@ -7,6 +7,8 @@ class Site < ApplicationRecord
   GLOBAL_TYPES = { redirect: "redirect", archive: "archive" }.freeze
   SPECIAL_REDIRECT_STRATEGY_TYPES = { via_aka: "via_aka", supplier: "supplier" }.freeze
 
+  has_paper_trail
+
   belongs_to :organisation
 
   has_many :hosts
