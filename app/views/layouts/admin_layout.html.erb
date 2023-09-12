@@ -11,7 +11,18 @@
     navigation_items: navigation_items
   } %>
 
-  <div class="govuk-width-container" >
+  <div class="govuk-width-container">
+    <% if breadcrumbs.links.any? %>
+      <%= render "govuk_publishing_components/components/breadcrumbs", {
+        collapse_on_mobile: true,
+        breadcrumbs:
+          breadcrumbs
+            .links
+            .reject { |link| link.current? }
+            .map { |link| { title: link.text, url: link.url } }
+      } %>
+    <% end %>
+
     <main class="govuk-main-wrapper " id="main-content" role="main">
       <%= yield %>
     </main>
