@@ -1,0 +1,25 @@
+@import "govuk_admin_template";
+@import "select2";
+@import "select2-bootstrap"; // https://github.com/fk/select2-bootstrap-css
+@import "legacy/mixins";
+@import "legacy/transition_theme";
+
+// Components
+@import "legacy/breadcrumb";
+@import "legacy/pagination";
+@import "legacy/filters";
+@import "legacy/forms";
+@import "legacy/nav";
+@import "legacy/selectable-table";
+@import "legacy/tags";
+@import "legacy/validation_errors";
+@import "legacy/modal_with_button_in_title";
+@import "legacy/modal_background_batch";
+
+// Page types
+@import "legacy/hits";
+@import "legacy/mappings";
+@import "legacy/organisations";
+@import "legacy/style";
+@import "legacy/versions";
+@import "legacy/glossary";
