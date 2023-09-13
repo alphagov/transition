@@ -1,120 +1,67 @@
+<% content_for :page_title, "New transition site" %>
+
 <% breadcrumb(:new_site, @organisation) %>
 
-<div class="page-title-with-border">
-  <h1>New transition site</h1>
-</div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <%= form_for @site_form, url: organisation_sites_path, builder: GOVUKDesignSystemFormBuilder::FormBuilder do |form| %>
+      <%= form.govuk_error_summary %>
 
-<%= form_for @site_form, html: { role: "form" }, url: organisation_sites_path do |form| %>
-  <%= render "shared/error_messages", error_messages: form.object.errors.full_messages %>
+      <h1 class="govuk-heading-l">New transition site</h1>
 
-  <div class="form-group row">
-    <div class="col-md-8">
       <%= form.hidden_field :organisation_slug, value: @organisation.whitehall_slug %>
 
-      <div class="form-group">
-        <%= form.label :abbr %>
-        <%= form.text_field :abbr, class: "form-control", aria: { describedby: "abbr-help" } %>
-        <small id="abbr-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.abbr") %></small>
-      </div>
+      <%= form.govuk_text_field :abbr, width: "one-third", label: { size: "m" } %>
 
-      <div class="form-group">
-        <%= form.label :tna_timestamp %>
-        <%= form.text_field :tna_timestamp, class: "form-control", aria: { describedby: "tna-timestamp-help" } %>
-        <small id="tna-timestamp-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.tna_timestamp").html_safe %></small>
-      </div>
+      <%= form.govuk_text_field :tna_timestamp, width: "one-third", label: { size: "m" } %>
 
-      <div class="form-group">
-        <%= form.label :homepage %>
-        <%= form.text_field :homepage, class: "form-control", aria: { describedby: "homepage-help" } %>
-        <small id="homepage-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.homepage") %></small>
-      </div>
+      <%= form.govuk_text_field :homepage, width: "two-thirds", label: { size: "m" } %>
 
-      <div class="form-group">
-        <%= form.label :hostname %>
-        <%= form.text_field :hostname, class: "form-control", aria: { describedby: "hostname-help" } %>
-        <small id="hostname-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.hostname") %></small>
-      </div>
+      <%= form.govuk_text_field :hostname, width: "two-thirds", label: { size: "m" } %>
 
-      <div class="form-group">
-        <%= form.label :homepage_title %>
-        <%= form.text_field :homepage_title, class: "form-control", aria: { describedby: "homepage-title-help" } %>
-        <small id="homepage-title-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.homepage_title") %></small>
-      </div>
+      <%= form.govuk_text_field :homepage_title, width: "two-thirds", label: { size: "m" } %>
 
-      <div class="form-group">
-        <%= form.label :extra_organisations %>
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--m" for="site_form_extra_organisations">
+          <%= I18n.t("helpers.label.site_form.extra_organisations") %>
+        </label>
+
+        <div id="site-form-extra-organisations-hint" class="govuk-hint">
+          <%= I18n.t("helpers.hint.site_form.extra_organisations") %>
+        </div>
+
         <%= form.collection_select :extra_organisations,
                                    form.object.organisations,
                                    :id,
                                    :title,
                                    {},
-                                   { multiple: true, class: "form-control", aria: { describedby: "extra-organisations-help" } }
+                                   { multiple: true, class: "govuk-select extra-organisations govuk-!-width-two-thirds" }
         %>
-        <small id="extra-organisations-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.extra_organisations") %></small>
       </div>
 
-      <div class="form-group">
-        <%= form.label :homepage_furl %>
-        <%= form.text_field :homepage_furl, class: "form-control", aria: { describedby: "homepage-furl-help" } %>
-        <small id="homepage-furl-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.homepage_furl") %></small>
-      </div>
+      <%= form.govuk_text_field :homepage_furl, width: "two-thirds", label: { size: "m" } %>
 
-      <div class="form-group">
-        <%= form.label :global_type %>
-        <%= form.collection_radio_buttons :global_type,
-                                          Site::GLOBAL_TYPES,
-                                          :to_s,
-                                          :humanize,
-                                          aria: { describedby: "global-type-help" } do |button| %>
-          <div class="radio">
-            <%= button.label do %>
-              <%= button.radio_button + button.text %>
-            <% end %>
-          </div>
+      <%= form.govuk_radio_buttons_fieldset :global_type do %>
+        <%= form.govuk_radio_button :global_type, Site::GLOBAL_TYPES[:archive], link_errors: true %>
+        <%= form.govuk_radio_button :global_type, Site::GLOBAL_TYPES[:redirect] do %>
+          <%= form.govuk_text_field :global_new_url, width: "two-thirds" %>
         <% end %>
-        <small id="global-type-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.global_type") %></small>
-      </div>
+      <% end %>
 
-      <div class="form-group">
-        <%= form.label :global_new_url %>
-        <%= form.text_field :global_new_url, class: "form-control" %>
-      </div>
+      <%= form.govuk_text_field :query_params, label: { size: "m" } %>
 
-      <div class="form-group">
-        <%= form.label :query_params %>
-        <%= form.text_field :query_params, class: "form-control", aria: { describedby: "query-params-help" } %>
-        <small id="query-params-help" class="form-text text-muted row"><%= I18n.t("activemodel.hint.site_form.query_params") %></small>
-      </div>
+      <%= form.govuk_check_boxes_fieldset :global_redirect_append_path, multiple: false do %>
+        <%= form.govuk_check_box :global_redirect_append_path, 1, 0, multiple: false, link_errors: true %>
+      <% end %>
 
-      <div class="form-check">
-        <%= form.label :global_redirect_append_path %>
-        <%= form.check_box :global_redirect_append_path, aria: { describedby: "global-redirect-append-path-help" } %>
-        <small id="global-redirect-append-path-help" class="form-text text-muted row"><%= I18n.t("activemodel.hint.site_form.global_redirect_append_path") %></small>
-      </div>
+      <%= form.govuk_collection_radio_buttons :special_redirect_strategy,
+                                              Site::SPECIAL_REDIRECT_STRATEGY_TYPES,
+                                              :to_s,
+                                              :humanize %>
 
-      <div class="form-group">
-        <%= form.label :special_redirect_strategy %>
-        <%= form.collection_radio_buttons :special_redirect_strategy,
-                                          Site::SPECIAL_REDIRECT_STRATEGY_TYPES,
-                                          :to_s,
-                                          :humanize,
-                                          aria: { describedby: "special-redirect-strategy-help" } do |button| %>
-          <div class="radio">
-            <%= button.label do %>
-              <%= button.radio_button + button.text %>
-            <% end %>
-          </div>
-        <% end %>
-        <small id="special-redirect-strategy-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.special_redirect_strategy") %></small>
-      </div>
+      <%= form.govuk_text_area :aliases, label: { size: "m" } %>
 
-      <div class="form-group">
-        <%= form.label :aliases %>
-        <%= form.text_area :aliases, class: "form-control", aria: { describedby: "aliases-help" } %>
-        <small id="aliases-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.aliases") %></small>
-      </div>
-
-      <%= form.submit 'Save', class: 'add-top-margin btn btn-success' %>
-    </div>
+      <%= form.govuk_submit "Save" %>
+    <% end %>
   </div>
-<% end %>
+</div>

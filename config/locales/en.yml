@@ -16,37 +16,49 @@ en:
         new_url: 'The URL to redirect to'
       mappings_batch:
         paths: Old URLs
-  activemodel:
-    attributes:
+  helpers:
+    legend:
       site_form:
+        global_redirect_append_path: Global redirect append path (Optional)
+        special_redirect_strategy: Special redirect strategy (Optional)
+        global_type: Global type (Optional)
+    label:
+      site_form:
+        global_redirect_append_path_options:
+          1: Should the path the user supplied be appended to the URL for the global redirect?
+        global_type_options:
+          redirect: Redirect
+          archive: Archive
         abbr: Abbreviated name
         host: Host
         tna_timestamp: TNA timestamp
         homepage: Homepage
         homepage_title: Homepage title (Optional)
-        global_type: Global type (Optional)
-        global_new_url: Global new URL (Optional)
+        global_new_url: Global new URL
         extra_organisations: Extra organisations (Optional)
         homepage_furl: Homepage full URL (Optional)
         options: Options (Optional)
-        global_redirect_append_path: Global redirect append path (Optional)
         query_params: Query params (Optional)
-        special_redirect_strategy: Special redirect strategy (Optional)
         aliases: Aliases (Optional)
     hint:
       site_form:
         abbr: This is the owning organisation abbreviation followed by the abbreviated site name, separated by an underscore. For example, the "Obesity West Midlands" site which is owned by Public Health England would be "phe_obesitywm"
         host: This is the primary hostname for the site. For example, "www.example.com".
-        tna_timestamp: This is the last good capture from the <a href="https://www.nationalarchives.gov.uk/webarchive/" class="govuk-link">UK Government Web Archives</a>. For example, "20131002172858". If the site has not been crawled by the National Archives, set a stub timestamp "20201010101010".
+        tna_timestamp_html: This is the last good capture from the <a href="https://www.nationalarchives.gov.uk/webarchive/" class="govuk-link">UK Government Web Archives</a>. For example, "20131002172858". If the site has not been crawled by the National Archives, set a stub timestamp "20201010101010".
         homepage: This is the URL for the new site.
         hostname: This is the primary hostname for the site.
         homepage_title: This is the title for 404/410 pages, it defaults to the organisation title. It should fit into the sentence "Visit the new [title] site at [full URL or homepage]"
         extra_organisations: These are the additional organisations which own this site. They are used for access control in Transition.
         homepage_furl: This is the friendly URL displayed on 404/410 pages. It should redirect to the homepage. It doesn't need to include 'http' or 'https'.
-        global_type: This sets a global redirect or archive for all paths. If "Redirect", all site URLs will redirect to the Global new URL. If "Archive", all site URLs will show a page saying the site has been archived.
+        global_type: This sets a global redirect or archive for all paths.
+        global_type_options:
+          redirect: All site URLs will redirect to the Global new URL
+          archive: All site URLs will show a page saying the site has been archived
         query_params:  A significant querystring parameter is one which on the old website changes the content in a meaningful way - which we might therefore need to map to a different place. Query string parameters should be specified in lowercase; uppercase parameters will not be preserved during canonicalisation. Enter as a colon-separated list.
-        global_redirect_append_path: Should the path the user supplied be appended to the URL for the global redirect?
-        special_redirect_strategy: When the transition is partial, some tools or content will be left behind and managed by the previous supplier. If "Via aka", the supplier is redirecting some paths to our aka domain. If "supplier", the supplier is managing redirects to gov.uk. No traffic comes through Bouncer for this site.
+        special_redirect_strategy: When the transition is partial, some tools or content will be left behind and managed by the previous supplier.
+        special_redirect_strategy_options:
+          via_aka: The supplier is redirecting some paths to our aka domain
+          supplier: The supplier is managing redirects to gov.uk. No traffic comes through Bouncer for this site.
         aliases: This is a list of alias domains. Enter as a comma-separated list.
   site:
     confirm_destroy:

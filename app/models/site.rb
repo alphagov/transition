@@ -4,7 +4,7 @@ require "./lib/transition/path_or_url"
 class Site < ApplicationRecord
   include NilifyBlanks
 
-  GLOBAL_TYPES = %w[redirect archive].freeze
+  GLOBAL_TYPES = { redirect: "redirect", archive: "archive" }.freeze
   SPECIAL_REDIRECT_STRATEGY_TYPES = %w[via_aka supplier].freeze
 
   belongs_to :organisation
