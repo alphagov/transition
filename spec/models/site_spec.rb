@@ -27,7 +27,7 @@ describe Site do
         before { expect(site).not_to be_valid }
 
         it "should validate the homepage as a full URL" do
-          expect(site.errors[:homepage]).to eq(["is not a URL"])
+          expect(site.errors[:homepage]).to eq(["Homepage must be a full URL, like https://www.gov.uk"])
         end
       end
     end
@@ -37,7 +37,7 @@ describe Site do
 
       before { expect(site).not_to be_valid }
       it "should validate presence of global_new_url" do
-        expect(site.errors[:global_new_url]).to eq(["can't be blank"])
+        expect(site.errors[:global_new_url]).to eq(["Global new URL cannot be blank"])
       end
     end
 
@@ -55,7 +55,7 @@ describe Site do
 
       before { expect(site).not_to be_valid }
       it "should disallow a global_new_url with a querystring" do
-        expect(site.errors[:global_new_url]).to eq(["cannot contain a query when the path is appended"])
+        expect(site.errors[:global_new_url]).to eq(["Global new URL cannot contain a query when the path is appended"])
       end
     end
   end

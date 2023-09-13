@@ -16,6 +16,36 @@ en:
         new_url: 'The URL to redirect to'
       mappings_batch:
         paths: Old URLs
+    errors:
+      models:
+        site:
+          attributes:
+            tna_timestamp:
+              blank: Enter a TNA Timestamp
+            homepage:
+              blank: Enter a homepage
+              non_blank_url: Homepage must be a full URL, like https://www.gov.uk
+            hostname:
+              blank:
+                Enter a hostname
+            abbr:
+              blank: Enter an abbreviated name
+              taken: Abbreviated name must be unique
+              extra_characters: Abbreviated name can only contain alphanumeric characters, underscores and dashes
+            global_new_url:
+              blank: Global new URL cannot be blank
+              has_query: Global new URL cannot contain a query when the path is appended
+        host:
+          attributes:
+            hostname:
+              blank: Enter a hostname
+  activemodel:
+    errors:
+      models:
+        site_form:
+          attributes:
+            aliases:
+              not_unique: Hostnames must be unique
   helpers:
     legend:
       site_form:

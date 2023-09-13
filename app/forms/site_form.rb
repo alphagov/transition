@@ -92,14 +92,14 @@ private
       next if host.valid?
 
       host.errors.each do |error|
-        errors.add(:aliases, "\"#{host.hostname}\" #{error.message}")
+        errors.add(:aliases, error.message)
       end
     end
   end
 
   def aliases_are_unique
     if alias_hosts.length != alias_hosts.map(&:hostname).uniq.length
-      errors.add(:aliases, "must be unique")
+      errors.add(:aliases, :not_unique)
     end
   end
 end
