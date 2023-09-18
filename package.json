@@ -5,7 +5,7 @@
   "author": "Government Digital Service",
   "license": "MIT",
   "devDependencies": {
-    "jasmine-browser-runner": "^2.2.0",
+    "jasmine-browser-runner": "^2.3.0",
     "jasmine-core": "^5.1.1"
   },
   "scripts": {
