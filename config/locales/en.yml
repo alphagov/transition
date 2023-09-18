@@ -51,16 +51,19 @@ en:
       site_form:
         global_redirect_append_path: Global redirect append path (Optional)
         special_redirect_strategy: Special redirect strategy (Optional)
-        global_type: Global type (Optional)
     label:
       site_form:
         global_redirect_append_path_options:
           1: Should the path the user supplied be appended to the URL for the global redirect?
+        global_type: Global type (Optional)
         global_type_options:
           redirect: Redirect
           archive: Archive
+        special_redirect_strategy_options:
+          via_aka: Via AKA
+          supplier: Supplier
         abbr: Abbreviated name
-        host: Host
+        hostname: Hostname
         tna_timestamp: TNA timestamp
         homepage: Homepage
         homepage_title: Homepage title (Optional)
@@ -74,7 +77,7 @@ en:
       site_form:
         abbr: This is the owning organisation abbreviation followed by the abbreviated site name, separated by an underscore. For example, the "Obesity West Midlands" site which is owned by Public Health England would be "phe_obesitywm"
         host: This is the primary hostname for the site. For example, "www.example.com".
-        tna_timestamp_html: This is the last good capture from the <a href="https://www.nationalarchives.gov.uk/webarchive/" class="govuk-link">UK Government Web Archives</a>. For example, "20131002172858". If the site has not been crawled by the National Archives, set a stub timestamp "20201010101010".
+        tna_timestamp: This is the last good capture from the <a href="https://www.nationalarchives.gov.uk/webarchive/" class="govuk-link">UK Government Web Archives</a>. For example, "20131002172858". If the site has not been crawled by the National Archives, set a stub timestamp "20201010101010".
         homepage: This is the URL for the new site.
         hostname: This is the primary hostname for the site.
         homepage_title: This is the title for 404/410 pages, it defaults to the organisation title. It should fit into the sentence "Visit the new [title] site at [full URL or homepage]"

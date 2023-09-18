@@ -27,7 +27,7 @@ When(/^I fill in the new transition site fields/) do
   fill_in "Global new URL", with: "https://www.gov.uk/government/organisations/air-accidents-investigation-branch/about"
   fill_in "Query params", with: "file"
   check "Should the path the user supplied be appended to the URL for the global redirect?"
-  choose "Via aka"
+  choose "Via AKA"
   fill_in "Aliases", with: "aaib.gov.uk,aaib.com"
 end
 
