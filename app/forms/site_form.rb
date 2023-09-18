@@ -4,7 +4,7 @@ class SiteForm
 
   attribute :organisation_slug
   attribute :abbr
-  attribute :tna_timestamp, :datetime
+  attribute :tna_timestamp
   attribute :homepage
   attribute :homepage_title
   attribute :extra_organisations
