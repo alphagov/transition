@@ -1,0 +1,189 @@
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <%= form_for @site_form, url: organisation_sites_path do |form| %>
+      <% if object_has_errors?(form.object) %>
+        <%= render "govuk_publishing_components/components/error_summary", {
+          title: "There is a problem",
+          items: error_messages(form.object)
+        } %>
+      <% end %>
+
+      <h1 class="govuk-heading-l">New transition site</h1>
+
+      <%= form.hidden_field :organisation_slug, value: @organisation.whitehall_slug %>
+
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text: t("helpers.label.site_form.abbr") },
+        hint: t("helpers.hint.site_form.abbr"),
+        heading_size: "m",
+        name: form.field_name(:abbr),
+        id: field_id_attribute(form.object, :abbr),
+        error_message: error_message(form.object, :abbr),
+        value: form.object.abbr,
+        width: 20
+      } %>
+
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text: t("helpers.label.site_form.tna_timestamp") },
+        hint: t("helpers.hint.site_form.tna_timestamp").html_safe,
+        heading_size: "m",
+        name: form.field_name(:tna_timestamp),
+        id: field_id_attribute(form.object, :tna_timestamp),
+        error_message: error_message(form.object, :tna_timestamp),
+        value: form.object.tna_timestamp,
+        width: 20
+      } %>
+
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text: t("helpers.label.site_form.homepage") },
+        hint: t("helpers.hint.site_form.homepage"),
+        heading_size: "m",
+        name: form.field_name(:homepage),
+        id: field_id_attribute(form.object, :homepage),
+        error_message: error_message(form.object, :homepage),
+        value: form.object.homepage,
+        width: 30
+      } %>
+
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text:  t("helpers.label.site_form.hostname")  },
+        hint: t("helpers.hint.site_form.hostname"),
+        heading_size: "m",
+        name: form.field_name(:hostname),
+        id: field_id_attribute(form.object, :hostname),
+        error_message: error_message(form.object, :hostname),
+        value: form.object.hostname,
+        width: 30
+      } %>
+
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text:  t("helpers.label.site_form.homepage_title")  },
+        hint: t("helpers.hint.site_form.homepage_title"),
+        heading_size: "m",
+        name: form.field_name(:homepage_title),
+        id: field_id_attribute(form.object, :homepage_title),
+        error_message: error_message(form.object, :homepage_title),
+        value: form.object.homepage_title,
+        width: 30
+      } %>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--m" for="site_form_extra_organisations">
+          <%= t("helpers.label.site_form.extra_organisations") %>
+        </label>
+
+        <div id="site-form-extra-organisations-hint" class="govuk-hint">
+          <%= t("helpers.hint.site_form.extra_organisations") %>
+        </div>
+
+        <%= form.collection_select :extra_organisations,
+                                   form.object.organisations,
+                                   :id,
+                                   :title,
+                                   {},
+                                   { multiple: true, class: "govuk-select extra-organisations govuk-!-width-two-thirds" }
+        %>
+      </div>
+
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text: t("helpers.label.site_form.homepage_furl") },
+        hint: t("helpers.hint.site_form.homepage_furl"),
+        heading_size: "m",
+        name: form.field_name(:homepage_furl),
+        id: field_id_attribute(form.object, :homepage_furl),
+        error_message: error_message(form.object, :homepage_furl),
+        value: form.object.homepage_furl,
+        width: 30
+      } %>
+
+      <%= render "govuk_publishing_components/components/radio", {
+        heading: t("helpers.label.site_form.global_type"),
+        name: form.field_name(:global_type),
+        items: [
+          {
+            value: Site::GLOBAL_TYPES[:archive],
+            text: t("helpers.label.site_form.global_type_options.archive"),
+            hint_text: t("helpers.hint.site_form.global_type_options.archive"),
+            checked: form.object.global_type == Site::GLOBAL_TYPES[:archive]
+          },
+          {
+            value: Site::GLOBAL_TYPES[:redirect],
+            text: t("helpers.label.site_form.global_type_options.redirect"),
+            hint_text: t("helpers.hint.site_form.global_type_options.redirect"),
+            checked: form.object.global_type == Site::GLOBAL_TYPES[:redirect],
+            conditional: (
+              render "govuk_publishing_components/components/input", {
+                label: { text: form.label(:global_new_url) },
+                name: form.field_name(:global_new_url),
+                id: field_id_attribute(form.object, :global_new_url),
+                error_message: error_message(form.object, :global_new_url),
+                value: form.object.global_new_url,
+                width: 30
+              }
+            )
+          }
+        ]
+      } %>
+
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text: t("helpers.label.site_form.query_params") },
+        hint: t("helpers.hint.site_form.query_params"),
+        heading_size: "m",
+        name: form.field_name(:query_params),
+        id: field_id_attribute(form.object, :query_params),
+        error_message: error_message(form.object, :query_params),
+        value: form.object.query_params,
+      } %>
+
+      <%= render "govuk_publishing_components/components/checkboxes", {
+        name: form.field_name(:global_redirect_append_path),
+        heading: t("helpers.legend.site_form.global_redirect_append_path"),
+        id: field_id_attribute(form.object, :global_redirect_append_path),
+        items: [
+          {
+            label: t("helpers.label.site_form.global_redirect_append_path_options.1"),
+            value: "1",
+            checked: form.object.global_redirect_append_path
+          }
+        ]
+      } %>
+
+      <%= render "govuk_publishing_components/components/radio", {
+        heading: t("helpers.legend.site_form.special_redirect_strategy"),
+        name: form.field_name(:special_redirect_strategy),
+        id: field_id_attribute(form.object, :special_redirect_strategy),
+        items: [
+          {
+            value: Site::SPECIAL_REDIRECT_STRATEGY_TYPES[:via_aka],
+            text: t("helpers.label.site_form.special_redirect_strategy_options.via_aka"),
+            hint_text: t("helpers.hint.site_form.special_redirect_strategy_options.via_aka"),
+            checked: form.object.special_redirect_strategy == Site::SPECIAL_REDIRECT_STRATEGY_TYPES[:via_aka]
+          },
+          {
+            value: Site::SPECIAL_REDIRECT_STRATEGY_TYPES[:supplier],
+            text: t("helpers.label.site_form.special_redirect_strategy_options.supplier"),
+            hint_text: t("helpers.hint.site_form.special_redirect_strategy_options.supplier"),
+            checked: form.object.special_redirect_strategy == Site::SPECIAL_REDIRECT_STRATEGY_TYPES[:supplier],
+          }
+        ]
+      } %>
+
+      <%= render "govuk_publishing_components/components/textarea", {
+        label: {
+          text: t("helpers.label.site_form.aliases"),
+          heading_size: "m"
+        },
+        hint: t("helpers.hint.site_form.aliases"),
+        name: form.field_name(:aliases),
+        id: field_id_attribute(form.object, :aliases),
+        value: form.object.aliases,
+        error_message: error_message(form.object, :aliases),
+      } %>
+
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Save"
+      } %>
+    <% end %>
+  </div>
+</div>
