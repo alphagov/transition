@@ -11,29 +11,8 @@
  *= require_self
  */
 
-@import "govuk_admin_template";
-@import "select2";
-@import "select2-bootstrap"; // https://github.com/fk/select2-bootstrap-css
-@import "mixins";
-@import "transition_theme";
+@import "govuk_publishing_components/all_components";
 
-// Components
-@import "breadcrumb";
-@import "pagination";
-@import "filters";
-@import "forms";
-@import "nav";
-@import "selectable-table";
-@import "tags";
-@import "validation_errors";
-@import "modal_with_button_in_title";
-@import "modal_background_batch";
-
-// Page types
-@import "hits";
-@import "mappings";
-@import "organisations";
-@import "site";
-@import "style";
-@import "versions";
-@import "glossary";
+.extra-organisations {
+  height: 150px;
+}

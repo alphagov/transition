@@ -1,0 +1,32 @@
+<%= render "govuk_publishing_components/components/layout_for_admin",
+           environment: GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment,
+           product_name: "Transition",
+           browser_title: yield(:page_title) do %>
+
+  <%= render "govuk_publishing_components/components/skip_link" %>
+
+  <%= render "govuk_publishing_components/components/layout_header", {
+    environment: GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment,
+    product_name: "Transition",
+    navigation_items: navigation_items
+  } %>
+
+  <div class="govuk-width-container">
+    <% if breadcrumbs.links.any? %>
+      <%= render "govuk_publishing_components/components/breadcrumbs", {
+        collapse_on_mobile: true,
+        breadcrumbs:
+          breadcrumbs
+            .links
+            .reject { |link| link.current? }
+            .map { |link| { title: link.text, url: link.url } }
+      } %>
+    <% end %>
+
+    <main class="govuk-main-wrapper " id="main-content" role="main">
+      <%= yield %>
+    </main>
+  </div>
+
+  <%= render "govuk_publishing_components/components/layout_footer", {} %>
+<% end %>

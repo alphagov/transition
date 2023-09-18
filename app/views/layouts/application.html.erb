@@ -1,34 +1,15 @@
 <% content_for :head do %>
-  <%= stylesheet_link_tag "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
+  <%= stylesheet_link_tag "legacy_layout", :media => "all" %>
+  <%= javascript_include_tag "legacy_layout" %>
   <%= csrf_meta_tag %>
   <%= yield :extra_headers %>
 <% end %>
 <% content_for :navbar_items do %>
-  <% if current_user.own_organisation %>
-    <li <% if current_page?(organisation_path(current_user.own_organisation)) %> class="active" <% end %>>
-      <%= link_to organisation_with_abbreviation(current_user.own_organisation), organisation_path(current_user.own_organisation), title: 'Your organisation' %>
+  <% navigation_items.each do |item| %>
+    <li class="<%= "active" if item[:active] %>" >
+      <%= link_to item[:text], item[:href] %>
     </li>
   <% end %>
-  <% if current_user.gds_editor? %>
-    <li <% if current_page?(hits_path) %> class="active" <% end %>>
-      <%= link_to 'Universal analytics', hits_path %>
-    </li>
-    <li <% if current_page?(leaderboard_path) %> class="active" <% end %>>
-      <%= link_to 'Leaderboard', leaderboard_path %>
-    </li>
-  <% end %>
-  <% if current_user.admin? %>
-    <li <% if current_page?(admin_whitelisted_hosts_path) %> class="active" <% end %>>
-      <%= link_to 'Redirection whitelist', admin_whitelisted_hosts_path %>
-    </li>
-    <li>
-      <%= link_to 'Hosts', hosts_path %>
-    </li>
-  <% end %>
-  <li <% if current_page?(glossary_index_path) %> class="active" <% end %>>
-    <%= link_to 'Glossary', glossary_index_path %>
-  </li>
 <% end %>
 
 <% content_for :favicon do %>

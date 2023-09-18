@@ -4,8 +4,8 @@ require "./lib/transition/path_or_url"
 class Site < ApplicationRecord
   include NilifyBlanks
 
-  GLOBAL_TYPES = %w[redirect archive].freeze
-  SPECIAL_REDIRECT_STRATEGY_TYPES = %w[via_aka supplier].freeze
+  GLOBAL_TYPES = { redirect: "redirect", archive: "archive" }.freeze
+  SPECIAL_REDIRECT_STRATEGY_TYPES = { via_aka: "via_aka", supplier: "supplier" }.freeze
 
   belongs_to :organisation
 
@@ -23,14 +23,14 @@ class Site < ApplicationRecord
 
   validates :tna_timestamp, presence: true
   validates :organisation, presence: true
-  validates :homepage, presence: true, non_blank_url: true
-  validates :abbr, uniqueness: true, presence: true, format: { with: /\A[a-zA-Z0-9_-]+\z/, message: "can only contain alphanumeric characters, underscores and dashes" }
-  validates :special_redirect_strategy, inclusion: { in: SPECIAL_REDIRECT_STRATEGY_TYPES, allow_blank: true }
+  validates :homepage, presence: true, non_blank_url: { message: :non_blank_url }
+  validates :abbr, uniqueness: true, presence: true, format: { with: /\A[a-zA-Z0-9_-]+\z/, message: :extra_characters }
+  validates :special_redirect_strategy, inclusion: { in: SPECIAL_REDIRECT_STRATEGY_TYPES.values, allow_blank: true }
   validates :global_new_url, presence: { if: :global_redirect? }
   validates :global_new_url, absence: { if: :global_archive? }
   validates :global_new_url,
             format: { without: /\?/,
-                      message: "cannot contain a query when the path is appended",
+                      message: :has_query,
                       if: :global_redirect_append_path }
 
   after_update :update_hits_relations, if: :saved_change_to_query_params?

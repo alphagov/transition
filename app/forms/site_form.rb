@@ -4,7 +4,7 @@ class SiteForm
 
   attribute :organisation_slug
   attribute :abbr
-  attribute :tna_timestamp, :datetime
+  attribute :tna_timestamp
   attribute :homepage
   attribute :homepage_title
   attribute :extra_organisations
@@ -46,7 +46,7 @@ private
       tna_timestamp:,
       homepage:,
       organisation: Organisation.find_by(whitehall_slug: organisation_slug),
-      extra_organisations: Organisation.where(title: extra_organisations),
+      extra_organisations: Organisation.where(id: extra_organisations),
       homepage_title:,
       homepage_furl:,
       global_type:,
@@ -92,14 +92,14 @@ private
       next if host.valid?
 
       host.errors.each do |error|
-        errors.add(:aliases, "\"#{host.hostname}\" #{error.message}")
+        errors.add(:aliases, error.message)
       end
     end
   end
 
   def aliases_are_unique
     if alias_hosts.length != alias_hosts.map(&:hostname).uniq.length
-      errors.add(:aliases, "must be unique")
+      errors.add(:aliases, :not_unique)
     end
   end
 end

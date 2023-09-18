@@ -6,23 +6,23 @@ describe SiteForm do
       site_form = build(:site_form, tna_timestamp: nil)
 
       expect(site_form.valid?).to be false
-      expect(site_form.errors[:tna_timestamp]).to include("can't be blank")
+      expect(site_form.errors[:tna_timestamp]).to include("Enter a TNA Timestamp")
     end
 
     it "surfaces errors on the default host model" do
       site_form = build(:site_form, hostname: nil)
 
       expect(site_form.valid?).to be false
-      expect(site_form.errors[:hostname]).to include("can't be blank")
+      expect(site_form.errors[:hostname]).to include("Enter a hostname")
     end
 
     describe "#aliases" do
       context "when there is a validation error on an alias host" do
-        it "adds the error message and problematic hostname to the errors" do
+        it "adds the error message to the errors" do
           site_form = build(:site_form, aliases: "aaib.gov.uk,,aaib.com")
 
           expect(site_form.valid?).to be false
-          expect(site_form.errors[:aliases]).to include("\"\" can't be blank") # hostname is blank, hence ""
+          expect(site_form.errors[:aliases]).to include("Enter a hostname")
         end
       end
 
@@ -31,7 +31,7 @@ describe SiteForm do
           site_form = build(:site_form, aliases: "aaib.gov.uk,aaib.gov.uk")
 
           expect(site_form.valid?).to be false
-          expect(site_form.errors[:aliases]).to include("must be unique")
+          expect(site_form.errors[:aliases]).to include("Hostnames must be unique")
         end
       end
     end
@@ -126,7 +126,7 @@ describe SiteForm do
       let!(:extra_organisation_2) { create(:organisation, whitehall_slug: "government-digital-service", title: "Government digital service") }
 
       it "creates extra organisations" do
-        site_form = build(:site_form, :with_extra_organisations)
+        site_form = build(:site_form, extra_organisations: [extra_organisation.id, extra_organisation_2.id])
 
         site = site_form.save
 

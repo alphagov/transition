@@ -1,120 +1,192 @@
+<% content_for :page_title, "New transition site" %>
+
 <% breadcrumb(:new_site, @organisation) %>
 
-<div class="page-title-with-border">
-  <h1>New transition site</h1>
-</div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <%= form_for @site_form, url: organisation_sites_path do |form| %>
+      <% if object_has_errors?(form.object) %>
+        <%= render "govuk_publishing_components/components/error_summary", {
+          title: "There is a problem",
+          items: error_messages(form.object)
+        } %>
+      <% end %>
 
-<%= form_for @site_form, html: { role: "form" }, url: organisation_sites_path do |form| %>
-  <%= render "shared/error_messages", error_messages: form.object.errors.full_messages %>
+      <h1 class="govuk-heading-l">New transition site</h1>
 
-  <div class="form-group row">
-    <div class="col-md-8">
       <%= form.hidden_field :organisation_slug, value: @organisation.whitehall_slug %>
 
-      <div class="form-group">
-        <%= form.label :abbr %>
-        <%= form.text_field :abbr, class: "form-control", aria: { describedby: "abbr-help" } %>
-        <small id="abbr-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.abbr") %></small>
-      </div>
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text: t("helpers.label.site_form.abbr") },
+        hint: t("helpers.hint.site_form.abbr"),
+        heading_size: "m",
+        name: form.field_name(:abbr),
+        id: field_id_attribute(form.object, :abbr),
+        error_message: error_message(form.object, :abbr),
+        value: form.object.abbr,
+        width: 20
+      } %>
 
-      <div class="form-group">
-        <%= form.label :tna_timestamp %>
-        <%= form.text_field :tna_timestamp, class: "form-control", aria: { describedby: "tna-timestamp-help" } %>
-        <small id="tna-timestamp-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.tna_timestamp").html_safe %></small>
-      </div>
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text: t("helpers.label.site_form.tna_timestamp") },
+        hint: t("helpers.hint.site_form.tna_timestamp").html_safe,
+        heading_size: "m",
+        name: form.field_name(:tna_timestamp),
+        id: field_id_attribute(form.object, :tna_timestamp),
+        error_message: error_message(form.object, :tna_timestamp),
+        value: form.object.tna_timestamp,
+        width: 20
+      } %>
 
-      <div class="form-group">
-        <%= form.label :homepage %>
-        <%= form.text_field :homepage, class: "form-control", aria: { describedby: "homepage-help" } %>
-        <small id="homepage-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.homepage") %></small>
-      </div>
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text: t("helpers.label.site_form.homepage") },
+        hint: t("helpers.hint.site_form.homepage"),
+        heading_size: "m",
+        name: form.field_name(:homepage),
+        id: field_id_attribute(form.object, :homepage),
+        error_message: error_message(form.object, :homepage),
+        value: form.object.homepage,
+        width: 30
+      } %>
 
-      <div class="form-group">
-        <%= form.label :hostname %>
-        <%= form.text_field :hostname, class: "form-control", aria: { describedby: "hostname-help" } %>
-        <small id="hostname-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.hostname") %></small>
-      </div>
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text:  t("helpers.label.site_form.hostname")  },
+        hint: t("helpers.hint.site_form.hostname"),
+        heading_size: "m",
+        name: form.field_name(:hostname),
+        id: field_id_attribute(form.object, :hostname),
+        error_message: error_message(form.object, :hostname),
+        value: form.object.hostname,
+        width: 30
+      } %>
 
-      <div class="form-group">
-        <%= form.label :homepage_title %>
-        <%= form.text_field :homepage_title, class: "form-control", aria: { describedby: "homepage-title-help" } %>
-        <small id="homepage-title-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.homepage_title") %></small>
-      </div>
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text:  t("helpers.label.site_form.homepage_title")  },
+        hint: t("helpers.hint.site_form.homepage_title"),
+        heading_size: "m",
+        name: form.field_name(:homepage_title),
+        id: field_id_attribute(form.object, :homepage_title),
+        error_message: error_message(form.object, :homepage_title),
+        value: form.object.homepage_title,
+        width: 30
+      } %>
 
-      <div class="form-group">
-        <%= form.label :extra_organisations %>
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--m" for="site_form_extra_organisations">
+          <%= t("helpers.label.site_form.extra_organisations") %>
+        </label>
+
+        <div id="site-form-extra-organisations-hint" class="govuk-hint">
+          <%= t("helpers.hint.site_form.extra_organisations") %>
+        </div>
+
         <%= form.collection_select :extra_organisations,
                                    form.object.organisations,
                                    :id,
                                    :title,
                                    {},
-                                   { multiple: true, class: "form-control", aria: { describedby: "extra-organisations-help" } }
+                                   { multiple: true, class: "govuk-select extra-organisations govuk-!-width-two-thirds" }
         %>
-        <small id="extra-organisations-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.extra_organisations") %></small>
       </div>
 
-      <div class="form-group">
-        <%= form.label :homepage_furl %>
-        <%= form.text_field :homepage_furl, class: "form-control", aria: { describedby: "homepage-furl-help" } %>
-        <small id="homepage-furl-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.homepage_furl") %></small>
-      </div>
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text: t("helpers.label.site_form.homepage_furl") },
+        hint: t("helpers.hint.site_form.homepage_furl"),
+        heading_size: "m",
+        name: form.field_name(:homepage_furl),
+        id: field_id_attribute(form.object, :homepage_furl),
+        error_message: error_message(form.object, :homepage_furl),
+        value: form.object.homepage_furl,
+        width: 30
+      } %>
 
-      <div class="form-group">
-        <%= form.label :global_type %>
-        <%= form.collection_radio_buttons :global_type,
-                                          Site::GLOBAL_TYPES,
-                                          :to_s,
-                                          :humanize,
-                                          aria: { describedby: "global-type-help" } do |button| %>
-          <div class="radio">
-            <%= button.label do %>
-              <%= button.radio_button + button.text %>
-            <% end %>
-          </div>
-        <% end %>
-        <small id="global-type-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.global_type") %></small>
-      </div>
+      <%= render "govuk_publishing_components/components/radio", {
+        heading: t("helpers.label.site_form.global_type"),
+        name: form.field_name(:global_type),
+        items: [
+          {
+            value: Site::GLOBAL_TYPES[:archive],
+            text: t("helpers.label.site_form.global_type_options.archive"),
+            hint_text: t("helpers.hint.site_form.global_type_options.archive"),
+            checked: form.object.global_type == Site::GLOBAL_TYPES[:archive]
+          },
+          {
+            value: Site::GLOBAL_TYPES[:redirect],
+            text: t("helpers.label.site_form.global_type_options.redirect"),
+            hint_text: t("helpers.hint.site_form.global_type_options.redirect"),
+            checked: form.object.global_type == Site::GLOBAL_TYPES[:redirect],
+            conditional: (
+              render "govuk_publishing_components/components/input", {
+                label: { text: form.label(:global_new_url) },
+                name: form.field_name(:global_new_url),
+                id: field_id_attribute(form.object, :global_new_url),
+                error_message: error_message(form.object, :global_new_url),
+                value: form.object.global_new_url,
+                width: 30
+              }
+            )
+          }
+        ]
+      } %>
 
-      <div class="form-group">
-        <%= form.label :global_new_url %>
-        <%= form.text_field :global_new_url, class: "form-control" %>
-      </div>
+      <%= render "govuk_publishing_components/components/input", {
+        label: { text: t("helpers.label.site_form.query_params") },
+        hint: t("helpers.hint.site_form.query_params"),
+        heading_size: "m",
+        name: form.field_name(:query_params),
+        id: field_id_attribute(form.object, :query_params),
+        error_message: error_message(form.object, :query_params),
+        value: form.object.query_params,
+      } %>
 
-      <div class="form-group">
-        <%= form.label :query_params %>
-        <%= form.text_field :query_params, class: "form-control", aria: { describedby: "query-params-help" } %>
-        <small id="query-params-help" class="form-text text-muted row"><%= I18n.t("activemodel.hint.site_form.query_params") %></small>
-      </div>
+      <%= render "govuk_publishing_components/components/checkboxes", {
+        name: form.field_name(:global_redirect_append_path),
+        heading: t("helpers.legend.site_form.global_redirect_append_path"),
+        id: field_id_attribute(form.object, :global_redirect_append_path),
+        items: [
+          {
+            label: t("helpers.label.site_form.global_redirect_append_path_options.1"),
+            value: "1",
+            checked: form.object.global_redirect_append_path
+          }
+        ]
+      } %>
 
-      <div class="form-check">
-        <%= form.label :global_redirect_append_path %>
-        <%= form.check_box :global_redirect_append_path, aria: { describedby: "global-redirect-append-path-help" } %>
-        <small id="global-redirect-append-path-help" class="form-text text-muted row"><%= I18n.t("activemodel.hint.site_form.global_redirect_append_path") %></small>
-      </div>
+      <%= render "govuk_publishing_components/components/radio", {
+        heading: t("helpers.legend.site_form.special_redirect_strategy"),
+        name: form.field_name(:special_redirect_strategy),
+        id: field_id_attribute(form.object, :special_redirect_strategy),
+        items: [
+          {
+            value: Site::SPECIAL_REDIRECT_STRATEGY_TYPES[:via_aka],
+            text: t("helpers.label.site_form.special_redirect_strategy_options.via_aka"),
+            hint_text: t("helpers.hint.site_form.special_redirect_strategy_options.via_aka"),
+            checked: form.object.special_redirect_strategy == Site::SPECIAL_REDIRECT_STRATEGY_TYPES[:via_aka]
+          },
+          {
+            value: Site::SPECIAL_REDIRECT_STRATEGY_TYPES[:supplier],
+            text: t("helpers.label.site_form.special_redirect_strategy_options.supplier"),
+            hint_text: t("helpers.hint.site_form.special_redirect_strategy_options.supplier"),
+            checked: form.object.special_redirect_strategy == Site::SPECIAL_REDIRECT_STRATEGY_TYPES[:supplier],
+          }
+        ]
+      } %>
 
-      <div class="form-group">
-        <%= form.label :special_redirect_strategy %>
-        <%= form.collection_radio_buttons :special_redirect_strategy,
-                                          Site::SPECIAL_REDIRECT_STRATEGY_TYPES,
-                                          :to_s,
-                                          :humanize,
-                                          aria: { describedby: "special-redirect-strategy-help" } do |button| %>
-          <div class="radio">
-            <%= button.label do %>
-              <%= button.radio_button + button.text %>
-            <% end %>
-          </div>
-        <% end %>
-        <small id="special-redirect-strategy-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.special_redirect_strategy") %></small>
-      </div>
+      <%= render "govuk_publishing_components/components/textarea", {
+        label: {
+          text: t("helpers.label.site_form.aliases"),
+          heading_size: "m"
+        },
+        hint: t("helpers.hint.site_form.aliases"),
+        name: form.field_name(:aliases),
+        id: field_id_attribute(form.object, :aliases),
+        value: form.object.aliases,
+        error_message: error_message(form.object, :aliases),
+      } %>
 
-      <div class="form-group">
-        <%= form.label :aliases %>
-        <%= form.text_area :aliases, class: "form-control", aria: { describedby: "aliases-help" } %>
-        <small id="aliases-help" class="form-text text-muted"><%= I18n.t("activemodel.hint.site_form.aliases") %></small>
-      </div>
-
-      <%= form.submit 'Save', class: 'add-top-margin btn btn-success' %>
-    </div>
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Save"
+      } %>
+    <% end %>
   </div>
-<% end %>
+</div>

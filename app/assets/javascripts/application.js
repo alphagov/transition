@@ -10,7 +10,5 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require select2
-//= require mousetrap.min
-//= require URI.min
-//= require_tree .
+//= require govuk_publishing_components/dependencies
+//= require govuk_publishing_components/all_components
