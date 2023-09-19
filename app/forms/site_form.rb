@@ -41,8 +41,9 @@ class SiteForm
 private
 
   def site
-    @site ||= Site.new(
-      abbr:,
+    @site ||= Site.find_or_create_by!(abbr:)
+
+    @site.update!(
       tna_timestamp:,
       homepage:,
       organisation: Organisation.find_by(whitehall_slug: organisation_slug),
@@ -55,6 +56,8 @@ private
       query_params:,
       special_redirect_strategy:,
     )
+
+    @site
   end
 
   def hosts
@@ -65,20 +68,37 @@ private
     hosts.map { |host| build_aka_host(host) }
   end
 
+  def default_host_updated?
+    hostname != @site.default_host.hostname
+  end
+
   def default_host
-    @default_host ||= Host.new(hostname:, site:)
+    @default_host ||= if !@site.default_host
+                        Host.new(hostname:, site:)
+                      elsif default_host_updated?
+                        @site.default_host.update!(hostname:)
+                        @site.default_host
+                      else
+                        @site.default_host
+                      end
+  end
+
+  def deleted_alias_hosts
+    @site.hosts_excluding_primary_and_aka.map(&:hostname) - aliases.split(",")
   end
 
   def alias_hosts
     return [] if aliases.nil?
 
+    Host.where(hostname: deleted_alias_hosts, site:).delete_all
+
     @alias_hosts ||= aliases.split(",").map do |host|
-      Host.new(hostname: host, site:)
+      Host.find_or_create_by(hostname: host, site:)
     end
   end
 
   def build_aka_host(host)
-    Host.new(hostname: host.aka_hostname, canonical_host: host, site:)
+    Host.find_or_create_by(hostname: host.aka_hostname, canonical_host: host, site:)
   end
 
   def validate_children

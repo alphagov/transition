@@ -1,19 +1,18 @@
 require "./lib/transition/import/revert_entirely_unsafe"
 
 class SitesController < ApplicationController
-  layout "admin_layout", only: %w[new create]
+  layout "admin_layout", only: %w[new create edit]
 
   before_action :find_site, only: %i[edit update show confirm_destroy destroy]
   before_action :find_organisation, only: %i[new create]
-  before_action :check_user_is_gds_editor, only: %i[edit update]
-  before_action :check_user_is_site_manager, only: %i[new create confirm_destroy destroy]
+  before_action :check_user_is_site_manager, only: %i[new create confirm_destroy destroy edit update]
 
   def new
     @site_form = SiteForm.new(organisation_slug: @organisation.whitehall_slug)
   end
 
   def create
-    @site_form = SiteForm.new(create_params)
+    @site_form = SiteForm.new(create_or_update_params)
 
     if (site = @site_form.save)
       redirect_to site_path(site), flash: { success: "Transition site created" }
@@ -22,13 +21,35 @@ class SitesController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    @organisation = @site.organisation
+
+    @site_form = SiteForm.new(
+      organisation_slug: @organisation.whitehall_slug,
+      abbr: @site.abbr,
+      tna_timestamp: @site.tna_timestamp.to_formatted_s(:number),
+      homepage: @site.homepage,
+      extra_organisations: @site.extra_organisations,
+      homepage_title: @site.homepage_title,
+      homepage_furl: @site.homepage_furl,
+      global_type: @site.global_type,
+      global_new_url: @site.global_new_url,
+      global_redirect_append_path: @site.global_redirect_append_path,
+      query_params: @site.query_params,
+      special_redirect_strategy: @site.special_redirect_strategy,
+      hostname: @site.default_host.hostname,
+      aliases: @site.hosts_excluding_primary_and_aka.map(&:hostname).join(","),
+    )
+  end
 
   def update
-    if @site.update(update_params)
-      redirect_to site_path(@site), flash: { success: "Transition date updated" }
+    @site_form = SiteForm.new(create_or_update_params)
+
+    if (site = @site_form.save)
+      redirect_to site_path(site), flash: { success: "Transition site updated" }
     else
-      redirect_to edit_site_path(@site), flash: { alert: "We couldn't save your change" }
+      ## TODO: need to show the error on the form, possibly use render instead of redirect_to
+      redirect_to edit_site_path(@site), alert: @site_form.errors.full_messages
     end
   end
 
@@ -59,7 +80,7 @@ private
     @organisation = Organisation.find_by(whitehall_slug: params[:organisation_id])
   end
 
-  def create_params
+  def create_or_update_params
     params.require(:site_form).permit(
       :organisation_slug,
       :abbr,
@@ -80,13 +101,6 @@ private
 
   def update_params
     params.require(:site).permit(:launch_date)
-  end
-
-  def check_user_is_gds_editor
-    unless current_user.gds_editor?
-      message = "Only GDS Editors can access that."
-      redirect_to site_path(@site), alert: message
-    end
   end
 
   def check_user_is_site_manager
