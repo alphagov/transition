@@ -1,7 +1,5 @@
-require "./lib/transition/import/revert_entirely_unsafe"
-
 class SitesController < ApplicationController
-  layout "admin_layout", only: %w[new create]
+  layout "admin_layout", only: %w[new create confirm_destroy destroy]
 
   before_action :find_site, only: %i[edit update show confirm_destroy destroy]
   before_action :find_organisation, only: %i[new create]
@@ -38,14 +36,17 @@ class SitesController < ApplicationController
     @unresolved_mappings_count = @site.mappings.unresolved.count
   end
 
-  def confirm_destroy; end
+  def confirm_destroy
+    @delete_site_form = DeleteSiteForm.new
+  end
 
   def destroy
-    if params[:confirm_destroy] == @site.abbr
-      Transition::Import::RevertEntirelyUnsafe::RevertSite.new(@site).revert_all_data!
+    @delete_site_form = DeleteSiteForm.new(abbr: @site.abbr, **destroy_params)
+
+    if @delete_site_form.save
       redirect_to organisation_path(@site.organisation), flash: { success: "The site and all its data have been successfully deleted" }
     else
-      redirect_to confirm_destroy_site_path(@site), flash: { alert: "The confirmation did not match" }
+      render :confirm_destroy
     end
   end
 
@@ -80,6 +81,10 @@ private
 
   def update_params
     params.require(:site).permit(:launch_date)
+  end
+
+  def destroy_params
+    params.require(:delete_site_form).permit(:abbr_confirmation)
   end
 
   def check_user_is_gds_editor
