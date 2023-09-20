@@ -45,11 +45,11 @@ When(/^I delete this site$/) do
 end
 
 When(/^I confirm the deletion$/) do
-  fill_in :confirm_destroy, with: @site.abbr
+  fill_in "delete_site_form[abbr_confirmation]", with: @site.abbr
   click_button I18n.t("site.confirm_destroy.confirm")
 end
 
 When(/^I fail to confirm the deletion$/) do
-  fill_in :confirm_destroy, with: "bogus"
+  fill_in "delete_site_form[abbr_confirmation]", with: "bogus"
   click_button I18n.t("site.confirm_destroy.confirm")
 end
