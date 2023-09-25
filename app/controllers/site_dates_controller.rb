@@ -1,14 +1,24 @@
 class SiteDatesController < ApplicationController
+  layout "admin_layout"
+
   before_action :find_site
   before_action :check_user_is_gds_editor
 
-  def edit; end
+  def edit
+    @site_date_form = SiteDateForm.new(
+      site: @site,
+      "launch_date(3i)": @site.launch_date&.day,
+      "launch_date(2i)": @site.launch_date&.month,
+      "launch_date(1i)": @site.launch_date&.year,
+    )
+  end
 
   def update
-    if @site.update(update_params)
+    @site_date_form = SiteDateForm.new(site: @site, **update_params)
+    if @site_date_form.save
       redirect_to site_path(@site), flash: { success: "Transition date updated" }
     else
-      redirect_to edit_site_path(@site), flash: { alert: "We couldn't save your change" }
+      render :edit
     end
   end
 
@@ -19,7 +29,7 @@ private
   end
 
   def update_params
-    params.require(:site).permit(:launch_date)
+    params.require(:site).permit("launch_date(3i)", "launch_date(2i)", "launch_date(1i)")
   end
 
   def check_user_is_gds_editor

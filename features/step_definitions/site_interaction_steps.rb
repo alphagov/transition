@@ -9,9 +9,9 @@ end
 
 When(/^I edit this site's transition date$/) do
   click_link "Edit date"
-  select("2014", from: "site_launch_date_1i")
-  select("September", from: "site_launch_date_2i")
-  select("20", from: "site_launch_date_3i")
+  fill_in "Year", with: 2014
+  fill_in "Month", with: 9
+  fill_in "Day", with: 20
   click_button "Save"
 end
 

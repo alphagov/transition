@@ -2,38 +2,48 @@
 
 <% breadcrumb :edit_site, @site %>
 
-<div class="page-title-with-border">
-  <h1>
-    <small><%= @site.default_host.hostname %></small>
-    <br />
-    Edit transition date
-  </h1>
-</div>
+<%= form_for @site_date_form, url: site_update_date_path(@site) do |form| %>
+  <% if object_has_errors?(form.object) %>
+    <%= render "govuk_publishing_components/components/error_summary", {
+      title: "There is a problem",
+      items: error_messages(form.object)
+    } %>
+  <% end %>
 
-<%= form_for @site, url: site_update_date_path(@site), method: :post, html: { role: 'form' } do |f| %>
-  <div class="form-group row">
-    <div class="col-md-8">
-      <dl class="read-only-fields add-vertical-margins">
-        <dt>
-          <%= f.label :old_date, 'Old transition date' %>
-        </dt>
-        <dd>
-          <%= date_or_not_yet(@site.launch_date) %>
-        </dd>
-      </dl>
-      <div class="input-group">
-        <dl>
-          <dt>
-            <%= f.label :launch_date, 'New transition date' %>
-          </dt>
-          <dd>
-            <%= f.date_select(:launch_date,
-                              { order: [:day, :month, :year]},
-                              { class: 'form-control date' }) %>
-          </dd>
-        </dl>
-      </div>
-      <%= f.submit 'Save', class: 'add-top-margin btn btn-success' %>
-    </div>
-  </div>
+  <span class="govuk-caption-l"><%= @site.default_host.hostname %></span>
+  <%= render "govuk_publishing_components/components/heading", {
+    text: "Edit transition date",
+    heading_level: 1,
+    font_size: "l",
+    margin_bottom: 6,
+  } %>
+
+  <%= render "govuk_publishing_components/components/date_input", {
+    id: field_id_attribute(form.object, :launch_date),
+    error_message: error_message(form.object, :launch_date),
+    items: [
+      {
+        label: "Day",
+        name: "site[launch_date(3i)]",
+        width: 2,
+        value: form.object.attributes["launch_date(3i)"]
+      },
+      {
+        label: "Month",
+        name: "site[launch_date(2i)]",
+        width: 2,
+        value: form.object.attributes["launch_date(2i)"]
+      },
+      {
+        label: "Year",
+        name: "site[launch_date(1i)]",
+        width: 4,
+        value: form.object.attributes["launch_date(1i)"]
+      }
+    ]
+  } %>
+
+  <%= render "govuk_publishing_components/components/button", {
+    text: "Save",
+  } %>
 <% end %>
