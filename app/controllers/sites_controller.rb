@@ -1,10 +1,10 @@
 class SitesController < ApplicationController
-  layout "admin_layout", only: %w[new create confirm_destroy destroy]
+  layout "admin_layout", except: %w[show]
 
   include PaperTrail::Rails::Controller
 
   before_action :find_site, except: %i[new create]
-  before_action :find_organisation, only: %i[new create]
+  before_action :find_organisation, only: %i[new create edit]
   before_action :check_user_is_site_manager, except: %i[show]
 
   def new
@@ -12,12 +12,26 @@ class SitesController < ApplicationController
   end
 
   def create
-    @site_form = SiteForm.new(create_params)
+    @site_form = SiteForm.new(create_or_update_params)
 
     if (site = @site_form.save)
       redirect_to site_path(site), flash: { success: "Transition site created" }
     else
       render :new
+    end
+  end
+
+  def edit
+    @site_form = SiteForm.for_existing(@site)
+  end
+
+  def update
+    @site_form = SiteForm.new(create_or_update_params)
+
+    if (site = @site_form.save)
+      redirect_to site_path(site), flash: { success: "Transition site updated" }
+    else
+      render :edit
     end
   end
 
@@ -51,8 +65,9 @@ private
     @organisation = Organisation.find_by(whitehall_slug: params[:organisation_id])
   end
 
-  def create_params
+  def create_or_update_params
     params.require(:site_form).permit(
+      :site_id,
       :organisation_slug,
       :abbr,
       :tna_timestamp,

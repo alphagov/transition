@@ -32,6 +32,12 @@
     </div>
 
     <% if current_user.site_manager? %>
+      <div class="highlight add-big-bottom-margin">
+        <%= link_to 'Edit', edit_site_path(@site) %>
+      </div>
+    <% end %>
+
+    <% if current_user.site_manager? %>
       <div class="highlight highlight-danger">
         <%= link_to 'Delete', confirm_destroy_site_path(@site) %>
       </div>

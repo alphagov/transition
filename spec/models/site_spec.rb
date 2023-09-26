@@ -145,6 +145,17 @@ describe Site do
         expect(tag_strings).to match_array(%w[popular1 popular2])
       end
     end
+
+    describe ".hosts_excluding_primary_and_aka" do
+      let!(:alias_host) { create(:host, hostname: "alias_host.gov.uk", site:) }
+      let!(:aka_host) { create(:host, hostname: "aka_host.gov.uk", site:, canonical_host: alias_host) }
+      let(:site) { create(:site) }
+
+      it "returns hosts excluding the primary host and any AKA hosts" do
+        expect(site.hosts_excluding_primary_and_aka.count).to be 1
+        expect(site.hosts_excluding_primary_and_aka.first).to eq alias_host
+      end
+    end
   end
 
   describe "nillifying blanks before validation" do

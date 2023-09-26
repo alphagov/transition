@@ -37,6 +37,44 @@ describe SiteForm do
     end
   end
 
+  describe ".for_existing" do
+    let!(:alias_host) { create(:host, hostname: "alias_host.gov.uk", site:) }
+    let!(:second_alias_host) { create(:host, hostname: "second_alias_host.gov.uk", site:) }
+    let(:extra_organisation) { create(:organisation, whitehall_slug: "extra-organisation") }
+    let(:site) do
+      create(:site,
+             extra_organisations: [extra_organisation],
+             homepage_title: "Homepage title",
+             homepage_furl: "www.gov.uk/site",
+             global_type: Site::GLOBAL_TYPES[:redirect],
+             global_new_url: "global-new-url",
+             global_redirect_append_path: true,
+             query_params: "site",
+             special_redirect_strategy: Site::SPECIAL_REDIRECT_STRATEGY_TYPES[:via_aka])
+    end
+
+    it "returns a populated site form" do
+      site_form = SiteForm.for_existing(site.reload)
+
+      expect(site_form).to have_attributes(
+        organisation_slug: site.organisation.whitehall_slug,
+        abbr: site.abbr,
+        tna_timestamp: "20120816224015",
+        homepage: "https://www.gov.uk/government/organisations/example-org",
+        extra_organisations: [extra_organisation],
+        homepage_title: "Homepage title",
+        homepage_furl: "www.gov.uk/site",
+        global_type: "redirect",
+        global_new_url: "global-new-url",
+        global_redirect_append_path: true,
+        query_params: "site",
+        special_redirect_strategy: "via_aka",
+        hostname: site.default_host.hostname,
+        aliases: "alias_host.gov.uk,second_alias_host.gov.uk",
+      )
+    end
+  end
+
   describe "#organisations" do
     let!(:organisation) { create(:organisation, whitehall_slug: organisation_slug) }
     let!(:other_organisation) { create(:organisation, whitehall_slug: "the-adjudicator-s-office", title: "The adjudicator's office") }
@@ -81,6 +119,7 @@ describe SiteForm do
 
       site = site_form.save
 
+      site.hosts.reload
       expect(site.hosts.count).to be 2
       expect(site.hosts.first.hostname).to eq "www.aaib.gov.uk"
       expect(site.hosts.last.hostname).to eq "aka.aaib.gov.uk"

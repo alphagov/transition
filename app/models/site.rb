@@ -65,6 +65,10 @@ class Site < ApplicationRecord
     @default_host ||= hosts.excluding_aka.order(:id).first
   end
 
+  def hosts_excluding_primary_and_aka
+    hosts.excluding(default_host).excluding_aka
+  end
+
   def transition_status
     return :live          if hosts.excluding_aka.any?(&:redirected_by_gds?)
     return :indeterminate if special_redirect_strategy.present?

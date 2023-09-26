@@ -1,7 +1,6 @@
-
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    <%= form_for @site_form, url: organisation_sites_path do |form| %>
+    <%= form_for @site_form, url: action_path, method: action_method do |form| %>
       <% if object_has_errors?(form.object) %>
         <%= render "govuk_publishing_components/components/error_summary", {
           title: "There is a problem",
@@ -9,9 +8,10 @@
         } %>
       <% end %>
 
-      <h1 class="govuk-heading-l">New transition site</h1>
+      <h1 class="govuk-heading-l"><%= title %></h1>
 
-      <%= form.hidden_field :organisation_slug, value: @organisation.whitehall_slug %>
+      <%= form.hidden_field :site_id, value: form.object.site_id %>
+      <%= form.hidden_field :organisation_slug, value: form.object.organisation_slug %>
 
       <%= render "govuk_publishing_components/components/input", {
         label: { text: t("helpers.label.site_form.abbr") },

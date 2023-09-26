@@ -1,39 +1,5 @@
-<% content_for(:page_title, @site.default_host.hostname) %>
+<% content_for :page_title, "Edit transition site" %>
 
-<% breadcrumb :edit_site, @site %>
+<% breadcrumb(:edit_site, @site) %>
 
-<div class="page-title-with-border">
-  <h1>
-    <small><%= @site.default_host.hostname %></small>
-    <br />
-    Edit transition date
-  </h1>
-</div>
-
-<%= form_for @site, html: { role: 'form' } do |f| %>
-  <div class="form-group row">
-    <div class="col-md-8">
-      <dl class="read-only-fields add-vertical-margins">
-        <dt>
-          <%= f.label :old_date, 'Old transition date' %>
-        </dt>
-        <dd>
-          <%= date_or_not_yet(@site.launch_date) %>
-        </dd>
-      </dl>
-      <div class="input-group">
-        <dl>
-          <dt>
-            <%= f.label :launch_date, 'New transition date' %>
-          </dt>
-          <dd>
-            <%= f.date_select(:launch_date,
-                              { order: [:day, :month, :year]},
-                              { class: 'form-control date' }) %>
-          </dd>
-        </dl>
-      </div>
-      <%= f.submit 'Save', class: 'add-top-margin btn btn-success' %>
-    </div>
-  </div>
-<% end %>
+<%= render partial: 'site_form', locals: { action_path: site_path, action_method: :put, title: "Edit transition site" } %>

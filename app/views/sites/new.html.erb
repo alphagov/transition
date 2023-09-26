@@ -2,4 +2,4 @@
 
 <% breadcrumb(:new_site, @organisation) %>
 
-<%= render partial: 'site_form' %>
+<%= render partial: 'site_form', locals: { action_path: organisation_sites_path, action_method: :post, title: "New transition site" } %>

@@ -58,6 +58,77 @@ describe SitesController do
     end
   end
 
+  describe "#edit" do
+    let(:organisation) { create(:organisation) }
+
+    context "when the user does have permission" do
+      before do
+        login_as site_manager
+      end
+
+      it "displays the form" do
+        get :edit, params: { id: site.abbr }
+        expect(response.status).to eql(200)
+      end
+    end
+
+    context "when the user does not have permission" do
+      before { login_as stub_user }
+
+      def make_request
+        get :edit, params: { organisation_id: organisation.whitehall_slug, id: site.abbr }
+      end
+
+      it "disallows deleting by non-Site Managers" do
+        make_request
+        expect(response.status).to eql(302)
+      end
+    end
+  end
+
+  describe "#update" do
+    let(:organisation) { create(:organisation) }
+    let(:params) do
+      attributes_for(
+        :site_form,
+        site_id: site.id,
+        organisation_slug: organisation.whitehall_slug,
+      )
+    end
+
+    def make_request
+      post :update, params: {
+        id: site.abbr,
+        site_form: params,
+      }
+    end
+
+    context "with versioning", versioning: true do
+      before { login_as site_manager }
+
+      it "records the user who updated the site" do
+        make_request
+
+        last_version = site.versions.last
+
+        expect(last_version.event).to eql("update")
+        expect(last_version.whodunnit).to eql("Boss McSitemanagery")
+        expect(last_version.user_id).to eql(site_manager.id)
+      end
+    end
+
+    context "when the user does not have permission" do
+      before { login_as stub_user }
+
+      it "disallows editing" do
+        make_request
+
+        expect(response).to redirect_to site_path(site)
+        expect(flash[:alert]).to eql("Only Site Managers can access that.")
+      end
+    end
+  end
+
   describe "#confirm_destroy" do
     context "when the user does have permission" do
       before { login_as site_manager }
