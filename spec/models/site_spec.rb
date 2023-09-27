@@ -60,6 +60,10 @@ describe Site do
     end
   end
 
+  it "has a paper trail" do
+    is_expected.to be_versioned
+  end
+
   describe "changing query_params" do
     context "there are related mappings, host_paths and hits" do
       let!(:host)          { create(:host, site: create(:site, query_params: "initial")) }

@@ -12,6 +12,10 @@ describe Hit do
     it { is_expected.to validate_numericality_of(:count).is_greater_than_or_equal_to(0) }
   end
 
+  it "has a paper trail" do
+    is_expected.to be_versioned
+  end
+
   describe "attributes set before validation" do
     subject { create :hit, hit_on: Time.zone.local(2014, 12, 31, 23, 59, 59) }
 

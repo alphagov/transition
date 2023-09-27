@@ -90,6 +90,10 @@ describe Host do
     end
   end
 
+  it "has a paper trail" do
+    is_expected.to be_versioned
+  end
+
   describe "scopes" do
     describe "excluding_aka" do
       let(:site) { create(:site_without_host) }

@@ -1,8 +1,8 @@
 class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
 
-  before_action :set_paper_trail_whodunnit
   before_action :authenticate_user!
+  before_action :set_paper_trail_whodunnit
 
   before_action :exclude_all_users_except_admins_during_maintenance
 

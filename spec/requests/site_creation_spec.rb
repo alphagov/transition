@@ -3,7 +3,7 @@ require "rails_helper"
 describe "Site creation" do
   render_views
 
-  let!(:site_manager) { create(:site_manager) }
+  let!(:site_manager) { create(:site_manager, name: "Site Manager") }
   let(:organisation) { create(:organisation, whitehall_slug: "air-accidents-investigation-branch") }
   let(:params) { attributes_for :site_form, :with_optional_fields, :with_aliases, organisation_slug: "air-accidents-investigation-branch" }
 
@@ -31,6 +31,15 @@ describe "Site creation" do
 
     expect(Site.last.attributes.with_indifferent_access).to include attributes
     expect(Site.last.organisation).to eq organisation
+  end
+
+  it "records a version", versioning: true do
+    post organisation_sites_path(organisation), params: { site_form: params }
+
+    version = Site.last.versions.last
+    expect(version.whodunnit).to eql("Site Manager")
+    expect(version.user_id).to eql(site_manager.id)
+    expect(version.event).to eql("create")
   end
 
   it "creates related hosts and aka hosts" do

@@ -1,6 +1,8 @@
 require "transition/import/hits_mappings_relations"
 
 class Host < ApplicationRecord
+  has_paper_trail
+
   belongs_to :site
   has_many :hits
   has_many :host_paths
