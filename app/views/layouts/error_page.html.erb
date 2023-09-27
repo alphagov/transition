@@ -35,7 +35,7 @@
     </main>
 
     <footer class="page-footer">
-      <a class="inherit" href="http://www.nationalarchives.gov.uk/information-management/our-services/crown-copyright.htm">&copy; Crown Copyright</a> <span class="pull-right">Version: <%= CURRENT_RELEASE_SHA %></span></p>
+      <a class="inherit" href="http://www.nationalarchives.gov.uk/information-management/our-services/crown-copyright.htm">&copy; Crown Copyright</a> <span class="pull-right">Version: <%= ENV.fetch("SENTRY_RELEASE", "null")[0..18] %></span></p>
     </footer>
   </section>
 </body>
