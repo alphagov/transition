@@ -19,7 +19,7 @@
 <% end %>
 
 <% content_for :page_title do %> | GOV.UK Transition<% end %>
-<% content_for :footer_version do %><%= CURRENT_RELEASE_SHA %><% end %>
+<% content_for :footer_version, ENV.fetch("SENTRY_RELEASE", "null")[0..18] %>
 <% content_for :content do %>
   <% # Map bootstrap alerts to Rails flashes, but keep notice and alert as they are pecial cased with redirect_to %>
   <% [:success, :info, :warning, :danger, :notice, :alert].select { |k| flash[k].present? }.each do |k| %>
