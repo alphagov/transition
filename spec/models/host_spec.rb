@@ -87,6 +87,23 @@ describe Host do
           expect(host.errors_on(:hostname)).to include("must be lowercase")
         end
       end
+
+      context "does not already exist" do
+        let!(:existing_host) { create :host, hostname: "www.cabinetoffice.gov.uk", site: }
+        let(:site) { create :site, abbr: "cabinetoffice" }
+
+        subject(:host) { build :host, hostname: "www.cabinetoffice.gov.uk" }
+
+        describe "#valid?" do
+          subject { super().valid? }
+          it { is_expected.to be false }
+        end
+
+        it "should have an error for invalid hostname" do
+          message = "The hostname www.cabinetoffice.gov.uk already exists. You must delete the cabinetoffice site to remove it"
+          expect(host.errors_on(:hostname)).to include(message)
+        end
+      end
     end
   end
 

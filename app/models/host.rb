@@ -11,6 +11,12 @@ class Host < ApplicationRecord
   belongs_to :canonical_host, class_name: "Host"
 
   validates :hostname, presence: true
+  validates :hostname, uniqueness: {
+    message: lambda do |_object, data|
+      site = Host.find_by(hostname: data[:value]).site.abbr
+      "The hostname #{data[:value]} already exists. You must delete the #{site} site to remove it"
+    end,
+  }
   validates :hostname, hostname: true
   validates :site, presence: true
   validate :canonical_host_id_xor_aka_present, if: -> { hostname.present? }
