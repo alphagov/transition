@@ -10,5 +10,16 @@ namespace :import do
 
       Transition::Import::Revert::Sites.new(site_abbrs).revert_all!
     end
+
+    desc "Delete specified hosts"
+    task :hosts, [:hostnames] => :environment do |_, args|
+      hosts = args[:hostnames].split(",")
+      if hosts.empty?
+        puts "Usage: rake import:revert:hosts[host_1,host_2]"
+        abort
+      end
+
+      Host.where(hostname: hosts).destroy_all
+    end
   end
 end
