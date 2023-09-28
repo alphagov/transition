@@ -32,6 +32,9 @@ Rails.application.routes.draw do
   get "leaderboard", to: "leaderboard#index"
 
   resources :sites, only: %i[edit update show destroy] do
+    get :edit_date, to: "site_dates#edit"
+    post :update_date, to: "site_dates#update"
+
     member do
       get :confirm_destroy
     end

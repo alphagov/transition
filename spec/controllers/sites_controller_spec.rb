@@ -58,58 +58,6 @@ describe SitesController do
     end
   end
 
-  describe "#edit" do
-    context "when the user does have permission" do
-      before do
-        login_as gds_bob
-      end
-
-      it "displays the form" do
-        get :edit, params: { id: site.abbr }
-        expect(response.status).to eql(200)
-      end
-    end
-
-    context "when the user does not have permission" do
-      def make_request
-        get :edit, params: { id: site.abbr }
-      end
-
-      it_behaves_like "disallows editing by non-GDS Editors"
-    end
-  end
-
-  describe "#update" do
-    def make_request
-      post :update, params: {
-        id: site.abbr,
-        site: {
-          "launch_date(3i)" => 15,
-          "launch_date(2i)" => 8,
-          "launch_date(1i)" => 2023,
-        },
-      }
-    end
-
-    context "with versioning", versioning: true do
-      before { login_as gds_bob }
-
-      it "records the user who updated the site" do
-        make_request
-
-        last_version = site.versions.last
-
-        expect(last_version.event).to eql("update")
-        expect(last_version.whodunnit).to eql("Bob Terwhilliger")
-        expect(last_version.user_id).to eql(gds_bob.id)
-      end
-    end
-
-    context "when the user does not have permission" do
-      it_behaves_like "disallows editing by non-GDS Editors"
-    end
-  end
-
   describe "#confirm_destroy" do
     context "when the user does have permission" do
       before { login_as site_manager }
