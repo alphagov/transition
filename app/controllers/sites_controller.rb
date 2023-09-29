@@ -1,19 +1,18 @@
 class SitesController < ApplicationController
-  layout "admin_layout", only: %w[new create confirm_destroy destroy]
+  layout "admin_layout", except: %w[show]
 
   include PaperTrail::Rails::Controller
 
-  before_action :find_site, only: %i[edit update show confirm_destroy destroy]
-  before_action :find_organisation, only: %i[new create]
-  before_action :check_user_is_gds_editor, only: %i[edit update]
-  before_action :check_user_is_site_manager, only: %i[new create confirm_destroy destroy]
+  before_action :find_site, except: %i[new create]
+  before_action :find_organisation, only: %i[new create edit]
+  before_action :check_user_is_site_manager, except: %i[show]
 
   def new
     @site_form = SiteForm.new(organisation_slug: @organisation.whitehall_slug)
   end
 
   def create
-    @site_form = SiteForm.new(create_params)
+    @site_form = SiteForm.new(create_or_update_params)
 
     if (site = @site_form.save)
       redirect_to site_path(site), flash: { success: "Transition site created" }
@@ -22,13 +21,17 @@ class SitesController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    @site_form = SiteForm.for_existing(@site)
+  end
 
   def update
-    if @site.update(update_params)
-      redirect_to site_path(@site), flash: { success: "Transition date updated" }
+    @site_form = SiteForm.new(create_or_update_params)
+
+    if (site = @site_form.save)
+      redirect_to site_path(site), flash: { success: "Transition site updated" }
     else
-      redirect_to edit_site_path(@site), flash: { alert: "We couldn't save your change" }
+      render :edit
     end
   end
 
@@ -62,8 +65,9 @@ private
     @organisation = Organisation.find_by(whitehall_slug: params[:organisation_id])
   end
 
-  def create_params
+  def create_or_update_params
     params.require(:site_form).permit(
+      :site_id,
       :organisation_slug,
       :abbr,
       :tna_timestamp,
@@ -81,19 +85,8 @@ private
     )
   end
 
-  def update_params
-    params.require(:site).permit(:launch_date)
-  end
-
   def destroy_params
     params.require(:delete_site_form).permit(:abbr_confirmation)
-  end
-
-  def check_user_is_gds_editor
-    unless current_user.gds_editor?
-      message = "Only GDS Editors can access that."
-      redirect_to site_path(@site), alert: message
-    end
   end
 
   def check_user_is_site_manager

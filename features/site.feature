@@ -111,9 +111,22 @@ Scenario: Creating a site
   When I visit the page for the UK Trade & Industry organisation
   And I click the link "Add a transition site"
   Then I should be on the new transition site page for the UK Trade & Industry organisation
-  When I fill in the new transition site fields
+  When I fill in the transition site fields
   And I save my changes
-  Then I should be redirected to the new site
+  Then I should be redirected to the site
+
+Scenario: Editing a site
+  Given I have logged in as a Site Manager
+  And there are these organisations without sites:
+    | whitehall_slug  | title                         |
+    | ukti            | UK Trade & Industry           |
+    | go-science      | Government Office for Science |
+  And a site bis exists
+  And I visit this site page
+  And I click the link "Edit"
+  When I fill in the transition site fields
+  And I save my changes
+  Then I should be redirected to the site
 
 Scenario: Editing a site's transition date as a GDS Editor
   Given I have logged in as a GDS Editor
@@ -130,7 +143,7 @@ Scenario: Editing a site's transition date as a non-GDS Editor
   And a site dclg exists
   And I visit this site page
   Then I should not see "Edit date"
-  When I visit the path /sites/dclg/edit
+  When I visit the path /sites/dclg/edit_date
   Then I should be redirected to the site dashboard
   And I should see "Only GDS Editors can access that."
 

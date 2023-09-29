@@ -9,13 +9,13 @@ end
 
 When(/^I edit this site's transition date$/) do
   click_link "Edit date"
-  select("2014", from: "site_launch_date_1i")
-  select("September", from: "site_launch_date_2i")
-  select("20", from: "site_launch_date_3i")
+  fill_in "Year", with: 2014
+  fill_in "Month", with: 9
+  fill_in "Day", with: 20
   click_button "Save"
 end
 
-When(/^I fill in the new transition site fields/) do
+When(/^I fill in the transition site fields/) do
   fill_in "Abbreviated name", with: "aaib"
   fill_in "TNA timestamp", with: "20141104112824"
   fill_in "Homepage", with: "https://www.gov.uk/government/organisations/air-accidents-investigation-branch"
@@ -36,7 +36,7 @@ Then(/^I should be on the new transition site page for the (.*) organisation$/) 
   i_should_be_on_the_path new_organisation_site_path(organisation)
 end
 
-Then(/^I should be redirected to the new site$/) do
+Then(/^I should be redirected to the site$/) do
   i_should_be_on_the_path site_path(Site.last)
 end
 
