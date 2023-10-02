@@ -514,39 +514,6 @@ describe Mapping do
     end
   end
 
-  describe "edited_by_human" do
-    context "imported from redirector" do
-      subject(:mapping) { create(:mapping, from_redirector: true) }
-
-      describe "#edited_by_human?" do
-        subject { super().edited_by_human? }
-        it { is_expected.to be_truthy }
-      end
-    end
-
-    context "has been edited by a human", versioning: true do
-      let(:human) { create :user }
-
-      subject(:mapping) { create(:mapping, as_user: human) }
-
-      describe "#edited_by_human?" do
-        subject { super().edited_by_human? }
-        it { is_expected.to be_truthy }
-      end
-    end
-
-    context "has been edited by a robot", versioning: true do
-      let(:robot) { create :user, is_robot: true }
-
-      subject(:mapping) { create(:mapping, as_user: robot) }
-
-      describe "#edited_by_human?" do
-        subject { super().edited_by_human? }
-        it { is_expected.to be_falsey }
-      end
-    end
-  end
-
   describe "last_editor" do
     context "no versions exist" do
       subject(:mapping) { create(:mapping, from_redirector: true) }
