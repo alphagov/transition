@@ -93,14 +93,6 @@ class Mapping < ApplicationRecord
     "http://webarchive.nationalarchives.gov.uk/#{tna_timestamp}/#{old_url}"
   end
 
-  def last_editor
-    # This will return nil if the mapping was imported from transition-config and has
-    # not been edited since.
-    if versions.present? && versions.last.user_id.present?
-      User.find_by(id: versions.last.user_id)
-    end
-  end
-
   def hit_percentage
     site.hit_total_count.zero? ? 0 : (hit_count.to_f / site.hit_total_count) * 100
   end

@@ -513,46 +513,4 @@ describe Mapping do
       end
     end
   end
-
-  describe "last_editor" do
-    context "no versions exist" do
-      subject(:mapping) { create(:mapping, from_redirector: true) }
-
-      describe "#last_editor" do
-        subject { super().last_editor }
-        it { is_expected.to be_nil }
-      end
-    end
-
-    context "versions exist", versioning: true do
-      let(:user) { create :user }
-      subject(:mapping) { create(:mapping, as_user: user) }
-
-      context "only one version exists" do
-        describe "#last_editor" do
-          subject { super().last_editor }
-          it { is_expected.to eql(user) }
-        end
-      end
-
-      context "several versions exist" do
-        let(:other_user) { create :user }
-        before do
-          Transition::History.as_a_user(other_user) do
-            mapping.update!(type: "redirect", new_url: "http://updated.gov.uk")
-            mapping.update!(type: "redirect", new_url: "http://new.gov.uk")
-          end
-        end
-
-        it "has 3 versions" do
-          expect(subject.versions.size).to eq(3)
-        end
-
-        describe "#last_editor" do
-          subject { super().last_editor }
-          it { is_expected.to eql(other_user) }
-        end
-      end
-    end
-  end
 end
