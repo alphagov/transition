@@ -3,9 +3,14 @@ require "transition/import/organisations"
 
 module Transition
   module Import
-    class OrgsSitesHosts
-      def self.from_yaml!(mask, whitehall_orgs = nil)
+    class Organisations
+      def self.from_yaml!(whitehall_orgs = nil)
         Organisations.from_whitehall!(whitehall_orgs)
+      end
+    end
+
+    class SitesHosts
+      def self.from_yaml!(mask)
         Sites.new(mask).import!
       end
     end
