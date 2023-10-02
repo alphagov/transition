@@ -1,7 +1,6 @@
 # Transition
 
-Rails app for managing the transition of websites to GOV.UK. Specifically, it's for the production of and handling
-of mappings for use with [Bouncer](https://github.com/alphagov/bouncer).
+Rails app for managing the transition of websites to GOV.UK. Specifically, it's for adding and deleting sites, hostnames, and mappings for use with [Bouncer](https://github.com/alphagov/bouncer).
 
 ## Technical documentation
 
@@ -28,15 +27,9 @@ bundle exec sidekiq -C config/sidekiq.yml
 Available at /style, the guide documents how transition is using bootstrap, where the app has diverged from default
 styles and any custom styles needed to fill in the gaps.
 
-### Adding data
+## Adding a new site
 
-You can add new URLs and update existing configurations for sites and organisations within the Transition app using the [Transition config](https://github.com/alphagov/transition-config) repo.
-
-To import locally, clone the config repo into `data/` and then run:
-
-```
-bundle exec rake import:all:orgs_sites_hosts
-```
+Follow the instructions in the [GOV.UK  Developer docs](https://docs.publishing.service.gov.uk/manual/transition-a-site.html)
 
 ## Example application URLs
 
@@ -47,6 +40,10 @@ bundle exec rake import:all:orgs_sites_hosts
 * https://transition.staging.publishing.service.gov.uk/sites/aaib/mappings/bulk_add_batches/new
 * https://transition.staging.publishing.service.gov.uk/sites/aaib/mappings/import_batches/new
 * https://transition.staging.publishing.service.gov.uk/sites/aaib/hits/summary
+
+## Glossary of terms
+
+A glossary of the terms used can be found in this [blog post](https://insidegovuk.blog.gov.uk/2014/03/17/transition-technical-glossary/).
 
 ## Licence
 
