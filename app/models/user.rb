@@ -34,10 +34,6 @@ class User < ApplicationRecord
     end
   end
 
-  def is_human?
-    !is_robot?
-  end
-
 private
 
   def site_is_editable?(site_to_edit)
