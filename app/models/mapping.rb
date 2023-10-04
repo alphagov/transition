@@ -93,32 +93,6 @@ class Mapping < ApplicationRecord
     "http://webarchive.nationalarchives.gov.uk/#{tna_timestamp}/#{old_url}"
   end
 
-  def edited_by_human?
-    # Intent: has this mapping (ever) been edited by a human? We treat
-    # mappings that were imported from redirector (now called transition-config)
-    # as human-edited because they are curated.
-    #
-    # Assumptions:
-    #
-    #   * humans only edit when paper trail is recording changes
-    #   * all machine edits are done by a 'robot' user or when paper trail is
-    #     turned off or isn't applicable (eg redirector import)
-    #
-    if from_redirector == true
-      true
-    else
-      last_editor.present? && last_editor.is_human?
-    end
-  end
-
-  def last_editor
-    # This will return nil if the mapping was imported from redirector and has
-    # not been edited since.
-    if versions.present? && versions.last.user_id.present?
-      User.find_by(id: versions.last.user_id)
-    end
-  end
-
   def hit_percentage
     site.hit_total_count.zero? ? 0 : (hit_count.to_f / site.hit_total_count) * 100
   end
