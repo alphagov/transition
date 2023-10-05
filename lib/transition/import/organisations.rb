@@ -4,10 +4,6 @@ require "ostruct"
 module Transition
   module Import
     class Organisations
-      def initialize(whitehall_orgs)
-        @whitehall_orgs = whitehall_orgs
-      end
-
       def whitehall_orgs
         @whitehall_orgs ||= WhitehallOrgs.new
       end
@@ -50,9 +46,9 @@ module Transition
         end
       end
 
-      def self.from_whitehall!(whitehall_orgs = WhitehallOrgs.new)
+      def self.from_whitehall!
         Organisation.transaction do
-          Organisations.new(whitehall_orgs).import!
+          Organisations.new.import!
         rescue PG::InFailedSqlTransaction => e
           e.transaction.rollback
         end

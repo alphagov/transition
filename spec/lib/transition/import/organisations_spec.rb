@@ -1,12 +1,16 @@
 require "rails_helper"
 require "transition/import/organisations"
+require "gds_api/test_helpers/organisations"
 
 describe Transition::Import::Organisations do
-  describe ".from_whitehall!", testing_before_all: true do
-    before :all do
-      Transition::Import::Organisations.from_whitehall!(
-        Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml"),
-      )
+  include GdsApi::TestHelpers::Organisations
+
+  describe ".from_whitehall!" do
+    let(:organisations) { YAML.safe_load(File.read("spec/fixtures/whitehall/orgs_abridged.yml")) }
+
+    before do
+      stub_organisations_api_has_organisations_with_bodies organisations
+      Transition::Import::Organisations.from_whitehall!
     end
 
     it "has imported orgs - one per org in orgs_abridged.yml" do
@@ -87,9 +91,7 @@ describe Transition::Import::Organisations do
 
     context "the import is run again" do
       before do
-        Transition::Import::Organisations.from_whitehall!(
-          Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml"),
-        )
+        Transition::Import::Organisations.from_whitehall!
       end
 
       describe "a pre-existing parent-child relationship is not duplicated" do
