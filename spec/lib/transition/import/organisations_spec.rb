@@ -1,6 +1,5 @@
 require "rails_helper"
 require "transition/import/organisations"
-require "transition/import/sites"
 
 describe Transition::Import::Organisations do
   describe ".from_whitehall!", testing_before_all: true do
