@@ -1,8 +1,8 @@
-require "transition/import/orgs_sites_hosts"
+require "transition/import/organisations"
 
 namespace :import do
   desc "Import all Organisations"
   task organisations: :environment do
-    Transition::Import::Organisations.from_yaml!
+    Transition::Import::Organisations.from_whitehall!
   end
 end

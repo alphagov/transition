@@ -6,7 +6,7 @@ describe Transition::Import::RevertEntirelyUnsafe::RevertSite do
     before do
       @bona_vacantia = create :organisation, whitehall_slug: "bona-vacantia"
       @treasury_office = create :organisation, whitehall_slug: "treasury-solicitor-s-office"
-      Transition::Import::Organisations.from_yaml!(
+      Transition::Import::Organisations.from_whitehall!(
         Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml"),
       )
 
