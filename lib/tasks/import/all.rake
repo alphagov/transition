@@ -6,18 +6,24 @@ namespace :import do
   desc "Import Organisations, Sites, Hosts, Hits and update DNS details"
   task :all,
        [:bucket] => [
-         "import:all:orgs_sites_hosts",
+         "import:all:organisations",
+         "import:all:sites_hosts",
          "import:all:hits",
          "import:dns_details",
        ]
 
   namespace :all do
-    desc "Import all Organisations, Sites and Hosts"
-    task orgs_sites_hosts: :environment do
+    desc "Import all Organisations"
+    task organisations: :environment do
+      Rake::Task["import:organisations"].invoke
+    end
+
+    desc "Import all Sites and Hosts"
+    task sites_hosts: :environment do
       patterns = [
         "data/transition-config/data/transition-sites/*.yml",
       ]
-      Rake::Task["import:orgs_sites_hosts"].invoke(glob_from_array(patterns))
+      Rake::Task["import:sites_hosts"].invoke(glob_from_array(patterns))
     end
 
     desc "Import all hits from s3"
