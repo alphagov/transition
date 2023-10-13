@@ -9,16 +9,28 @@ describe Transition::Import::RevertEntirelyUnsafe::RevertSite do
       Transition::Import::Organisations.from_yaml!(
         Transition::Import::WhitehallOrgs.new("spec/fixtures/whitehall/orgs_abridged.yml"),
       )
-      Transition::Import::SitesHosts.from_yaml!(
-        "spec/fixtures/sites/someyaml/**/*.yml",
-      )
 
       @site_abbr = "ago"
-      @ago = Site.find_by(abbr: @site_abbr)
+      @ago = create :site_without_host,
+                    abbr: @site_abbr,
+                    organisation: Organisation.find_by(whitehall_slug: "attorney-generals-office"),
+                    extra_organisations: Organisation.where(whitehall_slug: %w[bona-vacantia treasury-solicitor-s-office])
+
+      create :host, :with_its_aka_host, site: @ago, hostname: "www.attorneygeneral.gov.uk"
+      create :host, :with_its_aka_host, site: @ago, hostname: "www.attorney-general.gov.uk"
+      create :host, :with_its_aka_host, site: @ago, hostname: "www.ago.gov.uk"
+      create :host, :with_its_aka_host, site: @ago, hostname: "www.lslo.gov.uk"
+
       create :mapping, site: @ago
 
-      @original_site_count = 8
-      @original_host_count = 24
+      bis = create :site_without_host,
+                   abbr: "bis",
+                   organisation: Organisation.find_by(whitehall_slug: "department-for-business-innovation-skills")
+
+      create :host, :with_its_aka_host, site: bis, hostname: "www.bis.gov.uk"
+
+      @original_site_count = 2
+      @original_host_count = 10
       @extra_sites_count = 2
 
       expect(Site.count).to eql(@original_site_count)
@@ -56,13 +68,13 @@ describe Transition::Import::RevertEntirelyUnsafe::RevertSite do
       end
 
       it "should only have deleted the site passed in" do
-        expect(Site.count).to eql(7)
+        expect(Site.count).to eql(1)
         expect(Site.where(abbr: @site_abbr)).to be_empty
         expect(Site.where(abbr: "bis")).to exist
       end
 
       it "should have deleted the hosts" do
-        expect(Host.count).to eql(16)
+        expect(Host.count).to eql(2)
         @host_names.each do |host|
           expect(Host.find_by(hostname: host)).to be_nil
         end
