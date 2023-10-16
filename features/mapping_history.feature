@@ -27,12 +27,6 @@ Feature: History of edits to a mapping
     And I should see "New URL updated"
     And I should see a link to "Edit"
 
-  Scenario: Looking at a mapping that was imported from transition-config
-    Given I log in as a SIRO
-    And there is a mapping that has no history
-    When I go to edit that mapping
-    Then I should see no history
-
   @allow-rescue
   Scenario: Trying to look at a mapping's history on the wrong site
     When I log in as a SIRO

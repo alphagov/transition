@@ -16,8 +16,6 @@ module Transition
           console_puts "Trying to delete site and all associated data: #{@site.abbr}"
 
           destroy_site_data
-
-          console_puts "***Ensure that the deleted site has also been deleted from the transition-config repo otherwise it will be re-imported.*** \n***This has not removed anything from the hits directory.***"
         end
 
       private
