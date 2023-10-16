@@ -82,12 +82,6 @@ Given(/^the organisation has a site with a special redirect strategy of "(.*?)"$
   create(:site, special_redirect_strategy:, organisation: @organisation)
 end
 
-Given(/^there is a mapping that has no history$/) do
-  with_papertrail_disabled do
-    @mapping = create :mapping
-  end
-end
-
 Given(/^a site (.*) exists$/) do |site_abbr|
   @site = create(:site, abbr: site_abbr)
 end

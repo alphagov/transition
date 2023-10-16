@@ -32,10 +32,6 @@ Then(/^I should see the most popular tags for this site$/) do
   end
 end
 
-Then(/^I should see no history$/) do
-  expect(page).not_to have_link("History")
-end
-
 Then(/^I should see that (.*) was changed from (.*) to (.*)$/) do |field_name, old_value, new_value|
   within ".versions" do
     expect(page).to have_content(field_name)
