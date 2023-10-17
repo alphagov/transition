@@ -826,7 +826,7 @@ DEPENDENCIES
   kaminari
   mlanett-redis-lock
   optic14n
-  paper_trail (~> 12)
+  paper_trail
   pg
   plek
   pry
