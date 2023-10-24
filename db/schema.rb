@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_17_095753) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_20_093533) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -216,8 +216,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_095753) do
     t.string "event", limit: 255, null: false
     t.string "whodunnit", limit: 255
     t.integer "user_id"
-    t.text "old_object_changes"
-    t.text "old_object"
     t.datetime "created_at", precision: nil
     t.jsonb "object"
     t.jsonb "object_changes"

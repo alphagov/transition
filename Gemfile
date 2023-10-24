@@ -19,7 +19,7 @@ gem "htmlentities"
 gem "kaminari"
 gem "mlanett-redis-lock"
 gem "optic14n" # Ideally version should be synced with bouncer
-gem "paper_trail", "~> 12" # We need to do migratory work to support paper_trail 13, see: https://github.com/alphagov/transition/pull/1202
+gem "paper_trail"
 gem "pg"
 gem "plek"
 gem "select2-rails", "~> 3.5.11" # Version 4 changes CSS classes considerably
