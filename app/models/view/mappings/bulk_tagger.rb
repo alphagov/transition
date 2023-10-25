@@ -1,5 +1,3 @@
-require "set"
-
 module View
   module Mappings
     ##
