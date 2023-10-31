@@ -5,6 +5,10 @@ module View
     # Alternatively, when not canonicalizing, just ensure the filter is a
     # path or substring, not a URL.
     class CanonicalFilter
+      def self.for_site(site, filter)
+        new(site, filter).to_s
+      end
+
       def initialize(site, filter)
         @site     = site
         @filter   = filter || ""
@@ -58,10 +62,6 @@ module View
       rescue Addressable::URI::InvalidURIError
         false
       end
-    end
-
-    def self.canonical_filter(site, filter)
-      CanonicalFilter.new(site, filter).to_s
     end
   end
 end

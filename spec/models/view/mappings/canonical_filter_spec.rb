@@ -2,10 +2,10 @@ require "rails_helper"
 
 module View
   module Mappings
-    describe ".canonical_filter" do
+    describe ".for_site" do
       let(:site) { build :site }
 
-      subject(:filter) { View::Mappings.canonical_filter(site, user_input) }
+      subject(:filter) { View::Mappings::CanonicalFilter.for_site(site, user_input) }
 
       context "when a non-path substring is given" do
         let(:user_input) { "About?q=1" }
