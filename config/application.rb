@@ -67,7 +67,7 @@ module Transition
     # https://guides.rubyonrails.org/v7.0/upgrading_ruby_on_rails.html#key-generator-digest-class-changing-to-use-sha256
     Rails.application.config.action_dispatch.cookies_rotations.tap do |cookies|
       salt = Rails.application.config.action_dispatch.authenticated_encrypted_cookie_salt
-      secret_key_base = Rails.application.secrets.secret_key_base
+      secret_key_base = Rails.application.credentials.secret_key_base
       next if secret_key_base.blank?
 
       key_generator = ActiveSupport::KeyGenerator.new(
