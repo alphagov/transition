@@ -1,4 +1,3 @@
-require "view/mappings/canonical_filter"
 require "./lib/transition/path_or_url"
 
 class MappingsController < ApplicationController

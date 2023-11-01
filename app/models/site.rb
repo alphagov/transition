@@ -1,4 +1,3 @@
-require "postgres/materialized_view"
 require "./lib/transition/path_or_url"
 
 class Site < ApplicationRecord

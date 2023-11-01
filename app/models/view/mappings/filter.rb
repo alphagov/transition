@@ -1,5 +1,3 @@
-require "view/mappings/canonical_filter"
-
 module View
   module Mappings
     ##
