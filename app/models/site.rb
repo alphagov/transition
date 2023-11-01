@@ -77,10 +77,10 @@ class Site < ApplicationRecord
   end
 
   def canonical_path(path_or_url)
-    url = if ::Transition::PathOrUrl.starts_with_http_scheme?(path_or_url)
+    url = if ::Transition::PathOrURL.starts_with_http_scheme?(path_or_url)
             path_or_url
           elsif !path_or_url.starts_with?("/") &&
-              ::Transition::PathOrUrl.starts_with_a_domain?(path_or_url)
+              ::Transition::PathOrURL.starts_with_a_domain?(path_or_url)
             "http://#{path_or_url}"
           else
             # BLURI takes a full URL, but we only care about the path. There's no
