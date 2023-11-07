@@ -1,5 +1,3 @@
-require "postgres/relation"
-
 module Postgres
   class MaterializedView < Relation
     def self.create(name, body, options = {})

@@ -5,7 +5,7 @@ class User < ApplicationRecord
   has_many :bulk_add_batches
   has_many :import_batches
 
-  serialize :permissions, Array
+  serialize :permissions, type: Array, coder: YAML
 
   def admin?
     permissions.include?("admin")

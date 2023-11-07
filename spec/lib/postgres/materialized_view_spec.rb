@@ -1,5 +1,4 @@
 require "rails_helper"
-require "postgres/materialized_view"
 
 describe Postgres::MaterializedView do
   def execute(sql)

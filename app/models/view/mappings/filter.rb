@@ -1,5 +1,3 @@
-require "view/mappings/canonical_filter"
-
 module View
   module Mappings
     ##
@@ -23,7 +21,7 @@ module View
       end
 
       def path_contains
-        @path_contains ||= View::Mappings.canonical_filter(site, params[:path_contains])
+        @path_contains ||= View::Mappings::CanonicalFilter.for_site(site, params[:path_contains])
       end
 
       def new_url_contains

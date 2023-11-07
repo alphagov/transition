@@ -1,5 +1,4 @@
 require "rails_helper"
-require "postgres/relation"
 
 describe Postgres::Relation do
   describe ".exist?" do

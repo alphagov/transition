@@ -1,7 +1,6 @@
 require "rails_helper"
 require "transition/import/daily_hit_totals"
 require "transition/import/materialized_views/hits"
-require "postgres/materialized_view"
 
 describe HitsController do
   let(:site) do
