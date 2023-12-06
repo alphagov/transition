@@ -4,6 +4,9 @@
   "private": true,
   "author": "Government Digital Service",
   "license": "MIT",
+  "dependencies": {
+    "accessible-autocomplete": "alphagov/accessible-autocomplete-multiselect"
+  },
   "devDependencies": {
     "jasmine-browser-runner": "^2.3.0",
     "jasmine-core": "^5.1.1"
