@@ -61,7 +61,7 @@ describe SiteForm do
         abbr: site.abbr,
         tna_timestamp: "20120816224015",
         homepage: "https://www.gov.uk/government/organisations/example-org",
-        extra_organisations: [extra_organisation],
+        extra_organisations: [extra_organisation.id],
         homepage_title: "Homepage title",
         homepage_furl: "www.gov.uk/site",
         global_type: "redirect",
