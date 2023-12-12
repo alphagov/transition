@@ -7,6 +7,8 @@ FROM $builder_image AS builder
 WORKDIR $APP_HOME
 COPY Gemfile* .ruby-version ./
 RUN bundle install
+COPY package.json yarn.lock ./
+RUN yarn set version 3.4.1 && yarn install --immutable
 COPY . .
 RUN bootsnap precompile --gemfile .
 RUN rails assets:precompile && rm -fr log
