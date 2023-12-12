@@ -12,7 +12,19 @@
  */
 
 @import "govuk_publishing_components/all_components";
+@import "accessible-autocomplete.min.css";
 
 .extra-organisations {
   height: 150px;
+}
+
+.autocomplete__wrapper * {
+  @include govuk-typography-common();
+}
+
+.autocomplete__input:focus,
+.autocomplete__input--focused {
+  outline: $govuk-focus-width solid $govuk-focus-colour;
+  outline-offset: $govuk-border-width-form-element;
+  box-shadow: $govuk-input-border-colour 0 0 0 $govuk-border-width-form-element;
 }

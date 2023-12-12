@@ -82,7 +82,7 @@
                                    :id,
                                    :title,
                                    {},
-                                   { multiple: true, class: "govuk-select extra-organisations govuk-!-width-two-thirds" }
+                                   { multiple: true, class: "govuk-select extra-organisations govuk-!-width-two-thirds autocomplete-enabled" }
         %>
       </div>
 
@@ -187,3 +187,7 @@
     <% end %>
   </div>
 </div>
+
+<%= content_for :head do %>
+  <%= javascript_include_tag "autocomplete", defer: true %>
+<% end %>
