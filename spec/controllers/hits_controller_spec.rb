@@ -95,7 +95,7 @@ describe HitsController do
     let(:paths)    { category.hits.map { |h| [h.http_status, h.path, h.count] } }
 
     before do
-      expect(Site).to receive(:find_by!).and_return(site)
+      expect(Site).to receive(:find).and_return(site)
     end
 
     shared_examples "it has hits and points whether or not we used a view" do

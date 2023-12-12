@@ -5,6 +5,6 @@
      points: @category.points,
      title: "All hits",
      active: 'All hits',
-     no_content_message: "We don’t have any traffic data for #{@site.abbr} #{@period.no_content}."
+     no_content_message: "We don’t have any traffic data for #{@site.default_host.hostname} #{@period.no_content}."
    }
 %>

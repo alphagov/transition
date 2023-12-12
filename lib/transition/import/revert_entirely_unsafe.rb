@@ -13,7 +13,7 @@ module Transition
         end
 
         def revert_all_data!
-          console_puts "Trying to delete site and all associated data: #{@site.abbr}"
+          console_puts "Trying to delete site and all associated data: #{@site.default_host.hostname}"
 
           destroy_site_data
         end
@@ -29,18 +29,18 @@ module Transition
 
           @site.destroy!
 
-          console_puts "Deleted site: #{@site.abbr}"
+          console_puts "Deleted site: #{@site.default_host.hostname}"
         end
 
         def destroy_all_versions
-          console_puts "Removing versions for: #{@site.abbr}"
+          console_puts "Removing versions for: #{@site.default_host.hostname}"
           @site.mappings.each do |map|
             map.versions.destroy_all
           end
         end
 
         def destroy_all_mappings
-          console_puts "Removing mappings for: #{@site.abbr}"
+          console_puts "Removing mappings for: #{@site.default_host.hostname}"
           @site.mappings.destroy_all
         end
 

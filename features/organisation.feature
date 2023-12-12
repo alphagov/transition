@@ -6,8 +6,8 @@ Feature: View organisation
   Scenario: Visit an organisation page
     Given I have logged in as a GDS Editor
     And there is a bis organisation named UK Atomic Energy Authority abbreviated ukaea with these sites:
-      | abbr       | homepage                                                               |
-      | bis_ukaea  | https://www.gov.uk/government/organisations/uk-atomic-energy-authority |
+      | abbr       | homepage                                                               | default_host     |
+      | bis_ukaea  | https://www.gov.uk/government/organisations/uk-atomic-energy-authority | www.ukaea.gov.uk |
     When I visit the path /organisations/ukaea
     Then I should see the header "UK Atomic Energy Authority"
     And I should see that this organisation is an executive non-departmental public body of its parent
@@ -40,9 +40,9 @@ Feature: View organisation
   Scenario: Filter the list of sites
     Given I have logged in as a GDS Editor
     And there is a bis organisation named Companies House abbreviated companies-house with these sites:
-      | abbr             | homepage                                                    |
-      | companies        | https://www.gov.uk/government/organisations/companies-house |
-      | companies_welsh  | https://www.gov.uk/government/organisations/companies-house |
+      | abbr             | homepage                                                    | default_host           |
+      | companies        | https://www.gov.uk/government/organisations/companies-house | companies.gov.uk       |
+      | companies_welsh  | https://www.gov.uk/government/organisations/companies-house | companies_welsh.gov.uk |
     When I visit the path /organisations/companies-house
     And I filter sites by "welsh"
     Then I should see a sites table with 1 row

@@ -48,10 +48,6 @@ class Site < ApplicationRecord
     self[:mapping_count].to_i
   end
 
-  def to_param
-    abbr
-  end
-
   def global_redirect?
     global_type == "redirect"
   end
@@ -126,11 +122,15 @@ class Site < ApplicationRecord
   end
 
   def precomputed_view_name
-    @_precomputed_view_name = %(#{abbr}_all_hits)
+    @_precomputed_view_name = %(all_hits_#{id})
   end
 
   def able_to_use_view?
     precompute_all_hits_view && Postgres::MaterializedView.exists?(precomputed_view_name)
+  end
+
+  def self.find_by_abbr_or_id(abbr_or_id)
+    find_by(abbr: abbr_or_id) || find(abbr_or_id)
   end
 
 private

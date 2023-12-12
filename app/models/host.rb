@@ -13,7 +13,7 @@ class Host < ApplicationRecord
   validates :hostname, presence: true
   validates :hostname, uniqueness: {
     message: lambda do |_object, data|
-      site = Host.find_by(hostname: data[:value]).site.abbr
+      site = Host.find_by(hostname: data[:value]).site.default_host.hostname
       "The hostname #{data[:value]} already exists. You must delete the #{site} site to remove it"
     end,
   }

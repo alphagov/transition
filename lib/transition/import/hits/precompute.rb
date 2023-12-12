@@ -6,8 +6,8 @@ module Transition
       class Precompute
         include Transition::Import::ConsoleJobWrapper
 
-        def initialize(site_abbrs, new_precompute_value)
-          @site_abbrs = site_abbrs.reject(&:empty?)
+        def initialize(site_ids, new_precompute_value)
+          @site_ids = site_ids.reject(&:blank?)
           @new_precompute_value = new_precompute_value
         end
 
@@ -17,9 +17,9 @@ module Transition
           Site.transaction do
             sites.each do |site|
               if site.precompute_all_hits_view == @new_precompute_value
-                console_puts "WARN: skipping site with abbr '#{site.abbr}' - already set to #{@new_precompute_value}"
+                console_puts "WARN: skipping site with ID '#{site.id}' - already set to #{@new_precompute_value}"
               else
-                start "Setting #{site.abbr} precompute_all_hits_view to #{@new_precompute_value}" do
+                start "Setting #{site.id} precompute_all_hits_view to #{@new_precompute_value}" do
                   site.update!(precompute_all_hits_view: @new_precompute_value)
                   @updated += 1
                 end
@@ -34,13 +34,7 @@ module Transition
       private
 
         def sites
-          @site_abbrs.map { |abbr| find_site(abbr) }.compact
-        end
-
-        def find_site(abbr)
-          Site.find_by(abbr:).tap do |site|
-            console_puts "WARN: skipping site with abbr '#{abbr}' - not found" if site.nil?
-          end
+          @site_ids.map { |id| Site.find(id) }.compact
         end
 
         def inform_about_refresh

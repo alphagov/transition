@@ -54,7 +54,7 @@ protected
   end
 
   def find_site
-    @site = Site.find_by!(abbr: params[:site_id])
+    @site = Site.find_by_abbr_or_id(params[:site_id])
   end
 
   def find_batch

@@ -5,14 +5,14 @@ describe Transition::Import::MaterializedViews::Hits do
   describe ".refresh!", testing_before_all: true do
     before :all do
       @sites = [
-        create(:site, abbr: "cabinet_office"),
-        create(:site, abbr: "hmrc",         precompute_all_hits_view: true),
-        create(:site, abbr: "ofsted",       precompute_all_hits_view: true),
+        create(:site),
+        create(:site, precompute_all_hits_view: true),
+        create(:site, precompute_all_hits_view: true),
       ]
       @sites.each do |site|
         ActiveRecord::Base.connection.execute(
           <<-POSTGRESQL,
-            DROP MATERIALIZED VIEW IF EXISTS #{site.abbr}_all_hits
+            DROP MATERIALIZED VIEW IF EXISTS all_hits_#{site.id}
           POSTGRESQL
         )
       end
@@ -20,25 +20,25 @@ describe Transition::Import::MaterializedViews::Hits do
     end
 
     it "does not create views for small sites" do
-      expect(Postgres::MaterializedView).not_to exist("cabinet_office_all_hits")
+      expect(Postgres::MaterializedView).not_to exist("all_hits_#{@sites[0].id}")
     end
     it "creates a view for the large site hmrc" do
-      expect(Postgres::MaterializedView).to exist("hmrc_all_hits")
+      expect(Postgres::MaterializedView).to exist("all_hits_#{@sites[1].id}")
     end
     it "creates a view for the large site ofsted" do
-      expect(Postgres::MaterializedView).to exist("ofsted_all_hits")
+      expect(Postgres::MaterializedView).to exist("all_hits_#{@sites[2].id}")
     end
 
     context "a second refresh with updated hits now views already exist" do
       before :all do
-        ofsted = @sites.find { |s| s.abbr == "ofsted" }
+        ofsted = @sites[2]
         ofsted.default_host.hits << create(:hit, host: ofsted.default_host)
 
         Transition::Import::MaterializedViews::Hits.replace!
       end
 
       it "refreshes the view" do
-        expect(Hit.select("*").from("ofsted_all_hits").size).to eq(1)
+        expect(Hit.select("*").from("all_hits_#{@sites[2].id}").size).to eq(1)
       end
     end
   end

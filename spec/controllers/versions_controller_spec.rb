@@ -12,7 +12,7 @@ describe VersionsController, versioning: true do
     context "loading the page" do
       before do
         login_as_stub_user
-        get :index, params: { mapping_id: mapping.id, site_id: site.abbr }
+        get :index, params: { mapping_id: mapping.id, site_id: site.id }
       end
 
       it "responds with the correct HTTP status code" do
@@ -34,7 +34,7 @@ describe VersionsController, versioning: true do
           mapping.reload
         end
         login_as_stub_user
-        get :index, params: { mapping_id: mapping.id, site_id: site.abbr }
+        get :index, params: { mapping_id: mapping.id, site_id: site.id }
       end
 
       it "shows details of the update when a mapping is amended" do

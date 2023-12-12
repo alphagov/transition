@@ -92,25 +92,25 @@ describe HitsHelper do
     end
 
     context "when a site is present" do
-      let(:site) { build :site, abbr: "site_abbr" }
+      let(:site) { create :site }
 
       context "when no category is set" do
         it "defaults to the summary with the period" do
-          expect(path).to eq("/sites/site_abbr/hits/summary?period=yesterday")
+          expect(path).to eq("/sites/#{site.id}/hits/summary?period=yesterday")
         end
       end
 
       context "when a category is set" do
         let(:category) { "errors" }
         it "links to the category and period for the site" do
-          expect(path).to eq("/sites/site_abbr/hits/category?category=errors&period=yesterday")
+          expect(path).to eq("/sites/#{site.id}/hits/category?category=errors&period=yesterday")
         end
 
         context "when the time period is default" do
           let(:period) { nil }
 
           it "links to the category without the period for the site" do
-            expect(path).to eq("/sites/site_abbr/hits/category?category=errors")
+            expect(path).to eq("/sites/#{site.id}/hits/category?category=errors")
           end
         end
       end
@@ -119,7 +119,7 @@ describe HitsHelper do
         let(:action) { "index" }
 
         it "defaults to all hits with the period" do
-          expect(path).to eq("/sites/site_abbr/hits?period=yesterday")
+          expect(path).to eq("/sites/#{site.id}/hits?period=yesterday")
         end
       end
     end

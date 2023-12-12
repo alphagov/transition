@@ -115,12 +115,12 @@ Scenario: No hits exist at all
   When I visit the associated site
   And I click the link "Analytics"
   Then I should not see a graph
-  And I should see "There are no known hits for the ago summary"
+  And I should see "There are no known hits for the ago.gov.uk summary"
   When I click the link "Errors"
-  Then I should see "There are no errors for ago"
+  Then I should see "There are no errors for ago.gov.uk"
   And I should not see a graph
   When I filter by the date period "Last seven days"
-  Then I should see "There are no errors for ago in this time period"
+  Then I should see "There are no errors for ago.gov.uk in this time period"
 
 @allow-rescue
 Scenario: Visit the hits summary page for an non-existent site

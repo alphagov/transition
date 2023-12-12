@@ -1,9 +1,10 @@
-Given(/^there is a (.*) organisation named (.*) abbreviated (.*) with these sites:$/) do |parent, name, abbr, site_table|
-  # table rows are like | awb  | http://average-white-band.gov.uk/ |
+Given(/^there is a (.*) organisation named (.*) abbreviated (.*) with these sites:$/) do |parent, name, org_abbr, site_table|
+  # table rows are like | http://average-white-band.gov.uk/ |
   @parent             = create(:organisation, whitehall_slug: parent)
-  @organisation       = create(:organisation, title: name, whitehall_slug: abbr, parent_organisations: [@parent])
-  @organisation.sites = site_table.rows.map do |site_abbr, homepage|
-    create(:site, abbr: site_abbr, homepage:, organisation: @organisation)
+  @organisation       = create(:organisation, title: name, whitehall_slug: org_abbr, parent_organisations: [@parent])
+  @organisation.sites = site_table.rows.map do |_site_abbr, homepage, default_host|
+    host = create(:host, hostname: default_host)
+    create(:site, homepage:, organisation: @organisation, hosts: [host])
   end
 end
 
@@ -102,7 +103,7 @@ Given(/^the site is globally redirected with the path appended$/) do
 end
 
 Given(/^these hits exist for the Attorney General's office site:$/) do |table|
-  @site = create :site, abbr: "ago"
+  @site = create :site
   # table is a | 410         | /    | 16/10/12 | 100   |
   table.rows.map do |status, path, hit_on, count|
     create :hit,
@@ -121,12 +122,12 @@ Given(/^these hits exist for the Attorney General's office site:$/) do |table|
 end
 
 Given(/^some hits exist for the Cabinet Office site$/) do
-  site = create :site, abbr: "cabinetoffice"
+  site = create :site
   create :hit, http_status: "410", count: 20, host: site.hosts.first, path: "/cabinetofficehit"
 end
 
 Given(/^no hits exist for the Attorney General's office site$/) do
-  @site ||= create(:site, abbr: "ago")
+  @site = create(:site, abbr: "ago")
   Hit.delete_all
   DailyHitTotal.delete_all
 end

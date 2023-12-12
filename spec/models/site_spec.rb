@@ -331,10 +331,10 @@ describe Site do
   describe "precomputed views" do
     let(:precompute) { false }
 
-    subject(:site) { build :site, abbr: "hmrc", precompute_all_hits_view: precompute }
+    subject(:site) { create :site, precompute_all_hits_view: precompute }
 
     it "calculates a conventional view name" do
-      expect(site.precomputed_view_name).to eql("hmrc_all_hits")
+      expect(site.precomputed_view_name).to eql("all_hits_#{site.id}")
     end
 
     describe "#able_to_use_view?" do
