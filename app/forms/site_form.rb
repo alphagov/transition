@@ -31,7 +31,7 @@ class SiteForm
       abbr: site.abbr,
       tna_timestamp: site.tna_timestamp.to_formatted_s(:number),
       homepage: site.homepage,
-      extra_organisations: site.extra_organisations,
+      extra_organisations: site.extra_organisations.map(&:id),
       homepage_title: site.homepage_title,
       homepage_furl: site.homepage_furl,
       global_type: site.global_type,
