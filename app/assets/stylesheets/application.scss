@@ -12,7 +12,21 @@
  */
 
 @import "govuk_publishing_components/all_components";
+@import "accessible-autocomplete/src/autocomplete";
+
+// The accessible autocomplete component does not use
+// GOV.UK fonts by default for suggestions.
+.autocomplete__wrapper * {
+  @include govuk-typography-common();
+}
 
 .extra-organisations {
   height: 150px;
+}
+
+.autocomplete__input:focus,
+.autocomplete__input--focused {
+  outline: $govuk-focus-width solid $govuk-focus-colour;
+  outline-offset: $govuk-border-width-form-element;
+  box-shadow: $govuk-input-border-colour 0 0 0 $govuk-border-width-form-element;
 }

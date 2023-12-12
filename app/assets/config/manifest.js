@@ -4,3 +4,4 @@
 //= link application.js
 //= link legacy_layout.js
 //= link html5.js
+//= link autocomplete.js
