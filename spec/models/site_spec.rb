@@ -8,12 +8,9 @@ describe Site do
   end
 
   describe "validations" do
-    it { is_expected.to validate_presence_of(:abbr) }
     it { is_expected.to validate_presence_of(:tna_timestamp) }
     it { is_expected.to validate_presence_of(:organisation) }
     it { is_expected.to validate_inclusion_of(:special_redirect_strategy).in_array(%w[via_aka supplier]) }
-    it { is_expected.to allow_value("org_site1-Modifier").for(:abbr) }
-    it { is_expected.not_to allow_value("org_www.site").for(:abbr) }
 
     describe "homepage" do
       it { is_expected.to validate_presence_of(:homepage) }

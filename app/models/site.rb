@@ -25,7 +25,6 @@ class Site < ApplicationRecord
   validates :tna_timestamp, presence: true
   validates :organisation, presence: true
   validates :homepage, presence: true, non_blank_url: { message: :non_blank_url }
-  validates :abbr, uniqueness: true, presence: true, format: { with: /\A[a-zA-Z0-9_-]+\z/, message: :extra_characters }
   validates :special_redirect_strategy, inclusion: { in: SPECIAL_REDIRECT_STRATEGY_TYPES.values, allow_blank: true }
   validates :global_new_url, presence: { if: :global_redirect? }
   validates :global_new_url, absence: { if: :global_archive? }
