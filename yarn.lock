@@ -36,6 +36,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"accessible-autocomplete-multiselect@alphagov/accessible-autocomplete-multiselect#6b671690189f9a4b32940e60a7df781ed55d4dca":
+  version: 2.0.4
+  resolution: "accessible-autocomplete-multiselect@https://github.com/alphagov/accessible-autocomplete-multiselect.git#commit=6b671690189f9a4b32940e60a7df781ed55d4dca"
+  dependencies:
+    preact: ^8.3.1
+  checksum: 15b20083ccacdd2046c5d2eebaa02b21b39d9182ee4ca69bd10f9d72beeabea5b87474e0aa057382d0ed393008a17e8f552cbe3506680b2157f37f297f08578a
+  languageName: node
+  linkType: hard
+
 "ansi-regex@npm:^5.0.1":
   version: 5.0.1
   resolution: "ansi-regex@npm:5.0.1"
@@ -740,6 +749,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"preact@npm:^8.3.1":
+  version: 8.5.3
+  resolution: "preact@npm:8.5.3"
+  checksum: 1a2d90816abdc62673842190b819b7ce2f552b4b412cc0d2118395d8167e79f4e988229993079700277a0cae6b7fd895b3bfe5a43091bbc1f4df43903b04d1e7
+  languageName: node
+  linkType: hard
+
 "process-nextick-args@npm:~2.0.0":
   version: 2.0.1
   resolution: "process-nextick-args@npm:2.0.1"
@@ -996,6 +1012,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "transition@workspace:."
   dependencies:
+    accessible-autocomplete-multiselect: "alphagov/accessible-autocomplete-multiselect#6b671690189f9a4b32940e60a7df781ed55d4dca"
     jasmine-browser-runner: ^2.3.0
     jasmine-core: ^5.1.1
   languageName: unknown
