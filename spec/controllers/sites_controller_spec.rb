@@ -155,7 +155,7 @@ describe SitesController do
 
   describe "#destroy" do
     def make_request
-      post :destroy, params: { id: site.id, delete_site_form: { abbr_confirmation: site.abbr } }
+      post :destroy, params: { id: site.id, delete_site_form: { hostname_confirmation: site.default_host.hostname } }
     end
 
     context "when the user does have permission" do
