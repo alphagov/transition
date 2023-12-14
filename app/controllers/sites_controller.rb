@@ -69,7 +69,6 @@ private
     params.require(:site_form).permit(
       :site_id,
       :organisation_slug,
-      :abbr,
       :tna_timestamp,
       :homepage,
       :homepage_title,

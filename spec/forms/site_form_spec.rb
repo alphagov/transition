@@ -58,7 +58,6 @@ describe SiteForm do
 
       expect(site_form).to have_attributes(
         organisation_slug: site.organisation.whitehall_slug,
-        abbr: site.abbr,
         tna_timestamp: "20120816224015",
         homepage: "https://www.gov.uk/government/organisations/example-org",
         extra_organisations: [extra_organisation.id],
@@ -107,7 +106,6 @@ describe SiteForm do
 
       expect(site).to be_a Site
       expect(site).to have_attributes(
-        abbr: "aaib",
         organisation:,
         homepage: "https://www.gov.uk/government/organisations/air-accidents-investigation-branch",
         tna_timestamp: Time.strptime("20141104112824", "%Y%m%d%H%M%S"),

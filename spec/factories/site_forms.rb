@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :site_form do
-    abbr { "aaib" }
     organisation_slug { "air-accidents-investigation-branch" }
     homepage { "https://www.gov.uk/government/organisations/air-accidents-investigation-branch" }
     tna_timestamp { "20141104112824" }

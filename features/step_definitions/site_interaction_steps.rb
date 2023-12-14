@@ -16,7 +16,6 @@ When(/^I edit this site's transition date$/) do
 end
 
 When(/^I fill in the transition site fields/) do
-  fill_in "Abbreviated name", with: "aaib"
   fill_in "TNA timestamp", with: "20141104112824"
   fill_in "Homepage", with: "https://www.gov.uk/government/organisations/air-accidents-investigation-branch"
   fill_in "Hostname", with: "www.aaib.gov.uk"
