@@ -86,7 +86,7 @@ GEM
       tzinfo (~> 2.0)
     acts-as-taggable-on (10.0.0)
       activerecord (>= 6.1, < 7.2)
-    addressable (2.8.5)
+    addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
     autoprefixer-rails (10.4.15.0)
@@ -115,7 +115,7 @@ GEM
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
-    brakeman (6.0.1)
+    brakeman (6.1.0)
     builder (3.2.4)
     capybara (3.39.2)
       addressable
@@ -272,7 +272,7 @@ GEM
       govuk_app_config (>= 1.1)
       redis-namespace (~> 1.6)
       sidekiq (~> 6.5, >= 6.5.12)
-    govuk_test (4.0.1)
+    govuk_test (4.0.2)
       brakeman (>= 5.0.2)
       capybara (>= 3.36)
       puma
@@ -650,7 +650,7 @@ GEM
     redis (4.8.1)
     redis-namespace (1.11.0)
       redis (>= 4)
-    regexp_parser (2.8.2)
+    regexp_parser (2.8.3)
     reline (0.4.1)
       io-console (~> 0.5)
     representable (3.2.0)
@@ -738,7 +738,7 @@ GEM
       sprockets-rails
       tilt
     select2-rails (3.5.11)
-    selenium-webdriver (4.14.0)
+    selenium-webdriver (4.16.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
