@@ -59,6 +59,40 @@
     },
     {
       "warning_type": "Cross-Site Scripting",
+      "warning_code": 84,
+      "fingerprint": "3de1c1d1db70515736baab15259c374071220d922d7ad7131900cd403cfb472b",
+      "check_name": "RenderInline",
+      "message": "Unescaped model attribute rendered inline",
+      "file": "app/views/sites/confirm_destroy.html.erb",
+      "line": 22,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_scripting/",
+      "code": "render(text => \"This will delete the #{Site.find_by_abbr_or_id(params[:id]).default_host.hostname} site and all the data that is associated with it.\", { :margin_bottom => true })",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "SitesController",
+          "method": "confirm_destroy",
+          "line": 46,
+          "file": "app/controllers/sites_controller.rb",
+          "rendered": {
+            "name": "sites/confirm_destroy",
+            "file": "app/views/sites/confirm_destroy.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "sites/confirm_destroy"
+      },
+      "user_input": "Site.find_by_abbr_or_id(params[:id]).default_host.hostname",
+      "confidence": "Medium",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
       "fingerprint": "3fdaf6ede7ba5c6a4eb649900849b88fabab0d49681a98e89a3b34242f78cb36",
       "check_name": "LinkToHref",
@@ -100,6 +134,40 @@
         79
       ],
       "note": "This is a valid URL (see app/models/mapping.rb)"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "63ce04cb0e7cb2864e67c346a54263872990644c940d76994cb169a8b009972e",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in `link_to` href",
+      "file": "app/views/bulk_add_batches/preview.html.erb",
+      "line": 37,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Site.find_by_abbr_or_id(params[:site_id]).bulk_add_batches.find(params[:id]).new_url, Site.find_by_abbr_or_id(params[:site_id]).bulk_add_batches.find(params[:id]).new_url, :class => \"breakable\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "BulkAddBatchesController",
+          "method": "preview",
+          "line": 36,
+          "file": "app/controllers/bulk_add_batches_controller.rb",
+          "rendered": {
+            "name": "bulk_add_batches/preview",
+            "file": "app/views/bulk_add_batches/preview.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "bulk_add_batches/preview"
+      },
+      "user_input": "Site.find_by_abbr_or_id(params[:site_id]).bulk_add_batches.find(params[:id]).new_url",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -159,6 +227,50 @@
       "note": "Ultimately this is interpolating a list of integers into the SQL for a WHERE...IN check"
     },
     {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "b34ed9665d156a41dbd8ede54224b41b64a496daafb8a2254e31dcd4f96a2238",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in `link_to` href",
+      "file": "app/views/sites/_configuration.html.erb",
+      "line": 6,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Site.find_by_abbr_or_id(params[:id]).homepage, Site.find_by_abbr_or_id(params[:id]).homepage, :class => \"breakable\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "SitesController",
+          "method": "show",
+          "line": 42,
+          "file": "app/controllers/sites_controller.rb",
+          "rendered": {
+            "name": "sites/show",
+            "file": "app/views/sites/show.html.erb"
+          }
+        },
+        {
+          "type": "template",
+          "name": "sites/show",
+          "line": 15,
+          "file": "app/views/sites/show.html.erb",
+          "rendered": {
+            "name": "sites/_configuration",
+            "file": "app/views/sites/_configuration.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "sites/_configuration"
+      },
+      "user_input": "Site.find_by_abbr_or_id(params[:id]).homepage",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "SQL Injection",
       "warning_code": 0,
       "fingerprint": "b6d10053540be2e7224fba9d6fc112a4111f522606d2877c9dbbe4ae7845399a",
@@ -180,40 +292,6 @@
         89
       ],
       "note": "Ultimately this is interpolating a list of integers into the SQL for a WHERE...IN check"
-    },
-    {
-      "warning_type": "Cross-Site Scripting",
-      "warning_code": 4,
-      "fingerprint": "d36f2b3cd37435a8c5bcddde9ebdd53e21b569bb817a329f2927c794e2c8d9b6",
-      "check_name": "LinkToHref",
-      "message": "Potentially unsafe model attribute in `link_to` href",
-      "file": "app/views/bulk_add_batches/preview.html.erb",
-      "line": 37,
-      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
-      "code": "link_to(Site.find_by!(:abbr => params[:site_id]).bulk_add_batches.find(params[:id]).new_url, Site.find_by!(:abbr => params[:site_id]).bulk_add_batches.find(params[:id]).new_url, :class => \"breakable\")",
-      "render_path": [
-        {
-          "type": "controller",
-          "class": "BulkAddBatchesController",
-          "method": "preview",
-          "line": 36,
-          "file": "app/controllers/bulk_add_batches_controller.rb",
-          "rendered": {
-            "name": "bulk_add_batches/preview",
-            "file": "app/views/bulk_add_batches/preview.html.erb"
-          }
-        }
-      ],
-      "location": {
-        "type": "template",
-        "template": "bulk_add_batches/preview"
-      },
-      "user_input": "Site.find_by!(:abbr => params[:site_id]).bulk_add_batches.find(params[:id]).new_url",
-      "confidence": "Weak",
-      "cwe_id": [
-        79
-      ],
-      "note": "This is a valid URL (see app/models/mapping.rb)"
     },
     {
       "warning_type": "Cross-Site Scripting",
@@ -418,6 +496,6 @@
       "note": "This is a valid National Archives URL (see app/models/mapping.rb)"
     }
   ],
-  "updated": "2023-12-18 11:39:32 +0000",
+  "updated": "2023-12-18 11:43:12 +0000",
   "brakeman_version": "6.1.0"
 }
