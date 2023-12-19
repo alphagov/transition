@@ -5,7 +5,7 @@ describe Transition::Import::Hits::Precompute do
   let(:new_precompute_value) { false }
 
   subject(:precompute_setter) do
-    Transition::Import::Hits::Precompute.new(abbrs, new_precompute_value)
+    Transition::Import::Hits::Precompute.new(ids, new_precompute_value)
   end
 
   before do
@@ -19,49 +19,33 @@ describe Transition::Import::Hits::Precompute do
 
   describe "#update!" do
     context "the sites we are updating do not exist" do
-      let(:abbrs) { ["foobar", "baz", "", ""] }
+      let(:ids) { [123, 456, "", ""] }
 
-      it "updates nothing and warns about what it could not find" do
-        expect(precompute_setter.console).to receive(:puts).with(
-          "WARN: skipping site with abbr 'foobar' - not found",
-        )
-        expect(precompute_setter.console).to receive(:puts).with(
-          "WARN: skipping site with abbr 'baz' - not found",
-        )
-
-        expect(precompute_setter.update!).to be_zero
+      it "raises an error for the record it could not find" do
+        expect { precompute_setter.update! }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
-    context "we are updating two sites, one non-existent, and one already set" do
-      let(:abbrs)                { %w[hmrc ofsted already_set throat_wobbler_mangrove] }
+    context "we are updating two sites, one already set" do
+      let(:site_1) { create(:site, precompute_all_hits_view: false) }
+      let(:site_2) { create(:site, precompute_all_hits_view: false) }
+      let(:site_3) { create(:site, precompute_all_hits_view: true) }
+      let(:ids) { [site_2.id, site_3.id] }
       let(:new_precompute_value) { true }
 
-      before do
-        create(:site, abbr: "hmrc", precompute_all_hits_view: false)
-        create(:site, abbr: "ofsted", precompute_all_hits_view: false)
-        create(:site, abbr: "already_set", precompute_all_hits_view: true)
-      end
-
-      it "updates two, warns about the others, and reminds us to refresh" do
+      it "updates one and skips the others" do
         expect(precompute_setter.console).to receive(:puts).with(
-          "WARN: skipping site with abbr 'throat_wobbler_mangrove' - not found",
-        )
-        expect(precompute_setter.console).to receive(:puts).with(
-          "WARN: skipping site with abbr 'already_set' - already set to true",
+          "WARN: skipping site with ID '#{site_3.id}' - already set to true",
         )
         expect(precompute_setter).to receive(:inform_about_refresh)
-        expect(precompute_setter.update!).to eq(2)
+        expect(precompute_setter.update!).to eq(1)
       end
     end
 
     context "we are updating a site not to precompute" do
-      let(:abbrs)                { %w[hmrc] }
+      let(:site) { create(:site, precompute_all_hits_view: true) }
+      let(:ids) { [site.id] }
       let(:new_precompute_value) { false }
-
-      before do
-        create(:site, abbr: "hmrc", precompute_all_hits_view: true)
-      end
 
       it "updates one, and does not remind us to refresh" do
         expect(precompute_setter).not_to receive(:inform_about_refresh)

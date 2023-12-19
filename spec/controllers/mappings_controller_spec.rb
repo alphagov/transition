@@ -2,7 +2,7 @@ require "rails_helper"
 require "csv"
 
 describe MappingsController do
-  let(:site)       { create :site, abbr: "moj" }
+  let(:site)       { create :site }
   let(:batch)      { create(:bulk_add_batch, site:) }
   let(:gds_bob)    { create(:gds_editor, name: "Bob Terwhilliger") }
   let(:admin_user) { create(:user, permissions: %w[admin signin]) }
@@ -20,7 +20,7 @@ describe MappingsController do
         it "orders mappings by path" do
           # this would be last in insertion order, but first alphabetically
           create(:mapping, site:, path: "/..")
-          get :index, params: { site_id: site.abbr }
+          get :index, params: { site_id: site.id }
 
           expect(assigns(:mappings).to_a).to eq(site.mappings.order(:path).to_a)
         end
@@ -28,7 +28,7 @@ describe MappingsController do
 
       context "when sorting by hits" do
         it "orders mappings by hit count" do
-          get :index, params: { site_id: site.abbr, sort: "by_hits" }
+          get :index, params: { site_id: site.id, sort: "by_hits" }
 
           expect(assigns(:mappings).to_a).to eq(
             site.mappings.order("hit_count DESC").to_a,
@@ -43,17 +43,17 @@ describe MappingsController do
       let!(:mapping_c) { create :redirect, path: "/c", new_url: "http://f.gov.uk/3", site: }
 
       it "filters mappings by path" do
-        get :index, params: { site_id: site.abbr, path_contains: "a" }
+        get :index, params: { site_id: site.id, path_contains: "a" }
         expect(assigns(:mappings)).to eq([mapping_a])
       end
 
       it "canonicalizes filter input" do
-        get :index, params: { site_id: site.abbr, path_contains: "/A?q=1" }
+        get :index, params: { site_id: site.id, path_contains: "/A?q=1" }
         expect(assigns(:mappings)).to eq([mapping_a])
       end
 
       it "filters mappings by new_url" do
-        get :index, params: { site_id: site.abbr, new_url_contains: "f.gov.uk/1" }
+        get :index, params: { site_id: site.id, new_url_contains: "f.gov.uk/1" }
         expect(assigns(:mappings)).to eq([mapping_a])
       end
 
@@ -63,22 +63,22 @@ describe MappingsController do
 
         create(:archived, new_url: "http://f.gov.uk/1", site:)
 
-        get :index, params: { site_id: site.abbr, new_url_contains: "f.gov.uk/1" }
+        get :index, params: { site_id: site.id, new_url_contains: "f.gov.uk/1" }
         expect(assigns(:mappings)).to eq([mapping_a])
       end
 
       it "does not canonicalize the filter for new_url" do
-        get :index, params: { site_id: site.abbr, new_url_contains: "/A/B/C/1?q=1" }
+        get :index, params: { site_id: site.id, new_url_contains: "/A/B/C/1?q=1" }
         expect(assigns(:filter).new_url_contains).to eq("/A/B/C/1?q=1")
       end
 
       it "extracts paths from full URLs supplied for filtering" do
-        get :index, params: { site_id: site.abbr, path_contains: "https://www.example.com/foobar" }
+        get :index, params: { site_id: site.id, path_contains: "https://www.example.com/foobar" }
         expect(assigns(:filter).path_contains).to eql("/foobar")
       end
 
       it "gracefully degrades if the filtering value looks like a URL but is unparseable" do
-        get :index, params: { site_id: site.abbr, path_contains: "https://}" }
+        get :index, params: { site_id: site.id, path_contains: "https://}" }
         expect(assigns(:filter).path_contains).to eql("https://}")
       end
     end
@@ -90,7 +90,7 @@ describe MappingsController do
         end
 
         it "prevents you from accessing it" do
-          get :index, params: { site_id: site.abbr, format: "csv" }
+          get :index, params: { site_id: site.id, format: "csv" }
           expect(response).to redirect_to site_mappings_path(site)
           expect(flash[:notice]).to eql("Only admin users can access the CSV export")
         end
@@ -105,12 +105,12 @@ describe MappingsController do
           let!(:mappings) { create(:redirect, path: "/a", new_url: "http://f.gov.uk/1", site:) }
 
           it "produces a CSV" do
-            get :index, params: { site_id: site.abbr, format: "csv" }
+            get :index, params: { site_id: site.id, format: "csv" }
             expect(response.headers["Content-Type"]).to eql("text/csv")
             csv = CSV.parse(response.body)
             expect(csv.first).to eql(["Old URL", "Type", "New URL", "Archive URL", "Suggested URL"])
             expect(csv.size).to eql(2)
-            expect(csv[1]).to eql(["http://moj.gov.uk/a", "redirect", "http://f.gov.uk/1", nil, nil])
+            expect(csv[1]).to eql(["http://#{site.default_host.hostname}/a", "redirect", "http://f.gov.uk/1", nil, nil])
           end
         end
 
@@ -118,7 +118,7 @@ describe MappingsController do
           let!(:mappings) { 101.times { create(:mapping, site:) } }
 
           it "includes all mappings, not just the current page" do
-            get :index, params: { site_id: site.abbr, format: "csv" }
+            get :index, params: { site_id: site.id, format: "csv" }
             csv = CSV.parse(response.body)
             expect(csv.size).to eql(102) # header + 101 rows
           end
@@ -198,7 +198,7 @@ describe MappingsController do
 
     context "when no mapping exists yet for the canonicalized path" do
       it "redirects to the new mappings form" do
-        get :find, params: { site_id: site.abbr, path: raw_path }
+        get :find, params: { site_id: site.id, path: raw_path }
 
         expect(response).to redirect_to new_site_bulk_add_batch_path(site, paths: canonicalized_path)
       end
@@ -208,7 +208,7 @@ describe MappingsController do
       it "redirects to the edit mapping form" do
         mapping = create(:mapping, site:, path: canonicalized_path)
 
-        get :find, params: { site_id: site.abbr, path: raw_path }
+        get :find, params: { site_id: site.id, path: raw_path }
 
         expect(response).to redirect_to edit_site_mapping_path(site, mapping)
       end
@@ -221,7 +221,7 @@ describe MappingsController do
         it "redirects back to the previous page" do
           request.env["HTTP_REFERER"] = site_hits_url(site)
 
-          get :find, params: { site_id: site.abbr, path: invalid_path }
+          get :find, params: { site_id: site.id, path: invalid_path }
 
           expect(response).to redirect_to site_hits_url(site)
         end
@@ -230,7 +230,7 @@ describe MappingsController do
           it "should redirect to the mappings index" do
             request.env["HTTP_REFERER"] = "http://www.environment-agency.gov.uk.side-by-side"
 
-            get :find, params: { site_id: site.abbr, path: invalid_path }
+            get :find, params: { site_id: site.id, path: invalid_path }
 
             expect(response).to redirect_to site_mappings_url(site)
           end
@@ -239,7 +239,7 @@ describe MappingsController do
 
       context "when no previous page is available" do
         it "redirects to site mappings index" do
-          get :find, params: { site_id: site.abbr, path: invalid_path }
+          get :find, params: { site_id: site.id, path: invalid_path }
 
           expect(response).to redirect_to site_mappings_url(site)
         end
@@ -250,7 +250,7 @@ describe MappingsController do
   describe "#edit" do
     context "without permission to edit" do
       def make_request
-        get :edit, params: { site_id: mapping.site.abbr, id: mapping.id }
+        get :edit, params: { site_id: mapping.site.id, id: mapping.id }
       end
 
       it_behaves_like "disallows editing by unaffiliated user"
@@ -260,7 +260,7 @@ describe MappingsController do
   describe "#update" do
     context "without permission to edit" do
       def make_request
-        put :update, params: { site_id: mapping.site.abbr, id: mapping.id }
+        put :update, params: { site_id: mapping.site.id, id: mapping.id }
       end
 
       it_behaves_like "disallows editing by unaffiliated user"
@@ -338,7 +338,7 @@ describe MappingsController do
         mapping_ids = [mapping_a.id, mapping_b.id]
         post :edit_multiple,
              params: {
-               site_id: site.abbr,
+               site_id: site.id,
                mapping_ids:,
                type: "archive",
                return_path: @mappings_index_with_filter,
@@ -359,7 +359,7 @@ describe MappingsController do
         it "redirects to the mappings index page" do
           post :edit_multiple,
                params: {
-                 site_id: site.abbr,
+                 site_id: site.id,
                  mapping_ids: [other_mapping.id],
                  type: "archive",
                }
@@ -372,7 +372,7 @@ describe MappingsController do
         it "redirects back to the last-visited mappings index page" do
           post :edit_multiple,
                params: {
-                 site_id: site.abbr,
+                 site_id: site.id,
                  mapping_ids: [other_mapping.id],
                  type: "archive",
                  return_path: @mappings_index_with_filter,
@@ -393,7 +393,7 @@ describe MappingsController do
           mapping_ids = [mapping_a.id, mapping_b.id]
           post :edit_multiple,
                params: {
-                 site_id: site.abbr,
+                 site_id: site.id,
                  mapping_ids:,
                  type: "bad",
                  return_path: @mappings_index_with_filter,
@@ -411,7 +411,7 @@ describe MappingsController do
         login_as gds_bob
         post :edit_multiple,
              params: {
-               site_id: site.abbr,
+               site_id: site.id,
                mapping_ids:,
                operation: "tag",
                return_path: "should_not_return",
@@ -438,7 +438,7 @@ describe MappingsController do
         mapping_ids = [mapping_a.id, mapping_b.id]
         post :update_multiple,
              params: {
-               site_id: site.abbr,
+               site_id: site.id,
                mapping_ids:,
                operation: "redirect",
                new_url: "http://a.gov.uk",
@@ -462,7 +462,7 @@ describe MappingsController do
         @new_url = "http://a.gov.uk"
         post :update_multiple,
              params: {
-               site_id: site.abbr,
+               site_id: site.id,
                mapping_ids:,
                operation: "redirect",
                new_url: @new_url,
@@ -508,7 +508,7 @@ describe MappingsController do
         it "redirects to the mappings index page" do
           post :update_multiple,
                params: {
-                 site_id: site.abbr,
+                 site_id: site.id,
                  mapping_ids: [other_mapping.id],
                  type: "redirect",
                  new_url: "http://a.gov.uk",
@@ -522,7 +522,7 @@ describe MappingsController do
         it "redirects back to the last-visited mappings index page" do
           post :update_multiple,
                params: {
-                 site_id: site.abbr,
+                 site_id: site.id,
                  mapping_ids: [other_mapping.id],
                  type: "redirect",
                  new_url: "http://a.gov.uk",
@@ -540,7 +540,7 @@ describe MappingsController do
         mapping_ids = [mapping_a.id, mapping_b.id]
         post :update_multiple,
              params: {
-               site_id: site.abbr,
+               site_id: site.id,
                mapping_ids:,
                type: "redirect",
                new_url: "http://{",
@@ -658,7 +658,7 @@ describe MappingsController do
       it "should redirect to mappings index" do
         post :update_multiple,
              params: {
-               site_id: site.abbr,
+               site_id: site.id,
                mapping_ids: [mapping.id],
                operation: "redirect",
                new_url: "http://a.gov.uk",
@@ -673,12 +673,12 @@ describe MappingsController do
   describe "mappings for sites with global http statuses" do
     before do
       login_as stub_user
-      get :index, params: { site_id: site.abbr }
+      get :index, params: { site_id: site.id }
     end
 
     shared_examples "it disallows the editing of mappings" do
       it "redirects to the site dashboard" do
-        expect(response).to redirect_to site_path(site.abbr)
+        expect(response).to redirect_to site_path(site.id)
       end
 
       it "sets a flash message" do
@@ -687,14 +687,14 @@ describe MappingsController do
     end
 
     context "when a site has a global redirect" do
-      let(:site)           { create :site, abbr: "bis", global_type: "redirect", global_new_url: "http://a.co" }
+      let(:site)           { create :site, global_type: "redirect", global_new_url: "http://a.co" }
       let(:expected_alert) { "entirely redirected" }
 
       it_behaves_like "it disallows the editing of mappings"
     end
 
     context "when a site has a global archive" do
-      let(:site)           { create :site, abbr: "bis", global_type: "archive" }
+      let(:site)           { create :site, global_type: "archive" }
       let(:expected_alert) { "entirely archived" }
 
       it_behaves_like "it disallows the editing of mappings"

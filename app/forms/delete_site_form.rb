@@ -4,8 +4,8 @@ class DeleteSiteForm
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  attribute :abbr
-  attribute :abbr_confirmation
+  attribute :id
+  attribute :hostname_confirmation
 
   validate :confirmation_matches
 
@@ -19,12 +19,12 @@ class DeleteSiteForm
 private
 
   def site
-    Site.find_by(abbr:)
+    Site.find_by(id:)
   end
 
   def confirmation_matches
-    if abbr_confirmation != abbr
-      errors.add(:abbr_confirmation, "The confirmation did not match")
+    if hostname_confirmation != site.default_host.hostname
+      errors.add(:hostname_confirmation, "The confirmation did not match")
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_20_093533) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_12_143730) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -159,7 +159,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_20_093533) do
 
   create_table "sites", force: :cascade do |t|
     t.integer "organisation_id", null: false
-    t.string "abbr", limit: 255, null: false
+    t.string "abbr", limit: 255
     t.string "query_params", limit: 255
     t.datetime "tna_timestamp", precision: nil, null: false
     t.string "homepage", limit: 255

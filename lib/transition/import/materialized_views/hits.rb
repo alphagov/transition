@@ -21,7 +21,7 @@ module Transition
 
         def self.replace!
           Site.where(precompute_all_hits_view: true).each do |site|
-            view_name = "#{site.abbr}_all_hits"
+            view_name = "all_hits_#{site.id}"
 
             doing = Postgres::MaterializedView.exists?(view_name) ? "Refreshing" : "Creating"
 

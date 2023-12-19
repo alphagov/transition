@@ -17,7 +17,6 @@ describe "Site creation" do
     post organisation_sites_path(organisation), params: { site_form: params }
 
     attributes = {
-      abbr: "aaib",
       global_new_url: "https://www.gov.uk/government/organisations/air-accidents-investigation-branch/about",
       global_redirect_append_path: true,
       global_type: "redirect",
@@ -78,7 +77,6 @@ describe "Site creation" do
       post organisation_sites_path(organisation), params: { site_form: params }
 
       attributes = {
-        abbr: "aaib",
         homepage: "https://www.gov.uk/government/organisations/air-accidents-investigation-branch",
         tna_timestamp: Time.strptime("20141104112824", "%Y%m%d%H%M%S"),
         global_redirect_append_path: false,

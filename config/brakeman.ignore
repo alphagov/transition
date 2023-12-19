@@ -7,7 +7,7 @@
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "lib/transition/import/hits_mappings_relations.rb",
-      "line": 113,
+      "line": 121,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
       "code": "ActiveRecord::Base.connection.execute(\"          UPDATE mappings\\n          SET hit_count = with_counts.hit_count\\n          FROM (\\n            SELECT hits.mapping_id, SUM(hits.count) AS hit_count\\n            FROM hits\\n            #{(\"WHERE host_id #{in_site_hosts}\" or \"\")}\\n            GROUP BY hits.mapping_id\\n          ) with_counts\\n          WHERE\\n            mappings.id = with_counts.mapping_id AND\\n            mappings.hit_count IS DISTINCT FROM with_counts.hit_count\\n\")",
       "render_path": null,
@@ -18,6 +18,9 @@
       },
       "user_input": "in_site_hosts",
       "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
       "note": "Ultimately this is interpolating a list of integers into the SQL for a WHERE...IN check"
     },
     {
@@ -25,95 +28,179 @@
       "warning_code": 4,
       "fingerprint": "38b7bf3af8733d01999c901c03369bf71414a355a3b6b12f84c68fb117365470",
       "check_name": "LinkToHref",
-      "message": "Potentially unsafe model attribute in link_to href",
+      "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/glossary/index.html.erb",
       "line": 121,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
       "code": "link_to(Mapping.where(:type => \"redirect\").first.old_url, Mapping.where(:type => \"redirect\").first.old_url)",
-      "render_path": [{"type":"controller","class":"GlossaryController","method":"index","line":6,"file":"app/controllers/glossary_controller.rb"}],
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "GlossaryController",
+          "method": "index",
+          "line": 6,
+          "file": "app/controllers/glossary_controller.rb",
+          "rendered": {
+            "name": "glossary/index",
+            "file": "app/views/glossary/index.html.erb"
+          }
+        }
+      ],
       "location": {
         "type": "template",
         "template": "glossary/index"
       },
       "user_input": "Mapping.where(:type => \"redirect\").first.old_url",
       "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
       "note": "This is a valid URL (see app/models/mapping.rb)"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 84,
+      "fingerprint": "3de1c1d1db70515736baab15259c374071220d922d7ad7131900cd403cfb472b",
+      "check_name": "RenderInline",
+      "message": "Unescaped model attribute rendered inline",
+      "file": "app/views/sites/confirm_destroy.html.erb",
+      "line": 22,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_scripting/",
+      "code": "render(text => \"This will delete the #{Site.find_by_abbr_or_id(params[:id]).default_host.hostname} site and all the data that is associated with it.\", { :margin_bottom => true })",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "SitesController",
+          "method": "confirm_destroy",
+          "line": 46,
+          "file": "app/controllers/sites_controller.rb",
+          "rendered": {
+            "name": "sites/confirm_destroy",
+            "file": "app/views/sites/confirm_destroy.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "sites/confirm_destroy"
+      },
+      "user_input": "Site.find_by_abbr_or_id(params[:id]).default_host.hostname",
+      "confidence": "Medium",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
     },
     {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
       "fingerprint": "3fdaf6ede7ba5c6a4eb649900849b88fabab0d49681a98e89a3b34242f78cb36",
       "check_name": "LinkToHref",
-      "message": "Potentially unsafe model attribute in link_to href",
+      "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/mappings/_form.html.erb",
       "line": 25,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
       "code": "link_to(Mapping.find(params[:id]).old_url, Mapping.find(params[:id]).old_url)",
-      "render_path": [{"type":"controller","class":"MappingsController","method":"edit","line":36,"file":"app/controllers/mappings_controller.rb"},{"type":"template","name":"mappings/edit","line":11,"file":"app/views/mappings/edit.html.erb"}],
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "MappingsController",
+          "method": "edit",
+          "line": 35,
+          "file": "app/controllers/mappings_controller.rb",
+          "rendered": {
+            "name": "mappings/edit",
+            "file": "app/views/mappings/edit.html.erb"
+          }
+        },
+        {
+          "type": "template",
+          "name": "mappings/edit",
+          "line": 11,
+          "file": "app/views/mappings/edit.html.erb",
+          "rendered": {
+            "name": "mappings/_form",
+            "file": "app/views/mappings/_form.html.erb"
+          }
+        }
+      ],
       "location": {
         "type": "template",
         "template": "mappings/_form"
       },
       "user_input": "Mapping.find(params[:id]).old_url",
       "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
       "note": "This is a valid URL (see app/models/mapping.rb)"
     },
     {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
-      "fingerprint": "d36f2b3cd37435a8c5bcddde9ebdd53e21b569bb817a329f2927c794e2c8d9b6",
+      "fingerprint": "63ce04cb0e7cb2864e67c346a54263872990644c940d76994cb169a8b009972e",
       "check_name": "LinkToHref",
       "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/bulk_add_batches/preview.html.erb",
       "line": 37,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
-      "code": "link_to(Site.find_by!(:abbr => params[:site_id]).bulk_add_batches.find(params[:id]).new_url, Site.find_by!(:abbr => params[:site_id]).bulk_add_batches.find(params[:id]).new_url, :class => \"breakable\")",
-      "render_path": [{"type":"controller","class":"BulkAddBatchesController","method":"preview","line":34,"file":"app/controllers/bulk_add_batches_controller.rb","rendered":{"name":"bulk_add_batches/preview","file":"app/views/bulk_add_batches/preview.html.erb"}}],
+      "code": "link_to(Site.find_by_abbr_or_id(params[:site_id]).bulk_add_batches.find(params[:id]).new_url, Site.find_by_abbr_or_id(params[:site_id]).bulk_add_batches.find(params[:id]).new_url, :class => \"breakable\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "BulkAddBatchesController",
+          "method": "preview",
+          "line": 36,
+          "file": "app/controllers/bulk_add_batches_controller.rb",
+          "rendered": {
+            "name": "bulk_add_batches/preview",
+            "file": "app/views/bulk_add_batches/preview.html.erb"
+          }
+        }
+      ],
       "location": {
         "type": "template",
         "template": "bulk_add_batches/preview"
       },
-      "user_input": "Site.find_by!(:abbr => params[:site_id]).bulk_add_batches.find(params[:id]).new_url",
+      "user_input": "Site.find_by_abbr_or_id(params[:site_id]).bulk_add_batches.find(params[:id]).new_url",
       "confidence": "Weak",
-      "note": "This is a valid URL (see app/models/mapping.rb)"
-    },
-    {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "533110565bf7c9e0b39c62ca6209a84c3bacb8a4d016183d56513927f785da80",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/mappings_controller.rb",
-      "line": 188,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:return_path], redirect_to_options)",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "MappingsController",
-        "method": "safely_redirect_to_start_point"
-      },
-      "user_input": "params[:return_path]",
-      "confidence": "High",
-      "note": "This is valid on the previous line (see lib/transition/off_site_redirect_checker.rb)"
+      "cwe_id": [
+        79
+      ],
+      "note": ""
     },
     {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
       "fingerprint": "8c1fce5b2b7bdec13c7fa177e82b388aa05296dcd35bd7895d0957878ac03989",
       "check_name": "LinkToHref",
-      "message": "Potentially unsafe model attribute in link_to href",
+      "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/bulk_add_batches/preview.html.erb",
       "line": 60,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
       "code": "link_to((Unresolved Model).new.path, (Unresolved Model).new.old_url, :class => \"breakable\")",
-      "render_path": [{"type":"controller","class":"BulkAddBatchesController","method":"preview","line":34,"file":"app/controllers/bulk_add_batches_controller.rb"}],
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "BulkAddBatchesController",
+          "method": "preview",
+          "line": 36,
+          "file": "app/controllers/bulk_add_batches_controller.rb",
+          "rendered": {
+            "name": "bulk_add_batches/preview",
+            "file": "app/views/bulk_add_batches/preview.html.erb"
+          }
+        }
+      ],
       "location": {
         "type": "template",
         "template": "bulk_add_batches/preview"
       },
       "user_input": "(Unresolved Model).new.old_url",
       "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
       "note": "This is a valid URL (see app/models/mapping.rb)"
     },
     {
@@ -123,7 +210,7 @@
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "lib/transition/import/hits_mappings_relations.rb",
-      "line": 59,
+      "line": 60,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
       "code": "ActiveRecord::Base.connection.execute(\"          INSERT INTO host_paths(host_id, path)\\n          SELECT hits.host_id, hits.path\\n          FROM   hits\\n          WHERE NOT EXISTS (\\n            SELECT 1 FROM host_paths\\n            WHERE\\n              host_paths.host_id   = hits.host_id AND\\n              host_paths.path      = hits.path\\n          )\\n          #{(\"AND hits.host_id #{in_site_hosts}\" or \"\")}\\n          GROUP  BY hits.host_id,\\n                    hits.path\\n\")",
       "render_path": null,
@@ -134,7 +221,54 @@
       },
       "user_input": "in_site_hosts",
       "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
       "note": "Ultimately this is interpolating a list of integers into the SQL for a WHERE...IN check"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "b34ed9665d156a41dbd8ede54224b41b64a496daafb8a2254e31dcd4f96a2238",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in `link_to` href",
+      "file": "app/views/sites/_configuration.html.erb",
+      "line": 6,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Site.find_by_abbr_or_id(params[:id]).homepage, Site.find_by_abbr_or_id(params[:id]).homepage, :class => \"breakable\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "SitesController",
+          "method": "show",
+          "line": 42,
+          "file": "app/controllers/sites_controller.rb",
+          "rendered": {
+            "name": "sites/show",
+            "file": "app/views/sites/show.html.erb"
+          }
+        },
+        {
+          "type": "template",
+          "name": "sites/show",
+          "line": 15,
+          "file": "app/views/sites/show.html.erb",
+          "rendered": {
+            "name": "sites/_configuration",
+            "file": "app/views/sites/_configuration.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "sites/_configuration"
+      },
+      "user_input": "Site.find_by_abbr_or_id(params[:id]).homepage",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
     },
     {
       "warning_type": "SQL Injection",
@@ -143,7 +277,7 @@
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "lib/transition/import/hits_mappings_relations.rb",
-      "line": 94,
+      "line": 102,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
       "code": "ActiveRecord::Base.connection.execute(\"          UPDATE hits\\n          SET  mapping_id = host_paths.mapping_id\\n          FROM host_paths\\n          WHERE\\n            host_paths.host_id   = hits.host_id AND\\n            host_paths.path      = hits.path AND\\n            host_paths.mapping_id IS DISTINCT FROM hits.mapping_id\\n            #{(\"AND host_paths.host_id #{in_site_hosts}\" or \"\")}\\n\")",
       "render_path": null,
@@ -154,6 +288,9 @@
       },
       "user_input": "in_site_hosts",
       "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
       "note": "Ultimately this is interpolating a list of integers into the SQL for a WHERE...IN check"
     },
     {
@@ -161,18 +298,33 @@
       "warning_code": 4,
       "fingerprint": "e1e17c05d61774feca7f6e4312ee2767b42fc8f50e875db3a95425ed25ce07bc",
       "check_name": "LinkToHref",
-      "message": "Potentially unsafe model attribute in link_to href",
+      "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/glossary/index.html.erb",
       "line": 56,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
       "code": "link_to(Mapping.where(:type => \"archive\").first.old_url, Mapping.where(:type => \"archive\").first.old_url)",
-      "render_path": [{"type":"controller","class":"GlossaryController","method":"index","line":6,"file":"app/controllers/glossary_controller.rb"}],
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "GlossaryController",
+          "method": "index",
+          "line": 6,
+          "file": "app/controllers/glossary_controller.rb",
+          "rendered": {
+            "name": "glossary/index",
+            "file": "app/views/glossary/index.html.erb"
+          }
+        }
+      ],
       "location": {
         "type": "template",
         "template": "glossary/index"
       },
       "user_input": "Mapping.where(:type => \"archive\").first.old_url",
       "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
       "note": "This is a valid URL (see app/models/mapping.rb)"
     },
     {
@@ -180,18 +332,33 @@
       "warning_code": 4,
       "fingerprint": "e559c0757414823db9d2a09c910ac6ce8d314a5e2860887955902d583fd3f2bd",
       "check_name": "LinkToHref",
-      "message": "Potentially unsafe model attribute in link_to href",
+      "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/glossary/index.html.erb",
       "line": 123,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
       "code": "link_to(Mapping.where(:type => \"redirect\").first.new_url, Mapping.where(:type => \"redirect\").first.new_url)",
-      "render_path": [{"type":"controller","class":"GlossaryController","method":"index","line":6,"file":"app/controllers/glossary_controller.rb"}],
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "GlossaryController",
+          "method": "index",
+          "line": 6,
+          "file": "app/controllers/glossary_controller.rb",
+          "rendered": {
+            "name": "glossary/index",
+            "file": "app/views/glossary/index.html.erb"
+          }
+        }
+      ],
       "location": {
         "type": "template",
         "template": "glossary/index"
       },
       "user_input": "Mapping.where(:type => \"redirect\").first.new_url",
       "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
       "note": "The domain of redirect URLs is constrained (see app/models/mapping.rb)"
     },
     {
@@ -199,18 +366,43 @@
       "warning_code": 4,
       "fingerprint": "e768cb7d3f7cd24d68e901ca297dc767559a188a7de7753451ee59ab1a613ee3",
       "check_name": "LinkToHref",
-      "message": "Potentially unsafe model attribute in link_to href",
+      "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/mappings/_form.html.erb",
       "line": 57,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
       "code": "link_to(\"Find on the National Archives\", Mapping.find(params[:id]).national_archive_index_url)",
-      "render_path": [{"type":"controller","class":"MappingsController","method":"edit","line":36,"file":"app/controllers/mappings_controller.rb"},{"type":"template","name":"mappings/edit","line":11,"file":"app/views/mappings/edit.html.erb"}],
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "MappingsController",
+          "method": "edit",
+          "line": 35,
+          "file": "app/controllers/mappings_controller.rb",
+          "rendered": {
+            "name": "mappings/edit",
+            "file": "app/views/mappings/edit.html.erb"
+          }
+        },
+        {
+          "type": "template",
+          "name": "mappings/edit",
+          "line": 11,
+          "file": "app/views/mappings/edit.html.erb",
+          "rendered": {
+            "name": "mappings/_form",
+            "file": "app/views/mappings/_form.html.erb"
+          }
+        }
+      ],
       "location": {
         "type": "template",
         "template": "mappings/_form"
       },
       "user_input": "Mapping.find(params[:id]).national_archive_index_url",
       "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
       "note": "This is a valid National Archives URL (see app/models/mapping.rb)"
     },
     {
@@ -231,6 +423,9 @@
       },
       "user_input": "name",
       "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
       "note": "This is only called with constant, safe, strings"
     },
     {
@@ -251,6 +446,9 @@
       },
       "user_input": "name",
       "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
       "note": "This is only called with constant, safe, strings"
     },
     {
@@ -258,21 +456,46 @@
       "warning_code": 4,
       "fingerprint": "fc1b85ee291a773b9faac48b766ceabe3ad349538b228e0a20b6e9eb58498e20",
       "check_name": "LinkToHref",
-      "message": "Potentially unsafe model attribute in link_to href",
+      "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/mappings/_form.html.erb",
       "line": 51,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
       "code": "link_to(Mapping.find(params[:id]).national_archive_url, Mapping.find(params[:id]).national_archive_url)",
-      "render_path": [{"type":"controller","class":"MappingsController","method":"edit","line":36,"file":"app/controllers/mappings_controller.rb"},{"type":"template","name":"mappings/edit","line":11,"file":"app/views/mappings/edit.html.erb"}],
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "MappingsController",
+          "method": "edit",
+          "line": 35,
+          "file": "app/controllers/mappings_controller.rb",
+          "rendered": {
+            "name": "mappings/edit",
+            "file": "app/views/mappings/edit.html.erb"
+          }
+        },
+        {
+          "type": "template",
+          "name": "mappings/edit",
+          "line": 11,
+          "file": "app/views/mappings/edit.html.erb",
+          "rendered": {
+            "name": "mappings/_form",
+            "file": "app/views/mappings/_form.html.erb"
+          }
+        }
+      ],
       "location": {
         "type": "template",
         "template": "mappings/_form"
       },
       "user_input": "Mapping.find(params[:id]).national_archive_url",
       "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
       "note": "This is a valid National Archives URL (see app/models/mapping.rb)"
     }
   ],
-  "updated": "2019-12-03 14:27:21 +0000",
-  "brakeman_version": "4.7.2"
+  "updated": "2023-12-18 11:43:12 +0000",
+  "brakeman_version": "6.1.0"
 }

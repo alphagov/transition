@@ -5,7 +5,6 @@ class SiteForm
   attribute :site_id
 
   attribute :organisation_slug
-  attribute :abbr
   attribute :tna_timestamp
   attribute :homepage
   attribute :homepage_title
@@ -28,7 +27,6 @@ class SiteForm
     new(
       site_id: site.id,
       organisation_slug: site.organisation.whitehall_slug,
-      abbr: site.abbr,
       tna_timestamp: site.tna_timestamp.to_formatted_s(:number),
       homepage: site.homepage,
       extra_organisations: site.extra_organisations.map(&:id),
@@ -66,7 +64,6 @@ private
   def site
     @site ||= Site.find_or_initialize_by(id: site_id).tap do |site|
       site.assign_attributes(
-        abbr:,
         tna_timestamp:,
         homepage:,
         organisation: Organisation.find_by(whitehall_slug: organisation_slug),

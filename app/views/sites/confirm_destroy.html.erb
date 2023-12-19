@@ -19,7 +19,7 @@
   } %>
 
   <%= render "govuk_publishing_components/components/warning_text", {
-    text: "This will delete the #{@site.abbr} site and all the data that is associated with it.",
+    text: "This will delete the #{@site.default_host.hostname} site and all the data that is associated with it.",
     margin_bottom: true
   } %>
 
@@ -39,11 +39,11 @@
   </p>
 
   <%= render "govuk_publishing_components/components/input", {
-    label: { text: "Enter the site slug, #{@site.abbr}, to confirm that you want to delete this site and all its data." },
-    name: form.field_name(:abbr_confirmation),
-    id: field_id_attribute(form.object, :abbr_confirmation),
-    error_message: error_message(form.object, :abbr_confirmation),
-    value: form.object.abbr_confirmation,
+    label: { text: "Enter the site's primary hostname, #{@site.default_host.hostname}, to confirm that you want to delete this site and all its data." },
+    name: form.field_name(:hostname_confirmation),
+    id: field_id_attribute(form.object, :hostname_confirmation),
+    error_message: error_message(form.object, :hostname_confirmation),
+    value: form.object.hostname_confirmation,
     heading_size: "s"
   } %>
 

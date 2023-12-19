@@ -5,7 +5,7 @@
     <%= link_to "See all #{category.name}", category_site_hits_path(@site, category: category.name, period: @period.query_slug) %>
   <% else %>
     <p class="no-content no-content-bordered">
-      There are no known <%= category.name.pluralize %> for <%= @site.abbr %> <%= @period.no_content %>.
+      There are no known <%= category.name.pluralize %> for <%= @site.default_host.hostname %> <%= @period.no_content %>.
     </p>
   <% end %>
 </section>

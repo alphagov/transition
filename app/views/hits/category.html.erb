@@ -5,6 +5,6 @@
      point_categories: [@category],
      title: "#{@category.title}",
      active: "#{@category.title}",
-     no_content_message: "There are no #{@category.plural} for #{@site.abbr} #{@period.no_content}."
+     no_content_message: "There are no #{@category.plural} for #{@site.default_host.hostname} #{@period.no_content}."
    }
 %>

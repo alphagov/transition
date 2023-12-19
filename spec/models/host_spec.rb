@@ -90,7 +90,7 @@ describe Host do
 
       context "does not already exist" do
         let!(:existing_host) { create :host, hostname: "www.cabinetoffice.gov.uk", site: }
-        let(:site) { create :site, abbr: "cabinetoffice" }
+        let(:site) { create :site }
 
         subject(:host) { build :host, hostname: "www.cabinetoffice.gov.uk" }
 
@@ -100,7 +100,7 @@ describe Host do
         end
 
         it "should have an error for invalid hostname" do
-          message = "The hostname www.cabinetoffice.gov.uk already exists. You must delete the cabinetoffice site to remove it"
+          message = "The hostname www.cabinetoffice.gov.uk already exists. You must delete the #{site.default_host.hostname} site to remove it"
           expect(host.errors_on(:hostname)).to include(message)
         end
       end

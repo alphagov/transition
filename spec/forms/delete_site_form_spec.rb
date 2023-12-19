@@ -1,14 +1,16 @@
 require "rails_helper"
 
 describe DeleteSiteForm do
+  let(:site) { create(:site) }
+
   describe "validations" do
-    describe "#abbr_confirmation" do
-      context "when the site abbr does not match" do
+    describe "#hostname_confirmation" do
+      context "when the site hostname is incorrect" do
         it "is invalid" do
-          site_form = DeleteSiteForm.new(abbr: "cabinet-office", abbr_confirmation: "dfe")
+          site_form = DeleteSiteForm.new(id: site.id, hostname_confirmation: "incorrect.gov.uk")
 
           expect(site_form.valid?).to be false
-          expect(site_form.errors[:abbr_confirmation]).to include("The confirmation did not match")
+          expect(site_form.errors[:hostname_confirmation]).to include("The confirmation did not match")
         end
       end
     end
@@ -25,7 +27,7 @@ describe DeleteSiteForm do
 
     context "when invalid" do
       it "returns false" do
-        site_form = DeleteSiteForm.new(abbr: "cabinet-office", abbr_confirmation: "dfe")
+        site_form = DeleteSiteForm.new(id: site.id, hostname_confirmation: "incorrect.gov.uk")
 
         expect(site_form.save).to be false
         expect(mock_reverter_class).to_not have_received(:new)
@@ -35,8 +37,7 @@ describe DeleteSiteForm do
 
     context "when valid" do
       it "calls the reverter and returns true" do
-        site = create(:site, abbr: "cabinet-office")
-        site_form = DeleteSiteForm.new(abbr: "cabinet-office", abbr_confirmation: "cabinet-office")
+        site_form = DeleteSiteForm.new(id: site.id, hostname_confirmation: site.default_host.hostname)
 
         result = site_form.save
 

@@ -66,8 +66,13 @@ describe SitesController do
         login_as site_manager
       end
 
-      it "displays the form" do
+      it "displays the form when requesting using an abbreviation" do
         get :edit, params: { id: site.abbr }
+        expect(response.status).to eql(200)
+      end
+
+      it "displays the form when requesting using an ID" do
+        get :edit, params: { id: site.id }
         expect(response.status).to eql(200)
       end
     end
@@ -76,7 +81,7 @@ describe SitesController do
       before { login_as stub_user }
 
       def make_request
-        get :edit, params: { organisation_id: organisation.whitehall_slug, id: site.abbr }
+        get :edit, params: { organisation_id: organisation.whitehall_slug, id: site.id }
       end
 
       it "disallows deleting by non-Site Managers" do
@@ -98,7 +103,7 @@ describe SitesController do
 
     def make_request
       post :update, params: {
-        id: site.abbr,
+        id: site.id,
         site_form: params,
       }
     end
@@ -134,14 +139,14 @@ describe SitesController do
       before { login_as site_manager }
 
       it "displays the form" do
-        get :confirm_destroy, params: { id: site.abbr }
+        get :confirm_destroy, params: { id: site.id }
         expect(response.status).to eql(200)
       end
     end
 
     context "when the user does not have permission" do
       def make_request
-        get :confirm_destroy, params: { id: site.abbr }
+        get :confirm_destroy, params: { id: site.id }
       end
 
       it_behaves_like "disallows deleting by non-Site managers"
@@ -150,7 +155,7 @@ describe SitesController do
 
   describe "#destroy" do
     def make_request
-      post :destroy, params: { id: site.abbr, delete_site_form: { abbr_confirmation: site.abbr } }
+      post :destroy, params: { id: site.id, delete_site_form: { hostname_confirmation: site.default_host.hostname } }
     end
 
     context "when the user does have permission" do

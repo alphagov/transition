@@ -1,14 +1,14 @@
 require "rails_helper"
 
 describe ImportBatchesController do
-  let(:site) { create :site, abbr: "moj" }
+  let(:site) { create :site }
   let(:global_site) { create :site, global_type: "archive" }
   let(:gds_bob) { create(:gds_editor, name: "Bob Terwhilliger") }
 
   describe "#new" do
     context "without permission to edit" do
       def make_request
-        get :new, params: { site_id: site.abbr }
+        get :new, params: { site_id: site.id }
       end
 
       it_behaves_like "disallows editing by unaffiliated user"
@@ -20,7 +20,7 @@ describe ImportBatchesController do
       end
 
       def make_request
-        post :create, params: { site_id: global_site.abbr }
+        post :create, params: { site_id: global_site.id }
       end
 
       it_behaves_like "disallows editing of a global site"
@@ -34,7 +34,7 @@ describe ImportBatchesController do
 
     context "for a global site" do
       def make_request
-        post :create, params: { site_id: global_site.abbr }
+        post :create, params: { site_id: global_site.id }
       end
 
       it_behaves_like "disallows editing of a global site"
@@ -42,7 +42,7 @@ describe ImportBatchesController do
 
     context "without permission to edit" do
       def make_request
-        post :create, params: { site_id: site.abbr }
+        post :create, params: { site_id: site.id }
       end
 
       it_behaves_like "disallows editing by unaffiliated user"
@@ -55,7 +55,7 @@ describe ImportBatchesController do
       before do
         post :create,
              params: {
-               site_id: site.abbr,
+               site_id: site.id,
                import_batch: {
                  raw_csv: "/a,TNA\n/b,#{long_url}",
                  tag_list: "",
@@ -116,7 +116,7 @@ describe ImportBatchesController do
       before do
         post :create,
              params: {
-               site_id: site.abbr,
+               site_id: site.id,
                import_batch: {
                  raw_csv: "a,", tag_list: ""
                },
@@ -144,7 +144,7 @@ describe ImportBatchesController do
   describe "#preview" do
     context "without permission to edit" do
       def make_request
-        get :preview, params: { site_id: site.abbr, id: 1 }
+        get :preview, params: { site_id: site.id, id: 1 }
       end
 
       it_behaves_like "disallows editing by unaffiliated user"
@@ -156,7 +156,7 @@ describe ImportBatchesController do
       end
 
       def make_request
-        post :create, params: { site_id: global_site.abbr }
+        post :create, params: { site_id: global_site.id }
       end
 
       it_behaves_like "disallows editing of a global site"
@@ -172,7 +172,7 @@ describe ImportBatchesController do
 
     context "for a global site" do
       def make_request
-        post :create, params: { site_id: global_site.abbr }
+        post :create, params: { site_id: global_site.id }
       end
 
       it_behaves_like "disallows editing of a global site"
@@ -180,7 +180,7 @@ describe ImportBatchesController do
 
     context "without permission to edit" do
       def make_request
-        get :preview, params: { site_id: site.abbr, id: 1 }
+        get :preview, params: { site_id: site.id, id: 1 }
       end
 
       it_behaves_like "disallows editing by unaffiliated user"
@@ -190,7 +190,7 @@ describe ImportBatchesController do
       def make_request
         post :import,
              params: {
-               site_id: site.abbr,
+               site_id: site.id,
                import_batch: { update_existing: "true" },
                id: batch.id,
              }
@@ -205,7 +205,7 @@ describe ImportBatchesController do
       def make_request
         post :import,
              params: {
-               site_id: site.abbr,
+               site_id: site.id,
                import_batch: { update_existing: "true" },
                id: large_batch.id,
              }
@@ -216,7 +216,7 @@ describe ImportBatchesController do
 
     context "a batch which has been submitted already" do
       def make_request
-        post :import, params: { site_id: site.abbr, id: batch.id, import_batch: {} }
+        post :import, params: { site_id: site.id, id: batch.id, import_batch: {} }
       end
 
       include_examples "it doesn't requeue a batch which has already been queued"

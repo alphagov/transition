@@ -25,7 +25,6 @@ class Site < ApplicationRecord
   validates :tna_timestamp, presence: true
   validates :organisation, presence: true
   validates :homepage, presence: true, non_blank_url: { message: :non_blank_url }
-  validates :abbr, uniqueness: true, presence: true, format: { with: /\A[a-zA-Z0-9_-]+\z/, message: :extra_characters }
   validates :special_redirect_strategy, inclusion: { in: SPECIAL_REDIRECT_STRATEGY_TYPES.values, allow_blank: true }
   validates :global_new_url, presence: { if: :global_redirect? }
   validates :global_new_url, absence: { if: :global_archive? }
@@ -46,10 +45,6 @@ class Site < ApplicationRecord
 
   def mapping_count
     self[:mapping_count].to_i
-  end
-
-  def to_param
-    abbr
   end
 
   def global_redirect?
@@ -126,11 +121,15 @@ class Site < ApplicationRecord
   end
 
   def precomputed_view_name
-    @_precomputed_view_name = %(#{abbr}_all_hits)
+    @_precomputed_view_name = %(all_hits_#{id})
   end
 
   def able_to_use_view?
     precompute_all_hits_view && Postgres::MaterializedView.exists?(precomputed_view_name)
+  end
+
+  def self.find_by_abbr_or_id(abbr_or_id)
+    find_by(abbr: abbr_or_id) || find(abbr_or_id)
   end
 
 private

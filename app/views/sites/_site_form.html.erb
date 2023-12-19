@@ -14,17 +14,6 @@
       <%= form.hidden_field :organisation_slug, value: form.object.organisation_slug %>
 
       <%= render "govuk_publishing_components/components/input", {
-        label: { text: t("helpers.label.site_form.abbr") },
-        hint: t("helpers.hint.site_form.abbr"),
-        heading_size: "m",
-        name: form.field_name(:abbr),
-        id: field_id_attribute(form.object, :abbr),
-        error_message: error_message(form.object, :abbr),
-        value: form.object.abbr,
-        width: 20
-      } %>
-
-      <%= render "govuk_publishing_components/components/input", {
         label: { text: t("helpers.label.site_form.tna_timestamp") },
         hint: t("helpers.hint.site_form.tna_timestamp").html_safe,
         heading_size: "m",

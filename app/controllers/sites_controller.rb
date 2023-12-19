@@ -46,7 +46,7 @@ class SitesController < ApplicationController
   end
 
   def destroy
-    @delete_site_form = DeleteSiteForm.new(abbr: @site.abbr, **destroy_params)
+    @delete_site_form = DeleteSiteForm.new(id: @site.id, **destroy_params)
 
     if @delete_site_form.save
       redirect_to organisation_path(@site.organisation), flash: { success: "The site and all its data have been successfully deleted" }
@@ -58,7 +58,7 @@ class SitesController < ApplicationController
 private
 
   def find_site
-    @site = Site.find_by!(abbr: params[:id])
+    @site = Site.find_by_abbr_or_id(params[:id])
   end
 
   def find_organisation
@@ -69,7 +69,6 @@ private
     params.require(:site_form).permit(
       :site_id,
       :organisation_slug,
-      :abbr,
       :tna_timestamp,
       :homepage,
       :homepage_title,
@@ -86,7 +85,7 @@ private
   end
 
   def destroy_params
-    params.require(:delete_site_form).permit(:abbr_confirmation)
+    params.require(:delete_site_form).permit(:hostname_confirmation)
   end
 
   def check_user_is_site_manager

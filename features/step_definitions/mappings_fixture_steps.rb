@@ -1,11 +1,11 @@
 Given(/^a mapping exists for the site ukba$/) do
-  @site = create :site, abbr: "ukba"
+  @site = create :site
   @mapping = create(:mapping)
   @site.mappings = [@mapping]
 end
 
-Given(/^a site "([^"]*)" exists with mappings with lots of tags$/) do |site_abbr|
-  @site = create :site, abbr: site_abbr
+Given(/^a site "([^"]*)" exists with mappings with lots of tags$/) do |_site_abbr|
+  @site = create :site
   [10, 11].each do |tag_count|
     # The site dashboard only displays the 10 most popular tags. If we make it
     # so that there are 11 tags on this site, 10 of which are predictably more
@@ -20,8 +20,8 @@ Given(/^a site "([^"]*)" exists with mappings with lots of tags$/) do |site_abbr
   end
 end
 
-Given(/^a site "([^"]*)" exists with these tagged mappings:$/) do |site_abbr, tagged_paths|
-  @site = create :site, abbr: site_abbr
+Given(/^a site "([^"]*)" exists with these tagged mappings:$/) do |_site_abbr, tagged_paths|
+  @site = create :site
 
   # tagged_paths.hashes.keys # => [:path, :tags]
   tagged_paths.hashes.each do |row|

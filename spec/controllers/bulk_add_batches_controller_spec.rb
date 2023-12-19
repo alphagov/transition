@@ -10,7 +10,7 @@ describe BulkAddBatchesController do
   describe "#new" do
     context "without permission to edit" do
       def make_request
-        get :new, params: { site_id: site.abbr }
+        get :new, params: { site_id: site.id }
       end
 
       it_behaves_like "disallows editing by unaffiliated user"
@@ -21,14 +21,19 @@ describe BulkAddBatchesController do
         login_as gds_bob
       end
 
-      it "displays the form" do
+      it "displays the form when requesting using an abbreviation" do
         get :new, params: { site_id: site.abbr }
+        expect(response.status).to eql(200)
+      end
+
+      it "displays the form when requesting using an ID" do
+        get :new, params: { site_id: site.id }
         expect(response.status).to eql(200)
       end
 
       context "but the site is global" do
         def make_request
-          post :create, params: { site_id: global_site.abbr }
+          post :create, params: { site_id: global_site.id }
         end
 
         it_behaves_like "disallows editing of a global site"
@@ -39,7 +44,7 @@ describe BulkAddBatchesController do
   describe "#create" do
     context "without permission to edit" do
       def make_request
-        post :create, params: { site_id: site.abbr }
+        post :create, params: { site_id: site.id }
       end
 
       it_behaves_like "disallows editing by unaffiliated user"
@@ -51,7 +56,7 @@ describe BulkAddBatchesController do
       end
 
       def make_request
-        post :create, params: { site_id: global_site.abbr }
+        post :create, params: { site_id: global_site.id }
       end
 
       it_behaves_like "disallows editing of a global site"
@@ -67,7 +72,7 @@ describe BulkAddBatchesController do
       it "returns to where it came from" do
         get :preview,
             params: {
-              site_id: site.abbr,
+              site_id: site.id,
               id: batch.id,
               return_path: "/donkey",
             }
@@ -80,18 +85,18 @@ describe BulkAddBatchesController do
       it "returns to the site mappings path" do
         get :preview,
             params: {
-              site_id: site.abbr,
+              site_id: site.id,
               id: batch.id,
               return_path: "http://google.com",
             }
 
-        expect(assigns(:bulk_add_cancel_destination)).to eq(site_mappings_path(site.abbr))
+        expect(assigns(:bulk_add_cancel_destination)).to eq(site_mappings_path(site.id))
       end
     end
 
     context "for a global site" do
       def make_request
-        post :create, params: { site_id: global_site.abbr }
+        post :create, params: { site_id: global_site.id }
       end
 
       it_behaves_like "disallows editing of a global site"
@@ -101,7 +106,7 @@ describe BulkAddBatchesController do
   describe "#import" do
     context "without permission to edit" do
       def make_request
-        post :import, params: { site_id: site.abbr, id: batch.id }
+        post :import, params: { site_id: site.id, id: batch.id }
       end
 
       it_behaves_like "disallows editing by unaffiliated user"
@@ -114,7 +119,7 @@ describe BulkAddBatchesController do
 
       context "but it is global" do
         def make_request
-          post :create, params: { site_id: global_site.abbr }
+          post :create, params: { site_id: global_site.id }
         end
 
         it_behaves_like "disallows editing of a global site"
@@ -124,7 +129,7 @@ describe BulkAddBatchesController do
         def make_request
           post :import,
                params: {
-                 site_id: site.abbr,
+                 site_id: site.id,
                  update_existing: "true",
                  id: batch.id,
                }
@@ -145,7 +150,7 @@ describe BulkAddBatchesController do
         def make_request
           post :import,
                params: {
-                 site_id: site.abbr,
+                 site_id: site.id,
                  update_existing: "true",
                  id: large_batch.id,
                }
@@ -156,7 +161,7 @@ describe BulkAddBatchesController do
 
       context "a batch which has been submitted already" do
         def make_request
-          post :import, params: { site_id: site.abbr, id: batch.id }
+          post :import, params: { site_id: site.id, id: batch.id }
         end
 
         include_examples "it doesn't requeue a batch which has already been queued"
@@ -176,7 +181,7 @@ describe BulkAddBatchesController do
         end
 
         before do
-          post :import, params: { site_id: site.abbr, id: batch.id }
+          post :import, params: { site_id: site.id, id: batch.id }
         end
 
         it "creates each mapping in the batch" do
@@ -217,7 +222,7 @@ describe BulkAddBatchesController do
       it "should redirect to mappings index" do
         post :import,
              params: {
-               site_id: site.abbr,
+               site_id: site.id,
                id: batch.id,
                return_path: "http://malicious.com",
              }

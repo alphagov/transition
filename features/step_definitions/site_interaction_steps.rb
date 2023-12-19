@@ -16,7 +16,6 @@ When(/^I edit this site's transition date$/) do
 end
 
 When(/^I fill in the transition site fields/) do
-  fill_in "Abbreviated name", with: "aaib"
   fill_in "TNA timestamp", with: "20141104112824"
   fill_in "Homepage", with: "https://www.gov.uk/government/organisations/air-accidents-investigation-branch"
   fill_in "Hostname", with: "www.aaib.gov.uk"
@@ -45,11 +44,11 @@ When(/^I delete this site$/) do
 end
 
 When(/^I confirm the deletion$/) do
-  fill_in "delete_site_form[abbr_confirmation]", with: @site.abbr
+  fill_in "delete_site_form[hostname_confirmation]", with: @site.default_host.hostname
   click_button I18n.t("site.confirm_destroy.confirm")
 end
 
 When(/^I fail to confirm the deletion$/) do
-  fill_in "delete_site_form[abbr_confirmation]", with: "bogus"
+  fill_in "delete_site_form[hostname_confirmation]", with: "bogus"
   click_button I18n.t("site.confirm_destroy.confirm")
 end
