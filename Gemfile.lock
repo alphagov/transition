@@ -258,7 +258,7 @@ GEM
     govuk_personalisation (0.15.0)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
-    govuk_publishing_components (37.1.0)
+    govuk_publishing_components (37.1.1)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -589,7 +589,7 @@ GEM
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    psych (5.1.1.1)
+    psych (5.1.2)
       stringio
     public_suffix (5.0.4)
     puma (6.4.0)
@@ -742,10 +742,10 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    sentry-rails (5.15.0)
+    sentry-rails (5.15.2)
       railties (>= 5.0)
-      sentry-ruby (~> 5.15.0)
-    sentry-ruby (5.15.0)
+      sentry-ruby (~> 5.15.2)
+    sentry-ruby (5.15.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
     sentry-sidekiq (5.15.0)
       sentry-ruby (~> 5.15.0)
