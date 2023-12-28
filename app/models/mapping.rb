@@ -140,7 +140,7 @@ protected
     #   '/' is a homepage path and not valid for a mapping
     #   a path that doesn't start with a '/' isn't a valid path
     # full validation still needs to be run on the path
-    !((path == "/" || path =~ /^[^\/]/))
+    !(path == "/" || path =~ /^[^\/]/)
   end
 
   def tna_timestamp

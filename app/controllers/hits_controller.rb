@@ -57,7 +57,7 @@ class HitsController < ApplicationController
 protected
 
   def set_period
-    @period = (View::Hits::TimePeriod[params[:period]] || View::Hits::TimePeriod.default)
+    @period = View::Hits::TimePeriod[params[:period]] || View::Hits::TimePeriod.default
   end
 
   def hits_in_period
