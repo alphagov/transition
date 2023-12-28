@@ -112,7 +112,9 @@ end
 
 Then(/^each hit except homepages and global redirects or archives should have a link to check its mapping$/) do
   within ".hits tbody" do
-    page.all("tr").each do |row|
+    rows = page.all("tr")
+
+    rows.each do |row|
       path = row.find(:css, ".path").text
       next if path == "/" || @site.global_type.present?
 

@@ -183,7 +183,9 @@ Then(/^the mappings should all have the tags "([^"]*)"$/) do |tag_list|
   expect(page).to have_selector(".mappings-index .tag-list", count: @site.mappings.count)
 
   expected_tags = tag_list.split(",").map(&:strip)
-  page.all(".tag-list").each do |mapping_tags_list|
+  mapping_tags_lists = page.all(".tag-list")
+
+  mapping_tags_lists.each do |mapping_tags_list|
     expected_tags.each do |tag|
       expect(mapping_tags_list).to have_selector(".tag", text: tag)
     end

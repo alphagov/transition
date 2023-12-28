@@ -189,7 +189,7 @@ describe BulkAddBatchesController do
         end
 
         it "has the long url for each" do
-          Mapping.all.each do |mapping|
+          Mapping.all.find_each do |mapping|
             expect(mapping.new_url).to eql(long_url)
           end
         end
