@@ -296,7 +296,7 @@ describe Transition::Import::Hits do
         lambda do |context|
           key = context.params[:key]
           file = contents[key]
-          return { body: File.open("spec/fixtures/hits/#{file}") }
+          { body: File.open("spec/fixtures/hits/#{file}") }
         end,
       )
 
