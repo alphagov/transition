@@ -277,7 +277,7 @@ GEM
       capybara (>= 3.36)
       puma
       selenium-webdriver (>= 4.0)
-    gretel (4.6.0)
+    gretel (5.0.0)
       actionview (>= 5.1, < 7.2)
       railties (>= 5.1, < 7.2)
     hashdiff (1.0.1)
@@ -290,9 +290,9 @@ GEM
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.7.1)
-    irb (1.11.0)
+    irb (1.11.1)
       rdoc
-      reline (>= 0.3.8)
+      reline (>= 0.4.2)
     jmespath (1.6.2)
     jquery-rails (4.6.0)
       rails-dom-testing (>= 1, < 3)
