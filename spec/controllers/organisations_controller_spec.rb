@@ -21,8 +21,8 @@ describe OrganisationsController do
     let(:organisation) { create(:organisation, title: "HM Government Department") }
 
     before do
-      create(:site, abbr: "site-1", organisation:)
       create(:site, abbr: "site-2", organisation:)
+      create(:site, abbr: "site-1", organisation:)
       login_as_stub_user
       get :show, params: { id: organisation.whitehall_slug }
     end
@@ -31,9 +31,11 @@ describe OrganisationsController do
       expect(response.status).to be(200)
     end
 
-    it "lists the sites for the organisation" do
+    it "lists the sites for the organisation in order of default hostname" do
       expect(response.body).to include("site-1.gov.uk")
       expect(response.body).to include("site-2.gov.uk")
+
+      expect(response.body.index("site-1.gov.uk")).to be < response.body.index("site-2.gov.uk")
     end
   end
 end
