@@ -2,6 +2,7 @@
   <%= stylesheet_link_tag "legacy_layout", :media => "all" %>
   <%= javascript_include_tag "legacy_layout" %>
   <%= csrf_meta_tag %>
+  <%= render "layouts/google_tag_manager" %>
   <%= yield :extra_headers %>
 <% end %>
 <% content_for :navbar_items do %>
