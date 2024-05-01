@@ -101,9 +101,9 @@ class Mapping < ApplicationRecord
   # eg www.gov.uk/foo is technically not a URL, but we can prepend https:// and
   # it becomes a URL.
   def self.ensure_url(uri)
-    if uri.blank? || uri =~ %r{^https?:}
+    if uri.blank? || uri.start_with?("http:", "https:")
       uri
-    elsif %r{^www.gov.uk}.match?(uri)
+    elsif %r{\Awww\.gov\.uk(?:/|\z)}.match?(uri)
       "https://#{uri}"
     else
       "http://#{uri}"
@@ -119,7 +119,9 @@ protected
   end
 
   def trim_scheme_host_and_port_from_path
-    if %r{^https?:}.match?(path)
+    return if path.nil?
+
+    if path.start_with?("http:", "https:")
       url = Addressable::URI.parse(path)
       self.path = url.request_uri
     end
@@ -140,7 +142,7 @@ protected
     #   '/' is a homepage path and not valid for a mapping
     #   a path that doesn't start with a '/' isn't a valid path
     # full validation still needs to be run on the path
-    !(path == "/" || path =~ /^[^\/]/)
+    !(path == "/" || path =~ /\A[^\/]/)
   end
 
   def tna_timestamp
