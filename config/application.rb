@@ -61,5 +61,8 @@ module Transition
     # to build, once to compress) which breaks the usage of "unquote" to use
     # CSS that has same function names as SCSS such as max
     config.assets.css_compressor = nil
+
+    # Sanitize and cleanup invalid UTF-8 characters in request URIs, headers and cookies
+    config.middleware.insert 0, Rack::UTF8Sanitizer, sanitize_null_bytes: true
   end
 end
