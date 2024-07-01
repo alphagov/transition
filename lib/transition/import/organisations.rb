@@ -36,7 +36,11 @@ module Transition
             create(whitehall_orgs.by_id[parent["id"]])
           end
 
-          target.save!
+          begin
+            target.save!
+          rescue ActiveRecord::RecordInvalid
+            Rails.logger.info("#{whitehall_org["details"]["slug"]}, #{whitehall_org["details"]["content_id"]}")            
+          end
         end
       end
 
