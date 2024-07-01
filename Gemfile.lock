@@ -255,7 +255,7 @@ GEM
       jquery-rails (~> 4.3)
       plek (>= 2.1)
       rails (>= 6)
-    govuk_app_config (9.12.0)
+    govuk_app_config (9.13.0)
       logstasher (~> 2.1)
       opentelemetry-exporter-otlp (>= 0.25, < 0.29)
       opentelemetry-instrumentation-all (>= 0.39.1, < 0.62.0)
@@ -349,7 +349,7 @@ GEM
     mime-types-data (3.2024.0604)
     mini_mime (1.1.5)
     mini_portile2 (2.8.7)
-    minitest (5.24.0)
+    minitest (5.24.1)
     mlanett-redis-lock (0.2.7)
       redis
     msgpack (1.7.2)
