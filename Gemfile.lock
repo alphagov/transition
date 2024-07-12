@@ -807,6 +807,8 @@ GEM
     strscan (3.1.0)
     sys-uname (1.2.3)
       ffi (~> 1.1)
+    terser (1.2.3)
+      execjs (>= 0.3.0, < 3)
     thor (1.3.1)
     tilt (2.3.0)
     timecop (0.9.10)
@@ -815,8 +817,6 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
-    uglifier (4.2.0)
-      execjs (>= 0.3.0, < 3)
     unicode-display_width (2.5.0)
     uri (0.13.0)
     version_gem (1.1.4)
@@ -890,8 +890,8 @@ DEPENDENCIES
   shoulda-matchers
   simplecov
   sprockets
+  terser
   timecop
-  uglifier
   web-console
   webmock
   whenever

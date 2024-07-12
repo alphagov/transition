@@ -30,7 +30,7 @@ gem "whenever"
 gem "sass"
 gem "sass-rails"
 gem "sprockets"
-gem "uglifier"
+gem "terser"
 
 group :development do
   gem "web-console"
