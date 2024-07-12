@@ -1,6 +1,7 @@
 <% content_for :head do %>
   <%= stylesheet_link_tag "legacy_layout", :media => "all" %>
   <%= javascript_include_tag "legacy_layout" %>
+  <%= javascript_include_tag "es6-components", type: "module" %>
   <%= csrf_meta_tag %>
   <%= render "layouts/google_tag_manager" %>
   <%= yield :extra_headers %>
