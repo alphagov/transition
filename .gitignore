@@ -35,6 +35,8 @@
 
 # Ignore compiled assets
 /public/assets
+/app/assets/builds/*
+!/app/assets/builds/.keep
 
 # https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 .yarn/*

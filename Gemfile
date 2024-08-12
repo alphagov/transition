@@ -7,6 +7,7 @@ gem "activerecord-session_store"
 gem "acts-as-taggable-on"
 gem "aws-sdk-s3"
 gem "bootsnap", require: false
+gem "dartsass-rails"
 gem "gds-api-adapters"
 gem "gds-sso"
 gem "google-api-client"
@@ -28,7 +29,6 @@ gem "sentry-sidekiq"
 gem "whenever"
 
 gem "sass"
-gem "sass-rails"
 gem "sprockets"
 gem "terser"
 
