@@ -293,9 +293,9 @@ GEM
       capybara (>= 3.36)
       puma
       selenium-webdriver (>= 4.0)
-    gretel (5.0.0)
-      actionview (>= 5.1, < 7.2)
-      railties (>= 5.1, < 7.2)
+    gretel (5.0.1)
+      actionview (>= 6.1)
+      railties (>= 6.1)
     hashdiff (1.1.0)
     hashie (5.0.0)
     htmlentities (4.3.4)
@@ -352,7 +352,7 @@ GEM
     mime-types-data (3.2024.0604)
     mini_mime (1.1.5)
     mini_portile2 (2.8.7)
-    minitest (5.24.1)
+    minitest (5.25.0)
     mlanett-redis-lock (0.2.7)
       redis
     msgpack (1.7.2)
