@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "7.1.3.4"
+gem "rails", "7.1.3.4" # Ideally version should be synced with Bouncer (activerecord)
 
 gem "activerecord-import"
 gem "activerecord-session_store"
@@ -19,7 +19,7 @@ gem "gretel"
 gem "htmlentities"
 gem "kaminari"
 gem "mlanett-redis-lock"
-gem "optic14n" # Ideally version should be synced with bouncer
+gem "optic14n" # Ideally version should be synced with Bouncer
 gem "paper_trail"
 gem "pg"
 gem "plek"
