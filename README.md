@@ -10,6 +10,14 @@ You can use the [GOV.UK Docker environment](https://github.com/alphagov/govuk-do
 
 **Use GOV.UK Docker to run any commands that follow.**
 
+### Relationship with Bouncer
+
+Bouncer and Transition currently share a database. As a result, we aim to keep a
+few of their dependencies in sync (on the same version), namely:
+
+- rails (Transition) and activerecord (Bouncer)
+- optic14n
+
 ### Running the tests
 
 ```
