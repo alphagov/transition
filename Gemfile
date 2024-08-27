@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "7.1.3.4" # Ideally version should be synced with Bouncer (activerecord)
+gem "rails", "7.2.1" # Ideally version should be synced with Bouncer (activerecord)
 
 gem "activerecord-import"
 gem "activerecord-session_store"
@@ -40,6 +40,7 @@ group :test do
   gem "capybara-select-2"
   gem "cucumber-rails", require: false
   gem "database_cleaner"
+  gem "database_cleaner-active_record"
   gem "factory_bot_rails"
   gem "rails-controller-testing"
   gem "shoulda-matchers"
