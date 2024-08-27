@@ -40,6 +40,7 @@ group :test do
   gem "capybara-select-2"
   gem "cucumber-rails", require: false
   gem "database_cleaner"
+  gem "database_cleaner-active_record"
   gem "factory_bot_rails"
   gem "rails-controller-testing"
   gem "shoulda-matchers"
