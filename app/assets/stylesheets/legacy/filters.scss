@@ -60,7 +60,7 @@ a.filter-option:visited,
 
 .dropdown-text-input {
   width: 600px;
-  padding: $default-vertical-margin/2 $grid-gutter-width/2;
+  padding: calc($default-vertical-margin / 2) calc($grid-gutter-width / 2);
 }
 
 .remove-filters {

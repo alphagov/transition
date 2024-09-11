@@ -1,8 +1,8 @@
 /* Tags
    ========================================================================== */
 
-$tag-padding-top-bottom: (2em/14);
-$tag-padding-left-right: (5em/14);
+$tag-padding-top-bottom: calc(2em / 14);
+$tag-padding-left-right: calc(5em / 14);
 
 %tag-foundation {
   color: $link-color;
@@ -15,7 +15,7 @@ $tag-padding-left-right: (5em/14);
   @extend %tag-foundation;
   padding: $tag-padding-top-bottom $tag-padding-left-right;
   display: inline-block;
-  margin-bottom: $default-vertical-margin / 3;
+  margin-bottom: calc($default-vertical-margin / 3);
 }
 
 .tag-active,
@@ -33,7 +33,7 @@ a.tag:hover {
 .tag .glyphicon-remove {
   @extend %glyphicon-smaller-than-text;
   position: relative;
-  top: (1em/14);
+  top: calc(1em / 14);
 }
 
 .tag-list {
