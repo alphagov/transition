@@ -40,7 +40,7 @@ class BulkAddBatchesController < ApplicationController
       @batch.update!(batch_params.merge(state: "queued"))
 
       if @batch.entries_to_process.count > 20
-        MappingsBatchWorker.perform_async(@batch.id)
+        MappingsBatchJob.perform_async(@batch.id)
         flash[:show_background_batch_progress_modal] = true
       else
         @batch.process

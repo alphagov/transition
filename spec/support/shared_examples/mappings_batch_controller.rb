@@ -25,7 +25,7 @@ shared_examples "it processes a large batch in the background" do
   end
 
   it "queues a job" do
-    expect(MappingsBatchWorker.jobs.size).to eql(1)
+    expect(MappingsBatchJob.jobs.size).to eql(1)
   end
 
   it "updates the batch state" do
@@ -41,7 +41,7 @@ shared_examples "it doesn't requeue a batch which has already been queued" do
   end
 
   it "doesn't queue it (again)" do
-    expect(MappingsBatchWorker.jobs.size).to eql(0)
+    expect(MappingsBatchJob.jobs.size).to eql(0)
   end
 
   it "redirects to the site return URL" do
