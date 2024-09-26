@@ -1,5 +1,5 @@
-class MappingsBatchWorker
-  include Sidekiq::Worker
+class MappingsBatchJob
+  include Sidekiq::Job
   sidekiq_options retry: false
 
   def perform(mappings_batch_id)
@@ -11,3 +11,5 @@ class MappingsBatchWorker
     end
   end
 end
+
+MappingsBatchWorker = MappingsBatchJob
