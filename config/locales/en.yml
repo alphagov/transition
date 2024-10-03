@@ -86,7 +86,7 @@ en:
         special_redirect_strategy_options:
           via_aka: The supplier is redirecting some paths to our aka domain
           supplier: The supplier is managing redirects to gov.uk. No traffic comes through Bouncer for this site.
-        aliases: This is a list of alias domains. Enter as a comma-separated list.
+        aliases: This is a list of alias domains. Enter as a comma-separated list, without spaces.
   site:
     confirm_destroy:
       confirm: I understand the consequences, delete this site
