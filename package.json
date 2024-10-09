@@ -4,17 +4,17 @@
   "private": true,
   "author": "Government Digital Service",
   "license": "MIT",
+  "packageManager": "yarn@3.4.1",
+  "scripts": {
+    "jasmine:prepare": "RAILS_ENV=test bundle exec rails assets:clobber assets:precompile",
+    "jasmine:ci": "yarn run jasmine:prepare && yarn run jasmine-browser-runner runSpecs",
+    "jasmine:browser": "yarn run jasmine:prepare && yarn run jasmine-browser-runner"
+  },
   "devDependencies": {
     "jasmine-browser-runner": "^2.5.0",
     "jasmine-core": "^5.3.0"
   },
   "resolutions": {
     "express": "4.21.1"
-  },
-  "scripts": {
-    "jasmine:prepare": "RAILS_ENV=test bundle exec rails assets:clobber assets:precompile",
-    "jasmine:ci": "yarn run jasmine:prepare && yarn run jasmine-browser-runner runSpecs",
-    "jasmine:browser": "yarn run jasmine:prepare && yarn run jasmine-browser-runner"
-  },
-  "packageManager": "yarn@3.4.1"
+  }
 }
