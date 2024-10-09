@@ -8,6 +8,9 @@
     "jasmine-browser-runner": "^2.5.0",
     "jasmine-core": "^5.3.0"
   },
+  "resolutions": {
+    "express": "4.21.1"
+  },
   "scripts": {
     "jasmine:prepare": "RAILS_ENV=test bundle exec rails assets:clobber assets:precompile",
     "jasmine:ci": "yarn run jasmine:prepare && yarn run jasmine-browser-runner runSpecs",
