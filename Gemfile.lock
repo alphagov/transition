@@ -193,7 +193,7 @@ GEM
     ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-arm64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
-    gds-api-adapters (97.0.0)
+    gds-api-adapters (97.1.0)
       addressable
       link_header
       null_logger
