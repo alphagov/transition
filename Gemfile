@@ -26,7 +26,6 @@ gem "plek"
 gem "rack-utf8_sanitizer"
 gem "select2-rails", "~> 3.5.11" # Version 4 changes CSS classes considerably
 gem "sentry-sidekiq"
-gem "whenever"
 
 gem "sass"
 gem "sprockets"
