@@ -24,10 +24,9 @@ gem "paper_trail"
 gem "pg"
 gem "plek"
 gem "rack-utf8_sanitizer"
+gem "sass"
 gem "select2-rails", "~> 3.5.11" # Version 4 changes CSS classes considerably
 gem "sentry-sidekiq"
-
-gem "sass"
 gem "sprockets"
 gem "terser"
 
