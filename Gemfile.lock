@@ -603,7 +603,7 @@ GEM
       opentelemetry-semantic_conventions
     opentelemetry-semantic_conventions (1.10.1)
       opentelemetry-api (~> 1.0)
-    optic14n (3.0.0)
+    optic14n (3.0.1)
       addressable (~> 2.7)
     os (1.1.4)
     ostruct (0.6.1)
