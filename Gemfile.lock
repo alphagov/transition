@@ -338,7 +338,7 @@ GEM
       rexml (>= 3.3.9)
     language_server-protocol (3.17.0.3)
     link_header (0.0.8)
-    logger (1.6.2)
+    logger (1.6.3)
     logstasher (2.1.5)
       activesupport (>= 5.2)
       request_store
@@ -688,7 +688,7 @@ GEM
       psych (>= 4.0.0)
     redis (5.3.0)
       redis-client (>= 0.22.0)
-    redis-client (0.22.2)
+    redis-client (0.23.0)
       connection_pool
     regexp_parser (2.9.3)
     reline (0.5.12)
@@ -785,11 +785,11 @@ GEM
     sentry-rails (5.22.0)
       railties (>= 5.0)
       sentry-ruby (~> 5.22.0)
-    sentry-ruby (5.22.0)
+    sentry-ruby (5.22.1)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sentry-sidekiq (5.22.0)
-      sentry-ruby (~> 5.22.0)
+    sentry-sidekiq (5.22.1)
+      sentry-ruby (~> 5.22.1)
       sidekiq (>= 3.0)
     shoulda-matchers (6.4.0)
       activesupport (>= 5.2.0)
