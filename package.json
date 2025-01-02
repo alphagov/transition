@@ -15,6 +15,6 @@
     "jasmine-core": "^5.5.0"
   },
   "resolutions": {
-    "express": "4.21.1"
+    "express": "4.21.2"
   }
 }
