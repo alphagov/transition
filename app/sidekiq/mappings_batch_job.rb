@@ -11,5 +11,3 @@ class MappingsBatchJob
     end
   end
 end
-
-MappingsBatchWorker = MappingsBatchJob
