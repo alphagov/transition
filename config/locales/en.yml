@@ -68,6 +68,7 @@ en:
         options: Options (Optional)
         query_params: Query params (Optional)
         aliases: Aliases (Optional)
+        alternative_archive_text: Alternative archive text (Optional)
     hint:
       site_form:
         host: This is the primary hostname for the site. For example, "www.example.com".
@@ -87,6 +88,7 @@ en:
           via_aka: The supplier is redirecting some paths to our aka domain
           supplier: The supplier is managing redirects to gov.uk. No traffic comes through Bouncer for this site.
         aliases: This is a list of alias domains. Enter as a comma-separated list, without spaces.
+        alternative_archive_text: This is text to be displayed on the archive landing page. Markdown is supported.
   site:
     confirm_destroy:
       confirm: I understand the consequences, delete this site

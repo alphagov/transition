@@ -80,6 +80,7 @@ private
       :query_params,
       :special_redirect_strategy,
       :aliases,
+      :alternative_archive_text,
       extra_organisations: [],
     )
   end

@@ -15,6 +15,7 @@ class SiteForm
   attribute :query_params
   attribute :global_redirect_append_path, :boolean, default: false
   attribute :special_redirect_strategy
+  attribute :alternative_archive_text
 
   attribute :hostname
   attribute :aliases
@@ -39,6 +40,7 @@ class SiteForm
       special_redirect_strategy: site.special_redirect_strategy,
       hostname: site.default_host.hostname,
       aliases: site.hosts_excluding_primary_and_aka.map(&:hostname).join(","),
+      alternative_archive_text: site.alternative_archive_text,
     )
   end
 
@@ -75,6 +77,7 @@ private
         global_redirect_append_path:,
         query_params:,
         special_redirect_strategy:,
+        alternative_archive_text:,
       )
     end
   end

@@ -170,6 +170,18 @@
         error_message: error_message(form.object, :aliases),
       } %>
 
+      <%= render "govuk_publishing_components/components/textarea", {
+        label: {
+          text: t("helpers.label.site_form.alternative_archive_text"),
+          heading_size: "m"
+        },
+        hint: t("helpers.hint.site_form.alternative_archive_text"),
+        name: form.field_name(:alternative_archive_text),
+        id: field_id_attribute(form.object, :alternative_archive_text),
+        value: form.object.alternative_archive_text,
+        error_message: error_message(form.object, :alternative_archive_text),
+      } %>
+
       <%= render "govuk_publishing_components/components/button", {
         text: "Save"
       } %>
