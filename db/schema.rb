@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_12_143730) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_15_102247) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "daily_hit_totals", force: :cascade do |t|
     t.integer "host_id", null: false
@@ -173,6 +173,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_12_143730) do
     t.string "homepage_title", limit: 255
     t.string "homepage_furl", limit: 255
     t.boolean "precompute_all_hits_view", default: false, null: false
+    t.text "alternative_archive_text"
     t.index ["abbr"], name: "index_sites_on_site", unique: true
     t.index ["organisation_id"], name: "index_sites_on_organisation_id"
   end
@@ -228,5 +229,4 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_12_143730) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["hostname"], name: "index_whitelisted_hosts_on_hostname", unique: true
   end
-
 end
