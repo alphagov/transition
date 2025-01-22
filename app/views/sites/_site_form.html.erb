@@ -165,7 +165,7 @@
         },
         hint: t("helpers.hint.site_form.aliases"),
         name: form.field_name(:aliases),
-        id: field_id_attribute(form.object, :aliases),
+        textarea_id: field_id_attribute(form.object, :aliases),
         value: form.object.aliases,
         error_message: error_message(form.object, :aliases),
       } %>
