@@ -286,7 +286,7 @@ GEM
       rouge
       sprockets (>= 3)
       sprockets-rails
-    govuk_sidekiq (9.0.3)
+    govuk_sidekiq (9.0.4)
       gds-api-adapters (>= 19.1.0)
       govuk_app_config (>= 1.1)
       redis-client (>= 0.22.2)
@@ -355,7 +355,7 @@ GEM
     mime-types (3.6.0)
       logger
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.1203)
+    mime-types-data (3.2025.0107)
     mini_mime (1.1.5)
     mini_portile2 (2.8.8)
     minitest (5.25.4)
@@ -692,7 +692,7 @@ GEM
       psych (>= 4.0.0)
     redis (5.3.0)
       redis-client (>= 0.22.0)
-    redis-client (0.23.0)
+    redis-client (0.23.2)
       connection_pool
     regexp_parser (2.10.0)
     reline (0.6.0)
@@ -797,7 +797,8 @@ GEM
       sidekiq (>= 3.0)
     shoulda-matchers (6.4.0)
       activesupport (>= 5.2.0)
-    sidekiq (7.3.6)
+    sidekiq (7.3.8)
+      base64
       connection_pool (>= 2.3.0)
       logger
       rack (>= 2.2.4)
