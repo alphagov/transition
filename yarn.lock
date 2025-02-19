@@ -643,19 +643,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jasmine-browser-runner@npm:^2.5.0":
-  version: 2.5.0
-  resolution: "jasmine-browser-runner@npm:2.5.0"
+"jasmine-browser-runner@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "jasmine-browser-runner@npm:3.0.0"
   dependencies:
     ejs: ^3.1.6
-    express: ^4.19.2
+    express: ^5.0.0
     glob: ^10.0.0
     selenium-webdriver: ^4.12.0
   peerDependencies:
-    jasmine-core: ^5.0.0
+    jasmine-core: ^5.5.0
   bin:
     jasmine-browser-runner: bin/jasmine-browser-runner
-  checksum: e6ed14fb514ff8599c65e720ad91c1ee1edc940916aba73434a8ba7742edaa27d7044bf7bf7eea1667f91df82760c761f23ef64a96b6c914824be4c07695e67e
+  checksum: 682b8fbaa90342ec25d7db11a38c3c8fc2d8458f4cf0b39b85c98feb42dfe11902890248a58bd7febf8ac5c4e19905cf43d411b98dd81c0becd9554211e5ae46
   languageName: node
   linkType: hard
 
@@ -1149,7 +1149,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "transition@workspace:."
   dependencies:
-    jasmine-browser-runner: ^2.5.0
+    jasmine-browser-runner: ^3.0.0
     jasmine-core: ^5.6.0
   languageName: unknown
   linkType: soft
