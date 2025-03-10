@@ -20,7 +20,7 @@ module Transition
       end
 
       def self.active?
-        @active.nil? ? true : @active
+        @active.nil? || @active
       end
 
       def console

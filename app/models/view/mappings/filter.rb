@@ -90,9 +90,7 @@ module View
           @filter = filter
         end
 
-        def params
-          @filter.params
-        end
+        delegate :params, to: :@filter
 
         def with_tag(tag)
           tagged = @filter.tags
