@@ -3,8 +3,7 @@ Then(/^I should still be editing a mapping$/) do
 end
 
 Then(/^I should be returned to the mappings list I was on$/) do
-  uri = Addressable::URI.parse(current_url)
-  expect("#{uri.path}?#{uri.query}").to eql(site_mappings_path("bis", fake_param: 1))
+  expect(page).to have_current_path(site_mappings_path("bis", fake_param: 1))
 end
 
 Then(/^the "([^"]*)" filter should be visible and contain "([^"]*)"$/) do |filter_type, value|
