@@ -187,6 +187,8 @@ When(/^I jump to the site or mapping "(.*?)"$/) do |url|
   page.execute_script("Mousetrap.trigger('g m');")
   fill_in "Old URL", with: url
   click_button "Go to site or mapping"
+
+  expect(page).to have_current_path(%r{/(:?sites|mappings).*})
 end
 
 When(/^I sort the mappings by hits$/) do
