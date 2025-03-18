@@ -63,10 +63,14 @@ When(/^I open the "(.*)" filter$/) do |filter_type|
 end
 
 When(/^I open the "(.*)" filter and filter by "(.*)"$/) do |filter_type, value|
+  previous_path = current_path
+
   within ".filters#{' .filter-by-path' if filter_type == 'Path'}" do
     click_link filter_type
     fill_in filter_type, with: value
     click_button "Filter"
+
+    expect(page).not_to have_current_path(previous_path)
   end
 end
 
