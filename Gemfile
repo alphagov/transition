@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "8.0.1" # Ideally version should be synced with Bouncer (activerecord)
+gem "rails", "8.0.2" # Ideally version should be synced with Bouncer (activerecord)
 
 gem "activerecord-import"
 gem "activerecord-session_store"
