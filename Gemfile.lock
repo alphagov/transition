@@ -822,7 +822,7 @@ GEM
     sentry-sidekiq (5.23.0)
       sentry-ruby (~> 5.23.0)
       sidekiq (>= 3.0)
-    shoulda-matchers (6.4.0)
+    shoulda-matchers (6.5.0)
       activesupport (>= 5.2.0)
     sidekiq (7.3.9)
       base64
