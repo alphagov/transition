@@ -16,7 +16,7 @@ describe Transition::Import::WhitehallOrgs do
 
     subject(:ago) do
       whitehall_orgs.by_id[
-        "https://whitehall-admin.production.alphagov.co.uk/api/organisations/attorney-generals-office"
+        "https://whitehall-admin.production.alphagov.co.uk/api/organisations/attorney-generals-office",
       ]
     end
 
