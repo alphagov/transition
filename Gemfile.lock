@@ -280,7 +280,7 @@ GEM
     govuk_personalisation (1.1.0)
       plek (>= 1.9.0)
       rails (>= 6, < 9)
-    govuk_publishing_components (56.2.2)
+    govuk_publishing_components (56.3.0)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -375,7 +375,7 @@ GEM
     mutex_m (0.3.0)
     net-http (0.6.0)
       uri
-    net-imap (0.5.7)
+    net-imap (0.5.8)
       date
       net-protocol
     net-pop (0.1.2)
@@ -431,7 +431,7 @@ GEM
       opentelemetry-api (~> 1.0)
       opentelemetry-instrumentation-active_support (~> 0.7)
       opentelemetry-instrumentation-base (~> 0.23.0)
-    opentelemetry-instrumentation-action_pack (0.12.0)
+    opentelemetry-instrumentation-action_pack (0.12.1)
       opentelemetry-api (~> 1.0)
       opentelemetry-instrumentation-base (~> 0.23.0)
       opentelemetry-instrumentation-rack (~> 0.21)
@@ -731,7 +731,7 @@ GEM
       netrc (~> 0.8)
     retriable (3.1.2)
     rexml (3.4.1)
-    rouge (4.5.1)
+    rouge (4.5.2)
     rspec-collection_matchers (1.2.1)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.13.3)
