@@ -115,7 +115,7 @@ GEM
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
-    brakeman (7.0.0)
+    brakeman (7.0.2)
       racc
     builder (3.3.0)
     capybara (3.40.0)
@@ -296,7 +296,7 @@ GEM
       govuk_app_config (>= 1.1)
       redis-client (>= 0.22.2)
       sidekiq (~> 7.0, < 8)
-    govuk_test (4.1.1)
+    govuk_test (4.1.2)
       brakeman (>= 5.0.2)
       capybara (>= 3.36)
       puma
@@ -809,7 +809,7 @@ GEM
       ffi (~> 1.9)
     securerandom (0.4.1)
     select2-rails (3.5.11)
-    selenium-webdriver (4.30.1)
+    selenium-webdriver (4.32.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
