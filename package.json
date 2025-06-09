@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "jasmine-browser-runner": "^3.0.0",
-    "jasmine-core": "^5.7.1"
+    "jasmine-core": "^5.8.0"
   },
   "resolutions": {
     "express": "4.21.2"
