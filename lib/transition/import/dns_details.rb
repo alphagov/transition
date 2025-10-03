@@ -16,7 +16,7 @@ module Transition
 
       def import!
         hosts.each do |host|
-          $stderr.print "."
+          warn "Importing CNAME / A records for #{host}"
 
           add_cname_record_details(host) || add_a_record_details(host)
 
