@@ -309,7 +309,7 @@ GEM
       railties (>= 6.1)
     hashdiff (1.2.1)
     hashie (5.0.0)
-    htmlentities (4.4.1)
+    htmlentities (4.4.2)
     http-accept (1.7.0)
     http-cookie (1.0.8)
       domain_name (~> 0.5)
