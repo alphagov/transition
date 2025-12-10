@@ -304,7 +304,7 @@ GEM
       capybara (>= 3.36)
       puma
       selenium-webdriver (>= 4.0)
-    gretel (5.0.1)
+    gretel (5.1.0)
       actionview (>= 6.1)
       railties (>= 6.1)
     hashdiff (1.2.1)
