@@ -13,8 +13,5 @@
   "devDependencies": {
     "jasmine-browser-runner": "^3.0.0",
     "jasmine-core": "^5.13.0"
-  },
-  "resolutions": {
-    "express": "4.21.2"
   }
 }
