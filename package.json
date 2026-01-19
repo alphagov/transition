@@ -11,7 +11,7 @@
     "jasmine:browser": "yarn run jasmine:prepare && yarn run jasmine-browser-runner"
   },
   "devDependencies": {
-    "jasmine-browser-runner": "^3.0.0",
+    "jasmine-browser-runner": "^4.0.0",
     "jasmine-core": "^6.0.0"
   }
 }
