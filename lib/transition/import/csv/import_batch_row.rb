@@ -10,7 +10,7 @@ module Transition
           @site = site
           @line_number = line_number
           @old_value = csv_row[0].strip
-          @new_value = csv_row[1].present? ? csv_row[1].strip : nil
+          @new_value = csv_row[1].presence&.strip
         end
 
         def ignorable?
