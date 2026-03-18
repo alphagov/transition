@@ -46,12 +46,10 @@ Then(/^I should see a preview of my small batch of mappings$/) do
 end
 
 Then(/^I should see a preview of my large batch of mappings$/) do
+  expect(page).to have_selector("table.mappings tbody tr .breakable", count: 20)
   steps %{
     Then I should see "Preview mappings (20 of 21)"
   }
-  within "table.mappings tbody" do
-    expect(page).to have_selector("tr .breakable", count: 20)
-  end
 end
 
 Then(/^I should see prominent progress of the import$/) do

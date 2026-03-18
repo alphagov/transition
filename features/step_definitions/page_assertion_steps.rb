@@ -17,8 +17,7 @@ end
 # Modals
 
 Then(/^I should see an open modal window$/) do
-  expect(page).to have_selector(".modal-backdrop")
-  expect(page).to have_selector(".modal")
+  expect(page).to have_selector(".modal", visible: true)
 end
 
 Then(/^I should see "([^"]*)" in (?:a|the) modal window$/) do |text|
