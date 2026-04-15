@@ -3,15 +3,21 @@ updates:
   - package-ecosystem: bundler
     directory: /
     open-pull-requests-limit: 20
+    cooldown:
+      default-days: 3
     schedule:
       interval: daily
 
   - package-ecosystem: npm
     directory: /
+    cooldown:
+      default-days: 3
     schedule:
       interval: daily
 
   - package-ecosystem: github-actions
     directory: /
+    cooldown:
+      default-days: 3
     schedule:
       interval: daily
