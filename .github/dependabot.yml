@@ -7,13 +7,35 @@ updates:
       default-days: 3
     schedule:
       interval: daily
-
+    groups:
+      test:
+        patterns:
+          - "factory_bot*"
+          - "capybara-*"
+          - "cucumber*"
+          - "database_cleaner*"
+          - "govuk_test"
+          - "rails-controller-testing"
+          - "rspec"
+          - "rspec-*"
+          - "shoulda-matchers"
+          - "simplecov"
+          - "timecop"
+          - "webmock"
+      activerecord:
+        patterns:
+          - "activerecord-*"
+  
   - package-ecosystem: npm
     directory: /
     cooldown:
       default-days: 3
     schedule:
       interval: daily
+    groups:
+      test:
+        patterns:
+          - "jasmine-*"
 
   - package-ecosystem: github-actions
     directory: /
