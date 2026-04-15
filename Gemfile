@@ -21,6 +21,7 @@ gem "htmlentities"
 gem "kaminari"
 gem "mlanett-redis-lock"
 gem "optic14n" # Ideally version should be synced with Bouncer
+gem "ostruct"
 gem "paper_trail"
 gem "pg"
 gem "plek"

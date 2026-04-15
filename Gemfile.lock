@@ -910,6 +910,7 @@ DEPENDENCIES
   kaminari
   mlanett-redis-lock
   optic14n
+  ostruct
   paper_trail
   pg
   plek
