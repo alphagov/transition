@@ -2,13 +2,13 @@ version: 2
 updates:
   - package-ecosystem: bundler
     directory: /
-    open-pull-requests-limit: 20
     schedule:
       interval: weekly
       day: tuesday
       time: "07:00"
     cooldown:
       default-days: 3
+    open-pull-requests-limit: 25
     groups:
       test:
         patterns:
@@ -36,6 +36,7 @@ updates:
       time: "07:00"
     cooldown:
       default-days: 3
+    open-pull-requests-limit: 25
     groups:
       test:
         patterns:
@@ -49,3 +50,5 @@ updates:
       time: "07:00"
     cooldown:
       default-days: 3
+    open-pull-requests-limit: 25
+
