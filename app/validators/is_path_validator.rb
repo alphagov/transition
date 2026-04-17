@@ -6,6 +6,7 @@ class IsPathValidator < ActiveModel::EachValidator
         "can't be blank",
       ) && return
     end
+
     if /^[^\/]/.match?(value)
       record.errors.add(
         attribute,
