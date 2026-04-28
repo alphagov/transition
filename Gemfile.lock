@@ -202,7 +202,7 @@ GEM
     ffi (1.17.4-aarch64-linux-gnu)
     ffi (1.17.4-arm64-darwin)
     ffi (1.17.4-x86_64-linux-gnu)
-    gds-api-adapters (103.3.0)
+    gds-api-adapters (103.3.1)
       addressable
       link_header
       null_logger
@@ -315,7 +315,7 @@ GEM
       logger
     htmlentities (4.4.2)
     http-accept (1.7.0)
-    http-cookie (1.1.4)
+    http-cookie (1.1.6)
       domain_name (~> 0.5)
     httpclient (2.9.0)
       mutex_m
