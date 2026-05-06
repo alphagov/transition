@@ -51,8 +51,9 @@ en:
       site_form:
         global_redirect_append_path_options:
           1: Should the path the user supplied be appended to the URL for the global redirect?
-        global_type: Global type (Optional)
+        global_type: Global type
         global_type_options:
+          none: Non-global
           redirect: Redirect
           archive: Archive
         special_redirect_strategy_options:
@@ -79,6 +80,7 @@ en:
         homepage_furl: This is the friendly URL displayed on 404/410 pages. It should redirect to the homepage. It doesn't need to include 'http' or 'https'.
         global_type: This sets a global redirect or archive for all paths.
         global_type_options:
+          none: Redirects for specific paths will be mapped manually
           redirect: All site URLs will redirect to the Global new URL
           archive: All site URLs will show a page saying the site has been archived
         query_params:  A significant querystring parameter is one which on the old website changes the content in a meaningful way - which we might therefore need to map to a different place. Query string parameters should be specified in lowercase; uppercase parameters will not be preserved during canonicalisation. Enter as a colon-separated list.

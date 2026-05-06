@@ -147,6 +147,19 @@ Scenario: Editing a site's transition date as a non-GDS Editor
   Then I should be redirected to the site dashboard
   And I should see "Only GDS Editors can access that."
 
+Scenario: Editing a globally redirected site to use non-global mappings
+  Given I have logged in as a Site Manager
+  And a site moj_academy exists
+  And the site is globally redirected
+  When I visit this site page
+  Then I should see "All paths from moj_academy.gov.uk"
+  When I click the link "Edit"
+  And I set the site to use non-global mappings
+  And I save my changes
+  Then I should be redirected to the site dashboard
+  And I should not see "All paths from moj_academy.gov.uk"
+  And I should be able to view the site's mappings
+
 Scenario: Deleting a site as a Site Manager
   Given I have logged in as a Site Manager
   And a site bis exists
