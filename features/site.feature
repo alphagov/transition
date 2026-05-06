@@ -122,9 +122,9 @@ Scenario: Editing a site
     | ukti            | UK Trade & Industry           |
     | go-science      | Government Office for Science |
   And a site bis exists
-  And I visit this site page
+  When I visit this site page
   And I click the link "Edit"
-  When I fill in the transition site fields
+  And I fill in the transition site fields
   And I save my changes
   Then I should be redirected to the site
 
@@ -132,8 +132,8 @@ Scenario: Editing a site's transition date as a GDS Editor
   Given I have logged in as a GDS Editor
   And the date is 29/11/19
   And a site bis exists
-  And I visit this site page
-  When I edit this site's transition date
+  When I visit this site page
+  And I edit this site's transition date
   Then I should be redirected to the site dashboard
   And I should see "Transition date updated"
   And I should see "20 September 2014"
@@ -141,7 +141,7 @@ Scenario: Editing a site's transition date as a GDS Editor
 Scenario: Editing a site's transition date as a non-GDS Editor
   Given I have logged in as a member of DCLG
   And a site dclg exists
-  And I visit this site page
+  When I visit this site page
   Then I should not see "Edit date"
   When I visit the path /sites/dclg/edit_date
   Then I should be redirected to the site dashboard
