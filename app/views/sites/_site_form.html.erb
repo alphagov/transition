@@ -91,6 +91,12 @@
         name: form.field_name(:global_type),
         items: [
           {
+            value: "",
+            text: t("helpers.label.site_form.global_type_options.none"),
+            hint_text: t("helpers.hint.site_form.global_type_options.none"),
+            checked: form.object.global_type.nil?
+          },
+          {
             value: Site::GLOBAL_TYPES[:archive],
             text: t("helpers.label.site_form.global_type_options.archive"),
             hint_text: t("helpers.hint.site_form.global_type_options.archive"),

@@ -30,6 +30,11 @@ When(/^I fill in the transition site fields/) do
   fill_in "Aliases", with: "aaib.gov.uk,aaib.com"
 end
 
+When(/^I set the site to use non-global mappings/) do
+  fill_in "Global new URL", with: ""
+  choose "Non-global"
+end
+
 Then(/^I should be on the new transition site page for the (.*) organisation$/) do |organisation_title|
   organisation = Organisation.find_by(title: organisation_title)
   i_should_be_on_the_path new_organisation_site_path(organisation)
