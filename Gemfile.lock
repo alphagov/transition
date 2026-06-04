@@ -287,7 +287,7 @@ GEM
     govuk_personalisation (1.1.0)
       plek (>= 1.9.0)
       rails (>= 6, < 9)
-    govuk_publishing_components (66.3.0)
+    govuk_publishing_components (66.4.1)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -365,7 +365,7 @@ GEM
       net-imap
       net-pop
       net-smtp
-    marcel (1.1.1)
+    marcel (1.2.1)
     matrix (0.4.3)
     memoist3 (1.0.0)
     method_source (1.1.0)
@@ -598,7 +598,7 @@ GEM
       opentelemetry-common (~> 0.20)
       opentelemetry-registry (~> 0.2)
       opentelemetry-semantic_conventions
-    opentelemetry-semantic_conventions (1.38.0)
+    opentelemetry-semantic_conventions (1.39.0)
       opentelemetry-api (~> 1.0)
     optic14n (4.2.0)
       addressable (~> 2.7)
@@ -713,7 +713,8 @@ GEM
       netrc (~> 0.8)
     retriable (3.4.1)
     rexml (3.4.4)
-    rouge (4.7.0)
+    rouge (5.0.0)
+      strscan (~> 3.1)
     rspec-collection_matchers (1.2.1)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.13.6)
@@ -837,6 +838,7 @@ GEM
       sprockets (>= 3.0.0)
     statsd-ruby (1.5.0)
     stringio (3.2.0)
+    strscan (3.1.8)
     sys-uname (1.5.1)
       ffi (~> 1.1)
       memoist3 (~> 1.0.0)
