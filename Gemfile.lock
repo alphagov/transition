@@ -287,7 +287,7 @@ GEM
     govuk_personalisation (1.1.0)
       plek (>= 1.9.0)
       rails (>= 6, < 9)
-    govuk_publishing_components (66.4.1)
+    govuk_publishing_components (66.4.2)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -872,7 +872,7 @@ GEM
       hashdiff (>= 0.4.0, < 2.0.0)
     webrick (1.9.2)
     websocket (1.2.11)
-    websocket-driver (0.8.0)
+    websocket-driver (0.8.1)
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
