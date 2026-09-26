@@ -778,7 +778,7 @@ GEM
       lint_roller (~> 1.1)
       rubocop (~> 1.81)
     ruby-progressbar (1.13.0)
-    rubyzip (3.2.2)
+    rubyzip (3.4.0)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-embedded (1.99.0)
