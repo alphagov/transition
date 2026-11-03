@@ -276,7 +276,7 @@ GEM
       jquery-rails (~> 4.3)
       plek (>= 2.1)
       rails (>= 6)
-    govuk_app_config (9.26.0)
+    govuk_app_config (9.27.0)
       connection_pool (< 4)
       logstasher (>= 2.1, < 4.0)
       opentelemetry-exporter-otlp (>= 0.25, < 0.35)
@@ -286,8 +286,8 @@ GEM
       prometheus_exporter (~> 2.3)
       puma (>= 5.6, < 9.0)
       rack-proxy (>= 0.7, < 2.0)
-      sentry-rails (>= 5.3, < 7.0)
-      sentry-ruby (>= 5.3, < 7.0)
+      sentry-rails (>= 5.3, < 8.0, != 7.0.0)
+      sentry-ruby (>= 5.3, < 8.0, != 7.0.0)
       statsd-ruby (~> 1.5)
     govuk_personalisation (1.2.0)
       plek (>= 1.9.0)
@@ -359,8 +359,8 @@ GEM
     link_header (0.0.8)
     lint_roller (1.1.0)
     logger (1.7.0)
-    logstasher (3.0.0)
-      activesupport (>= 7.0)
+    logstasher (2.1.5)
+      activesupport (>= 5.2)
       request_store
     loofah (2.25.3)
       crass (~> 1.0.2)
@@ -712,7 +712,7 @@ GEM
       tsort
     redis (5.4.1)
       redis-client (>= 0.22.0)
-    redis-client (0.30.1)
+    redis-client (0.31.0)
       connection_pool
     regexp_parser (2.12.0)
     reline (0.7.0)
@@ -813,19 +813,19 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
-    sentry-rails (6.7.0)
+    sentry-rails (7.2.0)
       railties (>= 5.2.0)
-      sentry-ruby (~> 6.7.0)
-    sentry-ruby (6.7.0)
+      sentry-ruby (~> 7.2.0)
+    sentry-ruby (7.2.0)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
       logger
-    sentry-sidekiq (6.7.0)
-      sentry-ruby (~> 6.7.0)
+    sentry-sidekiq (7.2.0)
+      sentry-ruby (~> 7.2.0)
       sidekiq (>= 5.0)
     shoulda-matchers (8.0.1)
       activesupport (>= 7.2)
-    sidekiq (8.1.6)
+    sidekiq (8.1.7)
       connection_pool (>= 3.0.0)
       json (>= 2.16.0)
       logger (>= 1.7.0)
@@ -914,7 +914,7 @@ DEPENDENCIES
   gds-sso
   google-api-client
   govuk_admin_template
-  govuk_app_config
+  govuk_app_config (>= 9.27.0)
   govuk_publishing_components
   govuk_sidekiq
   govuk_test
