@@ -292,7 +292,7 @@ GEM
     govuk_personalisation (1.2.0)
       plek (>= 1.9.0)
       rails (>= 6, < 9)
-    govuk_publishing_components (71.0.1)
+    govuk_publishing_components (71.1.0)
       chartkick
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
@@ -328,7 +328,7 @@ GEM
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
     io-console (0.9.5)
-    irb (1.18.0)
+    irb (1.19.0)
       pp (>= 0.6.0)
       prism (>= 1.3.0)
       rdoc (>= 4.0.0)
@@ -359,8 +359,8 @@ GEM
     link_header (0.0.8)
     lint_roller (1.1.0)
     logger (1.7.0)
-    logstasher (2.1.5)
-      activesupport (>= 5.2)
+    logstasher (3.0.0)
+      activesupport (>= 7.0)
       request_store
     loofah (2.25.3)
       crass (~> 1.0.2)
@@ -381,9 +381,9 @@ GEM
     mime-types-data (3.2026.0921)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
-    minitest (6.0.6)
+    minitest (6.1.0)
       drb (~> 2.0)
-      prism (~> 1.5)
+      prism (>= 1.5, < 3)
     mlanett-redis-lock (0.2.7)
       redis
     msgpack (1.8.7)
