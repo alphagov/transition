@@ -292,7 +292,7 @@ GEM
     govuk_personalisation (1.2.0)
       plek (>= 1.9.0)
       rails (>= 6, < 9)
-    govuk_publishing_components (71.0.1)
+    govuk_publishing_components (71.1.0)
       chartkick
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
@@ -359,8 +359,8 @@ GEM
     link_header (0.0.8)
     lint_roller (1.1.0)
     logger (1.7.0)
-    logstasher (2.1.5)
-      activesupport (>= 5.2)
+    logstasher (3.0.0)
+      activesupport (>= 7.0)
       request_store
     loofah (2.25.3)
       crass (~> 1.0.2)
