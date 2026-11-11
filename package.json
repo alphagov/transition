@@ -13,5 +13,8 @@
   "devDependencies": {
     "jasmine-browser-runner": "^5.0.0",
     "jasmine-core": "^7.0.2"
+  },
+  "resolutions": {
+    "glob": "14.0.4"
   }
 }
