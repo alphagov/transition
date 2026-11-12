@@ -323,7 +323,7 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.1.6)
       domain_name (~> 0.5)
-    httpclient (2.9.0)
+    httpclient (2.10.0)
       mutex_m
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
